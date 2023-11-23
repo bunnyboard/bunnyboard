@@ -37,6 +37,17 @@ export default class Aavev2Adapter extends ProtocolAdapter {
     return totalBorrowed.toString(10);
   }
 
+  protected async getReserveData(config: AaveLendingMarketConfig, reserve: string, blockNumber: number): Promise<any> {
+    return await this.services.blockchain.singlecall({
+      chain: config.chain,
+      abi: AaveDataProviderV2Abi,
+      target: config.dataProvider,
+      method: 'getReserveData',
+      params: [reserve],
+      blockNumber,
+    });
+  }
+
   public async getLendingMarketSnapshots(
     options: GetLendingMarketSnapshotOptions,
   ): Promise<Array<LendingMarketSnapshot> | null> {
@@ -70,14 +81,7 @@ export default class Aavev2Adapter extends ProtocolAdapter {
         return null;
       }
 
-      const reserveData: any = await this.services.blockchain.singlecall({
-        chain: marketConfig.chain,
-        abi: AaveDataProviderV2Abi,
-        target: marketConfig.dataProvider,
-        method: 'getReserveData',
-        params: [reserve],
-        blockNumber,
-      });
+      const reserveData: any = await this.getReserveData(marketConfig, reserve, blockNumber);
 
       const totalBorrowed = this.getTotalBorrowed(reserveData);
       const totalDeposited = this.getTotalDeposited(reserveData);

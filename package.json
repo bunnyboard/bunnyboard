@@ -5,7 +5,7 @@
   "license": "MIT",
   "scripts": {
     "build": "rm -rf ./build && tsc",
-    "test": "ts-mocha --timeout 0 --exit 'tests/**/*.ts'",
+    "test": "ts-mocha --timeout 0 --exit 'src/tests/**/*.ts'",
     "pretty": "prettier --write ./",
     "start": "node build/index.js"
   },

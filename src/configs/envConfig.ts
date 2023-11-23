@@ -99,6 +99,32 @@ const envConfig: EnvConfig = {
         decimals: 18,
       },
     },
+    avalanche: {
+      name: 'avalanche',
+      family: 'evm',
+      chainId: 43114,
+      nodeRpc: String(process.env.MAGICBUNNY_AVALANCHE_NODE),
+      blockSubgraph: BlockSubGraphEndpoints.avalanche,
+      nativeToken: {
+        chain: 'avalanche',
+        address: AddressZero,
+        symbol: 'AVAX',
+        decimals: 18,
+      },
+    },
+    fantom: {
+      name: 'fantom',
+      family: 'evm',
+      chainId: 43114,
+      nodeRpc: String(process.env.MAGICBUNNY_FANTOM_NODE),
+      blockSubgraph: BlockSubGraphEndpoints.fantom,
+      nativeToken: {
+        chain: 'fantom',
+        address: AddressZero,
+        symbol: 'FTM',
+        decimals: 18,
+      },
+    },
   },
 };
 

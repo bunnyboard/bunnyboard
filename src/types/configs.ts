@@ -85,9 +85,6 @@ export interface LendingMarketConfig {
 export interface ProtocolConfig {
   protocol: string;
 
-  // a list of chains where this protocol is operating
-  chains: Array<string>;
-
   // a list of contract which need to indexed logs
   contracts?: Array<ContractConfig>;
 

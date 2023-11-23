@@ -1,5 +1,7 @@
 import BigNumber from 'bignumber.js';
 
+import AaveDataProviderV3Abi from '../../../configs/abi/aave/DataProviderV3.json';
+import { AaveLendingMarketConfig } from '../../../configs/protocols/aave';
 import { ProtocolConfig } from '../../../types/configs';
 import { ContextServices } from '../../../types/namespaces';
 import Aavev2Adapter from './aavev2';
@@ -9,6 +11,17 @@ export default class Aavev3Adapter extends Aavev2Adapter {
 
   constructor(services: ContextServices, config: ProtocolConfig) {
     super(services, config);
+  }
+
+  protected async getReserveData(config: AaveLendingMarketConfig, reserve: string, blockNumber: number): Promise<any> {
+    return await this.services.blockchain.singlecall({
+      chain: config.chain,
+      abi: AaveDataProviderV3Abi,
+      target: config.dataProvider,
+      method: 'getReserveData',
+      params: [reserve],
+      blockNumber,
+    });
   }
 
   // return total deposited (in wei)

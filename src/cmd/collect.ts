@@ -44,7 +44,7 @@ export class CollectCommand extends BasicCommand {
       },
       protocol: {
         type: 'string',
-        default: 'lending',
+        default: '',
         describe: 'Run collector with given protocol.',
       },
       exit: {

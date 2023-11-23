@@ -20,15 +20,16 @@ export default class LendingCollector extends Collector {
     const adapters = getProtocolAdapters(this.services);
 
     let configs: Array<ProtocolConfig> = Object.values(ProtocolConfigs);
-    if (options.chain) {
-      configs = configs.filter((item) => item.chains.indexOf(options.chain as string) !== -1);
-    }
     if (options.protocol) {
       configs = configs.filter((item) => item.protocol === options.protocol);
     }
 
     for (const protocol of configs) {
       if (protocol.lendingMarkets && adapters[protocol.protocol]) {
+        if (options.chain) {
+          protocol.lendingMarkets = protocol.lendingMarkets.filter((item) => item.chain === options.chain);
+        }
+
         logger.info('start to update lending market snapshots', {
           service: this.name,
           protocol: protocol.protocol,
