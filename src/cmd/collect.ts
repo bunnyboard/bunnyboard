@@ -1,3 +1,4 @@
+import EnvConfig from '../configs/envConfig';
 import { sleep } from '../lib/utils';
 import LendingCollector from '../modules/collector/lending';
 import { ContextServices } from '../types/namespaces';
@@ -16,7 +17,10 @@ export class CollectCommand extends BasicCommand {
     const lendingCollector = new LendingCollector(services);
 
     while (true) {
-      await lendingCollector.run({});
+      await lendingCollector.run({
+        chain: argv.chain === '' ? undefined : argv.chain,
+        protocol: argv.protocol === '' ? undefined : argv.protocol,
+      });
 
       if (argv.exit) {
         process.exit(0);
@@ -32,6 +36,16 @@ export class CollectCommand extends BasicCommand {
         type: 'string',
         default: 'lending',
         describe: 'The metric to collect, support: lending.',
+      },
+      chain: {
+        type: 'string',
+        default: '',
+        describe: `Run collector on given chain, support: ${Object.keys(EnvConfig.blockchains).toString()}.`,
+      },
+      protocol: {
+        type: 'string',
+        default: 'lending',
+        describe: 'Run collector with given protocol.',
       },
       exit: {
         type: 'boolean',

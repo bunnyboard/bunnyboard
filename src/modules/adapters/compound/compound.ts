@@ -1,7 +1,7 @@
 import BigNumber from 'bignumber.js';
 
 import cErc20Abi from '../../../configs/abi/compound/cErc20.json';
-import { ChainBlockPeriods } from '../../../configs/constants';
+import { ChainBlockPeriods, YEAR } from '../../../configs/constants';
 import EnvConfig from '../../../configs/envConfig';
 import { CompoundLendingMarketConfig } from '../../../configs/protocols/compound';
 import logger from '../../../lib/logger';
@@ -76,8 +76,12 @@ export default class CompoundAdapter extends ProtocolAdapter {
       blockNumber,
     });
 
-    const supplyRate = new BigNumber(supplyRatePerBlock).multipliedBy(ChainBlockPeriods[options.config.chain]);
-    const borrowRate = new BigNumber(borrowRatePerBlock).multipliedBy(ChainBlockPeriods[options.config.chain]);
+    const supplyRate = new BigNumber(supplyRatePerBlock).multipliedBy(
+      Math.floor(YEAR / ChainBlockPeriods[options.config.chain]),
+    );
+    const borrowRate = new BigNumber(borrowRatePerBlock).multipliedBy(
+      Math.floor(YEAR / ChainBlockPeriods[options.config.chain]),
+    );
 
     const totalDeposited = new BigNumber(totalCash.toString())
       .plus(new BigNumber(totalBorrows.toString()))

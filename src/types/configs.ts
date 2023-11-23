@@ -73,7 +73,7 @@ export interface ContractConfig {
   topics: Array<Array<string>>;
 }
 
-export type LendingMarketVersion = 'aavev1' | 'aavev2' | 'aavev3' | 'compound';
+export type LendingMarketVersion = 'aavev1' | 'aavev2' | 'aavev3' | 'compound' | 'compoundv3';
 export interface LendingMarketConfig {
   chain: string;
   protocol: string;

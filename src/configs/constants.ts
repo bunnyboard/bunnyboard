@@ -1,3 +1,7 @@
+// time
+export const DAY = 24 * 60 * 60;
+export const YEAR = 365 * DAY;
+
 export const BlockSubGraphEndpoints: { [key: string]: string } = {
   ethereum: 'https://api.thegraph.com/subgraphs/name/blocklytics/ethereum-blocks',
   arbitrum: 'https://api.thegraph.com/subgraphs/name/ianlapham/arbitrum-one-blocks',
