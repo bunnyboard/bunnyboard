@@ -115,7 +115,7 @@ const envConfig: EnvConfig = {
     fantom: {
       name: 'fantom',
       family: 'evm',
-      chainId: 43114,
+      chainId: 250,
       nodeRpc: String(process.env.MAGICBUNNY_FANTOM_NODE),
       blockSubgraph: BlockSubGraphEndpoints.fantom,
       nativeToken: {

@@ -76,7 +76,7 @@ export default class CompoundAdapter extends ProtocolAdapter {
       blockNumber,
     });
 
-    const supplyRate = new BigNumber(supplyRatePerBlock).multipliedBy(
+    const supplyRate = new BigNumber(supplyRatePerBlock ? supplyRatePerBlock : '0').multipliedBy(
       Math.floor(YEAR / ChainBlockPeriods[options.config.chain]),
     );
     const borrowRate = new BigNumber(borrowRatePerBlock).multipliedBy(

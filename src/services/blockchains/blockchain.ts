@@ -104,27 +104,38 @@ export default class BlockchainService extends CachingService implements IBlockc
   }
 
   public async singlecall(call: ContractCall): Promise<any> {
-    const startExeTime = Math.floor(new Date().getTime() / 1000);
-
     const contract = new this.providers[call.chain].eth.Contract(call.abi, call.target);
 
     let result;
-    if (call.blockNumber) {
-      result = await contract.methods[call.method](...(call.params as [])).call({}, call.blockNumber);
-    } else {
-      result = await contract.methods[call.method](...(call.params as [])).call();
-    }
+    try {
+      const startExeTime = Math.floor(new Date().getTime() / 1000);
 
-    const endExeTime = Math.floor(new Date().getTime() / 1000);
-    const elapsed = endExeTime - startExeTime;
+      if (call.blockNumber) {
+        result = await contract.methods[call.method](...(call.params as [])).call({}, call.blockNumber);
+      } else {
+        result = await contract.methods[call.method](...(call.params as [])).call();
+      }
 
-    if (elapsed > 5) {
-      logger.debug('took too long for onchain single call', {
+      const endExeTime = Math.floor(new Date().getTime() / 1000);
+      const elapsed = endExeTime - startExeTime;
+
+      if (elapsed > 5) {
+        logger.debug('took too long for onchain single call', {
+          service: this.name,
+          chain: call.chain,
+          target: call.target,
+          method: call.method,
+          params: call.params.toString(),
+        });
+      }
+    } catch (e: any) {
+      logger.warn('failed to query contract', {
         service: this.name,
         chain: call.chain,
         target: call.target,
         method: call.method,
-        params: call.params.toString(),
+        params: call.params.length > 0 ? call.params.toString() : '[]',
+        error: e.message,
       });
     }
 

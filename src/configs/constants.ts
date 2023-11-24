@@ -9,8 +9,8 @@ export const BlockSubGraphEndpoints: { [key: string]: string } = {
   optimism: 'https://api.thegraph.com/subgraphs/name/ianlapham/uni-testing-subgraph',
   polygon: 'https://api.thegraph.com/subgraphs/name/matthewlilley/polygon-blocks',
   bnbchain: 'https://api.thegraph.com/subgraphs/name/matthewlilley/bsc-blocks',
-  avalanche: 'https://api.thegraph.com/subgraphs/name/dasconnor/avalanche-blocks',
-  fantom: 'https://api.thegraph.com/subgraphs/name/ducquangkstn/fantom-blocks',
+  avalanche: 'https://api.thegraph.com/subgraphs/name/matthewlilley/avalanche-blocks',
+  fantom: 'https://api.thegraph.com/subgraphs/name/matthewlilley/fantom-blocks',
 };
 
 export const AddressZero = '0x0000000000000000000000000000000000000000';
@@ -19,5 +19,6 @@ export const AddressF = '0xffffffffffffffffffffffffffffffffffffffff';
 
 // chain => number of second per block confirmation
 export const ChainBlockPeriods: { [key: string]: number } = {
-  ethereum: 13,
+  ethereum: 13, // 13 seconds
+  bnbchain: 3, // 3 seconds
 };

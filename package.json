@@ -6,7 +6,7 @@
   "scripts": {
     "build": "rm -rf ./build && tsc",
     "test": "ts-mocha --timeout 0 --exit 'src/tests/**/*.ts'",
-    "pretty": "prettier --write ./",
+    "pretty": "node scripts/pretty.js && prettier --write ./",
     "start": "node build/index.js"
   },
   "dependencies": {
