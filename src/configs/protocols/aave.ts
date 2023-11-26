@@ -8,6 +8,20 @@ export interface AaveProtocolConfig extends ProtocolConfig {
   lendingMarkets: Array<AaveLendingMarketConfig>;
 }
 
+export const Aavev1Configs: AaveProtocolConfig = {
+  protocol: 'aavev1',
+  lendingMarkets: [
+    {
+      chain: 'ethereum',
+      protocol: 'aavev2',
+      version: 'aavev2',
+      birthday: 1578528000, // Thu Jan 09 2020 00:00:00 GMT+0000
+      address: '0x398ec7346dcd622edc5ae82352f02be94c62d119',
+      dataProvider: '', // don't use
+    },
+  ],
+};
+
 export const Aavev2Configs: AaveProtocolConfig = {
   protocol: 'aavev2',
   lendingMarkets: [
