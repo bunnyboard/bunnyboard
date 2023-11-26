@@ -57,6 +57,42 @@ export interface EnvConfig {
   };
 }
 
+export type OracleType = 'chainlink' | 'univ2';
+export type OracleCurrencyBase = 'usd' | 'eth' | 'bnb' | 'avax' | 'matic' | 'ftm';
+
+interface OracleSourceBase {
+  type: OracleType;
+  chain: string;
+  address: string;
+}
+
+export interface OracleSourceChainlink extends OracleSourceBase {
+  // aggregator data decimals places
+  decimals: number;
+
+  // the oldest timestamp when this data source is available
+  birthday: number;
+}
+
+export interface OracleSourceUniv2 extends OracleSourceBase {
+  token0: Token;
+  token1: Token;
+}
+
+export interface OracleConfig {
+  // if the currency is not usd
+  // we need to get currency base token price too
+  currency: OracleCurrencyBase;
+
+  // a list of on-chain sources where we can get the token price
+  sources: Array<OracleSourceChainlink | OracleSourceUniv2>;
+
+  // if the coingecko id was given
+  // we will get price from coingecko API
+  // in case we failed to get price from on-chain source
+  coingeckoId?: string;
+}
+
 export interface ContractConfig {
   chain: string;
 
