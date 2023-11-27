@@ -104,6 +104,16 @@ export interface OracleConfig {
   coingeckoId?: string;
 }
 
+export interface ContractFilterLogTopics {
+  // required, event signature
+  topic0: string;
+
+  // match with topics list item index
+  topic1?: string;
+  topic2?: string;
+  topic3?: string;
+}
+
 export interface ContractConfig {
   chain: string;
 
@@ -113,11 +123,11 @@ export interface ContractConfig {
   // the factory contract address
   address: string;
 
-  // the block number when contract was deployed
-  birthblock: number;
+  // the timestamp when contract was deployed
+  birthday: number;
 
-  // used to filter logs
-  topics: Array<Array<string>>;
+  // for logs indexing
+  logFilters: Array<ContractFilterLogTopics>;
 }
 
 export type LendingMarketVersion = 'aavev1' | 'aavev2' | 'aavev3' | 'compound' | 'compoundv3';

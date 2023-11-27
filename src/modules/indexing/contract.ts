@@ -3,7 +3,7 @@ import Web3 from 'web3';
 import { DefaultQueryLogsBlockRange } from '../../configs';
 import EnvConfig from '../../configs/envConfig';
 import logger from '../../lib/logger';
-import { queryBlockTimestamps } from '../../lib/subsgraph';
+import { queryBlockNumberAtTimestamp, queryBlockTimestamps } from '../../lib/subsgraph';
 import { compareAddress, formatTime, sleep } from '../../lib/utils';
 import { ContractConfig } from '../../types/configs';
 import { ContextServices, IContractIndexing } from '../../types/namespaces';
@@ -19,7 +19,7 @@ export default class ContractIndexing implements IContractIndexing {
   }
 
   private async indexContract(contractConfig: ContractConfig): Promise<void> {
-    let startBlock = contractConfig.birthblock;
+    let startBlock = 0;
 
     const stateKey = `indexing-contract-${contractConfig.chain}-${contractConfig.address}`;
     const state = await this.services.database.find({
@@ -31,6 +31,17 @@ export default class ContractIndexing implements IContractIndexing {
     if (state) {
       if (startBlock < state.blockNumber) {
         startBlock = state.blockNumber;
+      }
+    }
+
+    while (startBlock === 0) {
+      startBlock = await queryBlockNumberAtTimestamp(
+        EnvConfig.blockchains[contractConfig.chain].blockSubgraph,
+        contractConfig.birthday,
+      );
+
+      if (startBlock === 0) {
+        await sleep(5);
       }
     }
 
@@ -69,15 +80,13 @@ export default class ContractIndexing implements IContractIndexing {
         for (const log of logs) {
           let matching = false;
 
-          for (const topics of contractConfig.topics) {
-            if (topics.length <= log.topics.length && topics[0] === log.topics[0]) {
+          for (const filter of contractConfig.logFilters) {
+            if (log.topics[0] === filter.topic0) {
               matching = true;
 
-              for (let i = 0; i < topics.length; i++) {
-                if (topics[i] !== log.topics[i]) {
-                  matching = false;
-                }
-              }
+              matching = !(filter.topic1 && filter.topic1 !== log.topics[1]);
+              matching = !(filter.topic2 && filter.topic2 !== log.topics[2]);
+              matching = !(filter.topic3 && filter.topic3 !== log.topics[3]);
             }
           }
 
@@ -125,9 +134,9 @@ export default class ContractIndexing implements IContractIndexing {
           service: this.name,
           chain: contractConfig.chain,
           address: contractConfig.address,
+          logs: `${operations.length}/${logs.length}`,
           toBlock: toBlock,
           age: formatTime(blocktimes[toBlock]),
-          saved: `${operations.length}/${logs.length}`,
           elapses: `${elapsed}s`,
         });
 
