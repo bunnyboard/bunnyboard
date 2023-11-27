@@ -381,7 +381,7 @@
     "chain": "arbitrum",
     "symbol": "FRAX",
     "decimals": 18,
-    "address": "0x7468a5d8e02245b00e8c0217fce021c70bc51305"
+    "address": "0x17fc002b466eec40dae837fc4be5c67993ddbd6f"
   },
   "FTM": {
     "chain": "arbitrum",
@@ -592,6 +592,12 @@
     "symbol": "MAGIC",
     "decimals": 18,
     "address": "0x539bde0d7dbd336b79148aa742883198bbf60342"
+  },
+  "MAI": {
+    "chain": "arbitrum",
+    "symbol": "MAI",
+    "decimals": 18,
+    "address": "0x3f56e0c36d275367b8c502090edf38289b3dea0d"
   },
   "MANA": {
     "chain": "arbitrum",
@@ -807,7 +813,7 @@
     "chain": "arbitrum",
     "symbol": "RDNT",
     "decimals": 18,
-    "address": "0x3082cc23568ea640225c2467653db90e9250aaa0"
+    "address": "0x0c4681e6c0235179ec3d4f4fc4df3d14fdd96017"
   },
   "RDPX": {
     "chain": "arbitrum",
@@ -915,7 +921,7 @@
     "chain": "arbitrum",
     "symbol": "STG",
     "decimals": 18,
-    "address": "0x6694340fc020c5e6b96567843da2df01b2ce1eb6"
+    "address": "0xe018c7a3d175fb0fe15d70da2c874d3ca16313ec"
   },
   "STORJ": {
     "chain": "arbitrum",
@@ -994,7 +1000,7 @@
     "chain": "arbitrum",
     "symbol": "USDC",
     "decimals": 6,
-    "address": "0xff970a61a04b1ca14834a43f5de4533ebddb5cc8"
+    "address": "0xaf88d065e77c8cc2239327c5edb3a432268e5831"
   },
   "USDC.e": {
     "chain": "arbitrum",
@@ -1157,6 +1163,12 @@
     "symbol": "fUSDC",
     "decimals": 6,
     "address": "0x4cfa50b7ce747e2d61724fcac57f24b748ff2b2a"
+  },
+  "rETH": {
+    "chain": "arbitrum",
+    "symbol": "rETH",
+    "decimals": 18,
+    "address": "0xec70dcb4a1efa46b8f2d97c310c9c4790ba5ffa8"
   },
   "sUSD": {
     "chain": "arbitrum",

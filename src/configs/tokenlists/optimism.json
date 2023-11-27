@@ -137,6 +137,12 @@
     "decimals": 18,
     "address": "0xc40f949f8a4e094d1b49a23ea9241d289b7b2819"
   },
+  "MAI": {
+    "chain": "optimism",
+    "symbol": "MAI",
+    "decimals": 18,
+    "address": "0xdfa46478f9e5ea86d57387849598dbfb2e964b02"
+  },
   "MASK": {
     "chain": "optimism",
     "symbol": "MASK",
@@ -238,7 +244,7 @@
     "chain": "optimism",
     "symbol": "USDC",
     "decimals": 6,
-    "address": "0x7f5c764cbc14f9669b88837ca1490cca17c31607"
+    "address": "0x0b2c639c533813f4aa9d7837caf62653d097ff85"
   },
   "USDC.e": {
     "chain": "optimism",
@@ -336,10 +342,22 @@
     "decimals": 18,
     "address": "0xaddb6a0412de1ba0f936dcaeb8aaa24578dcf3b2"
   },
+  "rETH": {
+    "chain": "optimism",
+    "symbol": "rETH",
+    "decimals": 18,
+    "address": "0x9bcef72be871e61ed4fbbc7630889bee758eb81d"
+  },
   "sUSD": {
     "chain": "optimism",
     "symbol": "sUSD",
     "decimals": 18,
     "address": "0x8c6f28f2f1a3c87f0f938b96d27520d9751ec8d9"
+  },
+  "wstETH": {
+    "chain": "optimism",
+    "symbol": "wstETH",
+    "decimals": 18,
+    "address": "0x1f32b1c2345538c0c6f582fcb022739c4a194ebb"
   }
 }

@@ -86,6 +86,11 @@ export default class Aavev1Adapter extends ProtocolAdapter {
       const totalBorrowed = this.getTotalBorrowed(reserveData);
       const totalDeposited = this.getTotalDeposited(reserveData);
 
+      const tokenPrice = await this.services.oracle.getTokenPriceUsd({
+        chain: token.chain,
+        address: token.address,
+        timestamp: options.timestamp,
+      });
       const snapshot: LendingMarketSnapshot = {
         marketId: `${marketConfig.protocol}-${marketConfig.chain}-${normalizeAddress(
           marketConfig.address,
@@ -97,7 +102,7 @@ export default class Aavev1Adapter extends ProtocolAdapter {
         timestamp: options.timestamp,
 
         token: token,
-        tokenPrice: '0',
+        tokenPrice: tokenPrice ? tokenPrice : '0',
 
         totalDeposited: formatFromDecimals(totalDeposited, token.decimals),
         totalBorrowed: formatFromDecimals(totalBorrowed, token.decimals),
@@ -109,7 +114,7 @@ export default class Aavev1Adapter extends ProtocolAdapter {
 
       snapshots.push(snapshot);
 
-      logger.debug('got lending market snapshot', {
+      logger.info('got lending market snapshot', {
         service: this.name,
         protocol: this.config.protocol,
         chain: marketConfig.chain,

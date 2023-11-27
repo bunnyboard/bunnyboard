@@ -89,6 +89,11 @@ export default class Compoundv3Adapter extends ProtocolAdapter {
         blockNumber,
       });
 
+      const tokenPrice = await this.services.oracle.getTokenPriceUsd({
+        chain: baseToken.chain,
+        address: baseToken.address,
+        timestamp: options.timestamp,
+      });
       snapshots.push({
         marketId: `${marketConfig.protocol}-${marketConfig.chain}-${normalizeAddress(
           marketConfig.address,
@@ -100,7 +105,7 @@ export default class Compoundv3Adapter extends ProtocolAdapter {
         timestamp: options.timestamp,
 
         token: baseToken,
-        tokenPrice: '0',
+        tokenPrice: tokenPrice ? tokenPrice : '0',
 
         totalDeposited: formatFromDecimals(new BigNumber(totalSupply.toString()).toString(10), baseToken.decimals),
         totalBorrowed: formatFromDecimals(new BigNumber(totalBorrow.toString()).toString(10), baseToken.decimals),
@@ -141,6 +146,11 @@ export default class Compoundv3Adapter extends ProtocolAdapter {
         address: assetInfo[1],
       });
       if (collateral) {
+        const collateralPrice = await this.services.oracle.getTokenPriceUsd({
+          chain: collateral.chain,
+          address: collateral.address,
+          timestamp: options.timestamp,
+        });
         const totalsCollateral = await this.services.blockchain.singlecall({
           chain: marketConfig.chain,
           abi: CompoundCometAbi,
@@ -161,7 +171,7 @@ export default class Compoundv3Adapter extends ProtocolAdapter {
           timestamp: options.timestamp,
 
           token: collateral,
-          tokenPrice: '0',
+          tokenPrice: collateralPrice ? collateralPrice : '0',
 
           totalDeposited: formatFromDecimals(
             new BigNumber(totalsCollateral.totalSupplyAsset.toString()).toString(10),
@@ -173,7 +183,7 @@ export default class Compoundv3Adapter extends ProtocolAdapter {
           borrowRate: '0',
         });
 
-        logger.debug('got lending market snapshot', {
+        logger.info('got lending market snapshot', {
           service: this.name,
           protocol: this.config.protocol,
           chain: marketConfig.chain,

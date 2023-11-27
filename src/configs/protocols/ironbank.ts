@@ -437,7 +437,7 @@ export const IronbankConfigs: CompoundProtocolConfig = {
       version: 'compound',
       birthday: 1644451200, // Thu Feb 10 2022 00:00:00 GMT+0000
       address: '0x02c9133627a14214879175a7a222d0a7f7404efb',
-      underlying: AvalancheTokenList['ALPHA.e'],
+      underlying: AvalancheTokenList.ALPHA,
     },
   ],
 };

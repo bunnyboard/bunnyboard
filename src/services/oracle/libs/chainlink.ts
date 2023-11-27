@@ -1,5 +1,4 @@
 import AggregatorAbi from '../../../configs/abi/chainlink/EACAggregator.json';
-import logger from '../../../lib/logger';
 import { formatFromDecimals } from '../../../lib/utils';
 import { OracleSourceChainlink } from '../../../types/configs';
 import BlockchainService from '../../blockchains/blockchain';
@@ -18,13 +17,6 @@ export default class ChainlinkLibs {
       params: [],
       blockNumber,
     });
-    if (!latestAnswer) {
-      logger.debug('failed to get chainlink answer from aggregator', {
-        chain: config.chain,
-        address: config.address,
-        blockNumber: blockNumber,
-      });
-    }
 
     return latestAnswer ? formatFromDecimals(latestAnswer.toString(), config.decimals) : null;
   }

@@ -57,8 +57,14 @@ export interface EnvConfig {
   };
 }
 
-export type OracleType = 'chainlink' | 'univ2';
-export type OracleCurrencyBase = 'usd' | 'eth' | 'bnb' | 'avax' | 'matic' | 'ftm';
+export type OracleType =
+  | 'chainlink'
+  | 'univ2'
+  | 'univ3'
+
+  // https://etherscan.io/token/0x83F20F44975D03b1b09e64809B757c47f942BEeA
+  | 'savingDai';
+export type OracleCurrencyBase = 'usd' | 'eth' | 'btc' | 'bnb' | 'avax' | 'matic' | 'ftm';
 
 interface OracleSourceBase {
   type: OracleType;
@@ -69,14 +75,19 @@ interface OracleSourceBase {
 export interface OracleSourceChainlink extends OracleSourceBase {
   // aggregator data decimals places
   decimals: number;
-
-  // the oldest timestamp when this data source is available
-  birthday: number;
 }
 
 export interface OracleSourceUniv2 extends OracleSourceBase {
-  token0: Token;
-  token1: Token;
+  baseToken: Token;
+  quotaToken: Token;
+}
+
+export interface OracleSourceUniv3 extends OracleSourceUniv2 {}
+
+// this oracle present a bearing staking pool
+// the price will be calculated by amount of underlying (staked) token
+export interface OracleSourceBearingToken extends OracleSourceBase {
+  token: Token;
 }
 
 export interface OracleConfig {
@@ -85,7 +96,7 @@ export interface OracleConfig {
   currency: OracleCurrencyBase;
 
   // a list of on-chain sources where we can get the token price
-  sources: Array<OracleSourceChainlink | OracleSourceUniv2>;
+  sources: Array<OracleSourceChainlink | OracleSourceUniv2 | OracleSourceUniv3 | OracleSourceBearingToken>;
 
   // if the coingecko id was given
   // we will get price from coingecko API

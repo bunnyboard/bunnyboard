@@ -1,0 +1,156 @@
+import { OracleSourceUniv3 } from '../../types/configs';
+import ArbitrumTokenList from '../tokenlists/arbitrum.json';
+import BnbchainTokenList from '../tokenlists/bnbchain.json';
+import EthereumTokenList from '../tokenlists/ethereum.json';
+import OptimismTokenList from '../tokenlists/optimism.json';
+import PolygonTokenList from '../tokenlists/polygon.json';
+
+export const OracleSourceUniswapv3List: { [key: string]: OracleSourceUniv3 } = {
+  RAI_DAI: {
+    type: 'univ3',
+    chain: 'ethereum',
+    address: '0xcb0c5d9d92f4f2f80cce7aa271a1e148c226e19d',
+    baseToken: EthereumTokenList.RAI,
+    quotaToken: EthereumTokenList.DAI,
+  },
+  ENS_WETH: {
+    type: 'univ3',
+    chain: 'ethereum',
+    address: '0x92560c178ce069cc014138ed3c2f5221ba71f58a',
+    baseToken: EthereumTokenList.ENS,
+    quotaToken: EthereumTokenList.WETH,
+  },
+  LUSD_USDC: {
+    type: 'univ3',
+    chain: 'ethereum',
+    address: '0x4e0924d3a751be199c426d52fb1f2337fa96f736',
+    baseToken: EthereumTokenList.LUSD,
+    quotaToken: EthereumTokenList.USDC,
+  },
+  wstETH_WETH: {
+    type: 'univ3',
+    chain: 'ethereum',
+    address: '0x109830a1aaad605bbf02a9dfa7b0b92ec2fb7daa',
+    baseToken: EthereumTokenList.wstETH,
+    quotaToken: EthereumTokenList.WETH,
+  },
+  cbETH_WETH: {
+    type: 'univ3',
+    chain: 'ethereum',
+    address: '0x840deeef2f115cf50da625f7368c24af6fe74410',
+    baseToken: EthereumTokenList.cbETH,
+    quotaToken: EthereumTokenList.WETH,
+  },
+  rETH_WETH: {
+    type: 'univ3',
+    chain: 'ethereum',
+    address: '0xa4e0faa58465a2d369aa21b3e42d43374c6f9613',
+    baseToken: EthereumTokenList.rETH,
+    quotaToken: EthereumTokenList.WETH,
+  },
+  LDO_WETH: {
+    type: 'univ3',
+    chain: 'ethereum',
+    address: '0xa3f558aebaecaf0e11ca4b2199cc5ed341edfd74',
+    baseToken: EthereumTokenList.LDO,
+    quotaToken: EthereumTokenList.WETH,
+  },
+  GHO_USDC: {
+    type: 'univ3',
+    chain: 'ethereum',
+    address: '0x5c95d4b1c3321cf898d25949f41d50be2db5bc1d',
+    baseToken: EthereumTokenList.GHO,
+    quotaToken: EthereumTokenList.USDC,
+  },
+  RPL_WETH: {
+    type: 'univ3',
+    chain: 'ethereum',
+    address: '0xe42318ea3b998e8355a3da364eb9d48ec725eb45',
+    baseToken: EthereumTokenList.RPL,
+    quotaToken: EthereumTokenList.WETH,
+  },
+  STG_USDC: {
+    type: 'univ3',
+    chain: 'ethereum',
+    address: '0x8592064903ef23d34e4d5aaaed40abf6d96af186',
+    baseToken: EthereumTokenList.STG,
+    quotaToken: EthereumTokenList.USDC,
+  },
+  EURS_USDC: {
+    type: 'univ3',
+    chain: 'polygon',
+    address: '0xc9d0cae8343a2231b1647ab00e639eabdc766147',
+    baseToken: PolygonTokenList.EURS,
+    quotaToken: PolygonTokenList.USDC,
+  },
+  agEUR_USDC: {
+    type: 'univ3',
+    chain: 'polygon',
+    address: '0x3fa147d6309abeb5c1316f7d8a7d8bd023e0cd80',
+    baseToken: PolygonTokenList.agEUR,
+    quotaToken: PolygonTokenList.USDC,
+  },
+  SAI_WETH: {
+    type: 'univ3',
+    chain: 'ethereum',
+    address: '0x8f9a0935b26097a1fc15d4919e0b9e466edc1c57',
+    baseToken: EthereumTokenList.SAI,
+    quotaToken: EthereumTokenList.WETH,
+  },
+  MIM_USDC: {
+    type: 'univ3',
+    chain: 'ethereum',
+    address: '0x298b7c5e0770d151e4c5cf6cca4dae3a3ffc8e27',
+    baseToken: EthereumTokenList.MIM,
+    quotaToken: EthereumTokenList.USDC,
+  },
+  OP_WETH: {
+    type: 'univ3',
+    chain: 'optimism',
+    address: '0x68f5c0a2de713a54991e01858fd27a3832401849',
+    baseToken: OptimismTokenList.OP,
+    quotaToken: OptimismTokenList.WETH,
+  },
+  stMATIC_WMATIC: {
+    type: 'univ3',
+    chain: 'polygon',
+    address: '0x59db5ea66958b19641b6891fc373b44b567ea15c',
+    baseToken: PolygonTokenList.stMATIC,
+    quotaToken: PolygonTokenList.WMATIC,
+  },
+  ARB_WETH: {
+    type: 'univ3',
+    chain: 'arbitrum',
+    address: '0xc6f780497a95e246eb9449f5e4770916dcd6396a',
+    baseToken: ArbitrumTokenList.ARB,
+    quotaToken: ArbitrumTokenList.WETH,
+  },
+  wBETH_ETH: {
+    type: 'univ3',
+    chain: 'bnbchain',
+    address: '0x379044e32f5a162233e82de19da852255d0951b8',
+    baseToken: BnbchainTokenList.wBETH,
+    quotaToken: BnbchainTokenList.ETH,
+  },
+  SbBNB_WBNB: {
+    type: 'univ3',
+    chain: 'bnbchain',
+    address: '0x9474e972f49605315763c296b122cbb998b615cf',
+    baseToken: BnbchainTokenList.SnBNB,
+    quotaToken: BnbchainTokenList.WBNB,
+  },
+  stkBNB_WBNB: {
+    type: 'univ3',
+    chain: 'bnbchain',
+    address: '0xae7a3d9bed2ba4ef9c134ff4baee33655ae5de6f',
+    baseToken: BnbchainTokenList.stkBNB,
+    quotaToken: BnbchainTokenList.WBNB,
+  },
+  ankrBNB_WBNB: {
+    type: 'univ3',
+    chain: 'bnbchain',
+    address: '0xcf57daadfbe05a04440c502967ce5209f64747eb',
+    baseToken: BnbchainTokenList.ankrBNB,
+    quotaToken: BnbchainTokenList.WBNB,
+  },
+};

@@ -15,6 +15,7 @@ function getProtocolAdapters(services: ContextServices): { [key: string]: IProto
     compoundv3: new Compoundv3Adapter(services, ProtocolConfigs.compoundv3),
     ironbank: new CompoundAdapter(services, ProtocolConfigs.ironbank),
     venus: new CompoundAdapter(services, ProtocolConfigs.venus),
+    radiant: new Aavev2Adapter(services, ProtocolConfigs.radiant),
   };
 }
 

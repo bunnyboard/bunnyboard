@@ -1,5 +1,6 @@
 import { IBlockchainService } from '../services/blockchains/domains';
 import { IDatabaseService } from '../services/database/domains';
+import { IOracleService } from '../services/oracle/domains';
 import { ProtocolConfig } from './configs';
 import { LendingMarketSnapshot } from './domains';
 import { ContractIndexingOptions, GetLendingMarketSnapshotOptions, RunCollectorOptions } from './options';
@@ -7,6 +8,7 @@ import { ContractIndexingOptions, GetLendingMarketSnapshotOptions, RunCollectorO
 export interface ContextServices {
   database: IDatabaseService;
   blockchain: IBlockchainService;
+  oracle: IOracleService;
 }
 
 export interface IProtocolAdapter {

@@ -89,6 +89,11 @@ export default class CompoundAdapter extends ProtocolAdapter {
     const totalBorrowed = new BigNumber(totalBorrows.toString());
 
     const token = (options.config as CompoundLendingMarketConfig).underlying;
+    const tokenPrice = await this.services.oracle.getTokenPriceUsd({
+      chain: token.chain,
+      address: token.address,
+      timestamp: options.timestamp,
+    });
 
     snapshots.push({
       marketId: `${marketConfig.protocol}-${marketConfig.chain}-${normalizeAddress(
@@ -101,7 +106,7 @@ export default class CompoundAdapter extends ProtocolAdapter {
       timestamp: options.timestamp,
 
       token: token,
-      tokenPrice: '0',
+      tokenPrice: tokenPrice ? tokenPrice : '0',
 
       totalDeposited: formatFromDecimals(totalDeposited.toString(10), token.decimals),
       totalBorrowed: formatFromDecimals(totalBorrowed.toString(10), token.decimals),
@@ -110,7 +115,7 @@ export default class CompoundAdapter extends ProtocolAdapter {
       borrowRate: formatFromDecimals(borrowRate.toString(10), 18),
     });
 
-    logger.debug('got lending market snapshot', {
+    logger.info('got lending market snapshot', {
       service: this.name,
       protocol: this.config.protocol,
       chain: marketConfig.chain,

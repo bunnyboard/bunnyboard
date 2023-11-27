@@ -125,18 +125,17 @@ export default class BlockchainService extends CachingService implements IBlockc
           chain: call.chain,
           target: call.target,
           method: call.method,
-          params: call.params.toString(),
+          params: call.params.length > 0 ? call.params.toString() : '[]',
         });
       }
     } catch (e: any) {
-      logger.warn('failed to query contract', {
-        service: this.name,
-        chain: call.chain,
-        target: call.target,
-        method: call.method,
-        params: call.params.length > 0 ? call.params.toString() : '[]',
-        error: e.message,
-      });
+      // logger.debug('failed to query contract', {
+      //   service: this.name,
+      //   chain: call.chain,
+      //   target: call.target,
+      //   method: call.method,
+      //   params: call.params.length > 0 ? call.params.toString() : '[]',
+      // });
     }
 
     return result;

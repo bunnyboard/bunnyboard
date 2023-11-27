@@ -35,12 +35,6 @@
     "decimals": 18,
     "address": "0x2147efff675e4a4ee1c2f918d181cdbd7a8e208f"
   },
-  "ALPHA.e": {
-    "chain": "avalanche",
-    "symbol": "ALPHA.e",
-    "decimals": 18,
-    "address": "0x2147efff675e4a4ee1c2f918d181cdbd7a8e208f"
-  },
   "ALTD": {
     "chain": "avalanche",
     "symbol": "ALTD",
@@ -429,7 +423,7 @@
     "chain": "avalanche",
     "symbol": "MAI",
     "decimals": 18,
-    "address": "0x3b55e45fd6bd7d4724f5c47e0d1bcaedd059263e"
+    "address": "0x5c49b268c9841aff1cc3b0a418ff5c3442ee3f3b"
   },
   "MATIC": {
     "chain": "avalanche",
@@ -531,7 +525,7 @@
     "chain": "avalanche",
     "symbol": "QI",
     "decimals": 18,
-    "address": "0xa56f9a54880afbc30cf29bb66d2d9adcdcaeadd6"
+    "address": "0x8729438eb15e2c8b576fcc6aecda6a148776c0f5"
   },
   "RAI": {
     "chain": "avalanche",
@@ -964,6 +958,12 @@
     "symbol": "hJoe",
     "decimals": 18,
     "address": "0xe7250b05bd8dee615ecc681eda1196add5156f2b"
+  },
+  "miMATIC": {
+    "chain": "avalanche",
+    "symbol": "miMATIC",
+    "decimals": 18,
+    "address": "0x3b55e45fd6bd7d4724f5c47e0d1bcaedd059263e"
   },
   "oldSUSHI": {
     "chain": "avalanche",

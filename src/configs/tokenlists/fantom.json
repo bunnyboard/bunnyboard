@@ -162,6 +162,12 @@
     "decimals": 18,
     "address": "0xae75a438b2e0cb8bb01ec1e1e376de11d44477cc"
   },
+  "TUSD": {
+    "chain": "fantom",
+    "symbol": "TUSD",
+    "decimals": 18,
+    "address": "0x9879abdea01a879644185341f7af7d8343556b7a"
+  },
   "USDC": {
     "chain": "fantom",
     "symbol": "USDC",

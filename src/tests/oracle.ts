@@ -1,8 +1,11 @@
 import { expect } from 'chai';
+import fs from 'fs';
 import { describe } from 'mocha';
 
 import { OracleConfigs } from '../configs/oracles/configs';
 import { getTimestamp } from '../lib/utils';
+import BlockchainService from '../services/blockchains/blockchain';
+import { IBlockchainService } from '../services/blockchains/domains';
 import DatabaseService from '../services/database/database';
 import { IDatabaseService } from '../services/database/domains';
 import { IOracleService } from '../services/oracle/domains';
@@ -31,12 +34,17 @@ function getAllOracles(): Array<TokenOracleConfig> {
 }
 
 const database: IDatabaseService = new DatabaseService();
+const blockchain: IBlockchainService = new BlockchainService();
 const oracle: IOracleService = new OracleService(database);
 const timestamp = getTimestamp();
 
+const reportFile = './getTokenPrices.csv';
+
+fs.writeFileSync(reportFile, 'chain,symbol,priceUsd,address\n');
+
 describe('oracle service', async function () {
   getAllOracles().map((config: TokenOracleConfig) =>
-    it(`can get token ${config.token} price`, async function () {
+    it(`can get token ${config.chain}:${config.token} price`, async function () {
       const priceUsd = await oracle.getTokenPriceUsd({
         chain: config.chain,
         address: config.token,
@@ -45,6 +53,14 @@ describe('oracle service', async function () {
 
       expect(priceUsd).not.equal(null);
       expect(priceUsd).not.equal('0');
+
+      const token = await blockchain.getTokenInfo({
+        chain: config.chain,
+        address: config.token,
+      });
+      if (priceUsd && token) {
+        fs.appendFileSync(reportFile, `${config.chain},${token.symbol},${priceUsd},${config.token}\n`);
+      }
     }),
   );
 });

@@ -4,6 +4,7 @@ import EnvConfig from '../configs/envConfig';
 import { normalizeAddress } from '../lib/utils';
 import BlockchainService from '../services/blockchains/blockchain';
 import DatabaseService from '../services/database/database';
+import OracleService from '../services/oracle/oracle';
 import { ContextServices } from '../types/namespaces';
 
 export class BasicCommand {
@@ -15,6 +16,7 @@ export class BasicCommand {
   public async getServices(): Promise<ContextServices> {
     const database = new DatabaseService();
     const blockchain = new BlockchainService();
+    const oracle = new OracleService(database);
 
     await database.connect(envConfig.mongodb.connectionUri, envConfig.mongodb.databaseName);
 
@@ -36,6 +38,7 @@ export class BasicCommand {
     return {
       database: database,
       blockchain: blockchain,
+      oracle: oracle,
     };
   }
 
