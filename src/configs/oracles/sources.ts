@@ -30,14 +30,17 @@ export const OracleSourceConfigs: { [key: string]: OracleConfig } = {
   sUSD: {
     currency: 'usd',
     sources: [OracleSourceChainlinkList.USDT_USD],
+    coingeckoId: 'nusd',
   },
   TUSD: {
     currency: 'eth',
     sources: [OracleSourceUniswapv2List.TUSD_WETH],
+    coingeckoId: 'true-usd',
   },
   LEND: {
     currency: 'eth',
     sources: [OracleSourceUniswapv2List.LEND_WETH],
+    coingeckoId: 'ethlend',
   },
   BAT: {
     currency: 'eth',
@@ -47,10 +50,12 @@ export const OracleSourceConfigs: { [key: string]: OracleConfig } = {
   LINK: {
     currency: 'usd',
     sources: [OracleSourceChainlinkList.LINK_USD],
+    coingeckoId: 'chainlink',
   },
   KNC: {
     currency: 'usd',
     sources: [OracleSourceChainlinkList.KNC_USD],
+    coingeckoId: 'kyber-network',
   },
   REP: {
     currency: 'eth',
@@ -60,22 +65,27 @@ export const OracleSourceConfigs: { [key: string]: OracleConfig } = {
   MKR: {
     currency: 'usd',
     sources: [OracleSourceUniswapv2List.MKR_DAI],
+    coingeckoId: 'maker',
   },
   MANA: {
     currency: 'eth',
     sources: [OracleSourceUniswapv2List.MANA_WETH],
+    coingeckoId: 'decentraland',
   },
   ZRX: {
     currency: 'eth',
     sources: [OracleSourceUniswapv2List.ZRX_WETH],
+    coingeckoId: '0x',
   },
   SNX: {
     currency: 'eth',
     sources: [OracleSourceUniswapv2List.SNX_WETH],
+    coingeckoId: 'havven',
   },
   WBTC: {
     currency: 'btc',
     sources: [OracleSourceChainlinkList.WBTC_BTC],
+    coingeckoId: 'wrapped-bitcoin',
   },
   BUSD: {
     currency: 'usd',
@@ -129,6 +139,7 @@ export const OracleSourceConfigs: { [key: string]: OracleConfig } = {
   USDP: {
     currency: 'usd',
     sources: [OracleSourceChainlinkList.USDP_USD],
+    coingeckoId: 'paxos-standard',
   },
   AMPL: {
     currency: 'eth',
@@ -213,6 +224,7 @@ export const OracleSourceConfigs: { [key: string]: OracleConfig } = {
   SAI: {
     currency: 'eth',
     sources: [OracleSourceUniswapv3List.SAI_WETH],
+    coingeckoId: 'sai',
   },
   EURS: {
     currency: 'usd',
