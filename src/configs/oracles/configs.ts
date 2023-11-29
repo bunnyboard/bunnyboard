@@ -75,6 +75,7 @@ export const OracleConfigs: { [key: string]: { [key: string]: OracleConfig } } =
     [EthereumTokenList.sEUR.address]: OracleSourceConfigs.EURS,
     [EthereumTokenList.MIM.address]: OracleSourceConfigs.MIM,
     [EthereumTokenList.FXS.address]: OracleSourceConfigs.FXS,
+    [EthereumTokenList.crvUSD.address]: OracleSourceConfigs.crvUSD,
   },
 
   // tokens on Arbitrum One

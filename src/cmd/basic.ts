@@ -1,7 +1,3 @@
-import { ContractConfigs } from '../configs/contracts';
-import envConfig from '../configs/envConfig';
-import EnvConfig from '../configs/envConfig';
-import { normalizeAddress } from '../lib/utils';
 import BlockchainService from '../services/blockchains/blockchain';
 import DatabaseService from '../services/database/database';
 import OracleService from '../services/oracle/oracle';
@@ -18,22 +14,7 @@ export class BasicCommand {
     const blockchain = new BlockchainService();
     const oracle = new OracleService(database);
 
-    await database.connect(envConfig.mongodb.connectionUri, envConfig.mongodb.databaseName);
-
-    // update contract config
-    for (const config of ContractConfigs) {
-      await database.update({
-        collection: EnvConfig.mongodb.collections.contracts,
-        keys: {
-          chain: config.chain,
-          address: normalizeAddress(config.address),
-        },
-        updates: {
-          ...config,
-        },
-        upsert: true,
-      });
-    }
+    // await database.connect(envConfig.mongodb.connectionUri, envConfig.mongodb.databaseName);
 
     return {
       database: database,

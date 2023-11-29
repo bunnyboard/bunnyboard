@@ -23,9 +23,9 @@ import UniswapLibs from './libs/uniswap';
 
 export default class OracleService extends CachingService implements IOracleService {
   public readonly name: string = 'oracle';
-  public readonly database: IDatabaseService;
+  public readonly database: IDatabaseService | null;
 
-  constructor(database: IDatabaseService) {
+  constructor(database: IDatabaseService | null) {
     super();
 
     this.database = database;

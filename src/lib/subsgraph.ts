@@ -93,11 +93,5 @@ export async function queryBlockNumberAtTimestamp(endpoint: string, timestamp: n
     return Number(response.blocks[0].number);
   }
 
-  logger.warn('failed to query block at timestamp', {
-    service: 'subgraph',
-    endpoint: endpoint,
-    timestamp: timestamp,
-  });
-
   return 0;
 }

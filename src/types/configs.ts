@@ -130,7 +130,7 @@ export interface ContractConfig {
   logFilters: Array<ContractFilterLogTopics>;
 }
 
-export type LendingMarketVersion = 'aavev1' | 'aavev2' | 'aavev3' | 'compound' | 'compoundv3';
+export type LendingMarketVersion = 'aavev1' | 'aavev2' | 'aavev3' | 'compound' | 'compoundv3' | 'venusIsolated';
 export interface LendingMarketConfig {
   chain: string;
   protocol: string;

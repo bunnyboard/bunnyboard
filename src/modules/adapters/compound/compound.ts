@@ -12,12 +12,19 @@ import { LendingMarketSnapshot } from '../../../types/domains';
 import { ContextServices } from '../../../types/namespaces';
 import { GetLendingMarketSnapshotOptions } from '../../../types/options';
 import ProtocolAdapter from '../adapter';
+import { CompoundEventAbiMappings, CompoundEventInterfaces, CompoundEventSignatures } from './abis';
 
 export default class CompoundAdapter extends ProtocolAdapter {
   public readonly name: string = 'adapter.compound';
 
+  protected readonly eventSignatures: CompoundEventInterfaces;
+  protected readonly eventAbiMappings: { [key: string]: Array<any> };
+
   constructor(services: ContextServices, config: ProtocolConfig) {
     super(services, config);
+
+    this.eventSignatures = CompoundEventSignatures;
+    this.eventAbiMappings = CompoundEventAbiMappings;
   }
 
   public async getLendingMarketSnapshots(
@@ -95,6 +102,71 @@ export default class CompoundAdapter extends ProtocolAdapter {
       timestamp: options.timestamp,
     });
 
+    let feesCollected = new BigNumber(0);
+    let volumeDeposited = new BigNumber(0);
+    let volumeWithdrawn = new BigNumber(0);
+    let volumeBorrowed = new BigNumber(0);
+    let volumeRepaid = new BigNumber(0);
+    let volumeLiquidated = new BigNumber(0);
+    let countAddresses = 0;
+    let countTransactions = 0;
+
+    const web3 = this.services.blockchain.getProvider(options.config.chain);
+    const logs: Array<any> = await this.getDayContractLogs({
+      chain: options.config.chain,
+      address: options.config.address,
+      topics: Object.values(this.eventSignatures),
+      dayStartTimestamp: options.timestamp,
+    });
+
+    const addresses: { [key: string]: boolean } = {};
+    const transactions: { [key: string]: boolean } = {};
+    for (const log of logs) {
+      if (!transactions[log.transactionHash]) {
+        transactions[log.transactionHash] = true;
+        countTransactions += 1;
+      }
+
+      const signature = log.topics[0];
+      const event = web3.eth.abi.decodeLog(this.eventAbiMappings[signature], log.data, log.topics.slice(1));
+      switch (signature) {
+        case this.eventSignatures.AccrueInterest:
+        case this.eventSignatures.AccrueInterestEther: {
+          feesCollected = feesCollected.plus(new BigNumber(event.interestAccumulated.toString()));
+          break;
+        }
+
+        case this.eventSignatures.Mint: {
+          volumeDeposited = volumeDeposited.plus(new BigNumber(event[1].toString()));
+          break;
+        }
+        case this.eventSignatures.Redeem: {
+          volumeWithdrawn = volumeDeposited.plus(new BigNumber(event[1].toString()));
+          break;
+        }
+        case this.eventSignatures.Borrow: {
+          volumeBorrowed = volumeDeposited.plus(new BigNumber(event[1].toString()));
+          break;
+        }
+        case this.eventSignatures.Repay: {
+          volumeRepaid = volumeDeposited.plus(new BigNumber(event[2].toString()));
+          break;
+        }
+        case this.eventSignatures.Liquidate: {
+          volumeLiquidated = volumeDeposited.plus(new BigNumber(event[2].toString()));
+          break;
+        }
+      }
+
+      if (signature !== this.eventSignatures.AccrueInterest && signature !== this.eventSignatures.AccrueInterestEther) {
+        const address = normalizeAddress(event[0]);
+        if (!addresses[address]) {
+          addresses[address] = true;
+          countAddresses += 1;
+        }
+      }
+    }
+
     snapshots.push({
       marketId: `${marketConfig.protocol}-${marketConfig.chain}-${normalizeAddress(
         marketConfig.address,
@@ -110,6 +182,16 @@ export default class CompoundAdapter extends ProtocolAdapter {
 
       totalDeposited: formatFromDecimals(totalDeposited.toString(10), token.decimals),
       totalBorrowed: formatFromDecimals(totalBorrowed.toString(10), token.decimals),
+      totalFeesCollected: formatFromDecimals(feesCollected.toString(10), token.decimals),
+
+      volumeDeposited: formatFromDecimals(volumeDeposited.toString(10), token.decimals),
+      volumeWithdrawn: formatFromDecimals(volumeWithdrawn.toString(10), token.decimals),
+      volumeBorrowed: formatFromDecimals(volumeBorrowed.toString(10), token.decimals),
+      volumeRepaid: formatFromDecimals(volumeRepaid.toString(10), token.decimals),
+      volumeLiquidated: formatFromDecimals(volumeLiquidated.toString(10), token.decimals),
+
+      countAddresses: countAddresses,
+      countTransactions: countTransactions,
 
       supplyRate: formatFromDecimals(supplyRate.toString(10), 18),
       borrowRate: formatFromDecimals(borrowRate.toString(10), 18),

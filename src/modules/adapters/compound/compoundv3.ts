@@ -109,6 +109,16 @@ export default class Compoundv3Adapter extends ProtocolAdapter {
 
         totalDeposited: formatFromDecimals(new BigNumber(totalSupply.toString()).toString(10), baseToken.decimals),
         totalBorrowed: formatFromDecimals(new BigNumber(totalBorrow.toString()).toString(10), baseToken.decimals),
+        totalFeesCollected: '0',
+
+        volumeDeposited: '0',
+        volumeWithdrawn: '0',
+        volumeBorrowed: '0',
+        volumeRepaid: '0',
+        volumeLiquidated: '0',
+
+        countAddresses: 0,
+        countTransactions: 0,
 
         supplyRate: formatFromDecimals(new BigNumber(supplyRate.toString()).multipliedBy(YEAR).toString(10), 18),
         borrowRate: formatFromDecimals(new BigNumber(borrowRate.toString()).multipliedBy(YEAR).toString(10), 18),
@@ -177,8 +187,19 @@ export default class Compoundv3Adapter extends ProtocolAdapter {
             new BigNumber(totalsCollateral.totalSupplyAsset.toString()).toString(10),
             collateral.decimals,
           ),
-
           totalBorrowed: '0',
+          totalRewardPaid: '0',
+          totalFeesCollected: '0',
+
+          volumeDeposited: '0',
+          volumeWithdrawn: '0',
+          volumeBorrowed: '0',
+          volumeRepaid: '0',
+          volumeLiquidated: '0',
+
+          countAddresses: 0,
+          countTransactions: 0,
+
           supplyRate: '0',
           borrowRate: '0',
         });

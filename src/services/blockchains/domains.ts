@@ -22,6 +22,14 @@ export interface GetTokenOptions {
   onchain?: boolean;
 }
 
+export interface GetContractLogOptions {
+  chain: string;
+  address: string;
+  fromBlock: number;
+  toBlock: number;
+  topics: Array<string>;
+}
+
 export interface IBlockchainService {
   // should be labeled as blockchain
   name: string;
@@ -33,6 +41,8 @@ export interface IBlockchainService {
 
   // get token info
   getTokenInfo: (options: GetTokenOptions) => Promise<Token | null>;
+
+  getContractLogs: (options: GetContractLogOptions) => Promise<Array<any>>;
 
   // query single
   singlecall: (call: ContractCall) => Promise<any>;

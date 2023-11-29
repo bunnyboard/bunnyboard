@@ -106,6 +106,16 @@ export default class Aavev1Adapter extends ProtocolAdapter {
 
         totalDeposited: formatFromDecimals(totalDeposited, token.decimals),
         totalBorrowed: formatFromDecimals(totalBorrowed, token.decimals),
+        totalFeesCollected: '0',
+
+        volumeDeposited: '0',
+        volumeWithdrawn: '0',
+        volumeBorrowed: '0',
+        volumeRepaid: '0',
+        volumeLiquidated: '0',
+
+        countAddresses: 0,
+        countTransactions: 0,
 
         supplyRate: formatFromDecimals(reserveData.liquidityRate.toString(), 27),
         borrowRate: formatFromDecimals(reserveData.variableBorrowRate.toString(), 27),

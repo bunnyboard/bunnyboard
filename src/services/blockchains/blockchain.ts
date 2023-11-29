@@ -1,7 +1,7 @@
 import BigNumber from 'bignumber.js';
 import Web3 from 'web3';
 
-import { TokenList } from '../../configs';
+import { DefaultQueryLogsBlockRange, TokenList } from '../../configs';
 import ERC20Abi from '../../configs/abi/ERC20.json';
 import { AddressE, AddressF, AddressZero } from '../../configs/constants';
 import EnvConfig from '../../configs/envConfig';
@@ -9,7 +9,7 @@ import logger from '../../lib/logger';
 import { compareAddress, normalizeAddress } from '../../lib/utils';
 import { Token } from '../../types/configs';
 import { CachingService } from '../caching/caching';
-import { ContractCall, GetTokenOptions, IBlockchainService } from './domains';
+import { ContractCall, GetContractLogOptions, GetTokenOptions, IBlockchainService } from './domains';
 
 export default class BlockchainService extends CachingService implements IBlockchainService {
   public readonly name: string = 'blockchain';
@@ -101,6 +101,31 @@ export default class BlockchainService extends CachingService implements IBlockc
     }
 
     return null;
+  }
+
+  public async getContractLogs(options: GetContractLogOptions): Promise<Array<any>> {
+    let logs: Array<any> = [];
+
+    const web3 = this.getProvider(options.chain);
+    let startBlock = options.fromBlock;
+    while (startBlock <= options.toBlock) {
+      const toBlock =
+        startBlock + DefaultQueryLogsBlockRange > options.toBlock
+          ? options.toBlock
+          : startBlock + DefaultQueryLogsBlockRange;
+      logs = logs.concat(
+        await web3.eth.getPastLogs({
+          address: options.address,
+          fromBlock: startBlock,
+          toBlock: toBlock,
+          topics: options.topics,
+        }),
+      );
+
+      startBlock += DefaultQueryLogsBlockRange;
+    }
+
+    return logs;
   }
 
   public async singlecall(call: ContractCall): Promise<any> {

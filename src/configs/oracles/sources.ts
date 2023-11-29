@@ -390,4 +390,8 @@ export const OracleSourceConfigs: { [key: string]: OracleConfig } = {
     currency: 'bnb',
     sources: [OracleSourceUniswapv2List.FLOKI_WBNB],
   },
+  crvUSD: {
+    currency: 'usd',
+    sources: [OracleSourceUniswapv3List.crvUSD_USDC],
+  },
 };

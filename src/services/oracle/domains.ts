@@ -14,7 +14,7 @@ export interface GetTokenPriceOptions {
 
 export interface IOracleService {
   name: string;
-  database: IDatabaseService;
+  database: IDatabaseService | null;
 
   // this will get token price vs base token in the oracle config only
   getTokenPriceSource: (

@@ -13,7 +13,7 @@ import TokenListFantom from './tokenlists/fantom.json';
 import TokenListOptimism from './tokenlists/optimism.json';
 import TokenListPolygon from './tokenlists/polygon.json';
 
-export const DefaultQueryLogsBlockRange = 1000;
+export const DefaultQueryLogsBlockRange = 2000;
 
 export const TokenList: {
   [key: string]: {

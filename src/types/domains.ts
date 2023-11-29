@@ -29,6 +29,18 @@ export interface LendingMarketSnapshot {
   // total token borrowed (debts) in this market
   totalBorrowed: string;
 
+  // total borrow fees were collected
+  totalFeesCollected: string;
+
+  volumeDeposited: string;
+  volumeWithdrawn: string;
+  volumeBorrowed: string;
+  volumeRepaid: string;
+  volumeLiquidated: string;
+
+  countAddresses: number;
+  countTransactions: number;
+
   // rates should be multiplied by 100 on display
   // supply rate aka APY
   supplyRate: string;
@@ -38,4 +50,8 @@ export interface LendingMarketSnapshot {
 
   // some protocol like AAVE offer a stable borrow rate
   borrowRateStable?: string;
+
+  // incentive rewards
+  rewardToken?: Token;
+  totalRewardPaid?: string;
 }

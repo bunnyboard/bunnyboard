@@ -153,4 +153,11 @@ export const OracleSourceUniswapv3List: { [key: string]: OracleSourceUniv3 } = {
     baseToken: BnbchainTokenList.ankrBNB,
     quotaToken: BnbchainTokenList.WBNB,
   },
+  crvUSD_USDC: {
+    type: 'univ3',
+    chain: 'ethereum',
+    address: '0x73ea3d8ba3d7380201b270ec504b33ed5e478542',
+    baseToken: EthereumTokenList.crvUSD,
+    quotaToken: EthereumTokenList.USDC,
+  },
 };
