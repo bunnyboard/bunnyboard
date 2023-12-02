@@ -1,6 +1,11 @@
 // time
+import BigNumber from 'bignumber.js';
+
 export const DAY = 24 * 60 * 60;
 export const YEAR = 365 * DAY;
+
+// solidity unit
+export const UNIT_RAY = new BigNumber(1e27).toString(10);
 
 export const BlockSubGraphEndpoints: { [key: string]: string } = {
   ethereum: 'https://api.thegraph.com/subgraphs/name/blocklytics/ethereum-blocks',

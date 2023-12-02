@@ -5,12 +5,16 @@ import { AaveLendingMarketConfig } from '../../../configs/protocols/aave';
 import { ProtocolConfig } from '../../../types/configs';
 import { ContextServices } from '../../../types/namespaces';
 import Aavev2Adapter from './aavev2';
+import { AaveV3EventSignatures, Aavev3EventAbiMappings } from './abis';
 
 export default class Aavev3Adapter extends Aavev2Adapter {
   public readonly name: string = 'adapter.aavev3';
 
   constructor(services: ContextServices, config: ProtocolConfig) {
     super(services, config);
+
+    this.eventSignatures = AaveV3EventSignatures;
+    this.eventAbiMappings = Aavev3EventAbiMappings;
   }
 
   protected async getReserveData(config: AaveLendingMarketConfig, reserve: string, blockNumber: number): Promise<any> {

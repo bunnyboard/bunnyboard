@@ -18,7 +18,7 @@ export default class CoingeckoLibs {
         );
 
         if (response.data['market_data']) {
-          price = response.data['market_data']['current_price']['usd'];
+          price = response.data['market_data']['current_price']['usd'].toString();
         }
       } catch (e: any) {
         if (e.response.status === 429) {

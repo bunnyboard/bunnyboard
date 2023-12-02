@@ -48,7 +48,6 @@ export default class LendingCollector extends Collector {
 
         if (snapshots) {
           for (const snapshot of snapshots) {
-            console.log(snapshot)
             await this.services.database.update({
               collection: EnvConfig.mongodb.collections.lendingMarketSnapshots,
               keys: {

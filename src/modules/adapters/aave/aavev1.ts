@@ -1,22 +1,40 @@
 import BigNumber from 'bignumber.js';
 
 import AaveLendingPoolV1Abi from '../../../configs/abi/aave/LendingPoolV1.json';
+import { DAY, UNIT_RAY } from '../../../configs/constants';
 import EnvConfig from '../../../configs/envConfig';
 import { AaveLendingMarketConfig } from '../../../configs/protocols/aave';
 import logger from '../../../lib/logger';
 import { queryBlockNumberAtTimestamp } from '../../../lib/subsgraph';
-import { formatFromDecimals, getDateString, normalizeAddress } from '../../../lib/utils';
-import { ProtocolConfig } from '../../../types/configs';
+import { compareAddress, formatFromDecimals, getDateString, normalizeAddress } from '../../../lib/utils';
+import { ProtocolConfig, Token } from '../../../types/configs';
 import { LendingMarketSnapshot } from '../../../types/domains';
 import { ContextServices } from '../../../types/namespaces';
 import { GetLendingMarketSnapshotOptions } from '../../../types/options';
 import ProtocolAdapter from '../adapter';
+import { AaveEventInterfaces, AaveV1EventSignatures, Aavev1EventAbiMappings } from './abis';
+
+export interface AaveMarketEventStats {
+  volumeDeposited: string;
+  volumeWithdrawn: string;
+  volumeBorrowed: string;
+  volumeRepaid: string;
+  volumeLiquidated: string;
+  countAddresses: number;
+  countTransactions: number;
+}
 
 export default class Aavev1Adapter extends ProtocolAdapter {
   public readonly name: string = 'adapter.aavev1';
 
+  protected eventSignatures: AaveEventInterfaces;
+  protected eventAbiMappings: { [key: string]: Array<any> };
+
   constructor(services: ContextServices, config: ProtocolConfig) {
     super(services, config);
+
+    this.eventSignatures = AaveV1EventSignatures;
+    this.eventAbiMappings = Aavev1EventAbiMappings;
   }
 
   // return total deposited (in wei)
@@ -55,6 +73,99 @@ export default class Aavev1Adapter extends ProtocolAdapter {
     });
   }
 
+  protected async getEventStats(
+    config: AaveLendingMarketConfig,
+    token: Token,
+    timestamp: number,
+  ): Promise<AaveMarketEventStats> {
+    let volumeDeposited = new BigNumber(0);
+    let volumeWithdrawn = new BigNumber(0);
+    let volumeBorrowed = new BigNumber(0);
+    let volumeRepaid = new BigNumber(0);
+    let volumeLiquidated = new BigNumber(0);
+    let countAddresses = 0;
+    let countTransactions = 0;
+
+    const logs = await this.getDayContractLogs({
+      chain: config.chain,
+      address: config.address,
+      topics: Object.values(this.eventSignatures),
+      dayStartTimestamp: timestamp,
+    });
+
+    const web3 = this.services.blockchain.getProvider(config.chain);
+
+    const addresses: { [key: string]: boolean } = {};
+    const transactions: { [key: string]: boolean } = {};
+    for (const log of logs) {
+      const signature = log.topics[0];
+      const event = web3.eth.abi.decodeLog(this.eventAbiMappings[signature], log.data, log.topics.slice(1));
+
+      let reserve;
+      if (signature === this.eventSignatures.Liquidate) {
+        reserve = normalizeAddress(event._reserve ? event._reserve : event.debtAsset);
+      } else {
+        reserve = normalizeAddress(event._reserve ? event._reserve : event.reserve);
+      }
+
+      if (compareAddress(reserve, token.address)) {
+        if (!transactions[log.transactionHash]) {
+          transactions[log.transactionHash] = true;
+          countTransactions += 1;
+        }
+
+        const address = normalizeAddress(signature === this.eventSignatures.Liquidate ? event[2] : event[1]);
+        if (!addresses[address]) {
+          addresses[address] = true;
+          countAddresses += 1;
+        }
+
+        switch (signature) {
+          case this.eventSignatures.Deposit: {
+            volumeDeposited = volumeDeposited.plus(
+              new BigNumber(event._amount ? event._amount.toString() : event.amount.toString()),
+            );
+            break;
+          }
+          case this.eventSignatures.Withdraw: {
+            volumeWithdrawn = volumeWithdrawn.plus(
+              new BigNumber(event._amount ? event._amount.toString() : event.amount.toString()),
+            );
+            break;
+          }
+          case this.eventSignatures.Borrow: {
+            volumeBorrowed = volumeBorrowed.plus(
+              new BigNumber(event._amount ? event._amount.toString() : event.amount.toString()),
+            );
+            break;
+          }
+          case this.eventSignatures.Repay: {
+            volumeRepaid = volumeRepaid.plus(
+              new BigNumber(event._amountMinusFees ? event._amountMinusFees.toString() : event.amount.toString()),
+            );
+            break;
+          }
+          case this.eventSignatures.Liquidate: {
+            volumeLiquidated = volumeLiquidated.plus(
+              new BigNumber(event._purchaseAmount ? event._purchaseAmount.toString() : event.debtToCover.toString()),
+            );
+            break;
+          }
+        }
+      }
+    }
+
+    return {
+      volumeDeposited: formatFromDecimals(volumeDeposited.toString(10), token.decimals),
+      volumeWithdrawn: formatFromDecimals(volumeWithdrawn.toString(10), token.decimals),
+      volumeBorrowed: formatFromDecimals(volumeBorrowed.toString(10), token.decimals),
+      volumeRepaid: formatFromDecimals(volumeRepaid.toString(10), token.decimals),
+      volumeLiquidated: formatFromDecimals(volumeLiquidated.toString(10), token.decimals),
+      countAddresses: countAddresses,
+      countTransactions: countTransactions,
+    };
+  }
+
   public async getLendingMarketSnapshots(
     options: GetLendingMarketSnapshotOptions,
   ): Promise<Array<LendingMarketSnapshot> | null> {
@@ -80,17 +191,37 @@ export default class Aavev1Adapter extends ProtocolAdapter {
       if (!token) {
         return null;
       }
+      const tokenPrice = await this.services.oracle.getTokenPriceUsd({
+        chain: token.chain,
+        address: token.address,
+        timestamp: options.timestamp,
+      });
 
       const reserveData: any = await this.getReserveData(marketConfig, reserve, blockNumber);
 
       const totalBorrowed = this.getTotalBorrowed(reserveData);
       const totalDeposited = this.getTotalDeposited(reserveData);
 
-      const tokenPrice = await this.services.oracle.getTokenPriceUsd({
-        chain: token.chain,
-        address: token.address,
-        timestamp: options.timestamp,
-      });
+      // calculate liquidity index increase
+      let totalFeesCollected = '0';
+      const dayEndBlock = await queryBlockNumberAtTimestamp(
+        EnvConfig.blockchains[options.config.chain].blockSubgraph,
+        options.timestamp + DAY - 1,
+      );
+      if (dayEndBlock) {
+        const reserveDataEndDay: any = await this.getReserveData(marketConfig, reserve, dayEndBlock);
+        const liquidityIndexBefore = new BigNumber(reserveData.liquidityIndex.toString());
+        const liquidityIndexAfter = new BigNumber(reserveDataEndDay.liquidityIndex.toString());
+        const liquidityIndexIncrease = liquidityIndexAfter.minus(liquidityIndexBefore);
+
+        totalFeesCollected = new BigNumber(totalDeposited)
+          .multipliedBy(liquidityIndexIncrease)
+          .dividedBy(new BigNumber(UNIT_RAY))
+          .toString(10);
+      }
+
+      const eventStats = await this.getEventStats(marketConfig, token, options.timestamp);
+
       const snapshot: LendingMarketSnapshot = {
         marketId: `${marketConfig.protocol}-${marketConfig.chain}-${normalizeAddress(
           marketConfig.address,
@@ -106,22 +237,23 @@ export default class Aavev1Adapter extends ProtocolAdapter {
 
         totalDeposited: formatFromDecimals(totalDeposited, token.decimals),
         totalBorrowed: formatFromDecimals(totalBorrowed, token.decimals),
-        totalFeesCollected: '0',
+        totalFeesCollected: formatFromDecimals(totalFeesCollected, token.decimals),
 
-        volumeDeposited: '0',
-        volumeWithdrawn: '0',
-        volumeBorrowed: '0',
-        volumeRepaid: '0',
-        volumeLiquidated: '0',
+        volumeDeposited: eventStats.volumeDeposited,
+        volumeWithdrawn: eventStats.volumeWithdrawn,
+        volumeBorrowed: eventStats.volumeBorrowed,
+        volumeRepaid: eventStats.volumeRepaid,
+        volumeLiquidated: eventStats.volumeLiquidated,
 
-        countAddresses: 0,
-        countTransactions: 0,
+        countAddresses: eventStats.countAddresses,
+        countTransactions: eventStats.countTransactions,
 
         supplyRate: formatFromDecimals(reserveData.liquidityRate.toString(), 27),
         borrowRate: formatFromDecimals(reserveData.variableBorrowRate.toString(), 27),
         borrowRateStable: formatFromDecimals(reserveData.stableBorrowRate.toString(), 27),
       };
 
+      console.log(snapshot);
       snapshots.push(snapshot);
 
       logger.info('got lending market snapshot', {

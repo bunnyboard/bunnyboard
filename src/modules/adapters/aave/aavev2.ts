@@ -6,12 +6,16 @@ import { AaveLendingMarketConfig } from '../../../configs/protocols/aave';
 import { ProtocolConfig } from '../../../types/configs';
 import { ContextServices } from '../../../types/namespaces';
 import Aavev1Adapter from './aavev1';
+import { AaveV2EventSignatures, Aavev2EventAbiMappings } from './abis';
 
 export default class Aavev2Adapter extends Aavev1Adapter {
   public readonly name: string = 'adapter.aavev2';
 
   constructor(services: ContextServices, config: ProtocolConfig) {
     super(services, config);
+
+    this.eventSignatures = AaveV2EventSignatures;
+    this.eventAbiMappings = Aavev2EventAbiMappings;
   }
 
   // return total deposited (in wei)
