@@ -131,6 +131,7 @@ export const OracleConfigs: { [key: string]: { [key: string]: OracleConfig } } =
     [BaseTokenList.USDC.address]: OracleSourceConfigs.USDC,
     [BaseTokenList.USDbC.address]: OracleSourceConfigs.USDC,
     [BaseTokenList.cbETH.address]: OracleSourceConfigs.cbETH,
+    [BaseTokenList.DAI.address]: OracleSourceConfigs.DAI,
   },
 
   // tokens on Polygon

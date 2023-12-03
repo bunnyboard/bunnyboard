@@ -19,6 +19,7 @@ function getProtocolAdapters(services: ContextServices): { [key: string]: IProto
     venus: new VenusAdapter(services, ProtocolConfigs.venus),
     radiant: new Aavev2Adapter(services, ProtocolConfigs.radiant),
     benqi: new BenqiAdapter(services, ProtocolConfigs.benqi),
+    sonne: new CompoundAdapter(services, ProtocolConfigs.sonne),
   };
 }
 

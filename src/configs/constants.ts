@@ -25,5 +25,10 @@ export const AddressF = '0xffffffffffffffffffffffffffffffffffffffff';
 // chain => number of second per block confirmation
 export const ChainBlockPeriods: { [key: string]: number } = {
   ethereum: 13, // 13 seconds
+  arbitrum: 1, // 1 seconds
+  base: 2, // 2 seconds
   bnbchain: 3, // 3 seconds
+  optimism: 2, // 2 seconds
+  avalanche: 2, // 2 seconds
+  fantom: 2, // 2 seconds
 };
