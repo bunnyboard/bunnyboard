@@ -253,7 +253,6 @@ export default class Aavev1Adapter extends ProtocolAdapter {
         borrowRateStable: formatFromDecimals(reserveData.stableBorrowRate.toString(), 27),
       };
 
-      console.log(snapshot);
       snapshots.push(snapshot);
 
       logger.info('got lending market snapshot', {

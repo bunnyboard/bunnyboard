@@ -1,5 +1,6 @@
 import { ProtocolConfig, Token } from '../types/configs';
 import { Aavev1Configs, Aavev2Configs, Aavev3Configs } from './protocols/aave';
+import { BenqiConfigs } from './protocols/benqi';
 import { CompoundConfigs, Compoundv3Configs } from './protocols/compound';
 import { IronbankConfigs } from './protocols/ironbank';
 import { RadiantConfigs } from './protocols/radiant';
@@ -39,4 +40,5 @@ export const ProtocolConfigs: { [key: string]: ProtocolConfig } = {
   ironbank: IronbankConfigs,
   venus: VenusConfigs,
   radiant: RadiantConfigs,
+  benqi: BenqiConfigs,
 };

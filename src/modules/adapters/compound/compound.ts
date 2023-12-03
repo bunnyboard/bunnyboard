@@ -7,12 +7,17 @@ import { CompoundLendingMarketConfig } from '../../../configs/protocols/compound
 import logger from '../../../lib/logger';
 import { queryBlockNumberAtTimestamp } from '../../../lib/subsgraph';
 import { formatFromDecimals, getDateString, normalizeAddress } from '../../../lib/utils';
-import { ProtocolConfig } from '../../../types/configs';
+import { LendingMarketConfig, ProtocolConfig } from '../../../types/configs';
 import { LendingMarketSnapshot } from '../../../types/domains';
 import { ContextServices } from '../../../types/namespaces';
 import { GetLendingMarketSnapshotOptions } from '../../../types/options';
 import ProtocolAdapter from '../adapter';
 import { CompoundEventAbiMappings, CompoundEventInterfaces, CompoundEventSignatures } from './abis';
+
+export interface CompoundMarketRates {
+  borrowRate: string;
+  supplyRate: string;
+}
 
 export default class CompoundAdapter extends ProtocolAdapter {
   public readonly name: string = 'adapter.compound';
@@ -25,6 +30,37 @@ export default class CompoundAdapter extends ProtocolAdapter {
 
     this.eventSignatures = CompoundEventSignatures;
     this.eventAbiMappings = CompoundEventAbiMappings;
+  }
+
+  protected async getMarketRates(config: LendingMarketConfig, blockNumber: number): Promise<CompoundMarketRates> {
+    const supplyRatePerBlock = await this.services.blockchain.singlecall({
+      chain: config.chain,
+      abi: cErc20Abi,
+      target: config.address,
+      method: 'supplyRatePerBlock',
+      params: [],
+      blockNumber,
+    });
+    const borrowRatePerBlock = await this.services.blockchain.singlecall({
+      chain: config.chain,
+      abi: cErc20Abi,
+      target: config.address,
+      method: 'borrowRatePerBlock',
+      params: [],
+      blockNumber,
+    });
+
+    const supplyRate = new BigNumber(supplyRatePerBlock ? supplyRatePerBlock : '0').multipliedBy(
+      Math.floor(YEAR / ChainBlockPeriods[config.chain]),
+    );
+    const borrowRate = new BigNumber(borrowRatePerBlock).multipliedBy(
+      Math.floor(YEAR / ChainBlockPeriods[config.chain]),
+    );
+
+    return {
+      supplyRate: formatFromDecimals(supplyRate.toString(10), 18),
+      borrowRate: formatFromDecimals(borrowRate.toString(10), 18),
+    };
   }
 
   public async getLendingMarketSnapshots(
@@ -66,29 +102,9 @@ export default class CompoundAdapter extends ProtocolAdapter {
       params: [],
       blockNumber,
     });
-    const supplyRatePerBlock = await this.services.blockchain.singlecall({
-      chain: marketConfig.chain,
-      abi: cErc20Abi,
-      target: marketConfig.address,
-      method: 'supplyRatePerBlock',
-      params: [],
-      blockNumber,
-    });
-    const borrowRatePerBlock = await this.services.blockchain.singlecall({
-      chain: marketConfig.chain,
-      abi: cErc20Abi,
-      target: marketConfig.address,
-      method: 'borrowRatePerBlock',
-      params: [],
-      blockNumber,
-    });
 
-    const supplyRate = new BigNumber(supplyRatePerBlock ? supplyRatePerBlock : '0').multipliedBy(
-      Math.floor(YEAR / ChainBlockPeriods[options.config.chain]),
-    );
-    const borrowRate = new BigNumber(borrowRatePerBlock).multipliedBy(
-      Math.floor(YEAR / ChainBlockPeriods[options.config.chain]),
-    );
+    // get market rates
+    const { supplyRate, borrowRate } = await this.getMarketRates(options.config, blockNumber);
 
     const totalDeposited = new BigNumber(totalCash.toString())
       .plus(new BigNumber(totalBorrows.toString()))
@@ -193,8 +209,8 @@ export default class CompoundAdapter extends ProtocolAdapter {
       countAddresses: countAddresses,
       countTransactions: countTransactions,
 
-      supplyRate: formatFromDecimals(supplyRate.toString(10), 18),
-      borrowRate: formatFromDecimals(borrowRate.toString(10), 18),
+      supplyRate: supplyRate,
+      borrowRate: borrowRate,
     });
 
     logger.info('got lending market snapshot', {

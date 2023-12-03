@@ -1,7 +1,6 @@
 import axios from 'axios';
 
-import logger from '../../../lib/logger';
-import { getDateString, sleep } from '../../../lib/utils';
+import { sleep } from '../../../lib/utils';
 
 export default class CoingeckoLibs {
   public static async getTokenPriceUsd(coingeckoId: string, timestamp: number): Promise<string | null> {
@@ -21,17 +20,7 @@ export default class CoingeckoLibs {
           price = response.data['market_data']['current_price']['usd'].toString();
         }
       } catch (e: any) {
-        if (e.response.status === 429) {
-          await sleep(10);
-          logger.debug('reached coingecko api limit and will try again', {
-            service: 'lib.coingecko',
-            id: coingeckoId,
-            date: getDateString(timestamp),
-          });
-        } else {
-          console.error(e.message);
-          process.exit(0);
-        }
+        await sleep(10);
       }
     } while (!price);
 

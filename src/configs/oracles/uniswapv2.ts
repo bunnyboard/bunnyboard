@@ -376,4 +376,11 @@ export const OracleSourceUniswapv2List: { [key: string]: OracleSourceUniv2 } = {
     baseToken: BnbchainTokenList.FLOKI,
     quotaToken: BnbchainTokenList.WBNB,
   },
+  QI_WAVAX: {
+    type: 'univ2',
+    chain: 'avalanche',
+    address: '0xe530dc2095ef5653205cf5ea79f8979a7028065c',
+    baseToken: AvalancheTokenList.QI,
+    quotaToken: AvalancheTokenList.WAVAX,
+  },
 };

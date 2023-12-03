@@ -394,4 +394,8 @@ export const OracleSourceConfigs: { [key: string]: OracleConfig } = {
     currency: 'usd',
     sources: [OracleSourceUniswapv3List.crvUSD_USDC],
   },
+  QI: {
+    currency: 'avax',
+    sources: [OracleSourceUniswapv2List.QI_WAVAX],
+  },
 };

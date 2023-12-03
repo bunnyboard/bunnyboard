@@ -233,6 +233,8 @@ export const OracleConfigs: { [key: string]: { [key: string]: OracleConfig } } =
     [AvalancheTokenList.MAI.address]: OracleSourceConfigs.miMATIC,
     [AvalancheTokenList.MIM.address]: OracleSourceConfigs.MIM,
     [AvalancheTokenList.ALPHA.address]: OracleSourceConfigs.ALPHA,
+    [AvalancheTokenList.BUSD.address]: OracleSourceConfigs.BUSD,
+    [AvalancheTokenList.QI.address]: OracleSourceConfigs.QI,
   },
 
   // tokens on Fantom
