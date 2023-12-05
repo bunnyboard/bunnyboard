@@ -1,24 +1,46 @@
 import { Token } from './configs';
 
-export interface LendingMarketSnapshot {
+export interface TokenRewardEntry {
+  token: Token;
+  tokenPrice: string;
+  tokenAmount: string;
+}
+
+export interface AddressCountEntry {
+  [key: string]: number;
+}
+
+export interface DayDataSnapshot {
+  // the protocol id
+  protocol: string;
+
+  // chain where data was collected
+  chain: string;
+
+  // StartDayTimestamp
+  // historical data was query at the StartDayTimestamp
+  // volumes were count from the StartDayTimestamp to EndDayTimestamp - 1
+  timestamp: number;
+
+  addressCount: AddressCountEntry;
+  transactionCount: number;
+}
+
+// a lending market present a reserve in the cross-pool lending
+// like compound or aave
+export interface LendingMarketSnapshot extends DayDataSnapshot {
   // must be unique id
   // protocol-chain-address-tokenAddress
   marketId: string;
 
-  // the chain where this market is living on
-  chain: string;
-
-  // the protocol which owns this market
-  protocol: string;
+  // cross-pool lending markets
+  type: 'cross';
 
   // the token, debts, collateral, or both
   token: Token;
 
   // market contract address
   address: string;
-
-  // unix timestamp
-  timestamp: number;
 
   // the token price (in US Dollar) at the snapshot timestamp
   tokenPrice: string;
@@ -38,8 +60,48 @@ export interface LendingMarketSnapshot {
   volumeRepaid: string;
   volumeLiquidated: string;
 
-  countAddresses: number;
-  countTransactions: number;
+  // rates should be multiplied by 100 on display
+  // supply rate aka APY
+  supplyRate: string;
+
+  // the borrow rate, aka borrow APY
+  borrowRate: string;
+
+  // a list of incentive tokens rewards
+  tokenRewards: Array<TokenRewardEntry>;
+
+  // some protocol like AAVE offer a stable borrow rate
+  borrowRateStable?: string;
+}
+
+// Collateralized Debt Position is a system created by MakerDAO
+// which locks up collateral in a smart contract in exchange for stablecoins,
+// a decentralized stablecoin known as DAI.
+// CDP, as it is often called, is a position characterized by a smart contract,
+// a collateral and an issued collateral-backed stablecoin.
+export interface LendingCdpCollateralSnapshot {
+  token: Token;
+  tokenPrice: string;
+  totalDeposited: string;
+  volumeDeposited: string;
+  volumeWithdrawn: string;
+  volumeLiquidated: string;
+}
+
+export interface LendingCdpSnapshot extends DayDataSnapshot {
+  // must be unique id
+  // protocol-chain-marketAddress/borrowOperation/collateralManager-debtTokenAddress
+  marketId: string;
+
+  // CDP lending market
+  type: 'cdp';
+
+  debtToken: Token;
+  debtTokenPrice: string;
+
+  totalBorrowed: string;
+  volumeBorrowed: string;
+  volumeRepaid: string;
 
   // rates should be multiplied by 100 on display
   // supply rate aka APY
@@ -48,10 +110,9 @@ export interface LendingMarketSnapshot {
   // the borrow rate, aka borrow APY
   borrowRate: string;
 
-  // some protocol like AAVE offer a stable borrow rate
-  borrowRateStable?: string;
+  // a list of collaterals
+  collaterals: Array<LendingCdpCollateralSnapshot>;
 
-  // incentive rewards
-  rewardToken?: Token;
-  totalRewardPaid?: string;
+  // a list of incentive tokens rewards
+  tokenRewards: Array<TokenRewardEntry>;
 }

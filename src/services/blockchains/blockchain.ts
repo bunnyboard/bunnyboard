@@ -133,7 +133,7 @@ export default class BlockchainService extends CachingService implements IBlockc
 
     let result;
     try {
-      const startExeTime = Math.floor(new Date().getTime() / 1000);
+      // const startExeTime = Math.floor(new Date().getTime() / 1000);
 
       if (call.blockNumber) {
         result = await contract.methods[call.method](...(call.params as [])).call({}, call.blockNumber);
@@ -141,18 +141,18 @@ export default class BlockchainService extends CachingService implements IBlockc
         result = await contract.methods[call.method](...(call.params as [])).call();
       }
 
-      const endExeTime = Math.floor(new Date().getTime() / 1000);
-      const elapsed = endExeTime - startExeTime;
+      // const endExeTime = Math.floor(new Date().getTime() / 1000);
+      // const elapsed = endExeTime - startExeTime;
 
-      if (elapsed > 5) {
-        logger.debug('took too long for onchain single call', {
-          service: this.name,
-          chain: call.chain,
-          target: call.target,
-          method: call.method,
-          params: call.params.length > 0 ? call.params.toString() : '[]',
-        });
-      }
+      // if (elapsed > 5) {
+      //   logger.debug('took too long for onchain single call', {
+      //     service: this.name,
+      //     chain: call.chain,
+      //     target: call.target,
+      //     method: call.method,
+      //     params: call.params.length > 0 ? call.params.toString() : '[]',
+      //   });
+      // }
     } catch (e: any) {
       // logger.debug('failed to query contract', {
       //   service: this.name,

@@ -5,6 +5,13 @@ import { CompoundProtocolConfig } from './compound';
 
 export const BenqiConfigs: CompoundProtocolConfig = {
   protocol: 'benqi',
+  comptrollers: {
+    avalanche: {
+      chain: 'avalanche',
+      address: '0x486Af39519B4Dc9a7fCcd318217352830E8AD9b4',
+      governanceToken: AvalancheTokenList.QI,
+    },
+  },
   lendingMarkets: [
     {
       chain: 'avalanche',

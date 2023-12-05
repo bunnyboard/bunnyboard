@@ -2,7 +2,7 @@ import { IBlockchainService } from '../services/blockchains/domains';
 import { IDatabaseService } from '../services/database/domains';
 import { IOracleService } from '../services/oracle/domains';
 import { ProtocolConfig } from './configs';
-import { LendingMarketSnapshot } from './domains';
+import { LendingCdpSnapshot, LendingMarketSnapshot } from './domains';
 import { ContractIndexingOptions, GetLendingMarketSnapshotOptions, RunCollectorOptions } from './options';
 
 export interface ContextServices {
@@ -16,7 +16,9 @@ export interface IProtocolAdapter {
   services: ContextServices;
   config: ProtocolConfig;
 
-  getLendingMarketSnapshots: (options: GetLendingMarketSnapshotOptions) => Promise<Array<LendingMarketSnapshot> | null>;
+  getLendingMarketSnapshots: (
+    options: GetLendingMarketSnapshotOptions,
+  ) => Promise<Array<LendingMarketSnapshot | LendingCdpSnapshot> | null>;
 }
 
 export type CollectorType = 'none' | 'lending';

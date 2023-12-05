@@ -6,6 +6,7 @@ import { CompoundProtocolConfig } from './compound';
 
 export const IronbankConfigs: CompoundProtocolConfig = {
   protocol: 'ironbank',
+  comptrollers: {},
   lendingMarkets: [
     {
       chain: 'ethereum',

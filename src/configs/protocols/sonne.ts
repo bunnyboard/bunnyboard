@@ -5,6 +5,18 @@ import { CompoundProtocolConfig } from './compound';
 
 export const SonneConfigs: CompoundProtocolConfig = {
   protocol: 'sonne',
+  comptrollers: {
+    optimism: {
+      chain: 'optimism',
+      address: '0x60CF091cD3f50420d50fD7f707414d0DF4751C58',
+      governanceToken: {
+        chain: 'optimism',
+        symbol: 'SONNE',
+        decimals: 18,
+        address: '0x1db2466d9f5e10d7090e7152b68d62703a2245f0',
+      },
+    },
+  },
   lendingMarkets: [
     {
       chain: 'optimism',

@@ -6,8 +6,8 @@ export interface CompoundEventInterfaces {
   Borrow: string;
   Repay: string;
   Liquidate: string;
-  // DistributedSupplierRewards: string,
-  // DistributedBorrowerRewards: string,
+  DistributedSupplierRewards: string;
+  DistributedBorrowerRewards: string;
 }
 
 export const CompoundEventSignatures: CompoundEventInterfaces = {
@@ -18,8 +18,16 @@ export const CompoundEventSignatures: CompoundEventInterfaces = {
   Borrow: '0x13ed6866d4e1ee6da46f845c46d7e54120883d75c5ea9a2dacc1c4ca8984ab80',
   Repay: '0x1a2a22cb034d26d1854bdc6666a5b91fe25efbbb5dcad3b0355478d6f5c362a1',
   Liquidate: '0x298637f684da70674f26509b10f07ec2fbc77a335ab1e7d6215a4b2484d8bb52',
-  // DistributedSupplierRewards: '0x2caecd17d02f56fa897705dcc740da2d237c373f70686f4e0d9bd3bf0400ea7a',
-  // DistributedBorrowerRewards: '0x1fc3ecc087d8d2d15e23d0032af5a47059c3892d003d8e139fdcb6bb327c99a6',
+  DistributedSupplierRewards: '0x2caecd17d02f56fa897705dcc740da2d237c373f70686f4e0d9bd3bf0400ea7a',
+  DistributedBorrowerRewards: '0x1fc3ecc087d8d2d15e23d0032af5a47059c3892d003d8e139fdcb6bb327c99a6',
+};
+
+export const Compoundv3EventSignatures = {
+  Supply: '',
+  Withdraw: '',
+  SupplyCollateral: '',
+  WithdrawCollateral: '',
+  AbsorbCollateral: '',
 };
 
 export const CompoundEventAbiMappings: { [key: string]: Array<any> } = {
@@ -197,56 +205,56 @@ export const CompoundEventAbiMappings: { [key: string]: Array<any> } = {
       type: 'uint256',
     },
   ],
-  // [CompoundEventSignatures.DistributedSupplierRewards]: [
-  //   {
-  //     "indexed": true,
-  //     "internalType": "contract CToken",
-  //     "name": "cToken",
-  //     "type": "address"
-  //   },
-  //   {
-  //     "indexed": true,
-  //     "internalType": "address",
-  //     "name": "supplier",
-  //     "type": "address"
-  //   },
-  //   {
-  //     "indexed": false,
-  //     "internalType": "uint256",
-  //     "name": "compDelta",
-  //     "type": "uint256"
-  //   },
-  //   {
-  //     "indexed": false,
-  //     "internalType": "uint256",
-  //     "name": "compSupplyIndex",
-  //     "type": "uint256"
-  //   }
-  // ],
-  // [CompoundEventSignatures.DistributedBorrowerRewards]: [
-  //   {
-  //     "indexed": true,
-  //     "internalType": "contract CToken",
-  //     "name": "cToken",
-  //     "type": "address"
-  //   },
-  //   {
-  //     "indexed": true,
-  //     "internalType": "address",
-  //     "name": "borrower",
-  //     "type": "address"
-  //   },
-  //   {
-  //     "indexed": false,
-  //     "internalType": "uint256",
-  //     "name": "compDelta",
-  //     "type": "uint256"
-  //   },
-  //   {
-  //     "indexed": false,
-  //     "internalType": "uint256",
-  //     "name": "compBorrowIndex",
-  //     "type": "uint256"
-  //   }
-  // ],
+  [CompoundEventSignatures.DistributedSupplierRewards]: [
+    {
+      indexed: true,
+      internalType: 'contract CToken',
+      name: 'cToken',
+      type: 'address',
+    },
+    {
+      indexed: true,
+      internalType: 'address',
+      name: 'supplier',
+      type: 'address',
+    },
+    {
+      indexed: false,
+      internalType: 'uint256',
+      name: 'compDelta',
+      type: 'uint256',
+    },
+    {
+      indexed: false,
+      internalType: 'uint256',
+      name: 'compSupplyIndex',
+      type: 'uint256',
+    },
+  ],
+  [CompoundEventSignatures.DistributedBorrowerRewards]: [
+    {
+      indexed: true,
+      internalType: 'contract CToken',
+      name: 'cToken',
+      type: 'address',
+    },
+    {
+      indexed: true,
+      internalType: 'address',
+      name: 'borrower',
+      type: 'address',
+    },
+    {
+      indexed: false,
+      internalType: 'uint256',
+      name: 'compDelta',
+      type: 'uint256',
+    },
+    {
+      indexed: false,
+      internalType: 'uint256',
+      name: 'compBorrowIndex',
+      type: 'uint256',
+    },
+  ],
 };

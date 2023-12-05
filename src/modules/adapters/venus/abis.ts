@@ -1,4 +1,4 @@
-import { CompoundEventInterfaces } from '../compound/abis';
+import { CompoundEventAbiMappings, CompoundEventInterfaces, CompoundEventSignatures } from '../compound/abis';
 
 export const VenusIsolatedEventSignatures: CompoundEventInterfaces = {
   AccrueInterestEther: '', // don't use
@@ -9,6 +9,15 @@ export const VenusIsolatedEventSignatures: CompoundEventInterfaces = {
   Repay: '0x1a2a22cb034d26d1854bdc6666a5b91fe25efbbb5dcad3b0355478d6f5c362a1',
   Liquidate: '0x298637f684da70674f26509b10f07ec2fbc77a335ab1e7d6215a4b2484d8bb52',
   AccrueInterest: '0x4dec04e750ca11537cabcd8a9eab06494de08da3735bc8871cd41250e190bc04',
+
+  DistributedSupplierRewards: '',
+  DistributedBorrowerRewards: '',
+};
+
+export const VenusCoreEventSignatures: CompoundEventInterfaces = {
+  ...CompoundEventSignatures,
+  DistributedSupplierRewards: '0xfa9d964d891991c113b49e3db1932abd6c67263d387119707aafdd6c4010a3a9',
+  DistributedBorrowerRewards: '0x837bdc11fca9f17ce44167944475225a205279b17e88c791c3b1f66f354668fb',
 };
 
 export const VenusIsolatedEventAbiMappings: { [key: string]: Array<any> } = {
@@ -177,6 +186,62 @@ export const VenusIsolatedEventAbiMappings: { [key: string]: Array<any> } = {
       indexed: false,
       internalType: 'uint256',
       name: 'totalBorrows',
+      type: 'uint256',
+    },
+  ],
+};
+
+export const VenusCoreEventAbiMappings: { [key: string]: Array<any> } = {
+  ...CompoundEventAbiMappings,
+  [VenusCoreEventSignatures.DistributedSupplierRewards]: [
+    {
+      indexed: true,
+      internalType: 'contract CToken',
+      name: 'cToken',
+      type: 'address',
+    },
+    {
+      indexed: true,
+      internalType: 'address',
+      name: 'supplier',
+      type: 'address',
+    },
+    {
+      indexed: false,
+      internalType: 'uint256',
+      name: 'compDelta',
+      type: 'uint256',
+    },
+    {
+      indexed: false,
+      internalType: 'uint256',
+      name: 'compSupplyIndex',
+      type: 'uint256',
+    },
+  ],
+  [VenusCoreEventSignatures.DistributedBorrowerRewards]: [
+    {
+      indexed: true,
+      internalType: 'contract CToken',
+      name: 'cToken',
+      type: 'address',
+    },
+    {
+      indexed: true,
+      internalType: 'address',
+      name: 'borrower',
+      type: 'address',
+    },
+    {
+      indexed: false,
+      internalType: 'uint256',
+      name: 'compDelta',
+      type: 'uint256',
+    },
+    {
+      indexed: false,
+      internalType: 'uint256',
+      name: 'compBorrowIndex',
       type: 'uint256',
     },
   ],

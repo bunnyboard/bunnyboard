@@ -2,7 +2,7 @@ import { DAY } from '../../configs/constants';
 import EnvConfig from '../../configs/envConfig';
 import { queryBlockNumberAtTimestamp } from '../../lib/subsgraph';
 import { ProtocolConfig } from '../../types/configs';
-import { LendingMarketSnapshot } from '../../types/domains';
+import { LendingCdpSnapshot, LendingMarketSnapshot } from '../../types/domains';
 import { ContextServices, IProtocolAdapter } from '../../types/namespaces';
 import { GetLendingMarketSnapshotOptions } from '../../types/options';
 
@@ -55,7 +55,7 @@ export default class ProtocolAdapter implements IProtocolAdapter {
 
   public async getLendingMarketSnapshots(
     options: GetLendingMarketSnapshotOptions,
-  ): Promise<Array<LendingMarketSnapshot> | null> {
+  ): Promise<Array<LendingMarketSnapshot | LendingCdpSnapshot> | null> {
     return [];
   }
 }

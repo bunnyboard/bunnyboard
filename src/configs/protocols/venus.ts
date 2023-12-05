@@ -5,6 +5,13 @@ import { CompoundProtocolConfig } from './compound';
 
 export const VenusConfigs: CompoundProtocolConfig = {
   protocol: 'venus',
+  comptrollers: {
+    bnbchain: {
+      chain: 'bnbchain',
+      address: '0xfD36E2c2a6789Db23113685031d7F16329158384',
+      governanceToken: BnbchainTokenList.XVS,
+    },
+  },
   lendingMarkets: [
     {
       chain: 'bnbchain',

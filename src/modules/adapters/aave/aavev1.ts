@@ -8,7 +8,7 @@ import logger from '../../../lib/logger';
 import { queryBlockNumberAtTimestamp } from '../../../lib/subsgraph';
 import { compareAddress, formatFromDecimals, getDateString, normalizeAddress } from '../../../lib/utils';
 import { ProtocolConfig, Token } from '../../../types/configs';
-import { LendingMarketSnapshot } from '../../../types/domains';
+import { LendingCdpSnapshot, LendingMarketSnapshot } from '../../../types/domains';
 import { ContextServices } from '../../../types/namespaces';
 import { GetLendingMarketSnapshotOptions } from '../../../types/options';
 import ProtocolAdapter from '../adapter';
@@ -168,7 +168,7 @@ export default class Aavev1Adapter extends ProtocolAdapter {
 
   public async getLendingMarketSnapshots(
     options: GetLendingMarketSnapshotOptions,
-  ): Promise<Array<LendingMarketSnapshot> | null> {
+  ): Promise<Array<LendingMarketSnapshot | LendingCdpSnapshot> | null> {
     const blockNumber = await queryBlockNumberAtTimestamp(
       EnvConfig.blockchains[options.config.chain].blockSubgraph,
       options.timestamp,
@@ -227,6 +227,7 @@ export default class Aavev1Adapter extends ProtocolAdapter {
           marketConfig.address,
         )}-${normalizeAddress(token.address)}`,
 
+        type: 'cross',
         chain: marketConfig.chain,
         protocol: marketConfig.protocol,
         address: normalizeAddress(marketConfig.address),
@@ -245,12 +246,16 @@ export default class Aavev1Adapter extends ProtocolAdapter {
         volumeRepaid: eventStats.volumeRepaid,
         volumeLiquidated: eventStats.volumeLiquidated,
 
-        countAddresses: eventStats.countAddresses,
-        countTransactions: eventStats.countTransactions,
+        addressCount: {
+          lenders: eventStats.countAddresses,
+        },
+        transactionCount: eventStats.countTransactions,
 
         supplyRate: formatFromDecimals(reserveData.liquidityRate.toString(), 27),
         borrowRate: formatFromDecimals(reserveData.variableBorrowRate.toString(), 27),
         borrowRateStable: formatFromDecimals(reserveData.stableBorrowRate.toString(), 27),
+
+        tokenRewards: [],
       };
 
       snapshots.push(snapshot);

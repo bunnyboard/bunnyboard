@@ -139,6 +139,15 @@ export interface LendingMarketConfig {
   address: string;
 }
 
+export type LendingCdpVersion = 'compoundv3' | 'liquity' | 'maker';
+export interface LendingCdpConfig {
+  chain: string;
+  protocol: string;
+  version: LendingCdpVersion;
+  birthday: number;
+  debtToken: Token;
+}
+
 export interface ProtocolConfig {
   protocol: string;
 
@@ -147,4 +156,7 @@ export interface ProtocolConfig {
 
   // a list of lending market configs if any
   lendingMarkets?: Array<LendingMarketConfig>;
+
+  // a list of lending CDP configs if any
+  lendingCdps?: Array<LendingCdpConfig>;
 }

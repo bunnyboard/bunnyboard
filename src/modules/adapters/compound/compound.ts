@@ -1,14 +1,15 @@
 import BigNumber from 'bignumber.js';
 
+import { ProtocolConfigs } from '../../../configs';
 import cErc20Abi from '../../../configs/abi/compound/cErc20.json';
 import { ChainBlockPeriods, YEAR } from '../../../configs/constants';
 import EnvConfig from '../../../configs/envConfig';
-import { CompoundLendingMarketConfig } from '../../../configs/protocols/compound';
+import { CompoundLendingMarketConfig, CompoundProtocolConfig } from '../../../configs/protocols/compound';
 import logger from '../../../lib/logger';
 import { queryBlockNumberAtTimestamp } from '../../../lib/subsgraph';
-import { formatFromDecimals, getDateString, normalizeAddress } from '../../../lib/utils';
+import { compareAddress, formatFromDecimals, getDateString, normalizeAddress } from '../../../lib/utils';
 import { LendingMarketConfig, ProtocolConfig } from '../../../types/configs';
-import { LendingMarketSnapshot } from '../../../types/domains';
+import { LendingCdpSnapshot, LendingMarketSnapshot, TokenRewardEntry } from '../../../types/domains';
 import { ContextServices } from '../../../types/namespaces';
 import { GetLendingMarketSnapshotOptions } from '../../../types/options';
 import ProtocolAdapter from '../adapter';
@@ -63,9 +64,50 @@ export default class CompoundAdapter extends ProtocolAdapter {
     };
   }
 
+  protected async getMarketRewards(config: LendingMarketConfig, timestamp: number): Promise<Array<TokenRewardEntry>> {
+    const rewards: Array<TokenRewardEntry> = [];
+
+    const comptroller = ProtocolConfigs[config.protocol]
+      ? (ProtocolConfigs[config.protocol] as CompoundProtocolConfig).comptrollers[config.chain]
+      : null;
+
+    if (comptroller) {
+      let rewardPaid = new BigNumber(0);
+      const web3 = this.services.blockchain.getProvider(config.chain);
+      const logs: Array<any> = await this.getDayContractLogs({
+        chain: config.chain,
+        address: comptroller.address,
+        topics: [this.eventSignatures.DistributedSupplierRewards, this.eventSignatures.DistributedBorrowerRewards],
+        dayStartTimestamp: timestamp,
+      });
+
+      for (const log of logs) {
+        const signature = log.topics[0];
+        const event = web3.eth.abi.decodeLog(this.eventAbiMappings[signature], log.data, log.topics.slice(1));
+        if (compareAddress(event[0], config.address)) {
+          rewardPaid = rewardPaid.plus(new BigNumber(event[2].toString()));
+        }
+      }
+
+      const tokenPrice = await this.services.oracle.getTokenPriceUsd({
+        chain: config.chain,
+        address: comptroller.governanceToken.address,
+        timestamp: timestamp,
+      });
+
+      rewards.push({
+        token: comptroller.governanceToken,
+        tokenPrice: tokenPrice ? tokenPrice : '0',
+        tokenAmount: formatFromDecimals(rewardPaid.toString(10), comptroller.governanceToken.decimals),
+      });
+    }
+
+    return rewards;
+  }
+
   public async getLendingMarketSnapshots(
     options: GetLendingMarketSnapshotOptions,
-  ): Promise<Array<LendingMarketSnapshot> | null> {
+  ): Promise<Array<LendingMarketSnapshot | LendingCdpSnapshot> | null> {
     const marketConfig = options.config as CompoundLendingMarketConfig;
 
     const blockNumber = await queryBlockNumberAtTimestamp(
@@ -124,18 +166,30 @@ export default class CompoundAdapter extends ProtocolAdapter {
     let volumeBorrowed = new BigNumber(0);
     let volumeRepaid = new BigNumber(0);
     let volumeLiquidated = new BigNumber(0);
-    let countAddresses = 0;
+    let countLenders = 0;
+    let countBorrowers = 0;
+    let countLiquidators = 0;
     let countTransactions = 0;
 
     const web3 = this.services.blockchain.getProvider(options.config.chain);
     const logs: Array<any> = await this.getDayContractLogs({
       chain: options.config.chain,
       address: options.config.address,
-      topics: Object.values(this.eventSignatures),
+      topics: [
+        this.eventSignatures.Mint,
+        this.eventSignatures.Redeem,
+        this.eventSignatures.Borrow,
+        this.eventSignatures.Repay,
+        this.eventSignatures.Liquidate,
+        this.eventSignatures.AccrueInterest,
+        this.eventSignatures.AccrueInterestEther,
+      ],
       dayStartTimestamp: options.timestamp,
     });
 
-    const addresses: { [key: string]: boolean } = {};
+    const lenders: { [key: string]: boolean } = {};
+    const borrowers: { [key: string]: boolean } = {};
+    const liquidators: { [key: string]: boolean } = {};
     const transactions: { [key: string]: boolean } = {};
     for (const log of logs) {
       if (!transactions[log.transactionHash]) {
@@ -154,40 +208,68 @@ export default class CompoundAdapter extends ProtocolAdapter {
 
         case this.eventSignatures.Mint: {
           volumeDeposited = volumeDeposited.plus(new BigNumber(event[1].toString()));
+          const address = normalizeAddress(event[0]);
+          if (!lenders[address]) {
+            countLenders += 1;
+            lenders[address] = true;
+          }
           break;
         }
         case this.eventSignatures.Redeem: {
           volumeWithdrawn = volumeDeposited.plus(new BigNumber(event[1].toString()));
+          const address = normalizeAddress(event[0]);
+          if (!lenders[address]) {
+            countLenders += 1;
+            lenders[address] = true;
+          }
           break;
         }
         case this.eventSignatures.Borrow: {
           volumeBorrowed = volumeDeposited.plus(new BigNumber(event[1].toString()));
+          const address = normalizeAddress(event[0]);
+          if (!borrowers[address]) {
+            countBorrowers += 1;
+            borrowers[address] = true;
+          }
           break;
         }
         case this.eventSignatures.Repay: {
           volumeRepaid = volumeDeposited.plus(new BigNumber(event[2].toString()));
+          const address = normalizeAddress(event[0]);
+          if (!borrowers[address]) {
+            countBorrowers += 1;
+            borrowers[address] = true;
+          }
           break;
         }
         case this.eventSignatures.Liquidate: {
           volumeLiquidated = volumeDeposited.plus(new BigNumber(event[2].toString()));
+          const address = normalizeAddress(event[0]);
+          if (!borrowers[address]) {
+            countBorrowers += 1;
+            borrowers[address] = true;
+          }
           break;
         }
       }
 
       if (signature !== this.eventSignatures.AccrueInterest && signature !== this.eventSignatures.AccrueInterestEther) {
         const address = normalizeAddress(event[0]);
-        if (!addresses[address]) {
-          addresses[address] = true;
-          countAddresses += 1;
+        if (!liquidators[address]) {
+          liquidators[address] = true;
+          countLiquidators += 1;
         }
       }
     }
+
+    const rewards = await this.getMarketRewards(options.config, options.timestamp);
 
     snapshots.push({
       marketId: `${marketConfig.protocol}-${marketConfig.chain}-${normalizeAddress(
         marketConfig.address,
       )}-${normalizeAddress(token.address)}`,
 
+      type: 'cross',
       chain: marketConfig.chain,
       protocol: marketConfig.protocol,
       address: normalizeAddress(marketConfig.address),
@@ -206,11 +288,18 @@ export default class CompoundAdapter extends ProtocolAdapter {
       volumeRepaid: formatFromDecimals(volumeRepaid.toString(10), token.decimals),
       volumeLiquidated: formatFromDecimals(volumeLiquidated.toString(10), token.decimals),
 
-      countAddresses: countAddresses,
-      countTransactions: countTransactions,
+      addressCount: {
+        lenders: countLenders,
+        borrowers: countBorrowers,
+        liquidators: countLiquidators,
+      },
+
+      transactionCount: countTransactions,
 
       supplyRate: supplyRate,
       borrowRate: borrowRate,
+
+      tokenRewards: rewards,
     });
 
     logger.info('got lending market snapshot', {

@@ -5,6 +5,7 @@ import { CompoundProtocolConfig } from './compound';
 
 export const CreamConfigs: CompoundProtocolConfig = {
   protocol: 'cream',
+  comptrollers: {},
   lendingMarkets: [
     {
       chain: 'ethereum',
