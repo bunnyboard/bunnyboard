@@ -17,6 +17,11 @@ export interface DatabaseUpdateOptions {
   upsert: boolean;
 }
 
+export interface DatabaseInsertOptions {
+  collection: string;
+  document: any;
+}
+
 export interface DatabaseBulkWriteOptions {
   collection: string;
   operations: Array<any>;
@@ -30,6 +35,9 @@ export interface IDatabaseService {
 
   // do connect to the database server
   connect: (mongoUri: string, databaseName: string) => Promise<void>;
+
+  // insert a new document
+  insert: (options: DatabaseInsertOptions) => Promise<void>;
 
   // query and return a list of matching documents
   query: (options: DatabaseQueryOptions) => Promise<Array<any>>;

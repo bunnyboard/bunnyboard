@@ -11,9 +11,9 @@ import { compareAddress, formatFromDecimals, getDateString, normalizeAddress } f
 import { LendingMarketConfig, ProtocolConfig } from '../../../types/configs';
 import { LendingCdpSnapshot, LendingMarketSnapshot, TokenRewardEntry } from '../../../types/domains';
 import { ContextServices } from '../../../types/namespaces';
-import { GetLendingMarketSnapshotOptions } from '../../../types/options';
+import { AdapterAbiConfigs, GetLendingMarketSnapshotOptions } from '../../../types/options';
 import ProtocolAdapter from '../adapter';
-import { CompoundEventAbiMappings, CompoundEventInterfaces, CompoundEventSignatures } from './abis';
+import { CompoundEventInterfaces } from './abis';
 
 export interface CompoundMarketRates {
   borrowRate: string;
@@ -23,14 +23,42 @@ export interface CompoundMarketRates {
 export default class CompoundAdapter extends ProtocolAdapter {
   public readonly name: string = 'adapter.compound';
 
-  protected readonly eventSignatures: CompoundEventInterfaces;
-  protected readonly eventAbiMappings: { [key: string]: Array<any> };
+  constructor(services: ContextServices, config: ProtocolConfig, abiConfigs: AdapterAbiConfigs) {
+    super(services, config, abiConfigs);
 
-  constructor(services: ContextServices, config: ProtocolConfig) {
-    super(services, config);
+    if (config.lendingMarkets && config.lendingMarkets.length > 0) {
+      this.contractLogCollector.contracts = config.lendingMarkets.map((market) => {
+        return {
+          chain: market.chain,
+          protocol: market.protocol,
+          address: market.address,
+          birthday: market.birthday,
+          topics: Object.values(this.abiConfigs.eventSignatures),
+        };
+      });
 
-    this.eventSignatures = CompoundEventSignatures;
-    this.eventAbiMappings = CompoundEventAbiMappings;
+      const compoundConfig = config as CompoundProtocolConfig;
+      for (const comptroller of Object.values(compoundConfig.comptrollers)) {
+        // get the oldest birthday of all market
+        let comptrollerBirthday = config.lendingMarkets[0].birthday;
+        for (const market of config.lendingMarkets) {
+          if (market.birthday < comptrollerBirthday) {
+            comptrollerBirthday = market.birthday;
+          }
+        }
+
+        this.contractLogCollector.contracts.push({
+          chain: comptroller.chain,
+          protocol: config.protocol,
+          address: comptroller.address,
+          birthday: comptrollerBirthday,
+          topics: [
+            (this.abiConfigs.eventSignatures as CompoundEventInterfaces).DistributedSupplierRewards,
+            (this.abiConfigs.eventSignatures as CompoundEventInterfaces).DistributedBorrowerRewards,
+          ],
+        });
+      }
+    }
   }
 
   protected async getMarketRates(config: LendingMarketConfig, blockNumber: number): Promise<CompoundMarketRates> {
@@ -71,19 +99,24 @@ export default class CompoundAdapter extends ProtocolAdapter {
       ? (ProtocolConfigs[config.protocol] as CompoundProtocolConfig).comptrollers[config.chain]
       : null;
 
+    const eventSignatures = this.abiConfigs.eventSignatures as CompoundEventInterfaces;
     if (comptroller) {
       let rewardPaid = new BigNumber(0);
       const web3 = this.services.blockchain.getProvider(config.chain);
       const logs: Array<any> = await this.getDayContractLogs({
         chain: config.chain,
         address: comptroller.address,
-        topics: [this.eventSignatures.DistributedSupplierRewards, this.eventSignatures.DistributedBorrowerRewards],
+        topics: [eventSignatures.DistributedSupplierRewards, eventSignatures.DistributedBorrowerRewards],
         dayStartTimestamp: timestamp,
       });
 
       for (const log of logs) {
         const signature = log.topics[0];
-        const event = web3.eth.abi.decodeLog(this.eventAbiMappings[signature], log.data, log.topics.slice(1));
+        const event = web3.eth.abi.decodeLog(
+          this.abiConfigs.eventAbiMappings[signature],
+          log.data,
+          log.topics.slice(1),
+        );
         if (compareAddress(event[0], config.address)) {
           rewardPaid = rewardPaid.plus(new BigNumber(event[2].toString()));
         }
@@ -109,6 +142,7 @@ export default class CompoundAdapter extends ProtocolAdapter {
     options: GetLendingMarketSnapshotOptions,
   ): Promise<Array<LendingMarketSnapshot | LendingCdpSnapshot> | null> {
     const marketConfig = options.config as CompoundLendingMarketConfig;
+    const eventSignatures = this.abiConfigs.eventSignatures as CompoundEventInterfaces;
 
     const blockNumber = await queryBlockNumberAtTimestamp(
       EnvConfig.blockchains[marketConfig.chain].blockSubgraph,
@@ -176,13 +210,13 @@ export default class CompoundAdapter extends ProtocolAdapter {
       chain: options.config.chain,
       address: options.config.address,
       topics: [
-        this.eventSignatures.Mint,
-        this.eventSignatures.Redeem,
-        this.eventSignatures.Borrow,
-        this.eventSignatures.Repay,
-        this.eventSignatures.Liquidate,
-        this.eventSignatures.AccrueInterest,
-        this.eventSignatures.AccrueInterestEther,
+        eventSignatures.Mint,
+        eventSignatures.Redeem,
+        eventSignatures.Borrow,
+        eventSignatures.Repay,
+        eventSignatures.Liquidate,
+        eventSignatures.AccrueInterest,
+        eventSignatures.AccrueInterestEther,
       ],
       dayStartTimestamp: options.timestamp,
     });
@@ -198,51 +232,79 @@ export default class CompoundAdapter extends ProtocolAdapter {
       }
 
       const signature = log.topics[0];
-      const event = web3.eth.abi.decodeLog(this.eventAbiMappings[signature], log.data, log.topics.slice(1));
+      const event = web3.eth.abi.decodeLog(this.abiConfigs.eventAbiMappings[signature], log.data, log.topics.slice(1));
       switch (signature) {
-        case this.eventSignatures.AccrueInterest:
-        case this.eventSignatures.AccrueInterestEther: {
+        case eventSignatures.AccrueInterest:
+        case eventSignatures.AccrueInterestEther: {
           feesCollected = feesCollected.plus(new BigNumber(event.interestAccumulated.toString()));
           break;
         }
 
-        case this.eventSignatures.Mint: {
-          volumeDeposited = volumeDeposited.plus(new BigNumber(event[1].toString()));
+        case eventSignatures.Mint:
+        case eventSignatures.Redeem: {
+          if (signature === eventSignatures.Mint) {
+            volumeDeposited = volumeDeposited.plus(new BigNumber(event[1].toString()));
+          } else {
+            volumeWithdrawn = volumeDeposited.plus(new BigNumber(event[1].toString()));
+          }
+
           const address = normalizeAddress(event[0]);
           if (!lenders[address]) {
             countLenders += 1;
             lenders[address] = true;
           }
+
+          await this.saveAddressSnapshot({
+            addressId: `${marketConfig.protocol}-${marketConfig.chain}-${normalizeAddress(
+              marketConfig.address,
+            )}-${normalizeAddress(token.address)}-${address}-lender`,
+            protocol: this.config.protocol,
+            address: address,
+            role: 'lender',
+            firstTime: options.timestamp,
+          });
+
           break;
         }
-        case this.eventSignatures.Redeem: {
-          volumeWithdrawn = volumeDeposited.plus(new BigNumber(event[1].toString()));
-          const address = normalizeAddress(event[0]);
-          if (!lenders[address]) {
-            countLenders += 1;
-            lenders[address] = true;
+
+        case eventSignatures.Borrow:
+        case eventSignatures.Repay: {
+          if (signature === eventSignatures.Borrow) {
+            volumeBorrowed = volumeDeposited.plus(new BigNumber(event[1].toString()));
+          } else {
+            volumeRepaid = volumeDeposited.plus(new BigNumber(event[2].toString()));
+
+            await this.saveAddressSnapshot({
+              addressId: `${marketConfig.protocol}-${marketConfig.chain}-${normalizeAddress(
+                marketConfig.address,
+              )}-${normalizeAddress(token.address)}-${normalizeAddress(event[1])}-borrower`,
+              protocol: this.config.protocol,
+              address: normalizeAddress(event[1].toString()),
+              role: 'borrower',
+              firstTime: options.timestamp,
+            });
           }
-          break;
-        }
-        case this.eventSignatures.Borrow: {
-          volumeBorrowed = volumeDeposited.plus(new BigNumber(event[1].toString()));
+
           const address = normalizeAddress(event[0]);
           if (!borrowers[address]) {
             countBorrowers += 1;
             borrowers[address] = true;
           }
+
+          await this.saveAddressSnapshot({
+            addressId: `${marketConfig.protocol}-${marketConfig.chain}-${normalizeAddress(
+              marketConfig.address,
+            )}-${normalizeAddress(token.address)}-${address}-borrower`,
+            protocol: this.config.protocol,
+            address: normalizeAddress(event[0].toString()),
+            role: 'borrower',
+            firstTime: options.timestamp,
+          });
+
           break;
         }
-        case this.eventSignatures.Repay: {
-          volumeRepaid = volumeDeposited.plus(new BigNumber(event[2].toString()));
-          const address = normalizeAddress(event[0]);
-          if (!borrowers[address]) {
-            countBorrowers += 1;
-            borrowers[address] = true;
-          }
-          break;
-        }
-        case this.eventSignatures.Liquidate: {
+
+        case eventSignatures.Liquidate: {
           volumeRepaid = volumeDeposited.plus(new BigNumber(event[2].toString()));
 
           // borrower address
@@ -251,6 +313,17 @@ export default class CompoundAdapter extends ProtocolAdapter {
             countBorrowers += 1;
             borrowers[borrower] = true;
           }
+
+          await this.saveAddressSnapshot({
+            addressId: `${marketConfig.protocol}-${marketConfig.chain}-${normalizeAddress(
+              marketConfig.address,
+            )}-${normalizeAddress(token.address)}-${borrower}-borrower`,
+            protocol: this.config.protocol,
+            address: normalizeAddress(event[0].toString()),
+            role: 'borrower',
+            firstTime: options.timestamp,
+          });
+
           break;
         }
       }
@@ -271,7 +344,7 @@ export default class CompoundAdapter extends ProtocolAdapter {
         await this.getDayContractLogs({
           chain: otherMarket.chain,
           address: otherMarket.address,
-          topics: [this.eventSignatures.Liquidate],
+          topics: [eventSignatures.Liquidate],
           dayStartTimestamp: options.timestamp,
         }),
       );
@@ -287,31 +360,41 @@ export default class CompoundAdapter extends ProtocolAdapter {
         method: 'exchangeRateStored',
         params: [],
       });
-    }
 
-    for (const liquidationLog of liquidationLogs) {
-      const liquidationEvent = web3.eth.abi.decodeLog(
-        this.eventAbiMappings[this.eventSignatures.Liquidate],
-        liquidationLog.data,
-        liquidationLog.topics.slice(1),
-      );
-      if (compareAddress(liquidationEvent[3], marketConfig.address)) {
-        // count liquidator address
-        const liquidator = normalizeAddress(liquidationEvent[0]);
-        if (!liquidators[liquidator]) {
-          countLiquidators += 1;
-          liquidators[liquidator] = true;
+      for (const liquidationLog of liquidationLogs) {
+        const liquidationEvent = web3.eth.abi.decodeLog(
+          this.abiConfigs.eventAbiMappings[eventSignatures.Liquidate],
+          liquidationLog.data,
+          liquidationLog.topics.slice(1),
+        );
+        if (compareAddress(liquidationEvent[3], marketConfig.address)) {
+          // count liquidator address
+          const liquidator = normalizeAddress(liquidationEvent[0]);
+          if (!liquidators[liquidator]) {
+            countLiquidators += 1;
+            liquidators[liquidator] = true;
+          }
+
+          await this.saveAddressSnapshot({
+            addressId: `${marketConfig.protocol}-${marketConfig.chain}-${normalizeAddress(
+              marketConfig.address,
+            )}-${normalizeAddress(token.address)}-${liquidator}-liquidator`,
+            protocol: this.config.protocol,
+            address: liquidator,
+            role: 'liquidator',
+            firstTime: options.timestamp,
+          });
+
+          // count volume
+          const seizeTokens = new BigNumber(liquidationEvent[4].toString());
+
+          const oneCTokenInUnderlying = new BigNumber(exchangeRateStored.toString());
+          const tokenAmount = oneCTokenInUnderlying
+            .multipliedBy(seizeTokens)
+            .dividedBy(new BigNumber(10).pow(8))
+            .dividedBy(new BigNumber(10).pow(8));
+          volumeLiquidated = volumeLiquidated.plus(tokenAmount);
         }
-
-        // count volume
-        const seizeTokens = new BigNumber(liquidationEvent[4].toString());
-
-        const oneCTokenInUnderlying = new BigNumber(exchangeRateStored.toString());
-        const tokenAmount = oneCTokenInUnderlying
-          .multipliedBy(seizeTokens)
-          .dividedBy(new BigNumber(10).pow(8))
-          .dividedBy(new BigNumber(10).pow(8));
-        volumeLiquidated = volumeLiquidated.plus(tokenAmount);
       }
     }
 

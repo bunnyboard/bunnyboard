@@ -10,9 +10,9 @@ import { compareAddress, formatFromDecimals, getDateString, normalizeAddress } f
 import { ProtocolConfig, Token } from '../../../types/configs';
 import { LendingCdpSnapshot, LendingMarketSnapshot } from '../../../types/domains';
 import { ContextServices } from '../../../types/namespaces';
-import { GetLendingMarketSnapshotOptions } from '../../../types/options';
+import { AdapterAbiConfigs, GetLendingMarketSnapshotOptions } from '../../../types/options';
 import ProtocolAdapter from '../adapter';
-import { AaveEventInterfaces, AaveV1EventSignatures, Aavev1EventAbiMappings } from './abis';
+import { AaveEventInterfaces } from './abis';
 
 export interface AaveMarketEventStats {
   volumeDeposited: string;
@@ -27,14 +27,20 @@ export interface AaveMarketEventStats {
 export default class Aavev1Adapter extends ProtocolAdapter {
   public readonly name: string = 'adapter.aavev1';
 
-  protected eventSignatures: AaveEventInterfaces;
-  protected eventAbiMappings: { [key: string]: Array<any> };
+  constructor(services: ContextServices, config: ProtocolConfig, abiConfigs: AdapterAbiConfigs) {
+    super(services, config, abiConfigs);
 
-  constructor(services: ContextServices, config: ProtocolConfig) {
-    super(services, config);
-
-    this.eventSignatures = AaveV1EventSignatures;
-    this.eventAbiMappings = Aavev1EventAbiMappings;
+    if (config.lendingMarkets && config.lendingMarkets.length > 0) {
+      this.contractLogCollector.contracts = config.lendingMarkets.map((market) => {
+        return {
+          chain: market.chain,
+          protocol: market.protocol,
+          address: market.address,
+          birthday: market.birthday,
+          topics: Object.values(this.abiConfigs.eventSignatures),
+        };
+      });
+    }
   }
 
   // return total deposited (in wei)
@@ -78,6 +84,8 @@ export default class Aavev1Adapter extends ProtocolAdapter {
     token: Token,
     timestamp: number,
   ): Promise<AaveMarketEventStats> {
+    const eventSignatures = this.abiConfigs.eventSignatures as AaveEventInterfaces;
+
     let volumeDeposited = new BigNumber(0);
     let volumeWithdrawn = new BigNumber(0);
     let volumeBorrowed = new BigNumber(0);
@@ -89,7 +97,7 @@ export default class Aavev1Adapter extends ProtocolAdapter {
     const logs = await this.getDayContractLogs({
       chain: config.chain,
       address: config.address,
-      topics: Object.values(this.eventSignatures),
+      topics: Object.values(eventSignatures),
       dayStartTimestamp: timestamp,
     });
 
@@ -99,10 +107,10 @@ export default class Aavev1Adapter extends ProtocolAdapter {
     const transactions: { [key: string]: boolean } = {};
     for (const log of logs) {
       const signature = log.topics[0];
-      const event = web3.eth.abi.decodeLog(this.eventAbiMappings[signature], log.data, log.topics.slice(1));
+      const event = web3.eth.abi.decodeLog(this.abiConfigs.eventAbiMappings[signature], log.data, log.topics.slice(1));
 
       let reserve;
-      if (signature === this.eventSignatures.Liquidate) {
+      if (signature === eventSignatures.Liquidate) {
         reserve = normalizeAddress(event._reserve ? event._reserve : event.debtAsset);
       } else {
         reserve = normalizeAddress(event._reserve ? event._reserve : event.reserve);
@@ -114,38 +122,38 @@ export default class Aavev1Adapter extends ProtocolAdapter {
           countTransactions += 1;
         }
 
-        const address = normalizeAddress(signature === this.eventSignatures.Liquidate ? event[2] : event[1]);
+        const address = normalizeAddress(signature === eventSignatures.Liquidate ? event[2] : event[1]);
         if (!addresses[address]) {
           addresses[address] = true;
           countAddresses += 1;
         }
 
         switch (signature) {
-          case this.eventSignatures.Deposit: {
+          case eventSignatures.Deposit: {
             volumeDeposited = volumeDeposited.plus(
               new BigNumber(event._amount ? event._amount.toString() : event.amount.toString()),
             );
             break;
           }
-          case this.eventSignatures.Withdraw: {
+          case eventSignatures.Withdraw: {
             volumeWithdrawn = volumeWithdrawn.plus(
               new BigNumber(event._amount ? event._amount.toString() : event.amount.toString()),
             );
             break;
           }
-          case this.eventSignatures.Borrow: {
+          case eventSignatures.Borrow: {
             volumeBorrowed = volumeBorrowed.plus(
               new BigNumber(event._amount ? event._amount.toString() : event.amount.toString()),
             );
             break;
           }
-          case this.eventSignatures.Repay: {
+          case eventSignatures.Repay: {
             volumeRepaid = volumeRepaid.plus(
               new BigNumber(event._amountMinusFees ? event._amountMinusFees.toString() : event.amount.toString()),
             );
             break;
           }
-          case this.eventSignatures.Liquidate: {
+          case eventSignatures.Liquidate: {
             volumeLiquidated = volumeLiquidated.plus(
               new BigNumber(event._purchaseAmount ? event._purchaseAmount.toString() : event.debtToCover.toString()),
             );

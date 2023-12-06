@@ -116,3 +116,16 @@ export interface LendingCdpSnapshot extends DayDataSnapshot {
   // a list of incentive tokens rewards
   tokenRewards: Array<TokenRewardEntry>;
 }
+
+export type AddressSnapshotRole = 'lender' | 'borrower' | 'liquidator' | 'liquidityProvider' | 'trader' | 'staker';
+export interface AddressSnapshot {
+  addressId: string;
+
+  protocol: string;
+  address: string;
+  role: AddressSnapshotRole;
+
+  // timestamp where the first transaction
+  // was made by this address to using this protocol
+  firstTime: number;
+}

@@ -37,8 +37,14 @@ export interface EnvConfig {
       // we need to save the latest block where logs were sync
       states: string;
 
+      // save contract raw logs
+      contractRawlogs: string;
+
       // save token prices
       tokenPrices: string;
+
+      // protocol address book
+      addressSnapshots: string;
 
       // save lending market metrics and snapshots
       lendingMarketSnapshots: string;
@@ -98,7 +104,7 @@ export interface OracleConfig {
   coingeckoId?: string;
 }
 
-export interface ContractFilterLogTopics {
+export interface ContractLogTopicFilters {
   // required, event signature
   topic0: string;
 
@@ -111,8 +117,8 @@ export interface ContractFilterLogTopics {
 export interface ContractConfig {
   chain: string;
 
-  // given name tag
-  tag: string;
+  // given protocol name
+  protocol: string;
 
   // the factory contract address
   address: string;
@@ -120,8 +126,8 @@ export interface ContractConfig {
   // the timestamp when contract was deployed
   birthday: number;
 
-  // for logs indexing
-  logFilters: Array<ContractFilterLogTopics>;
+  // simple get all logs that match with topics
+  topics: Array<string>;
 }
 
 export type LendingMarketVersion = 'aavev1' | 'aavev2' | 'aavev3' | 'compound' | 'compoundv3' | 'venusIsolated';

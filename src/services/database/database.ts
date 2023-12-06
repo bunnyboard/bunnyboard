@@ -3,7 +3,13 @@ import { Collection, MongoClient } from 'mongodb';
 import envConfig from '../../configs/envConfig';
 import logger from '../../lib/logger';
 import { sleep } from '../../lib/utils';
-import { DatabaseBulkWriteOptions, DatabaseQueryOptions, DatabaseUpdateOptions, IDatabaseService } from './domains';
+import {
+  DatabaseBulkWriteOptions,
+  DatabaseInsertOptions,
+  DatabaseQueryOptions,
+  DatabaseUpdateOptions,
+  IDatabaseService,
+} from './domains';
 
 export default class DatabaseService implements IDatabaseService {
   public readonly name: string = 'database';
@@ -69,14 +75,28 @@ export default class DatabaseService implements IDatabaseService {
 
   private async setupIndies(): Promise<void> {
     const statesCollection = await this.getCollection(envConfig.mongodb.collections.states);
+    const contractrawlogsCollection = await this.getCollection(envConfig.mongodb.collections.contractRawlogs);
     const tokenPricesCollection = await this.getCollection(envConfig.mongodb.collections.tokenPrices);
+    const addressSnapshotsCollection = await this.getCollection(envConfig.mongodb.collections.addressSnapshots);
     const lendingMarketSnapshotsCollection = await this.getCollection(
       envConfig.mongodb.collections.lendingMarketSnapshots,
     );
 
     statesCollection.createIndex({ name: 1 }, { background: true });
+    contractrawlogsCollection.createIndex(
+      { chain: 1, address: 1, transactionHash: 1, logIndex: 1 },
+      { background: true },
+    );
+    contractrawlogsCollection.createIndex({ chain: 1, address: 1, blockNumber: 1 }, { background: true });
     tokenPricesCollection.createIndex({ chain: 1, address: 1, timestamp: 1 }, { background: true });
+
+    addressSnapshotsCollection.createIndex({ addressId: 1 }, { background: true });
     lendingMarketSnapshotsCollection.createIndex({ marketId: 1, timestamp: 1 }, { background: true });
+  }
+
+  public async insert(options: DatabaseInsertOptions): Promise<void> {
+    const collection = await this.getCollection(options.collection);
+    await collection.insertOne(options.document);
   }
 
   public async bulkWrite(options: DatabaseBulkWriteOptions): Promise<void> {

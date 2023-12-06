@@ -11,7 +11,7 @@ const customFormat = winston.format.printf((entry: any) => {
 
   const service = entry.service ? entry.service : 'unknown';
 
-  return `${entry.timestamp} ${entry.level.padEnd(5)}: ${('[' + service + ']').padEnd(20)} ${entry.message}, ${
+  return `${entry.timestamp} ${entry.level.padEnd(5)} ${service}: ${entry.message}, ${
     propsLine.length > 0 ? propsLine.slice(0, -1) : ''
   }`;
 });

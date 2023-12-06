@@ -106,6 +106,7 @@ export const OracleSourceConfigs: { [key: string]: OracleConfig } = {
   AAVE: {
     currency: 'eth',
     sources: [OracleSourceUniswapv2List.AAVE_WETH],
+    coingeckoId: 'aave',
   },
   UNI: {
     currency: 'eth',

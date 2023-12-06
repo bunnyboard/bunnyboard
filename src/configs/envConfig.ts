@@ -6,7 +6,7 @@ import { AddressZero, BlockSubGraphEndpoints } from './constants';
 // global env and configurations
 dotenv.config();
 
-const MongodbPrefix = 'magicbunny';
+const MongodbPrefix = 'mb';
 
 const envConfig: EnvConfig = {
   mongodb: {
@@ -14,7 +14,9 @@ const envConfig: EnvConfig = {
     connectionUri: String(process.env.MAGICBUNNY_MONGODB_URI),
     collections: {
       states: `${MongodbPrefix}.states`,
+      contractRawlogs: `${MongodbPrefix}.contract.rawlogs`,
       tokenPrices: `${MongodbPrefix}.token.prices`,
+      addressSnapshots: `${MongodbPrefix}.snapshots.addresses`,
       lendingMarketSnapshots: `${MongodbPrefix}.snapshots.lending.markets`,
     },
   },
