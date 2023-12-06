@@ -24,7 +24,6 @@ export class CollectCommand extends BasicCommand {
 
     if (protocols.length > 0) {
       const services: ContextServices = await super.getServices();
-      // connect database only when we got validated configs
       await services.database.connect(envConfig.mongodb.connectionUri, envConfig.mongodb.databaseName);
 
       const adapters = getProtocolAdapters(services);
