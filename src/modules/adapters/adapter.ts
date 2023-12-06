@@ -109,11 +109,15 @@ export default class ProtocolAdapter implements IProtocolAdapter {
   }
 
   public async run(options: RunAdapterOptions): Promise<void> {
-    // get logs from all contract belong to the adapter
-    await this.contractLogCollector.getContractLogs();
+    if (options.contractLogCollector) {
+      // get logs from all contract belong to the adapter
+      await this.contractLogCollector.getContractLogs();
+    }
 
-    // collect lending market snapshot if any
-    await this.runLendingCollector();
+    if (options.lendingMarketCollector) {
+      // collect lending market snapshot if any
+      await this.runLendingCollector();
+    }
   }
 
   public async getLendingMarketSnapshots(

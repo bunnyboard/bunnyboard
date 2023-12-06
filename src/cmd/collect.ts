@@ -37,7 +37,9 @@ export class CollectCommand extends BasicCommand {
       do {
         for (const protocol of protocols) {
           if (adapters[protocol]) {
-            await adapters[protocol].run({});
+            await adapters[protocol].run({
+              lendingMarketCollector: true,
+            });
           }
         }
 
