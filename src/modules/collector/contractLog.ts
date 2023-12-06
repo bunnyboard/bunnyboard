@@ -120,6 +120,18 @@ export default class ContractLogCollector implements IContractLogCollector {
 
         startBlock += DefaultQueryLogsBlockRange;
 
+        await this.services.database.update({
+          collection: EnvConfig.mongodb.collections.states,
+          keys: {
+            name: stateKey,
+          },
+          updates: {
+            name: stateKey,
+            blockNumber: startBlock,
+          },
+          upsert: true,
+        });
+
         logger.info('got contract logs', {
           service: this.name,
           chain: contract.chain,
