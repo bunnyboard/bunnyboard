@@ -17,7 +17,7 @@ const customFormat = winston.format.printf((entry: any) => {
 });
 
 const logger = winston.createLogger({
-  level: String(process.env.LOGGER_LEVEL),
+  level: 'debug',
   format: winston.format.combine(winston.format.colorize(), winston.format.timestamp(), customFormat),
   transports: [new winston.transports.Console({})],
 });
