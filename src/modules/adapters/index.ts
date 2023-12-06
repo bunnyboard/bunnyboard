@@ -12,7 +12,6 @@ import {
   Aavev3EventAbiMappings,
 } from './aave/abis';
 import BenqiAdapter from './benqi/benqi';
-// import Compoundv3Adapter from './compound/compoundv3';
 import { CompoundEventAbiMappings, CompoundEventSignatures } from './compound/abis';
 import CompoundAdapter from './compound/compound';
 import { VenusCoreEventAbiMappings, VenusCoreEventSignatures } from './venus/abis';
@@ -35,7 +34,6 @@ function getProtocolAdapters(services: ContextServices): { [key: string]: IProto
       eventSignatures: CompoundEventSignatures,
       eventAbiMappings: CompoundEventAbiMappings,
     }),
-    // compoundv3: new Compoundv3Adapter(services, ProtocolConfigs.compoundv3),
     ironbank: new CompoundAdapter(services, ProtocolConfigs.ironbank, {
       eventSignatures: CompoundEventSignatures,
       eventAbiMappings: CompoundEventAbiMappings,

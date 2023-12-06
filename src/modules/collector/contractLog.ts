@@ -84,14 +84,16 @@ export default class ContractLogCollector implements IContractLogCollector {
 
         let logs: Array<any> = [];
         for (const topic of contract.topics) {
-          logs = logs.concat(
-            await web3.eth.getPastLogs({
-              address: contract.address,
-              fromBlock: startBlock,
-              toBlock: toBlock,
-              topics: [topic],
-            }),
-          );
+          if (topic !== '') {
+            logs = logs.concat(
+              await web3.eth.getPastLogs({
+                address: contract.address,
+                fromBlock: startBlock,
+                toBlock: toBlock,
+                topics: [topic],
+              }),
+            );
+          }
         }
 
         const operations: Array<any> = [];
@@ -107,6 +109,7 @@ export default class ContractLogCollector implements IContractLogCollector {
                 $set: {
                   ...log,
                   chain: contract.chain,
+                  protocol: contract.protocol,
                   address: normalizeAddress(log.address),
                 },
               },
