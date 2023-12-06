@@ -5,7 +5,7 @@ import { OracleConfigs } from '../../configs/oracles/configs';
 import { OracleCurrencyBaseConfigs } from '../../configs/oracles/currency';
 import logger from '../../lib/logger';
 import { queryBlockNumberAtTimestamp } from '../../lib/subsgraph';
-import { sleep } from '../../lib/utils';
+import { normalizeAddress, sleep } from '../../lib/utils';
 import {
   OracleCurrencyBase,
   OracleSourceBearingToken,
@@ -29,6 +29,46 @@ export default class OracleService extends CachingService implements IOracleServ
     super();
 
     this.database = database;
+  }
+
+  // get price from database if any
+  private async getPriceFromDatabase(options: GetTokenPriceOptions): Promise<string | null> {
+    if (this.database) {
+      const document = await this.database.find({
+        collection: EnvConfig.mongodb.collections.tokenPrices,
+        query: {
+          chain: options.chain,
+          address: normalizeAddress(options.address),
+          timestamp: options.timestamp,
+        },
+      });
+      if (document) {
+        return document.priceUsd.toString();
+      }
+    }
+
+    return null;
+  }
+
+  // get price from database if any
+  private async savePriceToDatabase(options: GetTokenPriceOptions, priceUsd: string): Promise<void> {
+    if (this.database) {
+      await this.database.update({
+        collection: EnvConfig.mongodb.collections.tokenPrices,
+        keys: {
+          chain: options.chain,
+          address: normalizeAddress(options.address),
+          timestamp: options.timestamp,
+        },
+        updates: {
+          chain: options.chain,
+          address: normalizeAddress(options.address),
+          timestamp: options.timestamp,
+          priceUsd: priceUsd,
+        },
+        upsert: true,
+      });
+    }
   }
 
   public async getTokenPriceSource(
@@ -105,13 +145,20 @@ export default class OracleService extends CachingService implements IOracleServ
   }
 
   public async getTokenPriceUsd(options: GetTokenPriceOptions): Promise<string | null> {
+    const priceFromDatabase = await this.getPriceFromDatabase(options);
+    if (priceFromDatabase) {
+      return priceFromDatabase;
+    }
+
+    let returnPrice = null;
+
     if (OracleConfigs[options.chain] && OracleConfigs[options.chain][options.address]) {
       const config = OracleConfigs[options.chain][options.address];
 
       const cachingKey = `${options.chain}:${options.address}:${options.timestamp}`;
       const cachingPriceUsd = await this.getCachingData(cachingKey);
       if (cachingPriceUsd) {
-        return cachingPriceUsd;
+        returnPrice = cachingPriceUsd;
       }
 
       for (const source of config.sources) {
@@ -131,7 +178,7 @@ export default class OracleService extends CachingService implements IOracleServ
           if (priceUsd) {
             await this.setCachingData(cachingKey, priceUsd);
 
-            return priceUsd;
+            returnPrice = priceUsd;
           }
         }
       }
@@ -141,18 +188,22 @@ export default class OracleService extends CachingService implements IOracleServ
         if (priceUsd) {
           await this.setCachingData(cachingKey, priceUsd);
 
-          return priceUsd;
+          returnPrice = priceUsd;
         }
       }
     }
 
-    logger.warn('failed to get token price', {
-      service: this.name,
-      chain: options.chain,
-      token: options.address,
-      timestamp: options.timestamp,
-    });
+    if (returnPrice !== null) {
+      await this.savePriceToDatabase(options, returnPrice);
+    } else {
+      logger.warn('failed to get token price', {
+        service: this.name,
+        chain: options.chain,
+        token: options.address,
+        timestamp: options.timestamp,
+      });
+    }
 
-    return null;
+    return returnPrice;
   }
 }

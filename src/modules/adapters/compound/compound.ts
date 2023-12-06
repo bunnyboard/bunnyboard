@@ -243,22 +243,75 @@ export default class CompoundAdapter extends ProtocolAdapter {
           break;
         }
         case this.eventSignatures.Liquidate: {
-          volumeLiquidated = volumeDeposited.plus(new BigNumber(event[2].toString()));
-          const address = normalizeAddress(event[0]);
-          if (!borrowers[address]) {
+          volumeRepaid = volumeDeposited.plus(new BigNumber(event[2].toString()));
+
+          // borrower address
+          const borrower = normalizeAddress(event[1]);
+          if (!borrowers[borrower]) {
             countBorrowers += 1;
-            borrowers[address] = true;
+            borrowers[borrower] = true;
           }
           break;
         }
       }
+    }
 
-      if (signature !== this.eventSignatures.AccrueInterest && signature !== this.eventSignatures.AccrueInterestEther) {
-        const address = normalizeAddress(event[0]);
-        if (!liquidators[address]) {
-          liquidators[address] = true;
+    // count liquidation volume
+    const allMarkets = this.config.lendingMarkets
+      ? this.config.lendingMarkets.filter(
+          (item) =>
+            item.chain === marketConfig.chain &&
+            !compareAddress(item.address, marketConfig.address) &&
+            item.birthday <= options.timestamp,
+        )
+      : [];
+    let liquidationLogs: Array<any> = [];
+    for (const otherMarket of allMarkets) {
+      liquidationLogs = liquidationLogs.concat(
+        await this.getDayContractLogs({
+          chain: otherMarket.chain,
+          address: otherMarket.address,
+          topics: [this.eventSignatures.Liquidate],
+          dayStartTimestamp: options.timestamp,
+        }),
+      );
+    }
+
+    let exchangeRateStored = '0';
+    if (liquidationLogs.length > 0) {
+      // get exchange rate
+      exchangeRateStored = await this.services.blockchain.singlecall({
+        chain: marketConfig.chain,
+        target: marketConfig.address,
+        abi: cErc20Abi,
+        method: 'exchangeRateStored',
+        params: [],
+      });
+    }
+
+    for (const liquidationLog of liquidationLogs) {
+      const liquidationEvent = web3.eth.abi.decodeLog(
+        this.eventAbiMappings[this.eventSignatures.Liquidate],
+        liquidationLog.data,
+        liquidationLog.topics.slice(1),
+      );
+      if (compareAddress(liquidationEvent[3], marketConfig.address)) {
+        // count liquidator address
+        const liquidator = normalizeAddress(liquidationEvent[0]);
+        if (!liquidators[liquidator]) {
           countLiquidators += 1;
+          liquidators[liquidator] = true;
         }
+
+        // count volume
+        const seizeTokens = new BigNumber(liquidationEvent[4].toString());
+
+        const oneCTokenInUnderlying = new BigNumber(exchangeRateStored.toString());
+        const tokenAmount = oneCTokenInUnderlying
+          .multipliedBy(seizeTokens)
+          .dividedBy(new BigNumber(10).pow(8))
+          .dividedBy(new BigNumber(10).pow(8));
+        volumeLiquidated = volumeLiquidated.plus(tokenAmount);
       }
     }
 

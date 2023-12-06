@@ -1,6 +1,6 @@
-// time
 import BigNumber from 'bignumber.js';
 
+// time
 export const DAY = 24 * 60 * 60;
 export const YEAR = 365 * DAY;
 

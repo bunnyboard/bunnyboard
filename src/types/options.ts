@@ -1,13 +1,5 @@
 import { LendingMarketConfig } from './configs';
 
-export interface ContractIndexingOptions {
-  // index contracts on given blockchain only
-  chain: string;
-
-  // index only given contract
-  address?: string;
-}
-
 export interface RunCollectorOptions {
   protocol?: string;
 }

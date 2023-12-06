@@ -220,6 +220,7 @@ export const OracleSourceConfigs: { [key: string]: OracleConfig } = {
   COMP: {
     currency: 'eth',
     sources: [OracleSourceUniswapv2List.COMP_WETH],
+    coingeckoId: 'compound-governance-token',
   },
   SAI: {
     currency: 'eth',

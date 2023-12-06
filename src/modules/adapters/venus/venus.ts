@@ -5,7 +5,12 @@ import { GetLendingMarketSnapshotOptions } from '../../../types/options';
 import ProtocolAdapter from '../adapter';
 import { CompoundEventInterfaces } from '../compound/abis';
 import CompoundAdapter from '../compound/compound';
-import { VenusIsolatedEventAbiMappings, VenusIsolatedEventSignatures } from './abis';
+import {
+  VenusCoreEventAbiMappings,
+  VenusCoreEventSignatures,
+  VenusIsolatedEventAbiMappings,
+  VenusIsolatedEventSignatures,
+} from './abis';
 
 class VenusIsolatedAdapter extends CompoundAdapter {
   public readonly name: string = 'adapter.venusIsolated';
@@ -30,8 +35,8 @@ class VenusCoreAdapter extends CompoundAdapter {
   constructor(services: ContextServices, config: ProtocolConfig) {
     super(services, config);
 
-    this.eventSignatures = VenusIsolatedEventSignatures;
-    this.eventAbiMappings = VenusIsolatedEventAbiMappings;
+    this.eventSignatures = VenusCoreEventSignatures;
+    this.eventAbiMappings = VenusCoreEventAbiMappings;
   }
 }
 

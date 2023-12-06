@@ -69,20 +69,13 @@ export default class DatabaseService implements IDatabaseService {
 
   private async setupIndies(): Promise<void> {
     const statesCollection = await this.getCollection(envConfig.mongodb.collections.states);
-    const rawlogsCollection = await this.getCollection(envConfig.mongodb.collections.rawlogs);
+    const tokenPricesCollection = await this.getCollection(envConfig.mongodb.collections.tokenPrices);
     const lendingMarketSnapshotsCollection = await this.getCollection(
       envConfig.mongodb.collections.lendingMarketSnapshots,
     );
 
     statesCollection.createIndex({ name: 1 }, { background: true });
-
-    // for write operations
-    rawlogsCollection.createIndex({ chain: 1, address: 1, transactionHash: 1, logIndex: 1 }, { background: true });
-
-    // for query operations
-    rawlogsCollection.createIndex({ chain: 1, address: 1, timestamp: 1 }, { background: true });
-    rawlogsCollection.createIndex({ chain: 1, address: 1, topics: 1, timestamp: 1 }, { background: true });
-
+    tokenPricesCollection.createIndex({ chain: 1, address: 1, timestamp: 1 }, { background: true });
     lendingMarketSnapshotsCollection.createIndex({ marketId: 1, timestamp: 1 }, { background: true });
   }
 

@@ -37,12 +37,6 @@ export interface EnvConfig {
       // we need to save the latest block where logs were sync
       states: string;
 
-      // save contract configs
-      contracts: string;
-
-      // save contract raw logs
-      rawlogs: string;
-
       // save token prices
       tokenPrices: string;
 

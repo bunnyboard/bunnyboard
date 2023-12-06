@@ -18,6 +18,8 @@ export default class CoingeckoLibs {
 
         if (response.data['market_data']) {
           price = response.data['market_data']['current_price']['usd'].toString();
+        } else {
+          price = '0';
         }
       } catch (e: any) {
         await sleep(10);
