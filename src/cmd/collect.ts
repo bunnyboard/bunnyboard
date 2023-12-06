@@ -1,5 +1,5 @@
-import { ProtocolConfigs } from '../configs';
 import envConfig from '../configs/envConfig';
+import logger from '../lib/logger';
 import { sleep } from '../lib/utils';
 import getProtocolAdapters from '../modules/adapters';
 import { ContextServices } from '../types/namespaces';
@@ -14,30 +14,40 @@ export class CollectCommand extends BasicCommand {
   }
 
   public async execute(argv: any) {
-    const protocol = argv.protocol === '' ? null : argv.protocol;
+    const protocolOptions = argv.protocol === '' ? null : argv.protocol;
 
-    if (!protocol) {
+    if (!protocolOptions) {
       process.exit(0);
     }
 
-    const services: ContextServices = await super.getServices();
-    const adapters = getProtocolAdapters(services);
-    if (!adapters[protocol] || !ProtocolConfigs[protocol]) {
-      process.exit(0);
+    const protocols: Array<string> = protocolOptions.split(',');
+
+    if (protocols.length > 0) {
+      const services: ContextServices = await super.getServices();
+      // connect database only when we got validated configs
+      await services.database.connect(envConfig.mongodb.connectionUri, envConfig.mongodb.databaseName);
+
+      const adapters = getProtocolAdapters(services);
+
+      logger.info(`start to run adapters`, {
+        service: 'command',
+        protocols: protocols.toString(),
+      });
+
+      do {
+        for (const protocol of protocols) {
+          if (adapters[protocol]) {
+            await adapters[protocol].run({});
+          }
+        }
+
+        if (argv.exit) {
+          process.exit(0);
+        } else {
+          await sleep(argv.sleep ? Number(argv.sleep) : 300);
+        }
+      } while (!argv.exit);
     }
-
-    // connect database only when we got validated configs
-    await services.database.connect(envConfig.mongodb.connectionUri, envConfig.mongodb.databaseName);
-
-    do {
-      await adapters[protocol].run({});
-
-      if (argv.exit) {
-        process.exit(0);
-      } else {
-        await sleep(argv.sleep ? Number(argv.sleep) : 300);
-      }
-    } while (!argv.exit);
 
     process.exit(0);
   }

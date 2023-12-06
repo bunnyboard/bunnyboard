@@ -24,11 +24,6 @@ export default class ContractLogCollector implements IContractLogCollector {
   }
 
   public async getContractLogs(): Promise<void> {
-    logger.info('getting logs from protocol contracts', {
-      service: this.name,
-      contracts: this.contracts.length,
-    });
-
     for (const contract of this.contracts) {
       let startBlock = 0;
 
