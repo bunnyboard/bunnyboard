@@ -5,6 +5,7 @@ import { queryBlockNumberAtTimestamp } from '../../lib/subsgraph';
 import { normalizeAddress, sleep } from '../../lib/utils';
 import { ContractConfig } from '../../types/configs';
 import { ContextServices, IContractLogCollector } from '../../types/namespaces';
+import { RunContractLogCollectorOptions } from '../../types/options';
 
 export default class ContractLogCollector implements IContractLogCollector {
   public readonly name: string = 'collector.contractLog';
@@ -23,8 +24,8 @@ export default class ContractLogCollector implements IContractLogCollector {
     }
   }
 
-  public async getContractLogs(): Promise<void> {
-    for (const contract of this.contracts) {
+  public async getContractLogs(options: RunContractLogCollectorOptions): Promise<void> {
+    for (const contract of this.contracts.filter((item) => item.chain === options.chain)) {
       let startBlock = 0;
 
       const stateKey = `index-contract-event-${contract.chain}-${contract.address}`;

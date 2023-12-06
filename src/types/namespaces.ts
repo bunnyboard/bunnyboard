@@ -3,7 +3,12 @@ import { IDatabaseService } from '../services/database/domains';
 import { IOracleService } from '../services/oracle/domains';
 import { ContractConfig, ProtocolConfig } from './configs';
 import { LendingCdpSnapshot, LendingMarketSnapshot } from './domains';
-import { AdapterAbiConfigs, GetLendingMarketSnapshotOptions, RunAdapterOptions } from './options';
+import {
+  AdapterAbiConfigs,
+  GetLendingMarketSnapshotOptions,
+  RunAdapterOptions,
+  RunContractLogCollectorOptions,
+} from './options';
 
 export interface ContextServices {
   database: IDatabaseService;
@@ -17,7 +22,7 @@ export interface IContractLogCollector {
   contracts: Array<ContractConfig>;
 
   // run all indexing tasks if any
-  getContractLogs: () => Promise<void>;
+  getContractLogs: (options: RunContractLogCollectorOptions) => Promise<void>;
 }
 
 export interface IProtocolAdapter {

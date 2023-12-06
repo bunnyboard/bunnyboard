@@ -21,7 +21,9 @@ export class GetlogCommand extends BasicCommand {
     do {
       for (const adapter of Object.values(adapters)) {
         await adapter.run({
-          contractLogCollector: true,
+          contractLogCollector: {
+            chain: argv.chain,
+          },
         });
       }
 
@@ -30,6 +32,13 @@ export class GetlogCommand extends BasicCommand {
   }
 
   public setOptions(yargs: any) {
-    return yargs.option({});
+    return yargs.option({
+      chain: {
+        type: 'string',
+        default: 'ethereum',
+        requiresArg: true,
+        describe: 'Get contract logs from given chain.',
+      },
+    });
   }
 }
