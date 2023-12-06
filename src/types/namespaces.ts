@@ -3,7 +3,7 @@ import { IDatabaseService } from '../services/database/domains';
 import { IOracleService } from '../services/oracle/domains';
 import { ContractConfig, ProtocolConfig } from './configs';
 import { LendingCdpSnapshot, LendingMarketSnapshot } from './domains';
-import { AdapterAbiConfigs, GetLendingMarketSnapshotOptions, RunAdapterOptions, RunCollectorOptions } from './options';
+import { AdapterAbiConfigs, GetLendingMarketSnapshotOptions, RunAdapterOptions } from './options';
 
 export interface ContextServices {
   database: IDatabaseService;
@@ -41,13 +41,4 @@ export interface IProtocolAdapter {
 
   // run updater worker service
   run: (options: RunAdapterOptions) => Promise<void>;
-}
-
-export type CollectorType = 'none' | 'lending';
-export interface ICollector {
-  name: string;
-  type: CollectorType;
-  services: ContextServices;
-
-  run: (options: RunCollectorOptions) => Promise<void>;
 }

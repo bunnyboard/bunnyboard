@@ -2,8 +2,8 @@ import { DAY } from '../../configs/constants';
 import EnvConfig from '../../configs/envConfig';
 import logger from '../../lib/logger';
 import { queryBlockNumberAtTimestamp } from '../../lib/subsgraph';
-import { sleep } from '../../lib/utils';
-import { ContractConfig, ProtocolConfig } from '../../types/configs';
+import { getTodayUTCTimestamp, normalizeAddress } from '../../lib/utils';
+import { ProtocolConfig } from '../../types/configs';
 import { AddressSnapshot, LendingCdpSnapshot, LendingMarketSnapshot } from '../../types/domains';
 import { ContextServices, IContractLogCollector, IProtocolAdapter } from '../../types/namespaces';
 import { AdapterAbiConfigs, GetLendingMarketSnapshotOptions, RunAdapterOptions } from '../../types/options';
@@ -29,6 +29,24 @@ export default class ProtocolAdapter implements IProtocolAdapter {
     this.abiConfigs = abiConfigs;
 
     this.contractLogCollector = new ContractLogCollector(services, []);
+
+    // config market address to lowercase
+    if (config.lendingMarkets) {
+      this.config.lendingMarkets = config.lendingMarkets.map((market) => {
+        return {
+          ...market,
+          address: normalizeAddress(market.address),
+        };
+      });
+    }
+    if (config.lendingCdps) {
+      this.config.lendingCdps = config.lendingCdps.map((market) => {
+        return {
+          ...market,
+          address: normalizeAddress(market.address),
+        };
+      });
+    }
   }
 
   protected async saveAddressSnapshot(options: AddressSnapshot): Promise<void> {
@@ -69,63 +87,91 @@ export default class ProtocolAdapter implements IProtocolAdapter {
       EnvConfig.blockchains[options.chain].blockSubgraph,
       options.dayStartTimestamp + DAY - 1,
     );
+
     if (dayStartBlock && dayEndBLock) {
-      for (const topic of options.topics) {
-        if (topic !== '') {
-          logs = logs.concat(
-            await this.services.blockchain.getContractLogs({
-              chain: options.chain,
-              address: options.address,
-              fromBlock: dayStartBlock,
-              toBlock: dayEndBLock,
-              topics: [topic],
-            }),
-          );
-        }
-      }
+      logs = await this.services.database.query({
+        collection: EnvConfig.mongodb.collections.contractRawlogs,
+        query: {
+          chain: options.chain,
+          address: options.address,
+          blockNumber: {
+            $gte: dayStartBlock,
+            $lte: dayEndBLock,
+          },
+          'topics.0': {
+            $in: options.topics,
+          },
+        },
+      });
     }
 
     return logs;
   }
 
-  protected async indexContractLog(config: ContractConfig): Promise<void> {
-    let startBlock = 0;
-    do {
-      startBlock = await queryBlockNumberAtTimestamp(
-        EnvConfig.blockchains[config.chain].blockSubgraph,
-        config.birthday,
-      );
-
-      if (startBlock === 0) {
-        logger.warn('failed to query block number from subgraph', {
-          service: this.name,
-          chain: config.chain,
-          timestamp: config.birthday,
-        });
-        await sleep(10);
-      } else {
-        break;
-      }
-    } while (startBlock === 0);
-
-    // get latest block number from database
-    // const stateKey = `index-contract-logs-${config.chain}-${normalizeAddress(config.address)}`;
-    // const latestState = await this.services.database.find({
-    //   collection: EnvConfig.mongodb.collections.states,
-    //   query: {
-    //
-    //   }
-    // })
-  }
-
   public async run(options: RunAdapterOptions): Promise<void> {
     // get logs from all contract belong to the adapter
     await this.contractLogCollector.getContractLogs();
+
+    // collect lending market snapshot if any
+    await this.runLendingCollector();
   }
 
   public async getLendingMarketSnapshots(
     options: GetLendingMarketSnapshotOptions,
   ): Promise<Array<LendingMarketSnapshot | LendingCdpSnapshot> | null> {
     return [];
+  }
+
+  protected async runLendingCollector(): Promise<void> {
+    const marketConfigs = this.config.lendingMarkets ? this.config.lendingMarkets : [];
+
+    if (marketConfigs.length > 0) {
+      logger.info('start to update lending market snapshots', {
+        service: this.name,
+        total: marketConfigs.length,
+      });
+
+      for (const marketConfig of marketConfigs) {
+        let startTimestamp = marketConfig.birthday;
+        const latestSnapshot = await this.services.database.find({
+          collection: EnvConfig.mongodb.collections.lendingMarketSnapshots,
+          query: {
+            chain: marketConfig.chain,
+            protocol: marketConfig.protocol,
+            address: marketConfig.address,
+          },
+        });
+        const lastTimestamp = latestSnapshot ? Number(latestSnapshot.timestamp) : 0;
+        if (lastTimestamp > startTimestamp) {
+          startTimestamp = lastTimestamp;
+        }
+
+        const todayTimestamp = getTodayUTCTimestamp();
+        while (startTimestamp <= todayTimestamp) {
+          const snapshots = await this.getLendingMarketSnapshots({
+            config: marketConfig,
+            timestamp: startTimestamp,
+          });
+
+          if (snapshots) {
+            for (const snapshot of snapshots) {
+              await this.services.database.update({
+                collection: EnvConfig.mongodb.collections.lendingMarketSnapshots,
+                keys: {
+                  marketId: snapshot.marketId,
+                  timestamp: snapshot.timestamp,
+                },
+                updates: {
+                  ...snapshot,
+                },
+                upsert: true,
+              });
+            }
+          }
+
+          startTimestamp += 24 * 60 * 60;
+        }
+      }
+    }
   }
 }

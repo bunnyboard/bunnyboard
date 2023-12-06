@@ -146,13 +146,11 @@ export interface LendingCdpConfig {
   version: LendingCdpVersion;
   birthday: number;
   debtToken: Token;
+  address: string;
 }
 
 export interface ProtocolConfig {
   protocol: string;
-
-  // a list of contract which need to indexed logs
-  contracts?: Array<ContractConfig>;
 
   // a list of lending market configs if any
   lendingMarkets?: Array<LendingMarketConfig>;
