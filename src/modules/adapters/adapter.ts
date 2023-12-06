@@ -6,7 +6,12 @@ import { getTodayUTCTimestamp, normalizeAddress } from '../../lib/utils';
 import { ProtocolConfig } from '../../types/configs';
 import { AddressSnapshot, LendingCdpSnapshot, LendingMarketSnapshot } from '../../types/domains';
 import { ContextServices, IContractLogCollector, IProtocolAdapter } from '../../types/namespaces';
-import { AdapterAbiConfigs, GetLendingMarketSnapshotOptions, RunAdapterOptions } from '../../types/options';
+import {
+  AdapterAbiConfigs,
+  GetLendingMarketSnapshotOptions,
+  RunAdapterOptions,
+  RunLendingMarketCollectorOptions,
+} from '../../types/options';
 import ContractLogCollector from '../collector/contractLog';
 
 export interface GetDayContractLogsOptions {
@@ -116,7 +121,7 @@ export default class ProtocolAdapter implements IProtocolAdapter {
 
     if (options.lendingMarketCollector) {
       // collect lending market snapshot if any
-      await this.runLendingCollector();
+      await this.runLendingCollector(options.lendingMarketCollector);
     }
   }
 
@@ -126,8 +131,10 @@ export default class ProtocolAdapter implements IProtocolAdapter {
     return [];
   }
 
-  protected async runLendingCollector(): Promise<void> {
-    const marketConfigs = this.config.lendingMarkets ? this.config.lendingMarkets : [];
+  protected async runLendingCollector(options: RunLendingMarketCollectorOptions): Promise<void> {
+    const marketConfigs = this.config.lendingMarkets
+      ? this.config.lendingMarkets.filter((item) => !options.chain || options.chain === item.chain)
+      : [];
 
     if (marketConfigs.length > 0) {
       logger.info('start to update lending market snapshots', {

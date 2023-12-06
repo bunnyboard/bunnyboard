@@ -1,5 +1,4 @@
 import envConfig from '../configs/envConfig';
-import logger from '../lib/logger';
 import { sleep } from '../lib/utils';
 import getProtocolAdapters from '../modules/adapters';
 import { ContextServices } from '../types/namespaces';
@@ -14,53 +13,50 @@ export class CollectCommand extends BasicCommand {
   }
 
   public async execute(argv: any) {
-    const protocolOptions = argv.protocol === '' ? null : argv.protocol;
+    const services: ContextServices = await super.getServices();
+    await services.database.connect(envConfig.mongodb.connectionUri, envConfig.mongodb.databaseName);
+    const adapters = getProtocolAdapters(services);
 
-    if (!protocolOptions) {
-      process.exit(0);
+    let protocols: Array<string>;
+    if (argv.protocol !== '') {
+      protocols = argv.protocol.split(',');
+    } else {
+      protocols = Object.keys(adapters);
     }
 
-    const protocols: Array<string> = protocolOptions.split(',');
-
-    if (protocols.length > 0) {
-      const services: ContextServices = await super.getServices();
-      await services.database.connect(envConfig.mongodb.connectionUri, envConfig.mongodb.databaseName);
-
-      const adapters = getProtocolAdapters(services);
-
-      logger.info(`start to run adapters`, {
-        service: 'command',
-        protocols: protocols.toString(),
-      });
-
-      do {
-        for (const protocol of protocols) {
-          if (adapters[protocol]) {
-            await adapters[protocol].run({
-              lendingMarketCollector: true,
-            });
-          }
+    do {
+      for (const protocol of protocols) {
+        if (adapters[protocol]) {
+          await adapters[protocol].run({
+            // run all chains
+            lendingMarketCollector: {
+              chain: argv.protocol !== '' ? undefined : argv.chain,
+            },
+          });
         }
+      }
 
-        if (argv.exit) {
-          process.exit(0);
-        } else {
-          await sleep(argv.sleep ? Number(argv.sleep) : 300);
-        }
-      } while (!argv.exit);
-    }
-
-    process.exit(0);
+      if (argv.exit) {
+        process.exit(0);
+      } else {
+        await sleep(argv.sleep ? Number(argv.sleep) : 300);
+      }
+    } while (!argv.exit);
   }
 
   public setOptions(yargs: any) {
     return yargs.option({
-      // must give a protocol id to run
+      // must give protocol ids to run
       protocol: {
         type: 'string',
         default: '',
-        requiresArg: true,
         describe: 'A list of protocols in format: protocol_1,protocol_2,...protocol_n',
+      },
+      // chain options will be ignored if protocol option was given
+      chain: {
+        type: 'string',
+        default: 'ethereum',
+        describe: 'Collect all protocols data on given chain.',
       },
       exit: {
         type: 'boolean',

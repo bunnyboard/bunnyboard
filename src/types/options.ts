@@ -14,8 +14,12 @@ export interface RunContractLogCollectorOptions {
   chain: string;
 }
 
+export interface RunLendingMarketCollectorOptions {
+  chain?: string;
+}
+
 export interface RunAdapterOptions {
   contractLogCollector?: RunContractLogCollectorOptions;
 
-  lendingMarketCollector?: boolean;
+  lendingMarketCollector?: RunLendingMarketCollectorOptions;
 }
