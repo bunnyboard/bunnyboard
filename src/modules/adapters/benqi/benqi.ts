@@ -5,19 +5,13 @@ import { YEAR } from '../../../configs/constants';
 import { formatFromDecimals } from '../../../lib/utils';
 import { LendingMarketConfig, ProtocolConfig } from '../../../types/configs';
 import { ContextServices } from '../../../types/namespaces';
-import { AdapterAbiConfigs } from '../../../types/options';
-import CompoundAdapter from '../compound/compound';
-
-export interface CompoundMarketRates {
-  borrowRate: string;
-  supplyRate: string;
-}
+import CompoundAdapter, { CompoundMarketRates } from '../compound/compound';
 
 export default class BenqiAdapter extends CompoundAdapter {
   public readonly name: string = 'adapter.benqi';
 
-  constructor(services: ContextServices, config: ProtocolConfig, abiConfigs: AdapterAbiConfigs) {
-    super(services, config, abiConfigs);
+  constructor(services: ContextServices, config: ProtocolConfig) {
+    super(services, config);
   }
 
   protected async getMarketRates(config: LendingMarketConfig, blockNumber: number): Promise<CompoundMarketRates> {

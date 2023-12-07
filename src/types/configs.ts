@@ -130,23 +130,20 @@ export interface ContractConfig {
   topics: Array<string>;
 }
 
-export type LendingMarketVersion = 'aavev1' | 'aavev2' | 'aavev3' | 'compound' | 'compoundv3' | 'venusIsolated';
+export type LendingMarketType = 'cross' | ' cdp';
+export type LendingCrossVersion = 'aavev1' | 'aavev2' | 'aavev3' | 'compound' | 'compoundv3' | 'venusIsolated';
+export type LendingCdpVersion = 'compoundv3' | 'liquity' | 'maker';
 export interface LendingMarketConfig {
   chain: string;
   protocol: string;
-  version: LendingMarketVersion;
+  type: LendingMarketType;
+  version: LendingCrossVersion | LendingCdpVersion;
   birthday: number;
   address: string;
-}
 
-export type LendingCdpVersion = 'compoundv3' | 'liquity' | 'maker';
-export interface LendingCdpConfig {
-  chain: string;
-  protocol: string;
-  version: LendingCdpVersion;
-  birthday: number;
-  debtToken: Token;
-  address: string;
+  // in CDP market, there is a default debt token
+  // ex: DAI in Maker DAO
+  debtToken?: Token;
 }
 
 export interface ProtocolConfig {
@@ -154,7 +151,4 @@ export interface ProtocolConfig {
 
   // a list of lending market configs if any
   lendingMarkets?: Array<LendingMarketConfig>;
-
-  // a list of lending CDP configs if any
-  lendingCdps?: Array<LendingCdpConfig>;
 }

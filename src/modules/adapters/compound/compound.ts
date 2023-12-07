@@ -11,9 +11,9 @@ import { compareAddress, formatFromDecimals, getDateString, normalizeAddress } f
 import { LendingMarketConfig, ProtocolConfig } from '../../../types/configs';
 import { LendingCdpSnapshot, LendingMarketSnapshot, TokenRewardEntry } from '../../../types/domains';
 import { ContextServices } from '../../../types/namespaces';
-import { AdapterAbiConfigs, GetLendingMarketSnapshotOptions } from '../../../types/options';
+import { GetLendingMarketSnapshotOptions } from '../../../types/options';
 import ProtocolAdapter from '../adapter';
-import { CompoundEventInterfaces } from './abis';
+import { CompoundEventAbiMappings, CompoundEventInterfaces, CompoundEventSignatures } from './abis';
 
 export interface CompoundMarketRates {
   borrowRate: string;
@@ -23,42 +23,11 @@ export interface CompoundMarketRates {
 export default class CompoundAdapter extends ProtocolAdapter {
   public readonly name: string = 'adapter.compound';
 
-  constructor(services: ContextServices, config: ProtocolConfig, abiConfigs: AdapterAbiConfigs) {
-    super(services, config, abiConfigs);
+  constructor(services: ContextServices, config: ProtocolConfig) {
+    super(services, config);
 
-    if (config.lendingMarkets && config.lendingMarkets.length > 0) {
-      this.contractLogCollector.contracts = config.lendingMarkets.map((market) => {
-        return {
-          chain: market.chain,
-          protocol: market.protocol,
-          address: market.address,
-          birthday: market.birthday,
-          topics: Object.values(this.abiConfigs.eventSignatures),
-        };
-      });
-
-      const compoundConfig = config as CompoundProtocolConfig;
-      for (const comptroller of Object.values(compoundConfig.comptrollers)) {
-        // get the oldest birthday of all market
-        let comptrollerBirthday = config.lendingMarkets[0].birthday;
-        for (const market of config.lendingMarkets) {
-          if (market.birthday < comptrollerBirthday) {
-            comptrollerBirthday = market.birthday;
-          }
-        }
-
-        this.contractLogCollector.contracts.push({
-          chain: comptroller.chain,
-          protocol: config.protocol,
-          address: comptroller.address,
-          birthday: comptrollerBirthday,
-          topics: [
-            (this.abiConfigs.eventSignatures as CompoundEventInterfaces).DistributedSupplierRewards,
-            (this.abiConfigs.eventSignatures as CompoundEventInterfaces).DistributedBorrowerRewards,
-          ],
-        });
-      }
-    }
+    this.abiConfigs.eventSignatures = CompoundEventSignatures;
+    this.abiConfigs.eventAbiMappings = CompoundEventAbiMappings;
   }
 
   protected async getMarketRates(config: LendingMarketConfig, blockNumber: number): Promise<CompoundMarketRates> {
@@ -438,7 +407,7 @@ export default class CompoundAdapter extends ProtocolAdapter {
       tokenRewards: rewards,
     });
 
-    logger.info('got lending market snapshot', {
+    logger.info('updated lending market snapshot', {
       service: this.name,
       protocol: this.config.protocol,
       chain: marketConfig.chain,

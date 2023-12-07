@@ -14,6 +14,7 @@ export const Aavev1Configs: AaveProtocolConfig = {
     {
       chain: 'ethereum',
       protocol: 'aavev1',
+      type: 'cross',
       version: 'aavev1',
       birthday: 1578528000, // Thu Jan 09 2020 00:00:00 GMT+0000
       address: '0x398ec7346dcd622edc5ae82352f02be94c62d119',
@@ -28,6 +29,7 @@ export const Aavev2Configs: AaveProtocolConfig = {
     {
       chain: 'ethereum',
       protocol: 'aavev2',
+      type: 'cross',
       version: 'aavev2',
       birthday: 1606780800, // Tue Dec 01 2020 00:00:00 GMT+0000
       address: '0x7d2768de32b0b80b7a3454c06bdac94a69ddc7a9',
@@ -36,6 +38,7 @@ export const Aavev2Configs: AaveProtocolConfig = {
     {
       chain: 'polygon',
       protocol: 'aavev2',
+      type: 'cross',
       version: 'aavev2',
       birthday: 1617235200, // Thu Apr 01 2021 00:00:00 GMT+0000
       address: '0x8dff5e27ea6b7ac08ebfdf9eb090f32ee9a30fcf',
@@ -44,6 +47,7 @@ export const Aavev2Configs: AaveProtocolConfig = {
     {
       chain: 'avalanche',
       protocol: 'aavev2',
+      type: 'cross',
       version: 'aavev2',
       birthday: 1632182400, // Tue Sep 21 2021 00:00:00 GMT+0000
       address: '0x4f01aed16d97e3ab5ab2b501154dc9bb0f1a5a2c',
@@ -58,6 +62,7 @@ export const Aavev3Configs: AaveProtocolConfig = {
     {
       chain: 'ethereum',
       protocol: 'aavev3',
+      type: 'cross',
       version: 'aavev3',
       birthday: 1672444800, // Sat Dec 31 2022 00:00:00 GMT+0000
       address: '0x87870bca3f3fd6335c3f4ce8392d69350b4fa4e2',
@@ -66,6 +71,7 @@ export const Aavev3Configs: AaveProtocolConfig = {
     {
       chain: 'optimism',
       protocol: 'aavev3',
+      type: 'cross',
       version: 'aavev3',
       birthday: 1647043200, // Sat Mar 12 2022 00:00:00 GMT+0000
       address: '0x794a61358d6845594f94dc1db02a252b5b4814ad',
@@ -74,6 +80,7 @@ export const Aavev3Configs: AaveProtocolConfig = {
     {
       chain: 'arbitrum',
       protocol: 'aavev3',
+      type: 'cross',
       version: 'aavev3',
       birthday: 1647043200, // Sat Mar 12 2022 00:00:00 GMT+0000
       address: '0x794a61358d6845594f94dc1db02a252b5b4814ad',
@@ -82,6 +89,7 @@ export const Aavev3Configs: AaveProtocolConfig = {
     {
       chain: 'polygon',
       protocol: 'aavev3',
+      type: 'cross',
       version: 'aavev3',
       birthday: 1647043200, // Sat Mar 12 2022 00:00:00 GMT+0000
       address: '0x794a61358d6845594f94dc1db02a252b5b4814ad',
@@ -90,6 +98,7 @@ export const Aavev3Configs: AaveProtocolConfig = {
     {
       chain: 'avalanche',
       protocol: 'aavev3',
+      type: 'cross',
       version: 'aavev3',
       birthday: 1647043200, // Sat Mar 12 2022 00:00:00 GMT+0000
       address: '0x794a61358d6845594f94dc1db02a252b5b4814ad',
@@ -98,6 +107,7 @@ export const Aavev3Configs: AaveProtocolConfig = {
     {
       chain: 'fantom',
       protocol: 'aavev3',
+      type: 'cross',
       version: 'aavev3',
       birthday: 1647043200, // Sat Mar 12 2022 00:00:00 GMT+0000
       address: '0x794a61358d6845594f94dc1db02a252b5b4814ad',
@@ -106,6 +116,7 @@ export const Aavev3Configs: AaveProtocolConfig = {
     {
       chain: 'base',
       protocol: 'aavev3',
+      type: 'cross',
       version: 'aavev3',
       birthday: 1691539200, // Wed Aug 09 2023 00:00:00 GMT+0000
       address: '0xa238dd80c259a72e81d7e4664a9801593f98d1c5',

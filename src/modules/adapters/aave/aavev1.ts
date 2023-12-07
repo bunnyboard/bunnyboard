@@ -10,9 +10,9 @@ import { compareAddress, formatFromDecimals, getDateString, normalizeAddress } f
 import { ProtocolConfig, Token } from '../../../types/configs';
 import { LendingCdpSnapshot, LendingMarketSnapshot } from '../../../types/domains';
 import { ContextServices } from '../../../types/namespaces';
-import { AdapterAbiConfigs, GetLendingMarketSnapshotOptions } from '../../../types/options';
+import { GetLendingMarketSnapshotOptions } from '../../../types/options';
 import ProtocolAdapter from '../adapter';
-import { AaveEventInterfaces } from './abis';
+import { AaveEventInterfaces, AaveV1EventSignatures, Aavev2EventAbiMappings } from './abis';
 
 export interface AaveMarketEventStats {
   volumeDeposited: string;
@@ -27,20 +27,11 @@ export interface AaveMarketEventStats {
 export default class Aavev1Adapter extends ProtocolAdapter {
   public readonly name: string = 'adapter.aavev1';
 
-  constructor(services: ContextServices, config: ProtocolConfig, abiConfigs: AdapterAbiConfigs) {
-    super(services, config, abiConfigs);
+  constructor(services: ContextServices, config: ProtocolConfig) {
+    super(services, config);
 
-    if (config.lendingMarkets && config.lendingMarkets.length > 0) {
-      this.contractLogCollector.contracts = config.lendingMarkets.map((market) => {
-        return {
-          chain: market.chain,
-          protocol: market.protocol,
-          address: market.address,
-          birthday: market.birthday,
-          topics: Object.values(this.abiConfigs.eventSignatures),
-        };
-      });
-    }
+    this.abiConfigs.eventSignatures = AaveV1EventSignatures;
+    this.abiConfigs.eventAbiMappings = Aavev2EventAbiMappings;
   }
 
   // return total deposited (in wei)
@@ -268,7 +259,7 @@ export default class Aavev1Adapter extends ProtocolAdapter {
 
       snapshots.push(snapshot);
 
-      logger.info('got lending market snapshot', {
+      logger.info('updated lending market snapshot', {
         service: this.name,
         protocol: this.config.protocol,
         chain: marketConfig.chain,

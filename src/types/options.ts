@@ -10,16 +10,7 @@ export interface AdapterAbiConfigs {
   eventAbiMappings: { [key: string]: Array<any> };
 }
 
-export interface RunContractLogCollectorOptions {
-  chain: string;
-}
-
-export interface RunLendingMarketCollectorOptions {
+export interface RunCollectorOptions {
   chain?: string;
-}
-
-export interface RunAdapterOptions {
-  contractLogCollector?: RunContractLogCollectorOptions;
-
-  lendingMarketCollector?: RunLendingMarketCollectorOptions;
+  protocol?: string;
 }

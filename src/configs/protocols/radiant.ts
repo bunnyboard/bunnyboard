@@ -6,6 +6,7 @@ export const RadiantConfigs: AaveProtocolConfig = {
     {
       chain: 'ethereum',
       protocol: 'radiant',
+      type: 'cross',
       version: 'aavev2',
       birthday: 1698710400, // Tue Oct 31 2023 00:00:00 GMT+0000
       address: '0xa950974f64aa33f27f6c5e017eee93bf7588ed07',
@@ -14,6 +15,7 @@ export const RadiantConfigs: AaveProtocolConfig = {
     {
       chain: 'arbitrum',
       protocol: 'radiant',
+      type: 'cross',
       version: 'aavev2',
       birthday: 1679184000, // Sun Mar 19 2023 00:00:00 GMT+0000
       address: '0xf4b1486dd74d07706052a33d31d7c0aafd0659e1',
@@ -22,6 +24,7 @@ export const RadiantConfigs: AaveProtocolConfig = {
     {
       chain: 'bnbchain',
       protocol: 'radiant',
+      type: 'cross',
       version: 'aavev2',
       birthday: 1679961600, // Tue Mar 28 2023 00:00:00 GMT+0000
       address: '0xd50cf00b6e600dd036ba8ef475677d816d6c4281',

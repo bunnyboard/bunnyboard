@@ -16,6 +16,7 @@ export const VenusConfigs: CompoundProtocolConfig = {
     {
       chain: 'bnbchain',
       protocol: 'venus',
+      type: 'cross',
       version: 'compound',
       birthday: 1630627200, // Fri Sep 03 2021 00:00:00 GMT+0000
       address: '0x26da28954763b92139ed49283625cecaf52c6f94',
@@ -24,6 +25,7 @@ export const VenusConfigs: CompoundProtocolConfig = {
     {
       chain: 'bnbchain',
       protocol: 'venus',
+      type: 'cross',
       version: 'compound',
       birthday: 1613692800, // Fri Feb 19 2021 00:00:00 GMT+0000
       address: '0x9a0af7fdb2065ce470d72664de73cae409da28ec',
@@ -32,6 +34,7 @@ export const VenusConfigs: CompoundProtocolConfig = {
     {
       chain: 'bnbchain',
       protocol: 'venus',
+      type: 'cross',
       version: 'compound',
       birthday: 1607990400, // Tue Dec 15 2020 00:00:00 GMT+0000
       address: '0x5f0388ebc2b94fa8e123f404b79ccf5f40b29176',
@@ -40,6 +43,7 @@ export const VenusConfigs: CompoundProtocolConfig = {
     {
       chain: 'bnbchain',
       protocol: 'venus',
+      type: 'cross',
       version: 'compound',
       birthday: 1610409600, // Tue Jan 12 2021 00:00:00 GMT+0000
       address: '0x972207a639cc1b374b893cc33fa251b55ceb7c07',
@@ -48,6 +52,7 @@ export const VenusConfigs: CompoundProtocolConfig = {
     {
       chain: 'bnbchain',
       protocol: 'venus',
+      type: 'cross',
       version: 'compound',
       birthday: 1606176000, // Tue Nov 24 2020 00:00:00 GMT+0000
       address: '0xa07c5b74c9b40447a954e1466938b865b6bbea36',
@@ -61,6 +66,7 @@ export const VenusConfigs: CompoundProtocolConfig = {
     {
       chain: 'bnbchain',
       protocol: 'venus',
+      type: 'cross',
       version: 'compound',
       birthday: 1607126400, // Sat Dec 05 2020 00:00:00 GMT+0000
       address: '0x882c173bc7ff3b7786ca16dfed3dfffb9ee7847b',
@@ -69,6 +75,7 @@ export const VenusConfigs: CompoundProtocolConfig = {
     {
       chain: 'bnbchain',
       protocol: 'venus',
+      type: 'cross',
       version: 'compound',
       birthday: 1606176000, // Tue Nov 24 2020 00:00:00 GMT+0000
       address: normalizeAddress('0x95c78222B3D6e262426483D42CfA53685A67Ab9D'),
@@ -77,6 +84,7 @@ export const VenusConfigs: CompoundProtocolConfig = {
     {
       chain: 'bnbchain',
       protocol: 'venus',
+      type: 'cross',
       version: 'compound',
       birthday: 1627344000, // Tue Jul 27 2021 00:00:00 GMT+0000
       address: normalizeAddress('0x86aC3974e2BD0d60825230fa6F355fF11409df5c'),
@@ -85,6 +93,7 @@ export const VenusConfigs: CompoundProtocolConfig = {
     {
       chain: 'bnbchain',
       protocol: 'venus',
+      type: 'cross',
       version: 'compound',
       birthday: 1609977600, // Thu Jan 07 2021 00:00:00 GMT+0000
       address: normalizeAddress('0x334b3eCB4DCa3593BCCC3c7EBD1A1C1d1780FBF1'),
@@ -93,6 +102,7 @@ export const VenusConfigs: CompoundProtocolConfig = {
     {
       chain: 'bnbchain',
       protocol: 'venus',
+      type: 'cross',
       version: 'compound',
       birthday: 1619136000, // Fri Apr 23 2021 00:00:00 GMT+0000
       address: normalizeAddress('0xec3422Ef92B2fb59e84c8B02Ba73F1fE84Ed8D71'),
@@ -101,6 +111,7 @@ export const VenusConfigs: CompoundProtocolConfig = {
     {
       chain: 'bnbchain',
       protocol: 'venus',
+      type: 'cross',
       version: 'compound',
       birthday: 1607990400, // Tue Dec 15 2020 00:00:00 GMT+0000
       address: normalizeAddress('0x1610bc33319e9398de5f57B33a5b184c806aD217'),
@@ -109,6 +120,7 @@ export const VenusConfigs: CompoundProtocolConfig = {
     {
       chain: 'bnbchain',
       protocol: 'venus',
+      type: 'cross',
       version: 'compound',
       birthday: 1607126400, // Sat Dec 05 2020 00:00:00 GMT+0000
       address: normalizeAddress('0xf508fCD89b8bd15579dc79A6827cB4686A3592c8'),
@@ -117,6 +129,7 @@ export const VenusConfigs: CompoundProtocolConfig = {
     {
       chain: 'bnbchain',
       protocol: 'venus',
+      type: 'cross',
       version: 'compound',
       birthday: 1609977600, // Thu Jan 07 2021 00:00:00 GMT+0000
       address: normalizeAddress('0xf91d58b5aE142DAcC749f58A49FCBac340Cb0343'),
@@ -125,6 +138,7 @@ export const VenusConfigs: CompoundProtocolConfig = {
     {
       chain: 'bnbchain',
       protocol: 'venus',
+      type: 'cross',
       version: 'compound',
       birthday: 1607990400, // Tue Dec 15 2020 00:00:00 GMT+0000
       address: normalizeAddress('0x650b940a1033B8A1b1873f78730FcFC73ec11f1f'),
@@ -133,6 +147,7 @@ export const VenusConfigs: CompoundProtocolConfig = {
     {
       chain: 'bnbchain',
       protocol: 'venus',
+      type: 'cross',
       version: 'compound',
       birthday: 1607126400, // Sat Dec 05 2020 00:00:00 GMT+0000
       address: normalizeAddress('0x57A5297F2cB2c0AaC9D554660acd6D385Ab50c6B'),
@@ -141,6 +156,7 @@ export const VenusConfigs: CompoundProtocolConfig = {
     {
       chain: 'bnbchain',
       protocol: 'venus',
+      type: 'cross',
       version: 'compound',
       birthday: 1646956800, // Fri Mar 11 2022 00:00:00 GMT+0000
       address: normalizeAddress('0xb91A659E88B51474767CD97EF3196A3e7cEDD2c8'),
@@ -154,6 +170,7 @@ export const VenusConfigs: CompoundProtocolConfig = {
     {
       chain: 'bnbchain',
       protocol: 'venus',
+      type: 'cross',
       version: 'compound',
       birthday: 1625875200, // Sat Jul 10 2021 00:00:00 GMT+0000
       address: normalizeAddress('0x5c9476FcD6a4F9a3654139721c949c2233bBbBc8'),
@@ -162,6 +179,7 @@ export const VenusConfigs: CompoundProtocolConfig = {
     {
       chain: 'bnbchain',
       protocol: 'venus',
+      type: 'cross',
       version: 'compound',
       birthday: 1606176000, // Tue Nov 24 2020 00:00:00 GMT+0000
       address: normalizeAddress('0x2fF3d0F6990a40261c66E1ff2017aCBc282EB6d0'),
@@ -170,6 +188,7 @@ export const VenusConfigs: CompoundProtocolConfig = {
     {
       chain: 'bnbchain',
       protocol: 'venus',
+      type: 'cross',
       version: 'compound',
       birthday: 1677024000, // Wed Feb 22 2023 00:00:00 GMT+0000
       address: normalizeAddress('0xC5D3466aA484B040eE977073fcF337f2c00071c1'),
@@ -183,6 +202,7 @@ export const VenusConfigs: CompoundProtocolConfig = {
     {
       chain: 'bnbchain',
       protocol: 'venus',
+      type: 'cross',
       version: 'compound',
       birthday: 1637366400, // Sat Nov 20 2021 00:00:00 GMT+0000
       address: normalizeAddress('0x61eDcFe8Dd6bA3c891CB9bEc2dc7657B3B422E93'),
@@ -191,6 +211,7 @@ export const VenusConfigs: CompoundProtocolConfig = {
     {
       chain: 'bnbchain',
       protocol: 'venus',
+      type: 'cross',
       version: 'compound',
       birthday: 1686700800, // Wed Jun 14 2023 00:00:00 GMT+0000
       address: normalizeAddress('0xBf762cd5991cA1DCdDaC9ae5C638F5B5Dc3Bee6E'),
@@ -199,6 +220,7 @@ export const VenusConfigs: CompoundProtocolConfig = {
     {
       chain: 'bnbchain',
       protocol: 'venus',
+      type: 'cross',
       version: 'compound',
       birthday: 1631577600, // Tue Sep 14 2021 00:00:00 GMT+0000
       address: normalizeAddress('0x08CEB3F4a7ed3500cA0982bcd0FC7816688084c3'),
@@ -207,6 +229,7 @@ export const VenusConfigs: CompoundProtocolConfig = {
     {
       chain: 'bnbchain',
       protocol: 'venus',
+      type: 'cross',
       version: 'compound',
       birthday: 1698796800, // Wed Nov 01 2023 00:00:00 GMT+0000
       address: normalizeAddress('0x27FF564707786720C71A2e5c1490A63266683612'),
@@ -215,6 +238,7 @@ export const VenusConfigs: CompoundProtocolConfig = {
     {
       chain: 'bnbchain',
       protocol: 'venus',
+      type: 'cross',
       version: 'compound',
       birthday: 1606176000, // Tue Nov 24 2020 00:00:00 GMT+0000
       address: normalizeAddress('0xecA88125a5ADbe82614ffC12D0DB554E2e2867C8'),
@@ -223,6 +247,7 @@ export const VenusConfigs: CompoundProtocolConfig = {
     {
       chain: 'bnbchain',
       protocol: 'venus',
+      type: 'cross',
       version: 'compound',
       birthday: 1606176000, // Tue Nov 24 2020 00:00:00 GMT+0000
       address: normalizeAddress('0xfD5840Cd36d94D7229439859C0112a4185BC0255'),
@@ -231,6 +256,7 @@ export const VenusConfigs: CompoundProtocolConfig = {
     {
       chain: 'bnbchain',
       protocol: 'venus',
+      type: 'cross',
       version: 'compound',
       birthday: 1646956800, // Fri Mar 11 2022 00:00:00 GMT+0000
       address: normalizeAddress('0x78366446547D062f45b4C0f320cDaa6d710D87bb'),
@@ -239,6 +265,7 @@ export const VenusConfigs: CompoundProtocolConfig = {
     {
       chain: 'bnbchain',
       protocol: 'venus',
+      type: 'cross',
       version: 'compound',
       birthday: 1686873600, // Fri Jun 16 2023 00:00:00 GMT+0000
       address: normalizeAddress('0x6CFdEc747f37DAf3b87a35a1D9c8AD3063A1A8A0'),
@@ -252,6 +279,7 @@ export const VenusConfigs: CompoundProtocolConfig = {
     {
       chain: 'bnbchain',
       protocol: 'venus',
+      type: 'cross',
       version: 'compound',
       birthday: 1607126400, // Sat Dec 05 2020 00:00:00 GMT+0000
       address: normalizeAddress('0xB248a295732e0225acd3337607cc01068e3b9c10'),
@@ -260,6 +288,7 @@ export const VenusConfigs: CompoundProtocolConfig = {
     {
       chain: 'bnbchain',
       protocol: 'venus',
+      type: 'cross',
       version: 'compound',
       birthday: 1606176000, // Tue Nov 24 2020 00:00:00 GMT+0000
       address: normalizeAddress('0x151B1e2635A717bcDc836ECd6FbB62B674FE3E1D'),

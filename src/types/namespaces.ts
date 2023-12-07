@@ -1,28 +1,14 @@
 import { IBlockchainService } from '../services/blockchains/domains';
 import { IDatabaseService } from '../services/database/domains';
 import { IOracleService } from '../services/oracle/domains';
-import { ContractConfig, ProtocolConfig } from './configs';
+import { ProtocolConfig } from './configs';
 import { LendingCdpSnapshot, LendingMarketSnapshot } from './domains';
-import {
-  AdapterAbiConfigs,
-  GetLendingMarketSnapshotOptions,
-  RunAdapterOptions,
-  RunContractLogCollectorOptions,
-} from './options';
+import { AdapterAbiConfigs, GetLendingMarketSnapshotOptions, RunCollectorOptions } from './options';
 
 export interface ContextServices {
   database: IDatabaseService;
   blockchain: IBlockchainService;
   oracle: IOracleService;
-}
-
-export interface IContractLogCollector {
-  name: string;
-  services: ContextServices;
-  contracts: Array<ContractConfig>;
-
-  // run all indexing tasks if any
-  getContractLogs: (options: RunContractLogCollectorOptions) => Promise<void>;
 }
 
 export interface IProtocolAdapter {
@@ -36,14 +22,15 @@ export interface IProtocolAdapter {
   // and abi for parsing
   abiConfigs: AdapterAbiConfigs;
 
-  // this collector does collect contract event logs
-  // of all needed contracts for adapter
-  contractLogCollector: IContractLogCollector;
-
+  // this function get snapshot data of a lending market config
   getLendingMarketSnapshots: (
     options: GetLendingMarketSnapshotOptions,
   ) => Promise<Array<LendingMarketSnapshot | LendingCdpSnapshot> | null>;
+}
 
-  // run updater worker service
-  run: (options: RunAdapterOptions) => Promise<void>;
+export interface IProtocolCollector {
+  name: string;
+  services: ContextServices;
+
+  run: (options: RunCollectorOptions) => Promise<void>;
 }
