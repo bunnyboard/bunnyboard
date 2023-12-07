@@ -3,9 +3,9 @@ import EnvConfig from '../../configs/envConfig';
 import logger from '../../lib/logger';
 import { queryBlockNumberAtTimestamp } from '../../lib/subsgraph';
 import { ProtocolConfig } from '../../types/configs';
-import { LendingCdpSnapshot, LendingMarketSnapshot } from '../../types/domains';
+import { LendingCdpSnapshot, LendingMarketSnapshot, MasterchefPoolSnapshot } from '../../types/domains';
 import { ContextServices, IProtocolAdapter } from '../../types/namespaces';
-import { AdapterAbiConfigs, GetLendingMarketSnapshotOptions } from '../../types/options';
+import { AdapterAbiConfigs, GetLendingMarketSnapshotOptions, GetMasterchefSnapshotOptions } from '../../types/options';
 import Booker from './booker';
 
 export interface GetDayContractLogsOptions {
@@ -36,6 +36,12 @@ export default class ProtocolAdapter implements IProtocolAdapter {
   public async getLendingMarketSnapshots(
     options: GetLendingMarketSnapshotOptions,
   ): Promise<Array<LendingMarketSnapshot | LendingCdpSnapshot> | null> {
+    return [];
+  }
+
+  public async getMasterchefSnapshots(
+    options: GetMasterchefSnapshotOptions,
+  ): Promise<Array<MasterchefPoolSnapshot> | null> {
     return [];
   }
 

@@ -2,8 +2,13 @@ import { IBlockchainService } from '../services/blockchains/domains';
 import { IDatabaseService } from '../services/database/domains';
 import { IOracleService } from '../services/oracle/domains';
 import { ProtocolConfig } from './configs';
-import { LendingCdpSnapshot, LendingMarketSnapshot } from './domains';
-import { AdapterAbiConfigs, GetLendingMarketSnapshotOptions, RunCollectorOptions } from './options';
+import { LendingCdpSnapshot, LendingMarketSnapshot, MasterchefPoolSnapshot } from './domains';
+import {
+  AdapterAbiConfigs,
+  GetLendingMarketSnapshotOptions,
+  GetMasterchefSnapshotOptions,
+  RunCollectorOptions,
+} from './options';
 
 export interface ContextServices {
   database: IDatabaseService;
@@ -26,6 +31,9 @@ export interface IProtocolAdapter {
   getLendingMarketSnapshots: (
     options: GetLendingMarketSnapshotOptions,
   ) => Promise<Array<LendingMarketSnapshot | LendingCdpSnapshot> | null>;
+
+  // this function get snapshots of a masterchef config
+  getMasterchefSnapshots: (options: GetMasterchefSnapshotOptions) => Promise<Array<MasterchefPoolSnapshot> | null>;
 }
 
 export interface IProtocolCollector {

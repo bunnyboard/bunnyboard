@@ -1,5 +1,20 @@
 import { LendingMarketType, Token } from './configs';
 
+export type AddressRoleLending = 'lender' | 'borrower' | 'liquidator';
+export type AddressRoleStaking = 'staker';
+export interface AddressBookEntry {
+  addressId: string;
+
+  chain: string;
+  protocol: string;
+  address: string;
+  role: AddressRoleLending | AddressRoleStaking;
+
+  // timestamp where the first transaction
+  // was made by this address to using this protocol
+  firstTime: number;
+}
+
 export interface TokenRewardEntry {
   token: Token;
   tokenPrice: string;
@@ -117,16 +132,26 @@ export interface LendingCdpSnapshot extends DayDataSnapshot {
   tokenRewards: Array<TokenRewardEntry>;
 }
 
-export type AddressRoleLending = 'lender' | 'borrower' | 'liquidator';
-export interface AddressBookEntry {
-  addressId: string;
-
-  chain: string;
-  protocol: string;
+export interface MasterchefPoolSnapshot extends DayDataSnapshot {
+  // masterchef address
   address: string;
-  role: AddressRoleLending;
 
-  // timestamp where the first transaction
-  // was made by this address to using this protocol
-  firstTime: number;
+  // pool ID
+  poolId: number;
+
+  // deposited token
+  token: Token;
+  tokenPrice: string;
+
+  // allocation point
+  allocationPoint: number;
+
+  // total lp token were deposited in the period of snapshot
+  totalDeposited: string;
+
+  // total rewards were earned in the snapshot period
+  totalRewardEarned: string;
+
+  volumeDeposited: string;
+  volumeWithdrawn: string;
 }

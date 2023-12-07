@@ -1,6 +1,7 @@
 import axios from 'axios';
 
 import logger from './logger';
+import { sleep } from './utils';
 
 export async function querySubgraph(endpoint: string, query: string, options: any = {}): Promise<any> {
   try {
@@ -94,4 +95,22 @@ export async function queryBlockNumberAtTimestamp(endpoint: string, timestamp: n
   }
 
   return 0;
+}
+
+export async function tryQueryBlockNumberAtTimestamp(endpoint: string, timestamp: number): Promise<number> {
+  let blockNumber = 0;
+
+  do {
+    blockNumber = await queryBlockNumberAtTimestamp(endpoint, timestamp);
+    if (blockNumber === 0) {
+      logger.warn('failed to query block number at timestamp', {
+        service: 'subgraph',
+        endpoint: endpoint,
+        timestamp: timestamp,
+      });
+      await sleep(10);
+    }
+  } while (blockNumber === 0);
+
+  return blockNumber;
 }

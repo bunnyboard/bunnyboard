@@ -1,7 +1,12 @@
-import { LendingMarketConfig } from './configs';
+import { LendingMarketConfig, MasterchefConfig } from './configs';
 
 export interface GetLendingMarketSnapshotOptions {
   config: LendingMarketConfig;
+  timestamp: number;
+}
+
+export interface GetMasterchefSnapshotOptions {
+  config: MasterchefConfig;
   timestamp: number;
 }
 

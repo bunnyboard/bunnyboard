@@ -1,11 +1,16 @@
 import BigNumber from 'bignumber.js';
 
+import Erc20Abi from '../../configs/abi/ERC20.json';
 import EnvConfig from '../../configs/envConfig';
 import { OracleConfigs } from '../../configs/oracles/configs';
 import { OracleCurrencyBaseConfigs } from '../../configs/oracles/currency';
 import logger from '../../lib/logger';
-import { queryBlockNumberAtTimestamp } from '../../lib/subsgraph';
-import { normalizeAddress, sleep } from '../../lib/utils';
+import { tryQueryBlockNumberAtTimestamp } from '../../lib/subsgraph';
+import { normalizeAddress } from '../../lib/utils';
+import ChainlinkLibs from '../../modules/libs/chainlink';
+import CoingeckoLibs from '../../modules/libs/coingecko';
+import OracleLibs from '../../modules/libs/custom';
+import UniswapLibs from '../../modules/libs/uniswap';
 import {
   OracleCurrencyBase,
   OracleSourceBearingToken,
@@ -13,13 +18,10 @@ import {
   OracleSourceUniv2,
   OracleSourceUniv3,
 } from '../../types/configs';
+import BlockchainService from '../blockchains/blockchain';
 import { CachingService } from '../caching/caching';
 import { IDatabaseService } from '../database/domains';
-import { GetTokenPriceOptions, IOracleService } from './domains';
-import ChainlinkLibs from './libs/chainlink';
-import CoingeckoLibs from './libs/coingecko';
-import OracleLibs from './libs/custom';
-import UniswapLibs from './libs/uniswap';
+import { GetTokenPriceOptions, GetUniv2TokenPriceOptions, IOracleService } from './domains';
 
 export default class OracleService extends CachingService implements IOracleService {
   public readonly name: string = 'oracle';
@@ -81,13 +83,10 @@ export default class OracleService extends CachingService implements IOracleServ
       return cachingPrice;
     }
 
-    let blockNumber = 0;
-    do {
-      blockNumber = await queryBlockNumberAtTimestamp(EnvConfig.blockchains[source.chain].blockSubgraph, timestamp);
-      if (blockNumber === 0) {
-        await sleep(5);
-      }
-    } while (blockNumber === 0);
+    const blockNumber = await tryQueryBlockNumberAtTimestamp(
+      EnvConfig.blockchains[source.chain].blockSubgraph,
+      timestamp,
+    );
 
     switch (source.type) {
       case 'chainlink': {
@@ -200,8 +199,78 @@ export default class OracleService extends CachingService implements IOracleServ
         service: this.name,
         chain: options.chain,
         token: options.address,
+        time: options.timestamp,
+      });
+    }
+
+    return returnPrice;
+  }
+
+  public async getUniv2TokenPriceUsd(options: GetUniv2TokenPriceOptions): Promise<string | null> {
+    let returnPrice = null;
+
+    const blockchain = new BlockchainService();
+
+    let token1Price = null;
+    let token0Price = await this.getTokenPriceUsd({
+      chain: options.pool2.chain,
+      address: options.pool2.tokens[0].address,
+      timestamp: options.timestamp,
+    });
+    if (!token0Price) {
+      token1Price = await this.getTokenPriceUsd({
+        chain: options.pool2.chain,
+        address: options.pool2.tokens[1].address,
         timestamp: options.timestamp,
       });
+    }
+
+    if (token0Price || token1Price) {
+      const blockNumber = await tryQueryBlockNumberAtTimestamp(
+        EnvConfig.blockchains[options.pool2.chain].blockSubgraph,
+        options.timestamp,
+      );
+      const lpSupply = await blockchain.singlecall({
+        chain: options.pool2.chain,
+        abi: Erc20Abi,
+        target: options.pool2.address,
+        method: 'totalSupply',
+        params: [],
+        blockNumber: blockNumber,
+      });
+
+      if (token0Price) {
+        const token0Balance = await blockchain.singlecall({
+          chain: options.pool2.chain,
+          abi: Erc20Abi,
+          target: options.pool2.tokens[0].address,
+          method: 'balanceOf',
+          params: [options.pool2.address],
+          blockNumber: blockNumber,
+        });
+
+        returnPrice = new BigNumber(token0Balance.toString())
+          .multipliedBy(2e18)
+          .multipliedBy(new BigNumber(token0Price))
+          .dividedBy(new BigNumber(lpSupply.toString()))
+          .dividedBy(new BigNumber(10).pow(options.pool2.tokens[0].decimals))
+          .toString(10);
+      } else if (token1Price) {
+        const token1Balance = await blockchain.singlecall({
+          chain: options.pool2.chain,
+          abi: Erc20Abi,
+          target: options.pool2.tokens[1].address,
+          method: 'balanceOf',
+          params: [options.pool2.address],
+          blockNumber: blockNumber,
+        });
+        returnPrice = new BigNumber(token1Balance.toString())
+          .multipliedBy(2e18)
+          .multipliedBy(new BigNumber(token1Price))
+          .dividedBy(new BigNumber(lpSupply.toString()))
+          .dividedBy(new BigNumber(10).pow(options.pool2.tokens[1].decimals))
+          .toString(10);
+      }
     }
 
     return returnPrice;

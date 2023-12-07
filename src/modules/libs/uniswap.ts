@@ -2,13 +2,48 @@ import { Token as UniswapSdkToken } from '@uniswap/sdk-core';
 import { Pool } from '@uniswap/v3-sdk';
 import BigNumber from 'bignumber.js';
 
-import ERC20Abi from '../../../configs/abi/ERC20.json';
-import UniswapV3PoolAbi from '../../../configs/abi/uniswap/UniswapV3Pool.json';
-import { normalizeAddress } from '../../../lib/utils';
-import { OracleSourceUniv2, OracleSourceUniv3 } from '../../../types/configs';
-import BlockchainService from '../../blockchains/blockchain';
+import ERC20Abi from '../../configs/abi/ERC20.json';
+import UniswapV3PoolAbi from '../../configs/abi/uniswap/UniswapV3Pool.json';
+import { normalizeAddress } from '../../lib/utils';
+import BlockchainService from '../../services/blockchains/blockchain';
+import { LiquidityPoolConfig, OracleSourceUniv2, OracleSourceUniv3 } from '../../types/configs';
 
 export default class UniswapLibs {
+  public static async getPool2Constant(chain: string, address: string): Promise<LiquidityPoolConfig | null> {
+    const blockchain = new BlockchainService();
+    const token0Address = await blockchain.singlecall({
+      chain: chain,
+      abi: UniswapV3PoolAbi,
+      target: address,
+      method: 'token0',
+      params: [],
+    });
+    const token1Address = await blockchain.singlecall({
+      chain: chain,
+      abi: UniswapV3PoolAbi,
+      target: address,
+      method: 'token1',
+      params: [],
+    });
+    const token0 = await blockchain.getTokenInfo({
+      chain: chain,
+      address: token0Address,
+    });
+    const token1 = await blockchain.getTokenInfo({
+      chain: chain,
+      address: token1Address,
+    });
+    if (token0 && token1) {
+      return {
+        chain: chain,
+        address: normalizeAddress(address),
+        tokens: [token0, token1],
+      };
+    }
+
+    return null;
+  }
+
   public static async getPricePool2(
     source: OracleSourceUniv2 | OracleSourceUniv3,
     blockNumber: number,

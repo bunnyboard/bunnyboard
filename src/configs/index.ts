@@ -5,6 +5,7 @@ import { CompoundConfigs } from './protocols/compound';
 import { IronbankConfigs } from './protocols/ironbank';
 import { RadiantConfigs } from './protocols/radiant';
 import { SonneConfigs } from './protocols/sonne';
+import { SushiConfigs } from './protocols/sushi';
 import { VenusConfigs } from './protocols/venus';
 import TokenListArbitrum from './tokenlists/arbitrum.json';
 import TokenListAvalanche from './tokenlists/avalanche.json';
@@ -43,4 +44,5 @@ export const ProtocolConfigs: { [key: string]: ProtocolConfig } = {
   radiant: RadiantConfigs,
   benqi: BenqiConfigs,
   sonne: SonneConfigs,
+  sushi: SushiConfigs,
 };

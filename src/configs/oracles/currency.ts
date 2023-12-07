@@ -1,4 +1,8 @@
-import { OracleConfig } from '../../types/configs';
+import { OracleConfig, Token } from '../../types/configs';
+import ArbitrumTokenList from '../tokenlists/arbitrum.json';
+import BaseTokenList from '../tokenlists/base.json';
+import EthereumTokenList from '../tokenlists/ethereum.json';
+import OptimismTokenList from '../tokenlists/optimism.json';
 import { OracleSourceChainlinkList } from './chainlink';
 
 export const OracleCurrencyBaseConfigs: { [key: string]: OracleConfig } = {
@@ -29,4 +33,11 @@ export const OracleCurrencyBaseConfigs: { [key: string]: OracleConfig } = {
     currency: 'usd',
     sources: [OracleSourceChainlinkList.FTM_USD],
   },
+};
+
+export const LiquidityPoolCurrentBaseConfigs: { [key: string]: Array<Token> } = {
+  ethereum: [EthereumTokenList.WETH],
+  arbitrum: [ArbitrumTokenList.WETH],
+  optimism: [OptimismTokenList.WETH],
+  base: [BaseTokenList.WETH],
 };

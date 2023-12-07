@@ -5,6 +5,7 @@ import Aavev2Adapter from './aave/aavev2';
 import Aavev3Adapter from './aave/aavev3';
 import BenqiAdapter from './benqi/benqi';
 import CompoundAdapter from './compound/compound';
+import SushiAdapter from './sushi/sushi';
 import VenusAdapter from './venus/venus';
 
 function getProtocolAdapters(services: ContextServices): { [key: string]: IProtocolAdapter } {
@@ -18,6 +19,7 @@ function getProtocolAdapters(services: ContextServices): { [key: string]: IProto
     radiant: new Aavev2Adapter(services, ProtocolConfigs.radiant),
     benqi: new BenqiAdapter(services, ProtocolConfigs.benqi),
     sonne: new CompoundAdapter(services, ProtocolConfigs.sonne),
+    sushi: new SushiAdapter(services, ProtocolConfigs.sushi),
   };
 }
 

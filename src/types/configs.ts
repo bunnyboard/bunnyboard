@@ -45,6 +45,9 @@ export interface EnvConfig {
 
       // save lending market metrics and snapshots
       lendingMarketSnapshots: string;
+
+      // save masterchef pools metric and snapshots
+      masterchefPoolSnapshots: string;
     };
   };
 
@@ -101,30 +104,10 @@ export interface OracleConfig {
   coingeckoId?: string;
 }
 
-export interface ContractLogTopicFilters {
-  // required, event signature
-  topic0: string;
-
-  // match with topics list item index
-  topic1?: string;
-  topic2?: string;
-  topic3?: string;
-}
-
-export interface ContractConfig {
+export interface LiquidityPoolConfig {
   chain: string;
-
-  // given protocol name
-  protocol: string;
-
-  // the factory contract address
   address: string;
-
-  // the timestamp when contract was deployed
-  birthday: number;
-
-  // simple get all logs that match with topics
-  topics: Array<string>;
+  tokens: Array<Token>;
 }
 
 export type LendingMarketType = 'cross' | ' cdp';
@@ -143,9 +126,25 @@ export interface LendingMarketConfig {
   debtToken?: Token;
 }
 
+export type MasterchefVersion =
+  | 'master' // the original sushi masterchef
+  | 'masterv2' // sushi masterchef v2
+  | 'mini'; // the minichef version of sushi were deployed other chains
+export interface MasterchefConfig {
+  chain: string;
+  protocol: string;
+  version: MasterchefVersion;
+  birthday: number;
+  address: string;
+  rewardToken: Token;
+}
+
 export interface ProtocolConfig {
   protocol: string;
 
   // a list of lending market configs if any
   lendingMarkets?: Array<LendingMarketConfig>;
+
+  // a list of masterchef if any
+  masterchefs?: Array<MasterchefConfig>;
 }

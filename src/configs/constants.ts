@@ -21,6 +21,7 @@ export const BlockSubGraphEndpoints: { [key: string]: string } = {
 export const AddressZero = '0x0000000000000000000000000000000000000000';
 export const AddressE = '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee';
 export const AddressF = '0xffffffffffffffffffffffffffffffffffffffff';
+// export const AddressMulticall3 = '0xca11bde05977b3631167028862be2a173976ca11';
 
 // chain => number of second per block confirmation
 export const ChainBlockPeriods: { [key: string]: number } = {

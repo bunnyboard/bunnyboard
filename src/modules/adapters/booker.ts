@@ -11,6 +11,11 @@ export interface AddressBookLendingOptions extends AddressBookEntry {
   tokenAddress: string;
 }
 
+export interface AddressBookMasterchefOptions extends AddressBookEntry {
+  masterchef: string;
+  poolId: number;
+}
+
 export default class Booker {
   public readonly name: string = 'booker';
   public readonly services: ContextServices;
@@ -23,6 +28,20 @@ export default class Booker {
     const addressId = `${options.chain}-${normalizeAddress(options.address)}-${options.protocol}-${
       options.marketAddress
     }-${options.tokenAddress}-${options.role}`;
+    await this.saveAddressBook({
+      addressId: addressId,
+      chain: options.chain,
+      protocol: options.protocol,
+      address: options.address,
+      role: options.role,
+      firstTime: options.firstTime,
+    });
+  }
+
+  public async saveAddressBookMasterchef(options: AddressBookMasterchefOptions): Promise<void> {
+    const addressId = `${options.chain}-${normalizeAddress(options.address)}-${options.protocol}-${
+      options.masterchef
+    }-${options.poolId}-${options.role}`;
     await this.saveAddressBook({
       addressId: addressId,
       chain: options.chain,

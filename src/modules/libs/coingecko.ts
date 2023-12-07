@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-import { sleep } from '../../../lib/utils';
+import { sleep } from '../../lib/utils';
 
 export default class CoingeckoLibs {
   public static async getTokenPriceUsd(coingeckoId: string, timestamp: number): Promise<string | null> {

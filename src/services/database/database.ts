@@ -80,11 +80,18 @@ export default class DatabaseService implements IDatabaseService {
     const lendingMarketSnapshotsCollection = await this.getCollection(
       envConfig.mongodb.collections.lendingMarketSnapshots,
     );
+    const masterchefPoolSnapshotsCollection = await this.getCollection(
+      envConfig.mongodb.collections.masterchefPoolSnapshots,
+    );
 
     statesCollection.createIndex({ name: 1 }, { background: true });
     tokenPricesCollection.createIndex({ chain: 1, address: 1, timestamp: 1 }, { background: true });
     addressBookCollection.createIndex({ addressId: 1 }, { background: true });
     lendingMarketSnapshotsCollection.createIndex({ marketId: 1, timestamp: 1 }, { background: true });
+    masterchefPoolSnapshotsCollection.createIndex(
+      { chain: 1, address: 1, poolId: 1, timestamp: 1 },
+      { background: true },
+    );
   }
 
   public async insert(options: DatabaseInsertOptions): Promise<void> {

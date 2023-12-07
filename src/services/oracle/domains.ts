@@ -1,4 +1,4 @@
-import { OracleSourceChainlink, OracleSourceUniv2 } from '../../types/configs';
+import { LiquidityPoolConfig, OracleSourceChainlink, OracleSourceUniv2 } from '../../types/configs';
 import { IDatabaseService } from '../database/domains';
 
 export interface GetTokenPriceOptions {
@@ -9,6 +9,11 @@ export interface GetTokenPriceOptions {
   address: string;
 
   // we always convert timestamp to the timestamp at the beginning of the day
+  timestamp: number;
+}
+
+export interface GetUniv2TokenPriceOptions {
+  pool2: LiquidityPoolConfig;
   timestamp: number;
 }
 
@@ -25,4 +30,7 @@ export interface IOracleService {
   // this function will get the base token price in usd
   // in case the base token is not usd
   getTokenPriceUsd: (options: GetTokenPriceOptions) => Promise<string | null>;
+
+  // get univ2 lp token price
+  getUniv2TokenPriceUsd: (options: GetUniv2TokenPriceOptions) => Promise<string | null>;
 }
