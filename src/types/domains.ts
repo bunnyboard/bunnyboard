@@ -1,4 +1,4 @@
-import { Token } from './configs';
+import { LendingMarketType, Token } from './configs';
 
 export interface TokenRewardEntry {
   token: Token;
@@ -34,7 +34,7 @@ export interface LendingMarketSnapshot extends DayDataSnapshot {
   marketId: string;
 
   // cross-pool lending markets
-  type: 'cross';
+  type: LendingMarketType;
 
   // the token, debts, collateral, or both
   token: Token;
@@ -94,7 +94,7 @@ export interface LendingCdpSnapshot extends DayDataSnapshot {
   marketId: string;
 
   // CDP lending market
-  type: 'cdp';
+  type: LendingMarketType;
 
   debtToken: Token;
   debtTokenPrice: string;
@@ -117,13 +117,14 @@ export interface LendingCdpSnapshot extends DayDataSnapshot {
   tokenRewards: Array<TokenRewardEntry>;
 }
 
-export type AddressSnapshotRole = 'lender' | 'borrower' | 'liquidator' | 'liquidityProvider' | 'trader' | 'staker';
-export interface AddressSnapshot {
+export type AddressRoleLending = 'lender' | 'borrower' | 'liquidator';
+export interface AddressBookEntry {
   addressId: string;
 
+  chain: string;
   protocol: string;
   address: string;
-  role: AddressSnapshotRole;
+  role: AddressRoleLending;
 
   // timestamp where the first transaction
   // was made by this address to using this protocol

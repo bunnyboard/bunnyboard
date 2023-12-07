@@ -214,7 +214,7 @@ export default class CompoundAdapter extends ProtocolAdapter {
           if (signature === eventSignatures.Mint) {
             volumeDeposited = volumeDeposited.plus(new BigNumber(event[1].toString()));
           } else {
-            volumeWithdrawn = volumeDeposited.plus(new BigNumber(event[1].toString()));
+            volumeWithdrawn = volumeWithdrawn.plus(new BigNumber(event[1].toString()));
           }
 
           const address = normalizeAddress(event[0]);
@@ -223,12 +223,13 @@ export default class CompoundAdapter extends ProtocolAdapter {
             lenders[address] = true;
           }
 
-          await this.saveAddressSnapshot({
-            addressId: `${marketConfig.protocol}-${marketConfig.chain}-${normalizeAddress(
-              marketConfig.address,
-            )}-${normalizeAddress(token.address)}-${address}-lender`,
-            protocol: this.config.protocol,
+          await this.booker.saveAddressBookLending({
+            addressId: '', // filled by booker
+            chain: marketConfig.chain,
+            protocol: marketConfig.protocol,
             address: address,
+            marketAddress: marketConfig.address,
+            tokenAddress: token.address,
             role: 'lender',
             firstTime: options.timestamp,
           });
@@ -239,16 +240,17 @@ export default class CompoundAdapter extends ProtocolAdapter {
         case eventSignatures.Borrow:
         case eventSignatures.Repay: {
           if (signature === eventSignatures.Borrow) {
-            volumeBorrowed = volumeDeposited.plus(new BigNumber(event[1].toString()));
+            volumeBorrowed = volumeBorrowed.plus(new BigNumber(event[1].toString()));
           } else {
-            volumeRepaid = volumeDeposited.plus(new BigNumber(event[2].toString()));
+            volumeRepaid = volumeRepaid.plus(new BigNumber(event[2].toString()));
 
-            await this.saveAddressSnapshot({
-              addressId: `${marketConfig.protocol}-${marketConfig.chain}-${normalizeAddress(
-                marketConfig.address,
-              )}-${normalizeAddress(token.address)}-${normalizeAddress(event[1])}-borrower`,
-              protocol: this.config.protocol,
+            await this.booker.saveAddressBookLending({
+              addressId: '', // filled by booker
+              chain: marketConfig.chain,
+              protocol: marketConfig.protocol,
               address: normalizeAddress(event[1].toString()),
+              marketAddress: marketConfig.address,
+              tokenAddress: token.address,
               role: 'borrower',
               firstTime: options.timestamp,
             });
@@ -260,12 +262,13 @@ export default class CompoundAdapter extends ProtocolAdapter {
             borrowers[address] = true;
           }
 
-          await this.saveAddressSnapshot({
-            addressId: `${marketConfig.protocol}-${marketConfig.chain}-${normalizeAddress(
-              marketConfig.address,
-            )}-${normalizeAddress(token.address)}-${address}-borrower`,
-            protocol: this.config.protocol,
+          await this.booker.saveAddressBookLending({
+            addressId: '', // filled by booker
+            chain: marketConfig.chain,
+            protocol: marketConfig.protocol,
             address: normalizeAddress(event[0].toString()),
+            marketAddress: marketConfig.address,
+            tokenAddress: token.address,
             role: 'borrower',
             firstTime: options.timestamp,
           });
@@ -274,7 +277,7 @@ export default class CompoundAdapter extends ProtocolAdapter {
         }
 
         case eventSignatures.Liquidate: {
-          volumeRepaid = volumeDeposited.plus(new BigNumber(event[2].toString()));
+          volumeRepaid = volumeRepaid.plus(new BigNumber(event[2].toString()));
 
           // borrower address
           const borrower = normalizeAddress(event[1]);
@@ -283,12 +286,13 @@ export default class CompoundAdapter extends ProtocolAdapter {
             borrowers[borrower] = true;
           }
 
-          await this.saveAddressSnapshot({
-            addressId: `${marketConfig.protocol}-${marketConfig.chain}-${normalizeAddress(
-              marketConfig.address,
-            )}-${normalizeAddress(token.address)}-${borrower}-borrower`,
-            protocol: this.config.protocol,
+          await this.booker.saveAddressBookLending({
+            addressId: '', // filled by booker
+            chain: marketConfig.chain,
+            protocol: marketConfig.protocol,
             address: normalizeAddress(event[0].toString()),
+            marketAddress: marketConfig.address,
+            tokenAddress: token.address,
             role: 'borrower',
             firstTime: options.timestamp,
           });
@@ -344,12 +348,13 @@ export default class CompoundAdapter extends ProtocolAdapter {
             liquidators[liquidator] = true;
           }
 
-          await this.saveAddressSnapshot({
-            addressId: `${marketConfig.protocol}-${marketConfig.chain}-${normalizeAddress(
-              marketConfig.address,
-            )}-${normalizeAddress(token.address)}-${liquidator}-liquidator`,
-            protocol: this.config.protocol,
+          await this.booker.saveAddressBookLending({
+            addressId: '', // filled by booker
+            chain: marketConfig.chain,
+            protocol: marketConfig.protocol,
             address: liquidator,
+            marketAddress: marketConfig.address,
+            tokenAddress: token.address,
             role: 'liquidator',
             firstTime: options.timestamp,
           });

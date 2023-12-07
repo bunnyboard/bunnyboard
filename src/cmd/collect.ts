@@ -35,7 +35,7 @@ export class CollectCommand extends BasicCommand {
     return yargs.option({
       chain: {
         type: 'string',
-        default: 'ethereum',
+        default: '',
         describe: 'Collect all protocols data on given chain.',
       },
       protocol: {

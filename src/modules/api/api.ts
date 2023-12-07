@@ -2,7 +2,7 @@ import { Router } from 'express';
 
 import { ContextServices } from '../../types/namespaces';
 import { middleware } from './middleware';
-import * as contractRouter from './routes/contract';
+import * as lendingRouter from './routes/lending';
 
 export function getRouter(services: ContextServices): Router {
   const router = Router({ mergeParams: true });
@@ -10,7 +10,7 @@ export function getRouter(services: ContextServices): Router {
   router.use('/', middleware);
 
   // public
-  router.use('/contract', contractRouter.getRouter(services));
+  router.use('/lending', lendingRouter.getRouter(services));
 
   return router;
 }
