@@ -12,7 +12,7 @@ import { LendingCdpSnapshot, LendingMarketSnapshot } from '../../../types/domain
 import { ContextServices } from '../../../types/namespaces';
 import { GetLendingMarketSnapshotOptions } from '../../../types/options';
 import ProtocolAdapter from '../adapter';
-import { AaveEventInterfaces, AaveV1EventSignatures, Aavev2EventAbiMappings } from './abis';
+import { AaveEventInterfaces, Aavev1EventAbiMappings, Aavev1EventSignatures } from './abis';
 
 export interface AaveMarketEventStats {
   volumeDeposited: string;
@@ -30,8 +30,8 @@ export default class Aavev1Adapter extends ProtocolAdapter {
   constructor(services: ContextServices, config: ProtocolConfig) {
     super(services, config);
 
-    this.abiConfigs.eventSignatures = AaveV1EventSignatures;
-    this.abiConfigs.eventAbiMappings = Aavev2EventAbiMappings;
+    this.abiConfigs.eventSignatures = Aavev1EventSignatures;
+    this.abiConfigs.eventAbiMappings = Aavev1EventAbiMappings;
   }
 
   // return total deposited (in wei)
@@ -120,34 +120,143 @@ export default class Aavev1Adapter extends ProtocolAdapter {
         }
 
         switch (signature) {
-          case eventSignatures.Deposit: {
-            volumeDeposited = volumeDeposited.plus(
-              new BigNumber(event._amount ? event._amount.toString() : event.amount.toString()),
-            );
-            break;
-          }
+          case eventSignatures.Deposit:
           case eventSignatures.Withdraw: {
-            volumeWithdrawn = volumeWithdrawn.plus(
-              new BigNumber(event._amount ? event._amount.toString() : event.amount.toString()),
-            );
+            if (signature === eventSignatures.Deposit) {
+              volumeDeposited = volumeDeposited.plus(new BigNumber(event[0].toString()));
+            } else {
+              volumeWithdrawn = volumeWithdrawn.plus(new BigNumber(event[0].toString()));
+            }
+
+            const user = normalizeAddress(event[1]);
+            await this.booker.saveAddressBookLending({
+              addressId: '', // filled by booker
+              chain: config.chain,
+              protocol: config.protocol,
+              address: user,
+              marketAddress: config.address,
+              tokenAddress: token.address,
+              role: 'lender',
+              firstTime: timestamp,
+            });
+
+            if (event.onBehalfOf) {
+              await this.booker.saveAddressBookLending({
+                addressId: '', // filled by booker
+                chain: config.chain,
+                protocol: config.protocol,
+                address: normalizeAddress(event.onBehalfOf),
+                marketAddress: config.address,
+                tokenAddress: token.address,
+                role: 'lender',
+                firstTime: timestamp,
+              });
+            }
+            if (event.to) {
+              await this.booker.saveAddressBookLending({
+                addressId: '', // filled by booker
+                chain: config.chain,
+                protocol: config.protocol,
+                address: normalizeAddress(event.to),
+                marketAddress: config.address,
+                tokenAddress: token.address,
+                role: 'lender',
+                firstTime: timestamp,
+              });
+            }
+
             break;
           }
-          case eventSignatures.Borrow: {
-            volumeBorrowed = volumeBorrowed.plus(
-              new BigNumber(event._amount ? event._amount.toString() : event.amount.toString()),
-            );
-            break;
-          }
+
+          case eventSignatures.Borrow:
           case eventSignatures.Repay: {
-            volumeRepaid = volumeRepaid.plus(
-              new BigNumber(event._amountMinusFees ? event._amountMinusFees.toString() : event.amount.toString()),
-            );
+            if (signature === eventSignatures.Borrow) {
+              volumeBorrowed = volumeBorrowed.plus(new BigNumber(event[0].toString()));
+            } else {
+              volumeRepaid = volumeRepaid.plus(new BigNumber(event[0].toString()));
+            }
+
+            const user = normalizeAddress(event[1]);
+            await this.booker.saveAddressBookLending({
+              addressId: '', // filled by booker
+              chain: config.chain,
+              protocol: config.protocol,
+              address: user,
+              marketAddress: config.address,
+              tokenAddress: token.address,
+              role: 'borrower',
+              firstTime: timestamp,
+            });
+            if (event.onBehalfOf) {
+              await this.booker.saveAddressBookLending({
+                addressId: '', // filled by booker
+                chain: config.chain,
+                protocol: config.protocol,
+                address: normalizeAddress(event.onBehalfOf),
+                marketAddress: config.address,
+                tokenAddress: token.address,
+                role: 'borrower',
+                firstTime: timestamp,
+              });
+            }
+            if (event.to) {
+              await this.booker.saveAddressBookLending({
+                addressId: '', // filled by booker
+                chain: config.chain,
+                protocol: config.protocol,
+                address: normalizeAddress(event.to),
+                marketAddress: config.address,
+                tokenAddress: token.address,
+                role: 'borrower',
+                firstTime: timestamp,
+              });
+            }
+
             break;
           }
+
           case eventSignatures.Liquidate: {
-            volumeLiquidated = volumeLiquidated.plus(
-              new BigNumber(event._purchaseAmount ? event._purchaseAmount.toString() : event.debtToCover.toString()),
-            );
+            if (compareAddress(reserve, token.address)) {
+              volumeRepaid = volumeRepaid.plus(
+                new BigNumber(event._purchaseAmount ? event._purchaseAmount.toString() : event.debtToCover.toString()),
+              );
+
+              const user = normalizeAddress(event._user ? event._user : event.user);
+              await this.booker.saveAddressBookLending({
+                addressId: '', // filled by booker
+                chain: config.chain,
+                protocol: config.protocol,
+                address: user,
+                marketAddress: config.address,
+                tokenAddress: token.address,
+                role: 'borrower',
+                firstTime: timestamp,
+              });
+            } else {
+              const collateral = event._collateral ? event.collateral : event.collateralAsset;
+              if (compareAddress(collateral, token.address)) {
+                volumeLiquidated = volumeLiquidated.plus(
+                  new BigNumber(
+                    event._liquidatedCollateralAmount
+                      ? event._liquidatedCollateralAmount.toString()
+                      : event.liquidatedCollateralAmount.toString(),
+                  ),
+                );
+
+                const liquidator = normalizeAddress(event._liquidator ? event._liquidator : event.liquidator);
+                await this.booker.saveAddressBookLending({
+                  addressId: '', // filled by booker
+                  chain: config.chain,
+                  protocol: config.protocol,
+                  address: liquidator,
+                  marketAddress: config.address,
+                  tokenAddress: token.address,
+                  role: 'liquidator',
+                  firstTime: timestamp,
+                });
+              }
+            }
+
             break;
           }
         }

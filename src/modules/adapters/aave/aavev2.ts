@@ -6,7 +6,7 @@ import { AaveLendingMarketConfig } from '../../../configs/protocols/aave';
 import { ProtocolConfig } from '../../../types/configs';
 import { ContextServices } from '../../../types/namespaces';
 import Aavev1Adapter from './aavev1';
-import { AaveV2EventSignatures, Aavev2EventAbiMappings } from './abis';
+import { Aavev2EventAbiMappings, Aavev2EventSignatures } from './abis';
 
 export default class Aavev2Adapter extends Aavev1Adapter {
   public readonly name: string = 'adapter.aavev2';
@@ -14,7 +14,7 @@ export default class Aavev2Adapter extends Aavev1Adapter {
   constructor(services: ContextServices, config: ProtocolConfig) {
     super(services, config);
 
-    this.abiConfigs.eventSignatures = AaveV2EventSignatures;
+    this.abiConfigs.eventSignatures = Aavev2EventSignatures;
     this.abiConfigs.eventAbiMappings = Aavev2EventAbiMappings;
   }
 
