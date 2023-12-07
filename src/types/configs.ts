@@ -37,6 +37,9 @@ export interface EnvConfig {
       // we need to save the latest block where logs were sync
       states: string;
 
+      // save any kind of cache
+      caching: string;
+
       // save token prices
       tokenPrices: string;
 

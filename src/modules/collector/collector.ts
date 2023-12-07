@@ -85,6 +85,11 @@ export default class ProtocolCollector implements IProtocolCollector {
           protocol: marketConfig.protocol,
           address: marketConfig.address,
         },
+        options: {
+          skip: 0,
+          limit: 1,
+          order: { timestamp: -1 },
+        },
       });
       const lastTimestamp = latestSnapshot ? Number(latestSnapshot.timestamp) : 0;
       if (lastTimestamp > startTimestamp) {
@@ -154,6 +159,11 @@ export default class ProtocolCollector implements IProtocolCollector {
           chain: masterchefConfig.chain,
           protocol: masterchefConfig.protocol,
           address: masterchefConfig.address,
+        },
+        options: {
+          skip: 0,
+          limit: 1,
+          order: { timestamp: -1 },
         },
       });
       const lastTimestamp = latestSnapshot ? Number(latestSnapshot.timestamp) : 0;

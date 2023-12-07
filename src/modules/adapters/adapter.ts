@@ -1,5 +1,6 @@
 import { DAY } from '../../configs/constants';
 import EnvConfig from '../../configs/envConfig';
+import { createDataKeyHash } from '../../lib/crypto';
 import logger from '../../lib/logger';
 import { queryBlockNumberAtTimestamp } from '../../lib/subsgraph';
 import { ProtocolConfig } from '../../types/configs';
@@ -46,6 +47,17 @@ export default class ProtocolAdapter implements IProtocolAdapter {
   }
 
   protected async getDayContractLogs(options: GetDayContractLogsOptions): Promise<Array<any>> {
+    const cachingKey = createDataKeyHash(JSON.stringify(options));
+    const cachingData = await this.services.database.find({
+      collection: EnvConfig.mongodb.collections.caching,
+      query: {
+        name: cachingKey,
+      },
+    });
+    if (cachingData) {
+      return cachingData.logs;
+    }
+
     let logs: Array<any> = [];
 
     const dayStartBlock = await queryBlockNumberAtTimestamp(
@@ -79,6 +91,18 @@ export default class ProtocolAdapter implements IProtocolAdapter {
         );
       }
     }
+
+    await this.services.database.update({
+      collection: EnvConfig.mongodb.collections.caching,
+      keys: {
+        name: cachingKey,
+      },
+      updates: {
+        name: cachingKey,
+        logs: logs,
+      },
+      upsert: true,
+    });
 
     return logs;
   }

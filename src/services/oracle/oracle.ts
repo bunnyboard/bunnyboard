@@ -209,67 +209,111 @@ export default class OracleService extends CachingService implements IOracleServ
   public async getUniv2TokenPriceUsd(options: GetUniv2TokenPriceOptions): Promise<string | null> {
     let returnPrice = null;
 
-    const blockchain = new BlockchainService();
-
-    let token1Price = null;
-    let token0Price = await this.getTokenPriceUsd({
-      chain: options.pool2.chain,
-      address: options.pool2.tokens[0].address,
-      timestamp: options.timestamp,
-    });
-    if (!token0Price) {
-      token1Price = await this.getTokenPriceUsd({
-        chain: options.pool2.chain,
-        address: options.pool2.tokens[1].address,
-        timestamp: options.timestamp,
-      });
+    const cachingKey = `${options.pool2.chain}:${options.pool2.address}:${options.timestamp}`;
+    const priceFromCaching = await this.getCachingData(cachingKey);
+    if (priceFromCaching) {
+      return priceFromCaching;
     }
 
-    if (token0Price || token1Price) {
-      const blockNumber = await tryQueryBlockNumberAtTimestamp(
-        EnvConfig.blockchains[options.pool2.chain].blockSubgraph,
-        options.timestamp,
-      );
-      const lpSupply = await blockchain.singlecall({
-        chain: options.pool2.chain,
-        abi: Erc20Abi,
-        target: options.pool2.address,
-        method: 'totalSupply',
-        params: [],
-        blockNumber: blockNumber,
+    // get from database
+    if (this.database) {
+      const priceFromDatabase = await this.database.find({
+        collection: EnvConfig.mongodb.collections.tokenPrices,
+        query: {
+          chain: options.pool2.chain,
+          address: options.pool2.address,
+          timestamp: options.timestamp,
+        },
       });
+      if (priceFromDatabase) {
+        return String(priceFromDatabase.priceUsd);
+      }
+    }
 
-      if (token0Price) {
-        const token0Balance = await blockchain.singlecall({
-          chain: options.pool2.chain,
-          abi: Erc20Abi,
-          target: options.pool2.tokens[0].address,
-          method: 'balanceOf',
-          params: [options.pool2.address],
-          blockNumber: blockNumber,
-        });
+    const blockchain = new BlockchainService();
 
-        returnPrice = new BigNumber(token0Balance.toString())
-          .multipliedBy(2e18)
-          .multipliedBy(new BigNumber(token0Price))
-          .dividedBy(new BigNumber(lpSupply.toString()))
-          .dividedBy(new BigNumber(10).pow(options.pool2.tokens[0].decimals))
-          .toString(10);
-      } else if (token1Price) {
-        const token1Balance = await blockchain.singlecall({
+    const blockNumber = await tryQueryBlockNumberAtTimestamp(
+      EnvConfig.blockchains[options.pool2.chain].blockSubgraph,
+      options.timestamp,
+    );
+    const lpSupply = await blockchain.singlecall({
+      chain: options.pool2.chain,
+      abi: Erc20Abi,
+      target: options.pool2.address,
+      method: 'totalSupply',
+      params: [],
+      blockNumber: blockNumber,
+    });
+
+    if (new BigNumber(lpSupply.toString()).gt(0)) {
+      let token1Price = null;
+      let token0Price = await this.getTokenPriceUsd({
+        chain: options.pool2.chain,
+        address: options.pool2.tokens[0].address,
+        timestamp: options.timestamp,
+      });
+      if (!token0Price) {
+        token1Price = await this.getTokenPriceUsd({
           chain: options.pool2.chain,
-          abi: Erc20Abi,
-          target: options.pool2.tokens[1].address,
-          method: 'balanceOf',
-          params: [options.pool2.address],
-          blockNumber: blockNumber,
+          address: options.pool2.tokens[1].address,
+          timestamp: options.timestamp,
         });
-        returnPrice = new BigNumber(token1Balance.toString())
-          .multipliedBy(2e18)
-          .multipliedBy(new BigNumber(token1Price))
-          .dividedBy(new BigNumber(lpSupply.toString()))
-          .dividedBy(new BigNumber(10).pow(options.pool2.tokens[1].decimals))
-          .toString(10);
+      }
+
+      if (token0Price || token1Price) {
+        if (token0Price) {
+          const token0Balance = await blockchain.singlecall({
+            chain: options.pool2.chain,
+            abi: Erc20Abi,
+            target: options.pool2.tokens[0].address,
+            method: 'balanceOf',
+            params: [options.pool2.address],
+            blockNumber: blockNumber,
+          });
+
+          returnPrice = new BigNumber(token0Balance.toString())
+            .multipliedBy(2e18)
+            .multipliedBy(new BigNumber(token0Price))
+            .dividedBy(new BigNumber(lpSupply.toString()))
+            .dividedBy(new BigNumber(10).pow(options.pool2.tokens[0].decimals))
+            .toString(10);
+        } else if (token1Price) {
+          const token1Balance = await blockchain.singlecall({
+            chain: options.pool2.chain,
+            abi: Erc20Abi,
+            target: options.pool2.tokens[1].address,
+            method: 'balanceOf',
+            params: [options.pool2.address],
+            blockNumber: blockNumber,
+          });
+          returnPrice = new BigNumber(token1Balance.toString())
+            .multipliedBy(2e18)
+            .multipliedBy(new BigNumber(token1Price))
+            .dividedBy(new BigNumber(lpSupply.toString()))
+            .dividedBy(new BigNumber(10).pow(options.pool2.tokens[1].decimals))
+            .toString(10);
+        }
+      }
+    }
+
+    if (returnPrice) {
+      await this.setCachingData(cachingKey, returnPrice);
+      if (this.database) {
+        await this.database.update({
+          collection: EnvConfig.mongodb.collections.tokenPrices,
+          keys: {
+            chain: options.pool2.chain,
+            address: options.pool2.address,
+            timestamp: options.timestamp,
+          },
+          updates: {
+            chain: options.pool2.chain,
+            address: options.pool2.address,
+            timestamp: options.timestamp,
+            priceUsd: returnPrice,
+          },
+          upsert: true,
+        });
       }
     }
 

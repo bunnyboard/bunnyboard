@@ -1,7 +1,6 @@
 // booker should be used by adapter
 // to format and save data
 import EnvConfig from '../../configs/envConfig';
-import logger from '../../lib/logger';
 import { normalizeAddress } from '../../lib/utils';
 import { AddressBookEntry } from '../../types/domains';
 import { ContextServices } from '../../types/namespaces';
@@ -70,12 +69,12 @@ export default class Booker {
         },
         upsert: true,
       });
-      logger.info('saved new address snapshot', {
-        service: this.name,
-        protocol: options.protocol,
-        address: options.address,
-        role: options.role,
-      });
+      // logger.info('saved new address snapshot', {
+      //   service: this.name,
+      //   protocol: options.protocol,
+      //   address: options.address,
+      //   role: options.role,
+      // });
     }
   }
 }

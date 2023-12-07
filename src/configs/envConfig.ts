@@ -14,6 +14,7 @@ const envConfig: EnvConfig = {
     connectionUri: String(process.env.MAGICBUNNY_MONGODB_URI),
     collections: {
       states: `${MongodbPrefix}.states`,
+      caching: `${MongodbPrefix}.caching`,
       tokenPrices: `${MongodbPrefix}.tokenPrices`,
       addressBook: `${MongodbPrefix}.addressBook`,
       lendingMarketSnapshots: `${MongodbPrefix}.lendingMarketSnapshots`,

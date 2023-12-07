@@ -117,6 +117,8 @@ export default class SushiAdapter extends ProtocolAdapter {
           timestamp: options.timestamp,
         });
 
+        console.log(lpToken.address, tokenPrice);
+
         let addressCount = {
           depositor: 0,
           withdrawer: 0,
