@@ -9,16 +9,17 @@ import { writeResponse } from '../middleware';
 export function getRouter(services: ContextServices): Router {
   const router = Router({ mergeParams: true });
 
-  // query latest market snapshots
+  // query latest market snapshots at exact today UTC timestamp
   router.get('/market/latest', async (request: Request, response: Response) => {
     const todayTimestamp = getTodayUTCTimestamp();
 
     const documents = await services.database.query({
       collection: EnvConfig.mongodb.collections.lendingMarketSnapshots,
       query: {
-        timestamp: { $gte: todayTimestamp },
+        timestamp: { $eq: todayTimestamp },
       },
     });
+
     const markets: Array<any> = [];
     for (const document of documents) {
       delete document._id;
