@@ -1,12 +1,13 @@
 import BigNumber from 'bignumber.js';
 
 import { ProtocolConfigs } from '../../../configs';
+import CompoundComptrollerAbi from '../../../configs/abi/compound/Comptroller.json';
 import cErc20Abi from '../../../configs/abi/compound/cErc20.json';
-import { ChainBlockPeriods, YEAR } from '../../../configs/constants';
+import { ChainBlockPeriods, DAY, YEAR } from '../../../configs/constants';
 import EnvConfig from '../../../configs/envConfig';
 import { CompoundLendingMarketConfig, CompoundProtocolConfig } from '../../../configs/protocols/compound';
 import logger from '../../../lib/logger';
-import { queryBlockNumberAtTimestamp } from '../../../lib/subsgraph';
+import { tryQueryBlockNumberAtTimestamp } from '../../../lib/subsgraph';
 import { compareAddress, formatFromDecimals, getDateString, normalizeAddress } from '../../../lib/utils';
 import { LendingMarketConfig, ProtocolConfig } from '../../../types/configs';
 import { LendingCdpSnapshot, LendingMarketSnapshot, TokenRewardEntry } from '../../../types/domains';
@@ -18,6 +19,11 @@ import { CompoundEventAbiMappings, CompoundEventInterfaces, CompoundEventSignatu
 export interface CompoundMarketRates {
   borrowRate: string;
   supplyRate: string;
+}
+
+export interface CompoundMarketRewards {
+  lenderTokenRewards: Array<TokenRewardEntry>;
+  borrowerTokenRewards: Array<TokenRewardEntry>;
 }
 
 export default class CompoundAdapter extends ProtocolAdapter {
@@ -61,47 +67,89 @@ export default class CompoundAdapter extends ProtocolAdapter {
     };
   }
 
-  protected async getMarketRewards(config: LendingMarketConfig, timestamp: number): Promise<Array<TokenRewardEntry>> {
-    const rewards: Array<TokenRewardEntry> = [];
+  protected async getMarketRewardsSpeed(
+    config: LendingMarketConfig,
+    blockNumber: number,
+  ): Promise<{
+    supplySpeed: string;
+    borrowSpeed: string;
+  } | null> {
+    // compound rewards were calculated based on supply and borrow speeds
+    const comptroller = ProtocolConfigs[config.protocol]
+      ? (ProtocolConfigs[config.protocol] as CompoundProtocolConfig).comptrollers[config.chain]
+      : null;
+    if (comptroller) {
+      const supplySpeed = await this.services.blockchain.singlecall({
+        chain: config.chain,
+        abi: CompoundComptrollerAbi,
+        target: comptroller.address,
+        method: 'compSupplySpeeds',
+        params: [config.address],
+        blockNumber: blockNumber,
+      });
+      const borrowSpeed = await this.services.blockchain.singlecall({
+        chain: config.chain,
+        abi: CompoundComptrollerAbi,
+        target: comptroller.address,
+        method: 'compBorrowSpeeds',
+        params: [config.address],
+        blockNumber: blockNumber,
+      });
 
+      return {
+        supplySpeed: supplySpeed.toString(),
+        borrowSpeed: borrowSpeed.toString(),
+      };
+    }
+
+    return null;
+  }
+
+  protected async getMarketRewards(config: LendingMarketConfig, timestamp: number): Promise<CompoundMarketRewards> {
+    const rewards: CompoundMarketRewards = {
+      lenderTokenRewards: [],
+      borrowerTokenRewards: [],
+    };
+
+    // compound rewards were calculated based on supply and borrow speeds
     const comptroller = ProtocolConfigs[config.protocol]
       ? (ProtocolConfigs[config.protocol] as CompoundProtocolConfig).comptrollers[config.chain]
       : null;
 
-    const eventSignatures = this.abiConfigs.eventSignatures as CompoundEventInterfaces;
     if (comptroller) {
-      let rewardPaid = new BigNumber(0);
-      const web3 = this.services.blockchain.getProvider(config.chain);
-      const logs: Array<any> = await this.getDayContractLogs({
-        chain: config.chain,
-        address: comptroller.address,
-        topics: [eventSignatures.DistributedSupplierRewards, eventSignatures.DistributedBorrowerRewards],
-        dayStartTimestamp: timestamp,
-      });
+      const startDayBlock = await tryQueryBlockNumberAtTimestamp(
+        EnvConfig.blockchains[config.chain].blockSubgraph,
+        timestamp,
+      );
+      const endDayBlock = await tryQueryBlockNumberAtTimestamp(
+        EnvConfig.blockchains[config.chain].blockSubgraph,
+        timestamp + DAY - 1,
+      );
 
-      for (const log of logs) {
-        const signature = log.topics[0];
-        const event = web3.eth.abi.decodeLog(
-          this.abiConfigs.eventAbiMappings[signature],
-          log.data,
-          log.topics.slice(1),
-        );
-        if (compareAddress(event[0], config.address)) {
-          rewardPaid = rewardPaid.plus(new BigNumber(event[2].toString()));
-        }
+      const numberOfBlocks = endDayBlock - startDayBlock;
+      const speeds = await this.getMarketRewardsSpeed(config, startDayBlock);
+
+      if (speeds) {
+        const rewardAmountForLender = new BigNumber(speeds.supplySpeed.toString()).multipliedBy(numberOfBlocks);
+        const rewardAmountForBorrower = new BigNumber(speeds.borrowSpeed.toString()).multipliedBy(numberOfBlocks);
+
+        const tokenPrice = await this.services.oracle.getTokenPriceUsd({
+          chain: config.chain,
+          address: comptroller.governanceToken.address,
+          timestamp: timestamp,
+        });
+
+        rewards.lenderTokenRewards.push({
+          token: comptroller.governanceToken,
+          tokenPrice: tokenPrice ? tokenPrice : '0',
+          tokenAmount: formatFromDecimals(rewardAmountForLender.toString(10), comptroller.governanceToken.decimals),
+        });
+        rewards.borrowerTokenRewards.push({
+          token: comptroller.governanceToken,
+          tokenPrice: tokenPrice ? tokenPrice : '0',
+          tokenAmount: formatFromDecimals(rewardAmountForBorrower.toString(10), comptroller.governanceToken.decimals),
+        });
       }
-
-      const tokenPrice = await this.services.oracle.getTokenPriceUsd({
-        chain: config.chain,
-        address: comptroller.governanceToken.address,
-        timestamp: timestamp,
-      });
-
-      rewards.push({
-        token: comptroller.governanceToken,
-        tokenPrice: tokenPrice ? tokenPrice : '0',
-        tokenAmount: formatFromDecimals(rewardPaid.toString(10), comptroller.governanceToken.decimals),
-      });
     }
 
     return rewards;
@@ -113,7 +161,7 @@ export default class CompoundAdapter extends ProtocolAdapter {
     const marketConfig = options.config as CompoundLendingMarketConfig;
     const eventSignatures = this.abiConfigs.eventSignatures as CompoundEventInterfaces;
 
-    const blockNumber = await queryBlockNumberAtTimestamp(
+    const blockNumber = await tryQueryBlockNumberAtTimestamp(
       EnvConfig.blockchains[marketConfig.chain].blockSubgraph,
       options.timestamp,
     );
@@ -409,7 +457,8 @@ export default class CompoundAdapter extends ProtocolAdapter {
       supplyRate: supplyRate,
       borrowRate: borrowRate,
 
-      tokenRewards: rewards,
+      tokenRewardsForLenders: rewards.lenderTokenRewards,
+      tokenRewardsForBorrowers: rewards.borrowerTokenRewards,
     });
 
     logger.info('updated lending market snapshot', {

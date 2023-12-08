@@ -2,7 +2,7 @@ import { DAY } from '../../configs/constants';
 import EnvConfig from '../../configs/envConfig';
 import { createDataKeyHash } from '../../lib/crypto';
 import logger from '../../lib/logger';
-import { queryBlockNumberAtTimestamp } from '../../lib/subsgraph';
+import { tryQueryBlockNumberAtTimestamp } from '../../lib/subsgraph';
 import { ProtocolConfig } from '../../types/configs';
 import { LendingCdpSnapshot, LendingMarketSnapshot, MasterchefPoolSnapshot } from '../../types/domains';
 import { ContextServices, IProtocolAdapter } from '../../types/namespaces';
@@ -60,11 +60,11 @@ export default class ProtocolAdapter implements IProtocolAdapter {
 
     let logs: Array<any> = [];
 
-    const dayStartBlock = await queryBlockNumberAtTimestamp(
+    const dayStartBlock = await tryQueryBlockNumberAtTimestamp(
       EnvConfig.blockchains[options.chain].blockSubgraph,
       options.dayStartTimestamp,
     );
-    const dayEndBLock = await queryBlockNumberAtTimestamp(
+    const dayEndBLock = await tryQueryBlockNumberAtTimestamp(
       EnvConfig.blockchains[options.chain].blockSubgraph,
       options.dayStartTimestamp + DAY - 1,
     );

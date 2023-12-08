@@ -26,6 +26,11 @@ export interface AaveMarketEventStats {
   countTransactions: number;
 }
 
+export interface AaveMarketRewards {
+  rewardsForLenders: Array<TokenRewardEntry>;
+  rewardsForBorrowers: Array<TokenRewardEntry>;
+}
+
 export default class Aavev1Adapter extends ProtocolAdapter {
   public readonly name: string = 'adapter.aavev1';
 
@@ -76,8 +81,11 @@ export default class Aavev1Adapter extends ProtocolAdapter {
     config: AaveLendingMarketConfig,
     reserve: string,
     timestamp: number,
-  ): Promise<Array<TokenRewardEntry>> {
-    return [];
+  ): Promise<AaveMarketRewards> {
+    return {
+      rewardsForLenders: [],
+      rewardsForBorrowers: [],
+    };
   }
 
   protected async getEventStats(
@@ -361,11 +369,7 @@ export default class Aavev1Adapter extends ProtocolAdapter {
       const totalBorrowed = this.getTotalBorrowed(reserveData);
       const totalDeposited = this.getTotalDeposited(reserveData);
 
-      const tokenRewards: Array<TokenRewardEntry> = await this.getIncentiveRewards(
-        marketConfig,
-        reserve,
-        options.timestamp,
-      );
+      const tokenRewards = await this.getIncentiveRewards(marketConfig, reserve, options.timestamp);
 
       // calculate liquidity index increase
       let totalFeesCollected = '0';
@@ -422,7 +426,8 @@ export default class Aavev1Adapter extends ProtocolAdapter {
         borrowRate: formatFromDecimals(reserveData.variableBorrowRate.toString(), 27),
         borrowRateStable: formatFromDecimals(reserveData.stableBorrowRate.toString(), 27),
 
-        tokenRewards: tokenRewards,
+        tokenRewardsForLenders: tokenRewards.rewardsForLenders,
+        tokenRewardsForBorrowers: tokenRewards.rewardsForBorrowers,
       };
 
       snapshots.push(snapshot);

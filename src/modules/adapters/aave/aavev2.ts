@@ -9,9 +9,8 @@ import { AaveLendingMarketConfig } from '../../../configs/protocols/aave';
 import { tryQueryBlockNumberAtTimestamp } from '../../../lib/subsgraph';
 import { formatFromDecimals } from '../../../lib/utils';
 import { ProtocolConfig } from '../../../types/configs';
-import { TokenRewardEntry } from '../../../types/domains';
 import { ContextServices } from '../../../types/namespaces';
-import Aavev1Adapter from './aavev1';
+import Aavev1Adapter, { AaveMarketRewards } from './aavev1';
 import { Aavev2EventAbiMappings, Aavev2EventSignatures } from './abis';
 
 export default class Aavev2Adapter extends Aavev1Adapter {
@@ -67,7 +66,12 @@ export default class Aavev2Adapter extends Aavev1Adapter {
     config: AaveLendingMarketConfig,
     reserve: string,
     timestamp: number,
-  ): Promise<Array<TokenRewardEntry>> {
+  ): Promise<AaveMarketRewards> {
+    const rewards: AaveMarketRewards = {
+      rewardsForLenders: [],
+      rewardsForBorrowers: [],
+    };
+
     const incentiveController = (config as AaveLendingMarketConfig).incentiveController;
     if (incentiveController) {
       // we calculate reward emission in a period of time
@@ -113,20 +117,21 @@ export default class Aavev2Adapter extends Aavev1Adapter {
         });
 
         const endDayTimestamp = timestamp + DAY - 1;
-        let rewardAmount = new BigNumber(0);
+        let rewardForLenders = new BigNumber(0);
+        let rewardForBorrowers = new BigNumber(0);
 
         if (aTokenAssetInfo) {
-          rewardAmount = rewardAmount
+          rewardForLenders = rewardForLenders
             .plus(new BigNumber(aTokenAssetInfo.emissionPerSecond.toString()))
             .multipliedBy(endDayTimestamp - timestamp);
         }
         if (stableDebtAssetInfo) {
-          rewardAmount = rewardAmount
+          rewardForBorrowers = rewardForBorrowers
             .plus(new BigNumber(stableDebtAssetInfo.emissionPerSecond.toString()))
             .multipliedBy(endDayTimestamp - timestamp);
         }
         if (variableDebtAssetInfo) {
-          rewardAmount = rewardAmount
+          rewardForBorrowers = rewardForBorrowers
             .plus(new BigNumber(variableDebtAssetInfo.emissionPerSecond.toString()))
             .multipliedBy(endDayTimestamp - timestamp);
         }
@@ -137,16 +142,23 @@ export default class Aavev2Adapter extends Aavev1Adapter {
           timestamp,
         });
 
-        return [
-          {
-            token: incentiveController.rewardTokens[0],
-            tokenAmount: formatFromDecimals(rewardAmount.toString(10), incentiveController.rewardTokens[0].decimals),
-            tokenPrice: tokenPrice ? tokenPrice : '0',
-          },
-        ];
+        // aave v2 has only one token incentive
+        rewards.rewardsForLenders.push({
+          token: incentiveController.rewardTokens[0],
+          tokenAmount: formatFromDecimals(rewardForLenders.toString(10), incentiveController.rewardTokens[0].decimals),
+          tokenPrice: tokenPrice ? tokenPrice : '0',
+        });
+        rewards.rewardsForBorrowers.push({
+          token: incentiveController.rewardTokens[0],
+          tokenAmount: formatFromDecimals(
+            rewardForBorrowers.toString(10),
+            incentiveController.rewardTokens[0].decimals,
+          ),
+          tokenPrice: tokenPrice ? tokenPrice : '0',
+        });
       }
     }
 
-    return [];
+    return rewards;
   }
 }

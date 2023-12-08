@@ -3,7 +3,7 @@ import axios from 'axios';
 import logger from './logger';
 import { sleep } from './utils';
 
-export async function querySubgraph(endpoint: string, query: string, options: any = {}): Promise<any> {
+async function querySubgraph(endpoint: string, query: string, options: any = {}): Promise<any> {
   try {
     const response = await axios.post(
       endpoint,
@@ -39,46 +39,7 @@ export async function querySubgraph(endpoint: string, query: string, options: an
   }
 }
 
-export interface BlockTimestamps {
-  [key: number]: number;
-}
-
-export async function queryBlockTimestamps(
-  endpoint: string,
-  fromBlock: number,
-  toBlock: number,
-): Promise<BlockTimestamps | null> {
-  const blockTimestamps: BlockTimestamps = {};
-
-  let startBlock = fromBlock;
-  const endBlock = toBlock;
-
-  const queryLimit = 1000;
-  while (startBlock <= endBlock) {
-    const response = await querySubgraph(
-      endpoint,
-      `
-        {
-          blocks(first: ${queryLimit}, where: {number_gte: ${startBlock}}, orderBy: number, orderDirection: asc) {
-            number
-            timestamp
-          }
-        }
-      `,
-    );
-    if (response) {
-      for (const block of response.blocks) {
-        blockTimestamps[Number(block.number)] = Number(Number(block.timestamp));
-      }
-    }
-
-    startBlock += queryLimit;
-  }
-
-  return blockTimestamps;
-}
-
-export async function queryBlockNumberAtTimestamp(endpoint: string, timestamp: number): Promise<number> {
+async function queryBlockNumberAtTimestamp(endpoint: string, timestamp: number): Promise<number> {
   const response = await querySubgraph(
     endpoint,
     `
@@ -106,7 +67,7 @@ export async function tryQueryBlockNumberAtTimestamp(endpoint: string, timestamp
       logger.warn('failed to query block number at timestamp', {
         service: 'subgraph',
         endpoint: endpoint,
-        timestamp: timestamp,
+        time: timestamp,
       });
       await sleep(10);
     }

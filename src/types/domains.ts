@@ -83,7 +83,8 @@ export interface LendingMarketSnapshot extends DayDataSnapshot {
   borrowRate: string;
 
   // a list of incentive tokens rewards
-  tokenRewards: Array<TokenRewardEntry>;
+  tokenRewardsForLenders: Array<TokenRewardEntry>;
+  tokenRewardsForBorrowers: Array<TokenRewardEntry>;
 
   // some protocol like AAVE offer a stable borrow rate
   borrowRateStable?: string;
