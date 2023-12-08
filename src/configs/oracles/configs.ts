@@ -160,6 +160,8 @@ export const OracleConfigs: { [key: string]: { [key: string]: OracleConfig } } =
     [PolygonTokenList.stMATIC.address]: OracleSourceConfigs.stMATIC,
     [PolygonTokenList.MaticX.address]: OracleSourceConfigs.MaticX,
     [PolygonTokenList.wstETH.address]: OracleSourceConfigs.wstETH,
+    [PolygonTokenList.SD.address]: OracleSourceConfigs.SD,
+    [PolygonTokenList.LDO.address]: OracleSourceConfigs.LDO,
   },
 
   // tokens on Bnbchain

@@ -1041,6 +1041,7 @@
     "decimals": 18,
     "address": "0xbbba073c31bf03b8acf7c28ef0738decf3695683"
   },
+  "SD": { "chain": "polygon", "symbol": "SD", "decimals": 18, "address": "0x1d734a02ef1e1f5886e66b0673b71af5b53ffa94" },
   "SDT": {
     "chain": "polygon",
     "symbol": "SDT",

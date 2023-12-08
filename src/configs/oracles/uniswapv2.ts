@@ -383,4 +383,11 @@ export const OracleSourceUniswapv2List: { [key: string]: OracleSourceUniv2 } = {
     baseToken: AvalancheTokenList.QI,
     quotaToken: AvalancheTokenList.WAVAX,
   },
+  SD_USDC: {
+    type: 'univ2',
+    chain: 'polygon',
+    address: '0x7d196c0c447fde421c72f88a1900bf3322f20e0a',
+    baseToken: PolygonTokenList.SD,
+    quotaToken: PolygonTokenList['USDC.e'],
+  },
 };

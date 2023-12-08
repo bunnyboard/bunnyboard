@@ -1,14 +1,14 @@
 import BigNumber from 'bignumber.js';
 
 import AaveLendingPoolV1Abi from '../../../configs/abi/aave/LendingPoolV1.json';
-import { DAY, UNIT_RAY } from '../../../configs/constants';
+import { DAY, ONE_RAY } from '../../../configs/constants';
 import EnvConfig from '../../../configs/envConfig';
 import { AaveLendingMarketConfig } from '../../../configs/protocols/aave';
 import logger from '../../../lib/logger';
-import { queryBlockNumberAtTimestamp } from '../../../lib/subsgraph';
+import { tryQueryBlockNumberAtTimestamp } from '../../../lib/subsgraph';
 import { compareAddress, formatFromDecimals, getDateString, normalizeAddress } from '../../../lib/utils';
 import { ProtocolConfig, Token } from '../../../types/configs';
-import { LendingCdpSnapshot, LendingMarketSnapshot } from '../../../types/domains';
+import { LendingCdpSnapshot, LendingMarketSnapshot, TokenRewardEntry } from '../../../types/domains';
 import { ContextServices } from '../../../types/namespaces';
 import { GetLendingMarketSnapshotOptions } from '../../../types/options';
 import ProtocolAdapter from '../adapter';
@@ -20,7 +20,9 @@ export interface AaveMarketEventStats {
   volumeBorrowed: string;
   volumeRepaid: string;
   volumeLiquidated: string;
-  countAddresses: number;
+  counterLenders: number;
+  counterBorrowers: number;
+  counterLiquidators: number;
   countTransactions: number;
 }
 
@@ -70,6 +72,14 @@ export default class Aavev1Adapter extends ProtocolAdapter {
     });
   }
 
+  protected async getIncentiveRewards(
+    config: AaveLendingMarketConfig,
+    reserve: string,
+    timestamp: number,
+  ): Promise<Array<TokenRewardEntry>> {
+    return [];
+  }
+
   protected async getEventStats(
     config: AaveLendingMarketConfig,
     token: Token,
@@ -82,7 +92,9 @@ export default class Aavev1Adapter extends ProtocolAdapter {
     let volumeBorrowed = new BigNumber(0);
     let volumeRepaid = new BigNumber(0);
     let volumeLiquidated = new BigNumber(0);
-    let countAddresses = 0;
+    let countLenders = 0;
+    let countBorrowers = 0;
+    let countLiquidators = 0;
     let countTransactions = 0;
 
     const logs = await this.getDayContractLogs({
@@ -113,19 +125,14 @@ export default class Aavev1Adapter extends ProtocolAdapter {
           countTransactions += 1;
         }
 
-        const address = normalizeAddress(signature === eventSignatures.Liquidate ? event[2] : event[1]);
-        if (!addresses[address]) {
-          addresses[address] = true;
-          countAddresses += 1;
-        }
-
         switch (signature) {
           case eventSignatures.Deposit:
           case eventSignatures.Withdraw: {
+            const amount = event._amount ? event._amount.toString() : event.amount.toString();
             if (signature === eventSignatures.Deposit) {
-              volumeDeposited = volumeDeposited.plus(new BigNumber(event[0].toString()));
+              volumeDeposited = volumeDeposited.plus(new BigNumber(amount));
             } else {
-              volumeWithdrawn = volumeWithdrawn.plus(new BigNumber(event[0].toString()));
+              volumeWithdrawn = volumeWithdrawn.plus(new BigNumber(amount));
             }
 
             const user = normalizeAddress(event[1]);
@@ -140,6 +147,11 @@ export default class Aavev1Adapter extends ProtocolAdapter {
               firstTime: timestamp,
             });
 
+            if (!addresses[user]) {
+              countLenders += 1;
+              addresses[user] = true;
+            }
+
             if (event.onBehalfOf) {
               await this.booker.saveAddressBookLending({
                 addressId: '', // filled by booker
@@ -151,6 +163,10 @@ export default class Aavev1Adapter extends ProtocolAdapter {
                 role: 'lender',
                 firstTime: timestamp,
               });
+              if (!addresses[normalizeAddress(event.onBehalfOf)]) {
+                countLenders += 1;
+                addresses[normalizeAddress(event.onBehalfOf)] = true;
+              }
             }
             if (event.to) {
               await this.booker.saveAddressBookLending({
@@ -163,6 +179,10 @@ export default class Aavev1Adapter extends ProtocolAdapter {
                 role: 'lender',
                 firstTime: timestamp,
               });
+              if (!addresses[normalizeAddress(event.to)]) {
+                countLenders += 1;
+                addresses[normalizeAddress(event.to)] = true;
+              }
             }
 
             break;
@@ -171,9 +191,16 @@ export default class Aavev1Adapter extends ProtocolAdapter {
           case eventSignatures.Borrow:
           case eventSignatures.Repay: {
             if (signature === eventSignatures.Borrow) {
-              volumeBorrowed = volumeBorrowed.plus(new BigNumber(event[0].toString()));
+              const amount = event._amount ? event._amount.toString() : event.amount.toString();
+              volumeBorrowed = volumeBorrowed.plus(new BigNumber(amount));
             } else {
-              volumeRepaid = volumeRepaid.plus(new BigNumber(event[0].toString()));
+              if (event._amountMinusFees) {
+                volumeRepaid = volumeRepaid
+                  .plus(new BigNumber(event._amountMinusFees.toString()))
+                  .plus(new BigNumber(event._fees.toString()));
+              } else {
+                volumeRepaid = volumeRepaid.plus(new BigNumber(event.amount.toString()));
+              }
             }
 
             const user = normalizeAddress(event[1]);
@@ -187,6 +214,11 @@ export default class Aavev1Adapter extends ProtocolAdapter {
               role: 'borrower',
               firstTime: timestamp,
             });
+            if (!addresses[user]) {
+              countBorrowers += 1;
+              addresses[user] = true;
+            }
+
             if (event.onBehalfOf) {
               await this.booker.saveAddressBookLending({
                 addressId: '', // filled by booker
@@ -198,6 +230,10 @@ export default class Aavev1Adapter extends ProtocolAdapter {
                 role: 'borrower',
                 firstTime: timestamp,
               });
+              if (!addresses[normalizeAddress(event.onBehalfOf)]) {
+                countBorrowers += 1;
+                addresses[normalizeAddress(event.onBehalfOf)] = true;
+              }
             }
             if (event.to) {
               await this.booker.saveAddressBookLending({
@@ -210,6 +246,10 @@ export default class Aavev1Adapter extends ProtocolAdapter {
                 role: 'borrower',
                 firstTime: timestamp,
               });
+              if (!addresses[normalizeAddress(event.to)]) {
+                countBorrowers += 1;
+                addresses[normalizeAddress(event.to)] = true;
+              }
             }
 
             break;
@@ -232,6 +272,10 @@ export default class Aavev1Adapter extends ProtocolAdapter {
                 role: 'borrower',
                 firstTime: timestamp,
               });
+              if (!addresses[user]) {
+                countBorrowers += 1;
+                addresses[user] = true;
+              }
             } else {
               const collateral = event._collateral ? event.collateral : event.collateralAsset;
               if (compareAddress(collateral, token.address)) {
@@ -254,6 +298,11 @@ export default class Aavev1Adapter extends ProtocolAdapter {
                   role: 'liquidator',
                   firstTime: timestamp,
                 });
+
+                if (!addresses[liquidator]) {
+                  countLiquidators += 1;
+                  addresses[liquidator] = true;
+                }
               }
             }
 
@@ -269,7 +318,9 @@ export default class Aavev1Adapter extends ProtocolAdapter {
       volumeBorrowed: formatFromDecimals(volumeBorrowed.toString(10), token.decimals),
       volumeRepaid: formatFromDecimals(volumeRepaid.toString(10), token.decimals),
       volumeLiquidated: formatFromDecimals(volumeLiquidated.toString(10), token.decimals),
-      countAddresses: countAddresses,
+      counterLenders: countLenders,
+      counterBorrowers: countBorrowers,
+      counterLiquidators: countLiquidators,
       countTransactions: countTransactions,
     };
   }
@@ -277,7 +328,7 @@ export default class Aavev1Adapter extends ProtocolAdapter {
   public async getLendingMarketSnapshots(
     options: GetLendingMarketSnapshotOptions,
   ): Promise<Array<LendingMarketSnapshot | LendingCdpSnapshot> | null> {
-    const blockNumber = await queryBlockNumberAtTimestamp(
+    const blockNumber = await tryQueryBlockNumberAtTimestamp(
       EnvConfig.blockchains[options.config.chain].blockSubgraph,
       options.timestamp,
     );
@@ -310,9 +361,15 @@ export default class Aavev1Adapter extends ProtocolAdapter {
       const totalBorrowed = this.getTotalBorrowed(reserveData);
       const totalDeposited = this.getTotalDeposited(reserveData);
 
+      const tokenRewards: Array<TokenRewardEntry> = await this.getIncentiveRewards(
+        marketConfig,
+        reserve,
+        options.timestamp,
+      );
+
       // calculate liquidity index increase
       let totalFeesCollected = '0';
-      const dayEndBlock = await queryBlockNumberAtTimestamp(
+      const dayEndBlock = await tryQueryBlockNumberAtTimestamp(
         EnvConfig.blockchains[options.config.chain].blockSubgraph,
         options.timestamp + DAY - 1,
       );
@@ -324,7 +381,7 @@ export default class Aavev1Adapter extends ProtocolAdapter {
 
         totalFeesCollected = new BigNumber(totalDeposited)
           .multipliedBy(liquidityIndexIncrease)
-          .dividedBy(new BigNumber(UNIT_RAY))
+          .dividedBy(new BigNumber(ONE_RAY))
           .toString(10);
       }
 
@@ -355,7 +412,9 @@ export default class Aavev1Adapter extends ProtocolAdapter {
         volumeLiquidated: eventStats.volumeLiquidated,
 
         addressCount: {
-          lenders: eventStats.countAddresses,
+          lenders: eventStats.counterLenders,
+          borrowers: eventStats.counterBorrowers,
+          liquidators: eventStats.counterLiquidators,
         },
         transactionCount: eventStats.countTransactions,
 
@@ -363,7 +422,7 @@ export default class Aavev1Adapter extends ProtocolAdapter {
         borrowRate: formatFromDecimals(reserveData.variableBorrowRate.toString(), 27),
         borrowRateStable: formatFromDecimals(reserveData.stableBorrowRate.toString(), 27),
 
-        tokenRewards: [],
+        tokenRewards: tokenRewards,
       };
 
       snapshots.push(snapshot);

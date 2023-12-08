@@ -90,6 +90,7 @@ export const OracleSourceConfigs: { [key: string]: OracleConfig } = {
   BUSD: {
     currency: 'usd',
     sources: [OracleSourceChainlinkList.BUSD_USD],
+    coingeckoId: 'binance-usd',
   },
   ENJ: {
     currency: 'eth',
@@ -231,6 +232,7 @@ export const OracleSourceConfigs: { [key: string]: OracleConfig } = {
   EURS: {
     currency: 'usd',
     sources: [OracleSourceUniswapv3List.EURS_USDC],
+    coingeckoId: 'stasis-eurs',
   },
   sEUR: {
     currency: 'usd',
@@ -251,6 +253,7 @@ export const OracleSourceConfigs: { [key: string]: OracleConfig } = {
   OP: {
     currency: 'eth',
     sources: [OracleSourceUniswapv3List.OP_WETH],
+    coingeckoId: 'optimism',
   },
   GHST: {
     currency: 'usd',
@@ -259,10 +262,12 @@ export const OracleSourceConfigs: { [key: string]: OracleConfig } = {
   jEUR: {
     currency: 'eth',
     sources: [OracleSourceUniswapv2List.jEUR_WETH],
+    coingeckoId: 'jarvis-synthetic-euro',
   },
   agEUR: {
     currency: 'usd',
     sources: [OracleSourceUniswapv3List.agEUR_USDC],
+    coingeckoId: 'ageur',
   },
   miMATIC: {
     currency: 'usd',
@@ -271,10 +276,12 @@ export const OracleSourceConfigs: { [key: string]: OracleConfig } = {
   stMATIC: {
     currency: 'matic',
     sources: [OracleSourceUniswapv3List.stMATIC_WMATIC],
+    coingeckoId: 'lido-staked-matic',
   },
   MaticX: {
     currency: 'matic',
     sources: [OracleSourceUniswapv2List.MaticX_WMATIC],
+    coingeckoId: 'stader-maticx',
   },
   ALPHA: {
     currency: 'eth',
@@ -399,5 +406,9 @@ export const OracleSourceConfigs: { [key: string]: OracleConfig } = {
   QI: {
     currency: 'avax',
     sources: [OracleSourceUniswapv2List.QI_WAVAX],
+  },
+  SD: {
+    currency: 'usd',
+    sources: [OracleSourceUniswapv2List.SD_USDC],
   },
 };

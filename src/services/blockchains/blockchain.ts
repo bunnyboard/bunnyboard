@@ -131,7 +131,7 @@ export default class BlockchainService extends CachingService implements IBlockc
   public async singlecall(call: ContractCall): Promise<any> {
     const contract = new this.providers[call.chain].eth.Contract(call.abi, call.target);
 
-    let result;
+    let result = null;
     try {
       // const startExeTime = Math.floor(new Date().getTime() / 1000);
 
