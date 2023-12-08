@@ -2,15 +2,16 @@ import BigNumber from 'bignumber.js';
 
 import AaveDataProviderV3Abi from '../../../configs/abi/aave/DataProviderV3.json';
 import AaveIncentiveControllerV3Abi from '../../../configs/abi/aave/IncentiveControllerV3.json';
+import { DAY } from '../../../configs/constants';
 import EnvConfig from '../../../configs/envConfig';
 import { AaveLendingMarketConfig } from '../../../configs/protocols/aave';
 import { tryQueryBlockNumberAtTimestamp } from '../../../lib/subsgraph';
-import { compareAddress, formatFromDecimals, normalizeAddress } from '../../../lib/utils';
+import { formatFromDecimals } from '../../../lib/utils';
 import { ProtocolConfig } from '../../../types/configs';
 import { TokenRewardEntry } from '../../../types/domains';
 import { ContextServices } from '../../../types/namespaces';
 import Aavev2Adapter from './aavev2';
-import { AaveIncentiveEventInterfaces, Aavev3EventAbiMappings, Aavev3EventSignatures } from './abis';
+import { Aavev3EventAbiMappings, Aavev3EventSignatures } from './abis';
 
 export default class Aavev3Adapter extends Aavev2Adapter {
   public readonly name: string = 'adapter.aavev3';
@@ -52,7 +53,7 @@ export default class Aavev3Adapter extends Aavev2Adapter {
     reserve: string,
     timestamp: number,
   ): Promise<Array<TokenRewardEntry>> {
-    const tokenRewards: { [key: string]: TokenRewardEntry } = {};
+    const tokenRewards: Array<TokenRewardEntry> = [];
 
     const incentiveController = (config as AaveLendingMarketConfig).incentiveController;
     if (incentiveController) {
@@ -86,59 +87,68 @@ export default class Aavev3Adapter extends Aavev2Adapter {
             timestamp: timestamp,
           });
 
-          tokenRewards[normalizeAddress(rewardTokenAddress)] = {
-            token: rewardToken,
-            tokenAmount: '0',
-            tokenPrice: rewardTokenPrice ? rewardTokenPrice : '0',
-          };
-        }
-      }
+          const reserveTokensAddresses = await this.services.blockchain.singlecall({
+            chain: config.chain,
+            target: config.dataProvider,
+            abi: AaveDataProviderV3Abi,
+            method: 'getReserveTokensAddresses',
+            params: [reserve],
+          });
+          if (reserveTokensAddresses) {
+            const aTokenAssetInfo = await this.services.blockchain.singlecall({
+              chain: config.chain,
+              abi: AaveIncentiveControllerV3Abi,
+              target: incentiveController.address,
+              method: 'getRewardsData',
+              params: [reserveTokensAddresses.aTokenAddress, rewardTokenAddress],
+              blockNumber: blockNumber,
+            });
+            const stableDebtAssetInfo = await this.services.blockchain.singlecall({
+              chain: config.chain,
+              abi: AaveIncentiveControllerV3Abi,
+              target: incentiveController.address,
+              method: 'getRewardsData',
+              params: [reserveTokensAddresses.stableDebtTokenAddress],
+              blockNumber: blockNumber,
+            });
+            const variableDebtAssetInfo = await this.services.blockchain.singlecall({
+              chain: config.chain,
+              abi: AaveIncentiveControllerV3Abi,
+              target: incentiveController.address,
+              method: 'getRewardsData',
+              params: [reserveTokensAddresses.variableDebtTokenAddress],
+              blockNumber: blockNumber,
+            });
 
-      const tokenAddresses = await this.services.blockchain.singlecall({
-        chain: config.chain,
-        target: config.dataProvider,
-        abi: AaveDataProviderV3Abi,
-        method: 'getReserveTokensAddresses',
-        params: [reserve],
-      });
-      if (tokenAddresses) {
-        const logs = await this.getDayContractLogs({
-          chain: config.chain,
-          address: config.address,
-          topics: Object.values(this.abiConfigs.eventSignatures),
-          dayStartTimestamp: timestamp,
-        });
+            const endDayTimestamp = timestamp + DAY - 1;
+            let rewardAmount = new BigNumber(0);
 
-        const eventSignature = this.abiConfigs.eventSignatures as AaveIncentiveEventInterfaces;
-        const web3 = this.services.blockchain.getProvider(config.chain);
-
-        for (const log of logs) {
-          const signature = log.topics[0];
-          if (signature === eventSignature.RewardsAccrued) {
-            const event = web3.eth.abi.decodeLog(
-              this.abiConfigs.eventAbiMappings[signature],
-              log.data,
-              log.topics.slice(1),
-            );
-            if (compareAddress(event.asset, tokenAddresses.aTokenAddress)) {
-              if (tokenRewards[normalizeAddress(event.reward)]) {
-                tokenRewards[normalizeAddress(event.reward)].tokenAmount = new BigNumber(
-                  tokenRewards[normalizeAddress(event.reward)].tokenAmount,
-                )
-                  .plus(
-                    formatFromDecimals(
-                      event.rewardsAccrued.toString(),
-                      tokenRewards[normalizeAddress(event.reward)].token.decimals,
-                    ),
-                  )
-                  .toString(10);
-              }
+            if (aTokenAssetInfo) {
+              rewardAmount = rewardAmount
+                .plus(new BigNumber(aTokenAssetInfo.emissionPerSecond.toString()))
+                .multipliedBy(endDayTimestamp - timestamp);
             }
+            if (stableDebtAssetInfo) {
+              rewardAmount = rewardAmount
+                .plus(new BigNumber(stableDebtAssetInfo.emissionPerSecond.toString()))
+                .multipliedBy(endDayTimestamp - timestamp);
+            }
+            if (variableDebtAssetInfo) {
+              rewardAmount = rewardAmount
+                .plus(new BigNumber(variableDebtAssetInfo.emissionPerSecond.toString()))
+                .multipliedBy(endDayTimestamp - timestamp);
+            }
+
+            tokenRewards.push({
+              token: rewardToken,
+              tokenAmount: formatFromDecimals(rewardAmount.toString(10), rewardToken.decimals),
+              tokenPrice: rewardTokenPrice ? rewardTokenPrice : '0',
+            });
           }
         }
       }
     }
 
-    return Object.values(tokenRewards);
+    return tokenRewards;
   }
 }

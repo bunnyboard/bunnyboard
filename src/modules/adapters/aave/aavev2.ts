@@ -1,9 +1,15 @@
 import BigNumber from 'bignumber.js';
 
 import AaveDataProviderV2Abi from '../../../configs/abi/aave/DataProviderV2.json';
+import AaveIncentiveControllerV2Abi from '../../../configs/abi/aave/IncentiveControllerV2.json';
 import AaveLendingPoolV2Abi from '../../../configs/abi/aave/LendingPoolV2.json';
+import { DAY } from '../../../configs/constants';
+import EnvConfig from '../../../configs/envConfig';
 import { AaveLendingMarketConfig } from '../../../configs/protocols/aave';
+import { tryQueryBlockNumberAtTimestamp } from '../../../lib/subsgraph';
+import { formatFromDecimals } from '../../../lib/utils';
 import { ProtocolConfig } from '../../../types/configs';
+import { TokenRewardEntry } from '../../../types/domains';
 import { ContextServices } from '../../../types/namespaces';
 import Aavev1Adapter from './aavev1';
 import { Aavev2EventAbiMappings, Aavev2EventSignatures } from './abis';
@@ -55,5 +61,92 @@ export default class Aavev2Adapter extends Aavev1Adapter {
       params: [reserve],
       blockNumber,
     });
+  }
+
+  protected async getIncentiveRewards(
+    config: AaveLendingMarketConfig,
+    reserve: string,
+    timestamp: number,
+  ): Promise<Array<TokenRewardEntry>> {
+    const incentiveController = (config as AaveLendingMarketConfig).incentiveController;
+    if (incentiveController) {
+      // we calculate reward emission in a period of time
+
+      const blockNumber = await tryQueryBlockNumberAtTimestamp(
+        EnvConfig.blockchains[config.chain].blockSubgraph,
+        timestamp,
+      );
+
+      // first, we need to get aToken address and debtTokenAddress for the given reserve
+      const reserveTokensAddresses = await this.services.blockchain.singlecall({
+        chain: config.chain,
+        abi: AaveDataProviderV2Abi,
+        target: config.dataProvider,
+        method: 'getReserveTokensAddresses',
+        params: [reserve],
+        blockNumber: blockNumber,
+      });
+      if (reserveTokensAddresses) {
+        const aTokenAssetInfo = await this.services.blockchain.singlecall({
+          chain: config.chain,
+          abi: AaveIncentiveControllerV2Abi,
+          target: incentiveController.address,
+          method: 'assets',
+          params: [reserveTokensAddresses.aTokenAddress],
+          blockNumber: blockNumber,
+        });
+        const stableDebtAssetInfo = await this.services.blockchain.singlecall({
+          chain: config.chain,
+          abi: AaveIncentiveControllerV2Abi,
+          target: incentiveController.address,
+          method: 'assets',
+          params: [reserveTokensAddresses.stableDebtTokenAddress],
+          blockNumber: blockNumber,
+        });
+        const variableDebtAssetInfo = await this.services.blockchain.singlecall({
+          chain: config.chain,
+          abi: AaveIncentiveControllerV2Abi,
+          target: incentiveController.address,
+          method: 'assets',
+          params: [reserveTokensAddresses.variableDebtTokenAddress],
+          blockNumber: blockNumber,
+        });
+
+        const endDayTimestamp = timestamp + DAY - 1;
+        let rewardAmount = new BigNumber(0);
+
+        if (aTokenAssetInfo) {
+          rewardAmount = rewardAmount
+            .plus(new BigNumber(aTokenAssetInfo.emissionPerSecond.toString()))
+            .multipliedBy(endDayTimestamp - timestamp);
+        }
+        if (stableDebtAssetInfo) {
+          rewardAmount = rewardAmount
+            .plus(new BigNumber(stableDebtAssetInfo.emissionPerSecond.toString()))
+            .multipliedBy(endDayTimestamp - timestamp);
+        }
+        if (variableDebtAssetInfo) {
+          rewardAmount = rewardAmount
+            .plus(new BigNumber(variableDebtAssetInfo.emissionPerSecond.toString()))
+            .multipliedBy(endDayTimestamp - timestamp);
+        }
+
+        const tokenPrice = await this.services.oracle.getTokenPriceUsd({
+          chain: config.chain,
+          address: incentiveController.rewardTokens[0].address,
+          timestamp,
+        });
+
+        return [
+          {
+            token: incentiveController.rewardTokens[0],
+            tokenAmount: formatFromDecimals(rewardAmount.toString(10), incentiveController.rewardTokens[0].decimals),
+            tokenPrice: tokenPrice ? tokenPrice : '0',
+          },
+        ];
+      }
+    }
+
+    return [];
   }
 }
