@@ -88,10 +88,12 @@ export default class VenusAdapter extends CompoundAdapter {
         blockNumber: blockNumber,
       });
 
-      return {
-        supplySpeed: supplySpeed.toString(),
-        borrowSpeed: borrowSpeed.toString(),
-      };
+      if (supplySpeed && borrowSpeed) {
+        return {
+          supplySpeed: supplySpeed.toString(),
+          borrowSpeed: borrowSpeed.toString(),
+        };
+      }
     }
 
     return null;
