@@ -111,7 +111,7 @@ export interface LiquidityPoolConfig extends Token {
   tokens: Array<Token>;
 }
 
-export type LendingMarketType = 'cross' | ' cdp';
+export type LendingMarketType = 'cross' | 'cdp';
 export type LendingCrossVersion = 'aavev1' | 'aavev2' | 'aavev3' | 'compound' | 'compoundv3' | 'venusIsolated';
 export type LendingCdpVersion = 'compoundv3' | 'liquity' | 'maker';
 export interface LendingMarketConfig {
@@ -120,11 +120,14 @@ export interface LendingMarketConfig {
   type: LendingMarketType;
   version: LendingCrossVersion | LendingCdpVersion;
   birthday: number;
+
+  // the market address, collateral manager, protocol logic, etc...
   address: string;
 
-  // in CDP market, there is a default debt token
+  // in CDP market, there is a default debt token and a collateral token
   // ex: DAI in Maker DAO
   debtToken?: Token;
+  collateralToken?: Token;
 }
 
 export type MasterchefVersion =

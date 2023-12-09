@@ -24,9 +24,12 @@ export default class Booker {
   }
 
   public async saveAddressBookLending(options: AddressBookLendingOptions): Promise<void> {
-    const addressId = `${options.chain}-${normalizeAddress(options.address)}-${options.protocol}-${
-      options.marketAddress
-    }-${options.tokenAddress}-${options.role}`;
+    const addressId =
+      options.addressId !== ''
+        ? `${options.chain}-${normalizeAddress(options.address)}-${options.protocol}-${options.marketAddress}-${
+            options.tokenAddress
+          }-${options.role}`
+        : options.addressId;
     await this.saveAddressBook({
       addressId: addressId,
       chain: options.chain,
@@ -38,9 +41,12 @@ export default class Booker {
   }
 
   public async saveAddressBookMasterchef(options: AddressBookMasterchefOptions): Promise<void> {
-    const addressId = `${options.chain}-${normalizeAddress(options.address)}-${options.protocol}-${
-      options.masterchef
-    }-${options.poolId}-${options.role}`;
+    const addressId =
+      options.addressId !== ''
+        ? `${options.chain}-${normalizeAddress(options.address)}-${options.protocol}-${options.masterchef}-${
+            options.poolId
+          }-${options.role}`
+        : options.addressId;
     await this.saveAddressBook({
       addressId: addressId,
       chain: options.chain,

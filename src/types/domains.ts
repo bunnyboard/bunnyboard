@@ -61,9 +61,11 @@ export interface LendingMarketSnapshot extends DayDataSnapshot {
   tokenPrice: string;
 
   // total token deposited in this market
+  // in CDP market, this is total collateral token deposited
   totalDeposited: string;
 
   // total token borrowed (debts) in this market
+  // in CDP market, this is equal to the total debts
   totalBorrowed: string;
 
   // total borrow fees were collected
@@ -90,47 +92,10 @@ export interface LendingMarketSnapshot extends DayDataSnapshot {
   borrowRateStable?: string;
 }
 
-// Collateralized Debt Position is a system created by MakerDAO
-// which locks up collateral in a smart contract in exchange for stablecoins,
-// a decentralized stablecoin known as DAI.
-// CDP, as it is often called, is a position characterized by a smart contract,
-// a collateral and an issued collateral-backed stablecoin.
-export interface LendingCdpCollateralSnapshot {
-  token: Token;
-  tokenPrice: string;
-  totalDeposited: string;
-  volumeDeposited: string;
-  volumeWithdrawn: string;
-  volumeLiquidated: string;
-}
-
-export interface LendingCdpSnapshot extends DayDataSnapshot {
-  // must be unique id
-  // protocol-chain-marketAddress/borrowOperation/collateralManager-debtTokenAddress
-  marketId: string;
-
-  // CDP lending market
-  type: LendingMarketType;
-
-  debtToken: Token;
-  debtTokenPrice: string;
-
-  totalBorrowed: string;
-  volumeBorrowed: string;
-  volumeRepaid: string;
-
-  // rates should be multiplied by 100 on display
-  // supply rate aka APY
-  supplyRate: string;
-
-  // the borrow rate, aka borrow APY
-  borrowRate: string;
-
-  // a list of collaterals
-  collaterals: Array<LendingCdpCollateralSnapshot>;
-
-  // a list of incentive tokens rewards
-  tokenRewards: Array<TokenRewardEntry>;
+export interface LendingCdpSnapshot extends LendingMarketSnapshot {
+  // a CDP market have a single collateral token
+  collateralToken: Token;
+  collateralTokenPrice: string;
 }
 
 export interface MasterchefPoolSnapshot extends DayDataSnapshot {

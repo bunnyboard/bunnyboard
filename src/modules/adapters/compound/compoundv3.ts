@@ -5,13 +5,13 @@
 // import EnvConfig from '../../../configs/envConfig';
 // import { CompoundLendingMarketConfig } from '../../../configs/protocols/compound';
 // import logger from '../../../lib/logger';
-// import { queryBlockNumberAtTimestamp } from '../../../lib/subsgraph';
 // import { formatFromDecimals, getDateString, normalizeAddress } from '../../../lib/utils';
 // import { ProtocolConfig } from '../../../types/configs';
 // import {LendingCdpSnapshot, LendingMarketSnapshot} from '../../../types/domains';
 // import { ContextServices } from '../../../types/namespaces';
 // import { GetLendingMarketSnapshotOptions } from '../../../types/options';
 // import ProtocolAdapter from '../adapter';
+// import {tryQueryBlockNumberAtTimestamp} from "../../../lib/subsgraph";
 //
 // export default class Compoundv3Adapter extends ProtocolAdapter {
 //   public readonly name: string = 'adapter.compoundv3';
@@ -25,15 +25,12 @@
 //   ): Promise<Array<LendingMarketSnapshot | LendingCdpSnapshot> | null> {
 //     const marketConfig = options.config as CompoundLendingMarketConfig;
 //
-//     const blockNumber = await queryBlockNumberAtTimestamp(
+//     const blockNumber = await tryQueryBlockNumberAtTimestamp(
 //       EnvConfig.blockchains[marketConfig.chain].blockSubgraph,
 //       options.timestamp,
 //     );
-//     if (blockNumber === 0) {
-//       return null;
-//     }
 //
-//     const snapshots: Array<LendingMarketSnapshot> = [];
+//     const snapshots: Array<LendingCdpSnapshot> = [];
 //
 //     const baseTokenAddress = await this.services.blockchain.singlecall({
 //       chain: marketConfig.chain,

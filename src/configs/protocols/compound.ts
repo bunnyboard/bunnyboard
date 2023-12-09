@@ -1,6 +1,10 @@
 import { LendingMarketConfig, ProtocolConfig, Token } from '../../types/configs';
 import EthereumTokenList from '../tokenlists/ethereum.json';
 
+// import ArbitrumTokenList from '../tokenlists/arbitrum.json';
+// import BaseTokenList from '../tokenlists/base.json';
+// import PolygonTokenList from '../tokenlists/polygon.json';
+
 export interface CompoundLendingMarketConfig extends LendingMarketConfig {
   underlying: Token;
 }
@@ -227,20 +231,13 @@ export const CompoundConfigs: CompoundProtocolConfig = {
   ],
 };
 
-// export interface Compoundv3MarketConfig extends LendingCdpConfig {
-//   address: string;
-// }
-//
-// export interface Compoundv3Config extends ProtocolConfig {
-//   lendingCdps: Array<Compoundv3MarketConfig>;
-// }
-//
-// export const Compoundv3Configs: Compoundv3Config = {
+// export const Compoundv3Configs: ProtocolConfig = {
 //   protocol: 'compoundv3',
-//   lendingCdps: [
+//   lendingMarkets: [
 //     {
 //       chain: 'ethereum',
 //       protocol: 'compoundv3',
+//       type: ' cdp',
 //       version: 'compoundv3',
 //       birthday: 1660521600, // Mon Aug 15 2022 00:00:00 GMT+0000
 //       debtToken: EthereumTokenList.USDC,
@@ -249,6 +246,7 @@ export const CompoundConfigs: CompoundProtocolConfig = {
 //     {
 //       chain: 'ethereum',
 //       protocol: 'compoundv3',
+//       type: ' cdp',
 //       version: 'compoundv3',
 //       birthday: 1673654400, // Sat Jan 14 2023 00:00:00 GMT+0000
 //       debtToken: EthereumTokenList.WETH,
@@ -257,6 +255,7 @@ export const CompoundConfigs: CompoundProtocolConfig = {
 //     {
 //       chain: 'arbitrum',
 //       protocol: 'compoundv3',
+//       type: ' cdp',
 //       version: 'compoundv3',
 //       birthday: 1683244800, // Fri May 05 2023 00:00:00 GMT+0000
 //       debtToken: ArbitrumTokenList['USDC.e'],
@@ -265,6 +264,7 @@ export const CompoundConfigs: CompoundProtocolConfig = {
 //     {
 //       chain: 'arbitrum',
 //       protocol: 'compoundv3',
+//       type: ' cdp',
 //       version: 'compoundv3',
 //       birthday: 1692230400, // Thu Aug 17 2023 00:00:00 GMT+0000
 //       debtToken: ArbitrumTokenList.USDC,
@@ -273,6 +273,7 @@ export const CompoundConfigs: CompoundProtocolConfig = {
 //     {
 //       chain: 'base',
 //       protocol: 'compoundv3',
+//       type: ' cdp',
 //       version: 'compoundv3',
 //       birthday: 1691193600, // Sat Aug 05 2023 00:00:00 GMT+0000
 //       debtToken: BaseTokenList.USDbC,
@@ -281,6 +282,7 @@ export const CompoundConfigs: CompoundProtocolConfig = {
 //     {
 //       chain: 'base',
 //       protocol: 'compoundv3',
+//       type: ' cdp',
 //       version: 'compoundv3',
 //       birthday: 1691798400, // Sat Aug 12 2023 00:00:00 GMT+0000
 //       debtToken: BaseTokenList.USDC,
@@ -289,6 +291,7 @@ export const CompoundConfigs: CompoundProtocolConfig = {
 //     {
 //       chain: 'polygon',
 //       protocol: 'compoundv3',
+//       type: ' cdp',
 //       version: 'compoundv3',
 //       birthday: 1676764800, // Sun Feb 19 2023 00:00:00 GMT+0000
 //       debtToken: PolygonTokenList['USDC.e'],

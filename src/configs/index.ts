@@ -5,6 +5,7 @@ import { Aavev1Configs, Aavev2Configs, Aavev3Configs } from './protocols/aave';
 import { BenqiConfigs } from './protocols/benqi';
 import { CompoundConfigs } from './protocols/compound';
 import { IronbankConfigs } from './protocols/ironbank';
+import { LiquityConfigs } from './protocols/liquity';
 import { RadiantConfigs } from './protocols/radiant';
 import { SonneConfigs } from './protocols/sonne';
 import { SushiConfigs } from './protocols/sushi';
@@ -49,4 +50,5 @@ export const ProtocolConfigs: { [key: string]: ProtocolConfig } = {
   benqi: BenqiConfigs,
   sonne: SonneConfigs,
   sushi: SushiConfigs,
+  liquity: LiquityConfigs,
 };
