@@ -60,7 +60,7 @@ export default class LiquityAdapter extends ProtocolAdapter {
       chain: config.chain,
       target: config.troveManager,
       abi: TroveManagerAbi,
-      method: 'getBorrowingFee',
+      method: 'getBorrowingRate',
       params: [],
       blockNumber: blockNumber,
     });
@@ -95,14 +95,7 @@ export default class LiquityAdapter extends ProtocolAdapter {
       params: [],
       blockNumber: blockNumber,
     });
-    const borrowingFee = await this.services.blockchain.singlecall({
-      chain: marketConfig.chain,
-      abi: TroveManagerAbi,
-      target: marketConfig.troveManager,
-      method: 'getBorrowingFee',
-      params: [],
-      blockNumber: blockNumber,
-    });
+    const borrowingFee = await this.getBorrowingFee(marketConfig, blockNumber);
 
     const logs = await this.getDayContractLogs({
       chain: marketConfig.chain,
