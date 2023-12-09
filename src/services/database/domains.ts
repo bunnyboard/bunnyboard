@@ -1,3 +1,5 @@
+import { Collection } from 'mongodb';
+
 export interface MongoQueryOptions {
   limit: number;
   skip: number;
@@ -35,6 +37,9 @@ export interface IDatabaseService {
 
   // do connect to the database server
   connect: (mongoUri: string, databaseName: string) => Promise<void>;
+
+  // get raw collection
+  getCollection: (name: string) => Promise<Collection>;
 
   // insert a new document
   insert: (options: DatabaseInsertOptions) => Promise<void>;

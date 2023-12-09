@@ -11,34 +11,61 @@ import { LiquidityPoolConfig, OracleSourceUniv2, OracleSourceUniv3 } from '../..
 export default class UniswapLibs {
   public static async getPool2Constant(chain: string, address: string): Promise<LiquidityPoolConfig | null> {
     const blockchain = new BlockchainService();
-    const token0Address = await blockchain.singlecall({
+    const symbol = await blockchain.singlecall({
       chain: chain,
-      abi: UniswapV3PoolAbi,
+      abi: ERC20Abi,
       target: address,
-      method: 'token0',
+      method: 'symbol',
       params: [],
     });
-    const token1Address = await blockchain.singlecall({
+    const decimals = await blockchain.singlecall({
       chain: chain,
-      abi: UniswapV3PoolAbi,
+      abi: ERC20Abi,
       target: address,
-      method: 'token1',
+      method: 'decimals',
       params: [],
     });
-    const token0 = await blockchain.getTokenInfo({
-      chain: chain,
-      address: token0Address,
-    });
-    const token1 = await blockchain.getTokenInfo({
-      chain: chain,
-      address: token1Address,
-    });
-    if (token0 && token1) {
-      return {
+
+    if (symbol && decimals) {
+      const pool: LiquidityPoolConfig = {
         chain: chain,
         address: normalizeAddress(address),
-        tokens: [token0, token1],
+        symbol: symbol,
+        decimals: Number(decimals),
+        tokens: [],
       };
+
+      const token0Address = await blockchain.singlecall({
+        chain: chain,
+        abi: UniswapV3PoolAbi,
+        target: address,
+        method: 'token0',
+        params: [],
+      });
+      const token1Address = await blockchain.singlecall({
+        chain: chain,
+        abi: UniswapV3PoolAbi,
+        target: address,
+        method: 'token1',
+        params: [],
+      });
+
+      if (token0Address && token1Address) {
+        const token0 = await blockchain.getTokenInfo({
+          chain: chain,
+          address: token0Address,
+        });
+        const token1 = await blockchain.getTokenInfo({
+          chain: chain,
+          address: token1Address,
+        });
+        if (token0 && token1) {
+          pool.tokens.push(token0);
+          pool.tokens.push(token1);
+        }
+      }
+
+      return pool;
     }
 
     return null;

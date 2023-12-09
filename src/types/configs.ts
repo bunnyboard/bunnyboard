@@ -107,9 +107,7 @@ export interface OracleConfig {
   coingeckoId?: string;
 }
 
-export interface LiquidityPoolConfig {
-  chain: string;
-  address: string;
+export interface LiquidityPoolConfig extends Token {
   tokens: Array<Token>;
 }
 

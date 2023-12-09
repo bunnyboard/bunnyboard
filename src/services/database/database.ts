@@ -52,7 +52,7 @@ export default class DatabaseService implements IDatabaseService {
     }
   }
 
-  private async getCollection(name: string): Promise<Collection> {
+  public async getCollection(name: string): Promise<Collection> {
     let collection: Collection | null = null;
     if (this._connected) {
       collection = this._db ? this._db.collection(name) : null;

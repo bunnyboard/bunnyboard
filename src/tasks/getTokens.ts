@@ -1,3 +1,4 @@
+// import axios from 'axios';
 import axios from 'axios';
 import * as fs from 'fs';
 
@@ -21,7 +22,7 @@ export const TokenDefaultList: Array<string> = [
   'https://apiv5.paraswap.io/tokens/250',
 ];
 
-const chains: any = {
+const chains: { [key: number]: string } = {
   1: 'ethereum',
   10: 'optimism',
   56: 'bnbchain',
@@ -31,6 +32,8 @@ const chains: any = {
   250: 'fantom',
   43114: 'avalanche',
 };
+
+const directoryPath = './src/configs/tokenlists';
 
 (async function () {
   const tokenByChains: any = {
@@ -43,6 +46,12 @@ const chains: any = {
     fantom: {},
     avalanche: {},
   };
+
+  for (const chain of Object.values(chains)) {
+    if (fs.existsSync(`${directoryPath}/${chain}.json`)) {
+      tokenByChains[chain] = JSON.parse(fs.readFileSync(`${directoryPath}/${chain}.json`).toString());
+    }
+  }
 
   for (const list of TokenDefaultList) {
     const response = await axios.get(list);
@@ -62,6 +71,6 @@ const chains: any = {
   }
 
   for (const [chain, tokens] of Object.entries(tokenByChains)) {
-    fs.writeFileSync(`./src/configs/tokenlists/${chain}.json`, JSON.stringify(tokens));
+    fs.writeFileSync(`${directoryPath}/${chain}.json`, JSON.stringify(tokens));
   }
 })();
