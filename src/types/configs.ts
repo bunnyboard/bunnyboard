@@ -140,6 +140,9 @@ export interface MasterchefConfig {
   birthday: number;
   address: string;
   rewardToken: Token;
+
+  // original sushi masterchef is 10%
+  devRewardSharePercentage: number;
 }
 
 export interface ProtocolConfig {

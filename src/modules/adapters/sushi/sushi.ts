@@ -61,6 +61,14 @@ export default class SushiAdapter extends ProtocolAdapter {
       params: [],
       blockNumber: blockNumber,
     });
+    const totalAllocationPoint = await this.services.blockchain.singlecall({
+      chain: options.config.chain,
+      target: options.config.address,
+      abi: MasterchefAbi,
+      method: 'totalAllocPoint',
+      params: [],
+      blockNumber: blockNumber,
+    });
     for (let poolId = 0; poolId < Number(poolLength); poolId++) {
       const poolInfo = await this.services.blockchain.singlecall({
         chain: options.config.chain,
@@ -70,18 +78,9 @@ export default class SushiAdapter extends ProtocolAdapter {
         params: [poolId],
         blockNumber: blockNumber,
       });
-      const poolInfoEndDay = await this.services.blockchain.singlecall({
-        chain: options.config.chain,
-        target: options.config.address,
-        abi: MasterchefAbi,
-        method: 'poolInfo',
-        params: [poolId],
-        blockNumber: blockNumberEndDay,
-      });
 
       let lpToken = null;
       let lpAmount = new BigNumber(0);
-      let lpAmountEndDay = new BigNumber(0);
       try {
         lpToken = await UniswapLibs.getPool2Constant(options.config.chain, poolInfo.lpToken);
         lpAmount = new BigNumber(
@@ -94,30 +93,39 @@ export default class SushiAdapter extends ProtocolAdapter {
             blockNumber: blockNumber,
           }),
         );
-        lpAmountEndDay = new BigNumber(
-          await this.services.blockchain.singlecall({
-            chain: options.config.chain,
-            target: poolInfo.lpToken,
-            abi: Erc20Abi,
-            method: 'balanceOf',
-            params: [options.config.address],
-            blockNumber: blockNumberEndDay,
-          }),
-        );
       } catch (e: any) {}
 
       // reward earned were calculated by
-      const rewardEarned = new BigNumber(poolInfo.accSushiPerShare.toString()).multipliedBy(lpAmount);
-      const rewardEarnedEndDay = new BigNumber(poolInfoEndDay.accSushiPerShare.toString()).multipliedBy(lpAmountEndDay);
-      const rewardEarnedDiff = rewardEarnedEndDay.minus(rewardEarned);
+      // RewardEarned = (RewardTokenSupplyGrowth / (1 + DevSharesPercentage)) * (PoolAllocationPoint / TotalAllocationPoint)
+      const rewardTokenSupplyBefore = await this.services.blockchain.singlecall({
+        chain: options.config.chain,
+        abi: Erc20Abi,
+        target: options.config.rewardToken.address,
+        method: 'totalSupply',
+        params: [],
+        blockNumber: blockNumber,
+      });
+      const rewardTokenSupplyAfter = await this.services.blockchain.singlecall({
+        chain: options.config.chain,
+        abi: Erc20Abi,
+        target: options.config.rewardToken.address,
+        method: 'totalSupply',
+        params: [],
+        blockNumber: blockNumberEndDay,
+      });
+      const rewardTokenSupplyGrowth = new BigNumber(rewardTokenSupplyAfter.toString()).minus(
+        new BigNumber(rewardTokenSupplyBefore.toString()),
+      );
+      const rewardEarnedByPool = rewardTokenSupplyGrowth
+        .multipliedBy(poolInfo.allocPoint.toString())
+        .dividedBy(1 + options.config.devRewardSharePercentage / 100)
+        .dividedBy(new BigNumber(totalAllocationPoint.toString()));
 
       if (lpToken) {
         const tokenPrice = await this.services.oracle.getUniv2TokenPriceUsd({
           pool2: lpToken,
           timestamp: options.timestamp,
         });
-
-        console.log(lpToken.address, tokenPrice);
 
         let addressCount = {
           depositor: 0,
@@ -194,7 +202,7 @@ export default class SushiAdapter extends ProtocolAdapter {
           tokenPrice: tokenPrice ? tokenPrice : '0',
           allocationPoint: new BigNumber(poolInfo.allocPoint.toString()).toNumber(),
           totalDeposited: formatFromDecimals(lpAmount.toString(10), 18),
-          totalRewardEarned: formatFromDecimals(rewardEarnedDiff.toString(10), 36),
+          totalRewardEarned: formatFromDecimals(rewardEarnedByPool.toString(10), options.config.rewardToken.decimals),
 
           volumeDeposited: formatFromDecimals(volumeDeposited.toString(10), 18),
           volumeWithdrawn: formatFromDecimals(volumeWithdrawn.toString(10), 18),

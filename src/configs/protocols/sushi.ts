@@ -9,6 +9,7 @@ export const SushiConfigs: ProtocolConfig = {
       version: 'master',
       birthday: 1598486400, // Thu Aug 27 2020 00:00:00 GMT+0000
       address: '0xc2edad668740f1aa35e4d8f227fb8e17dca888cd',
+      devRewardSharePercentage: 10, // 10%
       rewardToken: {
         chain: 'ethereum',
         symbol: 'SUSHI',
