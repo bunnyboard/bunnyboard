@@ -54,7 +54,7 @@ export default class VenusAdapter extends CompoundAdapter {
         ],
         target: comptroller.address,
         method: 'venusSupplySpeeds',
-        params: [config.address],
+        params: [comptroller.address],
         blockNumber: blockNumber,
       });
       const borrowSpeed = await this.services.blockchain.singlecall({
@@ -84,7 +84,7 @@ export default class VenusAdapter extends CompoundAdapter {
         ],
         target: comptroller.address,
         method: 'venusBorrowSpeeds',
-        params: [config.address],
+        params: [comptroller.address],
         blockNumber: blockNumber,
       });
 
