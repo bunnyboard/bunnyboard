@@ -43,6 +43,7 @@ export function getRouter(services: ContextServices): Router {
   // get all snapshots of a market
   router.get('/market/chain/:chain/address/:address/token/:token', async (request: Request, response: Response) => {
     const { chain, address, token } = request.params;
+    const { order } = request.query;
 
     const documents: Array<any> = await services.database.query({
       collection: EnvConfig.mongodb.collections.lendingMarketSnapshots,
@@ -50,6 +51,11 @@ export function getRouter(services: ContextServices): Router {
         chain,
         address: normalizeAddress(address),
         'token.address': normalizeAddress(token),
+      },
+      options: {
+        limit: 1,
+        skip: 0,
+        order: { timestamp: order && order === 'oldest' ? 1 : -1 },
       },
     });
     const snapshots: Array<any> = [];
