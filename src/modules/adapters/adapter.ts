@@ -92,17 +92,19 @@ export default class ProtocolAdapter implements IProtocolAdapter {
       }
     }
 
-    await this.services.database.update({
-      collection: EnvConfig.mongodb.collections.caching,
-      keys: {
-        name: cachingKey,
-      },
-      updates: {
-        name: cachingKey,
-        logs: logs,
-      },
-      upsert: true,
-    });
+    try {
+      await this.services.database.update({
+        collection: EnvConfig.mongodb.collections.caching,
+        keys: {
+          name: cachingKey,
+        },
+        updates: {
+          name: cachingKey,
+          logs: logs,
+        },
+        upsert: true,
+      });
+    } catch (e: any) {}
 
     return logs;
   }
