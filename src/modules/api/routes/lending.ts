@@ -53,7 +53,7 @@ export function getRouter(services: ContextServices): Router {
         'token.address': normalizeAddress(token),
       },
       options: {
-        limit: 1,
+        limit: 0, // no limit
         skip: 0,
         order: { timestamp: order && order === 'oldest' ? 1 : -1 },
       },
