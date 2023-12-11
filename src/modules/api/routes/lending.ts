@@ -9,18 +9,26 @@ import { writeResponse } from '../middleware';
 export function getRouter(services: ContextServices): Router {
   const router = Router({ mergeParams: true });
 
-  // query all market at latest snapshot
+  // query all latest snapshots of all unique markets
   router.get('/market/latest', async (request: Request, response: Response) => {
     // first, we get unique market ids
     const collection = await services.database.getCollection(EnvConfig.mongodb.collections.lendingMarketSnapshots);
 
-    const marketIds = await collection.distinct('marketId');
+    const groupUniques = await collection
+      .aggregate([
+        { $group: { _id: { protocol: '$protocol', chain: '$chain', address: '$address', token: '$token.address' } } },
+      ])
+      .toArray();
+
     const snapshots: Array<any> = [];
-    for (const marketId of marketIds) {
+    for (const uniqueId of groupUniques) {
       const latestSnapshot = await services.database.find({
         collection: EnvConfig.mongodb.collections.lendingMarketSnapshots,
         query: {
-          marketId: marketId,
+          chain: uniqueId._id.chain,
+          protocol: uniqueId._id.protocol,
+          address: uniqueId._id.address,
+          'token.address': uniqueId._id.token,
         },
         options: {
           limit: 1,
