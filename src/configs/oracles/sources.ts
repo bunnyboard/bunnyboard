@@ -187,6 +187,7 @@ export const OracleSourceConfigs: { [key: string]: OracleConfig } = {
   SUSHI: {
     currency: 'eth',
     sources: [OracleSourceUniswapv2List.SUSHI_WETH],
+    coingeckoId: 'sushi',
   },
   wstETH: {
     currency: 'eth',

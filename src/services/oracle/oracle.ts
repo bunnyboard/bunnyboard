@@ -246,13 +246,18 @@ export default class OracleService extends CachingService implements IOracleServ
     });
 
     if (new BigNumber(lpSupply.toString()).gt(0)) {
+      let token0Price = null;
       let token1Price = null;
-      let token0Price = await this.getTokenPriceUsd({
-        chain: options.pool2.chain,
-        address: options.pool2.tokens[0].address,
-        timestamp: options.timestamp,
-      });
-      if (!token0Price) {
+      if (OracleConfigs[options.pool2.chain] && OracleConfigs[options.pool2.chain][options.pool2.tokens[0].address]) {
+        token0Price = await this.getTokenPriceUsd({
+          chain: options.pool2.chain,
+          address: options.pool2.tokens[0].address,
+          timestamp: options.timestamp,
+        });
+      } else if (
+        OracleConfigs[options.pool2.chain] &&
+        OracleConfigs[options.pool2.chain][options.pool2.tokens[0].address]
+      ) {
         token1Price = await this.getTokenPriceUsd({
           chain: options.pool2.chain,
           address: options.pool2.tokens[1].address,

@@ -118,8 +118,9 @@ export default class SushiAdapter extends ProtocolAdapter {
       );
       const rewardEarnedByPool = rewardTokenSupplyGrowth
         .multipliedBy(poolInfo.allocPoint.toString())
-        .dividedBy(1 + options.config.devRewardSharePercentage / 100)
+        .dividedBy(100 + options.config.devRewardSharePercentage / 100)
         .dividedBy(new BigNumber(totalAllocationPoint.toString()));
+      const rewardEarnedByProtocol = rewardTokenSupplyGrowth.minus(rewardEarnedByPool);
 
       if (lpToken) {
         const tokenPrice = await this.services.oracle.getUniv2TokenPriceUsd({
@@ -127,15 +128,12 @@ export default class SushiAdapter extends ProtocolAdapter {
           timestamp: options.timestamp,
         });
 
-        let addressCount = {
-          depositor: 0,
-          withdrawer: 0,
-        };
         let transactionCount = 0;
         let volumeDeposited = new BigNumber(0);
         let volumeWithdrawn = new BigNumber(0);
 
-        const addresses: any = {};
+        const depositors: any = {};
+        const withdrawers: any = {};
         const transactions: any = {};
         for (const log of logs) {
           const signature = log.topics[0];
@@ -164,9 +162,8 @@ export default class SushiAdapter extends ProtocolAdapter {
 
             switch (signature) {
               case eventSignatures.Deposit: {
-                if (!addresses[normalizeAddress(event.user)]) {
-                  addressCount.depositor += 1;
-                  addresses[normalizeAddress(event.user)] = true;
+                if (!depositors[normalizeAddress(event.user)]) {
+                  depositors[normalizeAddress(event.user)] = true;
                 }
 
                 volumeDeposited = volumeDeposited.plus(new BigNumber(event.amount.toString()));
@@ -174,9 +171,8 @@ export default class SushiAdapter extends ProtocolAdapter {
               }
               case eventSignatures.Withdraw:
               case eventSignatures.EmergencyWithdraw: {
-                if (!addresses[normalizeAddress(event.user)]) {
-                  addressCount.withdrawer += 1;
-                  addresses[normalizeAddress(event.user)] = true;
+                if (!withdrawers[normalizeAddress(event.user)]) {
+                  withdrawers[normalizeAddress(event.user)] = true;
                 }
 
                 volumeWithdrawn = volumeWithdrawn.plus(new BigNumber(event.amount.toString()));
@@ -226,6 +222,16 @@ export default class SushiAdapter extends ProtocolAdapter {
                 tokenAmount: formatFromDecimals(rewardEarnedByPool.toString(10), options.config.rewardToken.decimals),
               },
             ],
+            forProtocol: [
+              {
+                token: options.config.rewardToken,
+                tokenPrice: rewardTokenPrice ? rewardTokenPrice : '0',
+                tokenAmount: formatFromDecimals(
+                  rewardEarnedByProtocol.toString(10),
+                  options.config.rewardToken.decimals,
+                ),
+              },
+            ],
           },
 
           volumes: {
@@ -238,8 +244,8 @@ export default class SushiAdapter extends ProtocolAdapter {
           },
 
           addressCount: {
-            depositors: addressCount.depositor,
-            withdrawers: addressCount.withdrawer,
+            depositors: Object.keys(depositors).length,
+            withdrawers: Object.keys(withdrawers).length,
           },
 
           transactionCount: transactionCount,

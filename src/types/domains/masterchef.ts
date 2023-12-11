@@ -30,6 +30,7 @@ export interface VolumeCountEntryLending extends VolumeCountEntry {
 
 export interface RewardCountEntryMasterchef extends RewardCountEntry {
   forStakers: Array<TokenRewardEntry>;
+  forProtocol: Array<TokenRewardEntry>;
 }
 
 export interface MasterchefPoolRates {
