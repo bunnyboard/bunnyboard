@@ -7,7 +7,7 @@ import logger from '../../../lib/logger';
 import { tryQueryBlockNumberAtTimestamp } from '../../../lib/subsgraph';
 import { formatFromDecimals, getDateString, normalizeAddress } from '../../../lib/utils';
 import { ProtocolConfig } from '../../../types/configs';
-import { LendingCdpSnapshot, LendingMarketSnapshot } from '../../../types/domains';
+import { LendingCdpSnapshot, LendingMarketSnapshot } from '../../../types/domains/lending';
 import { ContextServices } from '../../../types/namespaces';
 import { GetLendingMarketSnapshotOptions } from '../../../types/options';
 import ProtocolAdapter from '../adapter';
@@ -126,16 +126,14 @@ export default class LiquityAdapter extends ProtocolAdapter {
       if (!borrowers[borrower]) {
         borrowers[borrower] = true;
         await this.booker.saveAddressBookLending({
-          addressId: `${marketConfig.chain}-${normalizeAddress(marketConfig.address)}-${marketConfig.protocol}-${
-            marketConfig.address
-          }-${marketConfig.debtToken.address}-${marketConfig.collateralToken.address}-borrower`,
           chain: marketConfig.chain,
           protocol: this.config.protocol,
           role: 'borrower',
+          sector: 'lending',
           address: borrower,
+          market: marketConfig.address,
+          token: marketConfig.collateralToken.address,
           firstTime: options.timestamp,
-          marketAddress: normalizeAddress(marketConfig.address),
-          tokenAddress: normalizeAddress(marketConfig.debtToken.address),
         });
       }
 
@@ -201,12 +199,6 @@ export default class LiquityAdapter extends ProtocolAdapter {
 
     return [
       {
-        marketId: `${marketConfig.protocol}-${marketConfig.chain}-${normalizeAddress(
-          marketConfig.address,
-        )}-${normalizeAddress(marketConfig.debtToken.address)}-${normalizeAddress(
-          marketConfig.collateralToken.address,
-        )}`,
-
         type: marketConfig.type,
         chain: marketConfig.chain,
         protocol: marketConfig.protocol,
@@ -218,27 +210,37 @@ export default class LiquityAdapter extends ProtocolAdapter {
         collateralToken: marketConfig.collateralToken,
         collateralTokenPrice: collateralTokenPrice ? collateralTokenPrice : '0',
 
-        totalDeposited: formatFromDecimals(totalColl.toString(), marketConfig.collateralToken.decimals),
-        totalBorrowed: formatFromDecimals(totalDebt.toString(), marketConfig.debtToken.decimals),
-        totalFeesCollected: formatFromDecimals(totalFeesCollected.toString(10), marketConfig.debtToken.decimals),
+        balances: {
+          deposit: formatFromDecimals(totalColl.toString(), marketConfig.collateralToken.decimals),
+          borrow: formatFromDecimals(totalDebt.toString(), marketConfig.debtToken.decimals),
+          fees: formatFromDecimals(totalFeesCollected.toString(10), marketConfig.debtToken.decimals),
+        },
 
-        volumeDeposited: formatFromDecimals(volumeDeposited.toString(10), marketConfig.collateralToken.decimals),
-        volumeWithdrawn: formatFromDecimals(volumeWithdrawn.toString(10), marketConfig.collateralToken.decimals),
-        volumeBorrowed: formatFromDecimals(volumeBorrowed.toString(10), marketConfig.debtToken.decimals),
-        volumeRepaid: formatFromDecimals(volumeRepaid.toString(10), marketConfig.debtToken.decimals),
-        volumeLiquidated: formatFromDecimals(volumeLiquidated.toString(10), marketConfig.collateralToken.decimals),
+        volumes: {
+          deposit: formatFromDecimals(volumeDeposited.toString(10), marketConfig.collateralToken.decimals),
+          withdraw: formatFromDecimals(volumeWithdrawn.toString(10), marketConfig.collateralToken.decimals),
+          borrow: formatFromDecimals(volumeBorrowed.toString(10), marketConfig.debtToken.decimals),
+          repay: formatFromDecimals(volumeRepaid.toString(10), marketConfig.debtToken.decimals),
+          liquidate: formatFromDecimals(volumeLiquidated.toString(10), marketConfig.collateralToken.decimals),
+        },
+
+        rates: {
+          supply: '0',
+          borrow: formatFromDecimals(borrowingFee.toString(), 18), // on-time paid
+        },
+
+        rewards: {
+          forLenders: [],
+          forBorrowers: [],
+        },
 
         addressCount: {
+          lenders: 0,
           borrowers: Object.keys(borrowers).length,
+          liquidators: 0,
         },
 
         transactionCount: Object.keys(transactions).length,
-
-        supplyRate: '0',
-        borrowRate: formatFromDecimals(borrowingFee.toString(), 18), // on-time paid
-
-        tokenRewardsForLenders: [],
-        tokenRewardsForBorrowers: [],
       },
     ];
   }

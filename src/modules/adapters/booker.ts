@@ -2,18 +2,9 @@
 // to format and save data
 import EnvConfig from '../../configs/envConfig';
 import { normalizeAddress } from '../../lib/utils';
-import { AddressBookEntry } from '../../types/domains';
+import { AddressBookEntryLending } from '../../types/domains/lending';
+import { AddressBookEntryMasterchef } from '../../types/domains/masterchef';
 import { ContextServices } from '../../types/namespaces';
-
-export interface AddressBookLendingOptions extends AddressBookEntry {
-  marketAddress: string;
-  tokenAddress: string;
-}
-
-export interface AddressBookMasterchefOptions extends AddressBookEntry {
-  masterchef: string;
-  poolId: number;
-}
 
 export default class Booker {
   public readonly name: string = 'booker';
@@ -23,64 +14,38 @@ export default class Booker {
     this.services = services;
   }
 
-  public async saveAddressBookLending(options: AddressBookLendingOptions): Promise<void> {
-    const addressId =
-      options.addressId !== ''
-        ? `${options.chain}-${normalizeAddress(options.address)}-${options.protocol}-${options.marketAddress}-${
-            options.tokenAddress
-          }-${options.role}`
-        : options.addressId;
-    await this.saveAddressBook({
-      addressId: addressId,
-      chain: options.chain,
-      protocol: options.protocol,
-      address: options.address,
-      role: options.role,
-      firstTime: options.firstTime,
-    });
+  public async saveAddressBookLending(options: AddressBookEntryLending): Promise<void> {
+    const addressId = `${options.chain}-${normalizeAddress(options.address)}-${options.protocol}-${options.sector}-${
+      options.market
+    }-${options.token}-${options.role}`;
+    await this.saveAddress(addressId, options);
   }
 
-  public async saveAddressBookMasterchef(options: AddressBookMasterchefOptions): Promise<void> {
-    const addressId =
-      options.addressId !== ''
-        ? `${options.chain}-${normalizeAddress(options.address)}-${options.protocol}-${options.masterchef}-${
-            options.poolId
-          }-${options.role}`
-        : options.addressId;
-    await this.saveAddressBook({
-      addressId: addressId,
-      chain: options.chain,
-      protocol: options.protocol,
-      address: options.address,
-      role: options.role,
-      firstTime: options.firstTime,
-    });
+  public async saveAddressBookMasterchef(options: AddressBookEntryMasterchef): Promise<void> {
+    const addressId = `${options.chain}-${normalizeAddress(options.address)}-${options.protocol}-${options.sector}-${
+      options.masterchef
+    }-${options.poolId}-${options.role}`;
+    await this.saveAddress(addressId, options);
   }
 
-  private async saveAddressBook(options: AddressBookEntry) {
+  private async saveAddress(addressId: string, addressEntry: any): Promise<void> {
     const existed = await this.services.database.find({
       collection: EnvConfig.mongodb.collections.addressBook,
       query: {
-        addressId: options.addressId,
+        addressId: addressId,
       },
     });
     if (!existed) {
       await this.services.database.update({
         collection: EnvConfig.mongodb.collections.addressBook,
         keys: {
-          addressId: options.addressId,
+          addressId: addressId,
         },
         updates: {
-          ...options,
+          ...addressEntry,
         },
         upsert: true,
       });
-      // logger.info('saved new address snapshot', {
-      //   service: this.name,
-      //   protocol: options.protocol,
-      //   address: options.address,
-      //   role: options.role,
-      // });
     }
   }
 }

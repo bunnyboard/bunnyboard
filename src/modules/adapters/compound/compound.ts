@@ -10,7 +10,8 @@ import logger from '../../../lib/logger';
 import { tryQueryBlockNumberAtTimestamp } from '../../../lib/subsgraph';
 import { compareAddress, formatFromDecimals, getDateString, normalizeAddress } from '../../../lib/utils';
 import { LendingMarketConfig, ProtocolConfig } from '../../../types/configs';
-import { LendingCdpSnapshot, LendingMarketSnapshot, TokenRewardEntry } from '../../../types/domains';
+import { TokenRewardEntry } from '../../../types/domains/base';
+import { LendingCdpSnapshot, LendingMarketSnapshot } from '../../../types/domains/lending';
 import { ContextServices } from '../../../types/namespaces';
 import { GetLendingMarketSnapshotOptions } from '../../../types/options';
 import ProtocolAdapter from '../adapter';
@@ -203,6 +204,7 @@ export default class CompoundAdapter extends ProtocolAdapter {
       .plus(new BigNumber(totalBorrows.toString()))
       .minus(new BigNumber(totalReserves.toString()));
     const totalBorrowed = new BigNumber(totalBorrows.toString());
+    const totalFeesCollected = totalDeposited.multipliedBy(new BigNumber(borrowRate)).dividedBy(365);
 
     const token = (options.config as CompoundLendingMarketConfig).underlying;
     const tokenPrice = await this.services.oracle.getTokenPriceUsd({
@@ -211,7 +213,6 @@ export default class CompoundAdapter extends ProtocolAdapter {
       timestamp: options.timestamp,
     });
 
-    let feesCollected = new BigNumber(0);
     let volumeDeposited = new BigNumber(0);
     let volumeWithdrawn = new BigNumber(0);
     let volumeBorrowed = new BigNumber(0);
@@ -232,8 +233,6 @@ export default class CompoundAdapter extends ProtocolAdapter {
         eventSignatures.Borrow,
         eventSignatures.Repay,
         eventSignatures.Liquidate,
-        eventSignatures.AccrueInterest,
-        eventSignatures.AccrueInterestEther,
       ],
       dayStartTimestamp: options.timestamp,
     });
@@ -251,12 +250,6 @@ export default class CompoundAdapter extends ProtocolAdapter {
       const signature = log.topics[0];
       const event = web3.eth.abi.decodeLog(this.abiConfigs.eventAbiMappings[signature], log.data, log.topics.slice(1));
       switch (signature) {
-        case eventSignatures.AccrueInterest:
-        case eventSignatures.AccrueInterestEther: {
-          feesCollected = feesCollected.plus(new BigNumber(event.interestAccumulated.toString()));
-          break;
-        }
-
         case eventSignatures.Mint:
         case eventSignatures.Redeem: {
           if (signature === eventSignatures.Mint) {
@@ -272,12 +265,12 @@ export default class CompoundAdapter extends ProtocolAdapter {
           }
 
           await this.booker.saveAddressBookLending({
-            addressId: '', // filled by booker
             chain: marketConfig.chain,
             protocol: marketConfig.protocol,
             address: address,
-            marketAddress: marketConfig.address,
-            tokenAddress: token.address,
+            market: marketConfig.address,
+            token: token.address,
+            sector: 'lending',
             role: 'lender',
             firstTime: options.timestamp,
           });
@@ -293,12 +286,12 @@ export default class CompoundAdapter extends ProtocolAdapter {
             volumeRepaid = volumeRepaid.plus(new BigNumber(event[2].toString()));
 
             await this.booker.saveAddressBookLending({
-              addressId: '', // filled by booker
               chain: marketConfig.chain,
               protocol: marketConfig.protocol,
               address: normalizeAddress(event[1].toString()),
-              marketAddress: marketConfig.address,
-              tokenAddress: token.address,
+              market: marketConfig.address,
+              token: token.address,
+              sector: 'lending',
               role: 'borrower',
               firstTime: options.timestamp,
             });
@@ -311,12 +304,12 @@ export default class CompoundAdapter extends ProtocolAdapter {
           }
 
           await this.booker.saveAddressBookLending({
-            addressId: '', // filled by booker
             chain: marketConfig.chain,
             protocol: marketConfig.protocol,
             address: normalizeAddress(event[0].toString()),
-            marketAddress: marketConfig.address,
-            tokenAddress: token.address,
+            market: marketConfig.address,
+            token: token.address,
+            sector: 'lending',
             role: 'borrower',
             firstTime: options.timestamp,
           });
@@ -335,12 +328,12 @@ export default class CompoundAdapter extends ProtocolAdapter {
           }
 
           await this.booker.saveAddressBookLending({
-            addressId: '', // filled by booker
             chain: marketConfig.chain,
             protocol: marketConfig.protocol,
             address: normalizeAddress(event[0].toString()),
-            marketAddress: marketConfig.address,
-            tokenAddress: token.address,
+            market: marketConfig.address,
+            token: token.address,
+            sector: 'lending',
             role: 'borrower',
             firstTime: options.timestamp,
           });
@@ -397,12 +390,12 @@ export default class CompoundAdapter extends ProtocolAdapter {
           }
 
           await this.booker.saveAddressBookLending({
-            addressId: '', // filled by booker
             chain: marketConfig.chain,
             protocol: marketConfig.protocol,
             address: liquidator,
-            marketAddress: marketConfig.address,
-            tokenAddress: token.address,
+            market: marketConfig.address,
+            token: token.address,
+            sector: 'lending',
             role: 'liquidator',
             firstTime: options.timestamp,
           });
@@ -423,10 +416,6 @@ export default class CompoundAdapter extends ProtocolAdapter {
     const rewards = await this.getMarketRewards(options.config, options.timestamp);
 
     snapshots.push({
-      marketId: `${marketConfig.protocol}-${marketConfig.chain}-${normalizeAddress(
-        marketConfig.address,
-      )}-${normalizeAddress(token.address)}`,
-
       type: 'cross',
       chain: marketConfig.chain,
       protocol: marketConfig.protocol,
@@ -436,15 +425,29 @@ export default class CompoundAdapter extends ProtocolAdapter {
       token: token,
       tokenPrice: tokenPrice ? tokenPrice : '0',
 
-      totalDeposited: formatFromDecimals(totalDeposited.toString(10), token.decimals),
-      totalBorrowed: formatFromDecimals(totalBorrowed.toString(10), token.decimals),
-      totalFeesCollected: formatFromDecimals(feesCollected.toString(10), token.decimals),
+      balances: {
+        deposit: formatFromDecimals(totalDeposited.toString(10), token.decimals),
+        borrow: formatFromDecimals(totalBorrowed.toString(10), token.decimals),
+        fees: formatFromDecimals(totalFeesCollected.toString(10), token.decimals),
+      },
 
-      volumeDeposited: formatFromDecimals(volumeDeposited.toString(10), token.decimals),
-      volumeWithdrawn: formatFromDecimals(volumeWithdrawn.toString(10), token.decimals),
-      volumeBorrowed: formatFromDecimals(volumeBorrowed.toString(10), token.decimals),
-      volumeRepaid: formatFromDecimals(volumeRepaid.toString(10), token.decimals),
-      volumeLiquidated: formatFromDecimals(volumeLiquidated.toString(10), token.decimals),
+      volumes: {
+        deposit: formatFromDecimals(volumeDeposited.toString(10), token.decimals),
+        withdraw: formatFromDecimals(volumeWithdrawn.toString(10), token.decimals),
+        borrow: formatFromDecimals(volumeBorrowed.toString(10), token.decimals),
+        repay: formatFromDecimals(volumeRepaid.toString(10), token.decimals),
+        liquidate: formatFromDecimals(volumeLiquidated.toString(10), token.decimals),
+      },
+
+      rates: {
+        supply: supplyRate,
+        borrow: borrowRate,
+      },
+
+      rewards: {
+        forLenders: rewards.lenderTokenRewards,
+        forBorrowers: rewards.borrowerTokenRewards,
+      },
 
       addressCount: {
         lenders: countLenders,
@@ -453,12 +456,6 @@ export default class CompoundAdapter extends ProtocolAdapter {
       },
 
       transactionCount: countTransactions,
-
-      supplyRate: supplyRate,
-      borrowRate: borrowRate,
-
-      tokenRewardsForLenders: rewards.lenderTokenRewards,
-      tokenRewardsForBorrowers: rewards.borrowerTokenRewards,
     });
 
     logger.info('updated lending market snapshot', {

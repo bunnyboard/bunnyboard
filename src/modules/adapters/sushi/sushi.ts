@@ -2,13 +2,13 @@ import BigNumber from 'bignumber.js';
 
 import Erc20Abi from '../../../configs/abi/ERC20.json';
 import MasterchefAbi from '../../../configs/abi/sushi/Masterchef.json';
-import { DAY } from '../../../configs/constants';
+import { DAY, YEAR } from '../../../configs/constants';
 import EnvConfig from '../../../configs/envConfig';
 import logger from '../../../lib/logger';
 import { tryQueryBlockNumberAtTimestamp } from '../../../lib/subsgraph';
 import { formatFromDecimals, getDateString, normalizeAddress } from '../../../lib/utils';
 import { ProtocolConfig } from '../../../types/configs';
-import { MasterchefPoolSnapshot } from '../../../types/domains';
+import { MasterchefPoolSnapshot } from '../../../types/domains/masterchef';
 import { ContextServices } from '../../../types/namespaces';
 import { GetMasterchefSnapshotOptions } from '../../../types/options';
 import UniswapLibs from '../../libs/uniswap';
@@ -152,13 +152,12 @@ export default class SushiAdapter extends ProtocolAdapter {
             }
 
             await this.booker.saveAddressBookMasterchef({
-              addressId: '', // filled by booker
               chain: options.config.chain,
               protocol: options.config.protocol,
               address: normalizeAddress(event.user),
+              sector: 'masterchef',
               role: 'staker',
               firstTime: options.timestamp,
-
               masterchef: options.config.address,
               poolId: poolId,
             });
@@ -187,6 +186,19 @@ export default class SushiAdapter extends ProtocolAdapter {
           }
         }
 
+        const rewardTokenPrice = await this.services.oracle.getTokenPriceUsd({
+          chain: options.config.chain,
+          address: options.config.rewardToken.address,
+          timestamp: options.timestamp,
+        });
+
+        // rate = TotalRewardEarn * 365 / TotalDeposit
+        const rewardRate = new BigNumber(rewardEarnedByPool.toString(10))
+          .multipliedBy(rewardTokenPrice ? rewardTokenPrice : '0')
+          .multipliedBy(YEAR)
+          .dividedBy(lpAmount.multipliedBy(tokenPrice ? tokenPrice : '0'))
+          .toString(10);
+
         poolSnapshots.push({
           chain: options.config.chain,
           protocol: options.config.protocol,
@@ -201,14 +213,36 @@ export default class SushiAdapter extends ProtocolAdapter {
           },
           tokenPrice: tokenPrice ? tokenPrice : '0',
           allocationPoint: new BigNumber(poolInfo.allocPoint.toString()).toNumber(),
-          totalDeposited: formatFromDecimals(lpAmount.toString(10), 18),
-          totalRewardEarned: formatFromDecimals(rewardEarnedByPool.toString(10), options.config.rewardToken.decimals),
 
-          volumeDeposited: formatFromDecimals(volumeDeposited.toString(10), 18),
-          volumeWithdrawn: formatFromDecimals(volumeWithdrawn.toString(10), 18),
+          balances: {
+            deposit: formatFromDecimals(lpAmount.toString(10), 18),
+          },
+
+          rewards: {
+            forStakers: [
+              {
+                token: options.config.rewardToken,
+                tokenPrice: rewardTokenPrice ? rewardTokenPrice : '0',
+                tokenAmount: formatFromDecimals(rewardEarnedByPool.toString(10), options.config.rewardToken.decimals),
+              },
+            ],
+          },
+
+          volumes: {
+            deposit: formatFromDecimals(volumeDeposited.toString(10), 18),
+            withdraw: formatFromDecimals(volumeWithdrawn.toString(10), 18),
+          },
+
+          rates: {
+            reward: rewardRate,
+          },
+
+          addressCount: {
+            depositors: addressCount.depositor,
+            withdrawers: addressCount.withdrawer,
+          },
 
           transactionCount: transactionCount,
-          addressCount: addressCount,
         });
 
         logger.info('updated masterchef pool snapshot', {

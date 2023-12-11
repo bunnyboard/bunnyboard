@@ -2,7 +2,8 @@ import { IBlockchainService } from '../services/blockchains/domains';
 import { IDatabaseService } from '../services/database/domains';
 import { IOracleService } from '../services/oracle/domains';
 import { ProtocolConfig } from './configs';
-import { LendingCdpSnapshot, LendingMarketSnapshot, MasterchefPoolSnapshot } from './domains';
+import { LendingCdpSnapshot, LendingMarketSnapshot } from './domains/lending';
+import { MasterchefPoolSnapshot } from './domains/masterchef';
 import {
   AdapterAbiConfigs,
   GetLendingMarketSnapshotOptions,

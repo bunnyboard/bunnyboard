@@ -2,7 +2,7 @@ import BigNumber from 'bignumber.js';
 
 import AaveDataProviderV3Abi from '../../../configs/abi/aave/DataProviderV3.json';
 import AaveIncentiveControllerV3Abi from '../../../configs/abi/aave/IncentiveControllerV3.json';
-import { DAY } from '../../../configs/constants';
+import { DAY, ONE_RAY } from '../../../configs/constants';
 import EnvConfig from '../../../configs/envConfig';
 import { AaveLendingMarketConfig } from '../../../configs/protocols/aave';
 import { tryQueryBlockNumberAtTimestamp } from '../../../lib/subsgraph';
@@ -46,6 +46,23 @@ export default class Aavev3Adapter extends Aavev2Adapter {
     );
 
     return totalBorrowed.toString(10);
+  }
+
+  // return total borrowed (in wei)
+  protected getTotalFeesCollected(reserveData: any): string {
+    const totalBorrowStable = new BigNumber(reserveData.totalStableDebt.toString());
+    const totalBorrowVariable = new BigNumber(reserveData.totalVariableDebt.toString());
+
+    const borrowRateStable = new BigNumber(reserveData.stableBorrowRate.toString());
+    const borrowRateVariable = new BigNumber(reserveData.variableBorrowRate.toString());
+
+    const feesCollectedStable = totalBorrowStable.multipliedBy(borrowRateStable).dividedBy(ONE_RAY).dividedBy(365);
+    const feesCollectedVariable = totalBorrowVariable
+      .multipliedBy(borrowRateVariable)
+      .dividedBy(ONE_RAY)
+      .dividedBy(365);
+
+    return feesCollectedStable.plus(feesCollectedVariable).toString(10);
   }
 
   protected async getIncentiveRewards(

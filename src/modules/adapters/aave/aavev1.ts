@@ -1,14 +1,15 @@
 import BigNumber from 'bignumber.js';
 
 import AaveLendingPoolV1Abi from '../../../configs/abi/aave/LendingPoolV1.json';
-import { DAY, ONE_RAY } from '../../../configs/constants';
+import { ONE_RAY } from '../../../configs/constants';
 import EnvConfig from '../../../configs/envConfig';
 import { AaveLendingMarketConfig } from '../../../configs/protocols/aave';
 import logger from '../../../lib/logger';
 import { tryQueryBlockNumberAtTimestamp } from '../../../lib/subsgraph';
 import { compareAddress, formatFromDecimals, getDateString, normalizeAddress } from '../../../lib/utils';
 import { ProtocolConfig, Token } from '../../../types/configs';
-import { LendingCdpSnapshot, LendingMarketSnapshot, TokenRewardEntry } from '../../../types/domains';
+import { TokenRewardEntry } from '../../../types/domains/base';
+import { LendingCdpSnapshot, LendingMarketSnapshot } from '../../../types/domains/lending';
 import { ContextServices } from '../../../types/namespaces';
 import { GetLendingMarketSnapshotOptions } from '../../../types/options';
 import ProtocolAdapter from '../adapter';
@@ -55,6 +56,23 @@ export default class Aavev1Adapter extends ProtocolAdapter {
     return totalBorrowed.toString(10);
   }
 
+  // return total borrowed (in wei)
+  protected getTotalFeesCollected(reserveData: any): string {
+    const totalBorrowStable = new BigNumber(reserveData.totalBorrowsStable.toString());
+    const totalBorrowVariable = new BigNumber(reserveData.totalBorrowsVariable.toString());
+
+    const borrowRateStable = new BigNumber(reserveData.stableBorrowRate.toString());
+    const borrowRateVariable = new BigNumber(reserveData.variableBorrowRate.toString());
+
+    const feesCollectedStable = totalBorrowStable.multipliedBy(borrowRateStable).dividedBy(ONE_RAY).dividedBy(365);
+    const feesCollectedVariable = totalBorrowVariable
+      .multipliedBy(borrowRateVariable)
+      .dividedBy(ONE_RAY)
+      .dividedBy(365);
+
+    return feesCollectedStable.plus(feesCollectedVariable).toString(10);
+  }
+
   protected async getReservesList(config: AaveLendingMarketConfig, blockNumber: number): Promise<any> {
     return await this.services.blockchain.singlecall({
       chain: config.chain,
@@ -90,6 +108,7 @@ export default class Aavev1Adapter extends ProtocolAdapter {
 
   protected async getEventStats(
     config: AaveLendingMarketConfig,
+    logs: Array<any>,
     token: Token,
     timestamp: number,
   ): Promise<AaveMarketEventStats> {
@@ -105,13 +124,6 @@ export default class Aavev1Adapter extends ProtocolAdapter {
     let countLiquidators = 0;
     let countTransactions = 0;
 
-    const logs = await this.getDayContractLogs({
-      chain: config.chain,
-      address: config.address,
-      topics: Object.values(eventSignatures),
-      dayStartTimestamp: timestamp,
-    });
-
     const web3 = this.services.blockchain.getProvider(config.chain);
 
     const addresses: { [key: string]: boolean } = {};
@@ -121,13 +133,15 @@ export default class Aavev1Adapter extends ProtocolAdapter {
       const event = web3.eth.abi.decodeLog(this.abiConfigs.eventAbiMappings[signature], log.data, log.topics.slice(1));
 
       let reserve;
+      let collateralAddress = '';
       if (signature === eventSignatures.Liquidate) {
         reserve = normalizeAddress(event._reserve ? event._reserve : event.debtAsset);
+        collateralAddress = normalizeAddress(event._collateral ? event._collateral : event.collateralAsset);
       } else {
         reserve = normalizeAddress(event._reserve ? event._reserve : event.reserve);
       }
 
-      if (compareAddress(reserve, token.address)) {
+      if (compareAddress(reserve, token.address) || compareAddress(collateralAddress, token.address)) {
         if (!transactions[log.transactionHash]) {
           transactions[log.transactionHash] = true;
           countTransactions += 1;
@@ -145,12 +159,12 @@ export default class Aavev1Adapter extends ProtocolAdapter {
 
             const user = normalizeAddress(event[1]);
             await this.booker.saveAddressBookLending({
-              addressId: '', // filled by booker
               chain: config.chain,
               protocol: config.protocol,
               address: user,
-              marketAddress: config.address,
-              tokenAddress: token.address,
+              market: config.address,
+              token: token.address,
+              sector: 'lending',
               role: 'lender',
               firstTime: timestamp,
             });
@@ -162,12 +176,12 @@ export default class Aavev1Adapter extends ProtocolAdapter {
 
             if (event.onBehalfOf) {
               await this.booker.saveAddressBookLending({
-                addressId: '', // filled by booker
                 chain: config.chain,
                 protocol: config.protocol,
                 address: normalizeAddress(event.onBehalfOf),
-                marketAddress: config.address,
-                tokenAddress: token.address,
+                market: config.address,
+                token: token.address,
+                sector: 'lending',
                 role: 'lender',
                 firstTime: timestamp,
               });
@@ -178,12 +192,12 @@ export default class Aavev1Adapter extends ProtocolAdapter {
             }
             if (event.to) {
               await this.booker.saveAddressBookLending({
-                addressId: '', // filled by booker
                 chain: config.chain,
                 protocol: config.protocol,
                 address: normalizeAddress(event.to),
-                marketAddress: config.address,
-                tokenAddress: token.address,
+                market: config.address,
+                token: token.address,
+                sector: 'lending',
                 role: 'lender',
                 firstTime: timestamp,
               });
@@ -213,12 +227,12 @@ export default class Aavev1Adapter extends ProtocolAdapter {
 
             const user = normalizeAddress(event[1]);
             await this.booker.saveAddressBookLending({
-              addressId: '', // filled by booker
               chain: config.chain,
               protocol: config.protocol,
               address: user,
-              marketAddress: config.address,
-              tokenAddress: token.address,
+              market: config.address,
+              token: token.address,
+              sector: 'lending',
               role: 'borrower',
               firstTime: timestamp,
             });
@@ -229,12 +243,12 @@ export default class Aavev1Adapter extends ProtocolAdapter {
 
             if (event.onBehalfOf) {
               await this.booker.saveAddressBookLending({
-                addressId: '', // filled by booker
                 chain: config.chain,
                 protocol: config.protocol,
                 address: normalizeAddress(event.onBehalfOf),
-                marketAddress: config.address,
-                tokenAddress: token.address,
+                market: config.address,
+                token: token.address,
+                sector: 'lending',
                 role: 'borrower',
                 firstTime: timestamp,
               });
@@ -245,12 +259,12 @@ export default class Aavev1Adapter extends ProtocolAdapter {
             }
             if (event.to) {
               await this.booker.saveAddressBookLending({
-                addressId: '', // filled by booker
                 chain: config.chain,
                 protocol: config.protocol,
                 address: normalizeAddress(event.to),
-                marketAddress: config.address,
-                tokenAddress: token.address,
+                market: config.address,
+                token: token.address,
+                sector: 'lending',
                 role: 'borrower',
                 firstTime: timestamp,
               });
@@ -271,12 +285,12 @@ export default class Aavev1Adapter extends ProtocolAdapter {
 
               const user = normalizeAddress(event._user ? event._user : event.user);
               await this.booker.saveAddressBookLending({
-                addressId: '', // filled by booker
                 chain: config.chain,
                 protocol: config.protocol,
                 address: user,
-                marketAddress: config.address,
-                tokenAddress: token.address,
+                market: config.address,
+                token: token.address,
+                sector: 'lending',
                 role: 'borrower',
                 firstTime: timestamp,
               });
@@ -297,12 +311,12 @@ export default class Aavev1Adapter extends ProtocolAdapter {
 
                 const liquidator = normalizeAddress(event._liquidator ? event._liquidator : event.liquidator);
                 await this.booker.saveAddressBookLending({
-                  addressId: '', // filled by booker
                   chain: config.chain,
                   protocol: config.protocol,
                   address: liquidator,
-                  marketAddress: config.address,
-                  tokenAddress: token.address,
+                  market: config.address,
+                  token: token.address,
+                  sector: 'lending',
                   role: 'liquidator',
                   firstTime: timestamp,
                 });
@@ -348,6 +362,13 @@ export default class Aavev1Adapter extends ProtocolAdapter {
 
     const snapshots: Array<LendingMarketSnapshot> = [];
 
+    const eventSignatures = this.abiConfigs.eventSignatures as AaveEventInterfaces;
+    const logs = await this.getDayContractLogs({
+      chain: marketConfig.chain,
+      address: marketConfig.address,
+      topics: Object.values(eventSignatures),
+      dayStartTimestamp: options.timestamp,
+    });
     const reservesList: Array<any> = await this.getReservesList(marketConfig, blockNumber);
 
     for (const reserve of reservesList) {
@@ -368,34 +389,13 @@ export default class Aavev1Adapter extends ProtocolAdapter {
 
       const totalBorrowed = this.getTotalBorrowed(reserveData);
       const totalDeposited = this.getTotalDeposited(reserveData);
+      const totalFeesCollected = this.getTotalFeesCollected(reserveData);
 
       const tokenRewards = await this.getIncentiveRewards(marketConfig, reserve, options.timestamp);
 
-      // calculate liquidity index increase
-      let totalFeesCollected = '0';
-      const dayEndBlock = await tryQueryBlockNumberAtTimestamp(
-        EnvConfig.blockchains[options.config.chain].blockSubgraph,
-        options.timestamp + DAY - 1,
-      );
-      if (dayEndBlock) {
-        const reserveDataEndDay: any = await this.getReserveData(marketConfig, reserve, dayEndBlock);
-        const liquidityIndexBefore = new BigNumber(reserveData.liquidityIndex.toString());
-        const liquidityIndexAfter = new BigNumber(reserveDataEndDay.liquidityIndex.toString());
-        const liquidityIndexIncrease = liquidityIndexAfter.minus(liquidityIndexBefore);
-
-        totalFeesCollected = new BigNumber(totalDeposited)
-          .multipliedBy(liquidityIndexIncrease)
-          .dividedBy(new BigNumber(ONE_RAY))
-          .toString(10);
-      }
-
-      const eventStats = await this.getEventStats(marketConfig, token, options.timestamp);
+      const eventStats = await this.getEventStats(marketConfig, logs, token, options.timestamp);
 
       const snapshot: LendingMarketSnapshot = {
-        marketId: `${marketConfig.protocol}-${marketConfig.chain}-${normalizeAddress(
-          marketConfig.address,
-        )}-${normalizeAddress(token.address)}`,
-
         type: 'cross',
         chain: marketConfig.chain,
         protocol: marketConfig.protocol,
@@ -405,15 +405,30 @@ export default class Aavev1Adapter extends ProtocolAdapter {
         token: token,
         tokenPrice: tokenPrice ? tokenPrice : '0',
 
-        totalDeposited: formatFromDecimals(totalDeposited, token.decimals),
-        totalBorrowed: formatFromDecimals(totalBorrowed, token.decimals),
-        totalFeesCollected: formatFromDecimals(totalFeesCollected, token.decimals),
+        balances: {
+          deposit: formatFromDecimals(totalDeposited, token.decimals),
+          borrow: formatFromDecimals(totalBorrowed, token.decimals),
+          fees: formatFromDecimals(totalFeesCollected, token.decimals),
+        },
 
-        volumeDeposited: eventStats.volumeDeposited,
-        volumeWithdrawn: eventStats.volumeWithdrawn,
-        volumeBorrowed: eventStats.volumeBorrowed,
-        volumeRepaid: eventStats.volumeRepaid,
-        volumeLiquidated: eventStats.volumeLiquidated,
+        volumes: {
+          deposit: eventStats.volumeDeposited,
+          withdraw: eventStats.volumeWithdrawn,
+          borrow: eventStats.volumeBorrowed,
+          repay: eventStats.volumeRepaid,
+          liquidate: eventStats.volumeLiquidated,
+        },
+
+        rates: {
+          supply: formatFromDecimals(reserveData.liquidityRate.toString(), 27),
+          borrow: formatFromDecimals(reserveData.variableBorrowRate.toString(), 27),
+          borrowStable: formatFromDecimals(reserveData.stableBorrowRate.toString(), 27),
+        },
+
+        rewards: {
+          forLenders: tokenRewards.rewardsForLenders,
+          forBorrowers: tokenRewards.rewardsForBorrowers,
+        },
 
         addressCount: {
           lenders: eventStats.counterLenders,
@@ -421,13 +436,6 @@ export default class Aavev1Adapter extends ProtocolAdapter {
           liquidators: eventStats.counterLiquidators,
         },
         transactionCount: eventStats.countTransactions,
-
-        supplyRate: formatFromDecimals(reserveData.liquidityRate.toString(), 27),
-        borrowRate: formatFromDecimals(reserveData.variableBorrowRate.toString(), 27),
-        borrowRateStable: formatFromDecimals(reserveData.stableBorrowRate.toString(), 27),
-
-        tokenRewardsForLenders: tokenRewards.rewardsForLenders,
-        tokenRewardsForBorrowers: tokenRewards.rewardsForBorrowers,
       };
 
       snapshots.push(snapshot);

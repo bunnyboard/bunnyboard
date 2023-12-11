@@ -118,7 +118,10 @@ export default class ProtocolCollector implements IProtocolCollector {
             await this.services.database.update({
               collection: EnvConfig.mongodb.collections.lendingMarketSnapshots,
               keys: {
-                marketId: snapshot.marketId,
+                chain: snapshot.chain,
+                protocol: snapshot.protocol,
+                address: snapshot.protocol,
+                'token.address': snapshot.token.address,
                 timestamp: snapshot.timestamp,
               },
               updates: {
