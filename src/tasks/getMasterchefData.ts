@@ -76,4 +76,6 @@ const directoryPath = './src/configs/data';
       }
     }
   }
+
+  process.exit(0);
 })();

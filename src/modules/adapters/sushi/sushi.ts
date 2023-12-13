@@ -3,11 +3,12 @@ import BigNumber from 'bignumber.js';
 import Erc20Abi from '../../../configs/abi/ERC20.json';
 import MasterchefAbi from '../../../configs/abi/sushi/Masterchef.json';
 import { DAY, YEAR } from '../../../configs/constants';
+import MasterchefPools from '../../../configs/data/MasterchefPools.json';
 import EnvConfig from '../../../configs/envConfig';
 import logger from '../../../lib/logger';
 import { tryQueryBlockNumberAtTimestamp } from '../../../lib/subsgraph';
-import { formatFromDecimals, getDateString, normalizeAddress } from '../../../lib/utils';
-import { ProtocolConfig } from '../../../types/configs';
+import { compareAddress, formatFromDecimals, getDateString, normalizeAddress } from '../../../lib/utils';
+import { LiquidityPoolConfig, ProtocolConfig } from '../../../types/configs';
 import { MasterchefPoolSnapshot } from '../../../types/domains/masterchef';
 import { ContextServices } from '../../../types/namespaces';
 import { GetMasterchefSnapshotOptions } from '../../../types/options';
@@ -27,6 +28,27 @@ export default class SushiAdapter extends ProtocolAdapter {
 
     this.abiConfigs.eventSignatures = SushiMasterchefEventSignatures;
     this.abiConfigs.eventAbiMappings = SushiMasterchefEventAbiMappings;
+  }
+
+  protected async getLpTokenInfo(
+    chain: string,
+    protocol: string,
+    lpToken: string,
+  ): Promise<LiquidityPoolConfig | null> {
+    const configPool = MasterchefPools.filter(
+      (pool) => pool.chain == chain && pool.protocol === protocol && compareAddress(pool.lpToken.address, lpToken),
+    )[0];
+    if (configPool) {
+      return {
+        chain: chain,
+        address: configPool.lpToken.address,
+        symbol: configPool.lpToken.symbol,
+        decimals: configPool.lpToken.decimals,
+        tokens: configPool.lpToken.tokens,
+      };
+    }
+
+    return await UniswapLibs.getPool2Constant(chain, lpToken);
   }
 
   public async getMasterchefSnapshots(
@@ -79,10 +101,10 @@ export default class SushiAdapter extends ProtocolAdapter {
         blockNumber: blockNumber,
       });
 
-      let lpToken = null;
+      const lpToken = await this.getLpTokenInfo(options.config.chain, this.config.protocol, poolInfo.lpToken);
+
       let lpAmount = new BigNumber(0);
       try {
-        lpToken = await UniswapLibs.getPool2Constant(options.config.chain, poolInfo.lpToken);
         lpAmount = new BigNumber(
           await this.services.blockchain.singlecall({
             chain: options.config.chain,

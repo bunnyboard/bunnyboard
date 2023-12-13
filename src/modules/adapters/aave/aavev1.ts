@@ -1,7 +1,7 @@
 import BigNumber from 'bignumber.js';
 
 import AaveLendingPoolV1Abi from '../../../configs/abi/aave/LendingPoolV1.json';
-import { ONE_RAY } from '../../../configs/constants';
+import { ONE_RAY, RAY_DECIMALS } from '../../../configs/constants';
 import EnvConfig from '../../../configs/envConfig';
 import { AaveLendingMarketConfig } from '../../../configs/protocols/aave';
 import logger from '../../../lib/logger';
@@ -420,9 +420,9 @@ export default class Aavev1Adapter extends ProtocolAdapter {
         },
 
         rates: {
-          supply: formatFromDecimals(reserveData.liquidityRate.toString(), 27),
-          borrow: formatFromDecimals(reserveData.variableBorrowRate.toString(), 27),
-          borrowStable: formatFromDecimals(reserveData.stableBorrowRate.toString(), 27),
+          supply: formatFromDecimals(reserveData.liquidityRate.toString(), RAY_DECIMALS),
+          borrow: formatFromDecimals(reserveData.variableBorrowRate.toString(), RAY_DECIMALS),
+          borrowStable: formatFromDecimals(reserveData.stableBorrowRate.toString(), RAY_DECIMALS),
         },
 
         rewards: {
