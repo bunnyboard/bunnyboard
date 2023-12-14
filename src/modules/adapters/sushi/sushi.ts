@@ -2,7 +2,7 @@ import BigNumber from 'bignumber.js';
 
 import Erc20Abi from '../../../configs/abi/ERC20.json';
 import MasterchefAbi from '../../../configs/abi/sushi/Masterchef.json';
-import { DAY, YEAR } from '../../../configs/constants';
+import { DAY } from '../../../configs/constants';
 import MasterchefPools from '../../../configs/data/MasterchefPools.json';
 import EnvConfig from '../../../configs/envConfig';
 import logger from '../../../lib/logger';
@@ -211,11 +211,13 @@ export default class SushiAdapter extends ProtocolAdapter {
         });
 
         // rate = TotalRewardEarn * 365 / TotalDeposit
-        const rewardRate = tokenPrice ? new BigNumber(rewardEarnedByPool.toString(10))
-          .multipliedBy(rewardTokenPrice ? rewardTokenPrice : '0')
-          .multipliedBy(YEAR)
-          .dividedBy(lpAmount.multipliedBy(tokenPrice ? tokenPrice : '0'))
-          .toString(10) : '0';
+        const rewardRate = tokenPrice
+          ? new BigNumber(rewardEarnedByPool.toString(10))
+              .multipliedBy(rewardTokenPrice ? rewardTokenPrice : '0')
+              .multipliedBy(365)
+              .dividedBy(lpAmount.multipliedBy(tokenPrice ? tokenPrice : '0'))
+              .toString(10)
+          : '0';
 
         poolSnapshots.push({
           chain: options.config.chain,
