@@ -146,17 +146,17 @@ export default class Aavev3Adapter extends Aavev2Adapter {
 
             if (aTokenAssetInfo) {
               rewardForLender = rewardForLender
-                .plus(new BigNumber(aTokenAssetInfo.emissionPerSecond.toString()))
+                .plus(new BigNumber(aTokenAssetInfo[1].toString()))
                 .multipliedBy(endDayTimestamp - timestamp);
             }
             if (stableDebtAssetInfo) {
               rewardForBorrower = rewardForBorrower
-                .plus(new BigNumber(stableDebtAssetInfo.emissionPerSecond.toString()))
+                .plus(new BigNumber(stableDebtAssetInfo[1].toString()))
                 .multipliedBy(endDayTimestamp - timestamp);
             }
             if (variableDebtAssetInfo) {
               rewardForBorrower = rewardForBorrower
-                .plus(new BigNumber(variableDebtAssetInfo.emissionPerSecond.toString()))
+                .plus(new BigNumber(variableDebtAssetInfo[1].toString()))
                 .multipliedBy(endDayTimestamp - timestamp);
             }
 
