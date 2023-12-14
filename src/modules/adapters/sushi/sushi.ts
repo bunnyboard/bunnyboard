@@ -211,11 +211,11 @@ export default class SushiAdapter extends ProtocolAdapter {
         });
 
         // rate = TotalRewardEarn * 365 / TotalDeposit
-        const rewardRate = new BigNumber(rewardEarnedByPool.toString(10))
+        const rewardRate = tokenPrice ? new BigNumber(rewardEarnedByPool.toString(10))
           .multipliedBy(rewardTokenPrice ? rewardTokenPrice : '0')
           .multipliedBy(YEAR)
           .dividedBy(lpAmount.multipliedBy(tokenPrice ? tokenPrice : '0'))
-          .toString(10);
+          .toString(10) : '0';
 
         poolSnapshots.push({
           chain: options.config.chain,
