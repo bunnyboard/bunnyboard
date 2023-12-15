@@ -43,9 +43,6 @@ export interface EnvConfig {
       // save token prices
       tokenPrices: string;
 
-      // protocol address book
-      addressBook: string;
-
       // save lending market metrics and snapshots
       lendingMarketSnapshots: string;
 

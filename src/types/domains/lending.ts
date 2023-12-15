@@ -1,40 +1,5 @@
 import { LendingMarketType, Token } from '../configs';
-import {
-  AddressBookEntry,
-  AddressCountEntry,
-  AddressRoleLending,
-  BalanceCountEntry,
-  DayDataSnapshot,
-  RewardCountEntry,
-  TokenRewardEntry,
-  VolumeCountEntry,
-} from './base';
-
-export interface AddressBookEntryLending extends AddressBookEntry {
-  role: AddressRoleLending;
-  market: string; // lending market address
-  token: string; // lending market token
-}
-
-export interface AddressCountEntryLending extends AddressCountEntry {
-  lenders: number;
-  borrowers: number;
-  liquidators: number;
-}
-
-export interface VolumeCountEntryLending extends VolumeCountEntry {
-  deposit: string;
-  withdraw: string;
-  borrow: string;
-  repay: string;
-  liquidate: string;
-}
-
-export interface BalanceCountEntryLending extends BalanceCountEntry {
-  deposit: string;
-  borrow: string;
-  fees: string;
-}
+import { DayDataSnapshot, TokenRewardEntry } from './base';
 
 export interface LendingMarketRates {
   supply: string;
@@ -42,11 +7,6 @@ export interface LendingMarketRates {
 
   // some protocol like AAVE offer a stable borrow rate
   borrowStable?: string;
-}
-
-export interface RewardCountEntryLending extends RewardCountEntry {
-  forLenders: Array<TokenRewardEntry>;
-  forBorrowers: Array<TokenRewardEntry>;
 }
 
 // a lending market present a reserve in the cross-pool lending
@@ -64,11 +24,19 @@ export interface LendingMarketSnapshot extends DayDataSnapshot {
   // the token price (in US Dollar) at the snapshot timestamp
   tokenPrice: string;
 
-  balances: BalanceCountEntryLending;
-  volumes: VolumeCountEntryLending;
-  addressCount: AddressCountEntryLending;
-  rates: LendingMarketRates;
-  rewards: RewardCountEntryLending;
+  // balances
+  totalDeposited: string;
+  totalBorrowed: string;
+  totalFeesCollected: string;
+
+  // rates
+  supplyRate: string;
+  borrowRate: string;
+  // some protocol like AAVE offer a stable borrow rate
+  borrowRateStable?: string;
+
+  rewardForLenders: Array<TokenRewardEntry>;
+  rewardForBorrowers: Array<TokenRewardEntry>;
 }
 
 export interface LendingCdpSnapshot extends LendingMarketSnapshot {

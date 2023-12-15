@@ -73,5 +73,16 @@
     "decimals": 18,
     "address": "0x2ae3f1ec7f1f5012cfeab0185bfc7aa3cf0dec22"
   },
-  "tBTC": { "chain": "base", "symbol": "tBTC", "decimals": 18, "address": "0x236aa50979d5f3de3bd1eeb40e81137f22ab794b" }
+  "tBTC": {
+    "chain": "base",
+    "symbol": "tBTC",
+    "decimals": 18,
+    "address": "0x236aa50979d5f3de3bd1eeb40e81137f22ab794b"
+  },
+  "wstETH": {
+    "chain": "base",
+    "symbol": "wstETH",
+    "decimals": 18,
+    "address": "0xc1cba3fcea344f92d9239c08c0568f6f2f0ee452"
+  }
 }

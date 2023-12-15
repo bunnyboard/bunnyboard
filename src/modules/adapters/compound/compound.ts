@@ -8,14 +8,14 @@ import EnvConfig from '../../../configs/envConfig';
 import { CompoundLendingMarketConfig, CompoundProtocolConfig } from '../../../configs/protocols/compound';
 import logger from '../../../lib/logger';
 import { tryQueryBlockNumberAtTimestamp } from '../../../lib/subsgraph';
-import { compareAddress, formatFromDecimals, getDateString, normalizeAddress } from '../../../lib/utils';
+import { formatFromDecimals, getDateString, normalizeAddress } from '../../../lib/utils';
 import { LendingMarketConfig, ProtocolConfig } from '../../../types/configs';
 import { TokenRewardEntry } from '../../../types/domains/base';
 import { LendingCdpSnapshot, LendingMarketSnapshot } from '../../../types/domains/lending';
 import { ContextServices } from '../../../types/namespaces';
 import { GetLendingMarketSnapshotOptions } from '../../../types/options';
 import ProtocolAdapter from '../adapter';
-import { CompoundEventAbiMappings, CompoundEventInterfaces, CompoundEventSignatures } from './abis';
+import { CompoundEventAbiMappings, CompoundEventSignatures } from './abis';
 
 export interface CompoundMarketRates {
   borrowRate: string;
@@ -97,10 +97,12 @@ export default class CompoundAdapter extends ProtocolAdapter {
         blockNumber: blockNumber,
       });
 
-      return {
-        supplySpeed: supplySpeed.toString(),
-        borrowSpeed: borrowSpeed.toString(),
-      };
+      if (supplySpeed && borrowSpeed) {
+        return {
+          supplySpeed: supplySpeed.toString(),
+          borrowSpeed: borrowSpeed.toString(),
+        };
+      }
     }
 
     return null;
@@ -160,7 +162,6 @@ export default class CompoundAdapter extends ProtocolAdapter {
     options: GetLendingMarketSnapshotOptions,
   ): Promise<Array<LendingMarketSnapshot | LendingCdpSnapshot> | null> {
     const marketConfig = options.config as CompoundLendingMarketConfig;
-    const eventSignatures = this.abiConfigs.eventSignatures as CompoundEventInterfaces;
 
     const blockNumber = await tryQueryBlockNumberAtTimestamp(
       EnvConfig.blockchains[marketConfig.chain].blockSubgraph,
@@ -213,206 +214,6 @@ export default class CompoundAdapter extends ProtocolAdapter {
       timestamp: options.timestamp,
     });
 
-    let volumeDeposited = new BigNumber(0);
-    let volumeWithdrawn = new BigNumber(0);
-    let volumeBorrowed = new BigNumber(0);
-    let volumeRepaid = new BigNumber(0);
-    let volumeLiquidated = new BigNumber(0);
-    let countLenders = 0;
-    let countBorrowers = 0;
-    let countLiquidators = 0;
-    let countTransactions = 0;
-
-    const web3 = this.services.blockchain.getProvider(options.config.chain);
-    const logs: Array<any> = await this.getDayContractLogs({
-      chain: options.config.chain,
-      address: options.config.address,
-      topics: [
-        eventSignatures.Mint,
-        eventSignatures.Redeem,
-        eventSignatures.Borrow,
-        eventSignatures.Repay,
-        eventSignatures.Liquidate,
-      ],
-      dayStartTimestamp: options.timestamp,
-    });
-
-    const lenders: { [key: string]: boolean } = {};
-    const borrowers: { [key: string]: boolean } = {};
-    const liquidators: { [key: string]: boolean } = {};
-    const transactions: { [key: string]: boolean } = {};
-    for (const log of logs) {
-      if (!transactions[log.transactionHash]) {
-        transactions[log.transactionHash] = true;
-        countTransactions += 1;
-      }
-
-      const signature = log.topics[0];
-      const event = web3.eth.abi.decodeLog(this.abiConfigs.eventAbiMappings[signature], log.data, log.topics.slice(1));
-      switch (signature) {
-        case eventSignatures.Mint:
-        case eventSignatures.Redeem: {
-          if (signature === eventSignatures.Mint) {
-            volumeDeposited = volumeDeposited.plus(new BigNumber(event[1].toString()));
-          } else {
-            volumeWithdrawn = volumeWithdrawn.plus(new BigNumber(event[1].toString()));
-          }
-
-          const address = normalizeAddress(event[0]);
-          if (!lenders[address]) {
-            countLenders += 1;
-            lenders[address] = true;
-          }
-
-          await this.booker.saveAddressBookLending({
-            chain: marketConfig.chain,
-            protocol: marketConfig.protocol,
-            address: address,
-            market: marketConfig.address,
-            token: token.address,
-            sector: 'lending',
-            role: 'lender',
-            firstTime: options.timestamp,
-          });
-
-          break;
-        }
-
-        case eventSignatures.Borrow:
-        case eventSignatures.Repay: {
-          if (signature === eventSignatures.Borrow) {
-            volumeBorrowed = volumeBorrowed.plus(new BigNumber(event[1].toString()));
-          } else {
-            volumeRepaid = volumeRepaid.plus(new BigNumber(event[2].toString()));
-
-            await this.booker.saveAddressBookLending({
-              chain: marketConfig.chain,
-              protocol: marketConfig.protocol,
-              address: normalizeAddress(event[1].toString()),
-              market: marketConfig.address,
-              token: token.address,
-              sector: 'lending',
-              role: 'borrower',
-              firstTime: options.timestamp,
-            });
-          }
-
-          const address = normalizeAddress(event[0]);
-          if (!borrowers[address]) {
-            countBorrowers += 1;
-            borrowers[address] = true;
-          }
-
-          await this.booker.saveAddressBookLending({
-            chain: marketConfig.chain,
-            protocol: marketConfig.protocol,
-            address: normalizeAddress(event[0].toString()),
-            market: marketConfig.address,
-            token: token.address,
-            sector: 'lending',
-            role: 'borrower',
-            firstTime: options.timestamp,
-          });
-
-          break;
-        }
-
-        case eventSignatures.Liquidate: {
-          volumeRepaid = volumeRepaid.plus(new BigNumber(event[2].toString()));
-
-          // borrower address
-          const borrower = normalizeAddress(event[1]);
-          if (!borrowers[borrower]) {
-            countBorrowers += 1;
-            borrowers[borrower] = true;
-          }
-
-          await this.booker.saveAddressBookLending({
-            chain: marketConfig.chain,
-            protocol: marketConfig.protocol,
-            address: normalizeAddress(event[0].toString()),
-            market: marketConfig.address,
-            token: token.address,
-            sector: 'lending',
-            role: 'borrower',
-            firstTime: options.timestamp,
-          });
-
-          break;
-        }
-      }
-    }
-
-    // count liquidation volume
-    const allMarkets = this.config.lendingMarkets
-      ? this.config.lendingMarkets.filter(
-          (item) =>
-            item.chain === marketConfig.chain &&
-            !compareAddress(item.address, marketConfig.address) &&
-            item.birthday <= options.timestamp,
-        )
-      : [];
-    let liquidationLogs: Array<any> = [];
-    for (const otherMarket of allMarkets) {
-      liquidationLogs = liquidationLogs.concat(
-        await this.getDayContractLogs({
-          chain: otherMarket.chain,
-          address: otherMarket.address,
-          topics: [eventSignatures.Liquidate],
-          dayStartTimestamp: options.timestamp,
-        }),
-      );
-    }
-
-    let exchangeRateStored = '0';
-    if (liquidationLogs.length > 0) {
-      // get exchange rate
-      exchangeRateStored = await this.services.blockchain.singlecall({
-        chain: marketConfig.chain,
-        target: marketConfig.address,
-        abi: cErc20Abi,
-        method: 'exchangeRateStored',
-        params: [],
-      });
-
-      for (const liquidationLog of liquidationLogs) {
-        const liquidationEvent = web3.eth.abi.decodeLog(
-          this.abiConfigs.eventAbiMappings[eventSignatures.Liquidate],
-          liquidationLog.data,
-          liquidationLog.topics.slice(1),
-        );
-        if (compareAddress(liquidationEvent[3], marketConfig.address)) {
-          // count liquidator address
-          const liquidator = normalizeAddress(liquidationEvent[0]);
-          if (!liquidators[liquidator]) {
-            countLiquidators += 1;
-            liquidators[liquidator] = true;
-          }
-
-          await this.booker.saveAddressBookLending({
-            chain: marketConfig.chain,
-            protocol: marketConfig.protocol,
-            address: liquidator,
-            market: marketConfig.address,
-            token: token.address,
-            sector: 'lending',
-            role: 'liquidator',
-            firstTime: options.timestamp,
-          });
-
-          // count volume
-          const seizeTokens = new BigNumber(liquidationEvent[4].toString());
-
-          const oneCTokenInUnderlying = new BigNumber(exchangeRateStored.toString());
-          const tokenAmount = oneCTokenInUnderlying
-            .multipliedBy(seizeTokens)
-            .dividedBy(new BigNumber(10).pow(8))
-            .dividedBy(new BigNumber(10).pow(8));
-          volumeLiquidated = volumeLiquidated.plus(tokenAmount);
-        }
-      }
-    }
-
     const rewards = await this.getMarketRewards(options.config, options.timestamp);
 
     snapshots.push({
@@ -425,37 +226,15 @@ export default class CompoundAdapter extends ProtocolAdapter {
       token: token,
       tokenPrice: tokenPrice ? tokenPrice : '0',
 
-      balances: {
-        deposit: formatFromDecimals(totalDeposited.toString(10), token.decimals),
-        borrow: formatFromDecimals(totalBorrowed.toString(10), token.decimals),
-        fees: formatFromDecimals(totalFeesCollected.toString(10), token.decimals),
-      },
+      totalDeposited: formatFromDecimals(totalDeposited.toString(10), token.decimals),
+      totalBorrowed: formatFromDecimals(totalBorrowed.toString(10), token.decimals),
+      totalFeesCollected: formatFromDecimals(totalFeesCollected.toString(10), token.decimals),
 
-      volumes: {
-        deposit: formatFromDecimals(volumeDeposited.toString(10), token.decimals),
-        withdraw: formatFromDecimals(volumeWithdrawn.toString(10), token.decimals),
-        borrow: formatFromDecimals(volumeBorrowed.toString(10), token.decimals),
-        repay: formatFromDecimals(volumeRepaid.toString(10), token.decimals),
-        liquidate: formatFromDecimals(volumeLiquidated.toString(10), token.decimals),
-      },
+      supplyRate: supplyRate,
+      borrowRate: borrowRate,
 
-      rates: {
-        supply: supplyRate,
-        borrow: borrowRate,
-      },
-
-      rewards: {
-        forLenders: rewards.lenderTokenRewards,
-        forBorrowers: rewards.borrowerTokenRewards,
-      },
-
-      addressCount: {
-        lenders: countLenders,
-        borrowers: countBorrowers,
-        liquidators: countLiquidators,
-      },
-
-      transactionCount: countTransactions,
+      rewardForLenders: rewards.lenderTokenRewards,
+      rewardForBorrowers: rewards.borrowerTokenRewards,
     });
 
     logger.info('updated lending market snapshot', {

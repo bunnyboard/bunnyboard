@@ -76,6 +76,18 @@ export const OracleConfigs: { [key: string]: { [key: string]: OracleConfig } } =
     [EthereumTokenList.MIM.address]: OracleSourceConfigs.MIM,
     [EthereumTokenList.FXS.address]: OracleSourceConfigs.FXS,
     [EthereumTokenList.crvUSD.address]: OracleSourceConfigs.crvUSD,
+    [EthereumTokenList.vBTC.address]: OracleSourceConfigs.vBTC,
+    [EthereumTokenList.CREAM.address]: OracleSourceConfigs.CREAM,
+    [EthereumTokenList.BAC.address]: OracleSourceConfigs.BAC,
+    [EthereumTokenList.ALPHA.address]: OracleSourceConfigs.ALPHA,
+    [EthereumTokenList.NFTX.address]: OracleSourceConfigs.NFTX,
+    [EthereumTokenList.STETH.address]: OracleSourceConfigs.STETH,
+    [EthereumTokenList.pONT.address]: OracleSourceConfigs.pONT,
+    [EthereumTokenList.PENDLE.address]: OracleSourceConfigs.PENDLE,
+    [EthereumTokenList.DOLA.address]: OracleSourceConfigs.DOLA,
+    [EthereumTokenList.OHMv1.address]: OracleSourceConfigs.OHMv1,
+    [EthereumTokenList.OHM.address]: OracleSourceConfigs.OHM,
+    [EthereumTokenList.agEUR.address]: OracleSourceConfigs.agEUR,
   },
 
   // tokens on Arbitrum One
@@ -132,6 +144,7 @@ export const OracleConfigs: { [key: string]: { [key: string]: OracleConfig } } =
     [BaseTokenList.USDbC.address]: OracleSourceConfigs.USDC,
     [BaseTokenList.cbETH.address]: OracleSourceConfigs.cbETH,
     [BaseTokenList.DAI.address]: OracleSourceConfigs.DAI,
+    [BaseTokenList.wstETH.address]: OracleSourceConfigs.wstETH,
   },
 
   // tokens on Polygon

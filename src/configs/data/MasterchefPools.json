@@ -6711,7 +6711,12 @@
           "decimals": 18,
           "address": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2"
         },
-        { "chain": "ethereum", "symbol": "SLP", "decimals": 0, "address": "0xcc8fa225d80b9c7d42f96e9570156c65d6caaa25" }
+        {
+          "chain": "ethereum",
+          "symbol": "SLP",
+          "decimals": 0,
+          "address": "0xcc8fa225d80b9c7d42f96e9570156c65d6caaa25"
+        }
       ]
     }
   },
@@ -6784,7 +6789,12 @@
           "decimals": 18,
           "address": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2"
         },
-        { "chain": "ethereum", "symbol": "ID", "decimals": 18, "address": "0xebd9d99a3982d547c5bb4db7e3b1f9f14b67eb83" }
+        {
+          "chain": "ethereum",
+          "symbol": "ID",
+          "decimals": 18,
+          "address": "0xebd9d99a3982d547c5bb4db7e3b1f9f14b67eb83"
+        }
       ]
     }
   },

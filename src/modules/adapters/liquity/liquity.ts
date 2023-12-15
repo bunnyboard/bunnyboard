@@ -104,38 +104,11 @@ export default class LiquityAdapter extends ProtocolAdapter {
       dayStartTimestamp: options.timestamp,
     });
 
-    let volumeBorrowed = new BigNumber(0);
-    let volumeRepaid = new BigNumber(0);
-    let volumeDeposited = new BigNumber(0);
-    let volumeWithdrawn = new BigNumber(0);
-    let volumeLiquidated = new BigNumber(0);
     let totalFeesCollected = new BigNumber(0);
 
-    const transactions: { [key: string]: boolean } = {};
-    const borrowers: { [key: string]: boolean } = {};
     for (const log of logs) {
-      if (!transactions[log.transactionHash]) {
-        transactions[log.transactionHash] = true;
-      }
-
       const signature = log.topics[0];
       const event = web3.eth.abi.decodeLog(this.abiConfigs.eventAbiMappings[signature], log.data, log.topics.slice(1));
-
-      // save borrower address
-      const borrower = normalizeAddress(event._borrower);
-      if (!borrowers[borrower]) {
-        borrowers[borrower] = true;
-        await this.booker.saveAddressBookLending({
-          chain: marketConfig.chain,
-          protocol: this.config.protocol,
-          role: 'borrower',
-          sector: 'lending',
-          address: borrower,
-          market: marketConfig.address,
-          token: marketConfig.collateralToken.address,
-          firstTime: options.timestamp,
-        });
-      }
 
       if (signature === eventSignatures.TroveUpdated) {
         const operation = Number(event._operation);
@@ -143,15 +116,6 @@ export default class LiquityAdapter extends ProtocolAdapter {
 
         if (operation === 0) {
           // open trove
-          volumeBorrowed = volumeBorrowed.plus(new BigNumber(event._debt.toString()));
-          volumeDeposited = volumeDeposited.plus(new BigNumber(event._coll.toString()));
-          totalFeesCollected = totalFeesCollected.plus(
-            new BigNumber(borrowingFee).multipliedBy(new BigNumber(event._debt.toString())).dividedBy(1e18),
-          );
-        } else if (operation === 1) {
-          // close trove
-          volumeRepaid = volumeRepaid.plus(new BigNumber(event._debt.toString()));
-          volumeWithdrawn = volumeWithdrawn.plus(new BigNumber(event._coll.toString()));
           totalFeesCollected = totalFeesCollected.plus(
             new BigNumber(borrowingFee).multipliedBy(new BigNumber(event._debt.toString())).dividedBy(1e18),
           );
@@ -159,20 +123,12 @@ export default class LiquityAdapter extends ProtocolAdapter {
           // update trove
           // get trove snapshot from previous block
           const info: GetTroveStateInfo = await this.getTroveState(marketConfig, event, blockNumber);
-          totalFeesCollected = totalFeesCollected.plus(
-            new BigNumber(borrowingFee).multipliedBy(new BigNumber(info.debtAmount.toString())).dividedBy(1e18),
-          );
           if (info.isBorrow) {
-            volumeBorrowed = volumeBorrowed.plus(new BigNumber(info.debtAmount));
-            volumeDeposited = volumeDeposited.plus(new BigNumber(info.collAmount));
-          } else {
-            volumeRepaid = volumeRepaid.plus(new BigNumber(info.debtAmount));
-            volumeWithdrawn = volumeWithdrawn.plus(new BigNumber(info.collAmount));
+            totalFeesCollected = totalFeesCollected.plus(
+              new BigNumber(borrowingFee).multipliedBy(new BigNumber(info.debtAmount.toString())).dividedBy(1e18),
+            );
           }
         }
-      } else if (signature === eventSignatures.TroveLiquidated) {
-        volumeRepaid = volumeRepaid.plus(new BigNumber(event._debt.toString()));
-        volumeLiquidated = volumeLiquidated.plus(new BigNumber(event._coll.toString()));
       }
     }
 
@@ -210,37 +166,15 @@ export default class LiquityAdapter extends ProtocolAdapter {
         collateralToken: marketConfig.collateralToken,
         collateralTokenPrice: collateralTokenPrice ? collateralTokenPrice : '0',
 
-        balances: {
-          deposit: formatFromDecimals(totalColl.toString(), marketConfig.collateralToken.decimals),
-          borrow: formatFromDecimals(totalDebt.toString(), marketConfig.debtToken.decimals),
-          fees: formatFromDecimals(totalFeesCollected.toString(10), marketConfig.debtToken.decimals),
-        },
+        totalDeposited: formatFromDecimals(totalColl.toString(), marketConfig.collateralToken.decimals),
+        totalBorrowed: formatFromDecimals(totalDebt.toString(), marketConfig.debtToken.decimals),
+        totalFeesCollected: formatFromDecimals(totalFeesCollected.toString(10), marketConfig.debtToken.decimals),
 
-        volumes: {
-          deposit: formatFromDecimals(volumeDeposited.toString(10), marketConfig.collateralToken.decimals),
-          withdraw: formatFromDecimals(volumeWithdrawn.toString(10), marketConfig.collateralToken.decimals),
-          borrow: formatFromDecimals(volumeBorrowed.toString(10), marketConfig.debtToken.decimals),
-          repay: formatFromDecimals(volumeRepaid.toString(10), marketConfig.debtToken.decimals),
-          liquidate: formatFromDecimals(volumeLiquidated.toString(10), marketConfig.collateralToken.decimals),
-        },
+        supplyRate: '0',
+        borrowRate: formatFromDecimals(borrowingFee.toString(), 18), // on-time paid
 
-        rates: {
-          supply: '0',
-          borrow: formatFromDecimals(borrowingFee.toString(), 18), // on-time paid
-        },
-
-        rewards: {
-          forLenders: [],
-          forBorrowers: [],
-        },
-
-        addressCount: {
-          lenders: 0,
-          borrowers: Object.keys(borrowers).length,
-          liquidators: 0,
-        },
-
-        transactionCount: Object.keys(transactions).length,
+        rewardForLenders: [],
+        rewardForBorrowers: [],
       },
     ];
   }

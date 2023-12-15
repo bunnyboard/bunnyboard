@@ -4,6 +4,7 @@ import { describe } from 'mocha';
 import { ProtocolConfigs } from '../configs';
 import AaveLendingPoolV1Abi from '../configs/abi/aave/LendingPoolV1.json';
 import AaveLendingPoolV2Abi from '../configs/abi/aave/LendingPoolV2.json';
+import MasterchefPools from '../configs/data/MasterchefPools.json';
 import { OracleConfigs } from '../configs/oracles/configs';
 import { CompoundLendingMarketConfig } from '../configs/protocols/compound';
 import { normalizeAddress } from '../lib/utils';
@@ -48,6 +49,18 @@ describe('configurations', async function () {
               `token:${market.chain}:${normalizeAddress(reserve)}`,
             ).not.equal(undefined);
           }
+        }
+      }),
+    );
+  });
+
+  describe('masterchef token price', async function () {
+    MasterchefPools.filter((item) => item.lpToken.tokens.length > 0).map((item) =>
+      it(`should have oracle config for lp token ${item.chain} ${item.lpToken.address}`, async function () {
+        if (OracleConfigs[item.chain][item.lpToken.tokens[0].address]) {
+          expect(OracleConfigs[item.chain][item.lpToken.tokens[0].address]).not.equal(undefined);
+        } else {
+          expect(OracleConfigs[item.chain][item.lpToken.tokens[1].address]).not.equal(undefined);
         }
       }),
     );

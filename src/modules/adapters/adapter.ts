@@ -8,7 +8,6 @@ import { LendingCdpSnapshot, LendingMarketSnapshot } from '../../types/domains/l
 import { MasterchefPoolSnapshot } from '../../types/domains/masterchef';
 import { ContextServices, IProtocolAdapter } from '../../types/namespaces';
 import { AdapterAbiConfigs, GetLendingMarketSnapshotOptions, GetMasterchefSnapshotOptions } from '../../types/options';
-import Booker from './booker';
 
 export interface GetDayContractLogsOptions {
   chain: string;
@@ -22,12 +21,10 @@ export default class ProtocolAdapter implements IProtocolAdapter {
   public readonly services: ContextServices;
   public readonly config: ProtocolConfig;
   public readonly abiConfigs: AdapterAbiConfigs;
-  public readonly booker: Booker;
 
   constructor(services: ContextServices, config: ProtocolConfig) {
     this.services = services;
     this.config = config;
-    this.booker = new Booker(services);
 
     this.abiConfigs = {
       eventSignatures: {},

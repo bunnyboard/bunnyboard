@@ -7,18 +7,14 @@ import MasterchefPools from '../../../configs/data/MasterchefPools.json';
 import EnvConfig from '../../../configs/envConfig';
 import logger from '../../../lib/logger';
 import { tryQueryBlockNumberAtTimestamp } from '../../../lib/subsgraph';
-import { compareAddress, formatFromDecimals, getDateString, normalizeAddress } from '../../../lib/utils';
+import { compareAddress, formatFromDecimals, getDateString } from '../../../lib/utils';
 import { LiquidityPoolConfig, ProtocolConfig } from '../../../types/configs';
 import { MasterchefPoolSnapshot } from '../../../types/domains/masterchef';
 import { ContextServices } from '../../../types/namespaces';
 import { GetMasterchefSnapshotOptions } from '../../../types/options';
 import UniswapLibs from '../../libs/uniswap';
 import ProtocolAdapter from '../adapter';
-import {
-  SushiMasterchefEventAbiMappings,
-  SushiMasterchefEventInterfaces,
-  SushiMasterchefEventSignatures,
-} from './abis';
+import { SushiMasterchefEventAbiMappings, SushiMasterchefEventSignatures } from './abis';
 
 export default class SushiAdapter extends ProtocolAdapter {
   public readonly name: string = 'adapter.sushi';
@@ -56,9 +52,6 @@ export default class SushiAdapter extends ProtocolAdapter {
   ): Promise<Array<MasterchefPoolSnapshot> | null> {
     const poolSnapshots: Array<MasterchefPoolSnapshot> = [];
 
-    const web3 = this.services.blockchain.getProvider(options.config.chain);
-    const eventSignatures = this.abiConfigs.eventSignatures as SushiMasterchefEventInterfaces;
-
     const blockNumber = await tryQueryBlockNumberAtTimestamp(
       EnvConfig.blockchains[options.config.chain].blockSubgraph,
       options.timestamp,
@@ -67,13 +60,6 @@ export default class SushiAdapter extends ProtocolAdapter {
       EnvConfig.blockchains[options.config.chain].blockSubgraph,
       options.timestamp + DAY - 1,
     );
-
-    const logs = await this.getDayContractLogs({
-      chain: options.config.chain,
-      address: options.config.address,
-      topics: Object.values(eventSignatures),
-      dayStartTimestamp: options.timestamp,
-    });
 
     const poolLength = await this.services.blockchain.singlecall({
       chain: options.config.chain,
@@ -150,60 +136,6 @@ export default class SushiAdapter extends ProtocolAdapter {
           timestamp: options.timestamp,
         });
 
-        let transactionCount = 0;
-        let volumeDeposited = new BigNumber(0);
-        let volumeWithdrawn = new BigNumber(0);
-
-        const depositors: any = {};
-        const withdrawers: any = {};
-        const transactions: any = {};
-        for (const log of logs) {
-          const signature = log.topics[0];
-          const event = web3.eth.abi.decodeLog(
-            this.abiConfigs.eventAbiMappings[signature],
-            log.data,
-            log.topics.slice(1),
-          );
-
-          if (Number(event.pid) === poolId) {
-            if (!transactions[log.transactionHash]) {
-              transactionCount += 1;
-              transactions[log.transactionHash] = true;
-            }
-
-            await this.booker.saveAddressBookMasterchef({
-              chain: options.config.chain,
-              protocol: options.config.protocol,
-              address: normalizeAddress(event.user),
-              sector: 'masterchef',
-              role: 'staker',
-              firstTime: options.timestamp,
-              masterchef: options.config.address,
-              poolId: poolId,
-            });
-
-            switch (signature) {
-              case eventSignatures.Deposit: {
-                if (!depositors[normalizeAddress(event.user)]) {
-                  depositors[normalizeAddress(event.user)] = true;
-                }
-
-                volumeDeposited = volumeDeposited.plus(new BigNumber(event.amount.toString()));
-                break;
-              }
-              case eventSignatures.Withdraw:
-              case eventSignatures.EmergencyWithdraw: {
-                if (!withdrawers[normalizeAddress(event.user)]) {
-                  withdrawers[normalizeAddress(event.user)] = true;
-                }
-
-                volumeWithdrawn = volumeWithdrawn.plus(new BigNumber(event.amount.toString()));
-                break;
-              }
-            }
-          }
-        }
-
         const rewardTokenPrice = await this.services.oracle.getTokenPriceUsd({
           chain: options.config.chain,
           address: options.config.rewardToken.address,
@@ -234,45 +166,24 @@ export default class SushiAdapter extends ProtocolAdapter {
           tokenPrice: tokenPrice ? tokenPrice : '0',
           allocationPoint: new BigNumber(poolInfo.allocPoint.toString()).toNumber(),
 
-          balances: {
-            deposit: formatFromDecimals(lpAmount.toString(10), 18),
-          },
+          totalDeposited: formatFromDecimals(lpAmount.toString(10), 18),
 
-          rewards: {
-            forStakers: [
-              {
-                token: options.config.rewardToken,
-                tokenPrice: rewardTokenPrice ? rewardTokenPrice : '0',
-                tokenAmount: formatFromDecimals(rewardEarnedByPool.toString(10), options.config.rewardToken.decimals),
-              },
-            ],
-            forProtocol: [
-              {
-                token: options.config.rewardToken,
-                tokenPrice: rewardTokenPrice ? rewardTokenPrice : '0',
-                tokenAmount: formatFromDecimals(
-                  rewardEarnedByProtocol.toString(10),
-                  options.config.rewardToken.decimals,
-                ),
-              },
-            ],
-          },
+          rewardForStakers: [
+            {
+              token: options.config.rewardToken,
+              tokenPrice: rewardTokenPrice ? rewardTokenPrice : '0',
+              tokenAmount: formatFromDecimals(rewardEarnedByPool.toString(10), options.config.rewardToken.decimals),
+            },
+          ],
+          rewardForProtocol: [
+            {
+              token: options.config.rewardToken,
+              tokenPrice: rewardTokenPrice ? rewardTokenPrice : '0',
+              tokenAmount: formatFromDecimals(rewardEarnedByProtocol.toString(10), options.config.rewardToken.decimals),
+            },
+          ],
 
-          volumes: {
-            deposit: formatFromDecimals(volumeDeposited.toString(10), 18),
-            withdraw: formatFromDecimals(volumeWithdrawn.toString(10), 18),
-          },
-
-          rates: {
-            reward: rewardRate,
-          },
-
-          addressCount: {
-            depositors: Object.keys(depositors).length,
-            withdrawers: Object.keys(withdrawers).length,
-          },
-
-          transactionCount: transactionCount,
+          rewardRate: rewardRate,
         });
 
         logger.info('updated masterchef pool snapshot', {

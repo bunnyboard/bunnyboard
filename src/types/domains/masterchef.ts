@@ -1,41 +1,5 @@
 import { Token } from '../configs';
-import {
-  AddressBookEntry,
-  AddressCountEntry,
-  BalanceCountEntry,
-  DayDataSnapshot,
-  RewardCountEntry,
-  TokenRewardEntry,
-  VolumeCountEntry,
-} from './base';
-
-export interface AddressBookEntryMasterchef extends AddressBookEntry {
-  masterchef: string;
-  poolId: number;
-}
-
-export interface AddressCountEntryMasterchef extends AddressCountEntry {
-  depositors: number;
-  withdrawers: number;
-}
-
-export interface BalanceCountEntryMasterchef extends BalanceCountEntry {
-  deposit: string;
-}
-
-export interface VolumeCountEntryLending extends VolumeCountEntry {
-  deposit: string;
-  withdraw: string;
-}
-
-export interface RewardCountEntryMasterchef extends RewardCountEntry {
-  forStakers: Array<TokenRewardEntry>;
-  forProtocol: Array<TokenRewardEntry>;
-}
-
-export interface MasterchefPoolRates {
-  reward: string;
-}
+import { DayDataSnapshot, TokenRewardEntry } from './base';
 
 export interface MasterchefPoolSnapshot extends DayDataSnapshot {
   // masterchef address
@@ -51,10 +15,12 @@ export interface MasterchefPoolSnapshot extends DayDataSnapshot {
   // allocation point
   allocationPoint: number;
 
-  // total lp token were deposited in the period of snapshot
-  balances: BalanceCountEntryMasterchef;
-  volumes: VolumeCountEntryLending;
-  rewards: RewardCountEntryMasterchef;
-  addressCount: AddressCountEntryMasterchef;
-  rates: MasterchefPoolRates;
+  totalDeposited: string;
+
+  // estimated reward rate (staking APY)
+  rewardRate: string;
+
+  // count number of reward tokens were distributed
+  rewardForStakers: Array<TokenRewardEntry>;
+  rewardForProtocol: Array<TokenRewardEntry>;
 }

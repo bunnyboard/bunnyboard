@@ -413,4 +413,44 @@ export const OracleSourceConfigs: { [key: string]: OracleConfig } = {
     currency: 'usd',
     sources: [OracleSourceUniswapv2List.SD_USDC],
   },
+  vBTC: {
+    currency: 'eth',
+    sources: [OracleSourceUniswapv2List.vBTC_WETH],
+  },
+  CREAM: {
+    currency: 'eth',
+    sources: [OracleSourceUniswapv2List.CREAM_WETH],
+  },
+  BAC: {
+    currency: 'usd',
+    sources: [OracleSourceUniswapv2List.BAC_DAI],
+  },
+  NFTX: {
+    currency: 'eth',
+    sources: [OracleSourceUniswapv2List.NFTX_WETH],
+  },
+  STETH: {
+    currency: 'eth',
+    sources: [OracleSourceUniswapv2List.STETH_WETH],
+  },
+  pONT: {
+    currency: 'eth',
+    sources: [OracleSourceUniswapv2List.pONT_WETH],
+  },
+  PENDLE: {
+    currency: 'eth',
+    sources: [OracleSourceUniswapv2List.PENDLE_WETH],
+  },
+  DOLA: {
+    currency: 'eth',
+    sources: [OracleSourceUniswapv2List.DOLA_WETH],
+  },
+  OHMv1: {
+    currency: 'usd',
+    sources: [OracleSourceUniswapv2List.OHMv1_DAI],
+  },
+  OHM: {
+    currency: 'eth',
+    sources: [OracleSourceUniswapv3List.OHM_WETH],
+  },
 };

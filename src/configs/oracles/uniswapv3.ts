@@ -160,4 +160,11 @@ export const OracleSourceUniswapv3List: { [key: string]: OracleSourceUniv3 } = {
     baseToken: EthereumTokenList.crvUSD,
     quotaToken: EthereumTokenList.USDC,
   },
+  OHM_WETH: {
+    type: 'univ3',
+    chain: 'ethereum',
+    address: '0x88051b0eea095007d3bef21ab287be961f3d8598',
+    baseToken: EthereumTokenList.OHM,
+    quotaToken: EthereumTokenList.WETH,
+  },
 };

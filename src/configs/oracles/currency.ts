@@ -35,7 +35,7 @@ export const OracleCurrencyBaseConfigs: { [key: string]: OracleConfig } = {
   },
 };
 
-export const LiquidityPoolCurrentBaseConfigs: { [key: string]: Array<Token> } = {
+export const OracleCurrencyBaseLiquidityPoolConfigs: { [key: string]: Array<Token> } = {
   ethereum: [EthereumTokenList.WETH],
   arbitrum: [ArbitrumTokenList.WETH],
   optimism: [OptimismTokenList.WETH],
