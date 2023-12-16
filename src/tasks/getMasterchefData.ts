@@ -32,7 +32,7 @@ const directoryPath = './src/configs/data';
   }
 
   for (const contract of contracts) {
-    const poolLength = await blockchain.singlecall({
+    const poolLength = await blockchain.readContract({
       chain: contract.chain,
       target: contract.address,
       abi: MasterchefAbi,
@@ -44,14 +44,14 @@ const directoryPath = './src/configs/data';
       if (
         pools.filter((item) => compareAddress(item.address, contract.address) && item.poolId === poolId).length === 0
       ) {
-        const poolInfo = await blockchain.singlecall({
+        const [r_lpToken] = await blockchain.readContract({
           chain: contract.chain,
           target: contract.address,
           abi: MasterchefAbi,
           method: 'poolInfo',
           params: [poolId],
         });
-        const liquidityPool = await UniswapLibs.getPool2Constant(contract.chain, poolInfo.lpToken);
+        const liquidityPool = await UniswapLibs.getPool2Constant(contract.chain, r_lpToken);
         if (liquidityPool) {
           pools.push({
             chain: contract.chain,

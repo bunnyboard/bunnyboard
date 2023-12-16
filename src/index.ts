@@ -11,7 +11,7 @@ import { ServerCommand } from './cmd/server';
   const serverCommand = new ServerCommand();
 
   yargs(process.argv.slice(2))
-    .scriptName('magicbunny')
+    .scriptName('bunnyboard')
     .command(collectCommand.name, collectCommand.describe, collectCommand.setOptions, collectCommand.execute)
     .command(serverCommand.name, serverCommand.describe, serverCommand.setOptions, serverCommand.execute)
     .help().argv;

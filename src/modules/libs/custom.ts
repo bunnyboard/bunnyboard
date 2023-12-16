@@ -11,7 +11,7 @@ export default class OracleLibs {
       // return amount of DAI per sDAI
       case 'savingDai': {
         const blockchain = new BlockchainService();
-        const daiAmount = await blockchain.singlecall({
+        const daiAmount = await blockchain.readContract({
           chain: config.chain,
           abi: SavingDaiAbi,
           target: config.address,

@@ -27,7 +27,7 @@ export default class VenusAdapter extends CompoundAdapter {
       ? (ProtocolConfigs[config.protocol] as CompoundProtocolConfig).comptrollers[config.chain]
       : null;
     if (comptroller) {
-      const supplySpeed = await this.services.blockchain.singlecall({
+      const supplySpeed = await this.services.blockchain.readContract({
         chain: config.chain,
         abi: [
           {
@@ -57,7 +57,7 @@ export default class VenusAdapter extends CompoundAdapter {
         params: [comptroller.address],
         blockNumber: blockNumber,
       });
-      const borrowSpeed = await this.services.blockchain.singlecall({
+      const borrowSpeed = await this.services.blockchain.readContract({
         chain: config.chain,
         abi: [
           {

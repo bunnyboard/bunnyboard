@@ -11,14 +11,14 @@ import { LiquidityPoolConfig, OracleSourceUniv2, OracleSourceUniv3 } from '../..
 export default class UniswapLibs {
   public static async getPool2Constant(chain: string, address: string): Promise<LiquidityPoolConfig | null> {
     const blockchain = new BlockchainService();
-    const symbol = await blockchain.singlecall({
+    const symbol = await blockchain.readContract({
       chain: chain,
       abi: ERC20Abi,
       target: address,
       method: 'symbol',
       params: [],
     });
-    const decimals = await blockchain.singlecall({
+    const decimals = await blockchain.readContract({
       chain: chain,
       abi: ERC20Abi,
       target: address,
@@ -35,14 +35,14 @@ export default class UniswapLibs {
         tokens: [],
       };
 
-      const token0Address = await blockchain.singlecall({
+      const token0Address = await blockchain.readContract({
         chain: chain,
         abi: UniswapV3PoolAbi,
         target: address,
         method: 'token0',
         params: [],
       });
-      const token1Address = await blockchain.singlecall({
+      const token1Address = await blockchain.readContract({
         chain: chain,
         abi: UniswapV3PoolAbi,
         target: address,
@@ -78,7 +78,7 @@ export default class UniswapLibs {
     const blockchain = new BlockchainService();
 
     if (source.type === 'univ2') {
-      const baseTokenBalance = await blockchain.singlecall({
+      const baseTokenBalance = await blockchain.readContract({
         chain: source.chain,
         abi: ERC20Abi,
         target: source.baseToken.address,
@@ -87,7 +87,7 @@ export default class UniswapLibs {
         blockNumber: blockNumber,
       });
 
-      const quotaTokenBalance = await blockchain.singlecall({
+      const quotaTokenBalance = await blockchain.readContract({
         chain: source.chain,
         abi: ERC20Abi,
         target: source.quotaToken.address,
@@ -105,7 +105,7 @@ export default class UniswapLibs {
       }
     } else if (source.type === 'univ3') {
       const [fee, state, liquidity] = await Promise.all([
-        blockchain.singlecall({
+        blockchain.readContract({
           chain: source.chain,
           abi: UniswapV3PoolAbi,
           target: source.address,
@@ -113,7 +113,7 @@ export default class UniswapLibs {
           params: [],
           blockNumber: blockNumber,
         }),
-        blockchain.singlecall({
+        blockchain.readContract({
           chain: source.chain,
           abi: UniswapV3PoolAbi,
           target: source.address,
@@ -121,7 +121,7 @@ export default class UniswapLibs {
           params: [],
           blockNumber: blockNumber,
         }),
-        blockchain.singlecall({
+        blockchain.readContract({
           chain: source.chain,
           abi: UniswapV3PoolAbi,
           target: source.address,
@@ -139,9 +139,9 @@ export default class UniswapLibs {
           baseTokenConfig,
           quoteTokenConfig,
           Number(fee.toString()),
-          state.sqrtPriceX96.toString(),
+          state[0].toString(),
           liquidity.toString(),
-          new BigNumber(state.tick.toString()).toNumber(),
+          new BigNumber(state[1].toString()).toNumber(),
         );
 
         if (normalizeAddress(pool.token0.address) === normalizeAddress(source.baseToken.address)) {

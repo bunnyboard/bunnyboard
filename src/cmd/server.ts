@@ -30,7 +30,7 @@ export class ServerCommand extends BasicCommand {
     app.use(cors());
     app.use(express.json());
 
-    app.use('/magicbunny', router);
+    app.use('/board', router);
 
     app.use('/', express.static(path.join('.', 'public')));
 

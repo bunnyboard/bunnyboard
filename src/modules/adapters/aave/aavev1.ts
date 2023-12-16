@@ -20,6 +20,12 @@ export interface AaveMarketRewards {
   rewardsForBorrowers: Array<TokenRewardEntry>;
 }
 
+export interface AaveMarketRates {
+  supply: string;
+  borrow: string;
+  borrowStable: string;
+}
+
 export default class Aavev1Adapter extends ProtocolAdapter {
   public readonly name: string = 'adapter.aavev1';
 
@@ -32,25 +38,23 @@ export default class Aavev1Adapter extends ProtocolAdapter {
 
   // return total deposited (in wei)
   protected getTotalDeposited(reserveData: any): string {
-    return reserveData.totalLiquidity.toString();
+    return reserveData[0].toString();
   }
 
   // return total borrowed (in wei)
   protected getTotalBorrowed(reserveData: any): string {
-    const totalBorrowed = new BigNumber(reserveData.totalBorrowsStable.toString()).plus(
-      new BigNumber(reserveData.totalBorrowsVariable.toString()),
-    );
+    const totalBorrowed = new BigNumber(reserveData[2].toString()).plus(new BigNumber(reserveData[3].toString()));
 
     return totalBorrowed.toString(10);
   }
 
   // return total borrowed (in wei)
   protected getTotalFeesCollected(reserveData: any): string {
-    const totalBorrowStable = new BigNumber(reserveData.totalBorrowsStable.toString());
-    const totalBorrowVariable = new BigNumber(reserveData.totalBorrowsVariable.toString());
+    const totalBorrowStable = new BigNumber(reserveData[2].toString());
+    const totalBorrowVariable = new BigNumber(reserveData[3].toString());
 
-    const borrowRateStable = new BigNumber(reserveData.stableBorrowRate.toString());
-    const borrowRateVariable = new BigNumber(reserveData.variableBorrowRate.toString());
+    const borrowRateStable = new BigNumber(reserveData[6].toString());
+    const borrowRateVariable = new BigNumber(reserveData[5].toString());
 
     const feesCollectedStable = totalBorrowStable.multipliedBy(borrowRateStable).dividedBy(ONE_RAY).dividedBy(365);
     const feesCollectedVariable = totalBorrowVariable
@@ -61,8 +65,16 @@ export default class Aavev1Adapter extends ProtocolAdapter {
     return feesCollectedStable.plus(feesCollectedVariable).toString(10);
   }
 
+  protected getMarketRates(reserveData: any): AaveMarketRates {
+    return {
+      supply: formatFromDecimals(reserveData[4].toString(), RAY_DECIMALS),
+      borrow: formatFromDecimals(reserveData[5].toString(), RAY_DECIMALS),
+      borrowStable: formatFromDecimals(reserveData[6].toString(), RAY_DECIMALS),
+    };
+  }
+
   protected async getReservesList(config: AaveLendingMarketConfig, blockNumber: number): Promise<any> {
-    return await this.services.blockchain.singlecall({
+    return await this.services.blockchain.readContract({
       chain: config.chain,
       abi: AaveLendingPoolV1Abi,
       target: config.address,
@@ -73,7 +85,7 @@ export default class Aavev1Adapter extends ProtocolAdapter {
   }
 
   protected async getReserveData(config: AaveLendingMarketConfig, reserve: string, blockNumber: number): Promise<any> {
-    return await this.services.blockchain.singlecall({
+    return await this.services.blockchain.readContract({
       chain: config.chain,
       abi: AaveLendingPoolV1Abi,
       target: config.address,
@@ -130,6 +142,7 @@ export default class Aavev1Adapter extends ProtocolAdapter {
       const totalBorrowed = this.getTotalBorrowed(reserveData);
       const totalDeposited = this.getTotalDeposited(reserveData);
       const totalFeesCollected = this.getTotalFeesCollected(reserveData);
+      const rates = this.getMarketRates(reserveData);
 
       const tokenRewards = await this.getIncentiveRewards(marketConfig, reserve, options.timestamp);
 
@@ -147,9 +160,9 @@ export default class Aavev1Adapter extends ProtocolAdapter {
         totalBorrowed: formatFromDecimals(totalBorrowed, token.decimals),
         totalFeesCollected: formatFromDecimals(totalFeesCollected, token.decimals),
 
-        supplyRate: formatFromDecimals(reserveData.liquidityRate.toString(), RAY_DECIMALS),
-        borrowRate: formatFromDecimals(reserveData.variableBorrowRate.toString(), RAY_DECIMALS),
-        borrowRateStable: formatFromDecimals(reserveData.stableBorrowRate.toString(), RAY_DECIMALS),
+        supplyRate: rates.supply,
+        borrowRate: rates.borrow,
+        borrowRateStable: rates.borrowStable,
 
         rewardForLenders: tokenRewards.rewardsForLenders,
         rewardForBorrowers: tokenRewards.rewardsForBorrowers,

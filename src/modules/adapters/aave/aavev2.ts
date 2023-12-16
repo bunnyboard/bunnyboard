@@ -3,14 +3,14 @@ import BigNumber from 'bignumber.js';
 import AaveDataProviderV2Abi from '../../../configs/abi/aave/DataProviderV2.json';
 import AaveIncentiveControllerV2Abi from '../../../configs/abi/aave/IncentiveControllerV2.json';
 import AaveLendingPoolV2Abi from '../../../configs/abi/aave/LendingPoolV2.json';
-import { DAY, ONE_RAY } from '../../../configs/constants';
+import { DAY, ONE_RAY, RAY_DECIMALS } from '../../../configs/constants';
 import EnvConfig from '../../../configs/envConfig';
 import { AaveLendingMarketConfig } from '../../../configs/protocols/aave';
 import { tryQueryBlockNumberAtTimestamp } from '../../../lib/subsgraph';
 import { formatFromDecimals } from '../../../lib/utils';
 import { ProtocolConfig } from '../../../types/configs';
 import { ContextServices } from '../../../types/namespaces';
-import Aavev1Adapter, { AaveMarketRewards } from './aavev1';
+import Aavev1Adapter, { AaveMarketRates, AaveMarketRewards } from './aavev1';
 import { Aavev2EventAbiMappings, Aavev2EventSignatures } from './abis';
 
 export default class Aavev2Adapter extends Aavev1Adapter {
@@ -25,28 +25,24 @@ export default class Aavev2Adapter extends Aavev1Adapter {
 
   // return total deposited (in wei)
   protected getTotalDeposited(reserveData: any): string {
-    const totalBorrowed = new BigNumber(reserveData.totalStableDebt.toString()).plus(
-      new BigNumber(reserveData.totalVariableDebt.toString()),
-    );
-    return new BigNumber(reserveData.availableLiquidity.toString()).plus(totalBorrowed).toString(10);
+    const totalBorrowed = new BigNumber(reserveData[1].toString()).plus(new BigNumber(reserveData[2].toString()));
+    return new BigNumber(reserveData[0].toString()).plus(totalBorrowed).toString(10);
   }
 
   // return total borrowed (in wei)
   protected getTotalBorrowed(reserveData: any): string {
-    const totalBorrowed = new BigNumber(reserveData.totalStableDebt.toString()).plus(
-      new BigNumber(reserveData.totalVariableDebt.toString()),
-    );
+    const totalBorrowed = new BigNumber(reserveData[1].toString()).plus(new BigNumber(reserveData[2].toString()));
 
     return totalBorrowed.toString(10);
   }
 
   // return total borrowed (in wei)
   protected getTotalFeesCollected(reserveData: any): string {
-    const totalBorrowStable = new BigNumber(reserveData.totalStableDebt.toString());
-    const totalBorrowVariable = new BigNumber(reserveData.totalVariableDebt.toString());
+    const totalBorrowStable = new BigNumber(reserveData[1].toString());
+    const totalBorrowVariable = new BigNumber(reserveData[2].toString());
 
-    const borrowRateStable = new BigNumber(reserveData.stableBorrowRate.toString());
-    const borrowRateVariable = new BigNumber(reserveData.variableBorrowRate.toString());
+    const borrowRateStable = new BigNumber(reserveData[5].toString());
+    const borrowRateVariable = new BigNumber(reserveData[4].toString());
 
     const feesCollectedStable = totalBorrowStable.multipliedBy(borrowRateStable).dividedBy(ONE_RAY).dividedBy(365);
     const feesCollectedVariable = totalBorrowVariable
@@ -57,8 +53,16 @@ export default class Aavev2Adapter extends Aavev1Adapter {
     return feesCollectedStable.plus(feesCollectedVariable).toString(10);
   }
 
+  protected getMarketRates(reserveData: any): AaveMarketRates {
+    return {
+      supply: formatFromDecimals(reserveData[3].toString(), RAY_DECIMALS),
+      borrow: formatFromDecimals(reserveData[4].toString(), RAY_DECIMALS),
+      borrowStable: formatFromDecimals(reserveData[5].toString(), RAY_DECIMALS),
+    };
+  }
+
   protected async getReservesList(config: AaveLendingMarketConfig, blockNumber: number): Promise<any> {
-    return await this.services.blockchain.singlecall({
+    return await this.services.blockchain.readContract({
       chain: config.chain,
       abi: AaveLendingPoolV2Abi,
       target: config.address,
@@ -69,7 +73,7 @@ export default class Aavev2Adapter extends Aavev1Adapter {
   }
 
   protected async getReserveData(config: AaveLendingMarketConfig, reserve: string, blockNumber: number): Promise<any> {
-    return await this.services.blockchain.singlecall({
+    return await this.services.blockchain.readContract({
       chain: config.chain,
       abi: AaveDataProviderV2Abi,
       target: config.dataProvider,
@@ -99,7 +103,7 @@ export default class Aavev2Adapter extends Aavev1Adapter {
       );
 
       // first, we need to get aToken address and debtTokenAddress for the given reserve
-      const reserveTokensAddresses = await this.services.blockchain.singlecall({
+      const reserveTokensAddresses = await this.services.blockchain.readContract({
         chain: config.chain,
         abi: AaveDataProviderV2Abi,
         target: config.dataProvider,
@@ -108,7 +112,7 @@ export default class Aavev2Adapter extends Aavev1Adapter {
         blockNumber: blockNumber,
       });
       if (reserveTokensAddresses) {
-        const aTokenAssetInfo = await this.services.blockchain.singlecall({
+        const aTokenAssetInfo = await this.services.blockchain.readContract({
           chain: config.chain,
           abi: AaveIncentiveControllerV2Abi,
           target: incentiveController.address,
@@ -116,7 +120,7 @@ export default class Aavev2Adapter extends Aavev1Adapter {
           params: [reserveTokensAddresses.aTokenAddress],
           blockNumber: blockNumber,
         });
-        const stableDebtAssetInfo = await this.services.blockchain.singlecall({
+        const stableDebtAssetInfo = await this.services.blockchain.readContract({
           chain: config.chain,
           abi: AaveIncentiveControllerV2Abi,
           target: incentiveController.address,
@@ -124,7 +128,7 @@ export default class Aavev2Adapter extends Aavev1Adapter {
           params: [reserveTokensAddresses.stableDebtTokenAddress],
           blockNumber: blockNumber,
         });
-        const variableDebtAssetInfo = await this.services.blockchain.singlecall({
+        const variableDebtAssetInfo = await this.services.blockchain.readContract({
           chain: config.chain,
           abi: AaveIncentiveControllerV2Abi,
           target: incentiveController.address,
@@ -139,17 +143,17 @@ export default class Aavev2Adapter extends Aavev1Adapter {
 
         if (aTokenAssetInfo) {
           rewardForLenders = rewardForLenders
-            .plus(new BigNumber(aTokenAssetInfo.emissionPerSecond.toString()))
+            .plus(new BigNumber(aTokenAssetInfo[0].toString()))
             .multipliedBy(endDayTimestamp - timestamp);
         }
         if (stableDebtAssetInfo) {
           rewardForBorrowers = rewardForBorrowers
-            .plus(new BigNumber(stableDebtAssetInfo.emissionPerSecond.toString()))
+            .plus(new BigNumber(stableDebtAssetInfo[0].toString()))
             .multipliedBy(endDayTimestamp - timestamp);
         }
         if (variableDebtAssetInfo) {
           rewardForBorrowers = rewardForBorrowers
-            .plus(new BigNumber(variableDebtAssetInfo.emissionPerSecond.toString()))
+            .plus(new BigNumber(variableDebtAssetInfo[0].toString()))
             .multipliedBy(endDayTimestamp - timestamp);
         }
 

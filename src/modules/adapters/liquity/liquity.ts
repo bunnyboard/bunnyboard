@@ -1,4 +1,5 @@
 import BigNumber from 'bignumber.js';
+import { decodeEventLog } from 'viem';
 
 import TroveManagerAbi from '../../../configs/abi/liquity/TroveManager.json';
 import EnvConfig from '../../../configs/envConfig';
@@ -34,7 +35,7 @@ export default class LiquityAdapter extends ProtocolAdapter {
     decodedEvent: any,
     blockNumber: number,
   ): Promise<GetTroveStateInfo> {
-    const troveInfo = await this.services.blockchain.singlecall({
+    const troveInfo = await this.services.blockchain.readContract({
       chain: market.chain,
       target: market.troveManager,
       abi: TroveManagerAbi,
@@ -56,7 +57,7 @@ export default class LiquityAdapter extends ProtocolAdapter {
   }
 
   protected async getBorrowingFee(config: LiquityLendingMarketConfig, blockNumber: number): Promise<string> {
-    const borrowingFee = await this.services.blockchain.singlecall({
+    const borrowingFee = await this.services.blockchain.readContract({
       chain: config.chain,
       target: config.troveManager,
       abi: TroveManagerAbi,
@@ -75,11 +76,10 @@ export default class LiquityAdapter extends ProtocolAdapter {
       options.timestamp,
     );
 
-    const web3 = this.services.blockchain.getProvider(options.config.chain);
     const eventSignatures = this.abiConfigs.eventSignatures as LiquityEventInterfaces;
     const marketConfig = options.config as LiquityLendingMarketConfig;
 
-    const totalDebt = await this.services.blockchain.singlecall({
+    const totalDebt = await this.services.blockchain.readContract({
       chain: marketConfig.chain,
       abi: TroveManagerAbi,
       target: marketConfig.troveManager,
@@ -87,7 +87,7 @@ export default class LiquityAdapter extends ProtocolAdapter {
       params: [],
       blockNumber: blockNumber,
     });
-    const totalColl = await this.services.blockchain.singlecall({
+    const totalColl = await this.services.blockchain.readContract({
       chain: marketConfig.chain,
       abi: TroveManagerAbi,
       target: marketConfig.troveManager,
@@ -100,7 +100,6 @@ export default class LiquityAdapter extends ProtocolAdapter {
     const logs = await this.getDayContractLogs({
       chain: marketConfig.chain,
       address: marketConfig.address, // borrow operations,
-      topics: Object.values(this.abiConfigs.eventSignatures),
       dayStartTimestamp: options.timestamp,
     });
 
@@ -108,25 +107,31 @@ export default class LiquityAdapter extends ProtocolAdapter {
 
     for (const log of logs) {
       const signature = log.topics[0];
-      const event = web3.eth.abi.decodeLog(this.abiConfigs.eventAbiMappings[signature], log.data, log.topics.slice(1));
+      if (signature === LiquityEventSignatures.TroveUpdated) {
+        const event: any = decodeEventLog({
+          abi: this.abiConfigs.eventAbiMappings[signature],
+          data: log.data,
+          topics: log.topics,
+        });
 
-      if (signature === eventSignatures.TroveUpdated) {
-        const operation = Number(event._operation);
-        const borrowingFee = await this.getBorrowingFee(marketConfig, blockNumber);
+        if (signature === eventSignatures.TroveUpdated) {
+          const operation = Number(event._operation);
+          const borrowingFee = await this.getBorrowingFee(marketConfig, blockNumber);
 
-        if (operation === 0) {
-          // open trove
-          totalFeesCollected = totalFeesCollected.plus(
-            new BigNumber(borrowingFee).multipliedBy(new BigNumber(event._debt.toString())).dividedBy(1e18),
-          );
-        } else {
-          // update trove
-          // get trove snapshot from previous block
-          const info: GetTroveStateInfo = await this.getTroveState(marketConfig, event, blockNumber);
-          if (info.isBorrow) {
+          if (operation === 0) {
+            // open trove
             totalFeesCollected = totalFeesCollected.plus(
-              new BigNumber(borrowingFee).multipliedBy(new BigNumber(info.debtAmount.toString())).dividedBy(1e18),
+              new BigNumber(borrowingFee).multipliedBy(new BigNumber(event._debt.toString())).dividedBy(1e18),
             );
+          } else {
+            // update trove
+            // get trove snapshot from previous block
+            const info: GetTroveStateInfo = await this.getTroveState(marketConfig, event, blockNumber);
+            if (info.isBorrow) {
+              totalFeesCollected = totalFeesCollected.plus(
+                new BigNumber(borrowingFee).multipliedBy(new BigNumber(info.debtAmount.toString())).dividedBy(1e18),
+              );
+            }
           }
         }
       }

@@ -12,7 +12,6 @@ import { AdapterAbiConfigs, GetLendingMarketSnapshotOptions, GetMasterchefSnapsh
 export interface GetDayContractLogsOptions {
   chain: string;
   address: string;
-  topics: Array<string>;
   dayStartTimestamp: number;
 }
 
@@ -72,22 +71,18 @@ export default class ProtocolAdapter implements IProtocolAdapter {
         service: this.name,
         chain: options.chain,
         address: options.address,
-        topics: options.topics.length,
         fromBlock: dayStartBlock,
         toBlock: dayEndBLock,
       });
 
-      for (const topic of options.topics) {
-        logs = logs.concat(
-          await this.services.blockchain.getContractLogs({
-            chain: options.chain,
-            address: options.address,
-            fromBlock: dayStartBlock,
-            toBlock: dayEndBLock,
-            topics: [topic],
-          }),
-        );
-      }
+      logs = logs.concat(
+        await this.services.blockchain.getContractLogs({
+          chain: options.chain,
+          address: options.address,
+          fromBlock: dayStartBlock,
+          toBlock: dayEndBLock,
+        }),
+      );
     }
 
     try {

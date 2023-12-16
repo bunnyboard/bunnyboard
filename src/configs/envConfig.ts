@@ -6,12 +6,12 @@ import { AddressZero, BlockSubGraphEndpoints } from './constants';
 // global env and configurations
 dotenv.config();
 
-const MongodbPrefix = 'mb';
+const MongodbPrefix = 'board';
 
 const envConfig: EnvConfig = {
   mongodb: {
-    databaseName: String(process.env.MAGICBUNNY_MONGODB_NAME),
-    connectionUri: String(process.env.MAGICBUNNY_MONGODB_URI),
+    databaseName: String(process.env.BUNNYBOARD_MONGODB_NAME),
+    connectionUri: String(process.env.BUNNYBOARD_MONGODB_URI),
     collections: {
       states: `${MongodbPrefix}.states`,
       caching: `${MongodbPrefix}.caching`,
@@ -25,7 +25,7 @@ const envConfig: EnvConfig = {
       name: 'ethereum',
       family: 'evm',
       chainId: 1,
-      nodeRpc: String(process.env.MAGICBUNNY_ETHEREUM_NODE),
+      nodeRpc: String(process.env.BUNNYBOARD_ETHEREUM_NODE),
       blockSubgraph: BlockSubGraphEndpoints.ethereum,
       nativeToken: {
         chain: 'ethereum',
@@ -38,7 +38,7 @@ const envConfig: EnvConfig = {
       name: 'arbitrum',
       family: 'evm',
       chainId: 42161,
-      nodeRpc: String(process.env.MAGICBUNNY_ARBITRUM_NODE),
+      nodeRpc: String(process.env.BUNNYBOARD_ARBITRUM_NODE),
       blockSubgraph: BlockSubGraphEndpoints.arbitrum,
       nativeToken: {
         chain: 'ethereum',
@@ -51,7 +51,7 @@ const envConfig: EnvConfig = {
       name: 'base',
       family: 'evm',
       chainId: 8453,
-      nodeRpc: String(process.env.MAGICBUNNY_BASE_NODE),
+      nodeRpc: String(process.env.BUNNYBOARD_BASE_NODE),
       blockSubgraph: BlockSubGraphEndpoints.base,
       nativeToken: {
         chain: 'ethereum',
@@ -64,7 +64,7 @@ const envConfig: EnvConfig = {
       name: 'optimism',
       family: 'evm',
       chainId: 10,
-      nodeRpc: String(process.env.MAGICBUNNY_OPTIMISM_NODE),
+      nodeRpc: String(process.env.BUNNYBOARD_OPTIMISM_NODE),
       blockSubgraph: BlockSubGraphEndpoints.optimism,
       nativeToken: {
         chain: 'ethereum',
@@ -77,7 +77,7 @@ const envConfig: EnvConfig = {
       name: 'polygon',
       family: 'evm',
       chainId: 137,
-      nodeRpc: String(process.env.MAGICBUNNY_POLYGON_NODE),
+      nodeRpc: String(process.env.BUNNYBOARD_POLYGON_NODE),
       blockSubgraph: BlockSubGraphEndpoints.polygon,
       nativeToken: {
         chain: 'ethereum',
@@ -90,7 +90,7 @@ const envConfig: EnvConfig = {
       name: 'bnbchain',
       family: 'evm',
       chainId: 56,
-      nodeRpc: String(process.env.MAGICBUNNY_BNBCHAIN_NODE),
+      nodeRpc: String(process.env.BUNNYBOARD_BNBCHAIN_NODE),
       blockSubgraph: BlockSubGraphEndpoints.bnbchain,
       nativeToken: {
         chain: 'ethereum',
@@ -103,7 +103,7 @@ const envConfig: EnvConfig = {
       name: 'avalanche',
       family: 'evm',
       chainId: 43114,
-      nodeRpc: String(process.env.MAGICBUNNY_AVALANCHE_NODE),
+      nodeRpc: String(process.env.BUNNYBOARD_AVALANCHE_NODE),
       blockSubgraph: BlockSubGraphEndpoints.avalanche,
       nativeToken: {
         chain: 'avalanche',
@@ -116,7 +116,7 @@ const envConfig: EnvConfig = {
       name: 'fantom',
       family: 'evm',
       chainId: 250,
-      nodeRpc: String(process.env.MAGICBUNNY_FANTOM_NODE),
+      nodeRpc: String(process.env.BUNNYBOARD_FANTOM_NODE),
       blockSubgraph: BlockSubGraphEndpoints.fantom,
       nativeToken: {
         chain: 'fantom',

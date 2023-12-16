@@ -1,8 +1,8 @@
-import Web3 from 'web3';
+import { PublicClient } from 'viem';
 
 import { Token } from '../../types/configs';
 
-export interface ContractCall {
+export interface ReadContractOptions {
   chain: string;
   target: string;
   abi: Array<any>;
@@ -22,28 +22,25 @@ export interface GetTokenOptions {
   onchain?: boolean;
 }
 
-export interface GetContractLogOptions {
+export interface GetContractLogsOptions {
   chain: string;
   address: string;
   fromBlock: number;
   toBlock: number;
-  topics: Array<string>;
 }
 
 export interface IBlockchainService {
   // should be labeled as blockchain
   name: string;
 
-  providers: { [key: string]: Web3 };
-
-  // get provider sdk
-  getProvider: (chain: string) => Web3;
+  getPublicClient: (chain: string) => PublicClient;
 
   // get token info
   getTokenInfo: (options: GetTokenOptions) => Promise<Token | null>;
 
-  getContractLogs: (options: GetContractLogOptions) => Promise<Array<any>>;
+  // get contract raw logs
+  getContractLogs: (options: GetContractLogsOptions) => Promise<Array<any>>;
 
-  // query single
-  singlecall: (call: ContractCall) => Promise<any>;
+  // read contract public method
+  readContract: (call: ReadContractOptions) => Promise<any>;
 }

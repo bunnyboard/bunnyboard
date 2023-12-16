@@ -38,7 +38,7 @@ export default class CompoundAdapter extends ProtocolAdapter {
   }
 
   protected async getMarketRates(config: LendingMarketConfig, blockNumber: number): Promise<CompoundMarketRates> {
-    const supplyRatePerBlock = await this.services.blockchain.singlecall({
+    const supplyRatePerBlock = await this.services.blockchain.readContract({
       chain: config.chain,
       abi: cErc20Abi,
       target: config.address,
@@ -46,7 +46,7 @@ export default class CompoundAdapter extends ProtocolAdapter {
       params: [],
       blockNumber,
     });
-    const borrowRatePerBlock = await this.services.blockchain.singlecall({
+    const borrowRatePerBlock = await this.services.blockchain.readContract({
       chain: config.chain,
       abi: cErc20Abi,
       target: config.address,
@@ -80,7 +80,7 @@ export default class CompoundAdapter extends ProtocolAdapter {
       ? (ProtocolConfigs[config.protocol] as CompoundProtocolConfig).comptrollers[config.chain]
       : null;
     if (comptroller) {
-      const supplySpeed = await this.services.blockchain.singlecall({
+      const supplySpeed = await this.services.blockchain.readContract({
         chain: config.chain,
         abi: CompoundComptrollerAbi,
         target: comptroller.address,
@@ -88,7 +88,7 @@ export default class CompoundAdapter extends ProtocolAdapter {
         params: [config.address],
         blockNumber: blockNumber,
       });
-      const borrowSpeed = await this.services.blockchain.singlecall({
+      const borrowSpeed = await this.services.blockchain.readContract({
         chain: config.chain,
         abi: CompoundComptrollerAbi,
         target: comptroller.address,
@@ -173,7 +173,7 @@ export default class CompoundAdapter extends ProtocolAdapter {
 
     const snapshots: Array<LendingMarketSnapshot> = [];
 
-    const totalCash = await this.services.blockchain.singlecall({
+    const totalCash = await this.services.blockchain.readContract({
       chain: marketConfig.chain,
       abi: cErc20Abi,
       target: marketConfig.address,
@@ -181,7 +181,7 @@ export default class CompoundAdapter extends ProtocolAdapter {
       params: [],
       blockNumber,
     });
-    const totalBorrows = await this.services.blockchain.singlecall({
+    const totalBorrows = await this.services.blockchain.readContract({
       chain: marketConfig.chain,
       abi: cErc20Abi,
       target: marketConfig.address,
@@ -189,7 +189,7 @@ export default class CompoundAdapter extends ProtocolAdapter {
       params: [],
       blockNumber,
     });
-    const totalReserves = await this.services.blockchain.singlecall({
+    const totalReserves = await this.services.blockchain.readContract({
       chain: marketConfig.chain,
       abi: cErc20Abi,
       target: marketConfig.address,

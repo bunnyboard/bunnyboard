@@ -81,6 +81,32 @@
     "chain": "ethereum",
     "address": "0xc2edad668740f1aa35e4d8f227fb8e17dca888cd",
     "protocol": "sushi",
+    "poolId": 3,
+    "lpToken": {
+      "chain": "ethereum",
+      "address": "0xf1f85b2c54a2bd284b1cf4141d64fd171bd85539",
+      "symbol": "SLP",
+      "decimals": 18,
+      "tokens": [
+        {
+          "chain": "ethereum",
+          "symbol": "sUSD",
+          "decimals": 18,
+          "address": "0x57ab1ec28d129707052df4df418d58a2d46d5f51"
+        },
+        {
+          "chain": "ethereum",
+          "symbol": "WETH",
+          "decimals": 18,
+          "address": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2"
+        }
+      ]
+    }
+  },
+  {
+    "chain": "ethereum",
+    "address": "0xc2edad668740f1aa35e4d8f227fb8e17dca888cd",
+    "protocol": "sushi",
     "poolId": 4,
     "lpToken": {
       "chain": "ethereum",
@@ -119,32 +145,6 @@
           "symbol": "LEND",
           "decimals": 18,
           "address": "0x80fb784b7ed66730e8b1dbd9820afd29931aab03"
-        },
-        {
-          "chain": "ethereum",
-          "symbol": "WETH",
-          "decimals": 18,
-          "address": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2"
-        }
-      ]
-    }
-  },
-  {
-    "chain": "ethereum",
-    "address": "0xc2edad668740f1aa35e4d8f227fb8e17dca888cd",
-    "protocol": "sushi",
-    "poolId": 3,
-    "lpToken": {
-      "chain": "ethereum",
-      "address": "0xf1f85b2c54a2bd284b1cf4141d64fd171bd85539",
-      "symbol": "SLP",
-      "decimals": 18,
-      "tokens": [
-        {
-          "chain": "ethereum",
-          "symbol": "sUSD",
-          "decimals": 18,
-          "address": "0x57ab1ec28d129707052df4df418d58a2d46d5f51"
         },
         {
           "chain": "ethereum",
@@ -263,6 +263,32 @@
     "chain": "ethereum",
     "address": "0xc2edad668740f1aa35e4d8f227fb8e17dca888cd",
     "protocol": "sushi",
+    "poolId": 10,
+    "lpToken": {
+      "chain": "ethereum",
+      "address": "0xcb2286d9471cc185281c4f763d34a962ed212962",
+      "symbol": "SLP",
+      "decimals": 18,
+      "tokens": [
+        {
+          "chain": "ethereum",
+          "symbol": "WETH",
+          "decimals": 18,
+          "address": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2"
+        },
+        {
+          "chain": "ethereum",
+          "symbol": "AMPL",
+          "decimals": 9,
+          "address": "0xd46ba6d942050d489dbd938a2c909a5d5039a161"
+        }
+      ]
+    }
+  },
+  {
+    "chain": "ethereum",
+    "address": "0xc2edad668740f1aa35e4d8f227fb8e17dca888cd",
+    "protocol": "sushi",
     "poolId": 11,
     "lpToken": {
       "chain": "ethereum",
@@ -341,6 +367,32 @@
     "chain": "ethereum",
     "address": "0xc2edad668740f1aa35e4d8f227fb8e17dca888cd",
     "protocol": "sushi",
+    "poolId": 14,
+    "lpToken": {
+      "chain": "ethereum",
+      "address": "0xaad22f5543fcdaa694b68f94be177b561836ae57",
+      "symbol": "UNI-V2",
+      "decimals": 18,
+      "tokens": [
+        {
+          "chain": "ethereum",
+          "symbol": "sUSD",
+          "decimals": 18,
+          "address": "0x57ab1ec28d129707052df4df418d58a2d46d5f51"
+        },
+        {
+          "chain": "ethereum",
+          "symbol": "$BASED",
+          "decimals": 18,
+          "address": "0x68a118ef45063051eac49c7e647ce5ace48a68a5"
+        }
+      ]
+    }
+  },
+  {
+    "chain": "ethereum",
+    "address": "0xc2edad668740f1aa35e4d8f227fb8e17dca888cd",
+    "protocol": "sushi",
     "poolId": 15,
     "lpToken": {
       "chain": "ethereum",
@@ -393,58 +445,6 @@
     "chain": "ethereum",
     "address": "0xc2edad668740f1aa35e4d8f227fb8e17dca888cd",
     "protocol": "sushi",
-    "poolId": 10,
-    "lpToken": {
-      "chain": "ethereum",
-      "address": "0xcb2286d9471cc185281c4f763d34a962ed212962",
-      "symbol": "SLP",
-      "decimals": 18,
-      "tokens": [
-        {
-          "chain": "ethereum",
-          "symbol": "WETH",
-          "decimals": 18,
-          "address": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2"
-        },
-        {
-          "chain": "ethereum",
-          "symbol": "AMPL",
-          "decimals": 9,
-          "address": "0xd46ba6d942050d489dbd938a2c909a5d5039a161"
-        }
-      ]
-    }
-  },
-  {
-    "chain": "ethereum",
-    "address": "0xc2edad668740f1aa35e4d8f227fb8e17dca888cd",
-    "protocol": "sushi",
-    "poolId": 14,
-    "lpToken": {
-      "chain": "ethereum",
-      "address": "0xaad22f5543fcdaa694b68f94be177b561836ae57",
-      "symbol": "UNI-V2",
-      "decimals": 18,
-      "tokens": [
-        {
-          "chain": "ethereum",
-          "symbol": "sUSD",
-          "decimals": 18,
-          "address": "0x57ab1ec28d129707052df4df418d58a2d46d5f51"
-        },
-        {
-          "chain": "ethereum",
-          "symbol": "$BASED",
-          "decimals": 18,
-          "address": "0x68a118ef45063051eac49c7e647ce5ace48a68a5"
-        }
-      ]
-    }
-  },
-  {
-    "chain": "ethereum",
-    "address": "0xc2edad668740f1aa35e4d8f227fb8e17dca888cd",
-    "protocol": "sushi",
     "poolId": 17,
     "lpToken": {
       "chain": "ethereum",
@@ -463,6 +463,32 @@
           "symbol": "CRV",
           "decimals": 18,
           "address": "0xd533a949740bb3306d119cc777fa900ba034cd52"
+        }
+      ]
+    }
+  },
+  {
+    "chain": "ethereum",
+    "address": "0xc2edad668740f1aa35e4d8f227fb8e17dca888cd",
+    "protocol": "sushi",
+    "poolId": 18,
+    "lpToken": {
+      "chain": "ethereum",
+      "address": "0xdafd66636e2561b0284edde37e42d192f2844d40",
+      "symbol": "SLP",
+      "decimals": 18,
+      "tokens": [
+        {
+          "chain": "ethereum",
+          "symbol": "UNI",
+          "decimals": 18,
+          "address": "0x1f9840a85d5af5bf1d1762f925bdaddc4201f984"
+        },
+        {
+          "chain": "ethereum",
+          "symbol": "WETH",
+          "decimals": 18,
+          "address": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2"
         }
       ]
     }
@@ -575,6 +601,32 @@
     "chain": "ethereum",
     "address": "0xc2edad668740f1aa35e4d8f227fb8e17dca888cd",
     "protocol": "sushi",
+    "poolId": 23,
+    "lpToken": {
+      "chain": "ethereum",
+      "address": "0x17b3c19bd640a59e832ab73eccf716cb47419846",
+      "symbol": "SLP",
+      "decimals": 18,
+      "tokens": [
+        {
+          "chain": "ethereum",
+          "symbol": "WETH",
+          "decimals": 18,
+          "address": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2"
+        },
+        {
+          "chain": "ethereum",
+          "symbol": "MEME",
+          "decimals": 18,
+          "address": "0xd5525d397898e5502075ea5e830d8914f6f0affe"
+        }
+      ]
+    }
+  },
+  {
+    "chain": "ethereum",
+    "address": "0xc2edad668740f1aa35e4d8f227fb8e17dca888cd",
+    "protocol": "sushi",
     "poolId": 24,
     "lpToken": {
       "chain": "ethereum",
@@ -587,6 +639,32 @@
           "symbol": "wNXM",
           "decimals": 18,
           "address": "0x0d438f3b5175bebc262bf23753c1e53d03432bde"
+        },
+        {
+          "chain": "ethereum",
+          "symbol": "WETH",
+          "decimals": 18,
+          "address": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2"
+        }
+      ]
+    }
+  },
+  {
+    "chain": "ethereum",
+    "address": "0xc2edad668740f1aa35e4d8f227fb8e17dca888cd",
+    "protocol": "sushi",
+    "poolId": 25,
+    "lpToken": {
+      "chain": "ethereum",
+      "address": "0x382c4a5147fd4090f7be3a9ff398f95638f5d39e",
+      "symbol": "SLP",
+      "decimals": 18,
+      "tokens": [
+        {
+          "chain": "ethereum",
+          "symbol": "yUSD",
+          "decimals": 18,
+          "address": "0x5dbcf33d8c2e976c6b560249878e6f1491bca25c"
         },
         {
           "chain": "ethereum",
@@ -692,6 +770,32 @@
     "chain": "ethereum",
     "address": "0xc2edad668740f1aa35e4d8f227fb8e17dca888cd",
     "protocol": "sushi",
+    "poolId": 31,
+    "lpToken": {
+      "chain": "ethereum",
+      "address": "0x6463bd6026a2e7bfab5851b62969a92f7cca0eb6",
+      "symbol": "SLP",
+      "decimals": 18,
+      "tokens": [
+        {
+          "chain": "ethereum",
+          "symbol": "HEGIC",
+          "decimals": 18,
+          "address": "0x584bc13c7d411c00c01a62e8019472de68768430"
+        },
+        {
+          "chain": "ethereum",
+          "symbol": "WETH",
+          "decimals": 18,
+          "address": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2"
+        }
+      ]
+    }
+  },
+  {
+    "chain": "ethereum",
+    "address": "0xc2edad668740f1aa35e4d8f227fb8e17dca888cd",
+    "protocol": "sushi",
     "poolId": 32,
     "lpToken": {
       "chain": "ethereum",
@@ -710,6 +814,32 @@
           "symbol": "tBTCv1",
           "decimals": 18,
           "address": "0x8daebade922df735c38c80c7ebd708af50815faa"
+        }
+      ]
+    }
+  },
+  {
+    "chain": "ethereum",
+    "address": "0xc2edad668740f1aa35e4d8f227fb8e17dca888cd",
+    "protocol": "sushi",
+    "poolId": 33,
+    "lpToken": {
+      "chain": "ethereum",
+      "address": "0xba13afecda9beb75de5c56bbaf696b880a5a50dd",
+      "symbol": "SLP",
+      "decimals": 18,
+      "tokens": [
+        {
+          "chain": "ethereum",
+          "symbol": "MKR",
+          "decimals": 18,
+          "address": "0x9f8f72aa9304c8b593d555f12ef6589cc3a579a2"
+        },
+        {
+          "chain": "ethereum",
+          "symbol": "WETH",
+          "decimals": 18,
+          "address": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2"
         }
       ]
     }
@@ -788,6 +918,32 @@
           "symbol": "OMG",
           "decimals": 18,
           "address": "0xd26114cd6ee289accf82350c8d8487fedb8a0c07"
+        }
+      ]
+    }
+  },
+  {
+    "chain": "ethereum",
+    "address": "0xc2edad668740f1aa35e4d8f227fb8e17dca888cd",
+    "protocol": "sushi",
+    "poolId": 37,
+    "lpToken": {
+      "chain": "ethereum",
+      "address": "0xd75ea151a61d06868e31f8988d28dfe5e9df57b4",
+      "symbol": "SLP",
+      "decimals": 18,
+      "tokens": [
+        {
+          "chain": "ethereum",
+          "symbol": "AAVE",
+          "decimals": 18,
+          "address": "0x7fc66500c84a76ad7e9c93437bfc5ac33e2ddae9"
+        },
+        {
+          "chain": "ethereum",
+          "symbol": "WETH",
+          "decimals": 18,
+          "address": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2"
         }
       ]
     }
@@ -978,6 +1134,45 @@
     "chain": "ethereum",
     "address": "0xc2edad668740f1aa35e4d8f227fb8e17dca888cd",
     "protocol": "sushi",
+    "poolId": 45,
+    "lpToken": {
+      "chain": "ethereum",
+      "address": "0xfb736dad22b879f055c7aebf3a2e8a197f923ea1",
+      "symbol": "REDUCE",
+      "decimals": 18,
+      "tokens": []
+    }
+  },
+  {
+    "chain": "ethereum",
+    "address": "0xc2edad668740f1aa35e4d8f227fb8e17dca888cd",
+    "protocol": "sushi",
+    "poolId": 46,
+    "lpToken": {
+      "chain": "ethereum",
+      "address": "0x69b39b89f9274a16e8a19b78e5eb47a4d91dac9e",
+      "symbol": "SLP",
+      "decimals": 18,
+      "tokens": [
+        {
+          "chain": "ethereum",
+          "symbol": "FARM",
+          "decimals": 18,
+          "address": "0xa0246c9032bc3a600820415ae600c6388619a14d"
+        },
+        {
+          "chain": "ethereum",
+          "symbol": "WETH",
+          "decimals": 18,
+          "address": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2"
+        }
+      ]
+    }
+  },
+  {
+    "chain": "ethereum",
+    "address": "0xc2edad668740f1aa35e4d8f227fb8e17dca888cd",
+    "protocol": "sushi",
     "poolId": 47,
     "lpToken": {
       "chain": "ethereum",
@@ -1082,6 +1277,84 @@
     "chain": "ethereum",
     "address": "0xc2edad668740f1aa35e4d8f227fb8e17dca888cd",
     "protocol": "sushi",
+    "poolId": 51,
+    "lpToken": {
+      "chain": "ethereum",
+      "address": "0xee6d78755e06c31ae7a5ea2b29b35c073dfc00a9",
+      "symbol": "SLP",
+      "decimals": 18,
+      "tokens": [
+        {
+          "chain": "ethereum",
+          "symbol": "tBTCv1",
+          "decimals": 18,
+          "address": "0x8daebade922df735c38c80c7ebd708af50815faa"
+        },
+        {
+          "chain": "ethereum",
+          "symbol": "WETH",
+          "decimals": 18,
+          "address": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2"
+        }
+      ]
+    }
+  },
+  {
+    "chain": "ethereum",
+    "address": "0xc2edad668740f1aa35e4d8f227fb8e17dca888cd",
+    "protocol": "sushi",
+    "poolId": 52,
+    "lpToken": {
+      "chain": "ethereum",
+      "address": "0x4f871f310ad0e8a170db0021c0ce066859d37469",
+      "symbol": "SLP",
+      "decimals": 18,
+      "tokens": [
+        {
+          "chain": "ethereum",
+          "symbol": "AUDIO",
+          "decimals": 18,
+          "address": "0x18aaa7115705e8be94bffebde57af9bfc265b998"
+        },
+        {
+          "chain": "ethereum",
+          "symbol": "WETH",
+          "decimals": 18,
+          "address": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2"
+        }
+      ]
+    }
+  },
+  {
+    "chain": "ethereum",
+    "address": "0xc2edad668740f1aa35e4d8f227fb8e17dca888cd",
+    "protocol": "sushi",
+    "poolId": 53,
+    "lpToken": {
+      "chain": "ethereum",
+      "address": "0x364248b2f1f57c5402d244b2d469a35b4c0e9dab",
+      "symbol": "SLP",
+      "decimals": 18,
+      "tokens": [
+        {
+          "chain": "ethereum",
+          "symbol": "AKRO",
+          "decimals": 18,
+          "address": "0x8ab7404063ec4dbcfd4598215992dc3f8ec853d7"
+        },
+        {
+          "chain": "ethereum",
+          "symbol": "WETH",
+          "decimals": 18,
+          "address": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2"
+        }
+      ]
+    }
+  },
+  {
+    "chain": "ethereum",
+    "address": "0xc2edad668740f1aa35e4d8f227fb8e17dca888cd",
+    "protocol": "sushi",
     "poolId": 54,
     "lpToken": {
       "chain": "ethereum",
@@ -1134,6 +1407,32 @@
     "chain": "ethereum",
     "address": "0xc2edad668740f1aa35e4d8f227fb8e17dca888cd",
     "protocol": "sushi",
+    "poolId": 56,
+    "lpToken": {
+      "chain": "ethereum",
+      "address": "0xe4455fdec181561e9ffe909dde46aaeaedc55283",
+      "symbol": "SLP",
+      "decimals": 18,
+      "tokens": [
+        {
+          "chain": "ethereum",
+          "symbol": "OUSD",
+          "decimals": 18,
+          "address": "0x2a8e1e676ec238d8a992307b495b45b3feaa5e86"
+        },
+        {
+          "chain": "ethereum",
+          "symbol": "USDT",
+          "decimals": 6,
+          "address": "0xdac17f958d2ee523a2206206994597c13d831ec7"
+        }
+      ]
+    }
+  },
+  {
+    "chain": "ethereum",
+    "address": "0xc2edad668740f1aa35e4d8f227fb8e17dca888cd",
+    "protocol": "sushi",
     "poolId": 57,
     "lpToken": {
       "chain": "ethereum",
@@ -1152,6 +1451,32 @@
           "symbol": "SURF",
           "decimals": 18,
           "address": "0xea319e87cf06203dae107dd8e5672175e3ee976c"
+        }
+      ]
+    }
+  },
+  {
+    "chain": "ethereum",
+    "address": "0xc2edad668740f1aa35e4d8f227fb8e17dca888cd",
+    "protocol": "sushi",
+    "poolId": 58,
+    "lpToken": {
+      "chain": "ethereum",
+      "address": "0xaf988aff99d3d0cb870812c325c588d8d8cb7de8",
+      "symbol": "SLP",
+      "decimals": 18,
+      "tokens": [
+        {
+          "chain": "ethereum",
+          "symbol": "KP3R",
+          "decimals": 18,
+          "address": "0x1ceb5cb57c4d4e2b2433641b95dd330a33185a44"
+        },
+        {
+          "chain": "ethereum",
+          "symbol": "WETH",
+          "decimals": 18,
+          "address": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2"
         }
       ]
     }
@@ -1186,11 +1511,50 @@
     "chain": "ethereum",
     "address": "0xc2edad668740f1aa35e4d8f227fb8e17dca888cd",
     "protocol": "sushi",
+    "poolId": 60,
+    "lpToken": {
+      "chain": "ethereum",
+      "address": "0x35a0d9579b1e886702375364fe9c540f97e4517b",
+      "symbol": "SLP",
+      "decimals": 18,
+      "tokens": [
+        {
+          "chain": "ethereum",
+          "symbol": "WETH",
+          "decimals": 18,
+          "address": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2"
+        },
+        {
+          "chain": "ethereum",
+          "address": "0xf5d669627376ebd411e34b98f19c868c8aba5ada",
+          "symbol": "AXS",
+          "decimals": 18
+        }
+      ]
+    }
+  },
+  {
+    "chain": "ethereum",
+    "address": "0xc2edad668740f1aa35e4d8f227fb8e17dca888cd",
+    "protocol": "sushi",
     "poolId": 61,
     "lpToken": {
       "chain": "ethereum",
       "address": "0x5e94cb9c309775763edbd4abf248a229880e68c6",
       "symbol": "COVERCHEF",
+      "decimals": 18,
+      "tokens": []
+    }
+  },
+  {
+    "chain": "ethereum",
+    "address": "0xc2edad668740f1aa35e4d8f227fb8e17dca888cd",
+    "protocol": "sushi",
+    "poolId": 62,
+    "lpToken": {
+      "chain": "ethereum",
+      "address": "0xdc549b8199ec396fd9ff7e431cfc3cf9b40f2163",
+      "symbol": "AMPLIQTEST",
       "decimals": 18,
       "tokens": []
     }
@@ -1237,6 +1601,32 @@
           "symbol": "ANTv1",
           "decimals": 18,
           "address": "0x960b236a07cf122663c4303350609a66a7b288c0"
+        },
+        {
+          "chain": "ethereum",
+          "symbol": "WETH",
+          "decimals": 18,
+          "address": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2"
+        }
+      ]
+    }
+  },
+  {
+    "chain": "ethereum",
+    "address": "0xc2edad668740f1aa35e4d8f227fb8e17dca888cd",
+    "protocol": "sushi",
+    "poolId": 65,
+    "lpToken": {
+      "chain": "ethereum",
+      "address": "0xef4f1d5007b4ff88c1a56261fec00264af6001fb",
+      "symbol": "SLP",
+      "decimals": 18,
+      "tokens": [
+        {
+          "chain": "ethereum",
+          "symbol": "PNK",
+          "decimals": 18,
+          "address": "0x93ed3fbe21207ec2e8f2d3c3de6e058cb73bc04d"
         },
         {
           "chain": "ethereum",
@@ -1433,448 +1823,6 @@
     "chain": "ethereum",
     "address": "0xc2edad668740f1aa35e4d8f227fb8e17dca888cd",
     "protocol": "sushi",
-    "poolId": 76,
-    "lpToken": {
-      "chain": "ethereum",
-      "address": "0xadeaa96a81ebba4e3a5525a008ee107385d588c3",
-      "symbol": "SLP",
-      "decimals": 18,
-      "tokens": [
-        {
-          "chain": "ethereum",
-          "symbol": "SWAG",
-          "decimals": 18,
-          "address": "0x87edffde3e14c7a66c9b9724747a1c5696b742e6"
-        },
-        {
-          "chain": "ethereum",
-          "symbol": "WETH",
-          "decimals": 18,
-          "address": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2"
-        }
-      ]
-    }
-  },
-  {
-    "chain": "ethereum",
-    "address": "0xc2edad668740f1aa35e4d8f227fb8e17dca888cd",
-    "protocol": "sushi",
-    "poolId": 77,
-    "lpToken": {
-      "chain": "ethereum",
-      "address": "0xf1360c4ae1cead17b588ec1111983d2791b760d3",
-      "symbol": "SLP",
-      "decimals": 18,
-      "tokens": [
-        {
-          "chain": "ethereum",
-          "symbol": "JRT",
-          "decimals": 18,
-          "address": "0x8a9c67fee641579deba04928c4bc45f66e26343a"
-        },
-        {
-          "chain": "ethereum",
-          "symbol": "WETH",
-          "decimals": 18,
-          "address": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2"
-        }
-      ]
-    }
-  },
-  {
-    "chain": "ethereum",
-    "address": "0xc2edad668740f1aa35e4d8f227fb8e17dca888cd",
-    "protocol": "sushi",
-    "poolId": 18,
-    "lpToken": {
-      "chain": "ethereum",
-      "address": "0xdafd66636e2561b0284edde37e42d192f2844d40",
-      "symbol": "SLP",
-      "decimals": 18,
-      "tokens": [
-        {
-          "chain": "ethereum",
-          "symbol": "UNI",
-          "decimals": 18,
-          "address": "0x1f9840a85d5af5bf1d1762f925bdaddc4201f984"
-        },
-        {
-          "chain": "ethereum",
-          "symbol": "WETH",
-          "decimals": 18,
-          "address": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2"
-        }
-      ]
-    }
-  },
-  {
-    "chain": "ethereum",
-    "address": "0xc2edad668740f1aa35e4d8f227fb8e17dca888cd",
-    "protocol": "sushi",
-    "poolId": 23,
-    "lpToken": {
-      "chain": "ethereum",
-      "address": "0x17b3c19bd640a59e832ab73eccf716cb47419846",
-      "symbol": "SLP",
-      "decimals": 18,
-      "tokens": [
-        {
-          "chain": "ethereum",
-          "symbol": "WETH",
-          "decimals": 18,
-          "address": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2"
-        },
-        {
-          "chain": "ethereum",
-          "symbol": "MEME",
-          "decimals": 18,
-          "address": "0xd5525d397898e5502075ea5e830d8914f6f0affe"
-        }
-      ]
-    }
-  },
-  {
-    "chain": "ethereum",
-    "address": "0xc2edad668740f1aa35e4d8f227fb8e17dca888cd",
-    "protocol": "sushi",
-    "poolId": 25,
-    "lpToken": {
-      "chain": "ethereum",
-      "address": "0x382c4a5147fd4090f7be3a9ff398f95638f5d39e",
-      "symbol": "SLP",
-      "decimals": 18,
-      "tokens": [
-        {
-          "chain": "ethereum",
-          "symbol": "yUSD",
-          "decimals": 18,
-          "address": "0x5dbcf33d8c2e976c6b560249878e6f1491bca25c"
-        },
-        {
-          "chain": "ethereum",
-          "symbol": "WETH",
-          "decimals": 18,
-          "address": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2"
-        }
-      ]
-    }
-  },
-  {
-    "chain": "ethereum",
-    "address": "0xc2edad668740f1aa35e4d8f227fb8e17dca888cd",
-    "protocol": "sushi",
-    "poolId": 31,
-    "lpToken": {
-      "chain": "ethereum",
-      "address": "0x6463bd6026a2e7bfab5851b62969a92f7cca0eb6",
-      "symbol": "SLP",
-      "decimals": 18,
-      "tokens": [
-        {
-          "chain": "ethereum",
-          "symbol": "HEGIC",
-          "decimals": 18,
-          "address": "0x584bc13c7d411c00c01a62e8019472de68768430"
-        },
-        {
-          "chain": "ethereum",
-          "symbol": "WETH",
-          "decimals": 18,
-          "address": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2"
-        }
-      ]
-    }
-  },
-  {
-    "chain": "ethereum",
-    "address": "0xc2edad668740f1aa35e4d8f227fb8e17dca888cd",
-    "protocol": "sushi",
-    "poolId": 33,
-    "lpToken": {
-      "chain": "ethereum",
-      "address": "0xba13afecda9beb75de5c56bbaf696b880a5a50dd",
-      "symbol": "SLP",
-      "decimals": 18,
-      "tokens": [
-        {
-          "chain": "ethereum",
-          "symbol": "MKR",
-          "decimals": 18,
-          "address": "0x9f8f72aa9304c8b593d555f12ef6589cc3a579a2"
-        },
-        {
-          "chain": "ethereum",
-          "symbol": "WETH",
-          "decimals": 18,
-          "address": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2"
-        }
-      ]
-    }
-  },
-  {
-    "chain": "ethereum",
-    "address": "0xc2edad668740f1aa35e4d8f227fb8e17dca888cd",
-    "protocol": "sushi",
-    "poolId": 37,
-    "lpToken": {
-      "chain": "ethereum",
-      "address": "0xd75ea151a61d06868e31f8988d28dfe5e9df57b4",
-      "symbol": "SLP",
-      "decimals": 18,
-      "tokens": [
-        {
-          "chain": "ethereum",
-          "symbol": "AAVE",
-          "decimals": 18,
-          "address": "0x7fc66500c84a76ad7e9c93437bfc5ac33e2ddae9"
-        },
-        {
-          "chain": "ethereum",
-          "symbol": "WETH",
-          "decimals": 18,
-          "address": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2"
-        }
-      ]
-    }
-  },
-  {
-    "chain": "ethereum",
-    "address": "0xc2edad668740f1aa35e4d8f227fb8e17dca888cd",
-    "protocol": "sushi",
-    "poolId": 45,
-    "lpToken": {
-      "chain": "ethereum",
-      "address": "0xfb736dad22b879f055c7aebf3a2e8a197f923ea1",
-      "symbol": "REDUCE",
-      "decimals": 18,
-      "tokens": []
-    }
-  },
-  {
-    "chain": "ethereum",
-    "address": "0xc2edad668740f1aa35e4d8f227fb8e17dca888cd",
-    "protocol": "sushi",
-    "poolId": 46,
-    "lpToken": {
-      "chain": "ethereum",
-      "address": "0x69b39b89f9274a16e8a19b78e5eb47a4d91dac9e",
-      "symbol": "SLP",
-      "decimals": 18,
-      "tokens": [
-        {
-          "chain": "ethereum",
-          "symbol": "FARM",
-          "decimals": 18,
-          "address": "0xa0246c9032bc3a600820415ae600c6388619a14d"
-        },
-        {
-          "chain": "ethereum",
-          "symbol": "WETH",
-          "decimals": 18,
-          "address": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2"
-        }
-      ]
-    }
-  },
-  {
-    "chain": "ethereum",
-    "address": "0xc2edad668740f1aa35e4d8f227fb8e17dca888cd",
-    "protocol": "sushi",
-    "poolId": 51,
-    "lpToken": {
-      "chain": "ethereum",
-      "address": "0xee6d78755e06c31ae7a5ea2b29b35c073dfc00a9",
-      "symbol": "SLP",
-      "decimals": 18,
-      "tokens": [
-        {
-          "chain": "ethereum",
-          "symbol": "tBTCv1",
-          "decimals": 18,
-          "address": "0x8daebade922df735c38c80c7ebd708af50815faa"
-        },
-        {
-          "chain": "ethereum",
-          "symbol": "WETH",
-          "decimals": 18,
-          "address": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2"
-        }
-      ]
-    }
-  },
-  {
-    "chain": "ethereum",
-    "address": "0xc2edad668740f1aa35e4d8f227fb8e17dca888cd",
-    "protocol": "sushi",
-    "poolId": 52,
-    "lpToken": {
-      "chain": "ethereum",
-      "address": "0x4f871f310ad0e8a170db0021c0ce066859d37469",
-      "symbol": "SLP",
-      "decimals": 18,
-      "tokens": [
-        {
-          "chain": "ethereum",
-          "symbol": "AUDIO",
-          "decimals": 18,
-          "address": "0x18aaa7115705e8be94bffebde57af9bfc265b998"
-        },
-        {
-          "chain": "ethereum",
-          "symbol": "WETH",
-          "decimals": 18,
-          "address": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2"
-        }
-      ]
-    }
-  },
-  {
-    "chain": "ethereum",
-    "address": "0xc2edad668740f1aa35e4d8f227fb8e17dca888cd",
-    "protocol": "sushi",
-    "poolId": 53,
-    "lpToken": {
-      "chain": "ethereum",
-      "address": "0x364248b2f1f57c5402d244b2d469a35b4c0e9dab",
-      "symbol": "SLP",
-      "decimals": 18,
-      "tokens": [
-        {
-          "chain": "ethereum",
-          "symbol": "AKRO",
-          "decimals": 18,
-          "address": "0x8ab7404063ec4dbcfd4598215992dc3f8ec853d7"
-        },
-        {
-          "chain": "ethereum",
-          "symbol": "WETH",
-          "decimals": 18,
-          "address": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2"
-        }
-      ]
-    }
-  },
-  {
-    "chain": "ethereum",
-    "address": "0xc2edad668740f1aa35e4d8f227fb8e17dca888cd",
-    "protocol": "sushi",
-    "poolId": 56,
-    "lpToken": {
-      "chain": "ethereum",
-      "address": "0xe4455fdec181561e9ffe909dde46aaeaedc55283",
-      "symbol": "SLP",
-      "decimals": 18,
-      "tokens": [
-        {
-          "chain": "ethereum",
-          "symbol": "OUSD",
-          "decimals": 18,
-          "address": "0x2a8e1e676ec238d8a992307b495b45b3feaa5e86"
-        },
-        {
-          "chain": "ethereum",
-          "symbol": "USDT",
-          "decimals": 6,
-          "address": "0xdac17f958d2ee523a2206206994597c13d831ec7"
-        }
-      ]
-    }
-  },
-  {
-    "chain": "ethereum",
-    "address": "0xc2edad668740f1aa35e4d8f227fb8e17dca888cd",
-    "protocol": "sushi",
-    "poolId": 58,
-    "lpToken": {
-      "chain": "ethereum",
-      "address": "0xaf988aff99d3d0cb870812c325c588d8d8cb7de8",
-      "symbol": "SLP",
-      "decimals": 18,
-      "tokens": [
-        {
-          "chain": "ethereum",
-          "symbol": "KP3R",
-          "decimals": 18,
-          "address": "0x1ceb5cb57c4d4e2b2433641b95dd330a33185a44"
-        },
-        {
-          "chain": "ethereum",
-          "symbol": "WETH",
-          "decimals": 18,
-          "address": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2"
-        }
-      ]
-    }
-  },
-  {
-    "chain": "ethereum",
-    "address": "0xc2edad668740f1aa35e4d8f227fb8e17dca888cd",
-    "protocol": "sushi",
-    "poolId": 60,
-    "lpToken": {
-      "chain": "ethereum",
-      "address": "0x35a0d9579b1e886702375364fe9c540f97e4517b",
-      "symbol": "SLP",
-      "decimals": 18,
-      "tokens": [
-        {
-          "chain": "ethereum",
-          "symbol": "WETH",
-          "decimals": 18,
-          "address": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2"
-        },
-        {
-          "chain": "ethereum",
-          "address": "0xf5d669627376ebd411e34b98f19c868c8aba5ada",
-          "symbol": "AXS",
-          "decimals": 18
-        }
-      ]
-    }
-  },
-  {
-    "chain": "ethereum",
-    "address": "0xc2edad668740f1aa35e4d8f227fb8e17dca888cd",
-    "protocol": "sushi",
-    "poolId": 62,
-    "lpToken": {
-      "chain": "ethereum",
-      "address": "0xdc549b8199ec396fd9ff7e431cfc3cf9b40f2163",
-      "symbol": "AMPLIQTEST",
-      "decimals": 18,
-      "tokens": []
-    }
-  },
-  {
-    "chain": "ethereum",
-    "address": "0xc2edad668740f1aa35e4d8f227fb8e17dca888cd",
-    "protocol": "sushi",
-    "poolId": 65,
-    "lpToken": {
-      "chain": "ethereum",
-      "address": "0xef4f1d5007b4ff88c1a56261fec00264af6001fb",
-      "symbol": "SLP",
-      "decimals": 18,
-      "tokens": [
-        {
-          "chain": "ethereum",
-          "symbol": "PNK",
-          "decimals": 18,
-          "address": "0x93ed3fbe21207ec2e8f2d3c3de6e058cb73bc04d"
-        },
-        {
-          "chain": "ethereum",
-          "symbol": "WETH",
-          "decimals": 18,
-          "address": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2"
-        }
-      ]
-    }
-  },
-  {
-    "chain": "ethereum",
-    "address": "0xc2edad668740f1aa35e4d8f227fb8e17dca888cd",
-    "protocol": "sushi",
     "poolId": 73,
     "lpToken": {
       "chain": "ethereum",
@@ -1939,6 +1887,58 @@
           "symbol": "INDEX",
           "decimals": 18,
           "address": "0x0954906da0bf32d5479e25f46056d22f08464cab"
+        },
+        {
+          "chain": "ethereum",
+          "symbol": "WETH",
+          "decimals": 18,
+          "address": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2"
+        }
+      ]
+    }
+  },
+  {
+    "chain": "ethereum",
+    "address": "0xc2edad668740f1aa35e4d8f227fb8e17dca888cd",
+    "protocol": "sushi",
+    "poolId": 76,
+    "lpToken": {
+      "chain": "ethereum",
+      "address": "0xadeaa96a81ebba4e3a5525a008ee107385d588c3",
+      "symbol": "SLP",
+      "decimals": 18,
+      "tokens": [
+        {
+          "chain": "ethereum",
+          "symbol": "SWAG",
+          "decimals": 18,
+          "address": "0x87edffde3e14c7a66c9b9724747a1c5696b742e6"
+        },
+        {
+          "chain": "ethereum",
+          "symbol": "WETH",
+          "decimals": 18,
+          "address": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2"
+        }
+      ]
+    }
+  },
+  {
+    "chain": "ethereum",
+    "address": "0xc2edad668740f1aa35e4d8f227fb8e17dca888cd",
+    "protocol": "sushi",
+    "poolId": 77,
+    "lpToken": {
+      "chain": "ethereum",
+      "address": "0xf1360c4ae1cead17b588ec1111983d2791b760d3",
+      "symbol": "SLP",
+      "decimals": 18,
+      "tokens": [
+        {
+          "chain": "ethereum",
+          "symbol": "JRT",
+          "decimals": 18,
+          "address": "0x8a9c67fee641579deba04928c4bc45f66e26343a"
         },
         {
           "chain": "ethereum",
@@ -5112,6 +5112,19 @@
     "chain": "ethereum",
     "address": "0xc2edad668740f1aa35e4d8f227fb8e17dca888cd",
     "protocol": "sushi",
+    "poolId": 215,
+    "lpToken": {
+      "chain": "ethereum",
+      "address": "0x82e9c2c3236de403509de0472f2f3e16077bc42d",
+      "symbol": "kmUSDC/YFI-LINK",
+      "decimals": 18,
+      "tokens": []
+    }
+  },
+  {
+    "chain": "ethereum",
+    "address": "0xc2edad668740f1aa35e4d8f227fb8e17dca888cd",
+    "protocol": "sushi",
     "poolId": 216,
     "lpToken": {
       "chain": "ethereum",
@@ -5273,19 +5286,6 @@
       "chain": "ethereum",
       "address": "0x15785398cf9fb677ddcbdb1133585a4d0c65c2d9",
       "symbol": "kmDAI/CRV-LINK",
-      "decimals": 18,
-      "tokens": []
-    }
-  },
-  {
-    "chain": "ethereum",
-    "address": "0xc2edad668740f1aa35e4d8f227fb8e17dca888cd",
-    "protocol": "sushi",
-    "poolId": 215,
-    "lpToken": {
-      "chain": "ethereum",
-      "address": "0x82e9c2c3236de403509de0472f2f3e16077bc42d",
-      "symbol": "kmUSDC/YFI-LINK",
       "decimals": 18,
       "tokens": []
     }
@@ -6711,12 +6711,7 @@
           "decimals": 18,
           "address": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2"
         },
-        {
-          "chain": "ethereum",
-          "symbol": "SLP",
-          "decimals": 0,
-          "address": "0xcc8fa225d80b9c7d42f96e9570156c65d6caaa25"
-        }
+        { "chain": "ethereum", "symbol": "SLP", "decimals": 0, "address": "0xcc8fa225d80b9c7d42f96e9570156c65d6caaa25" }
       ]
     }
   },
@@ -6789,12 +6784,7 @@
           "decimals": 18,
           "address": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2"
         },
-        {
-          "chain": "ethereum",
-          "symbol": "ID",
-          "decimals": 18,
-          "address": "0xebd9d99a3982d547c5bb4db7e3b1f9f14b67eb83"
-        }
+        { "chain": "ethereum", "symbol": "ID", "decimals": 18, "address": "0xebd9d99a3982d547c5bb4db7e3b1f9f14b67eb83" }
       ]
     }
   },
@@ -8102,45 +8092,6 @@
     "chain": "ethereum",
     "address": "0xc2edad668740f1aa35e4d8f227fb8e17dca888cd",
     "protocol": "sushi",
-    "poolId": 344,
-    "lpToken": {
-      "chain": "ethereum",
-      "address": "0x47a307e3167820daf22a377d777371753758f59c",
-      "symbol": "POLYGONDUMMYTOKEN",
-      "decimals": 0,
-      "tokens": []
-    }
-  },
-  {
-    "chain": "ethereum",
-    "address": "0xc2edad668740f1aa35e4d8f227fb8e17dca888cd",
-    "protocol": "sushi",
-    "poolId": 345,
-    "lpToken": {
-      "chain": "ethereum",
-      "address": "0xd90a819577186870b8693b67ffb21750ecddc528",
-      "symbol": "CELODUMMYTOKEN",
-      "decimals": 0,
-      "tokens": []
-    }
-  },
-  {
-    "chain": "ethereum",
-    "address": "0xc2edad668740f1aa35e4d8f227fb8e17dca888cd",
-    "protocol": "sushi",
-    "poolId": 346,
-    "lpToken": {
-      "chain": "ethereum",
-      "address": "0x3685d09b7bfbf1e02dcccb6f7f546979c05610e3",
-      "symbol": "XDAIDUMMYTOKEN",
-      "decimals": 0,
-      "tokens": []
-    }
-  },
-  {
-    "chain": "ethereum",
-    "address": "0xc2edad668740f1aa35e4d8f227fb8e17dca888cd",
-    "protocol": "sushi",
     "poolId": 347,
     "lpToken": {
       "chain": "ethereum",
@@ -8161,45 +8112,6 @@
           "address": "0x6b175474e89094c44da98b954eedeac495271d0f"
         }
       ]
-    }
-  },
-  {
-    "chain": "ethereum",
-    "address": "0xc2edad668740f1aa35e4d8f227fb8e17dca888cd",
-    "protocol": "sushi",
-    "poolId": 348,
-    "lpToken": {
-      "chain": "ethereum",
-      "address": "0x6e6fe8711f2109e330a193dde347945ad6a6bdd8",
-      "symbol": "HARMONYDUMMYTOKEN",
-      "decimals": 0,
-      "tokens": []
-    }
-  },
-  {
-    "chain": "ethereum",
-    "address": "0xc2edad668740f1aa35e4d8f227fb8e17dca888cd",
-    "protocol": "sushi",
-    "poolId": 349,
-    "lpToken": {
-      "chain": "ethereum",
-      "address": "0xdf4395818bb8b1a45d4ca6ac9c685646c517f274",
-      "symbol": "FANTOMDUMMYTOKEN",
-      "decimals": 0,
-      "tokens": []
-    }
-  },
-  {
-    "chain": "ethereum",
-    "address": "0xc2edad668740f1aa35e4d8f227fb8e17dca888cd",
-    "protocol": "sushi",
-    "poolId": 350,
-    "lpToken": {
-      "chain": "ethereum",
-      "address": "0x393b6dc9b00e18314888678721ec0e923fc5f49d",
-      "symbol": "ARBITRUMDUMMYTOKEN",
-      "decimals": 0,
-      "tokens": []
     }
   },
   {
@@ -8304,97 +8216,6 @@
           "address": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2"
         }
       ]
-    }
-  },
-  {
-    "chain": "ethereum",
-    "address": "0xc2edad668740f1aa35e4d8f227fb8e17dca888cd",
-    "protocol": "sushi",
-    "poolId": 355,
-    "lpToken": {
-      "chain": "ethereum",
-      "address": "0x8f7a3ca0c676cee87c34d5d9c9cab5a51e929984",
-      "symbol": "KAVADUMMY",
-      "decimals": 0,
-      "tokens": []
-    }
-  },
-  {
-    "chain": "ethereum",
-    "address": "0xc2edad668740f1aa35e4d8f227fb8e17dca888cd",
-    "protocol": "sushi",
-    "poolId": 356,
-    "lpToken": {
-      "chain": "ethereum",
-      "address": "0x69cb9f3d42cf6e3706d62db661c30d048220637a",
-      "symbol": "NOVADUMMY",
-      "decimals": 0,
-      "tokens": []
-    }
-  },
-  {
-    "chain": "ethereum",
-    "address": "0xc2edad668740f1aa35e4d8f227fb8e17dca888cd",
-    "protocol": "sushi",
-    "poolId": 357,
-    "lpToken": {
-      "chain": "ethereum",
-      "address": "0x2377e68f0f909e208884e707db4a7cd493911280",
-      "symbol": "METISDUMMY",
-      "decimals": 0,
-      "tokens": []
-    }
-  },
-  {
-    "chain": "ethereum",
-    "address": "0xc2edad668740f1aa35e4d8f227fb8e17dca888cd",
-    "protocol": "sushi",
-    "poolId": 358,
-    "lpToken": {
-      "chain": "ethereum",
-      "address": "0x65550c7f7280579f34999358b5234f45cfadf50f",
-      "symbol": "BOBADUMMY",
-      "decimals": 0,
-      "tokens": []
-    }
-  },
-  {
-    "chain": "ethereum",
-    "address": "0xc2edad668740f1aa35e4d8f227fb8e17dca888cd",
-    "protocol": "sushi",
-    "poolId": 359,
-    "lpToken": {
-      "chain": "ethereum",
-      "address": "0xe7e656893030187f1073e5b2d768e3c1e8861f26",
-      "symbol": "BSCDUMMY",
-      "decimals": 0,
-      "tokens": []
-    }
-  },
-  {
-    "chain": "ethereum",
-    "address": "0xc2edad668740f1aa35e4d8f227fb8e17dca888cd",
-    "protocol": "sushi",
-    "poolId": 360,
-    "lpToken": {
-      "chain": "ethereum",
-      "address": "0xcb277e48526f30f625e24850cf293d89301ea470",
-      "symbol": "BTTCDUMMY",
-      "decimals": 0,
-      "tokens": []
-    }
-  },
-  {
-    "chain": "ethereum",
-    "address": "0xc2edad668740f1aa35e4d8f227fb8e17dca888cd",
-    "protocol": "sushi",
-    "poolId": 361,
-    "lpToken": {
-      "chain": "ethereum",
-      "address": "0x11b66abb675b955bd6f066fde849442865c60e29",
-      "symbol": "OPDUMMY",
-      "decimals": 0,
-      "tokens": []
     }
   }
 ]

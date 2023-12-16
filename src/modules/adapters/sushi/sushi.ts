@@ -61,7 +61,7 @@ export default class SushiAdapter extends ProtocolAdapter {
       options.timestamp + DAY - 1,
     );
 
-    const poolLength = await this.services.blockchain.singlecall({
+    const poolLength = await this.services.blockchain.readContract({
       chain: options.config.chain,
       target: options.config.address,
       abi: MasterchefAbi,
@@ -69,7 +69,7 @@ export default class SushiAdapter extends ProtocolAdapter {
       params: [],
       blockNumber: blockNumber,
     });
-    const totalAllocationPoint = await this.services.blockchain.singlecall({
+    const totalAllocationPoint = await this.services.blockchain.readContract({
       chain: options.config.chain,
       target: options.config.address,
       abi: MasterchefAbi,
@@ -78,7 +78,7 @@ export default class SushiAdapter extends ProtocolAdapter {
       blockNumber: blockNumber,
     });
     for (let poolId = 0; poolId < Number(poolLength); poolId++) {
-      const poolInfo = await this.services.blockchain.singlecall({
+      const [lpTokenAddress, allocPoint] = await this.services.blockchain.readContract({
         chain: options.config.chain,
         target: options.config.address,
         abi: MasterchefAbi,
@@ -87,14 +87,14 @@ export default class SushiAdapter extends ProtocolAdapter {
         blockNumber: blockNumber,
       });
 
-      const lpToken = await this.getLpTokenInfo(options.config.chain, this.config.protocol, poolInfo.lpToken);
+      const lpToken = await this.getLpTokenInfo(options.config.chain, this.config.protocol, lpTokenAddress);
 
       let lpAmount = new BigNumber(0);
       try {
         lpAmount = new BigNumber(
-          await this.services.blockchain.singlecall({
+          await this.services.blockchain.readContract({
             chain: options.config.chain,
-            target: poolInfo.lpToken,
+            target: lpTokenAddress,
             abi: Erc20Abi,
             method: 'balanceOf',
             params: [options.config.address],
@@ -105,7 +105,7 @@ export default class SushiAdapter extends ProtocolAdapter {
 
       // reward earned were calculated by
       // RewardEarned = (RewardTokenSupplyGrowth / (1 + DevSharesPercentage)) * (PoolAllocationPoint / TotalAllocationPoint)
-      const rewardTokenSupplyBefore = await this.services.blockchain.singlecall({
+      const rewardTokenSupplyBefore = await this.services.blockchain.readContract({
         chain: options.config.chain,
         abi: Erc20Abi,
         target: options.config.rewardToken.address,
@@ -113,7 +113,7 @@ export default class SushiAdapter extends ProtocolAdapter {
         params: [],
         blockNumber: blockNumber,
       });
-      const rewardTokenSupplyAfter = await this.services.blockchain.singlecall({
+      const rewardTokenSupplyAfter = await this.services.blockchain.readContract({
         chain: options.config.chain,
         abi: Erc20Abi,
         target: options.config.rewardToken.address,
@@ -125,10 +125,9 @@ export default class SushiAdapter extends ProtocolAdapter {
         new BigNumber(rewardTokenSupplyBefore.toString()),
       );
       const rewardEarnedByPool = rewardTokenSupplyGrowth
-        .multipliedBy(poolInfo.allocPoint.toString())
+        .multipliedBy(allocPoint.toString())
         .dividedBy(100 + options.config.devRewardSharePercentage / 100)
         .dividedBy(new BigNumber(totalAllocationPoint.toString()));
-      const rewardEarnedByProtocol = rewardTokenSupplyGrowth.minus(rewardEarnedByPool);
 
       if (lpToken) {
         const tokenPrice = await this.services.oracle.getUniv2TokenPriceUsd({
@@ -164,7 +163,8 @@ export default class SushiAdapter extends ProtocolAdapter {
             address: lpToken.address,
           },
           tokenPrice: tokenPrice ? tokenPrice : '0',
-          allocationPoint: new BigNumber(poolInfo.allocPoint.toString()).toNumber(),
+          allocationPoint: new BigNumber(allocPoint.toString()).toNumber(),
+          allocationPointTotal: new BigNumber(totalAllocationPoint.toString()).toNumber(),
 
           totalDeposited: formatFromDecimals(lpAmount.toString(10), 18),
 
@@ -173,13 +173,6 @@ export default class SushiAdapter extends ProtocolAdapter {
               token: options.config.rewardToken,
               tokenPrice: rewardTokenPrice ? rewardTokenPrice : '0',
               tokenAmount: formatFromDecimals(rewardEarnedByPool.toString(10), options.config.rewardToken.decimals),
-            },
-          ],
-          rewardForProtocol: [
-            {
-              token: options.config.rewardToken,
-              tokenPrice: rewardTokenPrice ? rewardTokenPrice : '0',
-              tokenAmount: formatFromDecimals(rewardEarnedByProtocol.toString(10), options.config.rewardToken.decimals),
             },
           ],
 

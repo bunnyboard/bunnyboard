@@ -9,7 +9,7 @@ export default class ChainlinkLibs {
     blockNumber: number,
   ): Promise<string | null> {
     const blockchain = new BlockchainService();
-    const latestAnswer = await blockchain.singlecall({
+    const latestAnswer = await blockchain.readContract({
       chain: config.chain,
       abi: AggregatorAbi,
       target: config.address,

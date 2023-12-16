@@ -236,7 +236,7 @@ export default class OracleService extends CachingService implements IOracleServ
       EnvConfig.blockchains[options.pool2.chain].blockSubgraph,
       options.timestamp,
     );
-    const lpSupply = await blockchain.singlecall({
+    const lpSupply = await blockchain.readContract({
       chain: options.pool2.chain,
       abi: Erc20Abi,
       target: options.pool2.address,
@@ -267,7 +267,7 @@ export default class OracleService extends CachingService implements IOracleServ
 
       if (token0Price || token1Price) {
         if (token0Price) {
-          const token0Balance = await blockchain.singlecall({
+          const token0Balance = await blockchain.readContract({
             chain: options.pool2.chain,
             abi: Erc20Abi,
             target: options.pool2.tokens[0].address,
@@ -283,7 +283,7 @@ export default class OracleService extends CachingService implements IOracleServ
             .dividedBy(new BigNumber(10).pow(options.pool2.tokens[0].decimals))
             .toString(10);
         } else if (token1Price) {
-          const token1Balance = await blockchain.singlecall({
+          const token1Balance = await blockchain.readContract({
             chain: options.pool2.chain,
             abi: Erc20Abi,
             target: options.pool2.tokens[1].address,

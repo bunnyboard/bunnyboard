@@ -15,7 +15,7 @@ export default class BenqiAdapter extends CompoundAdapter {
   }
 
   protected async getMarketRates(config: LendingMarketConfig, blockNumber: number): Promise<CompoundMarketRates> {
-    const supplyRatePerTimestamp = await this.services.blockchain.singlecall({
+    const supplyRatePerTimestamp = await this.services.blockchain.readContract({
       chain: config.chain,
       abi: qiTokenAbi,
       target: config.address,
@@ -23,7 +23,7 @@ export default class BenqiAdapter extends CompoundAdapter {
       params: [],
       blockNumber,
     });
-    const borrowRatePerTimestamp = await this.services.blockchain.singlecall({
+    const borrowRatePerTimestamp = await this.services.blockchain.readContract({
       chain: config.chain,
       abi: qiTokenAbi,
       target: config.address,

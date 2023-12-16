@@ -14,6 +14,7 @@ export interface MasterchefPoolSnapshot extends DayDataSnapshot {
 
   // allocation point
   allocationPoint: number;
+  allocationPointTotal: number;
 
   totalDeposited: string;
 
@@ -22,5 +23,4 @@ export interface MasterchefPoolSnapshot extends DayDataSnapshot {
 
   // count number of reward tokens were distributed
   rewardForStakers: Array<TokenRewardEntry>;
-  rewardForProtocol: Array<TokenRewardEntry>;
 }

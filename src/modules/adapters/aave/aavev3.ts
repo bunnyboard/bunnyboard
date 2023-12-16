@@ -2,14 +2,14 @@ import BigNumber from 'bignumber.js';
 
 import AaveDataProviderV3Abi from '../../../configs/abi/aave/DataProviderV3.json';
 import AaveIncentiveControllerV3Abi from '../../../configs/abi/aave/IncentiveControllerV3.json';
-import { DAY, ONE_RAY } from '../../../configs/constants';
+import { DAY, ONE_RAY, RAY_DECIMALS } from '../../../configs/constants';
 import EnvConfig from '../../../configs/envConfig';
 import { AaveLendingMarketConfig } from '../../../configs/protocols/aave';
 import { tryQueryBlockNumberAtTimestamp } from '../../../lib/subsgraph';
 import { formatFromDecimals } from '../../../lib/utils';
 import { ProtocolConfig } from '../../../types/configs';
 import { ContextServices } from '../../../types/namespaces';
-import { AaveMarketRewards } from './aavev1';
+import { AaveMarketRates, AaveMarketRewards } from './aavev1';
 import Aavev2Adapter from './aavev2';
 import { Aavev3EventAbiMappings, Aavev3EventSignatures } from './abis';
 
@@ -24,7 +24,7 @@ export default class Aavev3Adapter extends Aavev2Adapter {
   }
 
   protected async getReserveData(config: AaveLendingMarketConfig, reserve: string, blockNumber: number): Promise<any> {
-    return await this.services.blockchain.singlecall({
+    return await this.services.blockchain.readContract({
       chain: config.chain,
       abi: AaveDataProviderV3Abi,
       target: config.dataProvider,
@@ -36,25 +36,23 @@ export default class Aavev3Adapter extends Aavev2Adapter {
 
   // return total deposited (in wei)
   protected getTotalDeposited(reserveData: any): string {
-    return new BigNumber(reserveData.totalAToken.toString()).toString(10);
+    return new BigNumber(reserveData[2].toString()).toString(10);
   }
 
   // return total borrowed (in wei)
   protected getTotalBorrowed(reserveData: any): string {
-    const totalBorrowed = new BigNumber(reserveData.totalStableDebt.toString()).plus(
-      new BigNumber(reserveData.totalVariableDebt.toString()),
-    );
+    const totalBorrowed = new BigNumber(reserveData[2].toString()).plus(new BigNumber(reserveData[4].toString()));
 
     return totalBorrowed.toString(10);
   }
 
   // return total borrowed (in wei)
   protected getTotalFeesCollected(reserveData: any): string {
-    const totalBorrowStable = new BigNumber(reserveData.totalStableDebt.toString());
-    const totalBorrowVariable = new BigNumber(reserveData.totalVariableDebt.toString());
+    const totalBorrowStable = new BigNumber(reserveData[3].toString());
+    const totalBorrowVariable = new BigNumber(reserveData[4].toString());
 
-    const borrowRateStable = new BigNumber(reserveData.stableBorrowRate.toString());
-    const borrowRateVariable = new BigNumber(reserveData.variableBorrowRate.toString());
+    const borrowRateStable = new BigNumber(reserveData[7].toString());
+    const borrowRateVariable = new BigNumber(reserveData[6].toString());
 
     const feesCollectedStable = totalBorrowStable.multipliedBy(borrowRateStable).dividedBy(ONE_RAY).dividedBy(365);
     const feesCollectedVariable = totalBorrowVariable
@@ -63,6 +61,14 @@ export default class Aavev3Adapter extends Aavev2Adapter {
       .dividedBy(365);
 
     return feesCollectedStable.plus(feesCollectedVariable).toString(10);
+  }
+
+  protected getMarketRates(reserveData: any): AaveMarketRates {
+    return {
+      supply: formatFromDecimals(reserveData[5].toString(), RAY_DECIMALS),
+      borrow: formatFromDecimals(reserveData[6].toString(), RAY_DECIMALS),
+      borrowStable: formatFromDecimals(reserveData[7].toString(), RAY_DECIMALS),
+    };
   }
 
   protected async getIncentiveRewards(
@@ -83,7 +89,7 @@ export default class Aavev3Adapter extends Aavev2Adapter {
       );
 
       // get reward token list
-      const rewardsList = await this.services.blockchain.singlecall({
+      const rewardsList = await this.services.blockchain.readContract({
         chain: config.chain,
         abi: AaveIncentiveControllerV3Abi,
         target: incentiveController.address,
@@ -107,7 +113,7 @@ export default class Aavev3Adapter extends Aavev2Adapter {
             timestamp: timestamp,
           });
 
-          const reserveTokensAddresses = await this.services.blockchain.singlecall({
+          const reserveTokensAddresses = await this.services.blockchain.readContract({
             chain: config.chain,
             target: config.dataProvider,
             abi: AaveDataProviderV3Abi,
@@ -115,28 +121,28 @@ export default class Aavev3Adapter extends Aavev2Adapter {
             params: [reserve],
           });
           if (reserveTokensAddresses) {
-            const aTokenAssetInfo = await this.services.blockchain.singlecall({
+            const aTokenAssetInfo = await this.services.blockchain.readContract({
               chain: config.chain,
               abi: AaveIncentiveControllerV3Abi,
               target: incentiveController.address,
               method: 'getRewardsData',
-              params: [reserveTokensAddresses.aTokenAddress, rewardTokenAddress],
+              params: [reserveTokensAddresses[0], rewardTokenAddress],
               blockNumber: blockNumber,
             });
-            const stableDebtAssetInfo = await this.services.blockchain.singlecall({
+            const stableDebtAssetInfo = await this.services.blockchain.readContract({
               chain: config.chain,
               abi: AaveIncentiveControllerV3Abi,
               target: incentiveController.address,
               method: 'getRewardsData',
-              params: [reserveTokensAddresses.stableDebtTokenAddress],
+              params: [reserveTokensAddresses[1]],
               blockNumber: blockNumber,
             });
-            const variableDebtAssetInfo = await this.services.blockchain.singlecall({
+            const variableDebtAssetInfo = await this.services.blockchain.readContract({
               chain: config.chain,
               abi: AaveIncentiveControllerV3Abi,
               target: incentiveController.address,
               method: 'getRewardsData',
-              params: [reserveTokensAddresses.variableDebtTokenAddress],
+              params: [reserveTokensAddresses[2]],
               blockNumber: blockNumber,
             });
 

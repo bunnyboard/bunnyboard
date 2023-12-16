@@ -36,7 +36,7 @@ describe('configurations', async function () {
           ).not.equal(undefined);
         } else if (market.version === 'aavev1' || market.version === 'aavev2' || market.version === 'aavev3') {
           // get reserve list
-          const reserveList: Array<string> = await blockchain.singlecall({
+          const reserveList: Array<string> = await blockchain.readContract({
             chain: market.chain,
             abi: market.version === 'aavev1' ? AaveLendingPoolV1Abi : AaveLendingPoolV2Abi,
             target: market.address,

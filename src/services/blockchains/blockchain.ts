@@ -1,5 +1,5 @@
 import BigNumber from 'bignumber.js';
-import Web3 from 'web3';
+import { Address, PublicClient, createPublicClient, http } from 'viem';
 
 import { DefaultQueryLogsBlockRange, TokenList } from '../../configs';
 import ERC20Abi from '../../configs/abi/ERC20.json';
@@ -9,27 +9,22 @@ import logger from '../../lib/logger';
 import { compareAddress, normalizeAddress } from '../../lib/utils';
 import { Token } from '../../types/configs';
 import { CachingService } from '../caching/caching';
-import { ContractCall, GetContractLogOptions, GetTokenOptions, IBlockchainService } from './domains';
+import { GetContractLogsOptions, GetTokenOptions, IBlockchainService, ReadContractOptions } from './domains';
 
 export default class BlockchainService extends CachingService implements IBlockchainService {
   public readonly name: string = 'blockchain';
-  public readonly providers: { [key: string]: Web3 } = {};
 
   constructor() {
     super();
-
-    for (const [chain, config] of Object.entries(EnvConfig.blockchains)) {
-      this.providers[chain] = new Web3(config.nodeRpc);
-    }
   }
 
-  public getProvider(chain: string): Web3 {
-    if (!this.providers[chain]) {
-      // get config and initialize a new provider
-      this.providers[chain] = new Web3(EnvConfig.blockchains[chain].nodeRpc);
-    }
-
-    return this.providers[chain];
+  public getPublicClient(chain: string): PublicClient {
+    return createPublicClient({
+      batch: {
+        multicall: true,
+      },
+      transport: http(EnvConfig.blockchains[chain].nodeRpc),
+    });
   }
 
   public async getTokenInfo(options: GetTokenOptions): Promise<Token | null> {
@@ -66,14 +61,14 @@ export default class BlockchainService extends CachingService implements IBlockc
 
     // query on-chain data
     try {
-      const symbol = await this.singlecall({
+      const symbol = await this.readContract({
         chain: chain,
         target: address,
         abi: ERC20Abi,
         method: 'symbol',
         params: [],
       });
-      const decimals = await this.singlecall({
+      const decimals = await this.readContract({
         chain: chain,
         target: address,
         abi: ERC20Abi,
@@ -81,16 +76,18 @@ export default class BlockchainService extends CachingService implements IBlockc
         params: [],
       });
 
-      const token: Token = {
-        chain,
-        address: normalizeAddress(address),
-        symbol,
-        decimals: new BigNumber(decimals.toString()).toNumber(),
-      };
+      if (symbol && decimals) {
+        const token: Token = {
+          chain,
+          address: normalizeAddress(address),
+          symbol,
+          decimals: new BigNumber(decimals.toString()).toNumber(),
+        };
 
-      await this.setCachingData(cacheKey, token);
+        await this.setCachingData(cacheKey, token);
 
-      return token;
+        return token;
+      }
     } catch (e: any) {
       logger.warn('failed to get token info', {
         service: this.name,
@@ -103,10 +100,11 @@ export default class BlockchainService extends CachingService implements IBlockc
     return null;
   }
 
-  public async getContractLogs(options: GetContractLogOptions): Promise<Array<any>> {
+  public async getContractLogs(options: GetContractLogsOptions): Promise<Array<any>> {
     let logs: Array<any> = [];
 
-    const web3 = this.getProvider(options.chain);
+    const client = this.getPublicClient(options.chain);
+
     let startBlock = options.fromBlock;
     while (startBlock <= options.toBlock) {
       const toBlock =
@@ -114,11 +112,10 @@ export default class BlockchainService extends CachingService implements IBlockc
           ? options.toBlock
           : startBlock + DefaultQueryLogsBlockRange;
       logs = logs.concat(
-        await web3.eth.getPastLogs({
-          address: options.address,
-          fromBlock: startBlock,
-          toBlock: toBlock,
-          topics: options.topics,
+        await client.getLogs({
+          address: options.address as Address,
+          fromBlock: BigInt(Number(startBlock)),
+          toBlock: BigInt(Number(toBlock)),
         }),
       );
 
@@ -128,41 +125,29 @@ export default class BlockchainService extends CachingService implements IBlockc
     return logs;
   }
 
-  public async singlecall(call: ContractCall): Promise<any> {
-    const contract = new this.providers[call.chain].eth.Contract(call.abi, call.target);
+  public async readContract(options: ReadContractOptions): Promise<any> {
+    const client = this.getPublicClient(options.chain);
 
-    let result = null;
     try {
-      // const startExeTime = Math.floor(new Date().getTime() / 1000);
-
-      if (call.blockNumber) {
-        result = await contract.methods[call.method](...(call.params as [])).call({}, call.blockNumber);
+      if (options.blockNumber) {
+        return await client.readContract({
+          address: options.target as Address,
+          abi: options.abi,
+          functionName: options.method,
+          args: options.params,
+          blockNumber: BigInt(Number(options.blockNumber)),
+        });
       } else {
-        result = await contract.methods[call.method](...(call.params as [])).call();
+        return await client.readContract({
+          address: options.target as Address,
+          abi: options.abi,
+          functionName: options.method,
+          args: options.params,
+          blockTag: 'latest',
+        });
       }
+    } catch (e: any) {}
 
-      // const endExeTime = Math.floor(new Date().getTime() / 1000);
-      // const elapsed = endExeTime - startExeTime;
-
-      // if (elapsed > 5) {
-      //   logger.debug('took too long for onchain single call', {
-      //     service: this.name,
-      //     chain: call.chain,
-      //     target: call.target,
-      //     method: call.method,
-      //     params: call.params.length > 0 ? call.params.toString() : '[]',
-      //   });
-      // }
-    } catch (e: any) {
-      // logger.debug('failed to query contract', {
-      //   service: this.name,
-      //   chain: call.chain,
-      //   target: call.target,
-      //   method: call.method,
-      //   params: call.params.length > 0 ? call.params.toString() : '[]',
-      // });
-    }
-
-    return result;
+    return null;
   }
 }
