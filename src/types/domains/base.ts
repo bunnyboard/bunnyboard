@@ -18,3 +18,32 @@ export interface DayDataSnapshot {
   // volumes were count from the StartDayTimestamp to EndDayTimestamp - 1
   timestamp: number;
 }
+
+export type LendingActivityAction = 'deposit' | 'withdraw' | 'borrow' | 'repay' | 'liquidate';
+
+export interface BaseActivityEvent {
+  chain: string;
+
+  protocol: string;
+
+  transactionHash: string;
+
+  // log index should form in the format: logIndex:actionIndex
+  // some protocol have multiple actions in a single log entry
+  // we need to identify them by given them an additional unique index
+  // if we got only an activity in single log entry
+  // so the logIndex should be logIndex:0
+  // we just increase actionIndex for other activities: logIndex:1, logIndex:2, ..., logIndex:n
+  logIndex: string;
+
+  // activity action
+  action: LendingActivityAction;
+
+  // user address
+  user: string;
+
+  // market token
+  token: Token;
+
+  tokenAmount: string;
+}

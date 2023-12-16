@@ -15,18 +15,6 @@ import { GetLendingMarketSnapshotOptions } from '../../../types/options';
 import ProtocolAdapter from '../adapter';
 import { Aavev1EventAbiMappings, Aavev1EventSignatures } from './abis';
 
-export interface AaveMarketEventStats {
-  volumeDeposited: string;
-  volumeWithdrawn: string;
-  volumeBorrowed: string;
-  volumeRepaid: string;
-  volumeLiquidated: string;
-  counterLenders: number;
-  counterBorrowers: number;
-  counterLiquidators: number;
-  countTransactions: number;
-}
-
 export interface AaveMarketRewards {
   rewardsForLenders: Array<TokenRewardEntry>;
   rewardsForBorrowers: Array<TokenRewardEntry>;

@@ -87,7 +87,13 @@ export default class DatabaseService implements IDatabaseService {
     statesCollection.createIndex({ name: 1 }, { background: true });
     cachingCollection.createIndex({ name: 1 }, { background: true });
     tokenPricesCollection.createIndex({ chain: 1, address: 1, timestamp: 1 }, { background: true });
-    lendingMarketSnapshotsCollection.createIndex({ marketId: 1, timestamp: 1 }, { background: true });
+
+    // write
+    lendingMarketSnapshotsCollection.createIndex(
+      { chain: 1, protocol: 1, address: 1, 'token.address': 1, timestamp: 1 },
+      { background: true },
+    );
+
     masterchefPoolSnapshotsCollection.createIndex(
       { chain: 1, address: 1, poolId: 1, timestamp: 1 },
       { background: true },

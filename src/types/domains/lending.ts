@@ -1,13 +1,5 @@
 import { LendingMarketType, Token } from '../configs';
-import { DayDataSnapshot, TokenRewardEntry } from './base';
-
-export interface LendingMarketRates {
-  supply: string;
-  borrow: string;
-
-  // some protocol like AAVE offer a stable borrow rate
-  borrowStable?: string;
-}
+import { BaseActivityEvent, DayDataSnapshot, TokenRewardEntry } from './base';
 
 // a lending market present a reserve in the cross-pool lending
 // like compound or aave
@@ -43,4 +35,17 @@ export interface LendingCdpSnapshot extends LendingMarketSnapshot {
   // a CDP market have a single collateral token
   collateralToken: Token;
   collateralTokenPrice: string;
+}
+
+export interface LendingActivityEvent extends BaseActivityEvent {
+  // market contract address
+  market: string;
+
+  // in case of liquidation, liquidator is considered as the main user of the transaction
+  // so, we need to keep track the borrower address that was liquidated in this borrower address
+  // also, an address can repay debts for another address, and this borrower address
+  // is the address which own debts.
+  // for example, Alice liquidate Bob borrowing position, so user = Alice address, borrower = Bob address
+  // in case of repay, Alice repay debts for Bob, so user = Alice address, borrower = Bob address
+  borrower?: string;
 }
