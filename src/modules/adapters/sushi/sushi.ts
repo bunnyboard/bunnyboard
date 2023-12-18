@@ -130,6 +130,9 @@ export default class SushiAdapter extends ProtocolAdapter {
         .dividedBy(new BigNumber(totalAllocationPoint.toString()));
 
       if (lpToken) {
+        lpToken.symbol =
+          lpToken.tokens.length === 2 ? `${lpToken.tokens[0].symbol}-${lpToken.tokens[1].symbol} LP` : lpToken.symbol;
+
         const tokenPrice = await this.services.oracle.getUniv2TokenPriceUsd({
           pool2: lpToken,
           timestamp: options.timestamp,
@@ -158,7 +161,7 @@ export default class SushiAdapter extends ProtocolAdapter {
           poolId: poolId,
           token: {
             chain: lpToken.chain,
-            symbol: `${lpToken.tokens[0].symbol}-${lpToken.tokens[1].symbol} LP`,
+            symbol: lpToken.symbol,
             decimals: 18,
             address: lpToken.address,
           },
@@ -184,7 +187,7 @@ export default class SushiAdapter extends ProtocolAdapter {
           protocol: options.config.protocol,
           address: options.config.address,
           poolId: poolId,
-          lpToken: `${lpToken.tokens[0].symbol}-${lpToken.tokens[1].symbol} LP`,
+          lpToken: lpToken.symbol,
           date: getDateString(options.timestamp),
         });
       }

@@ -209,6 +209,11 @@ export default class OracleService extends CachingService implements IOracleServ
   public async getUniv2TokenPriceUsd(options: GetUniv2TokenPriceOptions): Promise<string | null> {
     let returnPrice = null;
 
+    // not a lp pool
+    if (options.pool2.tokens.length === 0) {
+      return null;
+    }
+
     const cachingKey = `${options.pool2.chain}:${options.pool2.address}:${options.timestamp}`;
     const priceFromCaching = await this.getCachingData(cachingKey);
     if (priceFromCaching) {
