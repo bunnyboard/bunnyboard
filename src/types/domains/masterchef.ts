@@ -1,5 +1,5 @@
 import { Token } from '../configs';
-import { DayDataSnapshot } from './base';
+import { BaseActivityEvent, DayDataSnapshot, MasterchefActivityAction } from './base';
 
 export interface MasterchefPoolSnapshot extends DayDataSnapshot {
   // masterchef address
@@ -26,4 +26,13 @@ export interface MasterchefPoolSnapshot extends DayDataSnapshot {
 
   // RewardAmount = RewardPerSecond * TimeElapsed * AllocationPoint / AllocationPointTotal
   rewardTokenAmount: string;
+}
+
+export interface MasterchefActivityEvent extends BaseActivityEvent {
+  action: MasterchefActivityAction;
+
+  // masterchef address
+  masterchef: string;
+
+  poolId: number;
 }

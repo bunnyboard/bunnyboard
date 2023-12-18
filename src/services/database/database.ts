@@ -83,6 +83,9 @@ export default class DatabaseService implements IDatabaseService {
     const masterchefPoolSnapshotsCollection = await this.getCollection(
       envConfig.mongodb.collections.masterchefPoolSnapshots,
     );
+    const masterchefPoolActivitiesCollection = await this.getCollection(
+      envConfig.mongodb.collections.masterchefPoolActivities,
+    );
 
     statesCollection.createIndex({ name: 1 }, { background: true });
     cachingCollection.createIndex({ name: 1 }, { background: true });
@@ -96,6 +99,11 @@ export default class DatabaseService implements IDatabaseService {
 
     masterchefPoolSnapshotsCollection.createIndex(
       { chain: 1, address: 1, poolId: 1, timestamp: 1 },
+      { background: true },
+    );
+    masterchefPoolActivitiesCollection.createIndex({ chain: 1, transactionHash: 1, logIndex: 1 }, { background: true });
+    masterchefPoolActivitiesCollection.createIndex(
+      { chain: 1, protocol: 1, poolId: 1, user: 1, blockNumber: 1 },
       { background: true },
     );
   }

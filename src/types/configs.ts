@@ -48,6 +48,9 @@ export interface EnvConfig {
 
       // save masterchef pools metric and snapshots
       masterchefPoolSnapshots: string;
+
+      // save masterchef activity events
+      masterchefPoolActivities: string;
     };
   };
 

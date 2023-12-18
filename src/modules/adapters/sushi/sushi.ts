@@ -1,4 +1,5 @@
 import BigNumber from 'bignumber.js';
+import { decodeEventLog } from 'viem';
 
 import Erc20Abi from '../../../configs/abi/ERC20.json';
 import MasterchefAbi from '../../../configs/abi/sushi/Masterchef.json';
@@ -7,9 +8,10 @@ import MasterchefPools from '../../../configs/data/MasterchefPools.json';
 import EnvConfig from '../../../configs/envConfig';
 import logger from '../../../lib/logger';
 import { tryQueryBlockNumberAtTimestamp } from '../../../lib/subsgraph';
-import { compareAddress, formatFromDecimals, getDateString } from '../../../lib/utils';
+import { compareAddress, formatFromDecimals, getDateString, normalizeAddress } from '../../../lib/utils';
 import { LiquidityPoolConfig, MasterchefConfig, ProtocolConfig } from '../../../types/configs';
-import { MasterchefPoolSnapshot } from '../../../types/domains/masterchef';
+import { MasterchefActivityAction } from '../../../types/domains/base';
+import { MasterchefActivityEvent, MasterchefPoolSnapshot } from '../../../types/domains/masterchef';
 import { ContextServices } from '../../../types/namespaces';
 import { GetMasterchefSnapshotOptions } from '../../../types/options';
 import UniswapLibs from '../../libs/uniswap';
@@ -47,6 +49,83 @@ export default class SushiAdapter extends ProtocolAdapter {
     return await UniswapLibs.getPool2Constant(chain, lpToken);
   }
 
+  protected async getLpTokenByPoolId(config: MasterchefConfig, poolId: number): Promise<LiquidityPoolConfig | null> {
+    const configPool = MasterchefPools.filter(
+      (pool) => pool.chain == config.chain && compareAddress(pool.address, config.address) && pool.poolId === poolId,
+    )[0];
+    if (configPool) {
+      return {
+        chain: config.chain,
+        address: configPool.lpToken.address,
+        symbol: configPool.lpToken.symbol,
+        decimals: configPool.lpToken.decimals,
+        tokens: configPool.lpToken.tokens,
+      };
+    }
+
+    const [lpTokenAddress] = await this.services.blockchain.readContract({
+      chain: config.chain,
+      target: config.address,
+      abi: MasterchefAbi,
+      method: 'poolInfo',
+      params: [poolId],
+    });
+
+    return UniswapLibs.getPool2Constant(config.chain, lpTokenAddress);
+  }
+
+  protected async parseEventLog(config: MasterchefConfig, log: any): Promise<MasterchefActivityEvent | null> {
+    const signature = log.topics[0];
+    if (
+      signature === SushiMasterchefEventSignatures.Deposit ||
+      signature === SushiMasterchefEventSignatures.Withdraw ||
+      signature === SushiMasterchefEventSignatures.EmergencyWithdraw
+    ) {
+      const event: any = decodeEventLog({
+        abi: MasterchefAbi,
+        data: log.data,
+        topics: log.topics,
+      });
+
+      const poolId = new BigNumber(event.args.pid.toString()).toNumber();
+      const lpToken = await this.getLpTokenByPoolId(config, poolId);
+      if (lpToken) {
+        const address = normalizeAddress(event.args.user);
+        let action: MasterchefActivityAction = 'deposit';
+        if (signature === SushiMasterchefEventSignatures.Withdraw) {
+          action = 'withdraw';
+        } else if (signature === SushiMasterchefEventSignatures.EmergencyWithdraw) {
+          action = 'emergencyWithdraw';
+        }
+        const amount = formatFromDecimals(event.args.amount.toString(), lpToken.decimals);
+
+        return {
+          protocol: config.protocol,
+          chain: config.chain,
+          transactionHash: log.transactionHash,
+          logIndex: String(log.logIndex),
+          action: action,
+          user: address,
+          token: {
+            chain: lpToken.chain,
+            decimals: lpToken.decimals,
+            address: lpToken.address,
+            symbol:
+              lpToken.tokens.length === 2
+                ? `${lpToken.tokens[0].symbol}-${lpToken.tokens[1].symbol} LP`
+                : lpToken.symbol,
+          },
+          tokenAmount: amount,
+          masterchef: normalizeAddress(config.address),
+          poolId: poolId,
+          blockNumber: new BigNumber(log.blockNumber.toString()).toNumber(),
+        };
+      }
+    }
+
+    return null;
+  }
+
   protected async getRewardTokenPerSecond(config: MasterchefConfig, blockNumber: number): Promise<string> {
     const sushiPerBlock = await this.services.blockchain.readContract({
       chain: config.chain,
@@ -73,6 +152,36 @@ export default class SushiAdapter extends ProtocolAdapter {
       EnvConfig.blockchains[options.config.chain].blockSubgraph,
       options.timestamp,
     );
+    const blockNumberEndDay = await tryQueryBlockNumberAtTimestamp(
+      EnvConfig.blockchains[options.config.chain].blockSubgraph,
+      options.timestamp + DAY - 1,
+    );
+
+    // process activity events
+    const logs = await this.services.blockchain.getContractLogs({
+      chain: options.config.chain,
+      address: options.config.address,
+      fromBlock: blockNumber,
+      toBlock: blockNumberEndDay,
+    });
+    for (const log of logs) {
+      const activityEvent = await this.parseEventLog(options.config, log);
+
+      if (activityEvent) {
+        await this.services.database.update({
+          collection: EnvConfig.mongodb.collections.masterchefPoolActivities,
+          keys: {
+            chain: options.config.chain,
+            transactionHash: activityEvent.transactionHash,
+            logIndex: activityEvent.logIndex,
+          },
+          updates: {
+            ...activityEvent,
+          },
+          upsert: true,
+        });
+      }
+    }
 
     const poolLength = await this.services.blockchain.readContract({
       chain: options.config.chain,

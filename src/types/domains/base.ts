@@ -20,6 +20,7 @@ export interface DayDataSnapshot {
 }
 
 export type LendingActivityAction = 'deposit' | 'withdraw' | 'borrow' | 'repay' | 'liquidate';
+export type MasterchefActivityAction = 'deposit' | 'withdraw' | 'emergencyWithdraw' | 'harvest';
 
 export interface BaseActivityEvent {
   chain: string;
@@ -36,8 +37,10 @@ export interface BaseActivityEvent {
   // we just increase actionIndex for other activities: logIndex:1, logIndex:2, ..., logIndex:n
   logIndex: string;
 
+  blockNumber: number;
+
   // activity action
-  action: LendingActivityAction;
+  action: LendingActivityAction | MasterchefActivityAction;
 
   // user address
   user: string;

@@ -18,6 +18,7 @@ const envConfig: EnvConfig = {
       tokenPrices: `${MongodbPrefix}.tokenPrices`,
       lendingMarketSnapshots: `${MongodbPrefix}.lendingMarketSnapshots`,
       masterchefPoolSnapshots: `${MongodbPrefix}.masterchefPoolSnapshots`,
+      masterchefPoolActivities: `${MongodbPrefix}.masterchefPoolActivities`,
     },
   },
   blockchains: {

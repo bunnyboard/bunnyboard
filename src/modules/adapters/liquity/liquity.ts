@@ -107,31 +107,29 @@ export default class LiquityAdapter extends ProtocolAdapter {
 
     for (const log of logs) {
       const signature = log.topics[0];
-      if (signature === LiquityEventSignatures.TroveUpdated) {
+      if (signature === eventSignatures.TroveUpdated) {
         const event: any = decodeEventLog({
           abi: this.abiConfigs.eventAbiMappings[signature],
           data: log.data,
           topics: log.topics,
         });
 
-        if (signature === eventSignatures.TroveUpdated) {
-          const operation = Number(event._operation);
-          const borrowingFee = await this.getBorrowingFee(marketConfig, blockNumber);
+        const operation = Number(event._operation);
+        const borrowingFee = await this.getBorrowingFee(marketConfig, blockNumber);
 
-          if (operation === 0) {
-            // open trove
+        if (operation === 0) {
+          // open trove
+          totalFeesCollected = totalFeesCollected.plus(
+            new BigNumber(borrowingFee).multipliedBy(new BigNumber(event._debt.toString())).dividedBy(1e18),
+          );
+        } else {
+          // update trove
+          // get trove snapshot from previous block
+          const info: GetTroveStateInfo = await this.getTroveState(marketConfig, event, blockNumber);
+          if (info.isBorrow) {
             totalFeesCollected = totalFeesCollected.plus(
-              new BigNumber(borrowingFee).multipliedBy(new BigNumber(event._debt.toString())).dividedBy(1e18),
+              new BigNumber(borrowingFee).multipliedBy(new BigNumber(info.debtAmount.toString())).dividedBy(1e18),
             );
-          } else {
-            // update trove
-            // get trove snapshot from previous block
-            const info: GetTroveStateInfo = await this.getTroveState(marketConfig, event, blockNumber);
-            if (info.isBorrow) {
-              totalFeesCollected = totalFeesCollected.plus(
-                new BigNumber(borrowingFee).multipliedBy(new BigNumber(info.debtAmount.toString())).dividedBy(1e18),
-              );
-            }
           }
         }
       }
