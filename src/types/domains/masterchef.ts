@@ -1,5 +1,5 @@
 import { Token } from '../configs';
-import { DayDataSnapshot, TokenRewardEntry } from './base';
+import { DayDataSnapshot } from './base';
 
 export interface MasterchefPoolSnapshot extends DayDataSnapshot {
   // masterchef address
@@ -12,15 +12,18 @@ export interface MasterchefPoolSnapshot extends DayDataSnapshot {
   token: Token;
   tokenPrice: string;
 
+  totalDeposited: string;
+
   // allocation point
   allocationPoint: number;
   allocationPointTotal: number;
 
-  totalDeposited: string;
+  // calculate reward token was emitted per second
+  rewardTokenPerSecond: string;
 
-  // estimated reward rate (staking APY)
-  rewardRate: string;
+  rewardToken: Token;
+  rewardTokenPrice: string;
 
-  // count number of reward tokens were distributed
-  rewardForStakers: Array<TokenRewardEntry>;
+  // RewardAmount = RewardPerSecond * TimeElapsed * AllocationPoint / AllocationPointTotal
+  rewardTokenAmount: string;
 }

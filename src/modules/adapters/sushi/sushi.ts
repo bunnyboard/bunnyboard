@@ -2,13 +2,13 @@ import BigNumber from 'bignumber.js';
 
 import Erc20Abi from '../../../configs/abi/ERC20.json';
 import MasterchefAbi from '../../../configs/abi/sushi/Masterchef.json';
-import { DAY } from '../../../configs/constants';
+import { ChainBlockPeriods, DAY, YEAR } from '../../../configs/constants';
 import MasterchefPools from '../../../configs/data/MasterchefPools.json';
 import EnvConfig from '../../../configs/envConfig';
 import logger from '../../../lib/logger';
 import { tryQueryBlockNumberAtTimestamp } from '../../../lib/subsgraph';
 import { compareAddress, formatFromDecimals, getDateString } from '../../../lib/utils';
-import { LiquidityPoolConfig, ProtocolConfig } from '../../../types/configs';
+import { LiquidityPoolConfig, MasterchefConfig, ProtocolConfig } from '../../../types/configs';
 import { MasterchefPoolSnapshot } from '../../../types/domains/masterchef';
 import { ContextServices } from '../../../types/namespaces';
 import { GetMasterchefSnapshotOptions } from '../../../types/options';
@@ -47,6 +47,23 @@ export default class SushiAdapter extends ProtocolAdapter {
     return await UniswapLibs.getPool2Constant(chain, lpToken);
   }
 
+  protected async getRewardTokenPerSecond(config: MasterchefConfig, blockNumber: number): Promise<string> {
+    const sushiPerBlock = await this.services.blockchain.readContract({
+      chain: config.chain,
+      target: config.address,
+      abi: MasterchefAbi,
+      method: 'sushiPerBlock',
+      params: [],
+      blockNumber: blockNumber,
+    });
+
+    return new BigNumber(sushiPerBlock)
+      .multipliedBy(YEAR / ChainBlockPeriods[config.chain])
+      .dividedBy(YEAR)
+      .dividedBy(new BigNumber(10).pow(config.rewardToken.decimals))
+      .toString(10);
+  }
+
   public async getMasterchefSnapshots(
     options: GetMasterchefSnapshotOptions,
   ): Promise<Array<MasterchefPoolSnapshot> | null> {
@@ -55,10 +72,6 @@ export default class SushiAdapter extends ProtocolAdapter {
     const blockNumber = await tryQueryBlockNumberAtTimestamp(
       EnvConfig.blockchains[options.config.chain].blockSubgraph,
       options.timestamp,
-    );
-    const blockNumberEndDay = await tryQueryBlockNumberAtTimestamp(
-      EnvConfig.blockchains[options.config.chain].blockSubgraph,
-      options.timestamp + DAY - 1,
     );
 
     const poolLength = await this.services.blockchain.readContract({
@@ -77,6 +90,7 @@ export default class SushiAdapter extends ProtocolAdapter {
       params: [],
       blockNumber: blockNumber,
     });
+    const rewardPerSecond = await this.getRewardTokenPerSecond(options.config, blockNumber);
     for (let poolId = 0; poolId < Number(poolLength); poolId++) {
       const [lpTokenAddress, allocPoint] = await this.services.blockchain.readContract({
         chain: options.config.chain,
@@ -103,31 +117,11 @@ export default class SushiAdapter extends ProtocolAdapter {
         );
       } catch (e: any) {}
 
-      // reward earned were calculated by
-      // RewardEarned = (RewardTokenSupplyGrowth / (1 + DevSharesPercentage)) * (PoolAllocationPoint / TotalAllocationPoint)
-      const rewardTokenSupplyBefore = await this.services.blockchain.readContract({
-        chain: options.config.chain,
-        abi: Erc20Abi,
-        target: options.config.rewardToken.address,
-        method: 'totalSupply',
-        params: [],
-        blockNumber: blockNumber,
-      });
-      const rewardTokenSupplyAfter = await this.services.blockchain.readContract({
-        chain: options.config.chain,
-        abi: Erc20Abi,
-        target: options.config.rewardToken.address,
-        method: 'totalSupply',
-        params: [],
-        blockNumber: blockNumberEndDay,
-      });
-      const rewardTokenSupplyGrowth = new BigNumber(rewardTokenSupplyAfter.toString()).minus(
-        new BigNumber(rewardTokenSupplyBefore.toString()),
-      );
-      const rewardEarnedByPool = rewardTokenSupplyGrowth
-        .multipliedBy(allocPoint.toString())
-        .dividedBy(100 + options.config.devRewardSharePercentage / 100)
-        .dividedBy(new BigNumber(totalAllocationPoint.toString()));
+      const rewardTokenAmount = new BigNumber(rewardPerSecond)
+        .multipliedBy(DAY)
+        .multipliedBy(new BigNumber(allocPoint.toString()))
+        .dividedBy(new BigNumber(totalAllocationPoint.toString()))
+        .toString(10);
 
       if (lpToken) {
         lpToken.symbol =
@@ -143,15 +137,6 @@ export default class SushiAdapter extends ProtocolAdapter {
           address: options.config.rewardToken.address,
           timestamp: options.timestamp,
         });
-
-        // rate = TotalRewardEarn * 365 / TotalDeposit
-        const rewardRate = tokenPrice
-          ? new BigNumber(rewardEarnedByPool.toString(10))
-              .multipliedBy(rewardTokenPrice ? rewardTokenPrice : '0')
-              .multipliedBy(365)
-              .dividedBy(lpAmount.multipliedBy(tokenPrice ? tokenPrice : '0'))
-              .toString(10)
-          : '0';
 
         poolSnapshots.push({
           chain: options.config.chain,
@@ -171,15 +156,10 @@ export default class SushiAdapter extends ProtocolAdapter {
 
           totalDeposited: formatFromDecimals(lpAmount.toString(10), 18),
 
-          rewardForStakers: [
-            {
-              token: options.config.rewardToken,
-              tokenPrice: rewardTokenPrice ? rewardTokenPrice : '0',
-              tokenAmount: formatFromDecimals(rewardEarnedByPool.toString(10), options.config.rewardToken.decimals),
-            },
-          ],
-
-          rewardRate: rewardRate,
+          rewardToken: options.config.rewardToken,
+          rewardTokenPrice: rewardTokenPrice ? rewardTokenPrice : '0',
+          rewardTokenAmount: rewardTokenAmount,
+          rewardTokenPerSecond: rewardPerSecond,
         });
 
         logger.info('updated masterchef pool snapshot', {
