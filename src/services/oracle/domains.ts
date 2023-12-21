@@ -1,5 +1,4 @@
 import { LiquidityPoolConfig, OracleSourceChainlink, OracleSourceUniv2 } from '../../types/configs';
-import { IDatabaseService } from '../database/domains';
 
 export interface GetTokenPriceOptions {
   // chain where token was deployed
@@ -19,7 +18,6 @@ export interface GetUniv2TokenPriceOptions {
 
 export interface IOracleService {
   name: string;
-  database: IDatabaseService | null;
 
   // this will get token price vs base token in the oracle config only
   getTokenPriceSource: (

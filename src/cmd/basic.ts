@@ -12,7 +12,7 @@ export class BasicCommand {
   public async getServices(): Promise<ContextServices> {
     const database = new DatabaseService();
     const blockchain = new BlockchainService();
-    const oracle = new OracleService(database);
+    const oracle = new OracleService();
 
     // await database.connect(envConfig.mongodb.connectionUri, envConfig.mongodb.databaseName);
 

@@ -6,7 +6,6 @@ import { OracleConfigs } from '../../configs/oracles/configs';
 import { OracleCurrencyBaseConfigs } from '../../configs/oracles/currency';
 import logger from '../../lib/logger';
 import { tryQueryBlockNumberAtTimestamp } from '../../lib/subsgraph';
-import { normalizeAddress } from '../../lib/utils';
 import ChainlinkLibs from '../../modules/libs/chainlink';
 import CoingeckoLibs from '../../modules/libs/coingecko';
 import OracleLibs from '../../modules/libs/custom';
@@ -20,57 +19,13 @@ import {
 } from '../../types/configs';
 import BlockchainService from '../blockchains/blockchain';
 import { CachingService } from '../caching/caching';
-import { IDatabaseService } from '../database/domains';
 import { GetTokenPriceOptions, GetUniv2TokenPriceOptions, IOracleService } from './domains';
 
 export default class OracleService extends CachingService implements IOracleService {
   public readonly name: string = 'oracle';
-  public readonly database: IDatabaseService | null;
 
-  constructor(database: IDatabaseService | null) {
+  constructor() {
     super();
-
-    this.database = database;
-  }
-
-  // get price from database if any
-  private async getPriceFromDatabase(options: GetTokenPriceOptions): Promise<string | null> {
-    if (this.database) {
-      const document = await this.database.find({
-        collection: EnvConfig.mongodb.collections.tokenPrices,
-        query: {
-          chain: options.chain,
-          address: normalizeAddress(options.address),
-          timestamp: options.timestamp,
-        },
-      });
-      if (document) {
-        return document.priceUsd.toString();
-      }
-    }
-
-    return null;
-  }
-
-  // get price from database if any
-  private async savePriceToDatabase(options: GetTokenPriceOptions, priceUsd: string): Promise<void> {
-    if (this.database) {
-      await this.database.update({
-        collection: EnvConfig.mongodb.collections.tokenPrices,
-        keys: {
-          chain: options.chain,
-          address: normalizeAddress(options.address),
-          timestamp: options.timestamp,
-        },
-        updates: {
-          chain: options.chain,
-          address: normalizeAddress(options.address),
-          timestamp: options.timestamp,
-          priceUsd: priceUsd,
-        },
-        upsert: true,
-      });
-    }
   }
 
   public async getTokenPriceSource(
@@ -144,11 +99,6 @@ export default class OracleService extends CachingService implements IOracleServ
   }
 
   public async getTokenPriceUsd(options: GetTokenPriceOptions): Promise<string | null> {
-    const priceFromDatabase = await this.getPriceFromDatabase(options);
-    if (priceFromDatabase) {
-      return priceFromDatabase;
-    }
-
     let returnPrice = null;
 
     if (OracleConfigs[options.chain] && OracleConfigs[options.chain][options.address]) {
@@ -174,7 +124,7 @@ export default class OracleService extends CachingService implements IOracleServ
             }
           }
 
-          if (priceUsd) {
+          if (priceUsd && priceUsd !== '0') {
             await this.setCachingData(cachingKey, priceUsd);
 
             returnPrice = priceUsd;
@@ -192,9 +142,7 @@ export default class OracleService extends CachingService implements IOracleServ
       }
     }
 
-    if (returnPrice !== null) {
-      await this.savePriceToDatabase(options, returnPrice);
-    } else {
+    if (returnPrice === null) {
       logger.warn('failed to get token price', {
         service: this.name,
         chain: options.chain,
@@ -218,21 +166,6 @@ export default class OracleService extends CachingService implements IOracleServ
     const priceFromCaching = await this.getCachingData(cachingKey);
     if (priceFromCaching) {
       return priceFromCaching;
-    }
-
-    // get from database
-    if (this.database) {
-      const priceFromDatabase = await this.database.find({
-        collection: EnvConfig.mongodb.collections.tokenPrices,
-        query: {
-          chain: options.pool2.chain,
-          address: options.pool2.address,
-          timestamp: options.timestamp,
-        },
-      });
-      if (priceFromDatabase) {
-        return String(priceFromDatabase.priceUsd);
-      }
     }
 
     const blockchain = new BlockchainService();
@@ -303,27 +236,6 @@ export default class OracleService extends CachingService implements IOracleServ
             .dividedBy(new BigNumber(10).pow(options.pool2.tokens[1].decimals))
             .toString(10);
         }
-      }
-    }
-
-    if (returnPrice) {
-      await this.setCachingData(cachingKey, returnPrice);
-      if (this.database) {
-        await this.database.update({
-          collection: EnvConfig.mongodb.collections.tokenPrices,
-          keys: {
-            chain: options.pool2.chain,
-            address: options.pool2.address,
-            timestamp: options.timestamp,
-          },
-          updates: {
-            chain: options.pool2.chain,
-            address: options.pool2.address,
-            timestamp: options.timestamp,
-            priceUsd: returnPrice,
-          },
-          upsert: true,
-        });
       }
     }
 

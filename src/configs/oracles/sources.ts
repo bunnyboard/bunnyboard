@@ -296,6 +296,7 @@ export const OracleSourceConfigs: { [key: string]: OracleConfig } = {
   ADA: {
     currency: 'bnb',
     sources: [OracleSourceUniswapv2List.ADA_WBNB],
+    coingeckoId: 'cardano',
   },
   BCH: {
     currency: 'usd',
