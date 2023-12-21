@@ -154,7 +154,19 @@ export default class BlockchainService extends CachingService implements IBlockc
           blockTag: 'latest',
         });
       }
-    } catch (e: any) {}
+    } catch (e: any) {
+      if (options.blockNumber) {
+        try {
+          return await client.readContract({
+            address: options.target as Address,
+            abi: options.abi,
+            functionName: options.method,
+            args: options.params,
+            blockNumber: BigInt(Number(options.blockNumber) + 1),
+          });
+        } catch (e: any) {}
+      }
+    }
 
     return null;
   }
