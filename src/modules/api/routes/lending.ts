@@ -9,42 +9,30 @@ import { writeResponse } from '../middleware';
 export function getRouter(services: ContextServices): Router {
   const router = Router({ mergeParams: true });
 
-  // query all latest snapshots of all unique markets
-  router.get('/market/latest', async (request: Request, response: Response) => {
+  // query a list of available lending markets
+  router.get('/market/list', async (request: Request, response: Response) => {
     // first, we get unique market ids
     const collection = await services.database.getCollection(EnvConfig.mongodb.collections.lendingMarketSnapshots);
 
     const groupUniques = await collection
       .aggregate([
-        { $group: { _id: { protocol: '$protocol', chain: '$chain', address: '$address', token: '$token.address' } } },
+        { $group: { _id: { protocol: '$protocol', chain: '$chain', address: '$address', token: '$token' } } },
       ])
       .toArray();
 
-    const snapshots: Array<any> = [];
+    const markets: Array<any> = [];
     for (const uniqueId of groupUniques) {
-      const latestSnapshot = await services.database.find({
-        collection: EnvConfig.mongodb.collections.lendingMarketSnapshots,
-        query: {
-          chain: uniqueId._id.chain,
-          protocol: uniqueId._id.protocol,
-          address: uniqueId._id.address,
-          'token.address': uniqueId._id.token,
-        },
-        options: {
-          limit: 1,
-          skip: 0,
-          order: { timestamp: -1 },
-        },
+      markets.push({
+        chain: uniqueId._id.chain,
+        protocol: uniqueId._id.protocol,
+        address: uniqueId._id.address,
+        token: uniqueId._id.token,
       });
-      if (latestSnapshot) {
-        delete latestSnapshot._id;
-        snapshots.push(latestSnapshot);
-      }
     }
 
     await writeResponse(services, request, response, HttpStatusCode.Ok, {
       error: null,
-      result: snapshots,
+      result: markets,
     });
   });
 
