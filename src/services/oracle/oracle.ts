@@ -250,7 +250,7 @@ export default class OracleService extends CachingService implements IOracleServ
       blockNumber: blockNumber,
     });
 
-    if (new BigNumber(lpSupply.toString()).gt(0)) {
+    if (lpSupply && new BigNumber(lpSupply.toString()).gt(0)) {
       let token0Price = null;
       let token1Price = null;
       if (OracleConfigs[options.pool2.chain] && OracleConfigs[options.pool2.chain][options.pool2.tokens[0].address]) {

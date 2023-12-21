@@ -105,6 +105,14 @@ export default class BlockchainService extends CachingService implements IBlockc
 
     const client = this.getPublicClient(options.chain);
 
+    logger.info('getting contract event logs', {
+      service: this.name,
+      chain: options.chain,
+      address: options.address,
+      fromBlock: options.fromBlock,
+      toBlock: options.toBlock,
+    });
+
     let startBlock = options.fromBlock;
     while (startBlock <= options.toBlock) {
       const toBlock =
