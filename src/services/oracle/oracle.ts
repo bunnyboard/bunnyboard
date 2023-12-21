@@ -140,6 +140,10 @@ export default class OracleService extends CachingService implements IOracleServ
           returnPrice = priceUsd;
         }
       }
+
+      if ((returnPrice === null || returnPrice === '0') && OracleConfigs[options.chain][options.address].stablecoin) {
+        return '1';
+      }
     }
 
     if (returnPrice === null) {

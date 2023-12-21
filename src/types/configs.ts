@@ -105,6 +105,9 @@ export interface OracleConfig {
   // we will get price from coingecko API
   // in case we failed to get price from on-chain source
   coingeckoId?: string;
+
+  // if is stablecoin, return 1 when we can not fetch the price from any source
+  stablecoin?: boolean;
 }
 
 export interface LiquidityPoolConfig extends Token {

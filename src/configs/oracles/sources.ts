@@ -31,6 +31,7 @@ export const OracleSourceConfigs: { [key: string]: OracleConfig } = {
     currency: 'usd',
     sources: [OracleSourceChainlinkList.USDT_USD],
     coingeckoId: 'nusd',
+    stablecoin: true,
   },
   TUSD: {
     currency: 'eth',
@@ -95,14 +96,17 @@ export const OracleSourceConfigs: { [key: string]: OracleConfig } = {
   ENJ: {
     currency: 'eth',
     sources: [OracleSourceUniswapv2List.ENJ_WETH],
+    coingeckoId: 'enjincoin',
   },
   REN: {
     currency: 'eth',
     sources: [OracleSourceUniswapv2List.REN_WETH],
+    coingeckoId: 'republic-protocol',
   },
   YFI: {
     currency: 'eth',
     sources: [OracleSourceUniswapv2List.YFI_WETH],
+    coingeckoId: 'yearn-finance',
   },
   AAVE: {
     currency: 'eth',
@@ -192,6 +196,7 @@ export const OracleSourceConfigs: { [key: string]: OracleConfig } = {
   wstETH: {
     currency: 'eth',
     sources: [OracleSourceUniswapv3List.wstETH_WETH],
+    coingeckoId: 'wrapped-steth',
   },
   cbETH: {
     currency: 'eth',
@@ -301,6 +306,7 @@ export const OracleSourceConfigs: { [key: string]: OracleConfig } = {
   BCH: {
     currency: 'usd',
     sources: [OracleSourceChainlinkList.BCH_USD],
+    coingeckoId: 'bitcoin-cash',
   },
   BETH: {
     currency: 'eth',

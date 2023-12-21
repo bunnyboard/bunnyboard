@@ -49,5 +49,7 @@ import OracleService from '../services/oracle/oracle';
     }
   }
 
+  await cursor.close();
+
   process.exit(0);
 })();
