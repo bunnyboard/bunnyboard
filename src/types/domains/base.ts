@@ -19,7 +19,7 @@ export interface DayDataSnapshot {
   timestamp: number;
 }
 
-export type LendingActivityAction = 'deposit' | 'withdraw' | 'borrow' | 'repay' | 'liquidate';
+export type LendingActivityAction = 'deposit' | 'withdraw' | 'borrow' | 'repay' | 'liquidate' | 'collect';
 export type MasterchefActivityAction = 'deposit' | 'withdraw' | 'emergencyWithdraw' | 'harvest';
 
 export interface BaseActivityEvent {

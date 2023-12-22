@@ -1,4 +1,5 @@
 import BigNumber from 'bignumber.js';
+import { decodeEventLog } from 'viem';
 
 import { ProtocolConfigs } from '../../../configs';
 import CompoundComptrollerAbi from '../../../configs/abi/compound/Comptroller.json';
@@ -8,14 +9,14 @@ import EnvConfig from '../../../configs/envConfig';
 import { CompoundLendingMarketConfig, CompoundProtocolConfig } from '../../../configs/protocols/compound';
 import logger from '../../../lib/logger';
 import { tryQueryBlockNumberAtTimestamp } from '../../../lib/subsgraph';
-import { formatFromDecimals, getDateString, normalizeAddress } from '../../../lib/utils';
+import { compareAddress, formatFromDecimals, getDateString, normalizeAddress } from '../../../lib/utils';
 import { LendingMarketConfig, ProtocolConfig } from '../../../types/configs';
-import { TokenRewardEntry } from '../../../types/domains/base';
-import { LendingCdpSnapshot, LendingMarketSnapshot } from '../../../types/domains/lending';
+import { LendingActivityAction, TokenRewardEntry } from '../../../types/domains/base';
+import { LendingActivityEvent, LendingCdpSnapshot, LendingMarketSnapshot } from '../../../types/domains/lending';
 import { ContextServices } from '../../../types/namespaces';
 import { GetLendingMarketSnapshotOptions } from '../../../types/options';
 import ProtocolAdapter from '../adapter';
-import { CompoundEventAbiMappings, CompoundEventSignatures } from './abis';
+import { CompoundEventAbiMappings, CompoundEventInterfaces, CompoundEventSignatures } from './abis';
 
 export interface CompoundMarketRates {
   borrowRate: string;
@@ -158,6 +159,168 @@ export default class CompoundAdapter extends ProtocolAdapter {
     return rewards;
   }
 
+  protected async parseEventLogDistributeReward(
+    config: LendingMarketConfig,
+    log: any,
+  ): Promise<LendingActivityEvent | null> {
+    const protocolConfig = this.config as CompoundProtocolConfig;
+    if (protocolConfig.comptrollers && protocolConfig.comptrollers[config.chain]) {
+      const signature = log.topics[0];
+      const eventSignatures = this.abiConfigs.eventSignatures as CompoundEventInterfaces;
+      if (
+        signature === eventSignatures.DistributedSupplierRewards ||
+        signature === eventSignatures.DistributedBorrowerRewards
+      ) {
+        const event: any = decodeEventLog({
+          abi: CompoundComptrollerAbi,
+          data: log.data,
+          topics: log.topics,
+        });
+        const amount = formatFromDecimals(
+          event.args.compDelta.toString(),
+          protocolConfig.comptrollers[config.chain].governanceToken.decimals,
+        );
+        const user = event.args.supplier
+          ? normalizeAddress(event.args.supplier)
+          : normalizeAddress(event.args.borrower);
+
+        if (amount !== '0') {
+          return {
+            chain: config.chain,
+            protocol: this.config.protocol,
+            address: config.address,
+            transactionHash: log.transactionHash,
+            logIndex: log.logIndex.toString(),
+            blockNumber: new BigNumber(log.blockNumber.toString()).toNumber(),
+            action: 'collect',
+            user: user,
+            token: protocolConfig.comptrollers[config.chain].governanceToken,
+            tokenAmount: amount,
+          };
+        }
+      }
+    }
+
+    return null;
+  }
+
+  protected async parseEventLog(config: LendingMarketConfig, log: any): Promise<LendingActivityEvent | null> {
+    const marketConfig = config as CompoundLendingMarketConfig;
+
+    const isCollectAction = await this.parseEventLogDistributeReward(config, log);
+    if (isCollectAction) {
+      return isCollectAction;
+    }
+
+    const signature = log.topics[0];
+    const eventSignatures = this.abiConfigs.eventSignatures as CompoundEventInterfaces;
+
+    if (
+      signature === eventSignatures.Mint ||
+      signature === eventSignatures.Redeem ||
+      signature === eventSignatures.Borrow ||
+      signature === eventSignatures.Repay ||
+      signature === eventSignatures.Liquidate
+    ) {
+      const event: any = decodeEventLog({
+        abi: cErc20Abi,
+        data: log.data,
+        topics: log.topics,
+      });
+
+      let user = null;
+      let amount = null;
+      let action: LendingActivityAction | null = null;
+
+      let borrower = null;
+      let collateralToken = null;
+      let collateralAmount = null;
+
+      switch (signature) {
+        case eventSignatures.Mint: {
+          action = 'deposit';
+          user = normalizeAddress(event.args.minter);
+          amount = formatFromDecimals(event.args.mintAmount.toString(), marketConfig.underlying.decimals);
+          break;
+        }
+        case eventSignatures.Redeem: {
+          action = 'withdraw';
+          user = normalizeAddress(event.args.redeemer);
+          amount = formatFromDecimals(event.args.redeemAmount.toString(), marketConfig.underlying.decimals);
+          break;
+        }
+        case eventSignatures.Borrow: {
+          action = 'borrow';
+          user = normalizeAddress(event.args.borrower);
+          amount = formatFromDecimals(event.args.borrowAmount.toString(), marketConfig.underlying.decimals);
+          break;
+        }
+        case eventSignatures.Repay: {
+          action = 'repay';
+          user = normalizeAddress(event.args.payer);
+          borrower = normalizeAddress(event.args.borrower);
+          amount = formatFromDecimals(event.args.repayAmount.toString(), marketConfig.underlying.decimals);
+          break;
+        }
+        case eventSignatures.Liquidate: {
+          action = 'liquidate';
+          user = normalizeAddress(event.args.liquidator);
+          borrower = normalizeAddress(event.args.borrower);
+          amount = formatFromDecimals(event.args.repayAmount.toString(), marketConfig.underlying.decimals);
+
+          let collateralMarket: CompoundLendingMarketConfig | null = null;
+          for (const protocolConfig of Object.values(ProtocolConfigs)) {
+            if (protocolConfig.lendingMarkets) {
+              for (const market of protocolConfig.lendingMarkets) {
+                if (market.chain === marketConfig.chain && compareAddress(market.address, marketConfig.address)) {
+                  collateralMarket = market as CompoundLendingMarketConfig;
+                }
+              }
+            }
+          }
+          if (collateralMarket) {
+            const exchangeRateCurrent = await this.services.blockchain.readContract({
+              chain: marketConfig.chain,
+              target: collateralMarket.address,
+              abi: cErc20Abi,
+              method: 'exchangeRateCurrent',
+              params: [],
+              blockNumber: new BigNumber(log.blockNumber.toString()).toNumber(),
+            });
+            const mantissa = 18 + collateralMarket.underlying.decimals - 8;
+            const oneCTokenInUnderlying = new BigNumber(exchangeRateCurrent).dividedBy(new BigNumber(10).pow(mantissa));
+            collateralToken = collateralMarket.underlying;
+            collateralAmount = new BigNumber(event.args.seizeTokens.toString())
+              .multipliedBy(oneCTokenInUnderlying)
+              .dividedBy(1e8)
+              .toString(10);
+          }
+          break;
+        }
+      }
+
+      if (user && amount && action) {
+        return {
+          chain: config.chain,
+          protocol: this.config.protocol,
+          address: config.address,
+          transactionHash: log.transactionHash,
+          logIndex: log.logIndex.toString(),
+          blockNumber: new BigNumber(log.blockNumber.toString()).toNumber(),
+          action: action,
+          user: user,
+          token: marketConfig.underlying,
+          tokenAmount: amount,
+          borrower: borrower ? borrower : undefined,
+          collateralToken: collateralToken ? collateralToken : undefined,
+          collateralAmount: collateralAmount ? collateralAmount : undefined,
+        };
+      }
+    }
+
+    return null;
+  }
+
   public async getLendingMarketSnapshots(
     options: GetLendingMarketSnapshotOptions,
   ): Promise<Array<LendingMarketSnapshot | LendingCdpSnapshot> | null> {
@@ -167,9 +330,10 @@ export default class CompoundAdapter extends ProtocolAdapter {
       EnvConfig.blockchains[marketConfig.chain].blockSubgraph,
       options.timestamp,
     );
-    if (blockNumber === 0) {
-      return null;
-    }
+    const blockNumberEndDay = await tryQueryBlockNumberAtTimestamp(
+      EnvConfig.blockchains[options.config.chain].blockSubgraph,
+      options.timestamp + DAY - 1,
+    );
 
     const snapshots: Array<LendingMarketSnapshot> = [];
 
@@ -236,6 +400,44 @@ export default class CompoundAdapter extends ProtocolAdapter {
       rewardForLenders: rewards.lenderTokenRewards,
       rewardForBorrowers: rewards.borrowerTokenRewards,
     });
+
+    // now we handle event log, turn them to activities
+    let logs = await this.services.blockchain.getContractLogs({
+      chain: options.config.chain,
+      address: options.config.address,
+      fromBlock: blockNumber,
+      toBlock: blockNumberEndDay,
+    });
+    const protocolConfig = this.config as CompoundProtocolConfig;
+    if (protocolConfig.comptrollers && protocolConfig.comptrollers[marketConfig.chain]) {
+      logs = logs.concat(
+        await this.services.blockchain.getContractLogs({
+          chain: options.config.chain,
+          address: protocolConfig.comptrollers[marketConfig.chain].address,
+          fromBlock: blockNumber,
+          toBlock: blockNumberEndDay,
+        }),
+      );
+    }
+
+    for (const log of logs) {
+      const activityEvent = await this.parseEventLog(options.config, log);
+
+      if (activityEvent) {
+        await this.services.database.update({
+          collection: EnvConfig.mongodb.collections.lendingMarketActivities,
+          keys: {
+            chain: options.config.chain,
+            transactionHash: activityEvent.transactionHash,
+            logIndex: activityEvent.logIndex,
+          },
+          updates: {
+            ...activityEvent,
+          },
+          upsert: true,
+        });
+      }
+    }
 
     logger.info('updated lending market snapshot', {
       service: this.name,

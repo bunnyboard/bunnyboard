@@ -203,6 +203,12 @@
     "decimals": 9,
     "address": "0xba1cf949c382a32a09a17b2adf3587fc7fa664f1"
   },
+  "SONNE": {
+    "chain": "optimism",
+    "symbol": "SONNE",
+    "decimals": 18,
+    "address": "0x1db2466d9f5e10d7090e7152b68d62703a2245f0"
+  },
   "SUKU": {
     "chain": "optimism",
     "symbol": "SUKU",

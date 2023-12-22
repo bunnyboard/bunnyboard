@@ -80,6 +80,7 @@ export default class DatabaseService implements IDatabaseService {
     const lendingMarketSnapshotsCollection = await this.getCollection(
       envConfig.mongodb.collections.lendingMarketSnapshots,
     );
+    const lendingMarketActivities = await this.getCollection(envConfig.mongodb.collections.lendingMarketActivities);
     const masterchefPoolSnapshotsCollection = await this.getCollection(
       envConfig.mongodb.collections.masterchefPoolSnapshots,
     );
@@ -94,6 +95,11 @@ export default class DatabaseService implements IDatabaseService {
     // write
     lendingMarketSnapshotsCollection.createIndex(
       { chain: 1, protocol: 1, address: 1, 'token.address': 1, timestamp: 1 },
+      { background: true },
+    );
+    lendingMarketActivities.createIndex({ chain: 1, transactionHash: 1, logIndex: 1 }, { background: true });
+    lendingMarketActivities.createIndex(
+      { chain: 1, protocol: 1, address: 1, user: 1, blockNumber: 1 },
       { background: true },
     );
 

@@ -132,6 +132,7 @@ export const OracleConfigs: { [key: string]: { [key: string]: OracleConfig } } =
     [OptimismTokenList.LUSD.address]: OracleSourceConfigs.LUSD,
     [OptimismTokenList.MAI.address]: OracleSourceConfigs.miMATIC,
     [OptimismTokenList.rETH.address]: OracleSourceConfigs.rETH,
+    [OptimismTokenList.SONNE.address]: OracleSourceConfigs.SONNE,
   },
 
   // tokens on Base

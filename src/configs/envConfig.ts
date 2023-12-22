@@ -17,6 +17,7 @@ const envConfig: EnvConfig = {
       caching: `${MongodbPrefix}.caching`,
       tokenPrices: `${MongodbPrefix}.tokenPrices`,
       lendingMarketSnapshots: `${MongodbPrefix}.lendingMarketSnapshots`,
+      lendingMarketActivities: `${MongodbPrefix}.lendingMarketActivities`,
       masterchefPoolSnapshots: `${MongodbPrefix}.masterchefPoolSnapshots`,
       masterchefPoolActivities: `${MongodbPrefix}.masterchefPoolActivities`,
     },

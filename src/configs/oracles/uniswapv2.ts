@@ -2,6 +2,7 @@ import { OracleSourceUniv2 } from '../../types/configs';
 import AvalancheTokenList from '../tokenlists/avalanche.json';
 import BnbchainTokenList from '../tokenlists/bnbchain.json';
 import EthereumTokenList from '../tokenlists/ethereum.json';
+import OptimismTokenList from '../tokenlists/optimism.json';
 import PolygonTokenList from '../tokenlists/polygon.json';
 
 export const OracleSourceUniswapv2List: { [key: string]: OracleSourceUniv2 } = {
@@ -452,5 +453,12 @@ export const OracleSourceUniswapv2List: { [key: string]: OracleSourceUniv2 } = {
     address: '0x34d7d7aaf50ad4944b70b320acb24c95fa2def7c',
     baseToken: EthereumTokenList.OHMv1,
     quotaToken: EthereumTokenList.DAI,
+  },
+  SONNE_USDC: {
+    type: 'univ2',
+    chain: 'optimism',
+    address: '0xc899c4d73ed8df2ead1543ab915888b0bf7d57a2',
+    baseToken: OptimismTokenList.SONNE,
+    quotaToken: OptimismTokenList['USDC.e'],
   },
 };

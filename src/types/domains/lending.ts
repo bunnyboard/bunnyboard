@@ -1,5 +1,5 @@
 import { LendingMarketType, Token } from '../configs';
-import { BaseActivityEvent, DayDataSnapshot, TokenRewardEntry } from './base';
+import { BaseActivityEvent, DayDataSnapshot, LendingActivityAction, TokenRewardEntry } from './base';
 
 // a lending market present a reserve in the cross-pool lending
 // like compound or aave
@@ -38,8 +38,10 @@ export interface LendingCdpSnapshot extends LendingMarketSnapshot {
 }
 
 export interface LendingActivityEvent extends BaseActivityEvent {
+  action: LendingActivityAction;
+
   // market contract address
-  market: string;
+  address: string;
 
   // in case of liquidation, liquidator is considered as the main user of the transaction
   // so, we need to keep track the borrower address that was liquidated in this borrower address
@@ -48,4 +50,8 @@ export interface LendingActivityEvent extends BaseActivityEvent {
   // for example, Alice liquidate Bob borrowing position, so user = Alice address, borrower = Bob address
   // in case of repay, Alice repay debts for Bob, so user = Alice address, borrower = Bob address
   borrower?: string;
+
+  // on liquidation event, this value track the collateral token and collateral amount which were liquidated by liquidator
+  collateralToken?: Token;
+  collateralAmount?: string;
 }

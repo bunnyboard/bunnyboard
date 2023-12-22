@@ -46,6 +46,9 @@ export interface EnvConfig {
       // save lending market metrics and snapshots
       lendingMarketSnapshots: string;
 
+      // save lending market activity events
+      lendingMarketActivities: string;
+
       // save masterchef pools metric and snapshots
       masterchefPoolSnapshots: string;
 
