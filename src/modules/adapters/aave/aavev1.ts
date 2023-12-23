@@ -1,18 +1,19 @@
 import BigNumber from 'bignumber.js';
+import { decodeEventLog } from 'viem';
 
 import AaveLendingPoolV1Abi from '../../../configs/abi/aave/LendingPoolV1.json';
-import { ONE_RAY, RAY_DECIMALS } from '../../../configs/constants';
+import { DAY, ONE_RAY, RAY_DECIMALS } from '../../../configs/constants';
 import EnvConfig from '../../../configs/envConfig';
 import { AaveLendingMarketConfig } from '../../../configs/protocols/aave';
 import { tryQueryBlockNumberAtTimestamp } from '../../../lib/subsgraph';
 import { formatFromDecimals, normalizeAddress } from '../../../lib/utils';
 import { ProtocolConfig } from '../../../types/configs';
-import { TokenRewardEntry } from '../../../types/domains/base';
-import { LendingCdpSnapshot, LendingMarketSnapshot } from '../../../types/domains/lending';
+import { LendingActivityAction, TokenRewardEntry } from '../../../types/domains/base';
+import { LendingActivityEvent, LendingCdpSnapshot, LendingMarketSnapshot } from '../../../types/domains/lending';
 import { ContextServices } from '../../../types/namespaces';
 import { GetLendingMarketSnapshotOptions } from '../../../types/options';
 import ProtocolAdapter from '../adapter';
-import { Aavev1EventSignatures } from './abis';
+import { AaveEventInterfaces, Aavev1EventSignatures } from './abis';
 
 export interface AaveMarketRewards {
   rewardsForLenders: Array<TokenRewardEntry>;
@@ -104,6 +105,140 @@ export default class Aavev1Adapter extends ProtocolAdapter {
     };
   }
 
+  protected async transformEventLogs(
+    config: AaveLendingMarketConfig,
+    logs: Array<any>,
+  ): Promise<Array<LendingActivityEvent>> {
+    const activities: Array<LendingActivityEvent> = [];
+
+    const eventSignatures: AaveEventInterfaces = this.abiConfigs.eventSignatures;
+    for (const log of logs) {
+      const signature = log.topics[0];
+      if (Object.values(eventSignatures).indexOf(signature) !== -1) {
+        const event: any = decodeEventLog({
+          abi: AaveLendingPoolV1Abi,
+          data: log.data,
+          topics: log.topics,
+        });
+
+        if (signature !== eventSignatures.Liquidate) {
+          const reserve = await this.services.blockchain.getTokenInfo({
+            chain: config.chain,
+            address: event.args._reserve.toString(),
+          });
+          if (reserve) {
+            let action: LendingActivityAction = 'deposit';
+            switch (signature) {
+              case eventSignatures.Withdraw: {
+                action = 'withdraw';
+                break;
+              }
+              case eventSignatures.Borrow: {
+                action = 'borrow';
+                break;
+              }
+              case eventSignatures.Repay: {
+                action = 'repay';
+                break;
+              }
+            }
+
+            let amount = '0';
+            let user = normalizeAddress(event.args._user.toString());
+            let borrower = normalizeAddress(event.args._user.toString());
+
+            if (signature === eventSignatures.Repay) {
+              amount = formatFromDecimals(
+                new BigNumber(event.args._amountMinusFees.toString())
+                  .plus(new BigNumber(event.args._fees.toString()))
+                  .toString(10),
+                reserve.decimals,
+              );
+              user = normalizeAddress(event.args._repayer);
+              borrower = normalizeAddress(event.args._user);
+            } else {
+              amount = formatFromDecimals(event.args._amount.toString(), reserve.decimals);
+            }
+
+            activities.push({
+              chain: config.chain,
+              protocol: this.config.protocol,
+              address: config.address,
+              transactionHash: log.transactionHash,
+              logIndex: log.logIndex.toString(),
+              blockNumber: new BigNumber(log.blockNumber.toString()).toNumber(),
+              action: action,
+              user: user,
+              token: reserve,
+              tokenAmount: amount,
+              borrower: borrower,
+            });
+          }
+        } else {
+          const reserve = await this.services.blockchain.getTokenInfo({
+            chain: config.chain,
+            address: event.args._reserve.toString(),
+          });
+          const collateral = await this.services.blockchain.getTokenInfo({
+            chain: config.chain,
+            address: event.args._collateral.toString(),
+          });
+
+          if (reserve && collateral) {
+            const user = normalizeAddress(event.args._liquidator.toString());
+            const borrower = normalizeAddress(event.args._user.toString());
+            const amount = formatFromDecimals(event.args._purchaseAmount.toString(), reserve.decimals);
+
+            const collateralAmount = formatFromDecimals(
+              event.args._liquidatedCollateralAmount.toString(),
+              collateral.decimals,
+            );
+            activities.push({
+              chain: config.chain,
+              protocol: this.config.protocol,
+              address: config.address,
+              transactionHash: log.transactionHash,
+              logIndex: log.logIndex.toString(),
+              blockNumber: new BigNumber(log.blockNumber.toString()).toNumber(),
+              action: 'liquidate',
+              user: user,
+              token: reserve,
+              tokenAmount: amount,
+
+              borrower: borrower,
+              collateralToken: collateral,
+              collateralAmount: collateralAmount,
+            });
+          }
+        }
+      }
+    }
+
+    return activities;
+  }
+
+  public async getLendingMarketActivities(
+    options: GetLendingMarketSnapshotOptions,
+  ): Promise<Array<LendingActivityEvent>> {
+    const blockNumber = await tryQueryBlockNumberAtTimestamp(
+      EnvConfig.blockchains[options.config.chain].blockSubgraph,
+      options.timestamp,
+    );
+    const blockNumberEndDay = await tryQueryBlockNumberAtTimestamp(
+      EnvConfig.blockchains[options.config.chain].blockSubgraph,
+      options.timestamp + DAY - 1,
+    );
+
+    const logs = await this.services.blockchain.getContractLogs({
+      chain: options.config.chain,
+      address: options.config.address,
+      fromBlock: blockNumber,
+      toBlock: blockNumberEndDay,
+    });
+
+    return await this.transformEventLogs(options.config as AaveLendingMarketConfig, logs);
+  }
+
   public async getLendingMarketSnapshots(
     options: GetLendingMarketSnapshotOptions,
   ): Promise<Array<LendingMarketSnapshot | LendingCdpSnapshot> | null> {
@@ -111,9 +246,6 @@ export default class Aavev1Adapter extends ProtocolAdapter {
       EnvConfig.blockchains[options.config.chain].blockSubgraph,
       options.timestamp,
     );
-    if (blockNumber === 0) {
-      return null;
-    }
 
     const marketConfig = options.config as AaveLendingMarketConfig;
 

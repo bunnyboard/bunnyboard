@@ -83,7 +83,7 @@ export const Aavev3Configs: AaveProtocolConfig = {
       protocol: 'aavev3',
       type: 'cross',
       version: 'aavev3',
-      birthday: 1672444800, // Sat Dec 31 2022 00:00:00 GMT+0000
+      birthday: 1674864000, // Sat Jan 28 2023 00:00:00 GMT+0000
       address: '0x87870bca3f3fd6335c3f4ce8392d69350b4fa4e2',
       dataProvider: '0x7B4EB56E7CD4b454BA8ff71E4518426369a138a3',
       incentiveController: {
