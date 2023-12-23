@@ -7,16 +7,15 @@ import cErc20Abi from '../../../configs/abi/compound/cErc20.json';
 import { ChainBlockPeriods, DAY, YEAR } from '../../../configs/constants';
 import EnvConfig from '../../../configs/envConfig';
 import { CompoundLendingMarketConfig, CompoundProtocolConfig } from '../../../configs/protocols/compound';
-import logger from '../../../lib/logger';
 import { tryQueryBlockNumberAtTimestamp } from '../../../lib/subsgraph';
-import { compareAddress, formatFromDecimals, getDateString, normalizeAddress } from '../../../lib/utils';
+import { compareAddress, formatFromDecimals, normalizeAddress } from '../../../lib/utils';
 import { LendingMarketConfig, ProtocolConfig } from '../../../types/configs';
 import { LendingActivityAction, TokenRewardEntry } from '../../../types/domains/base';
 import { LendingActivityEvent, LendingCdpSnapshot, LendingMarketSnapshot } from '../../../types/domains/lending';
 import { ContextServices } from '../../../types/namespaces';
 import { GetLendingMarketSnapshotOptions } from '../../../types/options';
 import ProtocolAdapter from '../adapter';
-import { CompoundEventAbiMappings, CompoundEventInterfaces, CompoundEventSignatures } from './abis';
+import { CompoundEventInterfaces, CompoundEventSignatures } from './abis';
 
 export interface CompoundMarketRates {
   borrowRate: string;
@@ -35,7 +34,6 @@ export default class CompoundAdapter extends ProtocolAdapter {
     super(services, config);
 
     this.abiConfigs.eventSignatures = CompoundEventSignatures;
-    this.abiConfigs.eventAbiMappings = CompoundEventAbiMappings;
   }
 
   protected async getMarketRates(config: LendingMarketConfig, blockNumber: number): Promise<CompoundMarketRates> {
@@ -321,6 +319,50 @@ export default class CompoundAdapter extends ProtocolAdapter {
     return null;
   }
 
+  public async getLendingMarketActivities(
+    options: GetLendingMarketSnapshotOptions,
+  ): Promise<Array<LendingActivityEvent>> {
+    const activities: Array<LendingActivityEvent> = [];
+
+    const blockNumber = await tryQueryBlockNumberAtTimestamp(
+      EnvConfig.blockchains[options.config.chain].blockSubgraph,
+      options.timestamp,
+    );
+    const blockNumberEndDay = await tryQueryBlockNumberAtTimestamp(
+      EnvConfig.blockchains[options.config.chain].blockSubgraph,
+      options.timestamp + DAY - 1,
+    );
+
+    // now we handle event log, turn them to activities
+    let logs = await this.services.blockchain.getContractLogs({
+      chain: options.config.chain,
+      address: options.config.address,
+      fromBlock: blockNumber,
+      toBlock: blockNumberEndDay,
+    });
+    const protocolConfig = this.config as CompoundProtocolConfig;
+    if (protocolConfig.comptrollers && protocolConfig.comptrollers[options.config.chain]) {
+      logs = logs.concat(
+        await this.services.blockchain.getContractLogs({
+          chain: options.config.chain,
+          address: protocolConfig.comptrollers[options.config.chain].address,
+          fromBlock: blockNumber,
+          toBlock: blockNumberEndDay,
+        }),
+      );
+    }
+
+    for (const log of logs) {
+      const activityEvent = await this.parseEventLog(options.config, log);
+
+      if (activityEvent) {
+        activities.push(activityEvent);
+      }
+    }
+
+    return activities;
+  }
+
   public async getLendingMarketSnapshots(
     options: GetLendingMarketSnapshotOptions,
   ): Promise<Array<LendingMarketSnapshot | LendingCdpSnapshot> | null> {
@@ -329,10 +371,6 @@ export default class CompoundAdapter extends ProtocolAdapter {
     const blockNumber = await tryQueryBlockNumberAtTimestamp(
       EnvConfig.blockchains[marketConfig.chain].blockSubgraph,
       options.timestamp,
-    );
-    const blockNumberEndDay = await tryQueryBlockNumberAtTimestamp(
-      EnvConfig.blockchains[options.config.chain].blockSubgraph,
-      options.timestamp + DAY - 1,
     );
 
     const snapshots: Array<LendingMarketSnapshot> = [];
@@ -399,53 +437,6 @@ export default class CompoundAdapter extends ProtocolAdapter {
 
       rewardForLenders: rewards.lenderTokenRewards,
       rewardForBorrowers: rewards.borrowerTokenRewards,
-    });
-
-    // now we handle event log, turn them to activities
-    let logs = await this.services.blockchain.getContractLogs({
-      chain: options.config.chain,
-      address: options.config.address,
-      fromBlock: blockNumber,
-      toBlock: blockNumberEndDay,
-    });
-    const protocolConfig = this.config as CompoundProtocolConfig;
-    if (protocolConfig.comptrollers && protocolConfig.comptrollers[marketConfig.chain]) {
-      logs = logs.concat(
-        await this.services.blockchain.getContractLogs({
-          chain: options.config.chain,
-          address: protocolConfig.comptrollers[marketConfig.chain].address,
-          fromBlock: blockNumber,
-          toBlock: blockNumberEndDay,
-        }),
-      );
-    }
-
-    for (const log of logs) {
-      const activityEvent = await this.parseEventLog(options.config, log);
-
-      if (activityEvent) {
-        await this.services.database.update({
-          collection: EnvConfig.mongodb.collections.lendingMarketActivities,
-          keys: {
-            chain: options.config.chain,
-            transactionHash: activityEvent.transactionHash,
-            logIndex: activityEvent.logIndex,
-          },
-          updates: {
-            ...activityEvent,
-          },
-          upsert: true,
-        });
-      }
-    }
-
-    logger.info('updated lending market snapshot', {
-      service: this.name,
-      protocol: this.config.protocol,
-      chain: marketConfig.chain,
-      version: marketConfig.version,
-      token: `${token.symbol}:${token.address}`,
-      date: getDateString(options.timestamp),
     });
 
     return snapshots;

@@ -1,6 +1,4 @@
 import { ProtocolConfig, Token } from '../types/configs';
-import { StaticDataMasterchefPoolInfo } from '../types/others';
-import MasterchefPools from './data/MasterchefPools.json';
 import { Aavev1Configs, Aavev2Configs, Aavev3Configs } from './protocols/aave';
 import { BenqiConfigs } from './protocols/benqi';
 import { CompoundConfigs } from './protocols/compound';
@@ -35,8 +33,6 @@ export const TokenList: {
   avalanche: TokenListAvalanche,
   fantom: TokenListFantom,
 };
-
-export const StaticDataMasterchefPools: Array<StaticDataMasterchefPoolInfo> = MasterchefPools;
 
 export const ProtocolConfigs: { [key: string]: ProtocolConfig } = {
   aavev1: Aavev1Configs,

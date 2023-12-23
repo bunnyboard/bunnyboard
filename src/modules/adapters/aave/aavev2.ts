@@ -11,7 +11,7 @@ import { formatFromDecimals } from '../../../lib/utils';
 import { ProtocolConfig } from '../../../types/configs';
 import { ContextServices } from '../../../types/namespaces';
 import Aavev1Adapter, { AaveMarketRates, AaveMarketRewards } from './aavev1';
-import { Aavev2EventAbiMappings, Aavev2EventSignatures } from './abis';
+import { Aavev2EventSignatures } from './abis';
 
 export default class Aavev2Adapter extends Aavev1Adapter {
   public readonly name: string = 'adapter.aavev2';
@@ -20,7 +20,6 @@ export default class Aavev2Adapter extends Aavev1Adapter {
     super(services, config);
 
     this.abiConfigs.eventSignatures = Aavev2EventSignatures;
-    this.abiConfigs.eventAbiMappings = Aavev2EventAbiMappings;
   }
 
   // return total deposited (in wei)

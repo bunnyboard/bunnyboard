@@ -10,7 +10,7 @@ import { LendingActivityEvent } from '../../../types/domains/lending';
 import { ContextServices } from '../../../types/namespaces';
 import { CompoundEventInterfaces } from '../compound/abis';
 import CompoundAdapter from '../compound/compound';
-import { VenusCoreEventAbiMappings, VenusCoreEventSignatures } from './abis';
+import { VenusCoreEventSignatures } from './abis';
 
 export default class VenusAdapter extends CompoundAdapter {
   public readonly name: string = 'adapter.venus';
@@ -19,7 +19,6 @@ export default class VenusAdapter extends CompoundAdapter {
     super(services, config);
 
     this.abiConfigs.eventSignatures = VenusCoreEventSignatures;
-    this.abiConfigs.eventAbiMappings = VenusCoreEventAbiMappings;
   }
 
   protected async parseEventLogDistributeReward(

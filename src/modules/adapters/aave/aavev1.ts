@@ -4,16 +4,15 @@ import AaveLendingPoolV1Abi from '../../../configs/abi/aave/LendingPoolV1.json';
 import { ONE_RAY, RAY_DECIMALS } from '../../../configs/constants';
 import EnvConfig from '../../../configs/envConfig';
 import { AaveLendingMarketConfig } from '../../../configs/protocols/aave';
-import logger from '../../../lib/logger';
 import { tryQueryBlockNumberAtTimestamp } from '../../../lib/subsgraph';
-import { formatFromDecimals, getDateString, normalizeAddress } from '../../../lib/utils';
+import { formatFromDecimals, normalizeAddress } from '../../../lib/utils';
 import { ProtocolConfig } from '../../../types/configs';
 import { TokenRewardEntry } from '../../../types/domains/base';
 import { LendingCdpSnapshot, LendingMarketSnapshot } from '../../../types/domains/lending';
 import { ContextServices } from '../../../types/namespaces';
 import { GetLendingMarketSnapshotOptions } from '../../../types/options';
 import ProtocolAdapter from '../adapter';
-import { Aavev1EventAbiMappings, Aavev1EventSignatures } from './abis';
+import { Aavev1EventSignatures } from './abis';
 
 export interface AaveMarketRewards {
   rewardsForLenders: Array<TokenRewardEntry>;
@@ -33,7 +32,6 @@ export default class Aavev1Adapter extends ProtocolAdapter {
     super(services, config);
 
     this.abiConfigs.eventSignatures = Aavev1EventSignatures;
-    this.abiConfigs.eventAbiMappings = Aavev1EventAbiMappings;
   }
 
   // return total deposited (in wei)
@@ -169,15 +167,6 @@ export default class Aavev1Adapter extends ProtocolAdapter {
       };
 
       snapshots.push(snapshot);
-
-      logger.info('updated lending market snapshot', {
-        service: this.name,
-        protocol: this.config.protocol,
-        chain: marketConfig.chain,
-        version: marketConfig.version,
-        token: `${token.symbol}:${token.address}`,
-        date: getDateString(options.timestamp),
-      });
     }
 
     return snapshots;

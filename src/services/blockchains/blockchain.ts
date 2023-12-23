@@ -5,7 +5,6 @@ import { DefaultQueryLogsBlockRange, TokenList } from '../../configs';
 import ERC20Abi from '../../configs/abi/ERC20.json';
 import { AddressE, AddressF, AddressZero } from '../../configs/constants';
 import EnvConfig from '../../configs/envConfig';
-import logger from '../../lib/logger';
 import { compareAddress, normalizeAddress } from '../../lib/utils';
 import { Token } from '../../types/configs';
 import { CachingService } from '../caching/caching';
@@ -88,14 +87,7 @@ export default class BlockchainService extends CachingService implements IBlockc
 
         return token;
       }
-    } catch (e: any) {
-      logger.warn('failed to get token info', {
-        service: this.name,
-        chain: chain,
-        token: address,
-        error: e.message,
-      });
-    }
+    } catch (e: any) {}
 
     return null;
   }
@@ -104,14 +96,6 @@ export default class BlockchainService extends CachingService implements IBlockc
     let logs: Array<any> = [];
 
     const client = this.getPublicClient(options.chain);
-
-    logger.info('getting contract event logs', {
-      service: this.name,
-      chain: options.chain,
-      address: options.address,
-      fromBlock: options.fromBlock,
-      toBlock: options.toBlock,
-    });
 
     let startBlock = options.fromBlock;
     while (startBlock <= options.toBlock) {

@@ -61,7 +61,7 @@ export default class ProtocolCollector implements IProtocolCollector {
 
   protected async collectLendingMarketSnapshots(marketConfigs: Array<LendingMarketConfig>): Promise<void> {
     if (marketConfigs.length > 0) {
-      logger.info('start to update lending market snapshots', {
+      logger.info('start to update lending market data', {
         service: this.name,
         total: marketConfigs.length,
       });
@@ -69,7 +69,7 @@ export default class ProtocolCollector implements IProtocolCollector {
 
     for (const marketConfig of marketConfigs) {
       if (!this.adapters[marketConfig.protocol]) {
-        logger.warn('ignored to update lending market snapshots', {
+        logger.warn('ignored to update lending market data', {
           service: this.name,
           protocol: marketConfig.protocol,
           market: marketConfig.address,
@@ -98,7 +98,7 @@ export default class ProtocolCollector implements IProtocolCollector {
 
       const todayTimestamp = getTodayUTCTimestamp();
 
-      logger.info('start to update lending market snapshots', {
+      logger.info('start to update lending market data', {
         service: this.name,
         protocol: marketConfig.protocol,
         chain: marketConfig.chain,
@@ -108,6 +108,33 @@ export default class ProtocolCollector implements IProtocolCollector {
       });
 
       while (startTimestamp <= todayTimestamp) {
+        const activities = await this.adapters[marketConfig.protocol].getLendingMarketActivities({
+          config: marketConfig,
+          timestamp: startTimestamp,
+        });
+        const operations: Array<any> = [];
+        for (const activity of activities) {
+          operations.push({
+            updateOne: {
+              filter: {
+                chain: activity.chain,
+                transactionHash: activity.transactionHash,
+                logIndex: activity.logIndex,
+              },
+              update: {
+                $set: {
+                  ...activity,
+                },
+              },
+              upsert: true,
+            },
+          });
+        }
+        await this.services.database.bulkWrite({
+          collection: EnvConfig.mongodb.collections.lendingMarketActivities,
+          operations: operations,
+        });
+
         const snapshots = await this.adapters[marketConfig.protocol].getLendingMarketSnapshots({
           config: marketConfig,
           timestamp: startTimestamp,
@@ -132,6 +159,16 @@ export default class ProtocolCollector implements IProtocolCollector {
           }
         }
 
+        logger.info('updated lending market data', {
+          service: this.name,
+          protocol: marketConfig.protocol,
+          chain: marketConfig.chain,
+          address: marketConfig.chain,
+          activities: activities.length,
+          snapshots: snapshots ? snapshots.length : 0,
+          day: getDateString(startTimestamp),
+        });
+
         startTimestamp += DAY;
       }
     }
@@ -139,7 +176,7 @@ export default class ProtocolCollector implements IProtocolCollector {
 
   protected async collectMasterchefPoolSnapshots(masterchefConfigs: Array<MasterchefConfig>): Promise<void> {
     if (masterchefConfigs.length > 0) {
-      logger.info('start to update masterchef pool snapshots', {
+      logger.info('start to update masterchef pool data', {
         service: this.name,
         total: masterchefConfigs.length,
       });
@@ -147,7 +184,7 @@ export default class ProtocolCollector implements IProtocolCollector {
 
     for (const masterchefConfig of masterchefConfigs) {
       if (!this.adapters[masterchefConfig.protocol]) {
-        logger.warn('ignored to update masterchef pool snapshots', {
+        logger.warn('ignored to update masterchef pool data', {
           service: this.name,
           protocol: masterchefConfig.protocol,
           address: masterchefConfig.address,
@@ -176,7 +213,7 @@ export default class ProtocolCollector implements IProtocolCollector {
 
       const todayTimestamp = getTodayUTCTimestamp();
 
-      logger.info('start to update masterchef pool snapshots', {
+      logger.info('start to update masterchef pool data', {
         service: this.name,
         protocol: masterchefConfig.protocol,
         chain: masterchefConfig.chain,
@@ -208,6 +245,14 @@ export default class ProtocolCollector implements IProtocolCollector {
             });
           }
         }
+
+        logger.info('updated masterchef pool data', {
+          service: this.name,
+          protocol: masterchefConfig.protocol,
+          chain: masterchefConfig.chain,
+          address: masterchefConfig.chain,
+          day: getDateString(startTimestamp),
+        });
 
         startTimestamp += DAY;
       }

@@ -1,8 +1,24 @@
-import envConfig from '../configs/envConfig';
-import { sleep } from '../lib/utils';
-import ProtocolCollector from '../modules/collector/collector';
+import { ProtocolConfigs } from '../configs';
+import { getDateString, getTodayUTCTimestamp } from '../lib/utils';
+import getProtocolAdapters from '../modules/adapters';
+import { LendingMarketSnapshot } from '../types/domains/lending';
 import { ContextServices } from '../types/namespaces';
 import { BasicCommand } from './basic';
+
+function printLendingMarketSnapshots(snapshots: Array<LendingMarketSnapshot>) {
+  const prettyData = [];
+  for (const snapshot of snapshots) {
+    prettyData.push({
+      chain: snapshot.chain,
+      day: getDateString(snapshot.timestamp),
+      token: snapshot.token.symbol,
+      tokenPrice: snapshot.tokenPrice,
+      totalDeposited: snapshot.totalDeposited,
+      supplyRate: snapshot.supplyRate,
+    });
+  }
+  console.table(prettyData);
+}
 
 export class RunCommand extends BasicCommand {
   public readonly name: string = 'run';
@@ -14,21 +30,27 @@ export class RunCommand extends BasicCommand {
 
   public async execute(argv: any) {
     const services: ContextServices = await super.getServices();
-    await services.database.connect(envConfig.mongodb.connectionUri, envConfig.mongodb.databaseName);
-    const collector = new ProtocolCollector(services);
 
-    do {
-      await collector.run({
-        chain: argv.chain !== '' ? argv.chain : undefined,
-        protocol: argv.protocol !== '' ? argv.protocol : undefined,
-      });
+    const protocol = argv.protocol;
+    const protocolConfig = ProtocolConfigs[protocol];
+    const timestamp = getTodayUTCTimestamp();
 
-      if (argv.exit) {
-        process.exit(0);
-      } else {
-        await sleep(argv.sleep ? Number(argv.sleep) : 300);
+    const adapters = getProtocolAdapters(services);
+    if (protocolConfig && adapters[protocol]) {
+      if (protocolConfig.lendingMarkets) {
+        for (const config of protocolConfig.lendingMarkets) {
+          const snapshots = await adapters[protocol].getLendingMarketSnapshots({
+            config: config,
+            timestamp: timestamp,
+          });
+          if (snapshots) {
+            printLendingMarketSnapshots(snapshots);
+          }
+        }
       }
-    } while (!argv.exit);
+    }
+
+    process.exit(0);
   }
 
   public setOptions(yargs: any) {

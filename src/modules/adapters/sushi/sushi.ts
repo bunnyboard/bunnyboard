@@ -6,9 +6,8 @@ import MasterchefAbi from '../../../configs/abi/sushi/Masterchef.json';
 import { ChainBlockPeriods, DAY, YEAR } from '../../../configs/constants';
 import MasterchefPools from '../../../configs/data/MasterchefPools.json';
 import EnvConfig from '../../../configs/envConfig';
-import logger from '../../../lib/logger';
 import { tryQueryBlockNumberAtTimestamp } from '../../../lib/subsgraph';
-import { compareAddress, formatFromDecimals, getDateString, normalizeAddress } from '../../../lib/utils';
+import { compareAddress, formatFromDecimals, normalizeAddress } from '../../../lib/utils';
 import { LiquidityPoolConfig, MasterchefConfig, ProtocolConfig } from '../../../types/configs';
 import { MasterchefActivityAction } from '../../../types/domains/base';
 import { MasterchefActivityEvent, MasterchefPoolSnapshot } from '../../../types/domains/masterchef';
@@ -16,7 +15,7 @@ import { ContextServices } from '../../../types/namespaces';
 import { GetMasterchefSnapshotOptions } from '../../../types/options';
 import UniswapLibs from '../../libs/uniswap';
 import ProtocolAdapter from '../adapter';
-import { SushiMasterchefEventAbiMappings, SushiMasterchefEventSignatures } from './abis';
+import { SushiMasterchefEventSignatures } from './abis';
 
 export default class SushiAdapter extends ProtocolAdapter {
   public readonly name: string = 'adapter.sushi';
@@ -25,7 +24,6 @@ export default class SushiAdapter extends ProtocolAdapter {
     super(services, config);
 
     this.abiConfigs.eventSignatures = SushiMasterchefEventSignatures;
-    this.abiConfigs.eventAbiMappings = SushiMasterchefEventAbiMappings;
   }
 
   protected async getLpTokenInfo(
@@ -143,10 +141,8 @@ export default class SushiAdapter extends ProtocolAdapter {
       .toString(10);
   }
 
-  public async getMasterchefSnapshots(
-    options: GetMasterchefSnapshotOptions,
-  ): Promise<Array<MasterchefPoolSnapshot> | null> {
-    const poolSnapshots: Array<MasterchefPoolSnapshot> = [];
+  public async getMasterchefActivities(options: GetMasterchefSnapshotOptions): Promise<Array<MasterchefActivityEvent>> {
+    const activities: Array<MasterchefActivityEvent> = [];
 
     const blockNumber = await tryQueryBlockNumberAtTimestamp(
       EnvConfig.blockchains[options.config.chain].blockSubgraph,
@@ -168,20 +164,22 @@ export default class SushiAdapter extends ProtocolAdapter {
       const activityEvent = await this.parseEventLog(options.config, log);
 
       if (activityEvent) {
-        await this.services.database.update({
-          collection: EnvConfig.mongodb.collections.masterchefPoolActivities,
-          keys: {
-            chain: options.config.chain,
-            transactionHash: activityEvent.transactionHash,
-            logIndex: activityEvent.logIndex,
-          },
-          updates: {
-            ...activityEvent,
-          },
-          upsert: true,
-        });
+        activities.push(activityEvent);
       }
     }
+
+    return activities;
+  }
+
+  public async getMasterchefSnapshots(
+    options: GetMasterchefSnapshotOptions,
+  ): Promise<Array<MasterchefPoolSnapshot> | null> {
+    const poolSnapshots: Array<MasterchefPoolSnapshot> = [];
+
+    const blockNumber = await tryQueryBlockNumberAtTimestamp(
+      EnvConfig.blockchains[options.config.chain].blockSubgraph,
+      options.timestamp,
+    );
 
     const poolLength = await this.services.blockchain.readContract({
       chain: options.config.chain,
@@ -269,15 +267,6 @@ export default class SushiAdapter extends ProtocolAdapter {
           rewardTokenPrice: rewardTokenPrice ? rewardTokenPrice : '0',
           rewardTokenAmount: rewardTokenAmount,
           rewardTokenPerSecond: rewardPerSecond,
-        });
-
-        logger.info('updated masterchef pool snapshot', {
-          service: this.name,
-          protocol: options.config.protocol,
-          address: options.config.address,
-          poolId: poolId,
-          lpToken: lpToken.symbol,
-          date: getDateString(options.timestamp),
         });
       }
     }

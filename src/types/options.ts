@@ -12,7 +12,6 @@ export interface GetMasterchefSnapshotOptions {
 
 export interface AdapterAbiConfigs {
   eventSignatures: any;
-  eventAbiMappings: { [key: string]: Array<any> };
 }
 
 export interface RunCollectorOptions {

@@ -4,8 +4,8 @@ import { createDataKeyHash } from '../../lib/crypto';
 import logger from '../../lib/logger';
 import { tryQueryBlockNumberAtTimestamp } from '../../lib/subsgraph';
 import { ProtocolConfig } from '../../types/configs';
-import { LendingCdpSnapshot, LendingMarketSnapshot } from '../../types/domains/lending';
-import { MasterchefPoolSnapshot } from '../../types/domains/masterchef';
+import { LendingActivityEvent, LendingCdpSnapshot, LendingMarketSnapshot } from '../../types/domains/lending';
+import { MasterchefActivityEvent, MasterchefPoolSnapshot } from '../../types/domains/masterchef';
 import { ContextServices, IProtocolAdapter } from '../../types/namespaces';
 import { AdapterAbiConfigs, GetLendingMarketSnapshotOptions, GetMasterchefSnapshotOptions } from '../../types/options';
 
@@ -27,13 +27,22 @@ export default class ProtocolAdapter implements IProtocolAdapter {
 
     this.abiConfigs = {
       eventSignatures: {},
-      eventAbiMappings: {},
     };
+  }
+
+  public async getLendingMarketActivities(
+    options: GetLendingMarketSnapshotOptions,
+  ): Promise<Array<LendingActivityEvent>> {
+    return [];
   }
 
   public async getLendingMarketSnapshots(
     options: GetLendingMarketSnapshotOptions,
   ): Promise<Array<LendingMarketSnapshot | LendingCdpSnapshot> | null> {
+    return [];
+  }
+
+  public async getMasterchefActivities(options: GetMasterchefSnapshotOptions): Promise<Array<MasterchefActivityEvent>> {
     return [];
   }
 

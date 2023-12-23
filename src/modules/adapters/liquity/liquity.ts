@@ -12,7 +12,7 @@ import { LendingCdpSnapshot, LendingMarketSnapshot } from '../../../types/domain
 import { ContextServices } from '../../../types/namespaces';
 import { GetLendingMarketSnapshotOptions } from '../../../types/options';
 import ProtocolAdapter from '../adapter';
-import { LiquityEventAbiMappings, LiquityEventInterfaces, LiquityEventSignatures } from './abis';
+import { LiquityEventInterfaces, LiquityEventSignatures } from './abis';
 
 interface GetTroveStateInfo {
   debtAmount: string;
@@ -27,7 +27,6 @@ export default class LiquityAdapter extends ProtocolAdapter {
     super(services, config);
 
     this.abiConfigs.eventSignatures = LiquityEventSignatures;
-    this.abiConfigs.eventAbiMappings = LiquityEventAbiMappings;
   }
 
   protected async getTroveState(
@@ -109,7 +108,7 @@ export default class LiquityAdapter extends ProtocolAdapter {
       const signature = log.topics[0];
       if (signature === eventSignatures.TroveUpdated) {
         const event: any = decodeEventLog({
-          abi: this.abiConfigs.eventAbiMappings[signature],
+          abi: TroveManagerAbi,
           data: log.data,
           topics: log.topics,
         });
