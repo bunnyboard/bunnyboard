@@ -223,6 +223,33 @@ export default class ProtocolCollector implements IProtocolCollector {
       });
 
       while (startTimestamp <= todayTimestamp) {
+        const activities = await this.adapters[masterchefConfig.protocol].getMasterchefActivities({
+          config: masterchefConfig,
+          timestamp: startTimestamp,
+        });
+        const operations: Array<any> = [];
+        for (const activity of activities) {
+          operations.push({
+            updateOne: {
+              filter: {
+                chain: activity.chain,
+                transactionHash: activity.transactionHash,
+                logIndex: activity.logIndex,
+              },
+              update: {
+                $set: {
+                  ...activity,
+                },
+              },
+              upsert: true,
+            },
+          });
+        }
+        await this.services.database.bulkWrite({
+          collection: EnvConfig.mongodb.collections.masterchefPoolActivities,
+          operations: operations,
+        });
+
         const snapshots = await this.adapters[masterchefConfig.protocol].getMasterchefSnapshots({
           config: masterchefConfig,
           timestamp: startTimestamp,
@@ -251,6 +278,8 @@ export default class ProtocolCollector implements IProtocolCollector {
           protocol: masterchefConfig.protocol,
           chain: masterchefConfig.chain,
           address: masterchefConfig.chain,
+          activities: activities.length,
+          snapshots: snapshots ? snapshots.length : 0,
           day: getDateString(startTimestamp),
         });
 
