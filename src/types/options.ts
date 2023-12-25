@@ -1,4 +1,9 @@
-import { LendingMarketConfig, MasterchefConfig } from './configs';
+import { ChainMetricConfig, LendingMarketConfig, MasterchefConfig } from './configs';
+
+export interface GetChainMetricSnapshotOptions {
+  chainConfig: ChainMetricConfig;
+  timestamp: number;
+}
 
 export interface GetLendingMarketSnapshotOptions {
   config: LendingMarketConfig;

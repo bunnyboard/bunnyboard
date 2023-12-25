@@ -1,4 +1,5 @@
 import { ProtocolConfig, Token } from '../types/configs';
+import { EthereumProtocolConfigs } from './chains/ethereum';
 import { Aavev1Configs, Aavev2Configs, Aavev3Configs } from './protocols/aave';
 import { BenqiConfigs } from './protocols/benqi';
 import { CompoundConfigs } from './protocols/compound';
@@ -35,6 +36,10 @@ export const TokenList: {
 };
 
 export const ProtocolConfigs: { [key: string]: ProtocolConfig } = {
+  // blockchains
+  ethereum: EthereumProtocolConfigs,
+
+  // protocols
   aavev1: Aavev1Configs,
   aavev2: Aavev2Configs,
   aavev3: Aavev3Configs,

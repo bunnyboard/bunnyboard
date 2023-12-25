@@ -29,12 +29,10 @@ export interface LendingMarketSnapshot extends DayDataSnapshot {
 
   rewardForLenders: Array<TokenRewardEntry>;
   rewardForBorrowers: Array<TokenRewardEntry>;
-}
 
-export interface LendingCdpSnapshot extends LendingMarketSnapshot {
-  // a CDP market have a single collateral token
-  collateralToken: Token;
-  collateralTokenPrice: string;
+  // for CDP market
+  collateralToken?: Token;
+  collateralTokenPrice?: string;
 }
 
 export interface LendingActivityEvent extends BaseActivityEvent {

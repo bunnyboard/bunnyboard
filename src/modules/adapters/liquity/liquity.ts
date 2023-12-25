@@ -1,6 +1,7 @@
 import BigNumber from 'bignumber.js';
 import { decodeEventLog } from 'viem';
 
+import BorrowOperationsAbi from '../../../configs/abi/liquity/BorrowOperations.json';
 import TroveManagerAbi from '../../../configs/abi/liquity/TroveManager.json';
 import { DAY } from '../../../configs/constants';
 import EnvConfig from '../../../configs/envConfig';
@@ -9,7 +10,8 @@ import logger from '../../../lib/logger';
 import { tryQueryBlockNumberAtTimestamp } from '../../../lib/subsgraph';
 import { formatFromDecimals, getDateString, normalizeAddress } from '../../../lib/utils';
 import { ProtocolConfig } from '../../../types/configs';
-import { LendingCdpSnapshot, LendingMarketSnapshot } from '../../../types/domains/lending';
+import { LendingActivityAction } from '../../../types/domains/base';
+import { LendingActivityEvent, LendingMarketSnapshot } from '../../../types/domains/lending';
 import { ContextServices } from '../../../types/namespaces';
 import { GetLendingMarketSnapshotOptions } from '../../../types/options';
 import ProtocolAdapter from '../adapter';
@@ -50,8 +52,8 @@ export default class LiquityAdapter extends ProtocolAdapter {
     const newColl = new BigNumber(decodedEvent.args._coll);
 
     return {
-      debtAmount: newDebt.minus(previousDebt).abs().dividedBy(1e18).toString(10),
-      collAmount: newColl.minus(previousColl).abs().dividedBy(1e18).toString(10),
+      debtAmount: formatFromDecimals(newDebt.minus(previousDebt).abs().toString(10), market.debtToken.decimals),
+      collAmount: formatFromDecimals(newColl.minus(previousColl).abs().toString(10), market.collateralToken.decimals),
       isBorrow: previousDebt.lte(newDebt),
     };
   }
@@ -68,9 +70,92 @@ export default class LiquityAdapter extends ProtocolAdapter {
     return borrowingFee.toString();
   }
 
+  public async getLendingMarketActivities(
+    options: GetLendingMarketSnapshotOptions,
+  ): Promise<Array<LendingActivityEvent>> {
+    const activityEvents: Array<LendingActivityEvent> = [];
+
+    const blockNumber = await tryQueryBlockNumberAtTimestamp(
+      EnvConfig.blockchains[options.config.chain].blockSubgraph,
+      options.timestamp,
+    );
+    const blockNumberEndDay = await tryQueryBlockNumberAtTimestamp(
+      EnvConfig.blockchains[options.config.chain].blockSubgraph,
+      options.timestamp + DAY - 1,
+    );
+
+    // now we handle event log, turn them to activities
+    let logs = await this.services.blockchain.getContractLogs({
+      chain: options.config.chain,
+      address: options.config.address, // borrow operations
+      fromBlock: blockNumber,
+      toBlock: blockNumberEndDay,
+    });
+
+    const marketConfig = options.config as LiquityLendingMarketConfig;
+    const eventSignatures = this.abiConfigs.eventSignatures as LiquityEventInterfaces;
+    for (const log of logs) {
+      const signature = log.topics[0];
+      if (signature === eventSignatures.TroveUpdated || signature === eventSignatures.TroveLiquidated) {
+        const event: any = decodeEventLog({
+          abi: BorrowOperationsAbi,
+          data: log.data,
+          topics: log.topics,
+        });
+        if (signature === eventSignatures.TroveUpdated) {
+          const operation = Number(event.args._operation);
+          const user = normalizeAddress(event.args._borrower);
+          if (operation === 0) {
+            // open trove
+            const amount = formatFromDecimals(event.args._debt.toString(), marketConfig.debtToken.decimals);
+            const collateralAmount = formatFromDecimals(
+              event.args._coll.toString(),
+              marketConfig.collateralToken.decimals,
+            );
+
+            activityEvents.push({
+              chain: marketConfig.chain,
+              protocol: this.config.protocol,
+              address: marketConfig.address,
+              transactionHash: log.transactionHash,
+              logIndex: log.logIndex.toString(),
+              blockNumber: new BigNumber(log.blockNumber.toString()).toNumber(),
+              action: 'borrow',
+              user: user,
+              token: marketConfig.debtToken,
+              tokenAmount: amount,
+              collateralAmount: collateralAmount,
+              collateralToken: marketConfig.collateralToken,
+            });
+          } else {
+            const info: GetTroveStateInfo = await this.getTroveState(marketConfig, event, blockNumber);
+            const action: LendingActivityAction = info.isBorrow ? 'borrow' : 'repay';
+            activityEvents.push({
+              chain: marketConfig.chain,
+              protocol: this.config.protocol,
+              address: marketConfig.address,
+              transactionHash: log.transactionHash,
+              logIndex: log.logIndex.toString(),
+              blockNumber: new BigNumber(log.blockNumber.toString()).toNumber(),
+              action: action,
+              user: user,
+              token: marketConfig.debtToken,
+              tokenAmount: info.debtAmount,
+              collateralToken: marketConfig.collateralToken,
+              collateralAmount: info.collAmount,
+            });
+          }
+        } else if (signature === eventSignatures.TroveLiquidated) {
+        }
+      }
+    }
+
+    return activityEvents;
+  }
+
   public async getLendingMarketSnapshots(
     options: GetLendingMarketSnapshotOptions,
-  ): Promise<Array<LendingMarketSnapshot | LendingCdpSnapshot> | null> {
+  ): Promise<Array<LendingMarketSnapshot> | null> {
     const blockNumber = await tryQueryBlockNumberAtTimestamp(
       EnvConfig.blockchains[options.config.chain].blockSubgraph,
       options.timestamp,
@@ -119,13 +204,13 @@ export default class LiquityAdapter extends ProtocolAdapter {
           topics: log.topics,
         });
 
-        const operation = Number(event._operation);
+        const operation = Number(event.args._operation);
         const borrowingFee = await this.getBorrowingFee(marketConfig, blockNumber);
 
         if (operation === 0) {
           // open trove
           totalFeesCollected = totalFeesCollected.plus(
-            new BigNumber(borrowingFee).multipliedBy(new BigNumber(event._debt.toString())).dividedBy(1e18),
+            new BigNumber(borrowingFee).multipliedBy(new BigNumber(event.args._debt.toString())).dividedBy(1e18),
           );
         } else {
           // update trove

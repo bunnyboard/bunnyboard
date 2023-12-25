@@ -1,8 +1,13 @@
 import { ProtocolConfig } from '../../types/configs';
-import { LendingActivityEvent, LendingCdpSnapshot, LendingMarketSnapshot } from '../../types/domains/lending';
+import { LendingActivityEvent, LendingMarketSnapshot } from '../../types/domains/lending';
 import { MasterchefActivityEvent, MasterchefPoolSnapshot } from '../../types/domains/masterchef';
 import { ContextServices, IProtocolAdapter } from '../../types/namespaces';
-import { AdapterAbiConfigs, GetLendingMarketSnapshotOptions, GetMasterchefSnapshotOptions } from '../../types/options';
+import {
+  AdapterAbiConfigs,
+  GetChainMetricSnapshotOptions,
+  GetLendingMarketSnapshotOptions,
+  GetMasterchefSnapshotOptions,
+} from '../../types/options';
 
 export default class ProtocolAdapter implements IProtocolAdapter {
   public readonly name: string = 'adapter';
@@ -19,6 +24,10 @@ export default class ProtocolAdapter implements IProtocolAdapter {
     };
   }
 
+  public async getChainMetricSnapshots(options: GetChainMetricSnapshotOptions): Promise<Array<any>> {
+    return [];
+  }
+
   public async getLendingMarketActivities(
     options: GetLendingMarketSnapshotOptions,
   ): Promise<Array<LendingActivityEvent>> {
@@ -27,7 +36,7 @@ export default class ProtocolAdapter implements IProtocolAdapter {
 
   public async getLendingMarketSnapshots(
     options: GetLendingMarketSnapshotOptions,
-  ): Promise<Array<LendingMarketSnapshot | LendingCdpSnapshot> | null> {
+  ): Promise<Array<LendingMarketSnapshot> | null> {
     return [];
   }
 

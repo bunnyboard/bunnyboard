@@ -11,7 +11,7 @@ import { tryQueryBlockNumberAtTimestamp } from '../../../lib/subsgraph';
 import { compareAddress, formatFromDecimals, normalizeAddress } from '../../../lib/utils';
 import { LendingMarketConfig, ProtocolConfig } from '../../../types/configs';
 import { LendingActivityAction, TokenRewardEntry } from '../../../types/domains/base';
-import { LendingActivityEvent, LendingCdpSnapshot, LendingMarketSnapshot } from '../../../types/domains/lending';
+import { LendingActivityEvent, LendingMarketSnapshot } from '../../../types/domains/lending';
 import { ContextServices } from '../../../types/namespaces';
 import { GetLendingMarketSnapshotOptions } from '../../../types/options';
 import ProtocolAdapter from '../adapter';
@@ -365,7 +365,7 @@ export default class CompoundAdapter extends ProtocolAdapter {
 
   public async getLendingMarketSnapshots(
     options: GetLendingMarketSnapshotOptions,
-  ): Promise<Array<LendingMarketSnapshot | LendingCdpSnapshot> | null> {
+  ): Promise<Array<LendingMarketSnapshot> | null> {
     const marketConfig = options.config as CompoundLendingMarketConfig;
 
     const blockNumber = await tryQueryBlockNumberAtTimestamp(

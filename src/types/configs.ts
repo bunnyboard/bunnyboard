@@ -43,6 +43,9 @@ export interface EnvConfig {
       // save token prices
       tokenPrices: string;
 
+      // save metrics related to blockchains
+      chainMetricSnapshots: string;
+
       // save lending market metrics and snapshots
       lendingMarketSnapshots: string;
 
@@ -152,6 +155,10 @@ export interface MasterchefConfig {
   devRewardSharePercentage: number;
 }
 
+export interface ChainMetricConfig extends Blockchain {
+  publicRpc: string;
+}
+
 export interface ProtocolConfig {
   protocol: string;
 
@@ -160,4 +167,7 @@ export interface ProtocolConfig {
 
   // a list of masterchef if any
   masterchefs?: Array<MasterchefConfig>;
+
+  // a list of config to collect blockchain metrics
+  chainMetrics?: Array<ChainMetricConfig>;
 }
