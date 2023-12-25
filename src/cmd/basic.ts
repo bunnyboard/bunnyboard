@@ -1,7 +1,8 @@
+import envConfig from '../configs/envConfig';
 import BlockchainService from '../services/blockchains/blockchain';
 import DatabaseService from '../services/database/database';
 import OracleService from '../services/oracle/oracle';
-import { ContextServices } from '../types/namespaces';
+import { ContextServices, ContextStorages } from '../types/namespaces';
 
 export class BasicCommand {
   public readonly name: string = 'command';
@@ -10,16 +11,21 @@ export class BasicCommand {
   constructor() {}
 
   public async getServices(): Promise<ContextServices> {
-    const database = new DatabaseService();
     const blockchain = new BlockchainService();
     const oracle = new OracleService();
 
-    // await database.connect(envConfig.mongodb.connectionUri, envConfig.mongodb.databaseName);
+    return {
+      blockchain: blockchain,
+      oracle: oracle,
+    };
+  }
+
+  public async getStorages(): Promise<ContextStorages> {
+    const database = new DatabaseService();
+    await database.connect(envConfig.mongodb.connectionUri, envConfig.mongodb.databaseName);
 
     return {
       database: database,
-      blockchain: blockchain,
-      oracle: oracle,
     };
   }
 

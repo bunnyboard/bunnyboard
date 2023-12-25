@@ -1,7 +1,6 @@
-import envConfig from '../configs/envConfig';
 import { sleep } from '../lib/utils';
 import ProtocolCollector from '../modules/collector/collector';
-import { ContextServices } from '../types/namespaces';
+import { ContextServices, ContextStorages } from '../types/namespaces';
 import { BasicCommand } from './basic';
 
 export class CollectCommand extends BasicCommand {
@@ -14,8 +13,9 @@ export class CollectCommand extends BasicCommand {
 
   public async execute(argv: any) {
     const services: ContextServices = await super.getServices();
-    await services.database.connect(envConfig.mongodb.connectionUri, envConfig.mongodb.databaseName);
-    const collector = new ProtocolCollector(services);
+    const storages: ContextStorages = await super.getStorages();
+
+    const collector = new ProtocolCollector(storages, services);
 
     do {
       await collector.run({

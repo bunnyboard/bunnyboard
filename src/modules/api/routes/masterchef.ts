@@ -3,16 +3,16 @@ import { Request, Response, Router } from 'express';
 
 import EnvConfig from '../../../configs/envConfig';
 import { normalizeAddress } from '../../../lib/utils';
-import { ContextServices } from '../../../types/namespaces';
+import { ContextServices, ContextStorages } from '../../../types/namespaces';
 import { writeResponse } from '../middleware';
 
-export function getRouter(services: ContextServices): Router {
+export function getRouter(storages: ContextStorages, services: ContextServices): Router {
   const router = Router({ mergeParams: true });
 
   // query all available masterchef contracts and its pools
   router.get('/pool/list', async (request: Request, response: Response) => {
     // first, we get unique masterchef
-    const collection = await services.database.getCollection(EnvConfig.mongodb.collections.masterchefPoolSnapshots);
+    const collection = await storages.database.getCollection(EnvConfig.mongodb.collections.masterchefPoolSnapshots);
 
     const groupUniques = await collection
       .aggregate([
@@ -35,7 +35,7 @@ export function getRouter(services: ContextServices): Router {
       });
     }
 
-    await writeResponse(services, request, response, HttpStatusCode.Ok, {
+    await writeResponse(storages, request, response, HttpStatusCode.Ok, {
       error: null,
       result: pools,
     });
@@ -46,7 +46,7 @@ export function getRouter(services: ContextServices): Router {
     const { chain, address, poolId } = request.params;
     const { order } = request.query;
 
-    const documents: Array<any> = await services.database.query({
+    const documents: Array<any> = await storages.database.query({
       collection: EnvConfig.mongodb.collections.masterchefPoolSnapshots,
       query: {
         chain,
@@ -65,7 +65,7 @@ export function getRouter(services: ContextServices): Router {
       snapshots.push(document);
     }
 
-    await writeResponse(services, request, response, HttpStatusCode.Ok, {
+    await writeResponse(storages, request, response, HttpStatusCode.Ok, {
       error: null,
       params: {
         chain: chain,

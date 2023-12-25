@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from 'express';
 
 import logger from '../../lib/logger';
-import { ContextServices } from '../../types/namespaces';
+import { ContextStorages } from '../../types/namespaces';
 import { getRequestIp } from './helper';
 
 export function middleware(request: Request, response: Response, next: NextFunction) {
@@ -11,7 +11,7 @@ export function middleware(request: Request, response: Response, next: NextFunct
 }
 
 export async function writeResponse(
-  services: ContextServices,
+  storages: ContextStorages,
   request: Request,
   response: Response,
   status: number,

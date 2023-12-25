@@ -2,6 +2,7 @@ import BigNumber from 'bignumber.js';
 import { decodeEventLog } from 'viem';
 
 import TroveManagerAbi from '../../../configs/abi/liquity/TroveManager.json';
+import { DAY } from '../../../configs/constants';
 import EnvConfig from '../../../configs/envConfig';
 import { LiquityLendingMarketConfig } from '../../../configs/protocols/liquity';
 import logger from '../../../lib/logger';
@@ -39,14 +40,14 @@ export default class LiquityAdapter extends ProtocolAdapter {
       target: market.troveManager,
       abi: TroveManagerAbi,
       method: 'Troves',
-      params: [decodedEvent._borrower],
+      params: [decodedEvent.args._borrower],
       blockNumber: blockNumber - 1,
     });
 
-    const previousDebt = new BigNumber(troveInfo.debt);
-    const newDebt = new BigNumber(decodedEvent._debt);
-    const previousColl = new BigNumber(troveInfo.coll);
-    const newColl = new BigNumber(decodedEvent._coll);
+    const previousDebt = new BigNumber(troveInfo[0]);
+    const newDebt = new BigNumber(decodedEvent.args._debt);
+    const previousColl = new BigNumber(troveInfo[1]);
+    const newColl = new BigNumber(decodedEvent.args._coll);
 
     return {
       debtAmount: newDebt.minus(previousDebt).abs().dividedBy(1e18).toString(10),
@@ -74,6 +75,10 @@ export default class LiquityAdapter extends ProtocolAdapter {
       EnvConfig.blockchains[options.config.chain].blockSubgraph,
       options.timestamp,
     );
+    const blockNumberEndDay = await tryQueryBlockNumberAtTimestamp(
+      EnvConfig.blockchains[options.config.chain].blockSubgraph,
+      options.timestamp + DAY - 1,
+    );
 
     const eventSignatures = this.abiConfigs.eventSignatures as LiquityEventInterfaces;
     const marketConfig = options.config as LiquityLendingMarketConfig;
@@ -96,10 +101,11 @@ export default class LiquityAdapter extends ProtocolAdapter {
     });
     const borrowingFee = await this.getBorrowingFee(marketConfig, blockNumber);
 
-    const logs = await this.getDayContractLogs({
+    const logs = await this.services.blockchain.getContractLogs({
       chain: marketConfig.chain,
       address: marketConfig.address, // borrow operations,
-      dayStartTimestamp: options.timestamp,
+      fromBlock: blockNumber,
+      toBlock: blockNumberEndDay,
     });
 
     let totalFeesCollected = new BigNumber(0);

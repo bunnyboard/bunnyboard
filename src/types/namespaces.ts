@@ -11,8 +11,11 @@ import {
   RunCollectorOptions,
 } from './options';
 
-export interface ContextServices {
+export interface ContextStorages {
   database: IDatabaseService;
+}
+
+export interface ContextServices {
   blockchain: IBlockchainService;
   oracle: IOracleService;
 }
@@ -46,6 +49,7 @@ export interface IProtocolAdapter {
 export interface IProtocolCollector {
   name: string;
   services: ContextServices;
+  storages: ContextStorages;
 
   run: (options: RunCollectorOptions) => Promise<void>;
 }

@@ -4,18 +4,20 @@ import EnvConfig from '../../configs/envConfig';
 import logger from '../../lib/logger';
 import { getDateString, getTodayUTCTimestamp, normalizeAddress } from '../../lib/utils';
 import { LendingMarketConfig, MasterchefConfig } from '../../types/configs';
-import { ContextServices, IProtocolAdapter, IProtocolCollector } from '../../types/namespaces';
+import { ContextServices, ContextStorages, IProtocolAdapter, IProtocolCollector } from '../../types/namespaces';
 import { RunCollectorOptions } from '../../types/options';
 import getProtocolAdapters from '../adapters';
 
 export default class ProtocolCollector implements IProtocolCollector {
   public readonly name: string = 'collector';
   public readonly services: ContextServices;
+  public readonly storages: ContextStorages;
 
   private readonly adapters: { [key: string]: IProtocolAdapter };
 
-  constructor(services: ContextServices) {
+  constructor(storages: ContextStorages, services: ContextServices) {
     this.services = services;
+    this.storages = storages;
     this.adapters = getProtocolAdapters(services);
   }
 
@@ -78,7 +80,7 @@ export default class ProtocolCollector implements IProtocolCollector {
       }
 
       let startTimestamp = marketConfig.birthday;
-      const latestSnapshot = await this.services.database.find({
+      const latestSnapshot = await this.storages.database.find({
         collection: EnvConfig.mongodb.collections.lendingMarketSnapshots,
         query: {
           chain: marketConfig.chain,
@@ -130,7 +132,7 @@ export default class ProtocolCollector implements IProtocolCollector {
             },
           });
         }
-        await this.services.database.bulkWrite({
+        await this.storages.database.bulkWrite({
           collection: EnvConfig.mongodb.collections.lendingMarketActivities,
           operations: operations,
         });
@@ -142,7 +144,7 @@ export default class ProtocolCollector implements IProtocolCollector {
 
         if (snapshots) {
           for (const snapshot of snapshots) {
-            await this.services.database.update({
+            await this.storages.database.update({
               collection: EnvConfig.mongodb.collections.lendingMarketSnapshots,
               keys: {
                 chain: snapshot.chain,
@@ -193,7 +195,7 @@ export default class ProtocolCollector implements IProtocolCollector {
       }
 
       let startTimestamp = masterchefConfig.birthday;
-      const latestSnapshot = await this.services.database.find({
+      const latestSnapshot = await this.storages.database.find({
         collection: EnvConfig.mongodb.collections.masterchefPoolSnapshots,
         query: {
           chain: masterchefConfig.chain,
@@ -245,7 +247,7 @@ export default class ProtocolCollector implements IProtocolCollector {
             },
           });
         }
-        await this.services.database.bulkWrite({
+        await this.storages.database.bulkWrite({
           collection: EnvConfig.mongodb.collections.masterchefPoolActivities,
           operations: operations,
         });
@@ -257,7 +259,7 @@ export default class ProtocolCollector implements IProtocolCollector {
 
         if (snapshots) {
           for (const snapshot of snapshots) {
-            await this.services.database.update({
+            await this.storages.database.update({
               collection: EnvConfig.mongodb.collections.masterchefPoolSnapshots,
               keys: {
                 chain: snapshot.chain,
