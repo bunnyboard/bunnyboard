@@ -17,7 +17,11 @@ export function getRouter(storages: ContextStorages, services: ContextServices):
 
     const groupUniques = await collection
       .aggregate([
-        { $group: { _id: { protocol: '$protocol', chain: '$chain', address: '$address', token: '$token' } } },
+        {
+          $group: {
+            _id: { protocol: '$protocol', chain: '$chain', address: '$address', token: '$token', type: '$type' },
+          },
+        },
       ])
       .toArray();
 
@@ -28,6 +32,7 @@ export function getRouter(storages: ContextStorages, services: ContextServices):
         protocol: uniqueId._id.protocol,
         address: uniqueId._id.address,
         token: uniqueId._id.token,
+        type: uniqueId._id.type,
       });
     }
 
