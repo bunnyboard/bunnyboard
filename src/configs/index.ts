@@ -19,6 +19,7 @@ import TokenListOptimism from './tokenlists/optimism.json';
 import TokenListPolygon from './tokenlists/polygon.json';
 
 export const DefaultQueryLogsBlockRange = 2000;
+export const DefaultQueryDataLimit = 100;
 
 export const TokenList: {
   [key: string]: {

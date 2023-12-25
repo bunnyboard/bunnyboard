@@ -1,6 +1,7 @@
 import { HttpStatusCode } from 'axios';
 import { Request, Response, Router } from 'express';
 
+import { DefaultQueryDataLimit } from '../../../configs';
 import EnvConfig from '../../../configs/envConfig';
 import { normalizeAddress } from '../../../lib/utils';
 import { ContextServices, ContextStorages } from '../../../types/namespaces';
@@ -44,7 +45,7 @@ export function getRouter(storages: ContextStorages, services: ContextServices):
   // query all snapshots of a given masterchef pool
   router.get('/pool/chain/:chain/address/:address/poolId/:poolId', async (request: Request, response: Response) => {
     const { chain, address, poolId } = request.params;
-    const { order } = request.query;
+    const { page, order } = request.query;
 
     const documents: Array<any> = await storages.database.query({
       collection: EnvConfig.mongodb.collections.masterchefPoolSnapshots,
@@ -54,8 +55,8 @@ export function getRouter(storages: ContextStorages, services: ContextServices):
         poolId: Number(poolId),
       },
       options: {
-        limit: 0, // no limit
-        skip: 0,
+        limit: DefaultQueryDataLimit,
+        skip: Number(page) * DefaultQueryDataLimit,
         order: { timestamp: order && order === 'oldest' ? 1 : -1 },
       },
     });

@@ -1,6 +1,7 @@
 import { HttpStatusCode } from 'axios';
 import { Request, Response, Router } from 'express';
 
+import { DefaultQueryDataLimit } from '../../../configs';
 import EnvConfig from '../../../configs/envConfig';
 import { normalizeAddress } from '../../../lib/utils';
 import { ContextServices, ContextStorages } from '../../../types/namespaces';
@@ -39,7 +40,7 @@ export function getRouter(storages: ContextStorages, services: ContextServices):
   // get all snapshots of a market
   router.get('/market/chain/:chain/address/:address/token/:token', async (request: Request, response: Response) => {
     const { chain, address, token } = request.params;
-    const { order } = request.query;
+    const { page, order } = request.query;
 
     const documents: Array<any> = await storages.database.query({
       collection: EnvConfig.mongodb.collections.lendingMarketSnapshots,
@@ -49,8 +50,8 @@ export function getRouter(storages: ContextStorages, services: ContextServices):
         'token.address': normalizeAddress(token),
       },
       options: {
-        limit: 0, // no limit
-        skip: 0,
+        limit: DefaultQueryDataLimit,
+        skip: Number(page) * DefaultQueryDataLimit,
         order: { timestamp: order && order === 'oldest' ? 1 : -1 },
       },
     });
