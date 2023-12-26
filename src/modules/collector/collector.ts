@@ -92,7 +92,7 @@ export default class ProtocolCollector implements IProtocolCollector {
               keys: {
                 chain: snapshot.chain,
                 protocol: snapshot.protocol,
-                address: snapshot.protocol,
+                address: snapshot.address,
                 'token.address': snapshot.token.address,
               },
               updates: {
@@ -107,7 +107,7 @@ export default class ProtocolCollector implements IProtocolCollector {
               keys: {
                 chain: snapshot.chain,
                 protocol: snapshot.protocol,
-                address: snapshot.protocol,
+                address: snapshot.address,
                 'token.address': snapshot.token.address,
                 'collateralToken.address': snapshot.collateralToken.address,
               },
@@ -190,7 +190,7 @@ export default class ProtocolCollector implements IProtocolCollector {
               keys: {
                 chain: snapshot.chain,
                 protocol: snapshot.protocol,
-                address: snapshot.protocol,
+                address: snapshot.address,
                 'token.address': snapshot.token.address,
                 timestamp: snapshot.timestamp,
               },
