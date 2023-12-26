@@ -46,11 +46,17 @@ export interface EnvConfig {
       // save metrics related to blockchains
       chainMetricSnapshots: string;
 
+      // save lending market states - latest snapshot
+      lendingMarketStates: string;
+
       // save lending market metrics and snapshots
       lendingMarketSnapshots: string;
 
       // save lending market activity events
       lendingMarketActivities: string;
+
+      // save masterchef pool states - latest snapshot
+      masterchefPoolStates: string;
 
       // save masterchef pools metric and snapshots
       masterchefPoolSnapshots: string;

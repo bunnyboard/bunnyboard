@@ -2,7 +2,7 @@ import { ProtocolConfigs } from '../../configs';
 import { DAY } from '../../configs/constants';
 import EnvConfig from '../../configs/envConfig';
 import logger from '../../lib/logger';
-import { getDateString, getTodayUTCTimestamp, normalizeAddress } from '../../lib/utils';
+import { getDateString, getTimestamp, getTodayUTCTimestamp, normalizeAddress } from '../../lib/utils';
 import { LendingMarketConfig, MasterchefConfig } from '../../types/configs';
 import { ContextServices, ContextStorages, IProtocolAdapter, IProtocolCollector } from '../../types/namespaces';
 import { RunCollectorOptions } from '../../types/options';
@@ -77,6 +77,29 @@ export default class ProtocolCollector implements IProtocolCollector {
           market: marketConfig.address,
         });
         continue;
+      }
+
+      // update latest states
+      const latestSnapshots = await this.adapters[marketConfig.protocol].getLendingMarketSnapshots({
+        config: marketConfig,
+        timestamp: getTimestamp(),
+      });
+      if (latestSnapshots) {
+        for (const snapshot of latestSnapshots) {
+          await this.storages.database.update({
+            collection: EnvConfig.mongodb.collections.lendingMarketStates,
+            keys: {
+              chain: snapshot.chain,
+              protocol: snapshot.protocol,
+              address: snapshot.protocol,
+              'token.address': snapshot.token.address,
+            },
+            updates: {
+              ...snapshot,
+            },
+            upsert: true,
+          });
+        }
       }
 
       let startTimestamp = marketConfig.birthday;
@@ -223,6 +246,28 @@ export default class ProtocolCollector implements IProtocolCollector {
         fromDate: getDateString(startTimestamp),
         toDate: getDateString(todayTimestamp),
       });
+
+      const latestSnapshots = await this.adapters[masterchefConfig.protocol].getMasterchefSnapshots({
+        config: masterchefConfig,
+        timestamp: getTimestamp(),
+      });
+
+      if (latestSnapshots) {
+        for (const snapshot of latestSnapshots) {
+          await this.storages.database.update({
+            collection: EnvConfig.mongodb.collections.masterchefPoolStates,
+            keys: {
+              chain: snapshot.chain,
+              address: snapshot.address,
+              poolId: snapshot.poolId,
+            },
+            updates: {
+              ...snapshot,
+            },
+            upsert: true,
+          });
+        }
+      }
 
       while (startTimestamp <= todayTimestamp) {
         const activities = await this.adapters[masterchefConfig.protocol].getMasterchefActivities({

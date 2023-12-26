@@ -77,10 +77,14 @@ export default class DatabaseService implements IDatabaseService {
     const statesCollection = await this.getCollection(envConfig.mongodb.collections.states);
     const cachingCollection = await this.getCollection(envConfig.mongodb.collections.caching);
     const tokenPricesCollection = await this.getCollection(envConfig.mongodb.collections.tokenPrices);
+
+    const lendingMarketStatesCollection = await this.getCollection(envConfig.mongodb.collections.lendingMarketStates);
     const lendingMarketSnapshotsCollection = await this.getCollection(
       envConfig.mongodb.collections.lendingMarketSnapshots,
     );
     const lendingMarketActivities = await this.getCollection(envConfig.mongodb.collections.lendingMarketActivities);
+
+    const masterchefPoolStatesCollection = await this.getCollection(envConfig.mongodb.collections.masterchefPoolStates);
     const masterchefPoolSnapshotsCollection = await this.getCollection(
       envConfig.mongodb.collections.masterchefPoolSnapshots,
     );
@@ -93,6 +97,10 @@ export default class DatabaseService implements IDatabaseService {
     tokenPricesCollection.createIndex({ chain: 1, address: 1, timestamp: 1 }, { background: true });
 
     // write
+    lendingMarketStatesCollection.createIndex(
+      { chain: 1, protocol: 1, address: 1, 'token.address': 1 },
+      { background: true },
+    );
     lendingMarketSnapshotsCollection.createIndex(
       { chain: 1, protocol: 1, address: 1, 'token.address': 1, timestamp: 1 },
       { background: true },
@@ -103,6 +111,7 @@ export default class DatabaseService implements IDatabaseService {
       { background: true },
     );
 
+    masterchefPoolStatesCollection.createIndex({ chain: 1, address: 1, poolId: 1 }, { background: true });
     masterchefPoolSnapshotsCollection.createIndex(
       { chain: 1, address: 1, poolId: 1, timestamp: 1 },
       { background: true },

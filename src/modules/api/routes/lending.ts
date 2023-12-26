@@ -42,6 +42,24 @@ export function getRouter(storages: ContextStorages, services: ContextServices):
     });
   });
 
+  // query all lending market latest states
+  router.get('/market/states', async (request: Request, response: Response) => {
+    const documents: Array<any> = await storages.database.query({
+      collection: EnvConfig.mongodb.collections.lendingMarketStates,
+      query: {},
+    });
+    const states: Array<any> = [];
+    for (const document of documents) {
+      delete document._id;
+      states.push(document);
+    }
+
+    await writeResponse(storages, request, response, HttpStatusCode.Ok, {
+      error: null,
+      result: states,
+    });
+  });
+
   // get all snapshots of a market
   router.get('/market/chain/:chain/address/:address/token/:token', async (request: Request, response: Response) => {
     const { chain, address, token } = request.params;

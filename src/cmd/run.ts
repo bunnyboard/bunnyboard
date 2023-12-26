@@ -1,5 +1,5 @@
 import { ProtocolConfigs } from '../configs';
-import { getDateString, getTodayUTCTimestamp } from '../lib/utils';
+import { getDateString, getTimestamp } from '../lib/utils';
 import getProtocolAdapters from '../modules/adapters';
 import { ContextServices } from '../types/namespaces';
 import { BasicCommand } from './basic';
@@ -41,7 +41,7 @@ export class RunCommand extends BasicCommand {
 
     const protocol = argv.protocol;
     const activity = argv.activity;
-    const timestamp = argv.timestamp ? Number(argv.timestamp) : getTodayUTCTimestamp();
+    const timestamp = argv.timestamp ? Number(argv.timestamp) : getTimestamp();
     const output = argv.output; // console, json, default: console
 
     const protocolConfig = ProtocolConfigs[protocol];

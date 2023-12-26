@@ -42,6 +42,24 @@ export function getRouter(storages: ContextStorages, services: ContextServices):
     });
   });
 
+  // query all masterchef pool latest states
+  router.get('/pool/states', async (request: Request, response: Response) => {
+    const documents: Array<any> = await storages.database.query({
+      collection: EnvConfig.mongodb.collections.masterchefPoolStates,
+      query: {},
+    });
+    const states: Array<any> = [];
+    for (const document of documents) {
+      delete document._id;
+      states.push(document);
+    }
+
+    await writeResponse(storages, request, response, HttpStatusCode.Ok, {
+      error: null,
+      result: states,
+    });
+  });
+
   // query all snapshots of a given masterchef pool
   router.get('/pool/chain/:chain/address/:address/poolId/:poolId', async (request: Request, response: Response) => {
     const { chain, address, poolId } = request.params;
