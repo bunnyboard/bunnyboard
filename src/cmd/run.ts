@@ -49,6 +49,10 @@ export class RunCommand extends BasicCommand {
     if (protocolConfig && adapters[protocol]) {
       const protocolData: any = {
         protocol: protocol,
+        lendingMarketSnapshots: [],
+        lendingMarketActivities: [],
+        masterchefPoolSnapshots: [],
+        masterchefPoolActivities: [],
       };
 
       if (protocolConfig.lendingMarkets) {
@@ -58,14 +62,16 @@ export class RunCommand extends BasicCommand {
             timestamp: timestamp,
           });
           if (snapshots) {
-            protocolData.lendingMarketSnapshots = snapshots;
+            protocolData.lendingMarketSnapshots = protocolData.lendingMarketSnapshots.concat(snapshots);
           }
 
           if (activity) {
-            protocolData.lendingMarketActivities = await adapters[protocol].getLendingMarketActivities({
-              config: config,
-              timestamp: timestamp,
-            });
+            protocolData.lendingMarketActivities = protocolData.lendingMarketActivities.concat(
+              await adapters[protocol].getLendingMarketActivities({
+                config: config,
+                timestamp: timestamp,
+              })
+            );
           }
         }
       }
@@ -77,14 +83,16 @@ export class RunCommand extends BasicCommand {
             timestamp: timestamp,
           });
           if (snapshots) {
-            protocolData.masterchefPoolSnapshots = snapshots;
+            protocolData.masterchefPoolSnapshots = protocolData.masterchefPoolSnapshots.concat(snapshots);
           }
 
           if (activity) {
-            protocolData.masterchefPoolActivities = await adapters[protocol].getMasterchefActivities({
-              config: config,
-              timestamp: timestamp,
-            });
+            protocolData.masterchefPoolActivities = protocolData.masterchefPoolActivities.concat(
+              await adapters[protocol].getMasterchefActivities({
+                config: config,
+                timestamp: timestamp,
+              })
+            );
           }
         }
       }

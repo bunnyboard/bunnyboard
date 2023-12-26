@@ -86,19 +86,37 @@ export default class ProtocolCollector implements IProtocolCollector {
       });
       if (latestSnapshots) {
         for (const snapshot of latestSnapshots) {
-          await this.storages.database.update({
-            collection: EnvConfig.mongodb.collections.lendingMarketStates,
-            keys: {
-              chain: snapshot.chain,
-              protocol: snapshot.protocol,
-              address: snapshot.protocol,
-              'token.address': snapshot.token.address,
-            },
-            updates: {
-              ...snapshot,
-            },
-            upsert: true,
-          });
+          if (snapshot.type === 'cross' || !snapshot.collateralToken) {
+            await this.storages.database.update({
+              collection: EnvConfig.mongodb.collections.lendingMarketStates,
+              keys: {
+                chain: snapshot.chain,
+                protocol: snapshot.protocol,
+                address: snapshot.protocol,
+                'token.address': snapshot.token.address,
+              },
+              updates: {
+                ...snapshot,
+              },
+              upsert: true,
+            });
+          } else {
+            // on cdp market, the market id should have collateral token too.
+            await this.storages.database.update({
+              collection: EnvConfig.mongodb.collections.lendingMarketStates,
+              keys: {
+                chain: snapshot.chain,
+                protocol: snapshot.protocol,
+                address: snapshot.protocol,
+                'token.address': snapshot.token.address,
+                'collateralToken.address': snapshot.collateralToken.address,
+              },
+              updates: {
+                ...snapshot,
+              },
+              upsert: true,
+            });
+          }
         }
       }
 

@@ -5,6 +5,25 @@ import { DayDataSnapshot } from './base';
 export interface ChainMetricSnapshot extends DayDataSnapshot {
   family: ChainFamily;
 
+  totalBlockGasLimit: string;
+  totalBlockGasUsed: string;
+
+  avgBlockGasBasePrice: string;
+
+  // number of base fees collected
+  // TotalBaseFees = SUM[0-n](BlockBaseFee * BlockGasUsed)
+  // value in native coin
+  totalBaseFees: string;
+
+  // native coin price
+  nativeCoinPrice: string;
+
+  // block count
+  totalBlocks: number;
+
   // total unique addresses which sent transactions
-  activeAddresses: number;
+  totalAddresses: number;
+
+  // transaction count
+  totalTransactions: number;
 }
