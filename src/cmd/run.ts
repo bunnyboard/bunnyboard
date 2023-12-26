@@ -70,7 +70,7 @@ export class RunCommand extends BasicCommand {
               await adapters[protocol].getLendingMarketActivities({
                 config: config,
                 timestamp: timestamp,
-              })
+              }),
             );
           }
         }
@@ -91,7 +91,7 @@ export class RunCommand extends BasicCommand {
               await adapters[protocol].getMasterchefActivities({
                 config: config,
                 timestamp: timestamp,
-              })
+              }),
             );
           }
         }

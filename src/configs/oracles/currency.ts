@@ -24,14 +24,17 @@ export const OracleCurrencyBaseConfigs: { [key: string]: OracleConfig } = {
   matic: {
     currency: 'usd',
     sources: [OracleSourceChainlinkList.MATIC_USD],
+    coingeckoId: 'matic-network',
   },
   avax: {
     currency: 'usd',
     sources: [OracleSourceChainlinkList.AVAX_USD],
+    coingeckoId: 'avalanche-2',
   },
   ftm: {
     currency: 'usd',
     sources: [OracleSourceChainlinkList.FTM_USD],
+    coingeckoId: 'fantom',
   },
 };
 
