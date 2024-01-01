@@ -78,110 +78,110 @@ export const Aavev2Configs: AaveProtocolConfig = {
 export const Aavev3Configs: AaveProtocolConfig = {
   protocol: 'aavev3',
   lendingMarkets: [
-    // {
-    //   chain: 'ethereum',
-    //   protocol: 'aavev3',
-    //   type: 'cross',
-    //   version: 'aavev3',
-    //   birthday: 1674864000, // Sat Jan 28 2023 00:00:00 GMT+0000
-    //   address: '0x87870bca3f3fd6335c3f4ce8392d69350b4fa4e2',
-    //   dataProvider: '0x7B4EB56E7CD4b454BA8ff71E4518426369a138a3',
-    //   incentiveController: {
-    //     address: '0x8164Cc65827dcFe994AB23944CBC90e0aa80bFcb',
-    //     rewardTokens: [], // will query reward list from contract
-    //   },
-    // },
-    // {
-    //   chain: 'optimism',
-    //   protocol: 'aavev3',
-    //   type: 'cross',
-    //   version: 'aavev3',
-    //   birthday: 1647043200, // Sat Mar 12 2022 00:00:00 GMT+0000
-    //   address: '0x794a61358d6845594f94dc1db02a252b5b4814ad',
-    //   dataProvider: '0x69FA688f1Dc47d4B5d8029D5a35FB7a548310654',
-    //   incentiveController: {
-    //     address: '0x929EC64c34a17401F460460D4B9390518E5B473e',
-    //     rewardTokens: [], // will query reward list from contract
-    //   },
-    // },
-    // {
-    //   chain: 'arbitrum',
-    //   protocol: 'aavev3',
-    //   type: 'cross',
-    //   version: 'aavev3',
-    //   birthday: 1647043200, // Sat Mar 12 2022 00:00:00 GMT+0000
-    //   address: '0x794a61358d6845594f94dc1db02a252b5b4814ad',
-    //   dataProvider: '0x69FA688f1Dc47d4B5d8029D5a35FB7a548310654',
-    //   incentiveController: {
-    //     address: '0x929EC64c34a17401F460460D4B9390518E5B473e',
-    //     rewardTokens: [], // will query reward list from contract
-    //   },
-    // },
-    // {
-    //   chain: 'polygon',
-    //   protocol: 'aavev3',
-    //   type: 'cross',
-    //   version: 'aavev3',
-    //   birthday: 1647043200, // Sat Mar 12 2022 00:00:00 GMT+0000
-    //   address: '0x794a61358d6845594f94dc1db02a252b5b4814ad',
-    //   dataProvider: '0x69FA688f1Dc47d4B5d8029D5a35FB7a548310654',
-    //   incentiveController: {
-    //     address: '0x929EC64c34a17401F460460D4B9390518E5B473e',
-    //     rewardTokens: [], // will query reward list from contract
-    //   },
-    // },
-    // {
-    //   chain: 'avalanche',
-    //   protocol: 'aavev3',
-    //   type: 'cross',
-    //   version: 'aavev3',
-    //   birthday: 1647043200, // Sat Mar 12 2022 00:00:00 GMT+0000
-    //   address: '0x794a61358d6845594f94dc1db02a252b5b4814ad',
-    //   dataProvider: '0x69FA688f1Dc47d4B5d8029D5a35FB7a548310654',
-    //   incentiveController: {
-    //     address: '0x929EC64c34a17401F460460D4B9390518E5B473e',
-    //     rewardTokens: [], // will query reward list from contract
-    //   },
-    // },
-    // {
-    //   chain: 'fantom',
-    //   protocol: 'aavev3',
-    //   type: 'cross',
-    //   version: 'aavev3',
-    //   birthday: 1647043200, // Sat Mar 12 2022 00:00:00 GMT+0000
-    //   address: '0x794a61358d6845594f94dc1db02a252b5b4814ad',
-    //   dataProvider: '0x69FA688f1Dc47d4B5d8029D5a35FB7a548310654',
-    //   incentiveController: {
-    //     address: '0x929EC64c34a17401F460460D4B9390518E5B473e',
-    //     rewardTokens: [], // will query reward list from contract
-    //   },
-    // },
-    // {
-    //   chain: 'base',
-    //   protocol: 'aavev3',
-    //   type: 'cross',
-    //   version: 'aavev3',
-    //   birthday: 1691539200, // Wed Aug 09 2023 00:00:00 GMT+0000
-    //   address: '0xa238dd80c259a72e81d7e4664a9801593f98d1c5',
-    //   dataProvider: '0x2d8A3C5677189723C4cB8873CfC9C8976FDF38Ac',
-    //   incentiveController: {
-    //     address: '0xf9cc4F0D883F1a1eb2c253bdb46c254Ca51E1F44',
-    //     rewardTokens: [], // will query reward list from contract
-    //   },
-    // },
-    // {
-    //   chain: 'metis',
-    //   protocol: 'aavev3',
-    //   type: 'cross',
-    //   version: 'aavev3',
-    //   birthday: 1682294400, // Mon Apr 24 2023 00:00:00 GMT+0000
-    //   address: '0x90df02551bB792286e8D4f13E0e357b4Bf1D6a57',
-    //   dataProvider: '0x99411FC17Ad1B56f49719E3850B2CDcc0f9bBFd8',
-    //   incentiveController: {
-    //     address: '0x30C1b8F0490fa0908863d6Cbd2E36400b4310A6B',
-    //     rewardTokens: [], // will query reward list from contract
-    //   },
-    // },
+    {
+      chain: 'ethereum',
+      protocol: 'aavev3',
+      type: 'cross',
+      version: 'aavev3',
+      birthday: 1674864000, // Sat Jan 28 2023 00:00:00 GMT+0000
+      address: '0x87870bca3f3fd6335c3f4ce8392d69350b4fa4e2',
+      dataProvider: '0x7B4EB56E7CD4b454BA8ff71E4518426369a138a3',
+      incentiveController: {
+        address: '0x8164Cc65827dcFe994AB23944CBC90e0aa80bFcb',
+        rewardTokens: [], // will query reward list from contract
+      },
+    },
+    {
+      chain: 'optimism',
+      protocol: 'aavev3',
+      type: 'cross',
+      version: 'aavev3',
+      birthday: 1647043200, // Sat Mar 12 2022 00:00:00 GMT+0000
+      address: '0x794a61358d6845594f94dc1db02a252b5b4814ad',
+      dataProvider: '0x69FA688f1Dc47d4B5d8029D5a35FB7a548310654',
+      incentiveController: {
+        address: '0x929EC64c34a17401F460460D4B9390518E5B473e',
+        rewardTokens: [], // will query reward list from contract
+      },
+    },
+    {
+      chain: 'arbitrum',
+      protocol: 'aavev3',
+      type: 'cross',
+      version: 'aavev3',
+      birthday: 1647043200, // Sat Mar 12 2022 00:00:00 GMT+0000
+      address: '0x794a61358d6845594f94dc1db02a252b5b4814ad',
+      dataProvider: '0x69FA688f1Dc47d4B5d8029D5a35FB7a548310654',
+      incentiveController: {
+        address: '0x929EC64c34a17401F460460D4B9390518E5B473e',
+        rewardTokens: [], // will query reward list from contract
+      },
+    },
+    {
+      chain: 'polygon',
+      protocol: 'aavev3',
+      type: 'cross',
+      version: 'aavev3',
+      birthday: 1647043200, // Sat Mar 12 2022 00:00:00 GMT+0000
+      address: '0x794a61358d6845594f94dc1db02a252b5b4814ad',
+      dataProvider: '0x69FA688f1Dc47d4B5d8029D5a35FB7a548310654',
+      incentiveController: {
+        address: '0x929EC64c34a17401F460460D4B9390518E5B473e',
+        rewardTokens: [], // will query reward list from contract
+      },
+    },
+    {
+      chain: 'avalanche',
+      protocol: 'aavev3',
+      type: 'cross',
+      version: 'aavev3',
+      birthday: 1647043200, // Sat Mar 12 2022 00:00:00 GMT+0000
+      address: '0x794a61358d6845594f94dc1db02a252b5b4814ad',
+      dataProvider: '0x69FA688f1Dc47d4B5d8029D5a35FB7a548310654',
+      incentiveController: {
+        address: '0x929EC64c34a17401F460460D4B9390518E5B473e',
+        rewardTokens: [], // will query reward list from contract
+      },
+    },
+    {
+      chain: 'fantom',
+      protocol: 'aavev3',
+      type: 'cross',
+      version: 'aavev3',
+      birthday: 1647043200, // Sat Mar 12 2022 00:00:00 GMT+0000
+      address: '0x794a61358d6845594f94dc1db02a252b5b4814ad',
+      dataProvider: '0x69FA688f1Dc47d4B5d8029D5a35FB7a548310654',
+      incentiveController: {
+        address: '0x929EC64c34a17401F460460D4B9390518E5B473e',
+        rewardTokens: [], // will query reward list from contract
+      },
+    },
+    {
+      chain: 'base',
+      protocol: 'aavev3',
+      type: 'cross',
+      version: 'aavev3',
+      birthday: 1691539200, // Wed Aug 09 2023 00:00:00 GMT+0000
+      address: '0xa238dd80c259a72e81d7e4664a9801593f98d1c5',
+      dataProvider: '0x2d8A3C5677189723C4cB8873CfC9C8976FDF38Ac',
+      incentiveController: {
+        address: '0xf9cc4F0D883F1a1eb2c253bdb46c254Ca51E1F44',
+        rewardTokens: [], // will query reward list from contract
+      },
+    },
+    {
+      chain: 'metis',
+      protocol: 'aavev3',
+      type: 'cross',
+      version: 'aavev3',
+      birthday: 1682294400, // Mon Apr 24 2023 00:00:00 GMT+0000
+      address: '0x90df02551bB792286e8D4f13E0e357b4Bf1D6a57',
+      dataProvider: '0x99411FC17Ad1B56f49719E3850B2CDcc0f9bBFd8',
+      incentiveController: {
+        address: '0x30C1b8F0490fa0908863d6Cbd2E36400b4310A6B',
+        rewardTokens: [], // will query reward list from contract
+      },
+    },
     {
       chain: 'gnosis',
       protocol: 'aavev3',
