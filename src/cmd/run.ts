@@ -19,6 +19,14 @@ async function printOutput(protocolData: any, output: string) {
           totalDeposited: snapshot.totalDeposited,
           supplyRate: snapshot.supplyRate,
           borrowRate: snapshot.borrowRate,
+          rewardForLender:
+            snapshot.rewardForLenders.length > 0
+              ? `${snapshot.rewardForLenders[0].token.symbol}:${snapshot.rewardForLenders[0].tokenAmount}`
+              : '',
+          rewardForBorrower:
+            snapshot.rewardForBorrowers.length > 0
+              ? `${snapshot.rewardForBorrowers[0].token.symbol}:${snapshot.rewardForBorrowers[0].tokenAmount}`
+              : '',
         });
       }
       console.log('');

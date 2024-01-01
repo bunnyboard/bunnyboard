@@ -11,6 +11,7 @@ export const TokenDefaultList: Array<string> = [
   'https://raw.githubusercontent.com/pancakeswap/token-list/main/lists/pancakeswap-default.json',
   'https://raw.githubusercontent.com/sushiswap/list/master/lists/token-lists/default-token-list/tokens/fantom.json',
   'https://raw.githubusercontent.com/sushiswap/list/master/lists/token-lists/default-token-list/tokens/avalanche.json',
+  'https://tokens.honeyswap.org/',
 
   'https://apiv5.paraswap.io/tokens/1',
   'https://apiv5.paraswap.io/tokens/42161',
@@ -31,6 +32,8 @@ const chains: { [key: number]: string } = {
   42161: 'arbitrum',
   250: 'fantom',
   43114: 'avalanche',
+  1088: 'metis',
+  100: 'gnosis',
 };
 
 const directoryPath = './src/configs/tokenlists';
@@ -45,6 +48,8 @@ const directoryPath = './src/configs/tokenlists';
     base: {},
     fantom: {},
     avalanche: {},
+    metis: {},
+    gnosis: {},
   };
 
   for (const chain of Object.values(chains)) {

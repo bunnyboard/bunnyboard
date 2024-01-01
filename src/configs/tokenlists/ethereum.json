@@ -17462,6 +17462,12 @@
     "decimals": 18,
     "address": "0xed35af169af46a02ee13b9d79eb57d6d68c1749e"
   },
+  "OMNI": {
+    "chain": "ethereum",
+    "symbol": "OMNI",
+    "decimals": 18,
+    "address": "0x9e20461bc2c4c980f62f1b279d71734207a6a356"
+  },
   "OMv2": {
     "chain": "ethereum",
     "symbol": "OMv2",

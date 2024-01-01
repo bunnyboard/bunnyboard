@@ -464,4 +464,16 @@ export const OracleSourceConfigs: { [key: string]: OracleConfig } = {
     currency: 'usd',
     sources: [OracleSourceUniswapv2List.SONNE_USDC],
   },
+  METIS: {
+    currency: 'eth',
+    sources: [OracleSourceUniswapv2List.METIS_WETH],
+  },
+  GNO: {
+    currency: 'usd',
+    sources: [OracleSourceUniswapv2List.GNO_WXDAI],
+  },
+  sXDAI: {
+    currency: 'usd',
+    sources: [OracleSourceCustomList.SAVING_xDAI],
+  },
 };

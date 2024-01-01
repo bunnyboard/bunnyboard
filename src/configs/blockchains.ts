@@ -111,4 +111,30 @@ export const BlockchainConfigs: { [key: string]: Blockchain } = {
       decimals: 18,
     },
   },
+  metis: {
+    name: 'metis',
+    family: 'evm',
+    chainId: 1088,
+    nodeRpc: String(process.env.BUNNYBOARD_METIS_NODE),
+    blockSubgraph: BlockSubGraphEndpoints.metis,
+    nativeToken: {
+      chain: 'metis',
+      address: AddressZero,
+      symbol: 'METIS',
+      decimals: 18,
+    },
+  },
+  gnosis: {
+    name: 'gnosis',
+    family: 'evm',
+    chainId: 100,
+    nodeRpc: String(process.env.BUNNYBOARD_GNOSIS_NODE),
+    blockSubgraph: BlockSubGraphEndpoints.gnosis,
+    nativeToken: {
+      chain: 'gnosis',
+      address: AddressZero,
+      symbol: 'xDAI',
+      decimals: 18,
+    },
+  },
 };

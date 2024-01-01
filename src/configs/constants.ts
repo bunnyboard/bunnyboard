@@ -17,6 +17,8 @@ export const BlockSubGraphEndpoints: { [key: string]: string } = {
   bnbchain: 'https://api.thegraph.com/subgraphs/name/matthewlilley/bsc-blocks',
   avalanche: 'https://api.thegraph.com/subgraphs/name/matthewlilley/avalanche-blocks',
   fantom: 'https://api.thegraph.com/subgraphs/name/matthewlilley/fantom-blocks',
+  metis: 'https://andromeda.thegraph.metis.io/subgraphs/name/netswap/blocks',
+  gnosis: 'https://api.thegraph.com/subgraphs/name/1hive/xdai-blocks',
 };
 
 export const AddressZero = '0x0000000000000000000000000000000000000000';

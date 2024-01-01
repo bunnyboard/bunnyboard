@@ -6,6 +6,7 @@ import { OracleConfigs } from '../../configs/oracles/configs';
 import { OracleCurrencyBaseConfigs } from '../../configs/oracles/currency';
 import logger from '../../lib/logger';
 import { tryQueryBlockNumberAtTimestamp } from '../../lib/subsgraph';
+import { normalizeAddress } from '../../lib/utils';
 import ChainlinkLibs from '../../modules/libs/chainlink';
 import CoingeckoLibs from '../../modules/libs/coingecko';
 import OracleLibs from '../../modules/libs/custom';
@@ -100,6 +101,7 @@ export default class OracleService extends CachingService implements IOracleServ
 
   public async getTokenPriceUsd(options: GetTokenPriceOptions): Promise<string | null> {
     let returnPrice = null;
+    options.address = normalizeAddress(options.address);
 
     if (OracleConfigs[options.chain] && OracleConfigs[options.chain][options.address]) {
       const config = OracleConfigs[options.chain][options.address];

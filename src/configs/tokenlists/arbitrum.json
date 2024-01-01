@@ -713,6 +713,12 @@
     "decimals": 18,
     "address": "0xd962c1895c46ac0378c502c207748b7061421e8e"
   },
+  "OPUL": {
+    "chain": "arbitrum",
+    "symbol": "OPUL",
+    "decimals": 18,
+    "address": "0x0c5fa0e07949f941a6c2c29a008252db1527d6ee"
+  },
   "PAXG": {
     "chain": "arbitrum",
     "symbol": "PAXG",
@@ -1026,6 +1032,12 @@
     "decimals": 18,
     "address": "0x088cd8f5ef3652623c22d48b1605dcfe860cd704"
   },
+  "VRTX": {
+    "chain": "arbitrum",
+    "symbol": "VRTX",
+    "decimals": 18,
+    "address": "0x95146881b86b3ee99e63705ec87afe29fcc044d9"
+  },
   "VST": {
     "chain": "arbitrum",
     "symbol": "VST",
@@ -1055,6 +1067,12 @@
     "symbol": "WETH",
     "decimals": 18,
     "address": "0x82af49447d8a07e3bd95bd0d56f35241523fbab1"
+  },
+  "WINR": {
+    "chain": "arbitrum",
+    "symbol": "WINR",
+    "decimals": 18,
+    "address": "0xd77b108d4f6cefaa0cae9506a934e825becca46e"
   },
   "WOM": {
     "chain": "arbitrum",

@@ -2,6 +2,7 @@ import { OracleSourceUniv2 } from '../../types/configs';
 import AvalancheTokenList from '../tokenlists/avalanche.json';
 import BnbchainTokenList from '../tokenlists/bnbchain.json';
 import EthereumTokenList from '../tokenlists/ethereum.json';
+import GnosisTokenList from '../tokenlists/gnosis.json';
 import OptimismTokenList from '../tokenlists/optimism.json';
 import PolygonTokenList from '../tokenlists/polygon.json';
 
@@ -460,5 +461,19 @@ export const OracleSourceUniswapv2List: { [key: string]: OracleSourceUniv2 } = {
     address: '0xc899c4d73ed8df2ead1543ab915888b0bf7d57a2',
     baseToken: OptimismTokenList.SONNE,
     quotaToken: OptimismTokenList['USDC.e'],
+  },
+  METIS_WETH: {
+    type: 'univ2',
+    chain: 'ethereum',
+    address: '0xd03dffd02db4b076e3eed9272a6a243a23de16e3',
+    baseToken: EthereumTokenList.METIS,
+    quotaToken: EthereumTokenList.WETH,
+  },
+  GNO_WXDAI: {
+    type: 'univ2',
+    chain: 'gnosis',
+    address: '0x321704900d52f44180068caa73778d5cd60695a6',
+    baseToken: GnosisTokenList.GNO,
+    quotaToken: GnosisTokenList.WXDAI,
   },
 };

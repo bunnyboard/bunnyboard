@@ -23,6 +23,18 @@
     "decimals": 18,
     "address": "0xd6df932a45c0f255f85145f286ea0b292b21c90b"
   },
+  "ADDY": {
+    "chain": "polygon",
+    "symbol": "ADDY",
+    "decimals": 18,
+    "address": "0xc3fdbadc7c795ef1d6ba111e06ff8f16a20ea539"
+  },
+  "ADS": {
+    "chain": "polygon",
+    "symbol": "ADS",
+    "decimals": 11,
+    "address": "0x598e49f01befeb1753737934a5b11fea9119c796"
+  },
   "ADX": {
     "chain": "polygon",
     "symbol": "ADX",
@@ -46,6 +58,12 @@
     "symbol": "AGLD",
     "decimals": 18,
     "address": "0x6a6bd53d677f8632631662c48bd47b1d4d6524ee"
+  },
+  "AGVE": {
+    "chain": "polygon",
+    "symbol": "AGVE",
+    "decimals": 18,
+    "address": "0x75eb9fd8608e2ff9418821062398e4f4b8d53644"
   },
   "AIOZ": {
     "chain": "polygon",
@@ -101,6 +119,12 @@
     "decimals": 18,
     "address": "0x2b8504ab5efc246d0ec5ec7e74565683227497de"
   },
+  "ANY": {
+    "chain": "polygon",
+    "symbol": "ANY",
+    "decimals": 18,
+    "address": "0x6ab6d61428fde76768d7b45d8bfeec19c6ef91a8"
+  },
   "APE": {
     "chain": "polygon",
     "symbol": "APE",
@@ -143,6 +167,12 @@
     "decimals": 18,
     "address": "0x5eb8d998371971d01954205c7afe90a7af6a95ac"
   },
+  "AVAX": {
+    "chain": "polygon",
+    "symbol": "AVAX",
+    "decimals": 18,
+    "address": "0x2c89bbc92bd86f8075d1decc58c7f4e0107f286b"
+  },
   "AXS": {
     "chain": "polygon",
     "symbol": "AXS",
@@ -179,6 +209,12 @@
     "decimals": 18,
     "address": "0x3cef98bb43d732e2f285ee605a8158cde967d219"
   },
+  "BEL": {
+    "chain": "polygon",
+    "symbol": "BEL",
+    "decimals": 18,
+    "address": "0x28c388fb1f4fa9f9eb445f0579666849ee5eeb42"
+  },
   "BICO": {
     "chain": "polygon",
     "symbol": "BICO",
@@ -214,6 +250,12 @@
     "symbol": "BOND",
     "decimals": 18,
     "address": "0xa041544fe2be56cce31ebb69102b965e06aace80"
+  },
+  "BORING": {
+    "chain": "polygon",
+    "symbol": "BORING",
+    "decimals": 18,
+    "address": "0xff88434e29d1e2333ad6baa08d358b436196da6b"
   },
   "BPT": {
     "chain": "polygon",
@@ -257,17 +299,47 @@
     "decimals": 18,
     "address": "0xecf8f2fa183b1c4d2a269bf98a54fce86c812d3e"
   },
+  "CGG": {
+    "chain": "polygon",
+    "symbol": "CGG",
+    "decimals": 18,
+    "address": "0x2ab4f9ac80f33071211729e45cfc346c1f8446d5"
+  },
+  "CHICK": {
+    "chain": "polygon",
+    "symbol": "CHICK",
+    "decimals": 18,
+    "address": "0x9e725cf7265d12fd5f59499aff1258ca92cac74d"
+  },
   "CHR": {
     "chain": "polygon",
     "symbol": "CHR",
     "decimals": 6,
     "address": "0x594c984e3318e91313f881b021a0c4203ff5e59f"
   },
+  "CHUM": {
+    "chain": "polygon",
+    "symbol": "CHUM",
+    "decimals": 18,
+    "address": "0x2e2dde47952b9c7defde7424d00dd2341ad927ca"
+  },
   "CHZ": {
     "chain": "polygon",
     "symbol": "CHZ",
     "decimals": 18,
     "address": "0xf1938ce12400f9a761084e7a80d37e732a4da056"
+  },
+  "CIOTX": {
+    "chain": "polygon",
+    "symbol": "CIOTX",
+    "decimals": 18,
+    "address": "0x300211def2a644b036a9bdd3e58159bb2074d388"
+  },
+  "COMBO": {
+    "chain": "polygon",
+    "symbol": "COMBO",
+    "decimals": 18,
+    "address": "0x6ddb31002abc64e1479fc439692f7ea061e78165"
   },
   "COMP": {
     "chain": "polygon",
@@ -360,17 +432,30 @@
     "decimals": 18,
     "address": "0xc168e40227e4ebd8c1cae80f7a55a4f0e6d66c97"
   },
+  "DG": { "chain": "polygon", "symbol": "DG", "decimals": 18, "address": "0x2a93172c8dccbfbc60a39d56183b7279a2f647b4" },
   "DIA": {
     "chain": "polygon",
     "symbol": "DIA",
     "decimals": 18,
     "address": "0x993f2cafe9dbe525243f4a78bebc69dac8d36000"
   },
+  "DINO": {
+    "chain": "polygon",
+    "symbol": "DINO",
+    "decimals": 18,
+    "address": "0xaa9654becca45b5bdfa5ac646c939c62b527d394"
+  },
   "DMT": {
     "chain": "polygon",
     "symbol": "DMT",
     "decimals": 18,
     "address": "0xd28449bb9bb659725accad52947677cce3719fd7"
+  },
+  "DNXC": {
+    "chain": "polygon",
+    "symbol": "DNXC",
+    "decimals": 18,
+    "address": "0xcaf5191fc480f43e4df80106c7695eca56e48b18"
   },
   "DPI": {
     "chain": "polygon",
@@ -408,6 +493,18 @@
     "decimals": 18,
     "address": "0xdb3b3b147a030f032633f6c4bebf9a2fb5a882b5"
   },
+  "EGG": {
+    "chain": "polygon",
+    "symbol": "EGG",
+    "decimals": 18,
+    "address": "0x245e5ddb65efea6522fa913229df1f4957fb2e21"
+  },
+  "ELE": {
+    "chain": "polygon",
+    "symbol": "ELE",
+    "decimals": 18,
+    "address": "0xacd7b3d9c10e97d0efa418903c0c7669e702e4c0"
+  },
   "ELET": {
     "chain": "polygon",
     "symbol": "ELET",
@@ -419,6 +516,12 @@
     "symbol": "ELON",
     "decimals": 18,
     "address": "0xe0339c80ffde91f3e20494df88d4206d86024cdf"
+  },
+  "EMON": {
+    "chain": "polygon",
+    "symbol": "EMON",
+    "decimals": 18,
+    "address": "0xd6a5ab46ead26f49b03bbb1f9eb1ad5c1767974a"
   },
   "ENJ": {
     "chain": "polygon",
@@ -456,11 +559,18 @@
     "decimals": 2,
     "address": "0xe111178a87a3bff0c8d18decba5798827539ae99"
   },
+  "EZ": { "chain": "polygon", "symbol": "EZ", "decimals": 18, "address": "0x34c1b299a74588d6abdc1b85a53345a48428a521" },
   "FARM": {
     "chain": "polygon",
     "symbol": "FARM",
     "decimals": 18,
     "address": "0x176f5ab638cf4ff3b6239ba609c3fadaa46ef5b0"
+  },
+  "FEAR": {
+    "chain": "polygon",
+    "symbol": "FEAR",
+    "decimals": 18,
+    "address": "0xa2ca40dbe72028d3ac78b5250a8cb8c404e7fb8c"
   },
   "FET": {
     "chain": "polygon",
@@ -468,11 +578,23 @@
     "decimals": 18,
     "address": "0x7583feddbcefa813dc18259940f76a02710a8905"
   },
+  "FFF": {
+    "chain": "polygon",
+    "symbol": "FFF",
+    "decimals": 18,
+    "address": "0x9aceb6f749396d1930abc9e263efc449e5e82c13"
+  },
   "FIS": {
     "chain": "polygon",
     "symbol": "FIS",
     "decimals": 18,
     "address": "0x7a7b94f18ef6ad056cda648588181cda84800f94"
+  },
+  "FISH": {
+    "chain": "polygon",
+    "symbol": "FISH",
+    "decimals": 18,
+    "address": "0x3a3df212b7aa91aa0402b9035b098891d276572b"
   },
   "FORT": {
     "chain": "polygon",
@@ -492,11 +614,23 @@
     "decimals": 18,
     "address": "0x65a05db8322701724c197af82c9cae41195b0aa8"
   },
+  "FRACTION": {
+    "chain": "polygon",
+    "symbol": "FRACTION",
+    "decimals": 18,
+    "address": "0xbd80cfa9d93a87d1bb895f810ea348e496611cd4"
+  },
   "FRAX": {
     "chain": "polygon",
     "symbol": "FRAX",
     "decimals": 18,
     "address": "0x104592a158490a9228070e0a8e5343b499e125d0"
+  },
+  "FSN": {
+    "chain": "polygon",
+    "symbol": "FSN",
+    "decimals": 18,
+    "address": "0x2bf9b864cdc97b08b6d79ad4663e71b8ab65c45c"
   },
   "FTM": {
     "chain": "polygon",
@@ -521,6 +655,24 @@
     "symbol": "GAME",
     "decimals": 18,
     "address": "0x8d1566569d5b695d44a9a234540f68d393cdc40d"
+  },
+  "GBTS": {
+    "chain": "polygon",
+    "symbol": "GBTS",
+    "decimals": 18,
+    "address": "0xbe9512e2754cb938dd69bbb96c8a09cb28a02d6d"
+  },
+  "GFARM2": {
+    "chain": "polygon",
+    "symbol": "GFARM2",
+    "decimals": 18,
+    "address": "0x7075cab6bcca06613e2d071bd918d1a0241379e2"
+  },
+  "GFI": {
+    "chain": "polygon",
+    "symbol": "GFI",
+    "decimals": 18,
+    "address": "0x874e178a2f3f3f9d34db862453cd756e7eab0381"
   },
   "GHST": {
     "chain": "polygon",
@@ -570,6 +722,12 @@
     "decimals": 6,
     "address": "0x482bc619ee7662759cdc0685b4e78f464da39c73"
   },
+  "Guard": {
+    "chain": "polygon",
+    "symbol": "Guard",
+    "decimals": 18,
+    "address": "0x948d2a81086a075b3130bac19e4c6dee1d2e3fe8"
+  },
   "HAWK": {
     "chain": "polygon",
     "symbol": "HAWK",
@@ -583,12 +741,25 @@
     "address": "0x23d29d30e35c5e8d321e1dc9a8a61bfd846d4c5c"
   },
   "HH": { "chain": "polygon", "symbol": "HH", "decimals": 18, "address": "0x521cddc0cba84f14c69c1e99249f781aa73ee0bc" },
+  "HNY": {
+    "chain": "polygon",
+    "symbol": "HNY",
+    "decimals": 18,
+    "address": "0xb371248dd0f9e4061ccf8850e9223ca48aa7ca4b"
+  },
+  "HONOR": {
+    "chain": "polygon",
+    "symbol": "HONOR",
+    "decimals": 18,
+    "address": "0xb82a20b4522680951f11c94c54b8800c1c237693"
+  },
   "HOPR": {
     "chain": "polygon",
     "symbol": "HOPR",
     "decimals": 18,
     "address": "0x6ccbf3627b2c83afef05bf2f035e7f7b210fe30d"
   },
+  "HT": { "chain": "polygon", "symbol": "HT", "decimals": 18, "address": "0xa731349fa468614c1698fc46ebf06da6f380239e" },
   "IDEX": {
     "chain": "polygon",
     "symbol": "IDEX",
@@ -625,17 +796,36 @@
     "decimals": 18,
     "address": "0x4e8dc2149eac3f3def36b1c281ea466338249371"
   },
+  "INRP": {
+    "chain": "polygon",
+    "symbol": "INRP",
+    "decimals": 18,
+    "address": "0xde485931674f4edd3ed3bf22e86e7d3c7d5347a1"
+  },
   "INV": {
     "chain": "polygon",
     "symbol": "INV",
     "decimals": 18,
     "address": "0xf18ac368001b0ddc80aa6a8374deb49e868efdb8"
   },
+  "IOI": {
+    "chain": "polygon",
+    "symbol": "IOI",
+    "decimals": 6,
+    "address": "0xaf24765f631c8830b5528b57002241ee7eef1c14"
+  },
   "IOTX": {
     "chain": "polygon",
     "symbol": "IOTX",
     "decimals": 18,
     "address": "0xf6372cdb9c1d3674e83842e3800f2a62ac9f3c66"
+  },
+  "IQ": { "chain": "polygon", "symbol": "IQ", "decimals": 18, "address": "0xb9638272ad6998708de56bbc0a290a1de534a578" },
+  "IRON": {
+    "chain": "polygon",
+    "symbol": "IRON",
+    "decimals": 18,
+    "address": "0xd86b5923f3ad7b585ed81b448170ae026c65ae9a"
   },
   "JASMY": {
     "chain": "polygon",
@@ -666,6 +856,12 @@
     "symbol": "KP3R",
     "decimals": 18,
     "address": "0x53aec293212e3b792563bc16f1be26956adb12e9"
+  },
+  "Krill": {
+    "chain": "polygon",
+    "symbol": "Krill",
+    "decimals": 18,
+    "address": "0x05089c9ebffa4f0aca269e32056b1b36b37ed71b"
   },
   "LCX": {
     "chain": "polygon",
@@ -757,6 +953,12 @@
     "decimals": 18,
     "address": "0xaa7dbd1598251f856c12f63557a4c4397c253cea"
   },
+  "MEM": {
+    "chain": "polygon",
+    "symbol": "MEM",
+    "decimals": 18,
+    "address": "0x42dbbd5ae373fea2fc320f62d44c058522bb3758"
+  },
   "MEME": {
     "chain": "polygon",
     "symbol": "MEME",
@@ -781,6 +983,12 @@
     "decimals": 18,
     "address": "0x1c5ccca2cb59145a4b25f452660cba6436ddce9b"
   },
+  "MIVA": {
+    "chain": "polygon",
+    "symbol": "MIVA",
+    "decimals": 18,
+    "address": "0xc0b2983a17573660053beeed6fdb1053107cf387"
+  },
   "MKR": {
     "chain": "polygon",
     "symbol": "MKR",
@@ -798,6 +1006,12 @@
     "symbol": "MONA",
     "decimals": 18,
     "address": "0x6968105460f67c3bf751be7c15f92f5286fd0ce5"
+  },
+  "MOON": {
+    "chain": "polygon",
+    "symbol": "MOON",
+    "decimals": 18,
+    "address": "0xc56d17dd519e5eb43a19c9759b5d5372115220bd"
   },
   "MUST": {
     "chain": "polygon",
@@ -824,6 +1038,12 @@
     "decimals": 18,
     "address": "0xfb65ef42f7c8a70ff73f627db6e9ba2aff1f20fa"
   },
+  "NFTP": {
+    "chain": "polygon",
+    "symbol": "NFTP",
+    "decimals": 18,
+    "address": "0xf7d9e281c5cb4c6796284c5b663b3593d2037af2"
+  },
   "NMR": {
     "chain": "polygon",
     "symbol": "NMR",
@@ -849,6 +1069,12 @@
     "decimals": 18,
     "address": "0x62414d03084eeb269e18c970a21f45d2967f0170"
   },
+  "OPU": {
+    "chain": "polygon",
+    "symbol": "OPU",
+    "decimals": 18,
+    "address": "0x7ff2fc33e161e3b1c6511b934f0209d304267857"
+  },
   "ORN": {
     "chain": "polygon",
     "symbol": "ORN",
@@ -860,6 +1086,12 @@
     "symbol": "OXT",
     "decimals": 18,
     "address": "0x9880e3dda13c8e7d4804691a45160102d31f6060"
+  },
+  "PAUTO": {
+    "chain": "polygon",
+    "symbol": "PAUTO",
+    "decimals": 18,
+    "address": "0x7f426f6dc648e50464a0392e60e1bb465a67e9cf"
   },
   "PAXG": {
     "chain": "polygon",
@@ -884,6 +1116,12 @@
     "symbol": "PLA",
     "decimals": 18,
     "address": "0x8765f05adce126d70bcdf1b0a48db573316662eb"
+  },
+  "PLOT": {
+    "chain": "polygon",
+    "symbol": "PLOT",
+    "decimals": 18,
+    "address": "0xe82808eaa78339b06a691fd92e1be79671cad8d3"
   },
   "PLU": {
     "chain": "polygon",
@@ -933,6 +1171,13 @@
     "decimals": 18,
     "address": "0x9377eeb7419486fd4d485671d50baa4bf77c2222"
   },
+  "PolyDoge": {
+    "chain": "polygon",
+    "symbol": "PolyDoge",
+    "decimals": 18,
+    "address": "0x8a953cfe442c5e8855cc6c61b1293fa648bae472"
+  },
+  "QI": { "chain": "polygon", "symbol": "QI", "decimals": 18, "address": "0x580a84c73811e1839f75d86d75d88cca0c241ff4" },
   "QNT": {
     "chain": "polygon",
     "symbol": "QNT",
@@ -951,6 +1196,12 @@
     "decimals": 18,
     "address": "0x831753dd7087cac61ab5644b308642cc1c33dc13"
   },
+  "QuickChart": {
+    "chain": "polygon",
+    "symbol": "QuickChart",
+    "decimals": 9,
+    "address": "0x99da82c5464c49962cdda44fe30d352bc5da0580"
+  },
   "RAD": {
     "chain": "polygon",
     "symbol": "RAD",
@@ -962,6 +1213,12 @@
     "symbol": "RAI",
     "decimals": 18,
     "address": "0x00e5646f60ac6fb446f621d146b6e1886f002905"
+  },
+  "RAMP": {
+    "chain": "polygon",
+    "symbol": "RAMP",
+    "decimals": 18,
+    "address": "0xaecebfcf604ad245eaf0d5bd68459c3a7a6399c2"
   },
   "RARI": {
     "chain": "polygon",
@@ -1102,6 +1359,12 @@
     "decimals": 18,
     "address": "0xa1428174f516f527fafdd146b883bb4428682737"
   },
+  "SURF": {
+    "chain": "polygon",
+    "symbol": "SURF",
+    "decimals": 18,
+    "address": "0x1e42edbe5376e717c1b22904c59e406426e8173f"
+  },
   "SUSHI": {
     "chain": "polygon",
     "symbol": "SUSHI",
@@ -1126,6 +1389,18 @@
     "symbol": "SXP",
     "decimals": 18,
     "address": "0x6abb753c1893194de4a83c6e8b4eadfc105fd5f5"
+  },
+  "TEL": {
+    "chain": "polygon",
+    "symbol": "TEL",
+    "decimals": 2,
+    "address": "0xdf7837de1f2fa4631d716cf2502f8b230f1dcc32"
+  },
+  "TITAN": {
+    "chain": "polygon",
+    "symbol": "TITAN",
+    "decimals": 18,
+    "address": "0xaaa5b9e6c589642f98a1cda99b9d024b8407285a"
   },
   "TOKE": {
     "chain": "polygon",
@@ -1169,6 +1444,12 @@
     "decimals": 8,
     "address": "0x7fbc10850cae055b27039af31bd258430e714c62"
   },
+  "UFT": {
+    "chain": "polygon",
+    "symbol": "UFT",
+    "decimals": 18,
+    "address": "0x5b4cf2c120a9702225814e18543ee658c5f8631e"
+  },
   "UMA": {
     "chain": "polygon",
     "symbol": "UMA",
@@ -1210,6 +1491,12 @@
     "symbol": "VOXEL",
     "decimals": 18,
     "address": "0xd0258a3fd00f38aa8090dfee343f10a9d4d30d3f"
+  },
+  "WAVE": {
+    "chain": "polygon",
+    "symbol": "WAVE",
+    "decimals": 18,
+    "address": "0x4de7fea447b837d7e77848a4b6c0662a64a84e14"
   },
   "WBTC": {
     "chain": "polygon",
@@ -1288,6 +1575,12 @@
     "symbol": "YGG",
     "decimals": 18,
     "address": "0x82617aa52dddf5ed9bb7b370ed777b3182a30fd1"
+  },
+  "ZEE": {
+    "chain": "polygon",
+    "symbol": "ZEE",
+    "decimals": 18,
+    "address": "0xfd4959c06fbcc02250952daebf8e0fb38cf9fd8c"
   },
   "ZRX": {
     "chain": "polygon",
@@ -1672,6 +1965,18 @@
     "symbol": "miMATIC",
     "decimals": 18,
     "address": "0xa3fa99a148fa48d14ed51d610c367c61876997f1"
+  },
+  "pCOMB": {
+    "chain": "polygon",
+    "symbol": "pCOMB",
+    "decimals": 18,
+    "address": "0x37d1ebc3af809b8fadb45dce7077efc629b2b5bb"
+  },
+  "rUSD": {
+    "chain": "polygon",
+    "symbol": "rUSD",
+    "decimals": 18,
+    "address": "0xfc40a4f89b410a1b855b5e205064a38fc29f5eb5"
   },
   "renBTC": {
     "chain": "polygon",

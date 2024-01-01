@@ -281,4 +281,24 @@ export const OracleConfigs: { [key: string]: { [key: string]: OracleConfig } } =
     [FantomTokenList.TUSD.address]: OracleSourceConfigs.TUSD,
     '0xe2d27f06f63d98b8e11b38b5b08a75d0c8dd62b9': OracleSourceConfigs.UST,
   },
+
+  // tokens on metis
+  metis: {
+    '0x4c078361fc9bbb78df910800a991c7c3dd2f6ce0': OracleSourceConfigs.DAI,
+    '0xdeaddeaddeaddeaddeaddeaddeaddeaddead0000': OracleSourceConfigs.METIS,
+    '0xea32a96608495e54156ae48931a7c20f0dcc1a21': OracleSourceConfigs.USDC,
+    '0xbb06dca3ae6887fabf931640f67cab3e3a16f4dc': OracleSourceConfigs.USDT,
+    '0x420000000000000000000000000000000000000a': OracleSourceConfigs.ETH,
+  },
+
+  // tokens on gnosis
+  gnosis: {
+    '0x6a023ccd1ff6f2045c3309768ead9e68f978f6e1': OracleSourceConfigs.ETH,
+    '0x6c76971f98945ae98dd7d4dfca8711ebea946ea6': OracleSourceConfigs.wstETH,
+    '0x9c58bacc331c9aa871afd802db6379a98e80cedb': OracleSourceConfigs.GNO,
+    '0xddafbb505ad214d7b80b1f830fccc89b60fb7a83': OracleSourceConfigs.USDC,
+    '0xe91d153e0b41518a2ce8dd3d7944fa863463a97d': OracleSourceConfigs.DAI,
+    '0xcb444e90d8198415266c6a2724b7900fb12fc56e': OracleSourceConfigs.EURS,
+    '0xaf204776c7245bf4147c2612bf6e5972ee483701': OracleSourceConfigs.sXDAI,
+  },
 };

@@ -155,6 +155,12 @@
     "decimals": 18,
     "address": "0xab7badef82e9fe11f6f33f87bc9bc2aa27f2fcb5"
   },
+  "OCEAN": {
+    "chain": "optimism",
+    "symbol": "OCEAN",
+    "decimals": 18,
+    "address": "0x2561aa2bb1d2eb6629edd7b0938d7679b8b49f9e"
+  },
   "OP": {
     "chain": "optimism",
     "symbol": "OP",

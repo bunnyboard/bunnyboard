@@ -15,6 +15,8 @@ import TokenListBase from './tokenlists/base.json';
 import TokenListBnbchain from './tokenlists/bnbchain.json';
 import TokenListEthereum from './tokenlists/ethereum.json';
 import TokenListFantom from './tokenlists/fantom.json';
+import TokenListGnosis from './tokenlists/gnosis.json';
+import TokenListMetis from './tokenlists/metis.json';
 import TokenListOptimism from './tokenlists/optimism.json';
 import TokenListPolygon from './tokenlists/polygon.json';
 
@@ -34,6 +36,8 @@ export const TokenList: {
   bnbchain: TokenListBnbchain,
   avalanche: TokenListAvalanche,
   fantom: TokenListFantom,
+  metis: TokenListMetis,
+  gnosis: TokenListGnosis,
 };
 
 export const ProtocolConfigs: { [key: string]: ProtocolConfig } = {

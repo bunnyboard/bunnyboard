@@ -33,6 +33,12 @@
     "decimals": 18,
     "address": "0xfa980ced6895ac314e7de34ef1bfae90a5add21b"
   },
+  "SEAM": {
+    "chain": "base",
+    "symbol": "SEAM",
+    "decimals": 18,
+    "address": "0x1c7a460413dd4e964f96d8dfc56e7223ce88cd85"
+  },
   "SNX": { "chain": "base", "symbol": "SNX", "decimals": 18, "address": "0x22e6966b799c4d5b13be962e1d117b56327fda66" },
   "SUSHI": {
     "chain": "base",
