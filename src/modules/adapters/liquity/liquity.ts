@@ -7,7 +7,7 @@ import { DAY } from '../../../configs/constants';
 import EnvConfig from '../../../configs/envConfig';
 import { LiquityLendingMarketConfig } from '../../../configs/protocols/liquity';
 import logger from '../../../lib/logger';
-import { tryQueryBlockNumberAtTimestamp } from '../../../lib/subsgraph';
+import { tryQueryBlockNumberAtTimestamp, tryQueryBlockTimestamps } from '../../../lib/subsgraph';
 import { formatFromDecimals, getDateString, normalizeAddress } from '../../../lib/utils';
 import { ProtocolConfig } from '../../../types/configs';
 import { LendingActivityAction } from '../../../types/domains/base';
@@ -85,6 +85,11 @@ export default class LiquityAdapter extends ProtocolAdapter {
     );
 
     // now we handle event log, turn them to activities
+    const timestamps = await tryQueryBlockTimestamps(
+      EnvConfig.blockchains[options.config.chain].blockSubgraph,
+      blockNumber,
+      blockNumberEndDay,
+    );
     let logs = await this.services.blockchain.getContractLogs({
       chain: options.config.chain,
       address: options.config.address, // borrow operations
@@ -120,6 +125,7 @@ export default class LiquityAdapter extends ProtocolAdapter {
               transactionHash: log.transactionHash,
               logIndex: log.logIndex.toString(),
               blockNumber: new BigNumber(log.blockNumber.toString()).toNumber(),
+              timestamp: timestamps[new BigNumber(log.blockNumber.toString()).toNumber()],
               action: 'borrow',
               user: user,
               token: marketConfig.debtToken,
@@ -137,6 +143,7 @@ export default class LiquityAdapter extends ProtocolAdapter {
               transactionHash: log.transactionHash,
               logIndex: log.logIndex.toString(),
               blockNumber: new BigNumber(log.blockNumber.toString()).toNumber(),
+              timestamp: timestamps[new BigNumber(log.blockNumber.toString()).toNumber()],
               action: action,
               user: user,
               token: marketConfig.debtToken,

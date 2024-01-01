@@ -7,7 +7,7 @@ import AaveLendingPoolV2Abi from '../../../configs/abi/aave/LendingPoolV2.json';
 import { DAY, ONE_RAY, RAY_DECIMALS } from '../../../configs/constants';
 import EnvConfig from '../../../configs/envConfig';
 import { AaveLendingMarketConfig } from '../../../configs/protocols/aave';
-import { tryQueryBlockNumberAtTimestamp } from '../../../lib/subsgraph';
+import { BlockTimestamps, tryQueryBlockNumberAtTimestamp } from '../../../lib/subsgraph';
 import { formatFromDecimals, normalizeAddress } from '../../../lib/utils';
 import { ProtocolConfig } from '../../../types/configs';
 import { LendingActivityAction } from '../../../types/domains/base';
@@ -188,6 +188,7 @@ export default class Aavev2Adapter extends Aavev1Adapter {
   protected async transformEventLogs(
     config: AaveLendingMarketConfig,
     logs: Array<any>,
+    timestamps: BlockTimestamps,
   ): Promise<Array<LendingActivityEvent>> {
     const activities: Array<LendingActivityEvent> = [];
 
@@ -243,6 +244,7 @@ export default class Aavev2Adapter extends Aavev1Adapter {
               transactionHash: log.transactionHash,
               logIndex: log.logIndex.toString(),
               blockNumber: new BigNumber(log.blockNumber.toString()).toNumber(),
+              timestamp: timestamps[new BigNumber(log.blockNumber.toString()).toNumber()],
               action: action,
               user: user,
               token: reserve,
@@ -276,6 +278,7 @@ export default class Aavev2Adapter extends Aavev1Adapter {
               transactionHash: log.transactionHash,
               logIndex: log.logIndex.toString(),
               blockNumber: new BigNumber(log.blockNumber.toString()).toNumber(),
+              timestamp: timestamps[new BigNumber(log.blockNumber.toString()).toNumber()],
               action: 'liquidate',
               user: user,
               token: reserve,

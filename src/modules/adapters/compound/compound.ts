@@ -7,7 +7,7 @@ import cErc20Abi from '../../../configs/abi/compound/cErc20.json';
 import { ChainBlockPeriods, DAY, YEAR } from '../../../configs/constants';
 import EnvConfig from '../../../configs/envConfig';
 import { CompoundLendingMarketConfig, CompoundProtocolConfig } from '../../../configs/protocols/compound';
-import { tryQueryBlockNumberAtTimestamp } from '../../../lib/subsgraph';
+import { BlockTimestamps, tryQueryBlockNumberAtTimestamp, tryQueryBlockTimestamps } from '../../../lib/subsgraph';
 import { compareAddress, formatFromDecimals, normalizeAddress } from '../../../lib/utils';
 import { LendingMarketConfig, ProtocolConfig } from '../../../types/configs';
 import { LendingActivityAction, TokenRewardEntry } from '../../../types/domains/base';
@@ -160,6 +160,7 @@ export default class CompoundAdapter extends ProtocolAdapter {
   protected async parseEventLogDistributeReward(
     config: LendingMarketConfig,
     log: any,
+    timestamps: BlockTimestamps,
   ): Promise<LendingActivityEvent | null> {
     const protocolConfig = this.config as CompoundProtocolConfig;
     if (protocolConfig.comptrollers && protocolConfig.comptrollers[config.chain]) {
@@ -190,6 +191,7 @@ export default class CompoundAdapter extends ProtocolAdapter {
             transactionHash: log.transactionHash,
             logIndex: log.logIndex.toString(),
             blockNumber: new BigNumber(log.blockNumber.toString()).toNumber(),
+            timestamp: timestamps[new BigNumber(log.blockNumber.toString()).toNumber()],
             action: 'collect',
             user: user,
             token: protocolConfig.comptrollers[config.chain].governanceToken,
@@ -202,10 +204,14 @@ export default class CompoundAdapter extends ProtocolAdapter {
     return null;
   }
 
-  protected async parseEventLog(config: LendingMarketConfig, log: any): Promise<LendingActivityEvent | null> {
+  protected async parseEventLog(
+    config: LendingMarketConfig,
+    log: any,
+    timestamps: BlockTimestamps,
+  ): Promise<LendingActivityEvent | null> {
     const marketConfig = config as CompoundLendingMarketConfig;
 
-    const isCollectAction = await this.parseEventLogDistributeReward(config, log);
+    const isCollectAction = await this.parseEventLogDistributeReward(config, log, timestamps);
     if (isCollectAction) {
       return isCollectAction;
     }
@@ -305,6 +311,7 @@ export default class CompoundAdapter extends ProtocolAdapter {
           transactionHash: log.transactionHash,
           logIndex: log.logIndex.toString(),
           blockNumber: new BigNumber(log.blockNumber.toString()).toNumber(),
+          timestamp: timestamps[new BigNumber(log.blockNumber.toString()).toNumber()],
           action: action,
           user: user,
           token: marketConfig.underlying,
@@ -334,6 +341,11 @@ export default class CompoundAdapter extends ProtocolAdapter {
     );
 
     // now we handle event log, turn them to activities
+    const timestamps = await tryQueryBlockTimestamps(
+      EnvConfig.blockchains[options.config.chain].blockSubgraph,
+      blockNumber,
+      blockNumberEndDay,
+    );
     let logs = await this.services.blockchain.getContractLogs({
       chain: options.config.chain,
       address: options.config.address,
@@ -353,7 +365,7 @@ export default class CompoundAdapter extends ProtocolAdapter {
     }
 
     for (const log of logs) {
-      const activityEvent = await this.parseEventLog(options.config, log);
+      const activityEvent = await this.parseEventLog(options.config, log, timestamps);
 
       if (activityEvent) {
         activities.push(activityEvent);

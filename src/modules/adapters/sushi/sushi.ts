@@ -6,7 +6,7 @@ import MasterchefAbi from '../../../configs/abi/sushi/Masterchef.json';
 import { ChainBlockPeriods, DAY, YEAR } from '../../../configs/constants';
 import MasterchefPools from '../../../configs/data/MasterchefPools.json';
 import EnvConfig from '../../../configs/envConfig';
-import { tryQueryBlockNumberAtTimestamp } from '../../../lib/subsgraph';
+import { BlockTimestamps, tryQueryBlockNumberAtTimestamp, tryQueryBlockTimestamps } from '../../../lib/subsgraph';
 import { compareAddress, formatFromDecimals, normalizeAddress } from '../../../lib/utils';
 import { LiquidityPoolConfig, MasterchefConfig, ProtocolConfig } from '../../../types/configs';
 import { MasterchefActivityAction } from '../../../types/domains/base';
@@ -72,7 +72,11 @@ export default class SushiAdapter extends ProtocolAdapter {
     return UniswapLibs.getPool2Constant(config.chain, lpTokenAddress);
   }
 
-  protected async parseEventLog(config: MasterchefConfig, log: any): Promise<MasterchefActivityEvent | null> {
+  protected async parseEventLog(
+    config: MasterchefConfig,
+    log: any,
+    timestamps: BlockTimestamps,
+  ): Promise<MasterchefActivityEvent | null> {
     const signature = log.topics[0];
     if (
       signature === SushiMasterchefEventSignatures.Deposit ||
@@ -117,6 +121,7 @@ export default class SushiAdapter extends ProtocolAdapter {
           masterchef: normalizeAddress(config.address),
           poolId: poolId,
           blockNumber: new BigNumber(log.blockNumber.toString()).toNumber(),
+          timestamp: timestamps[new BigNumber(log.blockNumber.toString()).toNumber()],
         };
       }
     }
@@ -154,6 +159,11 @@ export default class SushiAdapter extends ProtocolAdapter {
     );
 
     // process activity events
+    const timestamps = await tryQueryBlockTimestamps(
+      EnvConfig.blockchains[options.config.chain].blockSubgraph,
+      blockNumber,
+      blockNumberEndDay,
+    );
     const logs = await this.services.blockchain.getContractLogs({
       chain: options.config.chain,
       address: options.config.address,
@@ -161,7 +171,7 @@ export default class SushiAdapter extends ProtocolAdapter {
       toBlock: blockNumberEndDay,
     });
     for (const log of logs) {
-      const activityEvent = await this.parseEventLog(options.config, log);
+      const activityEvent = await this.parseEventLog(options.config, log, timestamps);
 
       if (activityEvent) {
         activities.push(activityEvent);

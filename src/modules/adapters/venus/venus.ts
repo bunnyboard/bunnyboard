@@ -4,6 +4,7 @@ import { decodeEventLog } from 'viem';
 import { ProtocolConfigs } from '../../../configs';
 import VenusComptrollerAbi from '../../../configs/abi/venus/venusUnitroller.json';
 import { CompoundProtocolConfig } from '../../../configs/protocols/compound';
+import { BlockTimestamps } from '../../../lib/subsgraph';
 import { formatFromDecimals, normalizeAddress } from '../../../lib/utils';
 import { LendingMarketConfig, ProtocolConfig } from '../../../types/configs';
 import { LendingActivityEvent } from '../../../types/domains/lending';
@@ -24,6 +25,7 @@ export default class VenusAdapter extends CompoundAdapter {
   protected async parseEventLogDistributeReward(
     config: LendingMarketConfig,
     log: any,
+    timestamps: BlockTimestamps,
   ): Promise<LendingActivityEvent | null> {
     const protocolConfig = this.config as CompoundProtocolConfig;
     if (protocolConfig.comptrollers && protocolConfig.comptrollers[config.chain]) {
@@ -54,6 +56,7 @@ export default class VenusAdapter extends CompoundAdapter {
             transactionHash: log.transactionHash,
             logIndex: log.logIndex.toString(),
             blockNumber: new BigNumber(log.blockNumber.toString()).toNumber(),
+            timestamp: timestamps[new BigNumber(log.blockNumber.toString()).toNumber()],
             action: 'collect',
             user: user,
             token: protocolConfig.comptrollers[config.chain].governanceToken,

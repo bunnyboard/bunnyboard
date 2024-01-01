@@ -5,7 +5,7 @@ import AaveLendingPoolV1Abi from '../../../configs/abi/aave/LendingPoolV1.json';
 import { DAY, ONE_RAY, RAY_DECIMALS } from '../../../configs/constants';
 import EnvConfig from '../../../configs/envConfig';
 import { AaveLendingMarketConfig } from '../../../configs/protocols/aave';
-import { tryQueryBlockNumberAtTimestamp } from '../../../lib/subsgraph';
+import { BlockTimestamps, tryQueryBlockNumberAtTimestamp, tryQueryBlockTimestamps } from '../../../lib/subsgraph';
 import { formatFromDecimals, normalizeAddress } from '../../../lib/utils';
 import { ProtocolConfig } from '../../../types/configs';
 import { LendingActivityAction, TokenRewardEntry } from '../../../types/domains/base';
@@ -108,6 +108,7 @@ export default class Aavev1Adapter extends ProtocolAdapter {
   protected async transformEventLogs(
     config: AaveLendingMarketConfig,
     logs: Array<any>,
+    timestamps: BlockTimestamps,
   ): Promise<Array<LendingActivityEvent>> {
     const activities: Array<LendingActivityEvent> = [];
 
@@ -167,6 +168,7 @@ export default class Aavev1Adapter extends ProtocolAdapter {
               transactionHash: log.transactionHash,
               logIndex: log.logIndex.toString(),
               blockNumber: new BigNumber(log.blockNumber.toString()).toNumber(),
+              timestamp: timestamps[new BigNumber(log.blockNumber.toString()).toNumber()],
               action: action,
               user: user,
               token: reserve,
@@ -200,6 +202,7 @@ export default class Aavev1Adapter extends ProtocolAdapter {
               transactionHash: log.transactionHash,
               logIndex: log.logIndex.toString(),
               blockNumber: new BigNumber(log.blockNumber.toString()).toNumber(),
+              timestamp: timestamps[new BigNumber(log.blockNumber.toString()).toNumber()],
               action: 'liquidate',
               user: user,
               token: reserve,
@@ -235,8 +238,13 @@ export default class Aavev1Adapter extends ProtocolAdapter {
       fromBlock: blockNumber,
       toBlock: blockNumberEndDay,
     });
+    const timestamps = await tryQueryBlockTimestamps(
+      EnvConfig.blockchains[options.config.chain].blockSubgraph,
+      blockNumber,
+      blockNumberEndDay,
+    );
 
-    return await this.transformEventLogs(options.config as AaveLendingMarketConfig, logs);
+    return await this.transformEventLogs(options.config as AaveLendingMarketConfig, logs, timestamps);
   }
 
   public async getLendingMarketSnapshots(
