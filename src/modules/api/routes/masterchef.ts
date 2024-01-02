@@ -99,7 +99,7 @@ export function getRouter(storages: ContextStorages, services: ContextServices):
         options.skip = DefaultQueryDataLimit * Number(filters.page);
       }
       if (filters.order) {
-        options.order = { blockNumber: filters.order === 'oldest' ? 1 : -1 };
+        options.order = { timestamp: filters.order === 'oldest' ? 1 : -1 };
       }
     }
 
