@@ -107,7 +107,7 @@ export default class DatabaseService implements IDatabaseService {
     );
     lendingMarketActivities.createIndex({ chain: 1, transactionHash: 1, logIndex: 1 }, { background: true });
     lendingMarketActivities.createIndex(
-      { chain: 1, protocol: 1, address: 1, user: 1, blockNumber: 1 },
+      { chain: 1, protocol: 1, address: 1, user: 1, timestamp: 1 },
       { background: true },
     );
 
@@ -118,7 +118,7 @@ export default class DatabaseService implements IDatabaseService {
     );
     masterchefPoolActivitiesCollection.createIndex({ chain: 1, transactionHash: 1, logIndex: 1 }, { background: true });
     masterchefPoolActivitiesCollection.createIndex(
-      { chain: 1, protocol: 1, poolId: 1, user: 1, blockNumber: 1 },
+      { chain: 1, protocol: 1, poolId: 1, user: 1, timestamp: 1 },
       { background: true },
     );
   }
