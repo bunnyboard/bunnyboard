@@ -10,9 +10,9 @@ import { BlockTimestamps, tryQueryBlockNumberAtTimestamp, tryQueryBlockTimestamp
 import { compareAddress, formatFromDecimals, normalizeAddress } from '../../../lib/utils';
 import { LiquidityPoolConfig, MasterchefConfig, ProtocolConfig } from '../../../types/configs';
 import { MasterchefActivityAction } from '../../../types/domains/base';
-import { MasterchefActivityEvent, MasterchefPoolSnapshot } from '../../../types/domains/masterchef';
+import { MasterchefActivityEvent } from '../../../types/domains/masterchef';
 import { ContextServices } from '../../../types/namespaces';
-import { GetMasterchefSnapshotOptions } from '../../../types/options';
+import { GetSnapshotOptions, GetSnapshotResult } from '../../../types/options';
 import UniswapLibs from '../../libs/uniswap';
 import ProtocolAdapter from '../adapter';
 import { SushiMasterchefEventSignatures } from './abis';
@@ -146,7 +146,7 @@ export default class SushiAdapter extends ProtocolAdapter {
       .toString(10);
   }
 
-  public async getMasterchefActivities(options: GetMasterchefSnapshotOptions): Promise<Array<MasterchefActivityEvent>> {
+  protected async getMasterchefActivities(options: GetSnapshotOptions): Promise<Array<MasterchefActivityEvent>> {
     const activities: Array<MasterchefActivityEvent> = [];
 
     const blockNumber = await tryQueryBlockNumberAtTimestamp(
@@ -171,7 +171,7 @@ export default class SushiAdapter extends ProtocolAdapter {
       toBlock: blockNumberEndDay,
     });
     for (const log of logs) {
-      const activityEvent = await this.parseEventLog(options.config, log, timestamps);
+      const activityEvent = await this.parseEventLog(options.config as MasterchefConfig, log, timestamps);
 
       if (activityEvent) {
         activities.push(activityEvent);
@@ -181,10 +181,11 @@ export default class SushiAdapter extends ProtocolAdapter {
     return activities;
   }
 
-  public async getMasterchefSnapshots(
-    options: GetMasterchefSnapshotOptions,
-  ): Promise<Array<MasterchefPoolSnapshot> | null> {
-    const poolSnapshots: Array<MasterchefPoolSnapshot> = [];
+  public async getMasterchefSnapshots(options: GetSnapshotOptions): Promise<GetSnapshotResult> {
+    const result: GetSnapshotResult = {
+      activities: options.collectActivities ? await this.getMasterchefActivities(options) : [],
+      snapshots: [],
+    };
 
     const blockNumber = await tryQueryBlockNumberAtTimestamp(
       EnvConfig.blockchains[options.config.chain].blockSubgraph,
@@ -207,7 +208,7 @@ export default class SushiAdapter extends ProtocolAdapter {
       params: [],
       blockNumber: blockNumber,
     });
-    const rewardPerSecond = await this.getRewardTokenPerSecond(options.config, blockNumber);
+    const rewardPerSecond = await this.getRewardTokenPerSecond(options.config as MasterchefConfig, blockNumber);
     for (let poolId = 0; poolId < Number(poolLength); poolId++) {
       const [lpTokenAddress, allocPoint] = await this.services.blockchain.readContract({
         chain: options.config.chain,
@@ -251,11 +252,11 @@ export default class SushiAdapter extends ProtocolAdapter {
 
         const rewardTokenPrice = await this.services.oracle.getTokenPriceUsd({
           chain: options.config.chain,
-          address: options.config.rewardToken.address,
+          address: (options.config as MasterchefConfig).rewardToken.address,
           timestamp: options.timestamp,
         });
 
-        poolSnapshots.push({
+        result.snapshots.push({
           chain: options.config.chain,
           protocol: options.config.protocol,
           timestamp: options.timestamp,
@@ -273,7 +274,7 @@ export default class SushiAdapter extends ProtocolAdapter {
 
           totalDeposited: formatFromDecimals(lpAmount.toString(10), 18),
 
-          rewardToken: options.config.rewardToken,
+          rewardToken: (options.config as MasterchefConfig).rewardToken,
           rewardTokenPrice: rewardTokenPrice ? rewardTokenPrice : '0',
           rewardTokenAmount: rewardTokenAmount,
           rewardTokenPerSecond: rewardPerSecond,
@@ -281,6 +282,6 @@ export default class SushiAdapter extends ProtocolAdapter {
       }
     }
 
-    return poolSnapshots;
+    return result;
   }
 }

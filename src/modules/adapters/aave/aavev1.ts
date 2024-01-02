@@ -11,7 +11,7 @@ import { ProtocolConfig } from '../../../types/configs';
 import { LendingActivityAction, TokenRewardEntry } from '../../../types/domains/base';
 import { LendingActivityEvent, LendingMarketSnapshot } from '../../../types/domains/lending';
 import { ContextServices } from '../../../types/namespaces';
-import { GetLendingMarketSnapshotOptions } from '../../../types/options';
+import { GetSnapshotOptions, GetSnapshotResult } from '../../../types/options';
 import ProtocolAdapter from '../adapter';
 import { AaveEventInterfaces, Aavev1EventSignatures } from './abis';
 
@@ -220,9 +220,7 @@ export default class Aavev1Adapter extends ProtocolAdapter {
     return activities;
   }
 
-  public async getLendingMarketActivities(
-    options: GetLendingMarketSnapshotOptions,
-  ): Promise<Array<LendingActivityEvent>> {
+  protected async getLendingMarketActivities(options: GetSnapshotOptions): Promise<Array<LendingActivityEvent>> {
     const blockNumber = await tryQueryBlockNumberAtTimestamp(
       EnvConfig.blockchains[options.config.chain].blockSubgraph,
       options.timestamp,
@@ -247,17 +245,18 @@ export default class Aavev1Adapter extends ProtocolAdapter {
     return await this.transformEventLogs(options.config as AaveLendingMarketConfig, logs, timestamps);
   }
 
-  public async getLendingMarketSnapshots(
-    options: GetLendingMarketSnapshotOptions,
-  ): Promise<Array<LendingMarketSnapshot> | null> {
+  public async getLendingMarketSnapshots(options: GetSnapshotOptions): Promise<GetSnapshotResult> {
+    const results: GetSnapshotResult = {
+      activities: options.collectActivities ? await this.getLendingMarketActivities(options) : [],
+      snapshots: [],
+    };
+
     const blockNumber = await tryQueryBlockNumberAtTimestamp(
       EnvConfig.blockchains[options.config.chain].blockSubgraph,
       options.timestamp,
     );
 
     const marketConfig = options.config as AaveLendingMarketConfig;
-
-    const snapshots: Array<LendingMarketSnapshot> = [];
 
     const reservesList: Array<any> = await this.getReservesList(marketConfig, blockNumber);
 
@@ -267,8 +266,9 @@ export default class Aavev1Adapter extends ProtocolAdapter {
         address: reserve,
       });
       if (!token) {
-        return null;
+        continue;
       }
+
       const tokenPrice = await this.services.oracle.getTokenPriceUsd({
         chain: token.chain,
         address: token.address,
@@ -306,9 +306,9 @@ export default class Aavev1Adapter extends ProtocolAdapter {
         rewardForBorrowers: tokenRewards.rewardsForBorrowers,
       };
 
-      snapshots.push(snapshot);
+      results.snapshots.push(snapshot);
     }
 
-    return snapshots;
+    return results;
   }
 }

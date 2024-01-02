@@ -11,9 +11,9 @@ import { BlockTimestamps, tryQueryBlockNumberAtTimestamp, tryQueryBlockTimestamp
 import { compareAddress, formatFromDecimals, normalizeAddress } from '../../../lib/utils';
 import { LendingMarketConfig, ProtocolConfig } from '../../../types/configs';
 import { LendingActivityAction, TokenRewardEntry } from '../../../types/domains/base';
-import { LendingActivityEvent, LendingMarketSnapshot } from '../../../types/domains/lending';
+import { LendingActivityEvent } from '../../../types/domains/lending';
 import { ContextServices } from '../../../types/namespaces';
-import { GetLendingMarketSnapshotOptions } from '../../../types/options';
+import { GetSnapshotOptions, GetSnapshotResult } from '../../../types/options';
 import ProtocolAdapter from '../adapter';
 import { CompoundEventInterfaces, CompoundEventSignatures } from './abis';
 
@@ -326,9 +326,7 @@ export default class CompoundAdapter extends ProtocolAdapter {
     return null;
   }
 
-  public async getLendingMarketActivities(
-    options: GetLendingMarketSnapshotOptions,
-  ): Promise<Array<LendingActivityEvent>> {
+  protected async getLendingMarketActivities(options: GetSnapshotOptions): Promise<Array<LendingActivityEvent>> {
     const activities: Array<LendingActivityEvent> = [];
 
     const blockNumber = await tryQueryBlockNumberAtTimestamp(
@@ -365,7 +363,7 @@ export default class CompoundAdapter extends ProtocolAdapter {
     }
 
     for (const log of logs) {
-      const activityEvent = await this.parseEventLog(options.config, log, timestamps);
+      const activityEvent = await this.parseEventLog(options.config as LendingMarketConfig, log, timestamps);
 
       if (activityEvent) {
         activities.push(activityEvent);
@@ -375,17 +373,18 @@ export default class CompoundAdapter extends ProtocolAdapter {
     return activities;
   }
 
-  public async getLendingMarketSnapshots(
-    options: GetLendingMarketSnapshotOptions,
-  ): Promise<Array<LendingMarketSnapshot> | null> {
+  public async getLendingMarketSnapshots(options: GetSnapshotOptions): Promise<GetSnapshotResult> {
+    const result: GetSnapshotResult = {
+      activities: options.collectActivities ? await this.getLendingMarketActivities(options) : [],
+      snapshots: [],
+    };
+
     const marketConfig = options.config as CompoundLendingMarketConfig;
 
     const blockNumber = await tryQueryBlockNumberAtTimestamp(
       EnvConfig.blockchains[marketConfig.chain].blockSubgraph,
       options.timestamp,
     );
-
-    const snapshots: Array<LendingMarketSnapshot> = [];
 
     const totalCash = await this.services.blockchain.readContract({
       chain: marketConfig.chain,
@@ -413,7 +412,7 @@ export default class CompoundAdapter extends ProtocolAdapter {
     });
 
     // get market rates
-    const { supplyRate, borrowRate } = await this.getMarketRates(options.config, blockNumber);
+    const { supplyRate, borrowRate } = await this.getMarketRates(options.config as LendingMarketConfig, blockNumber);
 
     const totalDeposited = new BigNumber(totalCash.toString())
       .plus(new BigNumber(totalBorrows.toString()))
@@ -428,9 +427,9 @@ export default class CompoundAdapter extends ProtocolAdapter {
       timestamp: options.timestamp,
     });
 
-    const rewards = await this.getMarketRewards(options.config, options.timestamp);
+    const rewards = await this.getMarketRewards(options.config as LendingMarketConfig, options.timestamp);
 
-    snapshots.push({
+    result.snapshots.push({
       type: 'cross',
       chain: marketConfig.chain,
       protocol: marketConfig.protocol,
@@ -451,6 +450,6 @@ export default class CompoundAdapter extends ProtocolAdapter {
       rewardForBorrowers: rewards.borrowerTokenRewards,
     });
 
-    return snapshots;
+    return result;
   }
 }

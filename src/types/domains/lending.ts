@@ -24,11 +24,20 @@ export interface LendingMarketSnapshot extends DayDataSnapshot {
   // rates
   supplyRate: string;
   borrowRate: string;
+
   // some protocol like AAVE offer a stable borrow rate
   borrowRateStable?: string;
 
-  rewardForLenders: Array<TokenRewardEntry>;
-  rewardForBorrowers: Array<TokenRewardEntry>;
+  // incentive rewards
+  rewardForLenders?: Array<TokenRewardEntry>;
+  rewardForBorrowers?: Array<TokenRewardEntry>;
+
+  // volumes
+  volumeDeposited?: string;
+  volumeWithdrawn?: string;
+  volumeBorrowed?: string;
+  volumeRepaid?: string;
+  volumeLiquidated?: string;
 
   // for CDP market
   collateralToken?: Token;

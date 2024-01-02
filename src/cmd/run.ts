@@ -65,43 +65,25 @@ export class RunCommand extends BasicCommand {
 
       if (protocolConfig.lendingMarkets) {
         for (const config of protocolConfig.lendingMarkets) {
-          const snapshots = await adapters[protocol].getLendingMarketSnapshots({
+          const result = await adapters[protocol].getLendingMarketSnapshots({
             config: config,
             timestamp: timestamp,
+            collectActivities: activity,
           });
-          if (snapshots) {
-            protocolData.lendingMarketSnapshots = protocolData.lendingMarketSnapshots.concat(snapshots);
-          }
-
-          if (activity) {
-            protocolData.lendingMarketActivities = protocolData.lendingMarketActivities.concat(
-              await adapters[protocol].getLendingMarketActivities({
-                config: config,
-                timestamp: timestamp,
-              }),
-            );
-          }
+          protocolData.lendingMarketSnapshots = protocolData.lendingMarketSnapshots.concat(result.snapshots);
+          protocolData.lendingMarketActivities = protocolData.lendingMarketActivities.concat(result.activities);
         }
       }
 
       if (protocolConfig.masterchefs) {
         for (const config of protocolConfig.masterchefs) {
-          const snapshots = await adapters[protocol].getMasterchefSnapshots({
+          const result = await adapters[protocol].getMasterchefSnapshots({
             config: config,
             timestamp: timestamp,
+            collectActivities: activity,
           });
-          if (snapshots) {
-            protocolData.masterchefPoolSnapshots = protocolData.masterchefPoolSnapshots.concat(snapshots);
-          }
-
-          if (activity) {
-            protocolData.masterchefPoolActivities = protocolData.masterchefPoolActivities.concat(
-              await adapters[protocol].getMasterchefActivities({
-                config: config,
-                timestamp: timestamp,
-              }),
-            );
-          }
+          protocolData.masterchefPoolSnapshots = protocolData.masterchefPoolSnapshots.concat(result.snapshots);
+          protocolData.masterchefPoolActivities = protocolData.masterchefPoolActivities.concat(result.activities);
         }
       }
 

@@ -1,12 +1,10 @@
 import { ProtocolConfig } from '../../types/configs';
-import { LendingActivityEvent, LendingMarketSnapshot } from '../../types/domains/lending';
-import { MasterchefActivityEvent, MasterchefPoolSnapshot } from '../../types/domains/masterchef';
 import { ContextServices, IProtocolAdapter } from '../../types/namespaces';
 import {
   AdapterAbiConfigs,
   GetChainMetricSnapshotOptions,
-  GetLendingMarketSnapshotOptions,
-  GetMasterchefSnapshotOptions,
+  GetSnapshotOptions,
+  GetSnapshotResult,
 } from '../../types/options';
 
 export default class ProtocolAdapter implements IProtocolAdapter {
@@ -28,25 +26,17 @@ export default class ProtocolAdapter implements IProtocolAdapter {
     return [];
   }
 
-  public async getLendingMarketActivities(
-    options: GetLendingMarketSnapshotOptions,
-  ): Promise<Array<LendingActivityEvent>> {
-    return [];
+  public async getLendingMarketSnapshots(options: GetSnapshotOptions): Promise<GetSnapshotResult> {
+    return {
+      activities: [],
+      snapshots: [],
+    };
   }
 
-  public async getLendingMarketSnapshots(
-    options: GetLendingMarketSnapshotOptions,
-  ): Promise<Array<LendingMarketSnapshot> | null> {
-    return [];
-  }
-
-  public async getMasterchefActivities(options: GetMasterchefSnapshotOptions): Promise<Array<MasterchefActivityEvent>> {
-    return [];
-  }
-
-  public async getMasterchefSnapshots(
-    options: GetMasterchefSnapshotOptions,
-  ): Promise<Array<MasterchefPoolSnapshot> | null> {
-    return [];
+  public async getMasterchefSnapshots(options: GetSnapshotOptions): Promise<GetSnapshotResult> {
+    return {
+      activities: [],
+      snapshots: [],
+    };
   }
 }

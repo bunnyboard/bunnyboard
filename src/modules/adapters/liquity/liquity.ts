@@ -11,9 +11,9 @@ import { tryQueryBlockNumberAtTimestamp, tryQueryBlockTimestamps } from '../../.
 import { formatFromDecimals, getDateString, normalizeAddress } from '../../../lib/utils';
 import { ProtocolConfig } from '../../../types/configs';
 import { LendingActivityAction } from '../../../types/domains/base';
-import { LendingActivityEvent, LendingMarketSnapshot } from '../../../types/domains/lending';
+import { LendingActivityEvent } from '../../../types/domains/lending';
 import { ContextServices } from '../../../types/namespaces';
-import { GetLendingMarketSnapshotOptions } from '../../../types/options';
+import { GetSnapshotOptions, GetSnapshotResult } from '../../../types/options';
 import ProtocolAdapter from '../adapter';
 import { LiquityEventInterfaces, LiquityEventSignatures } from './abis';
 
@@ -70,9 +70,7 @@ export default class LiquityAdapter extends ProtocolAdapter {
     return borrowingFee.toString();
   }
 
-  public async getLendingMarketActivities(
-    options: GetLendingMarketSnapshotOptions,
-  ): Promise<Array<LendingActivityEvent>> {
+  protected async getLendingMarketActivities(options: GetSnapshotOptions): Promise<Array<LendingActivityEvent>> {
     const activityEvents: Array<LendingActivityEvent> = [];
 
     const blockNumber = await tryQueryBlockNumberAtTimestamp(
@@ -160,9 +158,12 @@ export default class LiquityAdapter extends ProtocolAdapter {
     return activityEvents;
   }
 
-  public async getLendingMarketSnapshots(
-    options: GetLendingMarketSnapshotOptions,
-  ): Promise<Array<LendingMarketSnapshot> | null> {
+  public async getLendingMarketSnapshots(options: GetSnapshotOptions): Promise<GetSnapshotResult> {
+    const result: GetSnapshotResult = {
+      activities: options.collectActivities ? await this.getLendingMarketActivities(options) : [],
+      snapshots: [],
+    };
+
     const blockNumber = await tryQueryBlockNumberAtTimestamp(
       EnvConfig.blockchains[options.config.chain].blockSubgraph,
       options.timestamp,
@@ -253,29 +254,26 @@ export default class LiquityAdapter extends ProtocolAdapter {
       date: getDateString(options.timestamp),
     });
 
-    return [
-      {
-        type: marketConfig.type,
-        chain: marketConfig.chain,
-        protocol: marketConfig.protocol,
-        address: normalizeAddress(marketConfig.address),
-        timestamp: options.timestamp,
+    result.snapshots.push({
+      type: marketConfig.type,
+      chain: marketConfig.chain,
+      protocol: marketConfig.protocol,
+      address: normalizeAddress(marketConfig.address),
+      timestamp: options.timestamp,
 
-        token: marketConfig.debtToken,
-        tokenPrice: debtTokenPrice ? debtTokenPrice : '0',
-        collateralToken: marketConfig.collateralToken,
-        collateralTokenPrice: collateralTokenPrice ? collateralTokenPrice : '0',
+      token: marketConfig.debtToken,
+      tokenPrice: debtTokenPrice ? debtTokenPrice : '0',
+      collateralToken: marketConfig.collateralToken,
+      collateralTokenPrice: collateralTokenPrice ? collateralTokenPrice : '0',
 
-        totalDeposited: formatFromDecimals(totalColl.toString(), marketConfig.collateralToken.decimals),
-        totalBorrowed: formatFromDecimals(totalDebt.toString(), marketConfig.debtToken.decimals),
-        totalFeesCollected: formatFromDecimals(totalFeesCollected.toString(10), marketConfig.debtToken.decimals),
+      totalDeposited: formatFromDecimals(totalColl.toString(), marketConfig.collateralToken.decimals),
+      totalBorrowed: formatFromDecimals(totalDebt.toString(), marketConfig.debtToken.decimals),
+      totalFeesCollected: formatFromDecimals(totalFeesCollected.toString(10), marketConfig.debtToken.decimals),
 
-        supplyRate: '0',
-        borrowRate: formatFromDecimals(borrowingFee.toString(), 18), // on-time paid
+      supplyRate: '0',
+      borrowRate: formatFromDecimals(borrowingFee.toString(), 18), // on-time paid
+    });
 
-        rewardForLenders: [],
-        rewardForBorrowers: [],
-      },
-    ];
+    return result;
   }
 }

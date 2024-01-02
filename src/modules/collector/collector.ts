@@ -4,6 +4,8 @@ import EnvConfig from '../../configs/envConfig';
 import logger from '../../lib/logger';
 import { getDateString, getTimestamp, getTodayUTCTimestamp, normalizeAddress } from '../../lib/utils';
 import { LendingMarketConfig, MasterchefConfig } from '../../types/configs';
+import { LendingMarketSnapshot } from '../../types/domains/lending';
+import { MasterchefPoolSnapshot } from '../../types/domains/masterchef';
 import { ContextServices, ContextStorages, IProtocolAdapter, IProtocolCollector } from '../../types/namespaces';
 import { RunCollectorOptions } from '../../types/options';
 import getProtocolAdapters from '../adapters';
@@ -80,43 +82,43 @@ export default class ProtocolCollector implements IProtocolCollector {
       }
 
       // update latest states
-      const latestSnapshots = await this.adapters[marketConfig.protocol].getLendingMarketSnapshots({
+      const latestResult = await this.adapters[marketConfig.protocol].getLendingMarketSnapshots({
         config: marketConfig,
+        collectActivities: false, // do not collect event logs
         timestamp: getTimestamp(),
       });
-      if (latestSnapshots) {
-        for (const snapshot of latestSnapshots) {
-          if (snapshot.type === 'cross' || !snapshot.collateralToken) {
-            await this.storages.database.update({
-              collection: EnvConfig.mongodb.collections.lendingMarketStates,
-              keys: {
-                chain: snapshot.chain,
-                protocol: snapshot.protocol,
-                address: snapshot.address,
-                'token.address': snapshot.token.address,
-              },
-              updates: {
-                ...snapshot,
-              },
-              upsert: true,
-            });
-          } else {
-            // on cdp market, the market id should have collateral token too.
-            await this.storages.database.update({
-              collection: EnvConfig.mongodb.collections.lendingMarketStates,
-              keys: {
-                chain: snapshot.chain,
-                protocol: snapshot.protocol,
-                address: snapshot.address,
-                'token.address': snapshot.token.address,
-                'collateralToken.address': snapshot.collateralToken.address,
-              },
-              updates: {
-                ...snapshot,
-              },
-              upsert: true,
-            });
-          }
+      for (const item of latestResult.snapshots) {
+        const snapshot = item as LendingMarketSnapshot;
+        if (snapshot.type === 'cross' || !snapshot.collateralToken) {
+          await this.storages.database.update({
+            collection: EnvConfig.mongodb.collections.lendingMarketStates,
+            keys: {
+              chain: snapshot.chain,
+              protocol: snapshot.protocol,
+              address: snapshot.address,
+              'token.address': snapshot.token.address,
+            },
+            updates: {
+              ...snapshot,
+            },
+            upsert: true,
+          });
+        } else {
+          // on cdp market, the market id should have collateral token too.
+          await this.storages.database.update({
+            collection: EnvConfig.mongodb.collections.lendingMarketStates,
+            keys: {
+              chain: snapshot.chain,
+              protocol: snapshot.protocol,
+              address: snapshot.address,
+              'token.address': snapshot.token.address,
+              'collateralToken.address': snapshot.collateralToken.address,
+            },
+            updates: {
+              ...snapshot,
+            },
+            upsert: true,
+          });
         }
       }
 
@@ -151,12 +153,14 @@ export default class ProtocolCollector implements IProtocolCollector {
       });
 
       while (startTimestamp <= todayTimestamp) {
-        const activities = await this.adapters[marketConfig.protocol].getLendingMarketActivities({
+        const result = await this.adapters[marketConfig.protocol].getLendingMarketSnapshots({
           config: marketConfig,
+          collectActivities: true,
           timestamp: startTimestamp,
         });
+
         const operations: Array<any> = [];
-        for (const activity of activities) {
+        for (const activity of result.activities) {
           operations.push({
             updateOne: {
               filter: {
@@ -178,28 +182,22 @@ export default class ProtocolCollector implements IProtocolCollector {
           operations: operations,
         });
 
-        const snapshots = await this.adapters[marketConfig.protocol].getLendingMarketSnapshots({
-          config: marketConfig,
-          timestamp: startTimestamp,
-        });
-
-        if (snapshots) {
-          for (const snapshot of snapshots) {
-            await this.storages.database.update({
-              collection: EnvConfig.mongodb.collections.lendingMarketSnapshots,
-              keys: {
-                chain: snapshot.chain,
-                protocol: snapshot.protocol,
-                address: snapshot.address,
-                'token.address': snapshot.token.address,
-                timestamp: snapshot.timestamp,
-              },
-              updates: {
-                ...snapshot,
-              },
-              upsert: true,
-            });
-          }
+        for (const item of result.snapshots) {
+          const snapshot = item as LendingMarketSnapshot;
+          await this.storages.database.update({
+            collection: EnvConfig.mongodb.collections.lendingMarketSnapshots,
+            keys: {
+              chain: snapshot.chain,
+              protocol: snapshot.protocol,
+              address: snapshot.address,
+              'token.address': snapshot.token.address,
+              timestamp: snapshot.timestamp,
+            },
+            updates: {
+              ...snapshot,
+            },
+            upsert: true,
+          });
         }
 
         logger.info('updated lending market data', {
@@ -207,8 +205,8 @@ export default class ProtocolCollector implements IProtocolCollector {
           protocol: marketConfig.protocol,
           chain: marketConfig.chain,
           address: marketConfig.address,
-          activities: activities.length,
-          snapshots: snapshots ? snapshots.length : 0,
+          activities: result.activities.length,
+          snapshots: result.snapshots.length,
           day: getDateString(startTimestamp),
         });
 
@@ -265,35 +263,36 @@ export default class ProtocolCollector implements IProtocolCollector {
         toDate: getDateString(todayTimestamp),
       });
 
-      const latestSnapshots = await this.adapters[masterchefConfig.protocol].getMasterchefSnapshots({
+      const latestResult = await this.adapters[masterchefConfig.protocol].getMasterchefSnapshots({
         config: masterchefConfig,
+        collectActivities: false,
         timestamp: getTimestamp(),
       });
 
-      if (latestSnapshots) {
-        for (const snapshot of latestSnapshots) {
-          await this.storages.database.update({
-            collection: EnvConfig.mongodb.collections.masterchefPoolStates,
-            keys: {
-              chain: snapshot.chain,
-              address: snapshot.address,
-              poolId: snapshot.poolId,
-            },
-            updates: {
-              ...snapshot,
-            },
-            upsert: true,
-          });
-        }
+      for (const item of latestResult.snapshots) {
+        const snapshot = item as MasterchefPoolSnapshot;
+        await this.storages.database.update({
+          collection: EnvConfig.mongodb.collections.masterchefPoolStates,
+          keys: {
+            chain: snapshot.chain,
+            address: snapshot.address,
+            poolId: snapshot.poolId,
+          },
+          updates: {
+            ...snapshot,
+          },
+          upsert: true,
+        });
       }
 
       while (startTimestamp <= todayTimestamp) {
-        const activities = await this.adapters[masterchefConfig.protocol].getMasterchefActivities({
+        const result = await this.adapters[masterchefConfig.protocol].getMasterchefSnapshots({
           config: masterchefConfig,
+          collectActivities: false,
           timestamp: startTimestamp,
         });
         const operations: Array<any> = [];
-        for (const activity of activities) {
+        for (const activity of result.activities) {
           operations.push({
             updateOne: {
               filter: {
@@ -315,27 +314,21 @@ export default class ProtocolCollector implements IProtocolCollector {
           operations: operations,
         });
 
-        const snapshots = await this.adapters[masterchefConfig.protocol].getMasterchefSnapshots({
-          config: masterchefConfig,
-          timestamp: startTimestamp,
-        });
-
-        if (snapshots) {
-          for (const snapshot of snapshots) {
-            await this.storages.database.update({
-              collection: EnvConfig.mongodb.collections.masterchefPoolSnapshots,
-              keys: {
-                chain: snapshot.chain,
-                address: snapshot.address,
-                poolId: snapshot.poolId,
-                timestamp: snapshot.timestamp,
-              },
-              updates: {
-                ...snapshot,
-              },
-              upsert: true,
-            });
-          }
+        for (const item of result.snapshots) {
+          const snapshot = item as MasterchefPoolSnapshot;
+          await this.storages.database.update({
+            collection: EnvConfig.mongodb.collections.masterchefPoolSnapshots,
+            keys: {
+              chain: snapshot.chain,
+              address: snapshot.address,
+              poolId: snapshot.poolId,
+              timestamp: snapshot.timestamp,
+            },
+            updates: {
+              ...snapshot,
+            },
+            upsert: true,
+          });
         }
 
         logger.info('updated masterchef pool data', {
@@ -343,8 +336,8 @@ export default class ProtocolCollector implements IProtocolCollector {
           protocol: masterchefConfig.protocol,
           chain: masterchefConfig.chain,
           address: masterchefConfig.address,
-          activities: activities.length,
-          snapshots: snapshots ? snapshots.length : 0,
+          activities: result.activities.length,
+          snapshots: result.snapshots.length,
           day: getDateString(startTimestamp),
         });
 

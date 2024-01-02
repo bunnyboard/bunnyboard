@@ -2,13 +2,11 @@ import { IBlockchainService } from '../services/blockchains/domains';
 import { IDatabaseService } from '../services/database/domains';
 import { IOracleService } from '../services/oracle/domains';
 import { ProtocolConfig } from './configs';
-import { LendingActivityEvent, LendingMarketSnapshot } from './domains/lending';
-import { MasterchefActivityEvent, MasterchefPoolSnapshot } from './domains/masterchef';
 import {
   AdapterAbiConfigs,
   GetChainMetricSnapshotOptions,
-  GetLendingMarketSnapshotOptions,
-  GetMasterchefSnapshotOptions,
+  GetSnapshotOptions,
+  GetSnapshotResult,
   RunCollectorOptions,
 } from './options';
 
@@ -35,17 +33,11 @@ export interface IProtocolAdapter {
   // get chain metrics
   getChainMetricSnapshots: (options: GetChainMetricSnapshotOptions) => Promise<Array<any>>;
 
-  // collect lending market activity logs
-  getLendingMarketActivities: (options: GetLendingMarketSnapshotOptions) => Promise<Array<LendingActivityEvent>>;
-
   // this function get snapshot data of a lending market config
-  getLendingMarketSnapshots: (options: GetLendingMarketSnapshotOptions) => Promise<Array<LendingMarketSnapshot> | null>;
-
-  // collect lending market activity logs
-  getMasterchefActivities: (options: GetMasterchefSnapshotOptions) => Promise<Array<MasterchefActivityEvent>>;
+  getLendingMarketSnapshots: (options: GetSnapshotOptions) => Promise<GetSnapshotResult>;
 
   // this function get snapshots of a masterchef config
-  getMasterchefSnapshots: (options: GetMasterchefSnapshotOptions) => Promise<Array<MasterchefPoolSnapshot> | null>;
+  getMasterchefSnapshots: (options: GetSnapshotOptions) => Promise<GetSnapshotResult>;
 }
 
 export interface IProtocolCollector {

@@ -58,7 +58,7 @@ import DatabaseService from '../services/database/database';
             update: {
               $set: {
                 timestamp: Number(timestamp),
-              }
+              },
             },
             upsert: false,
           },
