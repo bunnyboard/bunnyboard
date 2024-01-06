@@ -6,9 +6,8 @@ import TroveManagerAbi from '../../../configs/abi/liquity/TroveManager.json';
 import { DAY } from '../../../configs/constants';
 import EnvConfig from '../../../configs/envConfig';
 import { LiquityLendingMarketConfig } from '../../../configs/protocols/liquity';
-import logger from '../../../lib/logger';
 import { tryQueryBlockNumberAtTimestamp, tryQueryBlockTimestamps } from '../../../lib/subsgraph';
-import { formatFromDecimals, getDateString, normalizeAddress } from '../../../lib/utils';
+import { formatFromDecimals, normalizeAddress } from '../../../lib/utils';
 import { ProtocolConfig } from '../../../types/configs';
 import { LendingActivityAction } from '../../../types/domains/base';
 import { LendingActivityEvent } from '../../../types/domains/lending';
@@ -159,8 +158,10 @@ export default class LiquityAdapter extends ProtocolAdapter {
   }
 
   public async getLendingMarketSnapshots(options: GetSnapshotOptions): Promise<GetSnapshotResult> {
+    const activities = options.collectActivities ? await this.getLendingMarketActivities(options) : [];
+
     const result: GetSnapshotResult = {
-      activities: options.collectActivities ? await this.getLendingMarketActivities(options) : [],
+      activities: activities,
       snapshots: [],
     };
 
@@ -244,15 +245,29 @@ export default class LiquityAdapter extends ProtocolAdapter {
       timestamp: options.timestamp,
     });
 
-    logger.info('updated lending market snapshot', {
-      service: this.name,
-      protocol: this.config.protocol,
-      chain: marketConfig.chain,
-      version: marketConfig.version,
-      debt: `${marketConfig.debtToken.symbol}`,
-      collateral: `${marketConfig.collateralToken.symbol}`,
-      date: getDateString(options.timestamp),
-    });
+    // count volumes here
+    let volumeDeposit = new BigNumber(0);
+    let volumeWithdraw = new BigNumber(0);
+    let volumeBorrow = new BigNumber(0);
+    let volumeRepay = new BigNumber(0);
+    for (const event of activities) {
+      switch (event.action) {
+        case 'borrow': {
+          volumeBorrow = volumeBorrow.plus(new BigNumber(event.tokenAmount));
+          if (event.collateralAmount) {
+            volumeDeposit = volumeDeposit.plus(new BigNumber(event.collateralAmount));
+          }
+          break;
+        }
+        case 'repay': {
+          volumeRepay = volumeRepay.plus(new BigNumber(event.tokenAmount));
+          if (event.collateralAmount) {
+            volumeWithdraw = volumeWithdraw.plus(new BigNumber(event.collateralAmount));
+          }
+          break;
+        }
+      }
+    }
 
     result.snapshots.push({
       type: marketConfig.type,
@@ -272,6 +287,11 @@ export default class LiquityAdapter extends ProtocolAdapter {
 
       supplyRate: '0',
       borrowRate: formatFromDecimals(borrowingFee.toString(), 18), // on-time paid
+
+      volumeDeposited: volumeDeposit.toString(10),
+      volumeWithdrawn: volumeWithdraw.toString(10),
+      volumeBorrowed: volumeBorrow.toString(10),
+      volumeRepaid: volumeRepay.toString(10),
     });
 
     return result;

@@ -18,7 +18,8 @@ export interface MasterchefPoolSnapshot extends DayDataSnapshot {
   allocationPoint: number;
   allocationPointTotal: number;
 
-  // calculate reward token was emitted per second
+  // the reward token was emitted per second
+  // this value should be applied to all pools
   rewardTokenPerSecond: string;
 
   rewardToken: Token;

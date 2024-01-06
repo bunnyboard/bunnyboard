@@ -7,7 +7,7 @@ import EnvConfig from '../../../configs/envConfig';
 import { AaveLendingMarketConfig } from '../../../configs/protocols/aave';
 import { BlockTimestamps, tryQueryBlockNumberAtTimestamp, tryQueryBlockTimestamps } from '../../../lib/subsgraph';
 import { formatFromDecimals, normalizeAddress } from '../../../lib/utils';
-import { ProtocolConfig } from '../../../types/configs';
+import { ProtocolConfig, Token } from '../../../types/configs';
 import { LendingActivityAction, TokenRewardEntry } from '../../../types/domains/base';
 import { LendingActivityEvent, LendingMarketSnapshot } from '../../../types/domains/lending';
 import { ContextServices } from '../../../types/namespaces';
@@ -242,12 +242,16 @@ export default class Aavev1Adapter extends ProtocolAdapter {
       blockNumberEndDay,
     );
 
+    console.log(logs);
+
     return await this.transformEventLogs(options.config as AaveLendingMarketConfig, logs, timestamps);
   }
 
   public async getLendingMarketSnapshots(options: GetSnapshotOptions): Promise<GetSnapshotResult> {
+    const activities = options.collectActivities ? await this.getLendingMarketActivities(options) : [];
+
     const results: GetSnapshotResult = {
-      activities: options.collectActivities ? await this.getLendingMarketActivities(options) : [],
+      activities: activities,
       snapshots: [],
     };
 
@@ -284,6 +288,67 @@ export default class Aavev1Adapter extends ProtocolAdapter {
 
       const tokenRewards = await this.getIncentiveRewards(marketConfig, reserve, options.timestamp);
 
+      // count volumes
+      let volumeDeposit = new BigNumber(0);
+      let volumeWithdraw = new BigNumber(0);
+      let volumeBorrow = new BigNumber(0);
+      let volumeRepay = new BigNumber(0);
+
+      const volumeLiquidate: {
+        [key: string]: {
+          collateralToken: Token;
+          collateralTokenPrice: string;
+          collateralAmount: string;
+        };
+      } = {};
+      for (const event of activities) {
+        switch (event.action) {
+          case 'deposit': {
+            volumeDeposit = volumeDeposit.plus(new BigNumber(event.tokenAmount));
+            break;
+          }
+          case 'withdraw': {
+            volumeWithdraw = volumeWithdraw.plus(new BigNumber(event.tokenAmount));
+            break;
+          }
+          case 'borrow': {
+            volumeBorrow = volumeBorrow.plus(new BigNumber(event.tokenAmount));
+            break;
+          }
+          case 'repay': {
+            volumeRepay = volumeRepay.plus(new BigNumber(event.tokenAmount));
+            break;
+          }
+          case 'liquidate': {
+            volumeRepay = volumeRepay.plus(new BigNumber(event.tokenAmount));
+
+            // count liquidate volume
+            if (event.collateralToken && event.collateralAmount) {
+              if (!volumeLiquidate[event.collateralToken.address]) {
+                const collateralTokenPrice = await this.services.oracle.getTokenPriceUsd({
+                  chain: options.config.chain,
+                  address: event.collateralToken.address,
+                  timestamp: options.timestamp,
+                });
+                volumeLiquidate[event.collateralToken.address] = {
+                  collateralToken: event.collateralToken,
+                  collateralTokenPrice: collateralTokenPrice ? collateralTokenPrice : '0',
+                  collateralAmount: '0',
+                };
+              }
+
+              volumeLiquidate[event.collateralToken.address].collateralAmount = new BigNumber(
+                volumeLiquidate[event.collateralToken.address].collateralAmount,
+              )
+                .plus(new BigNumber(event.collateralAmount))
+                .toString(10);
+            }
+
+            break;
+          }
+        }
+      }
+
       const snapshot: LendingMarketSnapshot = {
         type: 'cross',
         chain: marketConfig.chain,
@@ -301,6 +366,12 @@ export default class Aavev1Adapter extends ProtocolAdapter {
         supplyRate: rates.supply,
         borrowRate: rates.borrow,
         borrowRateStable: rates.borrowStable,
+
+        volumeDeposited: volumeDeposit.toString(10),
+        volumeWithdrawn: volumeWithdraw.toString(10),
+        volumeBorrowed: volumeBorrow.toString(10),
+        volumeRepaid: volumeRepay.toString(10),
+        volumeLiquidated: Object.values(volumeLiquidate),
 
         rewardForLenders: tokenRewards.rewardsForLenders,
         rewardForBorrowers: tokenRewards.rewardsForBorrowers,

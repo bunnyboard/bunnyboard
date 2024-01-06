@@ -48,6 +48,7 @@ export class RunCommand extends BasicCommand {
     const services: ContextServices = await super.getServices();
 
     const protocol = argv.protocol;
+    const chain = argv.chain;
     const activity = argv.activity;
     const timestamp = argv.timestamp ? Number(argv.timestamp) : getTimestamp();
     const output = argv.output; // console, json, default: console
@@ -64,7 +65,7 @@ export class RunCommand extends BasicCommand {
       };
 
       if (protocolConfig.lendingMarkets) {
-        for (const config of protocolConfig.lendingMarkets) {
+        for (const config of protocolConfig.lendingMarkets.filter((item) => chain === '' || item.chain === chain)) {
           const result = await adapters[protocol].getLendingMarketSnapshots({
             config: config,
             timestamp: timestamp,
@@ -76,7 +77,7 @@ export class RunCommand extends BasicCommand {
       }
 
       if (protocolConfig.masterchefs) {
-        for (const config of protocolConfig.masterchefs) {
+        for (const config of protocolConfig.masterchefs.filter((item) => chain === '' || item.chain === chain)) {
           const result = await adapters[protocol].getMasterchefSnapshots({
             config: config,
             timestamp: timestamp,
@@ -99,6 +100,11 @@ export class RunCommand extends BasicCommand {
         type: 'string',
         default: '',
         describe: 'Run adapter with given protocol.',
+      },
+      chain: {
+        type: 'string',
+        default: '',
+        describe: 'Run adapter on given chain.',
       },
       timestamp: {
         type: 'number',

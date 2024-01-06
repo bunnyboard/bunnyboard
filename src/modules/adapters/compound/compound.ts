@@ -9,7 +9,7 @@ import EnvConfig from '../../../configs/envConfig';
 import { CompoundLendingMarketConfig, CompoundProtocolConfig } from '../../../configs/protocols/compound';
 import { BlockTimestamps, tryQueryBlockNumberAtTimestamp, tryQueryBlockTimestamps } from '../../../lib/subsgraph';
 import { compareAddress, formatFromDecimals, normalizeAddress } from '../../../lib/utils';
-import { LendingMarketConfig, ProtocolConfig } from '../../../types/configs';
+import { LendingMarketConfig, ProtocolConfig, Token } from '../../../types/configs';
 import { LendingActivityAction, TokenRewardEntry } from '../../../types/domains/base';
 import { LendingActivityEvent } from '../../../types/domains/lending';
 import { ContextServices } from '../../../types/namespaces';
@@ -374,8 +374,10 @@ export default class CompoundAdapter extends ProtocolAdapter {
   }
 
   public async getLendingMarketSnapshots(options: GetSnapshotOptions): Promise<GetSnapshotResult> {
+    const activities = options.collectActivities ? await this.getLendingMarketActivities(options) : [];
+
     const result: GetSnapshotResult = {
-      activities: options.collectActivities ? await this.getLendingMarketActivities(options) : [],
+      activities: activities,
       snapshots: [],
     };
 
@@ -429,6 +431,66 @@ export default class CompoundAdapter extends ProtocolAdapter {
 
     const rewards = await this.getMarketRewards(options.config as LendingMarketConfig, options.timestamp);
 
+    // count volumes
+    let volumeDeposit = new BigNumber(0);
+    let volumeWithdraw = new BigNumber(0);
+    let volumeBorrow = new BigNumber(0);
+    let volumeRepay = new BigNumber(0);
+    const volumeLiquidate: {
+      [key: string]: {
+        collateralToken: Token;
+        collateralTokenPrice: string;
+        collateralAmount: string;
+      };
+    } = {};
+    for (const event of activities) {
+      switch (event.action) {
+        case 'deposit': {
+          volumeDeposit = volumeDeposit.plus(new BigNumber(event.tokenAmount));
+          break;
+        }
+        case 'withdraw': {
+          volumeWithdraw = volumeWithdraw.plus(new BigNumber(event.tokenAmount));
+          break;
+        }
+        case 'borrow': {
+          volumeBorrow = volumeBorrow.plus(new BigNumber(event.tokenAmount));
+          break;
+        }
+        case 'repay': {
+          volumeRepay = volumeRepay.plus(new BigNumber(event.tokenAmount));
+          break;
+        }
+        case 'liquidate': {
+          volumeRepay = volumeRepay.plus(new BigNumber(event.tokenAmount));
+
+          // count liquidate volume
+          if (event.collateralToken && event.collateralAmount) {
+            if (!volumeLiquidate[event.collateralToken.address]) {
+              const collateralTokenPrice = await this.services.oracle.getTokenPriceUsd({
+                chain: options.config.chain,
+                address: event.collateralToken.address,
+                timestamp: options.timestamp,
+              });
+              volumeLiquidate[event.collateralToken.address] = {
+                collateralToken: event.collateralToken,
+                collateralTokenPrice: collateralTokenPrice ? collateralTokenPrice : '0',
+                collateralAmount: '0',
+              };
+            }
+
+            volumeLiquidate[event.collateralToken.address].collateralAmount = new BigNumber(
+              volumeLiquidate[event.collateralToken.address].collateralAmount,
+            )
+              .plus(new BigNumber(event.collateralAmount))
+              .toString(10);
+          }
+
+          break;
+        }
+      }
+    }
+
     result.snapshots.push({
       type: 'cross',
       chain: marketConfig.chain,
@@ -445,6 +507,12 @@ export default class CompoundAdapter extends ProtocolAdapter {
 
       supplyRate: supplyRate,
       borrowRate: borrowRate,
+
+      volumeDeposited: volumeDeposit.toString(10),
+      volumeWithdrawn: volumeWithdraw.toString(10),
+      volumeBorrowed: volumeBorrow.toString(10),
+      volumeRepaid: volumeRepay.toString(10),
+      volumeLiquidated: Object.values(volumeLiquidate),
 
       rewardForLenders: rewards.lenderTokenRewards,
       rewardForBorrowers: rewards.borrowerTokenRewards,

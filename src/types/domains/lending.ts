@@ -33,11 +33,18 @@ export interface LendingMarketSnapshot extends DayDataSnapshot {
   rewardForBorrowers?: Array<TokenRewardEntry>;
 
   // volumes
+  // on cross market, deposit/withdraw volume is the token supplied and withdrawn volumes
+  // but on CDP market, deposit/withdraw volume is collateral deposit/withdraw volumes, not debt token.
   volumeDeposited?: string;
   volumeWithdrawn?: string;
   volumeBorrowed?: string;
   volumeRepaid?: string;
-  volumeLiquidated?: string;
+
+  volumeLiquidated?: Array<{
+    collateralToken: Token;
+    collateralTokenPrice: string;
+    collateralAmount: string;
+  }>;
 
   // for CDP market
   collateralToken?: Token;
