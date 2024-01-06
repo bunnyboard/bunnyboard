@@ -39,4 +39,11 @@ export default class ProtocolAdapter implements IProtocolAdapter {
       snapshots: [],
     };
   }
+
+  public async getPerpetualSnapshots(options: GetSnapshotOptions): Promise<GetSnapshotResult> {
+    return {
+      activities: [],
+      snapshots: [],
+    };
+  }
 }

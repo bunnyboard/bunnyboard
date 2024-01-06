@@ -3,9 +3,10 @@ import { DAY } from '../../configs/constants';
 import EnvConfig from '../../configs/envConfig';
 import logger from '../../lib/logger';
 import { getDateString, getTimestamp, getTodayUTCTimestamp, normalizeAddress } from '../../lib/utils';
-import { LendingMarketConfig, MasterchefConfig } from '../../types/configs';
+import { LendingMarketConfig, MasterchefConfig, PerpetualMarketConfig } from '../../types/configs';
 import { LendingMarketSnapshot } from '../../types/domains/lending';
 import { MasterchefPoolSnapshot } from '../../types/domains/masterchef';
+import { PerpetualMarketSnapshot } from '../../types/domains/perpetual';
 import { ContextServices, ContextStorages, IProtocolAdapter, IProtocolCollector } from '../../types/namespaces';
 import { RunCollectorOptions } from '../../types/options';
 import getProtocolAdapters from '../adapters';
@@ -31,6 +32,7 @@ export default class ProtocolCollector implements IProtocolCollector {
 
     let lendingMarketConfigs: Array<LendingMarketConfig> = [];
     let masterchefConfigs: Array<MasterchefConfig> = [];
+    let perpetualMarketConfigs: Array<PerpetualMarketConfig> = [];
 
     for (const protocolConfig of protocolConfigs) {
       if (protocolConfig.lendingMarkets) {
@@ -42,6 +44,12 @@ export default class ProtocolCollector implements IProtocolCollector {
       if (protocolConfig.masterchefs) {
         masterchefConfigs = masterchefConfigs.concat(
           protocolConfig.masterchefs.filter((item) => !options.chain || options.chain === item.chain),
+        );
+      }
+
+      if (protocolConfig.perpetualMarkets) {
+        perpetualMarketConfigs = perpetualMarketConfigs.concat(
+          protocolConfig.perpetualMarkets.filter((item) => !options.chain || options.chain === item.chain),
         );
       }
     }
@@ -58,9 +66,16 @@ export default class ProtocolCollector implements IProtocolCollector {
         address: normalizeAddress(item.address),
       };
     });
+    perpetualMarketConfigs = perpetualMarketConfigs.map((item) => {
+      return {
+        ...item,
+        address: normalizeAddress(item.address),
+      };
+    });
 
     await this.collectLendingMarketSnapshots(lendingMarketConfigs);
     await this.collectMasterchefPoolSnapshots(masterchefConfigs);
+    await this.collectPerpetualMarketSnapshots(perpetualMarketConfigs);
   }
 
   protected async collectLendingMarketSnapshots(marketConfigs: Array<LendingMarketConfig>): Promise<void> {
@@ -336,6 +351,140 @@ export default class ProtocolCollector implements IProtocolCollector {
           protocol: masterchefConfig.protocol,
           chain: masterchefConfig.chain,
           address: masterchefConfig.address,
+          activities: result.activities.length,
+          snapshots: result.snapshots.length,
+          day: getDateString(startTimestamp),
+        });
+
+        startTimestamp += DAY;
+      }
+    }
+  }
+
+  protected async collectPerpetualMarketSnapshots(marketConfigs: Array<PerpetualMarketConfig>): Promise<void> {
+    if (marketConfigs.length > 0) {
+      logger.info('start to update perpetual market data', {
+        service: this.name,
+        total: marketConfigs.length,
+      });
+    }
+
+    for (const marketConfig of marketConfigs) {
+      if (!this.adapters[marketConfig.protocol]) {
+        logger.warn('ignored to update perpetual market data', {
+          service: this.name,
+          protocol: marketConfig.protocol,
+          market: marketConfig.address,
+        });
+        continue;
+      }
+
+      // update latest states
+      const latestResult = await this.adapters[marketConfig.protocol].getPerpetualSnapshots({
+        config: marketConfig,
+        collectActivities: false, // do not collect event logs
+        timestamp: getTimestamp(),
+      });
+      for (const item of latestResult.snapshots) {
+        const snapshot = item as PerpetualMarketSnapshot;
+        await this.storages.database.update({
+          collection: EnvConfig.mongodb.collections.perpetualMarketStates,
+          keys: {
+            chain: snapshot.chain,
+            protocol: snapshot.protocol,
+            address: snapshot.address,
+            'token.address': snapshot.token.address,
+          },
+          updates: {
+            ...snapshot,
+          },
+          upsert: true,
+        });
+      }
+
+      let startTimestamp = marketConfig.birthday;
+      const latestSnapshot = await this.storages.database.find({
+        collection: EnvConfig.mongodb.collections.perpetualMarketSnapshots,
+        query: {
+          chain: marketConfig.chain,
+          protocol: marketConfig.protocol,
+          address: marketConfig.address,
+        },
+        options: {
+          skip: 0,
+          limit: 1,
+          order: { timestamp: -1 },
+        },
+      });
+      const lastTimestamp = latestSnapshot ? Number(latestSnapshot.timestamp) : 0;
+      if (lastTimestamp > startTimestamp) {
+        startTimestamp = lastTimestamp;
+      }
+
+      const todayTimestamp = getTodayUTCTimestamp();
+
+      logger.info('start to update perpetual market data', {
+        service: this.name,
+        protocol: marketConfig.protocol,
+        chain: marketConfig.chain,
+        address: marketConfig.address,
+        fromDate: getDateString(startTimestamp),
+        toDate: getDateString(todayTimestamp),
+      });
+
+      while (startTimestamp <= todayTimestamp) {
+        const result = await this.adapters[marketConfig.protocol].getPerpetualSnapshots({
+          config: marketConfig,
+          collectActivities: true,
+          timestamp: startTimestamp,
+        });
+
+        const operations: Array<any> = [];
+        for (const activity of result.activities) {
+          operations.push({
+            updateOne: {
+              filter: {
+                chain: activity.chain,
+                transactionHash: activity.transactionHash,
+                logIndex: activity.logIndex,
+              },
+              update: {
+                $set: {
+                  ...activity,
+                },
+              },
+              upsert: true,
+            },
+          });
+        }
+        await this.storages.database.bulkWrite({
+          collection: EnvConfig.mongodb.collections.perpetualMarketActivities,
+          operations: operations,
+        });
+
+        for (const item of result.snapshots) {
+          const snapshot = item as PerpetualMarketSnapshot;
+          await this.storages.database.update({
+            collection: EnvConfig.mongodb.collections.perpetualMarketSnapshots,
+            keys: {
+              chain: snapshot.chain,
+              protocol: snapshot.protocol,
+              address: snapshot.address,
+              'token.address': snapshot.token.address,
+              timestamp: snapshot.timestamp,
+            },
+            updates: {
+              ...snapshot,
+            },
+            upsert: true,
+          });
+        }
+
+        logger.info('updated perpetual market data', {
+          service: this.name,
+          protocol: marketConfig.protocol,
+          chain: marketConfig.chain,
+          address: marketConfig.address,
           activities: result.activities.length,
           snapshots: result.snapshots.length,
           day: getDateString(startTimestamp),

@@ -38,6 +38,9 @@ export interface IProtocolAdapter {
 
   // this function get snapshots of a masterchef config
   getMasterchefSnapshots: (options: GetSnapshotOptions) => Promise<GetSnapshotResult>;
+
+  // this function get snapshots of a masterchef config
+  getPerpetualSnapshots: (options: GetSnapshotOptions) => Promise<GetSnapshotResult>;
 }
 
 export interface IProtocolCollector {

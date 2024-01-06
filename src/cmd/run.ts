@@ -1,40 +1,8 @@
 import { ProtocolConfigs } from '../configs';
-import { getDateString, getTimestamp } from '../lib/utils';
+import { getTimestamp } from '../lib/utils';
 import getProtocolAdapters from '../modules/adapters';
 import { ContextServices } from '../types/namespaces';
 import { BasicCommand } from './basic';
-
-async function printOutput(protocolData: any, output: string) {
-  if (output === 'json') {
-    console.log(JSON.stringify(protocolData));
-  } else {
-    if (protocolData.lendingMarketSnapshots) {
-      const prettyData = [];
-      for (const snapshot of protocolData.lendingMarketSnapshots) {
-        prettyData.push({
-          chain: snapshot.chain,
-          day: getDateString(snapshot.timestamp),
-          token: snapshot.token.symbol,
-          tokenPrice: snapshot.tokenPrice,
-          totalDeposited: snapshot.totalDeposited,
-          supplyRate: snapshot.supplyRate,
-          borrowRate: snapshot.borrowRate,
-          rewardForLender:
-            snapshot.rewardForLenders.length > 0
-              ? `${snapshot.rewardForLenders[0].token.symbol}:${snapshot.rewardForLenders[0].tokenAmount}`
-              : '',
-          rewardForBorrower:
-            snapshot.rewardForBorrowers.length > 0
-              ? `${snapshot.rewardForBorrowers[0].token.symbol}:${snapshot.rewardForBorrowers[0].tokenAmount}`
-              : '',
-        });
-      }
-      console.log('');
-      console.log('Lending Market Snapshots');
-      console.table(prettyData);
-    }
-  }
-}
 
 export class RunCommand extends BasicCommand {
   public readonly name: string = 'run';
@@ -51,7 +19,6 @@ export class RunCommand extends BasicCommand {
     const chain = argv.chain;
     const activity = argv.activity;
     const timestamp = argv.timestamp ? Number(argv.timestamp) : getTimestamp();
-    const output = argv.output; // console, json, default: console
 
     const protocolConfig = ProtocolConfigs[protocol];
     const adapters = getProtocolAdapters(services);
@@ -62,6 +29,8 @@ export class RunCommand extends BasicCommand {
         lendingMarketActivities: [],
         masterchefPoolSnapshots: [],
         masterchefPoolActivities: [],
+        perpetualMarketSnapshots: [],
+        perpetualMarketActivities: [],
       };
 
       if (protocolConfig.lendingMarkets) {
@@ -88,7 +57,19 @@ export class RunCommand extends BasicCommand {
         }
       }
 
-      await printOutput(protocolData, output);
+      if (protocolConfig.perpetualMarkets) {
+        for (const config of protocolConfig.perpetualMarkets.filter((item) => chain === '' || item.chain === chain)) {
+          const result = await adapters[protocol].getPerpetualSnapshots({
+            config: config,
+            timestamp: timestamp,
+            collectActivities: activity,
+          });
+          protocolData.perpetualMarketSnapshots = protocolData.perpetualMarketSnapshots.concat(result.snapshots);
+          protocolData.perpetualMarketActivities = protocolData.perpetualMarketActivities.concat(result.activities);
+        }
+      }
+
+      console.log(JSON.stringify(protocolData));
     }
 
     process.exit(0);
@@ -115,11 +96,6 @@ export class RunCommand extends BasicCommand {
         type: 'boolean',
         default: false,
         describe: 'Request to collect protocol activities, default: false',
-      },
-      output: {
-        type: 'string',
-        default: 'console',
-        describe: 'Output result in given format: console, json, default is console.',
       },
     });
   }

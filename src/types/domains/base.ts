@@ -21,6 +21,8 @@ export interface DayDataSnapshot {
 
 export type LendingActivityAction = 'deposit' | 'withdraw' | 'borrow' | 'repay' | 'liquidate' | 'collect';
 export type MasterchefActivityAction = 'deposit' | 'withdraw' | 'emergencyWithdraw' | 'harvest';
+export type TradingActivityAction = 'trade' | 'swap' | 'addLiquidity' | 'removeLiquidity';
+export type PerpetualActivityAction = 'increase' | 'decrease' | 'liquidate' | 'addLiquidity' | 'removeLiquidity';
 
 export interface BaseActivityEvent {
   chain: string;
@@ -42,7 +44,7 @@ export interface BaseActivityEvent {
   timestamp: number;
 
   // activity action
-  action: LendingActivityAction | MasterchefActivityAction;
+  action: LendingActivityAction | MasterchefActivityAction | TradingActivityAction | PerpetualActivityAction;
 
   // user address
   user: string;

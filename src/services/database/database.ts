@@ -92,6 +92,16 @@ export default class DatabaseService implements IDatabaseService {
       envConfig.mongodb.collections.masterchefPoolActivities,
     );
 
+    const perpetualMarketStatesCollection = await this.getCollection(
+      envConfig.mongodb.collections.perpetualMarketStates,
+    );
+    const perpetualMarketSnapshotsCollection = await this.getCollection(
+      envConfig.mongodb.collections.perpetualMarketSnapshots,
+    );
+    const perpetualMarketActivitiesCollection = await this.getCollection(
+      envConfig.mongodb.collections.perpetualMarketActivities,
+    );
+
     statesCollection.createIndex({ name: 1 }, { background: true });
     cachingCollection.createIndex({ name: 1 }, { background: true });
     tokenPricesCollection.createIndex({ chain: 1, address: 1, timestamp: 1 }, { background: true });
@@ -119,6 +129,23 @@ export default class DatabaseService implements IDatabaseService {
     masterchefPoolActivitiesCollection.createIndex({ chain: 1, transactionHash: 1, logIndex: 1 }, { background: true });
     masterchefPoolActivitiesCollection.createIndex(
       { chain: 1, protocol: 1, poolId: 1, user: 1, timestamp: 1 },
+      { background: true },
+    );
+
+    perpetualMarketStatesCollection.createIndex(
+      { chain: 1, protocol: 1, address: 1, 'token.address': 1 },
+      { background: true },
+    );
+    perpetualMarketSnapshotsCollection.createIndex(
+      { chain: 1, protocol: 1, address: 1, 'token.address': 1, timestamp: 1 },
+      { background: true },
+    );
+    perpetualMarketActivitiesCollection.createIndex(
+      { chain: 1, transactionHash: 1, logIndex: 1 },
+      { background: true },
+    );
+    perpetualMarketActivitiesCollection.createIndex(
+      { chain: 1, protocol: 1, 'token.address': 1, user: 1, timestamp: 1 },
       { background: true },
     );
   }

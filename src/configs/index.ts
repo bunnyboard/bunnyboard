@@ -3,6 +3,7 @@ import { EthereumProtocolConfigs } from './chains/ethereum';
 import { Aavev1Configs, Aavev2Configs, Aavev3Configs } from './protocols/aave';
 import { BenqiConfigs } from './protocols/benqi';
 import { CompoundConfigs } from './protocols/compound';
+import { GmxConfigs } from './protocols/gmx';
 import { IronbankConfigs } from './protocols/ironbank';
 import { LiquityConfigs } from './protocols/liquity';
 import { RadiantConfigs } from './protocols/radiant';
@@ -57,4 +58,5 @@ export const ProtocolConfigs: { [key: string]: ProtocolConfig } = {
   sonne: SonneConfigs,
   sushi: SushiConfigs,
   liquity: LiquityConfigs,
+  gmx: GmxConfigs,
 };

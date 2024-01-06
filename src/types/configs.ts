@@ -63,6 +63,15 @@ export interface EnvConfig {
 
       // save masterchef activity events
       masterchefPoolActivities: string;
+
+      // save perpetual market states
+      perpetualMarketStates: string;
+
+      // save perpetual market snapshots
+      perpetualMarketSnapshots: string;
+
+      // save perpetual market activities
+      perpetualMarketActivities: string;
     };
   };
 
@@ -161,6 +170,13 @@ export interface MasterchefConfig {
   devRewardSharePercentage: number;
 }
 
+export interface PerpetualMarketConfig {
+  chain: string;
+  protocol: string;
+  birthday: number;
+  address: string;
+}
+
 export interface ChainMetricConfig extends Blockchain {
   publicRpc: string;
 }
@@ -176,4 +192,7 @@ export interface ProtocolConfig {
 
   // a list of config to collect blockchain metrics
   chainMetrics?: Array<ChainMetricConfig>;
+
+  // a list of perpetual market configs
+  perpetualMarkets?: Array<PerpetualMarketConfig>;
 }

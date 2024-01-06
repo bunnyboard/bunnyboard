@@ -110,6 +110,8 @@ export const OracleConfigs: { [key: string]: { [key: string]: OracleConfig } } =
     [ArbitrumTokenList.rETH.address]: OracleSourceConfigs.rETH,
     [ArbitrumTokenList.FRAX.address]: OracleSourceConfigs.FRAX,
     [ArbitrumTokenList.ARB.address]: OracleSourceConfigs.ARB,
+    [ArbitrumTokenList.UNI.address]: OracleSourceConfigs.UNI,
+    [ArbitrumTokenList.MIM.address]: OracleSourceConfigs.MIM,
   },
 
   // tokens on Optimism
