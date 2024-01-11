@@ -1,11 +1,7 @@
+import { compareAddress } from '../../lib/utils';
 import { ProtocolConfig } from '../../types/configs';
 import { ContextServices, IProtocolAdapter } from '../../types/namespaces';
-import {
-  AdapterAbiConfigs,
-  GetChainMetricSnapshotOptions,
-  GetSnapshotOptions,
-  GetSnapshotResult,
-} from '../../types/options';
+import { AdapterAbiConfigs, TransformEventLogOptions, TransformEventLogResult } from '../../types/options';
 
 export default class ProtocolAdapter implements IProtocolAdapter {
   public readonly name: string = 'adapter';
@@ -22,28 +18,29 @@ export default class ProtocolAdapter implements IProtocolAdapter {
     };
   }
 
-  public async getChainMetricSnapshots(options: GetChainMetricSnapshotOptions): Promise<Array<any>> {
-    return [];
+  protected supportSignature(signature: string): boolean {
+    for (const sig of Object.values(this.abiConfigs.eventSignatures)) {
+      if (sig === signature) {
+        return true;
+      }
+    }
+
+    return false;
   }
 
-  public async getLendingMarketSnapshots(options: GetSnapshotOptions): Promise<GetSnapshotResult> {
-    return {
-      activities: [],
-      snapshots: [],
-    };
+  protected supportContract(address: string): boolean {
+    for (const contract of this.config.configs) {
+      if (compareAddress(address, contract.address)) {
+        return true;
+      }
+    }
+
+    return false;
   }
 
-  public async getMasterchefSnapshots(options: GetSnapshotOptions): Promise<GetSnapshotResult> {
+  public async transformEventLogs(options: TransformEventLogOptions): Promise<TransformEventLogResult> {
     return {
       activities: [],
-      snapshots: [],
-    };
-  }
-
-  public async getPerpetualSnapshots(options: GetSnapshotOptions): Promise<GetSnapshotResult> {
-    return {
-      activities: [],
-      snapshots: [],
     };
   }
 }

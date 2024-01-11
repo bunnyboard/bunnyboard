@@ -1,15 +1,5 @@
 import { ProtocolConfig, Token } from '../types/configs';
-import { EthereumProtocolConfigs } from './chains/ethereum';
-import { Aavev1Configs, Aavev2Configs, Aavev3Configs } from './protocols/aave';
-import { BenqiConfigs } from './protocols/benqi';
-import { CompoundConfigs } from './protocols/compound';
-import { GmxConfigs } from './protocols/gmx';
-import { IronbankConfigs } from './protocols/ironbank';
-import { LiquityConfigs } from './protocols/liquity';
-import { RadiantConfigs } from './protocols/radiant';
-import { SonneConfigs } from './protocols/sonne';
-import { SushiConfigs } from './protocols/sushi';
-import { VenusConfigs } from './protocols/venus';
+import { Aavev2Configs, Aavev3Configs } from './protocols/aave';
 import TokenListArbitrum from './tokenlists/arbitrum.json';
 import TokenListAvalanche from './tokenlists/avalanche.json';
 import TokenListBase from './tokenlists/base.json';
@@ -21,8 +11,14 @@ import TokenListMetis from './tokenlists/metis.json';
 import TokenListOptimism from './tokenlists/optimism.json';
 import TokenListPolygon from './tokenlists/polygon.json';
 
-export const DefaultQueryLogsBlockRange = 2000;
-export const DefaultQueryDataLimit = 100;
+export const DefaultQueryLogsBlockRange = 100;
+
+// chain => ethereum
+export const DefaultQueryLogsRanges: { [key: string]: number } = {
+  polygon: 50,
+  linea: 50,
+  zksyncera: 20,
+};
 
 export const TokenList: {
   [key: string]: {
@@ -42,21 +38,6 @@ export const TokenList: {
 };
 
 export const ProtocolConfigs: { [key: string]: ProtocolConfig } = {
-  // blockchains
-  ethereum: EthereumProtocolConfigs,
-
-  // protocols
-  aavev1: Aavev1Configs,
   aavev2: Aavev2Configs,
   aavev3: Aavev3Configs,
-  compound: CompoundConfigs,
-  // compoundv3: Compoundv3Configs,
-  ironbank: IronbankConfigs,
-  venus: VenusConfigs,
-  radiant: RadiantConfigs,
-  benqi: BenqiConfigs,
-  sonne: SonneConfigs,
-  sushi: SushiConfigs,
-  liquity: LiquityConfigs,
-  gmx: GmxConfigs,
 };

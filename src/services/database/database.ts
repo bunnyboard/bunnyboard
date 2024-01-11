@@ -76,78 +76,16 @@ export default class DatabaseService implements IDatabaseService {
   private async setupIndies(): Promise<void> {
     const statesCollection = await this.getCollection(envConfig.mongodb.collections.states);
     const cachingCollection = await this.getCollection(envConfig.mongodb.collections.caching);
-    const tokenPricesCollection = await this.getCollection(envConfig.mongodb.collections.tokenPrices);
-
-    const lendingMarketStatesCollection = await this.getCollection(envConfig.mongodb.collections.lendingMarketStates);
-    const lendingMarketSnapshotsCollection = await this.getCollection(
-      envConfig.mongodb.collections.lendingMarketSnapshots,
-    );
-    const lendingMarketActivities = await this.getCollection(envConfig.mongodb.collections.lendingMarketActivities);
-
-    const masterchefPoolStatesCollection = await this.getCollection(envConfig.mongodb.collections.masterchefPoolStates);
-    const masterchefPoolSnapshotsCollection = await this.getCollection(
-      envConfig.mongodb.collections.masterchefPoolSnapshots,
-    );
-    const masterchefPoolActivitiesCollection = await this.getCollection(
-      envConfig.mongodb.collections.masterchefPoolActivities,
-    );
-
-    const perpetualMarketStatesCollection = await this.getCollection(
-      envConfig.mongodb.collections.perpetualMarketStates,
-    );
-    const perpetualMarketSnapshotsCollection = await this.getCollection(
-      envConfig.mongodb.collections.perpetualMarketSnapshots,
-    );
-    const perpetualMarketActivitiesCollection = await this.getCollection(
-      envConfig.mongodb.collections.perpetualMarketActivities,
-    );
+    const activitiesCollection = await this.getCollection(envConfig.mongodb.collections.activities);
 
     statesCollection.createIndex({ name: 1 }, { background: true });
     cachingCollection.createIndex({ name: 1 }, { background: true });
-    tokenPricesCollection.createIndex({ chain: 1, address: 1, timestamp: 1 }, { background: true });
+    activitiesCollection.createIndex({ chain: 1, transactionHash: 1, logIndex: 1 }, { background: true });
 
-    // write
-    lendingMarketStatesCollection.createIndex(
-      { chain: 1, protocol: 1, address: 1, 'token.address': 1 },
-      { background: true },
-    );
-    lendingMarketSnapshotsCollection.createIndex(
-      { chain: 1, protocol: 1, address: 1, 'token.address': 1, timestamp: 1 },
-      { background: true },
-    );
-    lendingMarketActivities.createIndex({ chain: 1, transactionHash: 1, logIndex: 1 }, { background: true });
-    lendingMarketActivities.createIndex(
-      { chain: 1, protocol: 1, address: 1, user: 1, timestamp: 1 },
-      { background: true },
-    );
-
-    masterchefPoolStatesCollection.createIndex({ chain: 1, address: 1, poolId: 1 }, { background: true });
-    masterchefPoolSnapshotsCollection.createIndex(
-      { chain: 1, address: 1, poolId: 1, timestamp: 1 },
-      { background: true },
-    );
-    masterchefPoolActivitiesCollection.createIndex({ chain: 1, transactionHash: 1, logIndex: 1 }, { background: true });
-    masterchefPoolActivitiesCollection.createIndex(
-      { chain: 1, protocol: 1, poolId: 1, user: 1, timestamp: 1 },
-      { background: true },
-    );
-
-    perpetualMarketStatesCollection.createIndex(
-      { chain: 1, protocol: 1, address: 1, 'token.address': 1 },
-      { background: true },
-    );
-    perpetualMarketSnapshotsCollection.createIndex(
-      { chain: 1, protocol: 1, address: 1, 'token.address': 1, timestamp: 1 },
-      { background: true },
-    );
-    perpetualMarketActivitiesCollection.createIndex(
-      { chain: 1, transactionHash: 1, logIndex: 1 },
-      { background: true },
-    );
-    perpetualMarketActivitiesCollection.createIndex(
-      { chain: 1, protocol: 1, 'token.address': 1, user: 1, timestamp: 1 },
-      { background: true },
-    );
+    // for query activities
+    activitiesCollection.createIndex({ chain: 1, protocol: 1, action: 1 }, { background: true });
+    activitiesCollection.createIndex({ chain: 1, protocol: 1, user: 1 }, { background: true });
+    activitiesCollection.createIndex({ chain: 1, protocol: 1, 'token.address': 1 }, { background: true });
   }
 
   public async insert(options: DatabaseInsertOptions): Promise<void> {

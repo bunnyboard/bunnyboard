@@ -2,13 +2,7 @@ import { IBlockchainService } from '../services/blockchains/domains';
 import { IDatabaseService } from '../services/database/domains';
 import { IOracleService } from '../services/oracle/domains';
 import { ProtocolConfig } from './configs';
-import {
-  AdapterAbiConfigs,
-  GetChainMetricSnapshotOptions,
-  GetSnapshotOptions,
-  GetSnapshotResult,
-  RunCollectorOptions,
-} from './options';
+import { AdapterAbiConfigs, RunCollectorOptions, TransformEventLogOptions, TransformEventLogResult } from './options';
 
 export interface ContextStorages {
   database: IDatabaseService;
@@ -30,17 +24,8 @@ export interface IProtocolAdapter {
   // and abi for parsing
   abiConfigs: AdapterAbiConfigs;
 
-  // get chain metrics
-  getChainMetricSnapshots: (options: GetChainMetricSnapshotOptions) => Promise<Array<any>>;
-
-  // this function get snapshot data of a lending market config
-  getLendingMarketSnapshots: (options: GetSnapshotOptions) => Promise<GetSnapshotResult>;
-
-  // this function get snapshots of a masterchef config
-  getMasterchefSnapshots: (options: GetSnapshotOptions) => Promise<GetSnapshotResult>;
-
-  // this function get snapshots of a masterchef config
-  getPerpetualSnapshots: (options: GetSnapshotOptions) => Promise<GetSnapshotResult>;
+  // transform raw event log into activities
+  transformEventLogs: (options: TransformEventLogOptions) => Promise<TransformEventLogResult>;
 }
 
 export interface IProtocolCollector {

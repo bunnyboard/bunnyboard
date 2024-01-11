@@ -7,6 +7,16 @@ export interface Token {
   decimals: number;
 }
 
+export interface Contract {
+  chain: string;
+  protocol: string;
+  address: string;
+}
+
+export interface LiquidityPoolConfig extends Token {
+  tokens: Array<Token>;
+}
+
 export interface Blockchain {
   // ex: ethereum
   name: string;
@@ -40,38 +50,8 @@ export interface EnvConfig {
       // save any kind of cache
       caching: string;
 
-      // save token prices
-      tokenPrices: string;
-
-      // save metrics related to blockchains
-      chainMetricSnapshots: string;
-
-      // save lending market states - latest snapshot
-      lendingMarketStates: string;
-
-      // save lending market metrics and snapshots
-      lendingMarketSnapshots: string;
-
-      // save lending market activity events
-      lendingMarketActivities: string;
-
-      // save masterchef pool states - latest snapshot
-      masterchefPoolStates: string;
-
-      // save masterchef pools metric and snapshots
-      masterchefPoolSnapshots: string;
-
-      // save masterchef activity events
-      masterchefPoolActivities: string;
-
-      // save perpetual market states
-      perpetualMarketStates: string;
-
-      // save perpetual market snapshots
-      perpetualMarketSnapshots: string;
-
-      // save perpetual market activities
-      perpetualMarketActivities: string;
+      // save all activity events;
+      activities: string;
     };
   };
 
@@ -79,6 +59,19 @@ export interface EnvConfig {
   blockchains: {
     [key: string]: Blockchain;
   };
+}
+
+export const DataMetrics = {
+  lending: 'lending',
+  masterchef: 'masterchef',
+  perpetual: 'perpetual',
+};
+const Metrics = Object.values(DataMetrics);
+export type DataMetric = (typeof Metrics)[number];
+
+export interface MetricConfig extends Contract {
+  metric: DataMetric;
+  birthday: number;
 }
 
 export type OracleType =
@@ -131,22 +124,34 @@ export interface OracleConfig {
   stablecoin?: boolean;
 }
 
-export interface LiquidityPoolConfig extends Token {
-  tokens: Array<Token>;
-}
+export const LendingMarketTypes = {
+  cross: 'cross',
+  cdp: 'cdp',
+};
+export const LendingMarketVersions = {
+  cross: {
+    aavev2: 'aavev2',
+    aavev3: 'aavev3',
+    compound: 'compound',
+  },
+  cdp: {
+    maker: 'maker',
+    liquity: 'liquity',
+    compoundv3: 'compoundv3',
+  },
+};
 
-export type LendingMarketType = 'cross' | 'cdp';
-export type LendingCrossVersion = 'aavev1' | 'aavev2' | 'aavev3' | 'compound' | 'compoundv3' | 'venusIsolated';
-export type LendingCdpVersion = 'compoundv3' | 'liquity' | 'maker';
-export interface LendingMarketConfig {
-  chain: string;
-  protocol: string;
+const MarketTypes = Object.values(LendingMarketTypes);
+const CrossVersions = Object.values(LendingMarketVersions.cross);
+const CdpVersions = Object.values(LendingMarketVersions.cdp);
+
+export type LendingMarketType = (typeof MarketTypes)[number];
+export type LendingCrossVersion = (typeof CrossVersions)[number];
+export type LendingCdpVersion = (typeof CdpVersions)[number];
+
+export interface LendingMarketConfig extends MetricConfig {
   type: LendingMarketType;
   version: LendingCrossVersion | LendingCdpVersion;
-  birthday: number;
-
-  // the market address, collateral manager, protocol logic, etc...
-  address: string;
 
   // in CDP market, there is a default debt token and a collateral token
   // ex: DAI in Maker DAO
@@ -154,45 +159,29 @@ export interface LendingMarketConfig {
   collateralToken?: Token;
 }
 
-export type MasterchefVersion =
-  | 'master' // the original sushi masterchef
-  | 'masterv2' // sushi masterchef v2
-  | 'mini'; // the minichef version of sushi were deployed other chains
-export interface MasterchefConfig {
-  chain: string;
-  protocol: string;
+export const MasterchefVersions = {
+  origin: 'origin', // the original sushi masterchef
+  masterv2: 'masterv2', // sushi masterchef v2
+  mini: 'mini', // the minichef version of sushi were deployed other chains
+};
+
+const ChefVersions = Object.values(MasterchefVersions);
+export type MasterchefVersion = (typeof ChefVersions)[number];
+
+export interface MasterchefConfig extends MetricConfig {
   version: MasterchefVersion;
-  birthday: number;
-  address: string;
+
+  // the reward token - ex: SUSHI
   rewardToken: Token;
 
   // original sushi masterchef is 10%
   devRewardSharePercentage: number;
 }
 
-export interface PerpetualMarketConfig {
-  chain: string;
-  protocol: string;
-  birthday: number;
-  address: string;
-}
-
-export interface ChainMetricConfig extends Blockchain {
-  publicRpc: string;
-}
+export interface PerpetualMarketConfig extends MetricConfig {}
 
 export interface ProtocolConfig {
   protocol: string;
 
-  // a list of lending market configs if any
-  lendingMarkets?: Array<LendingMarketConfig>;
-
-  // a list of masterchef if any
-  masterchefs?: Array<MasterchefConfig>;
-
-  // a list of config to collect blockchain metrics
-  chainMetrics?: Array<ChainMetricConfig>;
-
-  // a list of perpetual market configs
-  perpetualMarkets?: Array<PerpetualMarketConfig>;
+  configs: Array<MetricConfig>;
 }

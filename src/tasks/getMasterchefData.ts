@@ -5,12 +5,20 @@ import MasterchefAbi from '../configs/abi/sushi/Masterchef.json';
 import { compareAddress, normalizeAddress } from '../lib/utils';
 import UniswapLibs from '../modules/libs/uniswap';
 import BlockchainService from '../services/blockchains/blockchain';
-import { StaticDataMasterchefPoolInfo } from '../types/others';
+import { LiquidityPoolConfig } from '../types/configs';
 
 interface Masterchef {
   chain: string;
   protocol: string;
   address: string;
+}
+
+interface StaticDataMasterchefPoolInfo {
+  chain: string;
+  protocol: string;
+  poolId: number;
+  address: string; // masterchef address
+  lpToken: LiquidityPoolConfig;
 }
 
 const contracts: Array<Masterchef> = [

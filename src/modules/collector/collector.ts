@@ -1,12 +1,7 @@
-import { ProtocolConfigs } from '../../configs';
-import { DAY } from '../../configs/constants';
+import { DefaultQueryLogsBlockRange, DefaultQueryLogsRanges } from '../../configs';
 import EnvConfig from '../../configs/envConfig';
 import logger from '../../lib/logger';
-import { getDateString, getTimestamp, getTodayUTCTimestamp, normalizeAddress } from '../../lib/utils';
-import { LendingMarketConfig, MasterchefConfig, PerpetualMarketConfig } from '../../types/configs';
-import { LendingMarketSnapshot } from '../../types/domains/lending';
-import { MasterchefPoolSnapshot } from '../../types/domains/masterchef';
-import { PerpetualMarketSnapshot } from '../../types/domains/perpetual';
+import { tryQueryBlockTimestamps } from '../../lib/subsgraph';
 import { ContextServices, ContextStorages, IProtocolAdapter, IProtocolCollector } from '../../types/namespaces';
 import { RunCollectorOptions } from '../../types/options';
 import getProtocolAdapters from '../adapters';
@@ -21,477 +16,131 @@ export default class ProtocolCollector implements IProtocolCollector {
   constructor(storages: ContextStorages, services: ContextServices) {
     this.services = services;
     this.storages = storages;
+
+    // get all supported adapters
     this.adapters = getProtocolAdapters(services);
   }
 
   public async run(options: RunCollectorOptions): Promise<void> {
-    let protocolConfigs = Object.values(ProtocolConfigs);
-    if (options.protocol) {
-      protocolConfigs = protocolConfigs.filter((item) => item.protocol === options.protocol);
-    }
-
-    let lendingMarketConfigs: Array<LendingMarketConfig> = [];
-    let masterchefConfigs: Array<MasterchefConfig> = [];
-    let perpetualMarketConfigs: Array<PerpetualMarketConfig> = [];
-
-    for (const protocolConfig of protocolConfigs) {
-      if (protocolConfig.lendingMarkets) {
-        lendingMarketConfigs = lendingMarketConfigs.concat(
-          protocolConfig.lendingMarkets.filter((item) => !options.chain || options.chain === item.chain),
-        );
-      }
-
-      if (protocolConfig.masterchefs) {
-        masterchefConfigs = masterchefConfigs.concat(
-          protocolConfig.masterchefs.filter((item) => !options.chain || options.chain === item.chain),
-        );
-      }
-
-      if (protocolConfig.perpetualMarkets) {
-        perpetualMarketConfigs = perpetualMarketConfigs.concat(
-          protocolConfig.perpetualMarkets.filter((item) => !options.chain || options.chain === item.chain),
-        );
-      }
-    }
-
-    lendingMarketConfigs = lendingMarketConfigs.map((item) => {
-      return {
-        ...item,
-        address: normalizeAddress(item.address),
-      };
-    });
-    masterchefConfigs = masterchefConfigs.map((item) => {
-      return {
-        ...item,
-        address: normalizeAddress(item.address),
-      };
-    });
-    perpetualMarketConfigs = perpetualMarketConfigs.map((item) => {
-      return {
-        ...item,
-        address: normalizeAddress(item.address),
-      };
-    });
-
-    await this.collectLendingMarketSnapshots(lendingMarketConfigs);
-    await this.collectMasterchefPoolSnapshots(masterchefConfigs);
-    await this.collectPerpetualMarketSnapshots(perpetualMarketConfigs);
+    await this.collectActivities(options);
   }
 
-  protected async collectLendingMarketSnapshots(marketConfigs: Array<LendingMarketConfig>): Promise<void> {
-    if (marketConfigs.length > 0) {
-      logger.info('start to update lending market data', {
-        service: this.name,
-        total: marketConfigs.length,
-      });
+  protected async collectActivities(options: RunCollectorOptions): Promise<void> {
+    let { chain, protocol, fromBlock, force } = options;
+
+    if (!EnvConfig.blockchains[chain]) {
+      return;
     }
 
-    for (const marketConfig of marketConfigs) {
-      if (!this.adapters[marketConfig.protocol]) {
-        logger.warn('ignored to update lending market data', {
-          service: this.name,
-          protocol: marketConfig.protocol,
-          market: marketConfig.address,
-        });
-        continue;
-      }
+    const client = this.services.blockchain.getPublicClient(chain);
+    const latestBlock = Number(await client.getBlockNumber());
+    const stateKey = `collect-activity-${chain}`;
 
-      // update latest states
-      const latestResult = await this.adapters[marketConfig.protocol].getLendingMarketSnapshots({
-        config: marketConfig,
-        collectActivities: false, // do not collect event logs
-        timestamp: getTimestamp(),
-      });
-      for (const item of latestResult.snapshots) {
-        const snapshot = item as LendingMarketSnapshot;
-        if (snapshot.type === 'cross' || !snapshot.collateralToken) {
-          await this.storages.database.update({
-            collection: EnvConfig.mongodb.collections.lendingMarketStates,
-            keys: {
-              chain: snapshot.chain,
-              protocol: snapshot.protocol,
-              address: snapshot.address,
-              'token.address': snapshot.token.address,
-            },
-            updates: {
-              ...snapshot,
-            },
-            upsert: true,
-          });
-        } else {
-          // on cdp market, the market id should have collateral token too.
-          await this.storages.database.update({
-            collection: EnvConfig.mongodb.collections.lendingMarketStates,
-            keys: {
-              chain: snapshot.chain,
-              protocol: snapshot.protocol,
-              address: snapshot.address,
-              'token.address': snapshot.token.address,
-              'collateralToken.address': snapshot.collateralToken.address,
-            },
-            updates: {
-              ...snapshot,
-            },
-            upsert: true,
-          });
-        }
-      }
-
-      let startTimestamp = marketConfig.birthday;
-      const latestSnapshot = await this.storages.database.find({
-        collection: EnvConfig.mongodb.collections.lendingMarketSnapshots,
+    let startBlock = fromBlock ? fromBlock : 0;
+    if (fromBlock && force) {
+      startBlock = fromBlock;
+    } else {
+      const state = await this.storages.database.find({
+        collection: EnvConfig.mongodb.collections.states,
         query: {
-          chain: marketConfig.chain,
-          protocol: marketConfig.protocol,
-          address: marketConfig.address,
-        },
-        options: {
-          skip: 0,
-          limit: 1,
-          order: { timestamp: -1 },
+          name: stateKey,
         },
       });
-      const lastTimestamp = latestSnapshot ? Number(latestSnapshot.timestamp) : 0;
-      if (lastTimestamp > startTimestamp) {
-        startTimestamp = lastTimestamp;
+      if (state) {
+        if (startBlock < state.blockNumber) {
+          startBlock = state.blockNumber;
+        }
       }
 
-      const todayTimestamp = getTodayUTCTimestamp();
+      if (startBlock === 0) {
+        // sync from latest 1000 blocks
+        startBlock = latestBlock - 1000;
+      }
+    }
 
-      logger.info('start to update lending market data', {
-        service: this.name,
-        protocol: marketConfig.protocol,
-        chain: marketConfig.chain,
-        address: marketConfig.address,
-        fromDate: getDateString(startTimestamp),
-        toDate: getDateString(todayTimestamp),
+    logger.info('start to collect activity events', {
+      service: this.name,
+      chain: chain,
+      fromBlock: startBlock,
+      toBlock: latestBlock,
+    });
+
+    const blockRange = DefaultQueryLogsRanges[chain] ? DefaultQueryLogsRanges[chain] : DefaultQueryLogsBlockRange;
+    while (startBlock <= latestBlock) {
+      const startExeTime = Math.floor(new Date().getTime() / 1000);
+
+      const toBlock = startBlock + blockRange > latestBlock ? latestBlock : startBlock + blockRange;
+      const logs: Array<any> = await client.getLogs({
+        fromBlock: BigInt(startBlock),
+        toBlock: BigInt(toBlock),
       });
 
-      while (startTimestamp <= todayTimestamp) {
-        const result = await this.adapters[marketConfig.protocol].getLendingMarketSnapshots({
-          config: marketConfig,
-          collectActivities: true,
-          timestamp: startTimestamp,
-        });
+      const blocktimes = await tryQueryBlockTimestamps(
+        EnvConfig.blockchains[chain].blockSubgraph as string,
+        startBlock,
+        toBlock,
+      );
 
-        const operations: Array<any> = [];
-        for (const activity of result.activities) {
-          operations.push({
-            updateOne: {
-              filter: {
-                chain: activity.chain,
-                transactionHash: activity.transactionHash,
-                logIndex: activity.logIndex,
-              },
-              update: {
-                $set: {
-                  ...activity,
+      const actionOperations: Array<any> = [];
+
+      for (const [, adapter] of Object.entries(this.adapters)) {
+        if (protocol === undefined || protocol === adapter.config.protocol) {
+          const result = await adapter.transformEventLogs({
+            chain: chain,
+            logs,
+          });
+          for (const activity of result.activities) {
+            actionOperations.push({
+              updateOne: {
+                filter: {
+                  chain: chain,
+                  transactionHash: activity.transactionHash,
+                  logIndex: activity.logIndex,
                 },
-              },
-              upsert: true,
-            },
-          });
-        }
-        await this.storages.database.bulkWrite({
-          collection: EnvConfig.mongodb.collections.lendingMarketActivities,
-          operations: operations,
-        });
-
-        for (const item of result.snapshots) {
-          const snapshot = item as LendingMarketSnapshot;
-          await this.storages.database.update({
-            collection: EnvConfig.mongodb.collections.lendingMarketSnapshots,
-            keys: {
-              chain: snapshot.chain,
-              protocol: snapshot.protocol,
-              address: snapshot.address,
-              'token.address': snapshot.token.address,
-              timestamp: snapshot.timestamp,
-            },
-            updates: {
-              ...snapshot,
-            },
-            upsert: true,
-          });
-        }
-
-        logger.info('updated lending market data', {
-          service: this.name,
-          protocol: marketConfig.protocol,
-          chain: marketConfig.chain,
-          address: marketConfig.address,
-          activities: result.activities.length,
-          snapshots: result.snapshots.length,
-          day: getDateString(startTimestamp),
-        });
-
-        startTimestamp += DAY;
-      }
-    }
-  }
-
-  protected async collectMasterchefPoolSnapshots(masterchefConfigs: Array<MasterchefConfig>): Promise<void> {
-    if (masterchefConfigs.length > 0) {
-      logger.info('start to update masterchef pool data', {
-        service: this.name,
-        total: masterchefConfigs.length,
-      });
-    }
-
-    for (const masterchefConfig of masterchefConfigs) {
-      if (!this.adapters[masterchefConfig.protocol]) {
-        logger.warn('ignored to update masterchef pool data', {
-          service: this.name,
-          protocol: masterchefConfig.protocol,
-          address: masterchefConfig.address,
-        });
-        continue;
-      }
-
-      let startTimestamp = masterchefConfig.birthday;
-      const latestSnapshot = await this.storages.database.find({
-        collection: EnvConfig.mongodb.collections.masterchefPoolSnapshots,
-        query: {
-          chain: masterchefConfig.chain,
-          protocol: masterchefConfig.protocol,
-          address: masterchefConfig.address,
-        },
-        options: {
-          skip: 0,
-          limit: 1,
-          order: { timestamp: -1 },
-        },
-      });
-      const lastTimestamp = latestSnapshot ? Number(latestSnapshot.timestamp) : 0;
-      if (lastTimestamp > startTimestamp) {
-        startTimestamp = lastTimestamp;
-      }
-
-      const todayTimestamp = getTodayUTCTimestamp();
-
-      logger.info('start to update masterchef pool data', {
-        service: this.name,
-        protocol: masterchefConfig.protocol,
-        chain: masterchefConfig.chain,
-        address: masterchefConfig.address,
-        fromDate: getDateString(startTimestamp),
-        toDate: getDateString(todayTimestamp),
-      });
-
-      const latestResult = await this.adapters[masterchefConfig.protocol].getMasterchefSnapshots({
-        config: masterchefConfig,
-        collectActivities: false,
-        timestamp: getTimestamp(),
-      });
-
-      for (const item of latestResult.snapshots) {
-        const snapshot = item as MasterchefPoolSnapshot;
-        await this.storages.database.update({
-          collection: EnvConfig.mongodb.collections.masterchefPoolStates,
-          keys: {
-            chain: snapshot.chain,
-            address: snapshot.address,
-            poolId: snapshot.poolId,
-          },
-          updates: {
-            ...snapshot,
-          },
-          upsert: true,
-        });
-      }
-
-      while (startTimestamp <= todayTimestamp) {
-        const result = await this.adapters[masterchefConfig.protocol].getMasterchefSnapshots({
-          config: masterchefConfig,
-          collectActivities: false,
-          timestamp: startTimestamp,
-        });
-        const operations: Array<any> = [];
-        for (const activity of result.activities) {
-          operations.push({
-            updateOne: {
-              filter: {
-                chain: activity.chain,
-                transactionHash: activity.transactionHash,
-                logIndex: activity.logIndex,
-              },
-              update: {
-                $set: {
-                  ...activity,
+                update: {
+                  $set: {
+                    ...activity,
+                    timestamp: blocktimes[activity.blockNumber] ? blocktimes[activity.blockNumber] : 0,
+                  },
                 },
+                upsert: true,
               },
-              upsert: true,
-            },
-          });
+            });
+          }
         }
-        await this.storages.database.bulkWrite({
-          collection: EnvConfig.mongodb.collections.masterchefPoolActivities,
-          operations: operations,
-        });
-
-        for (const item of result.snapshots) {
-          const snapshot = item as MasterchefPoolSnapshot;
-          await this.storages.database.update({
-            collection: EnvConfig.mongodb.collections.masterchefPoolSnapshots,
-            keys: {
-              chain: snapshot.chain,
-              address: snapshot.address,
-              poolId: snapshot.poolId,
-              timestamp: snapshot.timestamp,
-            },
-            updates: {
-              ...snapshot,
-            },
-            upsert: true,
-          });
-        }
-
-        logger.info('updated masterchef pool data', {
-          service: this.name,
-          protocol: masterchefConfig.protocol,
-          chain: masterchefConfig.chain,
-          address: masterchefConfig.address,
-          activities: result.activities.length,
-          snapshots: result.snapshots.length,
-          day: getDateString(startTimestamp),
-        });
-
-        startTimestamp += DAY;
       }
-    }
-  }
 
-  protected async collectPerpetualMarketSnapshots(marketConfigs: Array<PerpetualMarketConfig>): Promise<void> {
-    if (marketConfigs.length > 0) {
-      logger.info('start to update perpetual market data', {
-        service: this.name,
-        total: marketConfigs.length,
+      await this.storages.database.bulkWrite({
+        collection: EnvConfig.mongodb.collections.activities,
+        operations: actionOperations,
       });
-    }
 
-    for (const marketConfig of marketConfigs) {
-      if (!this.adapters[marketConfig.protocol]) {
-        logger.warn('ignored to update perpetual market data', {
-          service: this.name,
-          protocol: marketConfig.protocol,
-          market: marketConfig.address,
-        });
-        continue;
-      }
-
-      // update latest states
-      const latestResult = await this.adapters[marketConfig.protocol].getPerpetualSnapshots({
-        config: marketConfig,
-        collectActivities: false, // do not collect event logs
-        timestamp: getTimestamp(),
-      });
-      for (const item of latestResult.snapshots) {
-        const snapshot = item as PerpetualMarketSnapshot;
-        await this.storages.database.update({
-          collection: EnvConfig.mongodb.collections.perpetualMarketStates,
-          keys: {
-            chain: snapshot.chain,
-            protocol: snapshot.protocol,
-            address: snapshot.address,
-            'token.address': snapshot.token.address,
-          },
-          updates: {
-            ...snapshot,
-          },
-          upsert: true,
-        });
-      }
-
-      let startTimestamp = marketConfig.birthday;
-      const latestSnapshot = await this.storages.database.find({
-        collection: EnvConfig.mongodb.collections.perpetualMarketSnapshots,
-        query: {
-          chain: marketConfig.chain,
-          protocol: marketConfig.protocol,
-          address: marketConfig.address,
+      await this.storages.database.update({
+        collection: EnvConfig.mongodb.collections.states,
+        keys: {
+          name: stateKey,
         },
-        options: {
-          skip: 0,
-          limit: 1,
-          order: { timestamp: -1 },
+        updates: {
+          name: stateKey,
+          blockNumber: toBlock,
         },
+        upsert: true,
       });
-      const lastTimestamp = latestSnapshot ? Number(latestSnapshot.timestamp) : 0;
-      if (lastTimestamp > startTimestamp) {
-        startTimestamp = lastTimestamp;
-      }
 
-      const todayTimestamp = getTodayUTCTimestamp();
+      const endExeTime = Math.floor(new Date().getTime() / 1000);
+      const elapsed = endExeTime - startExeTime;
 
-      logger.info('start to update perpetual market data', {
+      logger.info('got activity events', {
         service: this.name,
-        protocol: marketConfig.protocol,
-        chain: marketConfig.chain,
-        address: marketConfig.address,
-        fromDate: getDateString(startTimestamp),
-        toDate: getDateString(todayTimestamp),
+        chain: chain,
+        fromBlock: startBlock,
+        toBlock: toBlock,
+        logs: logs.length,
+        events: actionOperations.length,
+        elapses: `${elapsed}s`,
       });
 
-      while (startTimestamp <= todayTimestamp) {
-        const result = await this.adapters[marketConfig.protocol].getPerpetualSnapshots({
-          config: marketConfig,
-          collectActivities: true,
-          timestamp: startTimestamp,
-        });
-
-        const operations: Array<any> = [];
-        for (const activity of result.activities) {
-          operations.push({
-            updateOne: {
-              filter: {
-                chain: activity.chain,
-                transactionHash: activity.transactionHash,
-                logIndex: activity.logIndex,
-              },
-              update: {
-                $set: {
-                  ...activity,
-                },
-              },
-              upsert: true,
-            },
-          });
-        }
-        await this.storages.database.bulkWrite({
-          collection: EnvConfig.mongodb.collections.perpetualMarketActivities,
-          operations: operations,
-        });
-
-        for (const item of result.snapshots) {
-          const snapshot = item as PerpetualMarketSnapshot;
-          await this.storages.database.update({
-            collection: EnvConfig.mongodb.collections.perpetualMarketSnapshots,
-            keys: {
-              chain: snapshot.chain,
-              protocol: snapshot.protocol,
-              address: snapshot.address,
-              'token.address': snapshot.token.address,
-              timestamp: snapshot.timestamp,
-            },
-            updates: {
-              ...snapshot,
-            },
-            upsert: true,
-          });
-        }
-
-        logger.info('updated perpetual market data', {
-          service: this.name,
-          protocol: marketConfig.protocol,
-          chain: marketConfig.chain,
-          address: marketConfig.address,
-          activities: result.activities.length,
-          snapshots: result.snapshots.length,
-          day: getDateString(startTimestamp),
-        });
-
-        startTimestamp += DAY;
-      }
+      startBlock += blockRange;
     }
   }
 }

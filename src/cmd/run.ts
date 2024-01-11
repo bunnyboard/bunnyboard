@@ -1,12 +1,11 @@
-import { ProtocolConfigs } from '../configs';
-import { getTimestamp } from '../lib/utils';
-import getProtocolAdapters from '../modules/adapters';
-import { ContextServices } from '../types/namespaces';
+import { sleep } from '../lib/utils';
+import ProtocolCollector from '../modules/collector/collector';
+import { ContextServices, ContextStorages } from '../types/namespaces';
 import { BasicCommand } from './basic';
 
 export class RunCommand extends BasicCommand {
   public readonly name: string = 'run';
-  public readonly describe: string = 'Run a adapter, mainly for testing';
+  public readonly describe: string = 'Run collector services';
 
   constructor() {
     super();
@@ -14,88 +13,58 @@ export class RunCommand extends BasicCommand {
 
   public async execute(argv: any) {
     const services: ContextServices = await super.getServices();
+    const storages: ContextStorages = await super.getStorages();
 
-    const protocol = argv.protocol;
-    const chain = argv.chain;
-    const activity = argv.activity;
-    const timestamp = argv.timestamp ? Number(argv.timestamp) : getTimestamp();
+    const collector = new ProtocolCollector(storages, services);
 
-    const protocolConfig = ProtocolConfigs[protocol];
-    const adapters = getProtocolAdapters(services);
-    if (protocolConfig && adapters[protocol]) {
-      const protocolData: any = {
-        protocol: protocol,
-        lendingMarketSnapshots: [],
-        lendingMarketActivities: [],
-        masterchefPoolSnapshots: [],
-        masterchefPoolActivities: [],
-        perpetualMarketSnapshots: [],
-        perpetualMarketActivities: [],
-      };
+    do {
+      await collector.run({
+        chain: argv.chain !== '' ? argv.chain : undefined,
+        protocol: argv.protocol !== '' ? argv.protocol : undefined,
+        fromBlock: argv.fromBlock ? argv.fromBlock : undefined,
+        force: argv.force,
+      });
 
-      if (protocolConfig.lendingMarkets) {
-        for (const config of protocolConfig.lendingMarkets.filter((item) => chain === '' || item.chain === chain)) {
-          const result = await adapters[protocol].getLendingMarketSnapshots({
-            config: config,
-            timestamp: timestamp,
-            collectActivities: activity,
-          });
-          protocolData.lendingMarketSnapshots = protocolData.lendingMarketSnapshots.concat(result.snapshots);
-          protocolData.lendingMarketActivities = protocolData.lendingMarketActivities.concat(result.activities);
-        }
+      if (argv.exit) {
+        process.exit(0);
+      } else {
+        await sleep(argv.sleep ? Number(argv.sleep) : 300);
       }
-
-      if (protocolConfig.masterchefs) {
-        for (const config of protocolConfig.masterchefs.filter((item) => chain === '' || item.chain === chain)) {
-          const result = await adapters[protocol].getMasterchefSnapshots({
-            config: config,
-            timestamp: timestamp,
-            collectActivities: activity,
-          });
-          protocolData.masterchefPoolSnapshots = protocolData.masterchefPoolSnapshots.concat(result.snapshots);
-          protocolData.masterchefPoolActivities = protocolData.masterchefPoolActivities.concat(result.activities);
-        }
-      }
-
-      if (protocolConfig.perpetualMarkets) {
-        for (const config of protocolConfig.perpetualMarkets.filter((item) => chain === '' || item.chain === chain)) {
-          const result = await adapters[protocol].getPerpetualSnapshots({
-            config: config,
-            timestamp: timestamp,
-            collectActivities: activity,
-          });
-          protocolData.perpetualMarketSnapshots = protocolData.perpetualMarketSnapshots.concat(result.snapshots);
-          protocolData.perpetualMarketActivities = protocolData.perpetualMarketActivities.concat(result.activities);
-        }
-      }
-
-      console.log(JSON.stringify(protocolData));
-    }
-
-    process.exit(0);
+    } while (!argv.exit);
   }
 
   public setOptions(yargs: any) {
     return yargs.option({
+      chain: {
+        type: 'string',
+        default: 'ethereum',
+        describe: 'Collect all protocols data on given chain.',
+      },
       protocol: {
         type: 'string',
         default: '',
-        describe: 'Run adapter with given protocol.',
+        describe: 'Collect data of given protocol.',
       },
-      chain: {
-        type: 'string',
-        default: '',
-        describe: 'Run adapter on given chain.',
-      },
-      timestamp: {
+      fromBlock: {
         type: 'number',
         default: 0,
-        describe: 'Collect data at given timestamp, default: current time.',
+        describe: 'Collect data from given block number.',
       },
-      activity: {
+      force: {
         type: 'boolean',
         default: false,
-        describe: 'Request to collect protocol activities, default: false',
+        describe: 'Force collect data from given from block number',
+      },
+
+      exit: {
+        type: 'boolean',
+        default: false,
+        describe: 'Do not run services as workers.',
+      },
+      sleep: {
+        type: 'number',
+        default: 300, // 5 minutes
+        describe: 'Given amount of seconds to sleep after every sync round. Default is 5 minutes.',
       },
     });
   }

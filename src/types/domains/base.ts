@@ -1,11 +1,5 @@
 import { Token } from '../configs';
 
-export interface TokenRewardEntry {
-  token: Token;
-  tokenPrice: string;
-  tokenAmount: string;
-}
-
 export interface DayDataSnapshot {
   // the protocol id
   protocol: string;
@@ -19,10 +13,17 @@ export interface DayDataSnapshot {
   timestamp: number;
 }
 
-export type LendingActivityAction = 'deposit' | 'withdraw' | 'borrow' | 'repay' | 'liquidate' | 'collect';
-export type MasterchefActivityAction = 'deposit' | 'withdraw' | 'emergencyWithdraw' | 'harvest';
-export type TradingActivityAction = 'trade' | 'swap' | 'addLiquidity' | 'removeLiquidity';
-export type PerpetualActivityAction = 'increase' | 'decrease' | 'liquidate' | 'addLiquidity' | 'removeLiquidity';
+export const ActivityActions = {
+  deposit: 'deposit',
+  withdraw: 'withdraw',
+  borrow: 'borrow',
+  repay: 'repay',
+  liquidate: 'liquidate',
+  collect: 'collect',
+};
+
+const Actions = Object.values(ActivityActions);
+export type ActivityAction = (typeof Actions)[number];
 
 export interface BaseActivityEvent {
   chain: string;
@@ -41,10 +42,8 @@ export interface BaseActivityEvent {
 
   blockNumber: number;
 
-  timestamp: number;
-
   // activity action
-  action: LendingActivityAction | MasterchefActivityAction | TradingActivityAction | PerpetualActivityAction;
+  action: ActivityAction;
 
   // user address
   user: string;
