@@ -3,6 +3,7 @@ import { ContextServices, IProtocolAdapter } from '../../types/namespaces';
 import Aavev2Adapter from './aave/aavev2';
 import Aavev3Adapter from './aave/aavev3';
 import CompoundAdapter from './compound/compound';
+import VenusAdapter from './venus/venus';
 
 function getProtocolAdapters(services: ContextServices): { [key: string]: IProtocolAdapter } {
   return {
@@ -10,6 +11,7 @@ function getProtocolAdapters(services: ContextServices): { [key: string]: IProto
     aavev3: new Aavev3Adapter(services, ProtocolConfigs.aavev3),
     compound: new CompoundAdapter(services, ProtocolConfigs.compound),
     ironbank: new CompoundAdapter(services, ProtocolConfigs.ironbank),
+    venus: new VenusAdapter(services, ProtocolConfigs.venus),
   };
 }
 

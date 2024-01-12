@@ -49,7 +49,7 @@ export default class CompoundAdapter extends ProtocolAdapter {
     cTokenContract: string,
     blockNumber: number,
   ): Promise<any> {
-    let mrketInfo = await this.services.blockchain.readContract({
+    let marketInfo = await this.services.blockchain.readContract({
       chain: config.chain,
       abi: this.abiConfigs.eventAbis.comptroller,
       target: config.address,
@@ -57,11 +57,11 @@ export default class CompoundAdapter extends ProtocolAdapter {
       params: [cTokenContract],
       blockNumber,
     });
-    if (mrketInfo) {
-      return formatBigNumberToString(mrketInfo[1].toString(), 18);
+    if (marketInfo) {
+      return formatBigNumberToString(marketInfo[1].toString(), 18);
     }
 
-    mrketInfo = await this.services.blockchain.readContract({
+    marketInfo = await this.services.blockchain.readContract({
       chain: config.chain,
       abi: CompoundComptrollerV1Abi,
       target: config.address,
@@ -70,7 +70,7 @@ export default class CompoundAdapter extends ProtocolAdapter {
       blockNumber,
     });
 
-    return formatBigNumberToString(mrketInfo[1].toString(), 18);
+    return formatBigNumberToString(marketInfo[1].toString(), 18);
   }
 
   protected async getMarketCompSpeeds(
@@ -180,7 +180,7 @@ export default class CompoundAdapter extends ProtocolAdapter {
       options.timestamp,
     );
 
-    const allMarkets = await this.services.blockchain.readContract({
+    const allMarket = await this.services.blockchain.readContract({
       chain: marketConfig.chain,
       abi: this.abiConfigs.eventAbis.comptroller,
       target: marketConfig.address,
@@ -188,135 +188,141 @@ export default class CompoundAdapter extends ProtocolAdapter {
       params: [],
       blockNumber,
     });
-    for (let cTokenContract of allMarkets) {
-      cTokenContract = normalizeAddress(cTokenContract);
+    if (allMarket) {
+      for (let cTokenContract of allMarket) {
+        cTokenContract = normalizeAddress(cTokenContract);
 
-      let token: Token | null = null;
-      if (marketConfig.underlying[cTokenContract]) {
-        token = marketConfig.underlying[cTokenContract];
-      } else {
-        const underlying = await this.services.blockchain.readContract({
-          chain: marketConfig.chain,
-          abi: this.abiConfigs.eventAbis.cErc20,
-          target: cTokenContract,
-          method: 'underlying',
-          params: [],
-          blockNumber,
-        });
-        token = await this.services.blockchain.getTokenInfo({
-          chain: marketConfig.chain,
-          address: underlying.toString(),
-        });
-      }
-
-      if (token) {
-        const totalCash = await this.services.blockchain.readContract({
-          chain: marketConfig.chain,
-          abi: this.abiConfigs.eventAbis.cErc20,
-          target: cTokenContract,
-          method: 'getCash',
-          params: [],
-          blockNumber,
-        });
-        const totalBorrows = await this.services.blockchain.readContract({
-          chain: marketConfig.chain,
-          abi: this.abiConfigs.eventAbis.cErc20,
-          target: cTokenContract,
-          method: 'totalBorrows',
-          params: [],
-          blockNumber,
-        });
-        const totalReserves = await this.services.blockchain.readContract({
-          chain: marketConfig.chain,
-          abi: this.abiConfigs.eventAbis.cErc20,
-          target: cTokenContract,
-          method: 'totalReserves',
-          params: [],
-          blockNumber,
-        });
-        const reserveFactorMantissa = await this.services.blockchain.readContract({
-          chain: marketConfig.chain,
-          abi: this.abiConfigs.eventAbis.cErc20,
-          target: cTokenContract,
-          method: 'reserveFactorMantissa',
-          params: [],
-          blockNumber,
-        });
-        const ltv = await this.getMarketLoanToValueRate(marketConfig, cTokenContract, blockNumber);
-
-        const totalDeposited = new BigNumber(totalCash.toString())
-          .plus(new BigNumber(totalBorrows.toString()))
-          .minus(new BigNumber(totalReserves.toString()));
-        const totalBorrowed = new BigNumber(totalBorrows.toString());
-
-        // get market rates
-        const { supplyRate, borrowRate } = await this.getMarketRates(marketConfig.chain, cTokenContract, blockNumber);
-
-        const tokenPrice = await this.services.oracle.getTokenPriceUsd({
-          chain: token.chain,
-          address: token.address,
-          timestamp: options.timestamp,
-        });
-
-        let rewardSupplyRate = '0';
-        let rewardBorrowRate = '0';
-
-        if (marketConfig.governanceToken) {
-          const compPerYear = await this.getMarketRewards(marketConfig, cTokenContract, blockNumber);
-          if (compPerYear) {
-            const governanceTokenPrice = await this.services.oracle.getTokenPriceUsd({
-              chain: marketConfig.governanceToken.chain,
-              address: marketConfig.governanceToken.address,
-              timestamp: options.timestamp,
-            });
-            if (governanceTokenPrice && tokenPrice) {
-              rewardSupplyRate = new BigNumber(compPerYear.forLenders[0].amount)
-                .multipliedBy(governanceTokenPrice)
-                .dividedBy(
-                  new BigNumber(formatBigNumberToString(totalDeposited.toString(10), token.decimals)).multipliedBy(
-                    tokenPrice,
-                  ),
-                )
-                .toString(10);
-              rewardBorrowRate = new BigNumber(compPerYear.forBorrowers[0].amount)
-                .multipliedBy(governanceTokenPrice)
-                .dividedBy(
-                  new BigNumber(formatBigNumberToString(totalBorrowed.toString(10), token.decimals)).multipliedBy(
-                    tokenPrice,
-                  ),
-                )
-                .toString(10);
-            }
-          }
+        if (marketConfig.blacklists && marketConfig.blacklists[cTokenContract]) {
+          continue;
         }
 
-        const dataState: LendingMarketState = {
-          type: marketConfig.type,
-          metric: DataMetrics.lending,
-          chain: marketConfig.chain,
-          protocol: marketConfig.protocol,
-          address: cTokenContract,
-          timestamp: options.timestamp,
+        let token: Token | null = null;
+        if (marketConfig.underlying[cTokenContract]) {
+          token = marketConfig.underlying[cTokenContract];
+        } else {
+          const underlying = await this.services.blockchain.readContract({
+            chain: marketConfig.chain,
+            abi: this.abiConfigs.eventAbis.cErc20,
+            target: cTokenContract,
+            method: 'underlying',
+            params: [],
+            blockNumber,
+          });
+          token = await this.services.blockchain.getTokenInfo({
+            chain: marketConfig.chain,
+            address: underlying.toString(),
+          });
+        }
 
-          token: token,
-          tokenPrice: tokenPrice ? tokenPrice : '0',
+        if (token) {
+          const totalCash = await this.services.blockchain.readContract({
+            chain: marketConfig.chain,
+            abi: this.abiConfigs.eventAbis.cErc20,
+            target: cTokenContract,
+            method: 'getCash',
+            params: [],
+            blockNumber,
+          });
+          const totalBorrows = await this.services.blockchain.readContract({
+            chain: marketConfig.chain,
+            abi: this.abiConfigs.eventAbis.cErc20,
+            target: cTokenContract,
+            method: 'totalBorrows',
+            params: [],
+            blockNumber,
+          });
+          const totalReserves = await this.services.blockchain.readContract({
+            chain: marketConfig.chain,
+            abi: this.abiConfigs.eventAbis.cErc20,
+            target: cTokenContract,
+            method: 'totalReserves',
+            params: [],
+            blockNumber,
+          });
+          const reserveFactorMantissa = await this.services.blockchain.readContract({
+            chain: marketConfig.chain,
+            abi: this.abiConfigs.eventAbis.cErc20,
+            target: cTokenContract,
+            method: 'reserveFactorMantissa',
+            params: [],
+            blockNumber,
+          });
+          const ltv = await this.getMarketLoanToValueRate(marketConfig, cTokenContract, blockNumber);
 
-          totalDeposited: formatBigNumberToString(totalDeposited.toString(10), token.decimals),
-          totalBorrowed: formatBigNumberToString(totalBorrowed.toString(10), token.decimals),
+          const totalDeposited = new BigNumber(totalCash.toString())
+            .plus(new BigNumber(totalBorrows.toString()))
+            .minus(new BigNumber(totalReserves.toString()));
+          const totalBorrowed = new BigNumber(totalBorrows.toString());
 
-          supplyRate: supplyRate,
-          borrowRate: borrowRate,
-          loanToValueRate: ltv,
-          reserveRate: formatBigNumberToString(reserveFactorMantissa.toString(), 18),
-          liquidationThresholdRate: ltv,
+          // get market rates
+          const { supplyRate, borrowRate } = await this.getMarketRates(marketConfig.chain, cTokenContract, blockNumber);
 
-          rewardSupplyRate: rewardSupplyRate,
-          rewardBorrowRate: rewardBorrowRate,
-        };
+          const tokenPrice = await this.services.oracle.getTokenPriceUsd({
+            chain: token.chain,
+            address: token.address,
+            timestamp: options.timestamp,
+          });
 
-        console.log(dataState);
+          let rewardSupplyRate = '0';
+          let rewardBorrowRate = '0';
 
-        result.data.push(dataState);
+          if (marketConfig.governanceToken) {
+            const compPerYear = await this.getMarketRewards(marketConfig, cTokenContract, blockNumber);
+            if (compPerYear) {
+              const governanceTokenPrice = await this.services.oracle.getTokenPriceUsd({
+                chain: marketConfig.governanceToken.chain,
+                address: marketConfig.governanceToken.address,
+                timestamp: options.timestamp,
+              });
+              if (governanceTokenPrice && tokenPrice) {
+                rewardSupplyRate = new BigNumber(compPerYear.forLenders[0].amount)
+                  .multipliedBy(governanceTokenPrice)
+                  .dividedBy(
+                    new BigNumber(formatBigNumberToString(totalDeposited.toString(10), token.decimals)).multipliedBy(
+                      tokenPrice,
+                    ),
+                  )
+                  .toString(10);
+                rewardBorrowRate = new BigNumber(compPerYear.forBorrowers[0].amount)
+                  .multipliedBy(governanceTokenPrice)
+                  .dividedBy(
+                    new BigNumber(formatBigNumberToString(totalBorrowed.toString(10), token.decimals)).multipliedBy(
+                      tokenPrice,
+                    ),
+                  )
+                  .toString(10);
+              }
+            }
+          }
+
+          const dataState: LendingMarketState = {
+            type: marketConfig.type,
+            metric: DataMetrics.lending,
+            chain: marketConfig.chain,
+            protocol: marketConfig.protocol,
+            address: cTokenContract,
+            timestamp: options.timestamp,
+
+            token: token,
+            tokenPrice: tokenPrice ? tokenPrice : '0',
+
+            totalDeposited: formatBigNumberToString(totalDeposited.toString(10), token.decimals),
+            totalBorrowed: formatBigNumberToString(totalBorrowed.toString(10), token.decimals),
+
+            supplyRate: supplyRate,
+            borrowRate: borrowRate,
+            loanToValueRate: ltv,
+            reserveRate: formatBigNumberToString(reserveFactorMantissa.toString(), 18),
+            liquidationThresholdRate: ltv,
+
+            rewardSupplyRate: rewardSupplyRate,
+            rewardBorrowRate: rewardBorrowRate,
+          };
+
+          console.log(dataState);
+
+          result.data.push(dataState);
+        }
       }
     }
 
