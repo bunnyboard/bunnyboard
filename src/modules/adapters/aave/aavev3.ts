@@ -32,10 +32,14 @@ export default class Aavev3Adapter extends Aavev2Adapter {
   }
 
   // return total borrowed (in wei)
-  protected getTotalBorrowed(reserveData: any): string {
-    const totalBorrowed = new BigNumber(reserveData[3].toString()).plus(new BigNumber(reserveData[4].toString()));
-
-    return totalBorrowed.toString(10);
+  protected getTotalBorrowed(reserveData: any): {
+    stable: string;
+    variable: string;
+  } {
+    return {
+      stable: reserveData[3].toString(),
+      variable: reserveData[4].toString(),
+    };
   }
 
   protected getMarketRates(reserveData: any): AaveMarketRates {

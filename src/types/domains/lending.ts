@@ -1,5 +1,5 @@
 import { LendingMarketType, Token } from '../configs';
-import { ActivityAction, BaseActivityEvent, DayDataSnapshot } from './base';
+import { ActivityAction, BaseActivityEvent, DayDataSnapshot, TokenAmountEntry } from './base';
 
 export interface LendingActivityEvent extends BaseActivityEvent {
   action: ActivityAction;
@@ -39,6 +39,9 @@ export interface LendingMarketState extends DayDataSnapshot {
   // total tokens were borrowed out of market
   totalBorrowed: string;
 
+  // total borrow stable if any
+  totalBorrowedStable?: string;
+
   // current lending supply rate
   supplyRate: string;
 
@@ -66,4 +69,20 @@ export interface LendingMarketState extends DayDataSnapshot {
   // for CDP market
   collateralToken?: Token;
   collateralTokenPrice?: string;
+}
+
+export interface LendingMarketSnapshot extends LendingMarketState {
+  volumeDeposited: string;
+  volumeWithdrawn: string;
+  volumeBorrowed: string;
+  volumeRepaid: string;
+
+  // a list of collateral assets were liquidated
+  // by borrowing this market asset token
+  volumeLiquidated: Array<TokenAmountEntry>;
+
+  numberOfUniqueUsers: number;
+  numberOfLenders: number;
+  numberOfBorrowers: number;
+  numberOfLiquidators: number;
 }

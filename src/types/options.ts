@@ -1,5 +1,5 @@
 import { MetricConfig } from './configs';
-import { LendingActivityEvent, LendingMarketState } from './domains/lending';
+import { LendingActivityEvent, LendingMarketSnapshot, LendingMarketState } from './domains/lending';
 
 export interface AdapterAbiConfigs {
   eventSignatures: any;
@@ -24,6 +24,10 @@ export interface GetStateDataResult {
   data: Array<LendingMarketState>;
 }
 
+export interface GetSnapshotDataResult {
+  data: Array<LendingMarketSnapshot>;
+}
+
 export interface RunCollectorOptions {
   chain: string;
   protocol?: string;
@@ -31,4 +35,7 @@ export interface RunCollectorOptions {
 
   // force sync from given from block
   force?: boolean;
+
+  // run a single service
+  service?: 'state' | 'activity' | 'snapshot';
 }

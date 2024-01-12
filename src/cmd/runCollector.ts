@@ -23,6 +23,7 @@ export class RunCollectorCommand extends BasicCommand {
         protocol: argv.protocol !== '' ? argv.protocol : undefined,
         fromBlock: argv.fromBlock ? argv.fromBlock : undefined,
         force: argv.force,
+        service: argv.service ? argv.service : undefined,
       });
 
       if (argv.exit) {
@@ -53,7 +54,12 @@ export class RunCollectorCommand extends BasicCommand {
       force: {
         type: 'boolean',
         default: false,
-        describe: 'Force collect data from given from block number',
+        describe: 'Force collect data from given from block number.',
+      },
+      service: {
+        type: 'string',
+        default: '',
+        describe: 'Run collector with a single given service. Services: state, activity, snapshot.',
       },
 
       exit: {

@@ -4,17 +4,18 @@ import { decodeEventLog } from 'viem';
 import AaveDataProviderV2Abi from '../../../configs/abi/aave/DataProviderV2.json';
 import AaveIncentiveControllerV2Abi from '../../../configs/abi/aave/IncentiveControllerV2.json';
 import AaveLendingPoolV2Abi from '../../../configs/abi/aave/LendingPoolV2.json';
-import { RAY_DECIMALS, YEAR } from '../../../configs/constants';
+import { DAY, RAY_DECIMALS, YEAR } from '../../../configs/constants';
 import EnvConfig from '../../../configs/envConfig';
 import { AaveLendingMarketConfig } from '../../../configs/protocols/aave';
 import { tryQueryBlockNumberAtTimestamp } from '../../../lib/subsgraph';
 import { formatBigNumberToString, normalizeAddress } from '../../../lib/utils';
 import { DataMetrics, ProtocolConfig } from '../../../types/configs';
-import { ActivityAction, TokenAmountEntry } from '../../../types/domains/base';
+import { ActivityAction, ActivityActions, BaseActivityEvent, TokenAmountEntry } from '../../../types/domains/base';
 import { LendingMarketState } from '../../../types/domains/lending';
-import { ContextServices } from '../../../types/namespaces';
+import { ContextServices, ContextStorages } from '../../../types/namespaces';
 import {
   GetAdapterDataOptions,
+  GetSnapshotDataResult,
   GetStateDataResult,
   TransformEventLogOptions,
   TransformEventLogResult,
@@ -242,15 +243,23 @@ export default class Aavev2Adapter extends ProtocolAdapter {
         const totalDepositedUsd = new BigNumber(formatBigNumberToString(totalDeposited, token.decimals)).multipliedBy(
           tokenPrice ? tokenPrice : 0,
         );
+        const totalBorrowedUsd = new BigNumber(
+          formatBigNumberToString(totalBorrowed.variable, token.decimals),
+        ).multipliedBy(tokenPrice ? tokenPrice : 0);
+        const totalBorrowedStableUsd = new BigNumber(
+          formatBigNumberToString(totalBorrowed.stable, token.decimals),
+        ).multipliedBy(tokenPrice ? tokenPrice : 0);
         if (totalDepositedUsd.gt(0)) {
           rewardRateForSupply = totalRewardUsdPerYearForSupply.dividedBy(totalDepositedUsd).toString(10);
-          rewardRateForBorrow = totalRewardUsdPerYearForBorrow.dividedBy(totalDepositedUsd).toString(10);
-          rewardRateForBorrowStable = totalRewardUsdPerYearForBorrowStable.dividedBy(totalDepositedUsd).toString(10);
+          rewardRateForBorrow = totalRewardUsdPerYearForBorrow.dividedBy(totalBorrowedUsd).toString(10);
+          rewardRateForBorrowStable = totalRewardUsdPerYearForBorrowStable
+            .dividedBy(totalBorrowedStableUsd)
+            .toString(10);
         }
       }
 
       const dataState: LendingMarketState = {
-        type: 'cross',
+        type: marketConfig.type,
         metric: DataMetrics.lending,
         chain: marketConfig.chain,
         protocol: marketConfig.protocol,
@@ -261,7 +270,8 @@ export default class Aavev2Adapter extends ProtocolAdapter {
         tokenPrice: tokenPrice ? tokenPrice : '0',
 
         totalDeposited: formatBigNumberToString(totalDeposited, token.decimals),
-        totalBorrowed: formatBigNumberToString(totalBorrowed, token.decimals),
+        totalBorrowed: formatBigNumberToString(totalBorrowed.variable, token.decimals),
+        totalBorrowedStable: formatBigNumberToString(totalBorrowed.stable, token.decimals),
 
         supplyRate: rates.supply,
         borrowRate: rates.borrow,
@@ -281,6 +291,60 @@ export default class Aavev2Adapter extends ProtocolAdapter {
     return result;
   }
 
+  public async getSnapshotData(
+    options: GetAdapterDataOptions,
+    storages: ContextStorages,
+  ): Promise<GetSnapshotDataResult> {
+    const states = (await this.getStateData(options)).data;
+
+    const result: GetSnapshotDataResult = {
+      data: [],
+    };
+
+    const startDayTimestamp = options.timestamp;
+    const endDayTimestamp = options.timestamp + DAY - 1;
+
+    for (const stateData of states) {
+      const documents = await storages.database.query({
+        collection: EnvConfig.mongodb.collections.activities,
+        query: {
+          protocol: this.config.protocol,
+          timestamp: {
+            $gte: startDayTimestamp,
+            $lte: endDayTimestamp,
+          },
+        },
+      });
+
+      let volumeDeposited = new BigNumber(0);
+      for (const document of documents) {
+        const activityEvent = document as BaseActivityEvent;
+        switch (activityEvent.action) {
+          case ActivityActions.deposit: {
+            volumeDeposited = volumeDeposited.plus(new BigNumber(activityEvent.tokenAmount));
+          }
+        }
+      }
+
+      result.data.push({
+        ...stateData,
+
+        volumeDeposited: volumeDeposited.toString(10),
+        volumeWithdrawn: '0',
+        volumeBorrowed: '0',
+        volumeRepaid: '0',
+        volumeLiquidated: [],
+
+        numberOfUniqueUsers: 0,
+        numberOfLenders: 0,
+        numberOfBorrowers: 0,
+        numberOfLiquidators: 0,
+      });
+    }
+
+    return result;
+  }
+
   // return total deposited (in wei)
   protected getTotalDeposited(reserveData: any): string {
     const totalBorrowed = new BigNumber(reserveData[1].toString()).plus(new BigNumber(reserveData[2].toString()));
@@ -288,10 +352,14 @@ export default class Aavev2Adapter extends ProtocolAdapter {
   }
 
   // return total borrowed (in wei)
-  protected getTotalBorrowed(reserveData: any): string {
-    const totalBorrowed = new BigNumber(reserveData[1].toString()).plus(new BigNumber(reserveData[2].toString()));
-
-    return totalBorrowed.toString(10);
+  protected getTotalBorrowed(reserveData: any): {
+    stable: string;
+    variable: string;
+  } {
+    return {
+      stable: reserveData[1].toString(),
+      variable: reserveData[2].toString(),
+    };
   }
 
   protected getMarketRates(reserveData: any): AaveMarketRates {

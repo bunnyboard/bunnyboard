@@ -1,9 +1,10 @@
 import { compareAddress } from '../../lib/utils';
 import { ProtocolConfig } from '../../types/configs';
-import { ContextServices, IProtocolAdapter } from '../../types/namespaces';
+import { ContextServices, ContextStorages, IProtocolAdapter } from '../../types/namespaces';
 import {
   AdapterAbiConfigs,
   GetAdapterDataOptions,
+  GetSnapshotDataResult,
   GetStateDataResult,
   TransformEventLogOptions,
   TransformEventLogResult,
@@ -52,6 +53,15 @@ export default class ProtocolAdapter implements IProtocolAdapter {
   }
 
   public async getStateData(options: GetAdapterDataOptions): Promise<GetStateDataResult> {
+    return {
+      data: [],
+    };
+  }
+
+  public async getSnapshotData(
+    options: GetAdapterDataOptions,
+    storages: ContextStorages,
+  ): Promise<GetSnapshotDataResult> {
     return {
       data: [],
     };

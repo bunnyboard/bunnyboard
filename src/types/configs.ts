@@ -52,6 +52,12 @@ export interface EnvConfig {
 
       // save all activity events;
       activities: string;
+
+      // save all data states of lending market
+      lendingMarketStates: string;
+
+      // save all data snapshots of lending market
+      lendingMarketSnapshots: string;
     };
   };
 

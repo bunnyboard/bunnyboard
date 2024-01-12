@@ -1,7 +1,9 @@
-import { DefaultQueryLogsBlockRange, DefaultQueryLogsRanges } from '../../configs';
+import { DefaultQueryLogsBlockRange, DefaultQueryLogsRanges, ProtocolConfigs } from '../../configs';
 import EnvConfig from '../../configs/envConfig';
 import logger from '../../lib/logger';
 import { tryQueryBlockTimestamps } from '../../lib/subsgraph';
+import { getTimestamp } from '../../lib/utils';
+import { DataMetrics } from '../../types/configs';
 import { ContextServices, ContextStorages, IProtocolAdapter, IProtocolCollector } from '../../types/namespaces';
 import { RunCollectorOptions } from '../../types/options';
 import getProtocolAdapters from '../adapters';
@@ -22,7 +24,70 @@ export default class ProtocolCollector implements IProtocolCollector {
   }
 
   public async run(options: RunCollectorOptions): Promise<void> {
-    await this.collectActivities(options);
+    if (options.service) {
+      switch (options.service) {
+        case 'state': {
+          await this.collectLatestStates(options);
+          return;
+        }
+        case 'activity': {
+          await this.collectActivities(options);
+          return;
+        }
+      }
+    } else {
+      await this.collectLatestStates(options);
+      await this.collectActivities(options);
+    }
+  }
+
+  protected async collectLatestStates(options: RunCollectorOptions): Promise<void> {
+    const { chain, protocol } = options;
+
+    const timestamp = getTimestamp();
+    const protocolConfigs = Object.values(ProtocolConfigs).filter(
+      (item) => protocol === undefined || protocol === item.protocol,
+    );
+    for (const protocolConfig of protocolConfigs) {
+      for (const config of protocolConfig.configs) {
+        if (config.chain === chain) {
+          const result = await this.adapters[config.protocol].getStateData({
+            config: config,
+            timestamp: timestamp,
+          });
+          for (const data of result.data) {
+            let collectionName: string | null = null;
+            if (data.metric === DataMetrics.lending) {
+              collectionName = EnvConfig.mongodb.collections.lendingMarketStates;
+            }
+
+            if (collectionName) {
+              await this.storages.database.update({
+                collection: collectionName,
+                keys: {
+                  chain: data.chain,
+                  protocol: data.protocol,
+                  address: data.address,
+                  'token.address': data.token.address,
+                },
+                updates: {
+                  ...data,
+                },
+                upsert: true,
+              });
+
+              logger.info('updated latest data states', {
+                service: this.name,
+                metric: data.metric,
+                chain: data.chain,
+                protocol: data.protocol,
+                token: data.token.symbol,
+              });
+            }
+          }
+        }
+      }
+    }
   }
 
   protected async collectActivities(options: RunCollectorOptions): Promise<void> {

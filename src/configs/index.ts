@@ -1,5 +1,7 @@
 import { ProtocolConfig, Token } from '../types/configs';
 import { Aavev2Configs, Aavev3Configs } from './protocols/aave';
+import { CompoundConfigs } from './protocols/compound';
+import { IronbankConfigs } from './protocols/ironbank';
 import TokenListArbitrum from './tokenlists/arbitrum.json';
 import TokenListAvalanche from './tokenlists/avalanche.json';
 import TokenListBase from './tokenlists/base.json';
@@ -40,4 +42,6 @@ export const TokenList: {
 export const ProtocolConfigs: { [key: string]: ProtocolConfig } = {
   aavev2: Aavev2Configs,
   aavev3: Aavev3Configs,
+  compound: CompoundConfigs,
+  ironbank: IronbankConfigs,
 };

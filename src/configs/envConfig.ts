@@ -16,6 +16,8 @@ const envConfig: EnvConfig = {
       states: `${MongodbPrefix}.states`,
       caching: `${MongodbPrefix}.caching`,
       activities: `${MongodbPrefix}.activities`,
+      lendingMarketStates: `${MongodbPrefix}.lendingMarketStates`,
+      lendingMarketSnapshots: `${MongodbPrefix}.lendingMarketSnapshots`,
     },
   },
   blockchains: BlockchainConfigs,

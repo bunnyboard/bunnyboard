@@ -77,10 +77,22 @@ export default class DatabaseService implements IDatabaseService {
     const statesCollection = await this.getCollection(envConfig.mongodb.collections.states);
     const cachingCollection = await this.getCollection(envConfig.mongodb.collections.caching);
     const activitiesCollection = await this.getCollection(envConfig.mongodb.collections.activities);
+    const lendingMarketStatesCollection = await this.getCollection(envConfig.mongodb.collections.lendingMarketStates);
+    const lendingMarketSnapshotsCollection = await this.getCollection(
+      envConfig.mongodb.collections.lendingMarketSnapshots,
+    );
 
     statesCollection.createIndex({ name: 1 }, { background: true });
     cachingCollection.createIndex({ name: 1 }, { background: true });
     activitiesCollection.createIndex({ chain: 1, transactionHash: 1, logIndex: 1 }, { background: true });
+    lendingMarketStatesCollection.createIndex(
+      { chain: 1, protocol: 1, address: 1, 'token.address': 1 },
+      { background: true },
+    );
+    lendingMarketSnapshotsCollection.createIndex(
+      { chain: 1, protocol: 1, address: 1, 'token.address': 1, timestamp: 1 },
+      { background: true },
+    );
 
     // for query activities
     activitiesCollection.createIndex({ chain: 1, protocol: 1, action: 1 }, { background: true });

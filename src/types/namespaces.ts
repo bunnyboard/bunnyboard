@@ -5,6 +5,7 @@ import { ProtocolConfig } from './configs';
 import {
   AdapterAbiConfigs,
   GetAdapterDataOptions,
+  GetSnapshotDataResult,
   GetStateDataResult,
   RunCollectorOptions,
   TransformEventLogOptions,
@@ -36,6 +37,9 @@ export interface IProtocolAdapter {
 
   // get state data
   getStateData: (options: GetAdapterDataOptions) => Promise<GetStateDataResult>;
+
+  // gte snapshot data
+  getSnapshotData: (options: GetAdapterDataOptions, storages: ContextStorages) => Promise<GetSnapshotDataResult>;
 }
 
 export interface IProtocolCollector {

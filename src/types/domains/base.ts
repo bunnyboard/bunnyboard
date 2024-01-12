@@ -3,6 +3,7 @@ import { DataMetric, Token } from '../configs';
 export interface TokenAmountEntry {
   token: Token;
   amount: string;
+  tokenPrice?: string;
 }
 
 export interface DayDataSnapshot {
