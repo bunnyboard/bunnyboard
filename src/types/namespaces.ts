@@ -2,7 +2,14 @@ import { IBlockchainService } from '../services/blockchains/domains';
 import { IDatabaseService } from '../services/database/domains';
 import { IOracleService } from '../services/oracle/domains';
 import { ProtocolConfig } from './configs';
-import { AdapterAbiConfigs, RunCollectorOptions, TransformEventLogOptions, TransformEventLogResult } from './options';
+import {
+  AdapterAbiConfigs,
+  GetAdapterDataOptions,
+  GetStateDataResult,
+  RunCollectorOptions,
+  TransformEventLogOptions,
+  TransformEventLogResult,
+} from './options';
 
 export interface ContextStorages {
   database: IDatabaseService;
@@ -26,6 +33,9 @@ export interface IProtocolAdapter {
 
   // transform raw event log into activities
   transformEventLogs: (options: TransformEventLogOptions) => Promise<TransformEventLogResult>;
+
+  // get state data
+  getStateData: (options: GetAdapterDataOptions) => Promise<GetStateDataResult>;
 }
 
 export interface IProtocolCollector {

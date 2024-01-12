@@ -41,6 +41,8 @@ export const OracleConfigs: { [key: string]: { [key: string]: OracleConfig } } =
     [EthereumTokenList.REN.address]: OracleSourceConfigs.REN,
     [EthereumTokenList.YFI.address]: OracleSourceConfigs.YFI,
     [EthereumTokenList.AAVE.address]: OracleSourceConfigs.AAVE,
+    [EthereumTokenList.sAAVE.address]: OracleSourceConfigs.AAVE,
+    [EthereumTokenList.stkAAVE.address]: OracleSourceConfigs.AAVE,
     [EthereumTokenList.UNI.address]: OracleSourceConfigs.UNI,
     [EthereumTokenList.CRV.address]: OracleSourceConfigs.CRV,
     [EthereumTokenList.BAL.address]: OracleSourceConfigs.BAL,

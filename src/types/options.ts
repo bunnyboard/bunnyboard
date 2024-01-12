@@ -1,4 +1,5 @@
-import { LendingActivityEvent } from './domains/lending';
+import { MetricConfig } from './configs';
+import { LendingActivityEvent, LendingMarketState } from './domains/lending';
 
 export interface AdapterAbiConfigs {
   eventSignatures: any;
@@ -11,6 +12,15 @@ export interface TransformEventLogOptions {
 
 export interface TransformEventLogResult {
   activities: Array<LendingActivityEvent>;
+}
+
+export interface GetAdapterDataOptions {
+  config: MetricConfig;
+  timestamp: number;
+}
+
+export interface GetStateDataResult {
+  data: Array<LendingMarketState>;
 }
 
 export interface RunCollectorOptions {

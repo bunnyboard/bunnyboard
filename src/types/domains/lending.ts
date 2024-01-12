@@ -46,7 +46,12 @@ export interface LendingMarketState extends DayDataSnapshot {
   borrowRate: string;
 
   // the token collateral factor
-  collateralFactor: string;
+  loanToValueRate: string;
+
+  // reserve rate
+  reserveRate: string;
+
+  liquidationThresholdRate: string;
 
   // borrow rate stable if any
   borrowRateStable?: string;
@@ -56,6 +61,7 @@ export interface LendingMarketState extends DayDataSnapshot {
 
   // incentive reward rate for suppliers
   rewardBorrowRate?: string;
+  rewardBorrowRateStable?: string;
 
   // for CDP market
   collateralToken?: Token;

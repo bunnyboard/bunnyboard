@@ -1,5 +1,5 @@
 import AggregatorAbi from '../../configs/abi/chainlink/EACAggregator.json';
-import { formatFromDecimals } from '../../lib/utils';
+import { formatBigNumberToString } from '../../lib/utils';
 import BlockchainService from '../../services/blockchains/blockchain';
 import { OracleSourceChainlink } from '../../types/configs';
 
@@ -18,6 +18,6 @@ export default class ChainlinkLibs {
       blockNumber,
     });
 
-    return latestAnswer ? formatFromDecimals(latestAnswer.toString(), config.decimals) : null;
+    return latestAnswer ? formatBigNumberToString(latestAnswer.toString(), config.decimals) : null;
   }
 }

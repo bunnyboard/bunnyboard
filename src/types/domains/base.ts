@@ -1,8 +1,16 @@
-import { Token } from '../configs';
+import { DataMetric, Token } from '../configs';
+
+export interface TokenAmountEntry {
+  token: Token;
+  amount: string;
+}
 
 export interface DayDataSnapshot {
   // the protocol id
   protocol: string;
+
+  // data metric id
+  metric: DataMetric;
 
   // chain where data was collected
   chain: string;

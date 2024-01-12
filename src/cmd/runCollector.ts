@@ -3,8 +3,8 @@ import ProtocolCollector from '../modules/collector/collector';
 import { ContextServices, ContextStorages } from '../types/namespaces';
 import { BasicCommand } from './basic';
 
-export class RunCommand extends BasicCommand {
-  public readonly name: string = 'run';
+export class RunCollectorCommand extends BasicCommand {
+  public readonly name: string = 'runCollector';
   public readonly describe: string = 'Run collector services';
 
   constructor() {

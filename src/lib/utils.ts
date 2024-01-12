@@ -57,7 +57,7 @@ export function formatTime(unix: number): string {
   }
 }
 
-export function formatFromDecimals(value: string, decimals: number): string {
+export function formatBigNumberToString(value: string, decimals: number): string {
   return new BigNumber(value).dividedBy(new BigNumber(10).pow(decimals)).toString(10);
 }
 

@@ -1,7 +1,13 @@
 import { compareAddress } from '../../lib/utils';
 import { ProtocolConfig } from '../../types/configs';
 import { ContextServices, IProtocolAdapter } from '../../types/namespaces';
-import { AdapterAbiConfigs, TransformEventLogOptions, TransformEventLogResult } from '../../types/options';
+import {
+  AdapterAbiConfigs,
+  GetAdapterDataOptions,
+  GetStateDataResult,
+  TransformEventLogOptions,
+  TransformEventLogResult,
+} from '../../types/options';
 
 export default class ProtocolAdapter implements IProtocolAdapter {
   public readonly name: string = 'adapter';
@@ -41,6 +47,12 @@ export default class ProtocolAdapter implements IProtocolAdapter {
   public async transformEventLogs(options: TransformEventLogOptions): Promise<TransformEventLogResult> {
     return {
       activities: [],
+    };
+  }
+
+  public async getStateData(options: GetAdapterDataOptions): Promise<GetStateDataResult> {
+    return {
+      data: [],
     };
   }
 }
