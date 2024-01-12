@@ -3,6 +3,7 @@ import { LendingActivityEvent, LendingMarketState } from './domains/lending';
 
 export interface AdapterAbiConfigs {
   eventSignatures: any;
+  eventAbis: any;
 }
 
 export interface TransformEventLogOptions {

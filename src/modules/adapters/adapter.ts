@@ -21,6 +21,7 @@ export default class ProtocolAdapter implements IProtocolAdapter {
 
     this.abiConfigs = {
       eventSignatures: {},
+      eventAbis: {},
     };
   }
 
