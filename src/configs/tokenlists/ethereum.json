@@ -19739,6 +19739,12 @@
     "decimals": 18,
     "address": "0x255aa6df07540cb5d3d297f0d0d4d84cb52bc8e6"
   },
+  "RDNT": {
+    "chain": "ethereum",
+    "symbol": "RDNT",
+    "decimals": 18,
+    "address": "0x137ddb47ee24eaa998a535ab00378d6bfa84f893"
+  },
   "RDPX": {
     "chain": "ethereum",
     "symbol": "RDPX",

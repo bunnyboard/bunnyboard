@@ -319,8 +319,6 @@ export default class CompoundAdapter extends ProtocolAdapter {
             rewardBorrowRate: rewardBorrowRate,
           };
 
-          console.log(dataState);
-
           result.data.push(dataState);
         }
       }

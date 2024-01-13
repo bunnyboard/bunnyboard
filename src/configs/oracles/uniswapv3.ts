@@ -167,4 +167,11 @@ export const OracleSourceUniswapv3List: { [key: string]: OracleSourceUniv3 } = {
     baseToken: EthereumTokenList.OHM,
     quotaToken: EthereumTokenList.WETH,
   },
+  RDNT_WETH: {
+    type: 'univ3',
+    chain: 'arbitrum',
+    address: '0x446bf9748b4ea044dd759d9b9311c70491df8f29',
+    baseToken: ArbitrumTokenList.RDNT,
+    quotaToken: ArbitrumTokenList.WETH,
+  },
 };

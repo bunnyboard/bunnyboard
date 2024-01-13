@@ -29,7 +29,7 @@ export interface GetSnapshotDataResult {
 }
 
 export interface RunCollectorOptions {
-  chain: string;
+  chain?: string;
   protocol?: string;
   fromBlock?: number;
 

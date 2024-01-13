@@ -251,7 +251,11 @@ export default class Aavev2Adapter extends ProtocolAdapter {
         ).multipliedBy(tokenPrice ? tokenPrice : 0);
         if (totalDepositedUsd.gt(0)) {
           rewardRateForSupply = totalRewardUsdPerYearForSupply.dividedBy(totalDepositedUsd).toString(10);
+        }
+        if (totalBorrowedUsd.gt(0)) {
           rewardRateForBorrow = totalRewardUsdPerYearForBorrow.dividedBy(totalBorrowedUsd).toString(10);
+        }
+        if (totalBorrowedStableUsd.gt(0)) {
           rewardRateForBorrowStable = totalRewardUsdPerYearForBorrowStable
             .dividedBy(totalBorrowedStableUsd)
             .toString(10);

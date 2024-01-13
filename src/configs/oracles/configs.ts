@@ -90,6 +90,7 @@ export const OracleConfigs: { [key: string]: { [key: string]: OracleConfig } } =
     [EthereumTokenList.OHMv1.address]: OracleSourceConfigs.OHMv1,
     [EthereumTokenList.OHM.address]: OracleSourceConfigs.OHM,
     [EthereumTokenList.agEUR.address]: OracleSourceConfigs.agEUR,
+    [EthereumTokenList.RDNT.address]: OracleSourceConfigs.RDNT,
   },
 
   // tokens on Arbitrum One
@@ -114,6 +115,8 @@ export const OracleConfigs: { [key: string]: { [key: string]: OracleConfig } } =
     [ArbitrumTokenList.ARB.address]: OracleSourceConfigs.ARB,
     [ArbitrumTokenList.UNI.address]: OracleSourceConfigs.UNI,
     [ArbitrumTokenList.MIM.address]: OracleSourceConfigs.MIM,
+    [ArbitrumTokenList.RDNT.address]: OracleSourceConfigs.RDNT,
+    [ArbitrumTokenList.RDNTv1.address]: OracleSourceConfigs.RDNT,
   },
 
   // tokens on Optimism
@@ -231,6 +234,7 @@ export const OracleConfigs: { [key: string]: { [key: string]: OracleConfig } } =
     [BnbchainTokenList.RACA.address]: OracleSourceConfigs.RACA,
     [BnbchainTokenList.TWT.address]: OracleSourceConfigs.TWT,
     [BnbchainTokenList.FLOKI.address]: OracleSourceConfigs.FLOKI,
+    [BnbchainTokenList.RDNT.address]: OracleSourceConfigs.RDNT,
   },
 
   // tokens on Avalanche C-Chain

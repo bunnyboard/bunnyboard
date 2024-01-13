@@ -476,4 +476,8 @@ export const OracleSourceConfigs: { [key: string]: OracleConfig } = {
     currency: 'usd',
     sources: [OracleSourceCustomList.SAVING_xDAI],
   },
+  RDNT: {
+    currency: 'eth',
+    sources: [OracleSourceUniswapv3List.RDNT_WETH],
+  },
 };
