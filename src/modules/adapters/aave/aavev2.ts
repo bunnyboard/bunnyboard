@@ -7,11 +7,11 @@ import AaveLendingPoolV2Abi from '../../../configs/abi/aave/LendingPoolV2.json';
 import { DAY, RAY_DECIMALS, YEAR } from '../../../configs/constants';
 import EnvConfig from '../../../configs/envConfig';
 import { AaveLendingMarketConfig } from '../../../configs/protocols/aave';
-import { tryQueryBlockNumberAtTimestamp } from '../../../lib/subsgraph';
+import { tryQueryBlockNumberAtTimestamp, tryQueryBlockTimestamps } from '../../../lib/subsgraph';
 import { formatBigNumberToString, normalizeAddress } from '../../../lib/utils';
 import { DataMetrics, ProtocolConfig } from '../../../types/configs';
 import { ActivityAction, ActivityActions, BaseActivityEvent, TokenAmountEntry } from '../../../types/domains/base';
-import { LendingMarketState } from '../../../types/domains/lending';
+import { LendingActivityEvent, LendingMarketSnapshot, LendingMarketState } from '../../../types/domains/lending';
 import { ContextServices, ContextStorages } from '../../../types/namespaces';
 import {
   GetAdapterDataOptions,
@@ -308,11 +308,77 @@ export default class Aavev2Adapter extends ProtocolAdapter {
     const startDayTimestamp = options.timestamp;
     const endDayTimestamp = options.timestamp + DAY - 1;
 
+    // sync activities
+    const stateKey = `state-snapshot-${options.config.protocol}-${options.config.chain}-${options.config.metric}-${options.config.address}`;
+    const beginBlock = await tryQueryBlockNumberAtTimestamp(
+      EnvConfig.blockchains[options.config.chain].blockSubgraph,
+      startDayTimestamp,
+    );
+    const endBlock = await tryQueryBlockNumberAtTimestamp(
+      EnvConfig.blockchains[options.config.chain].blockSubgraph,
+      endDayTimestamp,
+    );
+    const blocktimes = await tryQueryBlockTimestamps(
+      EnvConfig.blockchains[options.config.chain].blockSubgraph as string,
+      beginBlock,
+      endBlock,
+    );
+
+    const activityOperations: Array<any> = [];
+    const logs = await this.services.blockchain.getContractLogs({
+      chain: options.config.chain,
+      address: options.config.address,
+      fromBlock: beginBlock,
+      toBlock: endBlock,
+    });
+    const { activities } = await this.transformEventLogs({
+      chain: options.config.chain,
+      logs: logs,
+    });
+    for (const activity of activities) {
+      activityOperations.push({
+        updateOne: {
+          filter: {
+            chain: options.config.chain,
+            transactionHash: activity.transactionHash,
+            logIndex: activity.logIndex,
+          },
+          update: {
+            $set: {
+              ...activity,
+              timestamp: blocktimes[activity.blockNumber] ? blocktimes[activity.blockNumber] : 0,
+            },
+          },
+          upsert: true,
+        },
+      });
+    }
+
+    await storages.database.bulkWrite({
+      collection: EnvConfig.mongodb.collections.activities,
+      operations: activityOperations,
+    });
+
+    await storages.database.update({
+      collection: EnvConfig.mongodb.collections.states,
+      keys: {
+        name: stateKey,
+      },
+      updates: {
+        name: stateKey,
+        timestamp: options.timestamp,
+      },
+      upsert: true,
+    });
+
     for (const stateData of states) {
       const documents = await storages.database.query({
         collection: EnvConfig.mongodb.collections.activities,
         query: {
-          protocol: this.config.protocol,
+          chain: stateData.chain,
+          protocol: stateData.protocol,
+          address: stateData.address,
+          'token.address': stateData.token.address,
           timestamp: {
             $gte: startDayTimestamp,
             $lte: endDayTimestamp,
@@ -321,29 +387,114 @@ export default class Aavev2Adapter extends ProtocolAdapter {
       });
 
       let volumeDeposited = new BigNumber(0);
+      let volumeWithdrawn = new BigNumber(0);
+      let volumeBorrowed = new BigNumber(0);
+      let volumeRepaid = new BigNumber(0);
+      const volumeLiquidated: { [key: string]: TokenAmountEntry } = {};
+      const countUsers: { [key: string]: boolean } = {};
+      const countLenders: { [key: string]: boolean } = {};
+      const countBorrowers: { [key: string]: boolean } = {};
+      const countLiquidators: { [key: string]: boolean } = {};
+      const transactions: { [key: string]: boolean } = {};
       for (const document of documents) {
         const activityEvent = document as BaseActivityEvent;
+        const borrower = (activityEvent as LendingActivityEvent).borrower;
+
+        if (!transactions[document.transactionHash]) {
+          transactions[document.transactionHash] = true;
+        }
+
+        if (!countUsers[activityEvent.user]) {
+          countUsers[activityEvent.user] = true;
+        }
+        if (borrower) {
+          if (!countUsers[borrower]) {
+            countUsers[borrower] = true;
+          }
+        }
+
         switch (activityEvent.action) {
           case ActivityActions.deposit: {
             volumeDeposited = volumeDeposited.plus(new BigNumber(activityEvent.tokenAmount));
+            if (!countLenders[activityEvent.user]) {
+              countLenders[activityEvent.user] = true;
+            }
+            break;
+          }
+          case ActivityActions.withdraw: {
+            volumeWithdrawn = volumeWithdrawn.plus(new BigNumber(activityEvent.tokenAmount));
+            if (!countLenders[activityEvent.user]) {
+              countLenders[activityEvent.user] = true;
+            }
+            break;
+          }
+          case ActivityActions.borrow: {
+            volumeBorrowed = volumeBorrowed.plus(new BigNumber(activityEvent.tokenAmount));
+            if (!countBorrowers[activityEvent.user]) {
+              countBorrowers[activityEvent.user] = true;
+            }
+            break;
+          }
+          case ActivityActions.repay: {
+            volumeRepaid = volumeRepaid.plus(new BigNumber(activityEvent.tokenAmount));
+            if (!countBorrowers[activityEvent.user]) {
+              countBorrowers[activityEvent.user] = true;
+            }
+            break;
+          }
+          case ActivityActions.liquidate: {
+            const event = activityEvent as LendingActivityEvent;
+            if (event.collateralToken && event.collateralAmount) {
+              const key = `${document.address}-${document.collateralToken.address}`;
+              if (!volumeLiquidated[key]) {
+                const tokenPrice = await this.services.oracle.getTokenPriceUsd({
+                  chain: document.collateralToken.chain,
+                  address: document.collateralToken.address,
+                  timestamp: document.timestamp,
+                });
+                volumeLiquidated[key] = {
+                  token: document.collateralToken,
+                  amount: '0',
+                  tokenPrice: tokenPrice ? tokenPrice : ' 0',
+                };
+              }
+              volumeLiquidated[key].amount = new BigNumber(volumeLiquidated[key].amount)
+                .plus(new BigNumber(event.collateralAmount.toString()))
+                .toString(10);
+            }
+
+            if (borrower) {
+              if (!countBorrowers[borrower]) {
+                countBorrowers[borrower] = true;
+              }
+            }
+
+            // count liquidators
+            if (!countLiquidators[activityEvent.user]) {
+              countLiquidators[activityEvent.user] = true;
+            }
+            break;
           }
         }
       }
 
-      result.data.push({
+      const snapshotData: LendingMarketSnapshot = {
         ...stateData,
 
         volumeDeposited: volumeDeposited.toString(10),
-        volumeWithdrawn: '0',
-        volumeBorrowed: '0',
-        volumeRepaid: '0',
-        volumeLiquidated: [],
+        volumeWithdrawn: volumeWithdrawn.toString(10),
+        volumeBorrowed: volumeBorrowed.toString(10),
+        volumeRepaid: volumeRepaid.toString(10),
+        volumeLiquidated: Object.values(volumeLiquidated),
 
-        numberOfUniqueUsers: 0,
-        numberOfLenders: 0,
-        numberOfBorrowers: 0,
-        numberOfLiquidators: 0,
-      });
+        numberOfUniqueUsers: Object.keys(countUsers).length,
+        numberOfLenders: Object.keys(countLenders).length,
+        numberOfBorrowers: Object.keys(countBorrowers).length,
+        numberOfLiquidators: Object.keys(countLiquidators).length,
+        numberOfTransactions: Object.keys(transactions).length,
+      };
+
+      result.data.push(snapshotData);
     }
 
     return result;

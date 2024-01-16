@@ -85,4 +85,6 @@ export interface LendingMarketSnapshot extends LendingMarketState {
   numberOfLenders: number;
   numberOfBorrowers: number;
   numberOfLiquidators: number;
+
+  numberOfTransactions: number;
 }

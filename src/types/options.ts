@@ -29,13 +29,14 @@ export interface GetSnapshotDataResult {
 }
 
 export interface RunCollectorOptions {
+  // if chain was given, run collector with given chain
   chain?: string;
+
+  // if the protocol was given, run collector with given protocol
+  // and the chain option is just use for filter configs
   protocol?: string;
-  fromBlock?: number;
 
-  // force sync from given from block
+  // force sync from given from timestamp
+  fromTime?: number;
   force?: boolean;
-
-  // run a single service
-  service?: 'state' | 'activity' | 'snapshot';
 }

@@ -1,19 +1,19 @@
-import { DefaultQueryLogsBlockRange, DefaultQueryLogsRanges, ProtocolConfigs } from '../../configs';
+import { ProtocolConfigs } from '../../configs';
+import { DAY } from '../../configs/constants';
 import EnvConfig from '../../configs/envConfig';
 import logger from '../../lib/logger';
-import { tryQueryBlockTimestamps } from '../../lib/subsgraph';
-import { getTimestamp } from '../../lib/utils';
-import { DataMetrics } from '../../types/configs';
-import { ContextServices, ContextStorages, IProtocolAdapter, IProtocolCollector } from '../../types/namespaces';
+import { getDateString, getTimestamp, getTodayUTCTimestamp } from '../../lib/utils';
+import { DataMetrics, MetricConfig } from '../../types/configs';
+import { ContextServices, ContextStorages, ICollector, IProtocolAdapter } from '../../types/namespaces';
 import { RunCollectorOptions } from '../../types/options';
 import getProtocolAdapters from '../adapters';
 
-export default class ProtocolCollector implements IProtocolCollector {
+export default class Collector implements ICollector {
   public readonly name: string = 'collector';
   public readonly services: ContextServices;
   public readonly storages: ContextStorages;
 
-  private readonly adapters: { [key: string]: IProtocolAdapter };
+  protected readonly adapters: { [key: string]: IProtocolAdapter };
 
   constructor(storages: ContextStorages, services: ContextServices) {
     this.services = services;
@@ -23,193 +23,142 @@ export default class ProtocolCollector implements IProtocolCollector {
     this.adapters = getProtocolAdapters(services);
   }
 
-  public async run(options: RunCollectorOptions): Promise<void> {
-    if (options.service) {
-      switch (options.service) {
-        case 'state': {
-          await this.collectLatestStates(options);
-          return;
-        }
-        case 'activity': {
-          await this.collectActivities(options);
-          return;
-        }
-      }
-    } else {
-      await this.collectLatestStates(options);
-      await this.collectActivities(options);
-    }
-  }
+  private getAllConfigs(options: RunCollectorOptions): Array<MetricConfig> {
+    const configs: Array<MetricConfig> = [];
 
-  protected async collectLatestStates(options: RunCollectorOptions): Promise<void> {
-    const { chain, protocol } = options;
-
-    const timestamp = getTimestamp();
     const protocolConfigs = Object.values(ProtocolConfigs).filter(
-      (item) => protocol === undefined || protocol === item.protocol,
+      (item) => options.protocol === undefined || options.protocol === item.protocol,
     );
     for (const protocolConfig of protocolConfigs) {
       for (const config of protocolConfig.configs) {
-        if (chain === undefined || config.chain === chain) {
-          const result = await this.adapters[config.protocol].getStateData({
-            config: config,
-            timestamp: timestamp,
+        if (options.chain === undefined || options.chain === config.chain) {
+          configs.push(config);
+        }
+      }
+    }
+
+    return configs;
+  }
+
+  public async run(options: RunCollectorOptions): Promise<void> {
+    // await this.collectStates(options);
+    await this.collectSnapshots(options);
+  }
+
+  protected async collectStates(options: RunCollectorOptions): Promise<void> {
+    const configs = this.getAllConfigs(options);
+    const timestamp = getTimestamp();
+    for (const config of configs) {
+      const result = await this.adapters[config.protocol].getStateData({
+        config: config,
+        timestamp: timestamp,
+      });
+      for (const data of result.data) {
+        let collectionName: string | null = null;
+        if (data.metric === DataMetrics.lending) {
+          collectionName = EnvConfig.mongodb.collections.lendingMarketStates;
+        }
+
+        if (collectionName) {
+          await this.storages.database.update({
+            collection: collectionName,
+            keys: {
+              chain: data.chain,
+              protocol: data.protocol,
+              address: data.address,
+              'token.address': data.token.address,
+            },
+            updates: {
+              ...data,
+            },
+            upsert: true,
           });
-          for (const data of result.data) {
-            let collectionName: string | null = null;
-            if (data.metric === DataMetrics.lending) {
-              collectionName = EnvConfig.mongodb.collections.lendingMarketStates;
-            }
 
-            if (collectionName) {
-              await this.storages.database.update({
-                collection: collectionName,
-                keys: {
-                  chain: data.chain,
-                  protocol: data.protocol,
-                  address: data.address,
-                  'token.address': data.token.address,
-                },
-                updates: {
-                  ...data,
-                },
-                upsert: true,
-              });
-
-              logger.info('updated latest data states', {
-                service: this.name,
-                metric: data.metric,
-                chain: data.chain,
-                protocol: data.protocol,
-                token: data.token.symbol,
-              });
-            }
-          }
+          logger.info('updated latest data states', {
+            service: this.name,
+            metric: data.metric,
+            chain: data.chain,
+            protocol: data.protocol,
+            token: data.token.symbol,
+          });
         }
       }
     }
   }
 
-  protected async collectActivities(options: RunCollectorOptions): Promise<void> {
-    let { chain, protocol, fromBlock, force } = options;
+  protected async collectSnapshots(options: RunCollectorOptions): Promise<void> {
+    const configs = this.getAllConfigs(options);
 
-    let chains: Array<string> = [];
-    if (chain === undefined) {
-      chains = Object.keys(EnvConfig.blockchains);
-    } else {
-      chains = [chain];
-    }
-
-    for (const chain of chains) {
-      const client = this.services.blockchain.getPublicClient(chain);
-      const latestBlock = Number(await client.getBlockNumber());
-      const stateKey = `collect-activity-${chain}`;
-
-      let startBlock = fromBlock ? fromBlock : 0;
-      if (fromBlock && force) {
-        startBlock = fromBlock;
-      } else {
-        const state = await this.storages.database.find({
+    for (const config of configs) {
+      const stateKey = `state-snapshot-${config.protocol}-${config.chain}-${config.metric}-${config.address}`;
+      let runTime = options.fromTime ? options.fromTime : config.birthday;
+      if (!options.force) {
+        const latestState = await this.storages.database.find({
           collection: EnvConfig.mongodb.collections.states,
           query: {
             name: stateKey,
           },
         });
-        if (state) {
-          if (startBlock < state.blockNumber) {
-            startBlock = state.blockNumber;
-          }
-        }
-
-        if (startBlock === 0) {
-          // sync from latest 1000 blocks
-          startBlock = latestBlock - 1000;
+        if (latestState) {
+          runTime = latestState.timestamp > runTime ? latestState.timestamp : runTime;
         }
       }
 
-      logger.info('start to collect activity events', {
+      const today = getTodayUTCTimestamp();
+      logger.info('start to get snapshots data', {
         service: this.name,
-        chain: chain,
-        fromBlock: startBlock,
-        toBlock: latestBlock,
+        chain: config.chain,
+        protocol: config.protocol,
+        metric: config.metric,
+        address: config.address,
+        fromDate: getDateString(runTime),
+        toDate: getDateString(today),
       });
 
-      const blockRange = DefaultQueryLogsRanges[chain] ? DefaultQueryLogsRanges[chain] : DefaultQueryLogsBlockRange;
-      while (startBlock <= latestBlock) {
+      while (runTime <= today) {
         const startExeTime = Math.floor(new Date().getTime() / 1000);
 
-        const toBlock = startBlock + blockRange > latestBlock ? latestBlock : startBlock + blockRange;
-        const logs: Array<any> = await client.getLogs({
-          fromBlock: BigInt(startBlock),
-          toBlock: BigInt(toBlock),
-        });
-
-        const blocktimes = await tryQueryBlockTimestamps(
-          EnvConfig.blockchains[chain].blockSubgraph as string,
-          startBlock,
-          toBlock,
-        );
-
-        const actionOperations: Array<any> = [];
-
-        for (const [, adapter] of Object.entries(this.adapters)) {
-          if (protocol === undefined || protocol === adapter.config.protocol) {
-            const result = await adapter.transformEventLogs({
-              chain: chain,
-              logs,
+        if (this.adapters[config.protocol]) {
+          const { data } = await this.adapters[config.protocol].getSnapshotData(
+            {
+              config: config,
+              timestamp: runTime,
+            },
+            this.storages,
+          );
+          for (const snapshot of data) {
+            await this.storages.database.update({
+              collection: EnvConfig.mongodb.collections.lendingMarketSnapshots,
+              keys: {
+                chain: snapshot.chain,
+                metric: snapshot.metric,
+                protocol: snapshot.protocol,
+                address: snapshot.address,
+                'token.address': snapshot.token.address,
+                timestamp: snapshot.timestamp,
+              },
+              updates: {
+                ...snapshot,
+              },
+              upsert: true,
             });
-            for (const activity of result.activities) {
-              actionOperations.push({
-                updateOne: {
-                  filter: {
-                    chain: chain,
-                    transactionHash: activity.transactionHash,
-                    logIndex: activity.logIndex,
-                  },
-                  update: {
-                    $set: {
-                      ...activity,
-                      timestamp: blocktimes[activity.blockNumber] ? blocktimes[activity.blockNumber] : 0,
-                    },
-                  },
-                  upsert: true,
-                },
-              });
-            }
           }
         }
-
-        await this.storages.database.bulkWrite({
-          collection: EnvConfig.mongodb.collections.activities,
-          operations: actionOperations,
-        });
-
-        await this.storages.database.update({
-          collection: EnvConfig.mongodb.collections.states,
-          keys: {
-            name: stateKey,
-          },
-          updates: {
-            name: stateKey,
-            blockNumber: toBlock,
-          },
-          upsert: true,
-        });
 
         const endExeTime = Math.floor(new Date().getTime() / 1000);
         const elapsed = endExeTime - startExeTime;
 
-        logger.info('got activity events', {
+        logger.info('updated snapshot data', {
           service: this.name,
-          chain: chain,
-          fromBlock: startBlock,
-          toBlock: toBlock,
-          logs: logs.length,
-          events: actionOperations.length,
+          chain: config.chain,
+          protocol: config.protocol,
+          metric: config.metric,
+          address: config.address,
+          date: getDateString(runTime),
           elapses: `${elapsed}s`,
         });
 
-        startBlock += blockRange;
+        runTime += DAY;
       }
     }
   }

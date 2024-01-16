@@ -16,14 +16,7 @@ import TokenListMetis from './tokenlists/metis.json';
 import TokenListOptimism from './tokenlists/optimism.json';
 import TokenListPolygon from './tokenlists/polygon.json';
 
-export const DefaultQueryLogsBlockRange = 100;
-
-// chain => ethereum
-export const DefaultQueryLogsRanges: { [key: string]: number } = {
-  polygon: 50,
-  linea: 50,
-  zksyncera: 20,
-};
+export const DefaultQueryLogsBlockRangeSingleContract = 2000;
 
 export const TokenList: {
   [key: string]: {

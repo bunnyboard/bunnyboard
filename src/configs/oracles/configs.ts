@@ -22,6 +22,7 @@ export const OracleConfigs: { [key: string]: { [key: string]: OracleConfig } } =
     '0xe41d2489571d322189246dafa5ebde1f4699f498': OracleSourceConfigs.ZRX,
     '0x1f9840a85d5af5bf1d1762f925bdaddc4201f984': OracleSourceConfigs.UNI,
     '0x7fc66500c84a76ad7e9c93437bfc5ac33e2ddae9': OracleSourceConfigs.AAVE,
+    '0x4da27a545c0c5b758a6ba100e3a049001de870f5': OracleSourceConfigs.AAVE,
     '0x4fabb145d64652a948d72533023f6e7a623c7c53': OracleSourceConfigs.BUSD,
     '0xf629cbd94d3791c9250152bd8dfbdf380e2a3b9c': OracleSourceConfigs.ENJ,
     '0xdd974d5c2e2928dea5f71b9825b8b646686bd200': OracleSourceConfigs.KNC,

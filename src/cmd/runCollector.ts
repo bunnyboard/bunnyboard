@@ -1,5 +1,5 @@
 import { sleep } from '../lib/utils';
-import ProtocolCollector from '../modules/collector/collector';
+import Collector from '../modules/collector/collector';
 import { ContextServices, ContextStorages } from '../types/namespaces';
 import { BasicCommand } from './basic';
 
@@ -15,15 +15,14 @@ export class RunCollectorCommand extends BasicCommand {
     const services: ContextServices = await super.getServices();
     const storages: ContextStorages = await super.getStorages();
 
-    const collector = new ProtocolCollector(storages, services);
+    const collector = new Collector(storages, services);
 
     do {
       await collector.run({
         chain: argv.chain !== '' ? argv.chain : undefined,
         protocol: argv.protocol !== '' ? argv.protocol : undefined,
-        fromBlock: argv.fromBlock ? argv.fromBlock : undefined,
+        fromTime: argv.fromTime ? argv.fromTime : undefined,
         force: argv.force,
-        service: argv.service ? argv.service : undefined,
       });
 
       if (argv.exit) {
@@ -46,20 +45,15 @@ export class RunCollectorCommand extends BasicCommand {
         default: '',
         describe: 'Collect data of given protocol.',
       },
-      fromBlock: {
+      fromTime: {
         type: 'number',
         default: 0,
-        describe: 'Collect data from given block number.',
+        describe: 'Collect snapshots data from given timestamp.',
       },
       force: {
         type: 'boolean',
         default: false,
         describe: 'Force collect data from given from block number.',
-      },
-      service: {
-        type: 'string',
-        default: '',
-        describe: 'Run collector with a single given service. Services: state, activity, snapshot.',
       },
 
       exit: {

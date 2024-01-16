@@ -38,11 +38,11 @@ export interface IProtocolAdapter {
   // get state data
   getStateData: (options: GetAdapterDataOptions) => Promise<GetStateDataResult>;
 
-  // gte snapshot data
+  // get snapshot data
   getSnapshotData: (options: GetAdapterDataOptions, storages: ContextStorages) => Promise<GetSnapshotDataResult>;
 }
 
-export interface IProtocolCollector {
+export interface ICollector {
   name: string;
   services: ContextServices;
   storages: ContextStorages;
