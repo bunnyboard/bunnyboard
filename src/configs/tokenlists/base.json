@@ -1,94 +1,38 @@
 {
-  "1INCH": {
+  "0x2ae3f1ec7f1f5012cfeab0185bfc7aa3cf0dec22": {
     "chain": "base",
-    "symbol": "1INCH",
-    "decimals": 18,
-    "address": "0xc5fecc3a29fb57b5024eec8a2239d4621e111cbe"
-  },
-  "BAL": { "chain": "base", "symbol": "BAL", "decimals": 18, "address": "0x4158734d47fc9692176b5085e0f52ee0da5d47f1" },
-  "BTRST": {
-    "chain": "base",
-    "symbol": "BTRST",
-    "decimals": 18,
-    "address": "0xa7d68d155d17cb30e311367c2ef1e82ab6022b67"
-  },
-  "COMP": {
-    "chain": "base",
-    "symbol": "COMP",
-    "decimals": 18,
-    "address": "0x9e1028f5f1d5ede59748ffcee5532509976840e0"
-  },
-  "CRV": { "chain": "base", "symbol": "CRV", "decimals": 18, "address": "0x8ee73c484a26e0a5df2ee2a4960b789967dd0415" },
-  "DAI": { "chain": "base", "symbol": "DAI", "decimals": 18, "address": "0x50c5725949a6f0c72e6c4a641f24049a917db0cb" },
-  "ETH": { "chain": "base", "symbol": "ETH", "decimals": 18, "address": "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee" },
-  "FARM": {
-    "chain": "base",
-    "symbol": "FARM",
-    "decimals": 18,
-    "address": "0xd08a2917653d4e460893203471f0000826fb4034"
-  },
-  "PRIME": {
-    "chain": "base",
-    "symbol": "PRIME",
-    "decimals": 18,
-    "address": "0xfa980ced6895ac314e7de34ef1bfae90a5add21b"
-  },
-  "SEAM": {
-    "chain": "base",
-    "symbol": "SEAM",
-    "decimals": 18,
-    "address": "0x1c7a460413dd4e964f96d8dfc56e7223ce88cd85"
-  },
-  "SNX": { "chain": "base", "symbol": "SNX", "decimals": 18, "address": "0x22e6966b799c4d5b13be962e1d117b56327fda66" },
-  "SUSHI": {
-    "chain": "base",
-    "symbol": "SUSHI",
-    "decimals": 18,
-    "address": "0x7d49a065d17d6d4a55dc13649901fdbb98b2afba"
-  },
-  "TRAC": {
-    "chain": "base",
-    "symbol": "TRAC",
-    "decimals": 18,
-    "address": "0xa81a52b4dda010896cdd386c7fbdc5cdc835ba23"
-  },
-  "USDC": { "chain": "base", "symbol": "USDC", "decimals": 6, "address": "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913" },
-  "USDbC": {
-    "chain": "base",
-    "symbol": "USDbC",
-    "decimals": 6,
-    "address": "0xd9aaec86b65d86f6a7b5b1b0c42ffa531710b6ca"
-  },
-  "WAMPL": {
-    "chain": "base",
-    "symbol": "WAMPL",
-    "decimals": 18,
-    "address": "0x489fe42c267fe0366b16b0c39e7aeef977e841ef"
-  },
-  "WETH": {
-    "chain": "base",
-    "symbol": "WETH",
-    "decimals": 18,
-    "address": "0x4200000000000000000000000000000000000006"
-  },
-  "YFI": { "chain": "base", "symbol": "YFI", "decimals": 18, "address": "0x9eaf8c1e34f05a589eda6bafdf391cf6ad3cb239" },
-  "ZRX": { "chain": "base", "symbol": "ZRX", "decimals": 18, "address": "0x3bb4445d30ac020a84c1b5a8a2c6248ebc9779d0" },
-  "cbETH": {
-    "chain": "base",
+    "address": "0x2ae3f1ec7f1f5012cfeab0185bfc7aa3cf0dec22",
     "symbol": "cbETH",
-    "decimals": 18,
-    "address": "0x2ae3f1ec7f1f5012cfeab0185bfc7aa3cf0dec22"
+    "decimals": 18
   },
-  "tBTC": {
+  "0x4200000000000000000000000000000000000006": {
     "chain": "base",
-    "symbol": "tBTC",
-    "decimals": 18,
-    "address": "0x236aa50979d5f3de3bd1eeb40e81137f22ab794b"
+    "address": "0x4200000000000000000000000000000000000006",
+    "symbol": "WETH",
+    "decimals": 18
   },
-  "wstETH": {
+  "0x50c5725949a6f0c72e6c4a641f24049a917db0cb": {
     "chain": "base",
+    "address": "0x50c5725949a6f0c72e6c4a641f24049a917db0cb",
+    "symbol": "DAI",
+    "decimals": 18
+  },
+  "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913": {
+    "chain": "base",
+    "address": "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913",
+    "symbol": "USDC",
+    "decimals": 6
+  },
+  "0xc1cba3fcea344f92d9239c08c0568f6f2f0ee452": {
+    "chain": "base",
+    "address": "0xc1cba3fcea344f92d9239c08c0568f6f2f0ee452",
     "symbol": "wstETH",
-    "decimals": 18,
-    "address": "0xc1cba3fcea344f92d9239c08c0568f6f2f0ee452"
+    "decimals": 18
+  },
+  "0xd9aaec86b65d86f6a7b5b1b0c42ffa531710b6ca": {
+    "chain": "base",
+    "address": "0xd9aaec86b65d86f6a7b5b1b0c42ffa531710b6ca",
+    "symbol": "USDbC",
+    "decimals": 6
   }
 }

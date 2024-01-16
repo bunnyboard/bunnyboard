@@ -1,7 +1,7 @@
 import AggregatorAbi from '../../configs/abi/chainlink/EACAggregator.json';
 import { formatBigNumberToString } from '../../lib/utils';
 import BlockchainService from '../../services/blockchains/blockchain';
-import { OracleSourceChainlink } from '../../types/configs';
+import { OracleSourceChainlink } from '../../types/oracles';
 
 export default class ChainlinkLibs {
   public static async getPriceFromAggregator(

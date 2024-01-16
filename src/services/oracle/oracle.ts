@@ -15,9 +15,10 @@ import {
   OracleCurrencyBase,
   OracleSourceBearingToken,
   OracleSourceChainlink,
+  OracleSourceCompoundOracle,
   OracleSourceUniv2,
   OracleSourceUniv3,
-} from '../../types/configs';
+} from '../../types/oracles';
 import BlockchainService from '../blockchains/blockchain';
 import { CachingService } from '../caching/caching';
 import { GetTokenPriceOptions, GetUniv2TokenPriceOptions, IOracleService } from './domains';
@@ -30,7 +31,12 @@ export default class OracleService extends CachingService implements IOracleServ
   }
 
   public async getTokenPriceSource(
-    source: OracleSourceChainlink | OracleSourceUniv2 | OracleSourceUniv3 | OracleSourceBearingToken,
+    source:
+      | OracleSourceChainlink
+      | OracleSourceUniv2
+      | OracleSourceUniv3
+      | OracleSourceBearingToken
+      | OracleSourceCompoundOracle,
     timestamp: number,
   ): Promise<string | null> {
     const sourceCachingKey = `source:${source.type}:${source.chain}:${source.address}:${timestamp}`;
@@ -134,7 +140,7 @@ export default class OracleService extends CachingService implements IOracleServ
         }
       }
 
-      if (config.coingeckoId) {
+      if (!returnPrice && config.coingeckoId) {
         const priceUsd = await CoingeckoLibs.getTokenPriceUsd(config.coingeckoId, options.timestamp);
         if (priceUsd) {
           await this.setCachingData(cachingKey, priceUsd);

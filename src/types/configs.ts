@@ -80,56 +80,6 @@ export interface MetricConfig extends Contract {
   birthday: number;
 }
 
-export type OracleType =
-  | 'chainlink'
-  | 'univ2'
-  | 'univ3'
-
-  // https://etherscan.io/token/0x83F20F44975D03b1b09e64809B757c47f942BEeA
-  | 'savingDai';
-export type OracleCurrencyBase = 'usd' | 'eth' | 'btc' | 'bnb' | 'avax' | 'matic' | 'ftm';
-
-interface OracleSourceBase {
-  type: OracleType;
-  chain: string;
-  address: string;
-}
-
-export interface OracleSourceChainlink extends OracleSourceBase {
-  // aggregator data decimals places
-  decimals: number;
-}
-
-export interface OracleSourceUniv2 extends OracleSourceBase {
-  baseToken: Token;
-  quotaToken: Token;
-}
-
-export interface OracleSourceUniv3 extends OracleSourceUniv2 {}
-
-// this oracle present a bearing staking pool
-// the price will be calculated by amount of underlying (staked) token
-export interface OracleSourceBearingToken extends OracleSourceBase {
-  token: Token;
-}
-
-export interface OracleConfig {
-  // if the currency is not usd
-  // we need to get currency base token price too
-  currency: OracleCurrencyBase;
-
-  // a list of on-chain sources where we can get the token price
-  sources: Array<OracleSourceChainlink | OracleSourceUniv2 | OracleSourceUniv3 | OracleSourceBearingToken>;
-
-  // if the coingecko id was given
-  // we will get price from coingecko API
-  // in case we failed to get price from on-chain source
-  coingeckoId?: string;
-
-  // if is stablecoin, return 1 when we can not fetch the price from any source
-  stablecoin?: boolean;
-}
-
 export const LendingMarketTypes = {
   cross: 'cross',
   cdp: 'cdp',
@@ -163,6 +113,11 @@ export interface LendingMarketConfig extends MetricConfig {
   // ex: DAI in Maker DAO
   debtToken?: Token;
   collateralToken?: Token;
+
+  // ignore these markets and tokens
+  blacklists?: {
+    [key: string]: boolean;
+  };
 }
 
 export const MasterchefVersions = {

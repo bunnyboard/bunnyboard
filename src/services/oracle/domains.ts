@@ -1,4 +1,11 @@
-import { LiquidityPoolConfig, OracleSourceChainlink, OracleSourceUniv2 } from '../../types/configs';
+import { LiquidityPoolConfig } from '../../types/configs';
+import {
+  OracleSourceBearingToken,
+  OracleSourceChainlink,
+  OracleSourceCompoundOracle,
+  OracleSourceUniv2,
+  OracleSourceUniv3,
+} from '../../types/oracles';
 
 export interface GetTokenPriceOptions {
   // chain where token was deployed
@@ -21,7 +28,12 @@ export interface IOracleService {
 
   // this will get token price vs base token in the oracle config only
   getTokenPriceSource: (
-    source: OracleSourceChainlink | OracleSourceUniv2,
+    source:
+      | OracleSourceChainlink
+      | OracleSourceUniv2
+      | OracleSourceUniv3
+      | OracleSourceBearingToken
+      | OracleSourceCompoundOracle,
     blockNumber: number,
   ) => Promise<string | null>;
 

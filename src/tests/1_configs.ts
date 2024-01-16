@@ -1,68 +1,105 @@
-// import { expect } from 'chai';
-// import { describe } from 'mocha';
-//
-// import { ProtocolConfigs } from '../configs';
-// import AaveLendingPoolV1Abi from '../configs/abi/aave/LendingPoolV1.json';
-// import AaveLendingPoolV2Abi from '../configs/abi/aave/LendingPoolV2.json';
-// import MasterchefPools from '../configs/data/MasterchefPools.json';
-// import { OracleConfigs } from '../configs/oracles/configs';
-// import { CompoundLendingMarketConfig } from '../configs/protocols/compound';
-// import { normalizeAddress } from '../lib/utils';
-// import BlockchainService from '../services/blockchains/blockchain';
-// import { LendingMarketConfig } from '../types/configs';
-//
-// function getAllLendingMarketConfigs(): Array<LendingMarketConfig> {
-//   let allMarkets: Array<LendingMarketConfig> = [];
-//
-//   for (const [, config] of Object.entries(ProtocolConfigs)) {
-//     if (config.lendingMarkets) {
-//       allMarkets = allMarkets.concat(config.lendingMarkets);
-//     }
-//   }
-//
-//   return allMarkets;
-// }
-//
-// const blockchain = new BlockchainService();
-//
-// describe('configurations', async function () {
-//   describe('lending market token price', async function () {
-//     getAllLendingMarketConfigs().map((market: LendingMarketConfig) =>
-//       it(`should have oracle config for tokens in lending market ${market.protocol}:${market.chain}:${market.address}`, async function () {
-//         if (market.version === 'compound') {
-//           expect(
-//             OracleConfigs[market.chain][(market as CompoundLendingMarketConfig).underlying.address],
-//             `token: ${normalizeAddress((market as CompoundLendingMarketConfig).underlying.address)}`,
-//           ).not.equal(undefined);
-//         } else if (market.version === 'aavev1' || market.version === 'aavev2' || market.version === 'aavev3') {
-//           // get reserve list
-//           const reserveList: Array<string> = await blockchain.readContract({
-//             chain: market.chain,
-//             abi: market.version === 'aavev1' ? AaveLendingPoolV1Abi : AaveLendingPoolV2Abi,
-//             target: market.address,
-//             method: market.version === 'aavev1' ? 'getReserves' : 'getReservesList',
-//             params: [],
-//           });
-//           for (const reserve of reserveList) {
-//             expect(
-//               OracleConfigs[market.chain][normalizeAddress(reserve)],
-//               `token:${market.chain}:${normalizeAddress(reserve)}`,
-//             ).not.equal(undefined);
-//           }
-//         }
-//       }),
-//     );
-//   });
-//
-//   describe('masterchef token price', async function () {
-//     MasterchefPools.filter((item) => item.lpToken.tokens.length > 0).map((item) =>
-//       it(`should have oracle config for lp token ${item.chain} ${item.lpToken.address}`, async function () {
-//         if (OracleConfigs[item.chain][item.lpToken.tokens[0].address]) {
-//           expect(OracleConfigs[item.chain][item.lpToken.tokens[0].address]).not.equal(undefined);
-//         } else {
-//           expect(OracleConfigs[item.chain][item.lpToken.tokens[1].address]).not.equal(undefined);
-//         }
-//       }),
-//     );
-//   });
-// });
+import { expect } from 'chai';
+import { describe } from 'mocha';
+
+import { ProtocolConfigs } from '../configs';
+import AaveLendingPoolAbiV2 from '../configs/abi/aave/LendingPoolV2.json';
+import AaveLendingPoolAbiV3 from '../configs/abi/aave/LendingPoolV3.json';
+import ComptrollerAbi from '../configs/abi/compound/Comptroller.json';
+import cErc20Abi from '../configs/abi/compound/cErc20.json';
+import { OracleConfigs } from '../configs/oracles/configs';
+import { CompoundLendingMarketConfig } from '../configs/protocols/compound';
+import { normalizeAddress } from '../lib/utils';
+import BlockchainService from '../services/blockchains/blockchain';
+import { DataMetrics, LendingMarketConfig, MetricConfig } from '../types/configs';
+
+const blockchain = new BlockchainService();
+
+interface SimpleToken {
+  chain: string;
+  address: string;
+}
+
+async function getLendingMarketTokenNeedOracles(config: LendingMarketConfig): Promise<Array<SimpleToken>> {
+  let tokens: Array<SimpleToken> = [];
+
+  const version = (config as LendingMarketConfig).version;
+  switch (version) {
+    case 'aavev2':
+    case 'aavev3': {
+      const reserveList = await blockchain.readContract({
+        chain: config.chain,
+        abi: version === 'aavev2' ? AaveLendingPoolAbiV2 : AaveLendingPoolAbiV3,
+        target: config.address,
+        method: 'getReservesList',
+        params: [],
+      });
+
+      tokens = tokens.concat(
+        reserveList.map((item: string) => {
+          return {
+            chain: config.chain,
+            address: normalizeAddress(item),
+          };
+        }),
+      );
+      break;
+    }
+    case 'compound': {
+      const governanceToken = (config as CompoundLendingMarketConfig).governanceToken;
+      if (governanceToken) {
+        tokens.push({
+          chain: governanceToken.chain,
+          address: governanceToken.address,
+        });
+      }
+
+      const marketList = await blockchain.readContract({
+        chain: config.chain,
+        abi: ComptrollerAbi,
+        target: config.address,
+        method: 'getAllMarkets',
+        params: [],
+      });
+      for (const cToken of marketList) {
+        const underlying = await blockchain.readContract({
+          chain: config.chain,
+          abi: cErc20Abi,
+          target: cToken,
+          method: 'underlying',
+          params: [],
+        });
+        if (underlying) {
+          if (config.blacklists && config.blacklists[normalizeAddress(cToken)]) {
+            continue;
+          }
+          tokens.push({
+            chain: config.chain,
+            address: normalizeAddress(underlying.toString()),
+          });
+        }
+      }
+    }
+  }
+
+  return tokens;
+}
+
+describe('data and configs', async function () {
+  Object.values(ProtocolConfigs).map((protocolConfig) =>
+    describe(`should have correct configs for protocol ${protocolConfig.protocol}`, async function () {
+      protocolConfig.configs
+        .filter((config) => (config as MetricConfig).metric === DataMetrics.lending)
+        .map((lendingConfig) =>
+          it(`should have correct configs for lending market ${lendingConfig.protocol}:${lendingConfig.chain}:${lendingConfig.address}`, async function () {
+            const tokens = await getLendingMarketTokenNeedOracles(lendingConfig as LendingMarketConfig);
+            for (const token of tokens) {
+              expect(OracleConfigs[token.chain][token.address]).not.equal(
+                undefined,
+                `should have token oracle config for ${token.chain}:${token.address}`,
+              );
+            }
+          }),
+        );
+    }),
+  );
+});

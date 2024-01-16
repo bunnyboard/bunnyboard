@@ -1,375 +1,98 @@
 {
-  "1INCH": {
+  "0x0b2c639c533813f4aa9d7837caf62653d097ff85": {
     "chain": "optimism",
-    "symbol": "1INCH",
-    "decimals": 18,
-    "address": "0xad42d013ac31486b73b6b059e748172994736426"
-  },
-  "AAVE": {
-    "chain": "optimism",
-    "symbol": "AAVE",
-    "decimals": 18,
-    "address": "0x76fb31fb4af56892a25e32cfc43de717950c9278"
-  },
-  "ARPA": {
-    "chain": "optimism",
-    "symbol": "ARPA",
-    "decimals": 18,
-    "address": "0x334cc734866e97d8452ae6261d68fd9bc9bfa31e"
-  },
-  "BAL": {
-    "chain": "optimism",
-    "symbol": "BAL",
-    "decimals": 18,
-    "address": "0xfe8b128ba8c78aabc59d4c64cee7ff28e9379921"
-  },
-  "BOND": {
-    "chain": "optimism",
-    "symbol": "BOND",
-    "decimals": 18,
-    "address": "0x3e7ef8f50246f725885102e8238cbba33f276747"
-  },
-  "BTRST": {
-    "chain": "optimism",
-    "symbol": "BTRST",
-    "decimals": 18,
-    "address": "0xed50ace88bd42b45cb0f49be15395021e141254e"
-  },
-  "BUSD": {
-    "chain": "optimism",
-    "symbol": "BUSD",
-    "decimals": 18,
-    "address": "0x9c9e5fd8bbc25984b178fdce6117defa39d2db39"
-  },
-  "CELO": {
-    "chain": "optimism",
-    "symbol": "CELO",
-    "decimals": 18,
-    "address": "0x9b88d293b7a791e40d36a39765ffd5a1b9b5c349"
-  },
-  "CRV": {
-    "chain": "optimism",
-    "symbol": "CRV",
-    "decimals": 18,
-    "address": "0x0994206dfe8de6ec6920ff4d779b0d950605fb53"
-  },
-  "CTSI": {
-    "chain": "optimism",
-    "symbol": "CTSI",
-    "decimals": 18,
-    "address": "0xec6adef5e1006bb305bb1975333e8fc4071295bf"
-  },
-  "DAI": {
-    "chain": "optimism",
-    "symbol": "DAI",
-    "decimals": 18,
-    "address": "0xda10009cbd5d07dd0cecc66161fc93d7c9000da1"
-  },
-  "ENS": {
-    "chain": "optimism",
-    "symbol": "ENS",
-    "decimals": 18,
-    "address": "0x65559aa14915a70190438ef90104769e5e890a00"
-  },
-  "ETH": {
-    "chain": "optimism",
-    "symbol": "ETH",
-    "decimals": 18,
-    "address": "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee"
-  },
-  "FIS": {
-    "chain": "optimism",
-    "symbol": "FIS",
-    "decimals": 18,
-    "address": "0xd8737ca46aa6285de7b8777a8e3db232911bad41"
-  },
-  "FOX": {
-    "chain": "optimism",
-    "symbol": "FOX",
-    "decimals": 18,
-    "address": "0xf1a0da3367bc7aa04f8d94ba57b862ff37ced174"
-  },
-  "FRAX": {
-    "chain": "optimism",
-    "symbol": "FRAX",
-    "decimals": 18,
-    "address": "0x2e3d870790dc77a83dd1d18184acc7439a53f475"
-  },
-  "FXS": {
-    "chain": "optimism",
-    "symbol": "FXS",
-    "decimals": 18,
-    "address": "0x67ccea5bb16181e7b4109c9c2143c24a1c2205be"
-  },
-  "GTC": {
-    "chain": "optimism",
-    "symbol": "GTC",
-    "decimals": 18,
-    "address": "0x1eba7a6a72c894026cd654ac5cdcf83a46445b08"
-  },
-  "GYEN": {
-    "chain": "optimism",
-    "symbol": "GYEN",
-    "decimals": 6,
-    "address": "0x589d35656641d6ab57a545f08cf473ecd9b6d5f7"
-  },
-  "LDO": {
-    "chain": "optimism",
-    "symbol": "LDO",
-    "decimals": 18,
-    "address": "0xfdb794692724153d1488ccdbe0c56c252596735f"
-  },
-  "LINK": {
-    "chain": "optimism",
-    "symbol": "LINK",
-    "decimals": 18,
-    "address": "0x350a791bfc2c21f9ed5d10980dad2e2638ffa7f6"
-  },
-  "LRC": {
-    "chain": "optimism",
-    "symbol": "LRC",
-    "decimals": 18,
-    "address": "0xfeaa9194f9f8c1b65429e31341a103071464907e"
-  },
-  "LUSD": {
-    "chain": "optimism",
-    "symbol": "LUSD",
-    "decimals": 18,
-    "address": "0xc40f949f8a4e094d1b49a23ea9241d289b7b2819"
-  },
-  "MAI": {
-    "chain": "optimism",
-    "symbol": "MAI",
-    "decimals": 18,
-    "address": "0xdfa46478f9e5ea86d57387849598dbfb2e964b02"
-  },
-  "MASK": {
-    "chain": "optimism",
-    "symbol": "MASK",
-    "decimals": 18,
-    "address": "0x3390108e913824b8ead638444cc52b9abdf63798"
-  },
-  "MKR": {
-    "chain": "optimism",
-    "symbol": "MKR",
-    "decimals": 18,
-    "address": "0xab7badef82e9fe11f6f33f87bc9bc2aa27f2fcb5"
-  },
-  "OCEAN": {
-    "chain": "optimism",
-    "symbol": "OCEAN",
-    "decimals": 18,
-    "address": "0x2561aa2bb1d2eb6629edd7b0938d7679b8b49f9e"
-  },
-  "OP": {
-    "chain": "optimism",
-    "symbol": "OP",
-    "decimals": 18,
-    "address": "0x4200000000000000000000000000000000000042"
-  },
-  "PEPE": {
-    "chain": "optimism",
-    "symbol": "PEPE",
-    "decimals": 18,
-    "address": "0xc1c167cc44f7923cd0062c4370df962f9ddb16f5"
-  },
-  "PERP": {
-    "chain": "optimism",
-    "symbol": "PERP",
-    "decimals": 18,
-    "address": "0x9e1028f5f1d5ede59748ffcee5532509976840e0"
-  },
-  "RAI": {
-    "chain": "optimism",
-    "symbol": "RAI",
-    "decimals": 18,
-    "address": "0x7fb688ccf682d58f86d7e38e03f9d22e7705448b"
-  },
-  "RGT": {
-    "chain": "optimism",
-    "symbol": "RGT",
-    "decimals": 18,
-    "address": "0xb548f63d4405466b36c0c0ac3318a22fdcec711a"
-  },
-  "SNT": {
-    "chain": "optimism",
-    "symbol": "SNT",
-    "decimals": 18,
-    "address": "0x650af3c15af43dcb218406d30784416d64cfb6b2"
-  },
-  "SNX": {
-    "chain": "optimism",
-    "symbol": "SNX",
-    "decimals": 18,
-    "address": "0x8700daec35af8ff88c16bdf0418774cb3d7599b4"
-  },
-  "SOL": {
-    "chain": "optimism",
-    "symbol": "SOL",
-    "decimals": 9,
-    "address": "0xba1cf949c382a32a09a17b2adf3587fc7fa664f1"
-  },
-  "SONNE": {
-    "chain": "optimism",
-    "symbol": "SONNE",
-    "decimals": 18,
-    "address": "0x1db2466d9f5e10d7090e7152b68d62703a2245f0"
-  },
-  "SUKU": {
-    "chain": "optimism",
-    "symbol": "SUKU",
-    "decimals": 18,
-    "address": "0xef6301da234fc7b0545c6e877d3359fe0b9e50a4"
-  },
-  "SUSD": {
-    "chain": "optimism",
-    "symbol": "SUSD",
-    "decimals": 18,
-    "address": "0x8c6f28f2f1a3c87f0f938b96d27520d9751ec8d9"
-  },
-  "SUSHI": {
-    "chain": "optimism",
-    "symbol": "SUSHI",
-    "decimals": 18,
-    "address": "0x3eaeb77b03dbc0f6321ae1b72b2e9adb0f60112b"
-  },
-  "T": { "chain": "optimism", "symbol": "T", "decimals": 18, "address": "0x747e42eb0591547a0ab429b3627816208c734ea7" },
-  "TRB": {
-    "chain": "optimism",
-    "symbol": "TRB",
-    "decimals": 18,
-    "address": "0xaf8ca653fa2772d58f4368b0a71980e9e3ceb888"
-  },
-  "UMA": {
-    "chain": "optimism",
-    "symbol": "UMA",
-    "decimals": 18,
-    "address": "0xe7798f023fc62146e8aa1b36da45fb70855a77ea"
-  },
-  "UNI": {
-    "chain": "optimism",
-    "symbol": "UNI",
-    "decimals": 18,
-    "address": "0x6fd9d7ad17242c41f7131d257212c54a0e816691"
-  },
-  "USDC": {
-    "chain": "optimism",
+    "address": "0x0b2c639c533813f4aa9d7837caf62653d097ff85",
     "symbol": "USDC",
-    "decimals": 6,
-    "address": "0x0b2c639c533813f4aa9d7837caf62653d097ff85"
+    "decimals": 6
   },
-  "USDC.e": {
+  "0x1db2466d9f5e10d7090e7152b68d62703a2245f0": {
     "chain": "optimism",
-    "symbol": "USDC.e",
-    "decimals": 6,
-    "address": "0x7f5c764cbc14f9669b88837ca1490cca17c31607"
+    "address": "0x1db2466d9f5e10d7090e7152b68d62703a2245f0",
+    "symbol": "SONNE",
+    "decimals": 18
   },
-  "USDT": {
+  "0x1f32b1c2345538c0c6f582fcb022739c4a194ebb": {
     "chain": "optimism",
-    "symbol": "USDT",
-    "decimals": 6,
-    "address": "0x94b008aa00579c1307b0ef2c499ad98a8ce58e58"
-  },
-  "WBTC": {
-    "chain": "optimism",
-    "symbol": "WBTC",
-    "decimals": 8,
-    "address": "0x68f180fcce6836688e9084f035309e29bf0a2095"
-  },
-  "WETH": {
-    "chain": "optimism",
-    "symbol": "WETH",
-    "decimals": 18,
-    "address": "0x4200000000000000000000000000000000000006"
-  },
-  "WOO": {
-    "chain": "optimism",
-    "symbol": "WOO",
-    "decimals": 18,
-    "address": "0x871f2f2ff935fd1ed867842ff2a7bfd051a5e527"
-  },
-  "YFI": {
-    "chain": "optimism",
-    "symbol": "YFI",
-    "decimals": 18,
-    "address": "0x9046d36440290ffde54fe0dd84db8b1cfee9107b"
-  },
-  "ZRX": {
-    "chain": "optimism",
-    "symbol": "ZRX",
-    "decimals": 18,
-    "address": "0xd1917629b3e6a72e6772aab5dbe58eb7fa3c2f33"
-  },
-  "aOptAAVE": {
-    "chain": "optimism",
-    "symbol": "aOptAAVE",
-    "decimals": 18,
-    "address": "0xf329e36c7bf6e5e86ce2150875a84ce77f477375"
-  },
-  "aOptDAI": {
-    "chain": "optimism",
-    "symbol": "aOptDAI",
-    "decimals": 18,
-    "address": "0x82e64f49ed5ec1bc6e43dad4fc8af9bb3a2312ee"
-  },
-  "aOptLINK": {
-    "chain": "optimism",
-    "symbol": "aOptLINK",
-    "decimals": 18,
-    "address": "0x191c10aa4af7c30e871e70c95db0e4eb77237530"
-  },
-  "aOptSUSD": {
-    "chain": "optimism",
-    "symbol": "aOptSUSD",
-    "decimals": 18,
-    "address": "0x6d80113e533a2c0fe82eabd35f1875dcea89ea97"
-  },
-  "aOptUSDC": {
-    "chain": "optimism",
-    "symbol": "aOptUSDC",
-    "decimals": 6,
-    "address": "0x625e7708f30ca75bfd92586e17077590c60eb4cd"
-  },
-  "aOptUSDT": {
-    "chain": "optimism",
-    "symbol": "aOptUSDT",
-    "decimals": 6,
-    "address": "0x6ab707aca953edaefbc4fd23ba73294241490620"
-  },
-  "aOptWBTC": {
-    "chain": "optimism",
-    "symbol": "aOptWBTC",
-    "decimals": 8,
-    "address": "0x078f358208685046a11c85e8ad32895ded33a249"
-  },
-  "aOptWETH": {
-    "chain": "optimism",
-    "symbol": "aOptWETH",
-    "decimals": 18,
-    "address": "0xe50fa9b3c56ffb159cb0fca61f5c9d750e8128c8"
-  },
-  "cbETH": {
-    "chain": "optimism",
-    "symbol": "cbETH",
-    "decimals": 18,
-    "address": "0xaddb6a0412de1ba0f936dcaeb8aaa24578dcf3b2"
-  },
-  "rETH": {
-    "chain": "optimism",
-    "symbol": "rETH",
-    "decimals": 18,
-    "address": "0x9bcef72be871e61ed4fbbc7630889bee758eb81d"
-  },
-  "sUSD": {
-    "chain": "optimism",
-    "symbol": "sUSD",
-    "decimals": 18,
-    "address": "0x8c6f28f2f1a3c87f0f938b96d27520d9751ec8d9"
-  },
-  "wstETH": {
-    "chain": "optimism",
+    "address": "0x1f32b1c2345538c0c6f582fcb022739c4a194ebb",
     "symbol": "wstETH",
-    "decimals": 18,
-    "address": "0x1f32b1c2345538c0c6f582fcb022739c4a194ebb"
+    "decimals": 18
+  },
+  "0x350a791bfc2c21f9ed5d10980dad2e2638ffa7f6": {
+    "chain": "optimism",
+    "address": "0x350a791bfc2c21f9ed5d10980dad2e2638ffa7f6",
+    "symbol": "LINK",
+    "decimals": 18
+  },
+  "0x4200000000000000000000000000000000000006": {
+    "chain": "optimism",
+    "address": "0x4200000000000000000000000000000000000006",
+    "symbol": "WETH",
+    "decimals": 18
+  },
+  "0x4200000000000000000000000000000000000042": {
+    "chain": "optimism",
+    "address": "0x4200000000000000000000000000000000000042",
+    "symbol": "OP",
+    "decimals": 18
+  },
+  "0x68f180fcce6836688e9084f035309e29bf0a2095": {
+    "chain": "optimism",
+    "address": "0x68f180fcce6836688e9084f035309e29bf0a2095",
+    "symbol": "WBTC",
+    "decimals": 8
+  },
+  "0x76fb31fb4af56892a25e32cfc43de717950c9278": {
+    "chain": "optimism",
+    "address": "0x76fb31fb4af56892a25e32cfc43de717950c9278",
+    "symbol": "AAVE",
+    "decimals": 18
+  },
+  "0x7f5c764cbc14f9669b88837ca1490cca17c31607": {
+    "chain": "optimism",
+    "address": "0x7f5c764cbc14f9669b88837ca1490cca17c31607",
+    "symbol": "USDC",
+    "decimals": 6
+  },
+  "0x8700daec35af8ff88c16bdf0418774cb3d7599b4": {
+    "chain": "optimism",
+    "address": "0x8700daec35af8ff88c16bdf0418774cb3d7599b4",
+    "symbol": "SNX",
+    "decimals": 18
+  },
+  "0x8c6f28f2f1a3c87f0f938b96d27520d9751ec8d9": {
+    "chain": "optimism",
+    "address": "0x8c6f28f2f1a3c87f0f938b96d27520d9751ec8d9",
+    "symbol": "sUSD",
+    "decimals": 18
+  },
+  "0x94b008aa00579c1307b0ef2c499ad98a8ce58e58": {
+    "chain": "optimism",
+    "address": "0x94b008aa00579c1307b0ef2c499ad98a8ce58e58",
+    "symbol": "USDT",
+    "decimals": 6
+  },
+  "0x9bcef72be871e61ed4fbbc7630889bee758eb81d": {
+    "chain": "optimism",
+    "address": "0x9bcef72be871e61ed4fbbc7630889bee758eb81d",
+    "symbol": "rETH",
+    "decimals": 18
+  },
+  "0xc40f949f8a4e094d1b49a23ea9241d289b7b2819": {
+    "chain": "optimism",
+    "address": "0xc40f949f8a4e094d1b49a23ea9241d289b7b2819",
+    "symbol": "LUSD",
+    "decimals": 18
+  },
+  "0xda10009cbd5d07dd0cecc66161fc93d7c9000da1": {
+    "chain": "optimism",
+    "address": "0xda10009cbd5d07dd0cecc66161fc93d7c9000da1",
+    "symbol": "DAI",
+    "decimals": 18
+  },
+  "0xdfa46478f9e5ea86d57387849598dbfb2e964b02": {
+    "chain": "optimism",
+    "address": "0xdfa46478f9e5ea86d57387849598dbfb2e964b02",
+    "symbol": "MAI",
+    "decimals": 18
   }
 }

@@ -7,9 +7,6 @@ export interface CompoundLendingMarketConfig extends LendingMarketConfig {
     // contract address => underlying token
     [key: string]: Token;
   };
-  blacklists?: {
-    [key: string]: boolean;
-  };
 }
 
 export interface CompoundProtocolConfig extends ProtocolConfig {

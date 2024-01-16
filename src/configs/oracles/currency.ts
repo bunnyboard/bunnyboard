@@ -1,8 +1,4 @@
-import { OracleConfig, Token } from '../../types/configs';
-import ArbitrumTokenList from '../tokenlists/arbitrum.json';
-import BaseTokenList from '../tokenlists/base.json';
-import EthereumTokenList from '../tokenlists/ethereum.json';
-import OptimismTokenList from '../tokenlists/optimism.json';
+import { OracleConfig } from '../../types/oracles';
 import { OracleSourceChainlinkList } from './chainlink';
 
 export const OracleCurrencyBaseConfigs: { [key: string]: OracleConfig } = {
@@ -36,11 +32,4 @@ export const OracleCurrencyBaseConfigs: { [key: string]: OracleConfig } = {
     sources: [OracleSourceChainlinkList.FTM_USD],
     coingeckoId: 'fantom',
   },
-};
-
-export const OracleCurrencyBaseLiquidityPoolConfigs: { [key: string]: Array<Token> } = {
-  ethereum: [EthereumTokenList.WETH],
-  arbitrum: [ArbitrumTokenList.WETH],
-  optimism: [OptimismTokenList.WETH],
-  base: [BaseTokenList.WETH],
 };

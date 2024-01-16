@@ -1,4 +1,4 @@
-import { OracleSourceChainlink } from '../../types/configs';
+import { OracleSourceChainlink } from '../../types/oracles';
 
 // chain => tokenAddress => config
 export const OracleSourceChainlinkList: { [key: string]: OracleSourceChainlink } = {
@@ -62,6 +62,12 @@ export const OracleSourceChainlinkList: { [key: string]: OracleSourceChainlink }
     address: '0x8fFfFfd4AfB6115b954Bd326cbe7B4BA576818f6',
     decimals: 8,
   },
+  EUR_USD: {
+    type: 'chainlink',
+    chain: 'ethereum',
+    address: '0xb49f677943BC038e9857d61E7d053CaA2C1734C1',
+    decimals: 8,
+  },
   BAT_ETH: {
     type: 'chainlink',
     chain: 'ethereum',
@@ -120,6 +126,36 @@ export const OracleSourceChainlinkList: { [key: string]: OracleSourceChainlink }
     type: 'chainlink',
     chain: 'bnbchain',
     address: '0x43d80f616DAf0b0B42a928EeD32147dC59027D41',
+    decimals: 8,
+  },
+  AUD_USD: {
+    type: 'chainlink',
+    chain: 'ethereum',
+    address: '0x77F9710E7d0A19669A13c055F62cd80d313dF022',
+    decimals: 8,
+  },
+  GBP_USD: {
+    type: 'chainlink',
+    chain: 'ethereum',
+    address: '0x5c0Ab2d9b5a7ed9f470386e82BB36A3613cDd4b5',
+    decimals: 8,
+  },
+  JPY_USD: {
+    type: 'chainlink',
+    chain: 'ethereum',
+    address: '0xBcE206caE7f0ec07b545EddE332A47C2F75bbeb3',
+    decimals: 8,
+  },
+  KRW_USD: {
+    type: 'chainlink',
+    chain: 'ethereum',
+    address: '0x01435677FB11763550905594A16B645847C1d0F3',
+    decimals: 8,
+  },
+  CHF_USD: {
+    type: 'chainlink',
+    chain: 'ethereum',
+    address: '0x449d117117838fFA61263B61dA6301AA2a88B13A',
     decimals: 8,
   },
 };

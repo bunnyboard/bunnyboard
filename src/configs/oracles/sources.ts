@@ -1,4 +1,4 @@
-import { OracleConfig } from '../../types/configs';
+import { OracleConfig } from '../../types/oracles';
 import { OracleSourceChainlinkList } from './chainlink';
 import { OracleCurrencyBaseConfigs } from './currency';
 import { OracleSourceCustomList } from './custom';
@@ -9,6 +9,7 @@ import { OracleSourceUniswapv3List } from './uniswapv3';
 export const OracleSourceConfigs: { [key: string]: OracleConfig } = {
   ETH: OracleCurrencyBaseConfigs.eth,
   BNB: OracleCurrencyBaseConfigs.bnb,
+  BTC: OracleCurrencyBaseConfigs.btc,
   MATIC: OracleCurrencyBaseConfigs.matic,
   AVAX: OracleCurrencyBaseConfigs.avax,
   FTM: OracleCurrencyBaseConfigs.ftm,
@@ -26,6 +27,10 @@ export const OracleSourceConfigs: { [key: string]: OracleConfig } = {
     currency: 'usd',
     sources: [OracleSourceChainlinkList.USDT_USD],
     coingeckoId: 'tether',
+  },
+  EUR: {
+    currency: 'usd',
+    sources: [OracleSourceChainlinkList.EUR_USD],
   },
   sUSD: {
     currency: 'usd',
@@ -479,5 +484,29 @@ export const OracleSourceConfigs: { [key: string]: OracleConfig } = {
   RDNT: {
     currency: 'eth',
     sources: [OracleSourceUniswapv3List.RDNT_WETH],
+  },
+  GBP: {
+    currency: 'usd',
+    sources: [OracleSourceChainlinkList.GBP_USD],
+  },
+  AUD: {
+    currency: 'usd',
+    sources: [OracleSourceChainlinkList.AUD_USD],
+  },
+  JPY: {
+    currency: 'usd',
+    sources: [OracleSourceChainlinkList.JPY_USD],
+  },
+  KRW: {
+    currency: 'usd',
+    sources: [OracleSourceChainlinkList.KRW_USD],
+  },
+  CHF: {
+    currency: 'usd',
+    sources: [OracleSourceChainlinkList.CHF_USD],
+  },
+  FDUSD: {
+    currency: 'usd',
+    sources: [OracleSourceUniswapv3List.FDUSD_USDT],
   },
 };
