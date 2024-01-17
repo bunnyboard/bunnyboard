@@ -4,14 +4,14 @@ import { decodeEventLog } from 'viem';
 import CompoundComptrollerAbi from '../../../configs/abi/compound/Comptroller.json';
 import CompoundComptrollerV1Abi from '../../../configs/abi/compound/ComptrollerV1.json';
 import cErc20Abi from '../../../configs/abi/compound/cErc20.json';
-import { ChainBlockPeriods, YEAR } from '../../../configs/constants';
+import { ChainBlockPeriods, DAY, YEAR } from '../../../configs/constants';
 import EnvConfig from '../../../configs/envConfig';
 import { CompoundLendingMarketConfig } from '../../../configs/protocols/compound';
 import { tryQueryBlockNumberAtTimestamp } from '../../../lib/subsgraph';
 import { compareAddress, formatBigNumberToString, normalizeAddress } from '../../../lib/utils';
 import { DataMetrics, ProtocolConfig, Token } from '../../../types/configs';
 import { ActivityActions, TokenAmountEntry } from '../../../types/domains/base';
-import { LendingMarketState } from '../../../types/domains/lending';
+import { LendingMarketSnapshot, LendingMarketState } from '../../../types/domains/lending';
 import { ContextServices, ContextStorages } from '../../../types/namespaces';
 import {
   GetAdapterDataOptions,
@@ -23,6 +23,7 @@ import {
 } from '../../../types/options';
 import CompoundLibs from '../../libs/compound';
 import ProtocolAdapter from '../adapter';
+import { countLendingDataFromActivities } from '../helpers';
 import { CompoundEventInterfaces, CompoundEventSignatures } from './abis';
 
 interface Rates {
@@ -423,53 +424,105 @@ export default class CompoundAdapter extends ProtocolAdapter {
               topics: log.topics,
             });
 
-            let action = '';
-            let user = '';
-            let borrower: string | undefined = undefined;
-            let tokenAmount = '';
+            if (signature !== eventSignatures.Liquidate) {
+              let action = '';
+              let user = '';
+              let borrower: string | undefined = undefined;
+              let tokenAmount = '';
 
-            switch (signature) {
-              case eventSignatures.Mint: {
-                action = ActivityActions.deposit;
-                user = normalizeAddress(event.args.minter);
-                tokenAmount = formatBigNumberToString(event.args.mintAmount.toString(), cToken.underlying.decimals);
-                break;
+              switch (signature) {
+                case eventSignatures.Mint: {
+                  action = ActivityActions.deposit;
+                  user = normalizeAddress(event.args.minter);
+                  tokenAmount = formatBigNumberToString(event.args.mintAmount.toString(), cToken.underlying.decimals);
+                  break;
+                }
+                case eventSignatures.Redeem: {
+                  action = ActivityActions.withdraw;
+                  user = normalizeAddress(event.args.redeemer);
+                  tokenAmount = formatBigNumberToString(event.args.redeemAmount.toString(), cToken.underlying.decimals);
+                  break;
+                }
+                case eventSignatures.Borrow: {
+                  action = ActivityActions.borrow;
+                  user = normalizeAddress(event.args.borrower);
+                  tokenAmount = formatBigNumberToString(event.args.borrowAmount.toString(), cToken.underlying.decimals);
+                  break;
+                }
+                case eventSignatures.Repay: {
+                  action = ActivityActions.repay;
+                  user = normalizeAddress(event.args.payer);
+                  borrower = normalizeAddress(event.args.borrower);
+                  tokenAmount = formatBigNumberToString(event.args.repayAmount.toString(), cToken.underlying.decimals);
+                  break;
+                }
               }
-              case eventSignatures.Redeem: {
-                action = ActivityActions.withdraw;
-                user = normalizeAddress(event.args.redeemer);
-                tokenAmount = formatBigNumberToString(event.args.redeemAmount.toString(), cToken.underlying.decimals);
-                break;
-              }
-              case eventSignatures.Borrow: {
-                action = ActivityActions.borrow;
-                user = normalizeAddress(event.args.borrower);
-                tokenAmount = formatBigNumberToString(event.args.borrowAmount.toString(), cToken.underlying.decimals);
-                break;
-              }
-              case eventSignatures.Repay: {
-                action = ActivityActions.repay;
-                user = normalizeAddress(event.args.payer);
-                borrower = normalizeAddress(event.args.borrower);
-                tokenAmount = formatBigNumberToString(event.args.repayAmount.toString(), cToken.underlying.decimals);
-                break;
+
+              result.activities.push({
+                chain: options.chain,
+                protocol: this.config.protocol,
+                address: address,
+                transactionHash: log.transactionHash,
+                logIndex: log.logIndex.toString(),
+                blockNumber: new BigNumber(log.blockNumber.toString()).toNumber(),
+                timestamp: log.timestamp,
+                action: action,
+                user: user,
+                token: cToken.underlying,
+                tokenAmount: tokenAmount,
+                borrower: borrower,
+              });
+            } else {
+              const action = ActivityActions.liquidate;
+              const user = normalizeAddress(event.args.liquidator);
+              const borrower = normalizeAddress(event.args.borrower);
+              const tokenAmount = formatBigNumberToString(
+                event.args.repayAmount.toString(),
+                cToken.underlying.decimals,
+              );
+
+              // get collateral info
+              const cTokenCollateral = allCTokens.filter((item) =>
+                compareAddress(item.cToken, event.args.cTokenCollateral),
+              )[0];
+              if (cTokenCollateral) {
+                const seizeTokens = new BigNumber(event.args.seizeTokens.toString());
+
+                // we get the current exchange rate
+                const exchangeRateCurrent = await this.services.blockchain.readContract({
+                  chain: options.chain,
+                  abi: this.abiConfigs.eventAbis.cErc20,
+                  target: cTokenCollateral.cToken,
+                  method: 'exchangeRateCurrent',
+                  params: [],
+                  blockNumber: log.blockNumber,
+                });
+                if (exchangeRateCurrent) {
+                  const mantissa = 18 + cTokenCollateral.underlying.decimals - 8;
+                  const oneCTokenInUnderlying = new BigNumber(exchangeRateCurrent).dividedBy(
+                    new BigNumber(10).pow(mantissa),
+                  );
+                  const collateralAmount = seizeTokens.multipliedBy(oneCTokenInUnderlying).dividedBy(1e8).toString(10);
+
+                  result.activities.push({
+                    chain: options.chain,
+                    protocol: this.config.protocol,
+                    address: address,
+                    transactionHash: log.transactionHash,
+                    logIndex: log.logIndex.toString(),
+                    blockNumber: new BigNumber(log.blockNumber.toString()).toNumber(),
+                    timestamp: log.timestamp,
+                    action: action,
+                    user: user,
+                    token: cToken.underlying,
+                    tokenAmount: tokenAmount,
+                    borrower: borrower,
+                    collateralToken: cTokenCollateral.underlying,
+                    collateralAmount: collateralAmount,
+                  });
+                }
               }
             }
-
-            result.activities.push({
-              chain: options.chain,
-              protocol: this.config.protocol,
-              address: address,
-              transactionHash: log.transactionHash,
-              logIndex: log.logIndex.toString(),
-              blockNumber: new BigNumber(log.blockNumber.toString()).toNumber(),
-              timestamp: log.timestamp,
-              action: action,
-              user: user,
-              token: cToken.underlying,
-              tokenAmount: tokenAmount,
-              borrower: borrower,
-            });
           }
         }
       }
@@ -482,13 +535,48 @@ export default class CompoundAdapter extends ProtocolAdapter {
     options: GetAdapterDataOptions,
     storages: ContextStorages,
   ): Promise<GetSnapshotDataResult> {
-    // const states = (await this.getStateData(options)).data;
+    const states = (await this.getStateData(options)).data;
 
     const result: GetSnapshotDataResult = {
       data: [],
     };
 
+    // make sure activities were synced
     await this.syncActivities(options, storages);
+
+    const startDayTimestamp = options.timestamp;
+    const endDayTimestamp = options.timestamp + DAY - 1;
+
+    for (const stateData of states) {
+      const documents = await storages.database.query({
+        collection: EnvConfig.mongodb.collections.activities,
+        query: {
+          chain: stateData.chain,
+          protocol: stateData.protocol,
+          address: stateData.address,
+          'token.address': stateData.token.address,
+          timestamp: {
+            $gte: startDayTimestamp,
+            $lte: endDayTimestamp,
+          },
+        },
+      });
+
+      const activityData = await countLendingDataFromActivities(documents);
+
+      const feesPaidFromBorrow = new BigNumber(stateData.totalBorrowed)
+        .multipliedBy(stateData.borrowRate)
+        .multipliedBy(DAY)
+        .dividedBy(YEAR);
+
+      const snapshotData: LendingMarketSnapshot = {
+        ...stateData,
+        ...activityData,
+        totalFeesPaid: feesPaidFromBorrow.toString(10),
+      };
+
+      result.data.push(snapshotData);
+    }
 
     return result;
   }

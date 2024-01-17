@@ -10,8 +10,8 @@ import { AaveLendingMarketConfig } from '../../../configs/protocols/aave';
 import { tryQueryBlockNumberAtTimestamp } from '../../../lib/subsgraph';
 import { formatBigNumberToString, normalizeAddress } from '../../../lib/utils';
 import { DataMetrics, ProtocolConfig } from '../../../types/configs';
-import { ActivityAction, ActivityActions, BaseActivityEvent, TokenAmountEntry } from '../../../types/domains/base';
-import { LendingActivityEvent, LendingMarketSnapshot, LendingMarketState } from '../../../types/domains/lending';
+import { ActivityAction, TokenAmountEntry } from '../../../types/domains/base';
+import { LendingMarketSnapshot, LendingMarketState } from '../../../types/domains/lending';
 import { ContextServices, ContextStorages } from '../../../types/namespaces';
 import {
   GetAdapterDataOptions,
@@ -22,6 +22,7 @@ import {
   TransformEventLogResult,
 } from '../../../types/options';
 import ProtocolAdapter from '../adapter';
+import { countLendingDataFromActivities } from '../helpers';
 import { AaveEventInterfaces, Aavev2EventSignatures } from './abis';
 
 export interface AaveMarketRates {
@@ -338,97 +339,7 @@ export default class Aavev2Adapter extends ProtocolAdapter {
         },
       });
 
-      let volumeDeposited = new BigNumber(0);
-      let volumeWithdrawn = new BigNumber(0);
-      let volumeBorrowed = new BigNumber(0);
-      let volumeRepaid = new BigNumber(0);
-      const volumeLiquidated: { [key: string]: TokenAmountEntry } = {};
-      const countUsers: { [key: string]: boolean } = {};
-      const countLenders: { [key: string]: boolean } = {};
-      const countBorrowers: { [key: string]: boolean } = {};
-      const countLiquidators: { [key: string]: boolean } = {};
-      const transactions: { [key: string]: boolean } = {};
-      for (const document of documents) {
-        const activityEvent = document as BaseActivityEvent;
-        const borrower = (activityEvent as LendingActivityEvent).borrower;
-
-        if (!transactions[document.transactionHash]) {
-          transactions[document.transactionHash] = true;
-        }
-
-        if (!countUsers[activityEvent.user]) {
-          countUsers[activityEvent.user] = true;
-        }
-        if (borrower) {
-          if (!countUsers[borrower]) {
-            countUsers[borrower] = true;
-          }
-        }
-
-        switch (activityEvent.action) {
-          case ActivityActions.deposit: {
-            volumeDeposited = volumeDeposited.plus(new BigNumber(activityEvent.tokenAmount));
-            if (!countLenders[activityEvent.user]) {
-              countLenders[activityEvent.user] = true;
-            }
-            break;
-          }
-          case ActivityActions.withdraw: {
-            volumeWithdrawn = volumeWithdrawn.plus(new BigNumber(activityEvent.tokenAmount));
-            if (!countLenders[activityEvent.user]) {
-              countLenders[activityEvent.user] = true;
-            }
-            break;
-          }
-          case ActivityActions.borrow: {
-            volumeBorrowed = volumeBorrowed.plus(new BigNumber(activityEvent.tokenAmount));
-            if (!countBorrowers[activityEvent.user]) {
-              countBorrowers[activityEvent.user] = true;
-            }
-            break;
-          }
-          case ActivityActions.repay: {
-            volumeRepaid = volumeRepaid.plus(new BigNumber(activityEvent.tokenAmount));
-            if (!countBorrowers[activityEvent.user]) {
-              countBorrowers[activityEvent.user] = true;
-            }
-            break;
-          }
-          case ActivityActions.liquidate: {
-            const event = activityEvent as LendingActivityEvent;
-            if (event.collateralToken && event.collateralAmount) {
-              const key = `${document.address}-${document.collateralToken.address}`;
-              if (!volumeLiquidated[key]) {
-                const tokenPrice = await this.services.oracle.getTokenPriceUsd({
-                  chain: document.collateralToken.chain,
-                  address: document.collateralToken.address,
-                  timestamp: document.timestamp,
-                });
-                volumeLiquidated[key] = {
-                  token: document.collateralToken,
-                  amount: '0',
-                  tokenPrice: tokenPrice ? tokenPrice : ' 0',
-                };
-              }
-              volumeLiquidated[key].amount = new BigNumber(volumeLiquidated[key].amount)
-                .plus(new BigNumber(event.collateralAmount.toString()))
-                .toString(10);
-            }
-
-            if (borrower) {
-              if (!countBorrowers[borrower]) {
-                countBorrowers[borrower] = true;
-              }
-            }
-
-            // count liquidators
-            if (!countLiquidators[activityEvent.user]) {
-              countLiquidators[activityEvent.user] = true;
-            }
-            break;
-          }
-        }
-      }
+      const activityData = await countLendingDataFromActivities(documents);
 
       const feesPaidFromBorrow = new BigNumber(stateData.totalBorrowed)
         .multipliedBy(stateData.borrowRate)
@@ -441,20 +352,8 @@ export default class Aavev2Adapter extends ProtocolAdapter {
 
       const snapshotData: LendingMarketSnapshot = {
         ...stateData,
-
-        volumeDeposited: volumeDeposited.toString(10),
-        volumeWithdrawn: volumeWithdrawn.toString(10),
-        volumeBorrowed: volumeBorrowed.toString(10),
-        volumeRepaid: volumeRepaid.toString(10),
-        volumeLiquidated: Object.values(volumeLiquidated),
-
+        ...activityData,
         totalFeesPaid: feesPaidFromBorrow.plus(feesPaidFromBorrowStable).toString(10),
-
-        numberOfUniqueUsers: Object.keys(countUsers).length,
-        numberOfLenders: Object.keys(countLenders).length,
-        numberOfBorrowers: Object.keys(countBorrowers).length,
-        numberOfLiquidators: Object.keys(countLiquidators).length,
-        numberOfTransactions: Object.keys(transactions).length,
       };
 
       result.data.push(snapshotData);
