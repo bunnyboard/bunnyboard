@@ -64,6 +64,7 @@ export const OracleConfigs: { [key: string]: { [key: string]: OracleConfig } } =
     '0x6b3595068778dd592e39a122f4f5a5cf09c90fe2': OracleSourceConfigs.SUSHI,
     '0x99d8a9c45b2eca8864373a26d1459e3dff1e17f3': OracleSourceConfigs.MIM,
     '0xdb25f211ab05b1c97d595516f45794528a807ad8': OracleSourceConfigs.EURS,
+    '0x137ddb47ee24eaa998a535ab00378d6bfa84f893': OracleSourceConfigs.RDNT,
 
     // ironbank fixed forex
     '0x69681f8fde45345c3870bcd5eaf4a05a60e7d227': OracleSourceConfigs.GBP,
@@ -198,6 +199,7 @@ export const OracleConfigs: { [key: string]: { [key: string]: OracleConfig } } =
     '0x40af3827f39d0eacbf4a168f8d4ee67c121d11c9': OracleSourceConfigs.TUSD,
     '0xbf5140a22578168fd562dccf235e5d43a02ce9b1': OracleSourceConfigs.UNI,
     '0xc5f0f7b66764f6ec8c8dff7ba683102295e16409': OracleSourceConfigs.FDUSD,
+    '0xf7de7e8a6bd59ed41a4b5fe50278b3b7f31384df': OracleSourceConfigs.RDNT,
   },
 
   // tokens on Avalanche C-Chain
