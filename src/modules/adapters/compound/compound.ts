@@ -4,6 +4,7 @@ import { decodeEventLog } from 'viem';
 import CompoundComptrollerAbi from '../../../configs/abi/compound/Comptroller.json';
 import CompoundComptrollerV1Abi from '../../../configs/abi/compound/ComptrollerV1.json';
 import cErc20Abi from '../../../configs/abi/compound/cErc20.json';
+import IronbankComptrollerOldAbi from '../../../configs/abi/ironbank/FirstComptroller.json';
 import { ChainBlockPeriods, DAY, YEAR } from '../../../configs/constants';
 import EnvConfig from '../../../configs/envConfig';
 import { CompoundLendingMarketConfig } from '../../../configs/protocols/compound';
@@ -59,28 +60,27 @@ export default class CompoundAdapter extends ProtocolAdapter {
     cTokenContract: string,
     blockNumber: number,
   ): Promise<any> {
-    let marketInfo = await this.services.blockchain.readContract({
-      chain: config.chain,
-      abi: this.abiConfigs.eventAbis.comptroller,
-      target: config.address,
-      method: 'markets',
-      params: [cTokenContract],
-      blockNumber,
-    });
-    if (marketInfo) {
-      return formatBigNumberToString(marketInfo[1].toString(), 18);
+    const abis: Array<any> = [
+      this.abiConfigs.eventAbis.comptroller,
+      CompoundComptrollerV1Abi,
+      IronbankComptrollerOldAbi,
+    ];
+
+    for (const abi of abis) {
+      const marketInfo = await this.services.blockchain.readContract({
+        chain: config.chain,
+        abi: abi,
+        target: config.address,
+        method: 'markets',
+        params: [cTokenContract],
+        blockNumber,
+      });
+      if (marketInfo) {
+        return formatBigNumberToString(marketInfo[1].toString(), 18);
+      }
     }
 
-    marketInfo = await this.services.blockchain.readContract({
-      chain: config.chain,
-      abi: CompoundComptrollerV1Abi,
-      target: config.address,
-      method: 'markets',
-      params: [cTokenContract],
-      blockNumber,
-    });
-
-    return formatBigNumberToString(marketInfo[1].toString(), 18);
+    return '0';
   }
 
   protected async getMarketCompSpeeds(

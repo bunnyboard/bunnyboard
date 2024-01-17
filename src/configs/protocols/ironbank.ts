@@ -14,6 +14,9 @@ export const IronbankConfigs: CompoundProtocolConfig = {
       address: '0xAB1c342C7bf5Ec5F02ADEA1c2270670bCa144CbB',
       governanceToken: null,
       underlying: {}, // no native markets
+      blacklists: {
+        '0x7589c9e17bcfce1ccaa1f921196fda177f0207fc': true, // cy3CRV
+      },
     },
     {
       chain: 'fantom',
