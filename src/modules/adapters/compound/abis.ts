@@ -1,6 +1,4 @@
 export interface CompoundEventInterfaces {
-  AccrueInterest: string;
-  AccrueInterestEther: string; // cEther market
   Mint: string;
   Redeem: string;
   Borrow: string;
@@ -11,8 +9,6 @@ export interface CompoundEventInterfaces {
 }
 
 export const CompoundEventSignatures: CompoundEventInterfaces = {
-  AccrueInterestEther: '0x875352fb3fadeb8c0be7cbbe8ff761b308fa7033470cd0287f02f3436fd76cb9',
-  AccrueInterest: '0x4dec04e750ca11537cabcd8a9eab06494de08da3735bc8871cd41250e190bc04',
   Mint: '0x4c209b5fc8ad50758f13e2e1088ba56a560dff690a1c6fef26394f4c03821c4f',
   Redeem: '0xe5b754fb1abb7f01b499791d0b820ae3b6af3424ac1c59768edb53f4ec31a929',
   Borrow: '0x13ed6866d4e1ee6da46f845c46d7e54120883d75c5ea9a2dacc1c4ca8984ab80',

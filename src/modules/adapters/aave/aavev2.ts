@@ -7,7 +7,7 @@ import AaveLendingPoolV2Abi from '../../../configs/abi/aave/LendingPoolV2.json';
 import { DAY, RAY_DECIMALS, YEAR } from '../../../configs/constants';
 import EnvConfig from '../../../configs/envConfig';
 import { AaveLendingMarketConfig } from '../../../configs/protocols/aave';
-import { tryQueryBlockNumberAtTimestamp, tryQueryBlockTimestamps } from '../../../lib/subsgraph';
+import { tryQueryBlockNumberAtTimestamp } from '../../../lib/subsgraph';
 import { formatBigNumberToString, normalizeAddress } from '../../../lib/utils';
 import { DataMetrics, ProtocolConfig } from '../../../types/configs';
 import { ActivityAction, ActivityActions, BaseActivityEvent, TokenAmountEntry } from '../../../types/domains/base';
@@ -15,6 +15,7 @@ import { LendingActivityEvent, LendingMarketSnapshot, LendingMarketState } from 
 import { ContextServices, ContextStorages } from '../../../types/namespaces';
 import {
   GetAdapterDataOptions,
+  GetAdapterEventLogsOptions,
   GetSnapshotDataResult,
   GetStateDataResult,
   TransformEventLogOptions,
@@ -41,6 +42,15 @@ export default class Aavev2Adapter extends ProtocolAdapter {
       dataProvider: AaveDataProviderV2Abi,
       incentiveController: AaveIncentiveControllerV2Abi,
     };
+  }
+
+  public async getEventLogs(options: GetAdapterEventLogsOptions): Promise<Array<any>> {
+    return await this.services.blockchain.getContractLogs({
+      chain: options.config.chain,
+      address: options.config.address,
+      fromBlock: options.fromBlock,
+      toBlock: options.toBlock,
+    });
   }
 
   public async transformEventLogs(options: TransformEventLogOptions): Promise<TransformEventLogResult> {
@@ -102,6 +112,7 @@ export default class Aavev2Adapter extends ProtocolAdapter {
               transactionHash: log.transactionHash,
               logIndex: log.logIndex.toString(),
               blockNumber: new BigNumber(log.blockNumber.toString()).toNumber(),
+              timestamp: log.timestamp,
               action: action,
               user: user,
               token: reserve,
@@ -135,6 +146,7 @@ export default class Aavev2Adapter extends ProtocolAdapter {
               transactionHash: log.transactionHash,
               logIndex: log.logIndex.toString(),
               blockNumber: new BigNumber(log.blockNumber.toString()).toNumber(),
+              timestamp: log.timestamp,
               action: 'liquidate',
               user: user,
               token: reserve,
@@ -309,67 +321,7 @@ export default class Aavev2Adapter extends ProtocolAdapter {
     const endDayTimestamp = options.timestamp + DAY - 1;
 
     // sync activities
-    const stateKey = `state-snapshot-${options.config.protocol}-${options.config.chain}-${options.config.metric}-${options.config.address}`;
-    const beginBlock = await tryQueryBlockNumberAtTimestamp(
-      EnvConfig.blockchains[options.config.chain].blockSubgraph,
-      startDayTimestamp,
-    );
-    const endBlock = await tryQueryBlockNumberAtTimestamp(
-      EnvConfig.blockchains[options.config.chain].blockSubgraph,
-      endDayTimestamp,
-    );
-    const blocktimes = await tryQueryBlockTimestamps(
-      EnvConfig.blockchains[options.config.chain].blockSubgraph as string,
-      beginBlock,
-      endBlock,
-    );
-
-    const activityOperations: Array<any> = [];
-    const logs = await this.services.blockchain.getContractLogs({
-      chain: options.config.chain,
-      address: options.config.address,
-      fromBlock: beginBlock,
-      toBlock: endBlock,
-    });
-    const { activities } = await this.transformEventLogs({
-      chain: options.config.chain,
-      logs: logs,
-    });
-    for (const activity of activities) {
-      activityOperations.push({
-        updateOne: {
-          filter: {
-            chain: options.config.chain,
-            transactionHash: activity.transactionHash,
-            logIndex: activity.logIndex,
-          },
-          update: {
-            $set: {
-              ...activity,
-              timestamp: blocktimes[activity.blockNumber] ? blocktimes[activity.blockNumber] : 0,
-            },
-          },
-          upsert: true,
-        },
-      });
-    }
-
-    await storages.database.bulkWrite({
-      collection: EnvConfig.mongodb.collections.activities,
-      operations: activityOperations,
-    });
-
-    await storages.database.update({
-      collection: EnvConfig.mongodb.collections.states,
-      keys: {
-        name: stateKey,
-      },
-      updates: {
-        name: stateKey,
-        timestamp: options.timestamp,
-      },
-      upsert: true,
-    });
+    await this.syncActivities(options, storages);
 
     for (const stateData of states) {
       const documents = await storages.database.query({
@@ -478,6 +430,15 @@ export default class Aavev2Adapter extends ProtocolAdapter {
         }
       }
 
+      const feesPaidFromBorrow = new BigNumber(stateData.totalBorrowed)
+        .multipliedBy(stateData.borrowRate)
+        .multipliedBy(DAY)
+        .dividedBy(YEAR);
+      const feesPaidFromBorrowStable = new BigNumber(stateData.totalBorrowed)
+        .multipliedBy(stateData.borrowRateStable ? stateData.borrowRateStable : '0')
+        .multipliedBy(DAY)
+        .dividedBy(YEAR);
+
       const snapshotData: LendingMarketSnapshot = {
         ...stateData,
 
@@ -486,6 +447,8 @@ export default class Aavev2Adapter extends ProtocolAdapter {
         volumeBorrowed: volumeBorrowed.toString(10),
         volumeRepaid: volumeRepaid.toString(10),
         volumeLiquidated: Object.values(volumeLiquidated),
+
+        totalFeesPaid: feesPaidFromBorrow.plus(feesPaidFromBorrowStable).toString(10),
 
         numberOfUniqueUsers: Object.keys(countUsers).length,
         numberOfLenders: Object.keys(countLenders).length,

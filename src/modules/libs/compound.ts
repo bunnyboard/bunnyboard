@@ -1,12 +1,21 @@
 import ComptrollerAbi from '../../configs/abi/compound/Comptroller.json';
 import cErc20Abi from '../../configs/abi/compound/cErc20.json';
+import EnvConfig from '../../configs/envConfig';
 import { CompoundLendingMarketConfig } from '../../configs/protocols/compound';
+import { normalizeAddress } from '../../lib/utils';
 import BlockchainService from '../../services/blockchains/blockchain';
 import { Token } from '../../types/configs';
 
+interface CTokenInfo {
+  chain: string;
+  cToken: string;
+  comptroller: string;
+  underlying: Token;
+}
+
 export default class CompoundLibs {
-  public static async getComptrollerTokens(lendingMarketConfig: CompoundLendingMarketConfig): Promise<Array<Token>> {
-    const tokens: Array<Token> = [];
+  public static async getComptrollerInfo(lendingMarketConfig: CompoundLendingMarketConfig): Promise<Array<CTokenInfo>> {
+    const cTokens: Array<CTokenInfo> = [];
     const blockchain = new BlockchainService();
 
     const allMarkets = await blockchain.readContract({
@@ -31,11 +40,23 @@ export default class CompoundLibs {
           onchain: true,
         });
         if (token) {
-          tokens.push(token);
+          cTokens.push({
+            chain: lendingMarketConfig.chain,
+            comptroller: lendingMarketConfig.address,
+            cToken: normalizeAddress(cToken.toString()),
+            underlying: token,
+          });
         }
+      } else {
+        cTokens.push({
+          chain: lendingMarketConfig.chain,
+          comptroller: lendingMarketConfig.address,
+          cToken: normalizeAddress(cToken.toString()),
+          underlying: EnvConfig.blockchains[lendingMarketConfig.chain].nativeToken,
+        });
       }
     }
 
-    return tokens;
+    return cTokens;
   }
 }

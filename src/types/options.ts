@@ -8,6 +8,7 @@ export interface AdapterAbiConfigs {
 
 export interface TransformEventLogOptions {
   chain: string;
+  config: MetricConfig;
   logs: Array<any>;
 }
 
@@ -18,6 +19,12 @@ export interface TransformEventLogResult {
 export interface GetAdapterDataOptions {
   config: MetricConfig;
   timestamp: number;
+}
+
+export interface GetAdapterEventLogsOptions {
+  config: MetricConfig;
+  fromBlock: number;
+  toBlock: number;
 }
 
 export interface GetStateDataResult {

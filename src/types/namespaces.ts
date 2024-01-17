@@ -5,6 +5,7 @@ import { ProtocolConfig } from './configs';
 import {
   AdapterAbiConfigs,
   GetAdapterDataOptions,
+  GetAdapterEventLogsOptions,
   GetSnapshotDataResult,
   GetStateDataResult,
   RunCollectorOptions,
@@ -34,6 +35,9 @@ export interface IProtocolAdapter {
 
   // transform raw event log into activities
   transformEventLogs: (options: TransformEventLogOptions) => Promise<TransformEventLogResult>;
+
+  // get logs related to the protocol
+  getEventLogs: (options: GetAdapterEventLogsOptions) => Promise<Array<any>>;
 
   // get state data
   getStateData: (options: GetAdapterDataOptions) => Promise<GetStateDataResult>;

@@ -41,7 +41,7 @@ export default class Collector implements ICollector {
   }
 
   public async run(options: RunCollectorOptions): Promise<void> {
-    await this.collectStates(options);
+    // await this.collectStates(options);
     await this.collectSnapshots(options);
   }
 

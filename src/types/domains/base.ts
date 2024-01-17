@@ -51,6 +51,8 @@ export interface BaseActivityEvent {
 
   blockNumber: number;
 
+  timestamp: number;
+
   // activity action
   action: ActivityAction;
 

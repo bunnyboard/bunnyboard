@@ -44,7 +44,8 @@ function loadExistedTokens(chain: string) {
         if (lendingConfig.version === 'aavev2' || lendingConfig.version === 'aavev3') {
           tokens = await AaveLibs.getMarketReserves(lendingConfig as AaveLendingMarketConfig);
         } else if (lendingConfig.version === 'compound') {
-          tokens = await CompoundLibs.getComptrollerTokens(lendingConfig as CompoundLendingMarketConfig);
+          const cTokens = await CompoundLibs.getComptrollerInfo(lendingConfig as CompoundLendingMarketConfig);
+          tokens = cTokens.map((item) => item.underlying);
         }
 
         for (const token of tokens) {

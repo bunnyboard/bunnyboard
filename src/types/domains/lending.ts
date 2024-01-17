@@ -81,6 +81,9 @@ export interface LendingMarketSnapshot extends LendingMarketState {
   // by borrowing this market asset token
   volumeLiquidated: Array<TokenAmountEntry>;
 
+  // TotalFeesPaid = TotalBorrow * BorrowRate * TimePeriod / 365 days
+  totalFeesPaid: string;
+
   numberOfUniqueUsers: number;
   numberOfLenders: number;
   numberOfBorrowers: number;

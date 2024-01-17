@@ -1,4 +1,5 @@
 import BigNumber from 'bignumber.js';
+import { decodeEventLog } from 'viem';
 
 import CompoundComptrollerAbi from '../../../configs/abi/compound/Comptroller.json';
 import CompoundComptrollerV1Abi from '../../../configs/abi/compound/ComptrollerV1.json';
@@ -7,14 +8,22 @@ import { ChainBlockPeriods, YEAR } from '../../../configs/constants';
 import EnvConfig from '../../../configs/envConfig';
 import { CompoundLendingMarketConfig } from '../../../configs/protocols/compound';
 import { tryQueryBlockNumberAtTimestamp } from '../../../lib/subsgraph';
-import { formatBigNumberToString, normalizeAddress } from '../../../lib/utils';
+import { compareAddress, formatBigNumberToString, normalizeAddress } from '../../../lib/utils';
 import { DataMetrics, ProtocolConfig, Token } from '../../../types/configs';
-import { TokenAmountEntry } from '../../../types/domains/base';
+import { ActivityActions, TokenAmountEntry } from '../../../types/domains/base';
 import { LendingMarketState } from '../../../types/domains/lending';
-import { ContextServices } from '../../../types/namespaces';
-import { GetAdapterDataOptions, GetStateDataResult } from '../../../types/options';
+import { ContextServices, ContextStorages } from '../../../types/namespaces';
+import {
+  GetAdapterDataOptions,
+  GetAdapterEventLogsOptions,
+  GetSnapshotDataResult,
+  GetStateDataResult,
+  TransformEventLogOptions,
+  TransformEventLogResult,
+} from '../../../types/options';
+import CompoundLibs from '../../libs/compound';
 import ProtocolAdapter from '../adapter';
-import { CompoundEventSignatures } from './abis';
+import { CompoundEventInterfaces, CompoundEventSignatures } from './abis';
 
 interface Rates {
   supplyRate: string;
@@ -323,6 +332,163 @@ export default class CompoundAdapter extends ProtocolAdapter {
         }
       }
     }
+
+    return result;
+  }
+
+  public async getEventLogs(options: GetAdapterEventLogsOptions): Promise<Array<any>> {
+    let logs: Array<any> = [];
+
+    // get comptroller logs
+    logs = await this.services.blockchain.getContractLogs({
+      chain: options.config.chain,
+      address: options.config.address,
+      fromBlock: options.fromBlock,
+      toBlock: options.toBlock,
+    });
+
+    const allMarkets = await this.services.blockchain.readContract({
+      chain: options.config.chain,
+      abi: this.abiConfigs.eventAbis.comptroller,
+      target: options.config.address,
+      method: 'getAllMarkets',
+      params: [],
+      blockNumber: options.fromBlock,
+    });
+    if (allMarkets) {
+      for (const cToken of allMarkets) {
+        logs = logs.concat(
+          await this.services.blockchain.getContractLogs({
+            chain: options.config.chain,
+            address: cToken.toString(),
+            fromBlock: options.fromBlock,
+            toBlock: options.toBlock,
+          }),
+        );
+      }
+    }
+
+    return logs;
+  }
+
+  public async transformEventLogs(options: TransformEventLogOptions): Promise<TransformEventLogResult> {
+    const result: TransformEventLogResult = {
+      activities: [],
+    };
+
+    const allCTokens = await CompoundLibs.getComptrollerInfo(options.config as CompoundLendingMarketConfig);
+    const allContracts = [...allCTokens.map((item) => normalizeAddress(item.cToken)), options.config.address];
+    const eventSignatures: CompoundEventInterfaces = this.abiConfigs.eventSignatures as CompoundEventInterfaces;
+
+    for (const log of options.logs) {
+      const signature = log.topics[0];
+      const address = normalizeAddress(log.address);
+
+      if (this.supportSignature(signature) && allContracts.indexOf(address) !== -1) {
+        if (
+          signature === eventSignatures.DistributedSupplierRewards ||
+          signature === eventSignatures.DistributedBorrowerRewards
+        ) {
+          const event: any = decodeEventLog({
+            abi: this.abiConfigs.eventAbis.comptroller,
+            data: log.data,
+            topics: log.topics,
+          });
+
+          const token = (options.config as CompoundLendingMarketConfig).governanceToken;
+          const cToken = allCTokens.filter((item) => compareAddress(item.cToken, event.args.cToken.toString()))[0];
+          if (cToken && token) {
+            const user = normalizeAddress(event.args.supplier);
+            const tokenAmount = formatBigNumberToString(event.args.compDelta.toString(), token.decimals);
+            result.activities.push({
+              chain: options.chain,
+              protocol: this.config.protocol,
+              address: address,
+              transactionHash: log.transactionHash,
+              logIndex: log.logIndex.toString(),
+              blockNumber: new BigNumber(log.blockNumber.toString()).toNumber(),
+              timestamp: log.timestamp,
+              action: 'collect',
+              user: user,
+              token: token,
+              tokenAmount: tokenAmount,
+            });
+          }
+        } else {
+          const cToken = allCTokens.filter((item) => compareAddress(item.cToken, address))[0];
+          if (cToken) {
+            const event: any = decodeEventLog({
+              abi: this.abiConfigs.eventAbis.cErc20,
+              data: log.data,
+              topics: log.topics,
+            });
+
+            let action = '';
+            let user = '';
+            let borrower: string | undefined = undefined;
+            let tokenAmount = '';
+
+            switch (signature) {
+              case eventSignatures.Mint: {
+                action = ActivityActions.deposit;
+                user = normalizeAddress(event.args.minter);
+                tokenAmount = formatBigNumberToString(event.args.mintAmount.toString(), cToken.underlying.decimals);
+                break;
+              }
+              case eventSignatures.Redeem: {
+                action = ActivityActions.withdraw;
+                user = normalizeAddress(event.args.redeemer);
+                tokenAmount = formatBigNumberToString(event.args.redeemAmount.toString(), cToken.underlying.decimals);
+                break;
+              }
+              case eventSignatures.Borrow: {
+                action = ActivityActions.borrow;
+                user = normalizeAddress(event.args.borrower);
+                tokenAmount = formatBigNumberToString(event.args.borrowAmount.toString(), cToken.underlying.decimals);
+                break;
+              }
+              case eventSignatures.Repay: {
+                action = ActivityActions.repay;
+                user = normalizeAddress(event.args.payer);
+                borrower = normalizeAddress(event.args.borrower);
+                tokenAmount = formatBigNumberToString(event.args.repayAmount.toString(), cToken.underlying.decimals);
+                break;
+              }
+            }
+
+            result.activities.push({
+              chain: options.chain,
+              protocol: this.config.protocol,
+              address: address,
+              transactionHash: log.transactionHash,
+              logIndex: log.logIndex.toString(),
+              blockNumber: new BigNumber(log.blockNumber.toString()).toNumber(),
+              timestamp: log.timestamp,
+              action: action,
+              user: user,
+              token: cToken.underlying,
+              tokenAmount: tokenAmount,
+              borrower: borrower,
+            });
+          }
+        }
+      }
+    }
+
+    return result;
+  }
+
+  public async getSnapshotData(
+    options: GetAdapterDataOptions,
+    storages: ContextStorages,
+  ): Promise<GetSnapshotDataResult> {
+    // const states = (await this.getStateData(options)).data;
+
+    const result: GetSnapshotDataResult = {
+      data: [],
+    };
+
+    await this.syncActivities(options, storages);
 
     return result;
   }
