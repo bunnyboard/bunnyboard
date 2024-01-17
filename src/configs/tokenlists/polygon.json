@@ -29,6 +29,12 @@
     "symbol": "WBTC",
     "decimals": 8
   },
+  "0x1d734a02ef1e1f5886e66b0673b71af5b53ffa94": {
+    "chain": "polygon",
+    "address": "0x1d734a02ef1e1f5886e66b0673b71af5b53ffa94",
+    "symbol": "SD",
+    "decimals": 18
+  },
   "0x2791bca1f2de4661ed88a30c99a7a9449aa84174": {
     "chain": "polygon",
     "address": "0x2791bca1f2de4661ed88a30c99a7a9449aa84174",

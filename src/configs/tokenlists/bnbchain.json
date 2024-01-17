@@ -1,4 +1,10 @@
 {
+  "0x0000000000000000000000000000000000000000": {
+    "chain": "bnbchain",
+    "address": "0x0000000000000000000000000000000000000000",
+    "symbol": "BNB",
+    "decimals": 18
+  },
   "0x0d8ce2a99bb6e3b7db580ed848240e4a0f9ae153": {
     "chain": "bnbchain",
     "address": "0x0d8ce2a99bb6e3b7db580ed848240e4a0f9ae153",

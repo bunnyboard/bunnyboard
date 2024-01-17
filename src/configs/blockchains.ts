@@ -27,7 +27,7 @@ export const BlockchainConfigs: { [key: string]: Blockchain } = {
     nodeRpc: String(process.env.BUNNYBOARD_ARBITRUM_NODE),
     blockSubgraph: BlockSubGraphEndpoints.arbitrum,
     nativeToken: {
-      chain: 'ethereum',
+      chain: 'arbitrum',
       address: AddressZero,
       symbol: 'ETH',
       decimals: 18,
@@ -40,7 +40,7 @@ export const BlockchainConfigs: { [key: string]: Blockchain } = {
     nodeRpc: String(process.env.BUNNYBOARD_BASE_NODE),
     blockSubgraph: BlockSubGraphEndpoints.base,
     nativeToken: {
-      chain: 'ethereum',
+      chain: 'base',
       address: AddressZero,
       symbol: 'ETH',
       decimals: 18,
@@ -53,7 +53,7 @@ export const BlockchainConfigs: { [key: string]: Blockchain } = {
     nodeRpc: String(process.env.BUNNYBOARD_OPTIMISM_NODE),
     blockSubgraph: BlockSubGraphEndpoints.optimism,
     nativeToken: {
-      chain: 'ethereum',
+      chain: 'optimism',
       address: AddressZero,
       symbol: 'ETH',
       decimals: 18,
@@ -66,7 +66,7 @@ export const BlockchainConfigs: { [key: string]: Blockchain } = {
     nodeRpc: String(process.env.BUNNYBOARD_POLYGON_NODE),
     blockSubgraph: BlockSubGraphEndpoints.polygon,
     nativeToken: {
-      chain: 'ethereum',
+      chain: 'polygon',
       address: AddressZero,
       symbol: 'MATIC',
       decimals: 18,
@@ -79,7 +79,7 @@ export const BlockchainConfigs: { [key: string]: Blockchain } = {
     nodeRpc: String(process.env.BUNNYBOARD_BNBCHAIN_NODE),
     blockSubgraph: BlockSubGraphEndpoints.bnbchain,
     nativeToken: {
-      chain: 'ethereum',
+      chain: 'bnbchain',
       address: AddressZero,
       symbol: 'BNB',
       decimals: 18,

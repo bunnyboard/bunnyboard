@@ -10,8 +10,8 @@ import { DataMetrics, LendingMarketConfig, Token } from '../types/configs';
 const directoryPath = './src/configs/tokenlists';
 
 function loadExistedTokens(chain: string) {
-  if (fs.existsSync(`${directoryPath}/${chain}/json`)) {
-    return JSON.parse(fs.readFileSync(`${directoryPath}/${chain}/json`).toString());
+  if (fs.existsSync(`${directoryPath}/${chain}.json`)) {
+    return JSON.parse(fs.readFileSync(`${directoryPath}/${chain}.json`).toString());
   }
 
   return {};

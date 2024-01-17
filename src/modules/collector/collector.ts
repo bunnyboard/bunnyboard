@@ -49,6 +49,8 @@ export default class Collector implements ICollector {
     const configs = this.getAllConfigs(options);
     const timestamp = getTimestamp();
     for (const config of configs) {
+      const startExeTime = Math.floor(new Date().getTime() / 1000);
+
       const result = await this.adapters[config.protocol].getStateData({
         config: config,
         timestamp: timestamp,
@@ -73,16 +75,20 @@ export default class Collector implements ICollector {
             },
             upsert: true,
           });
-
-          logger.info('updated latest data states', {
-            service: this.name,
-            metric: data.metric,
-            chain: data.chain,
-            protocol: data.protocol,
-            token: data.token.symbol,
-          });
         }
       }
+
+      const endExeTime = Math.floor(new Date().getTime() / 1000);
+      const elapsed = endExeTime - startExeTime;
+
+      logger.info('updated state data', {
+        service: this.name,
+        chain: config.chain,
+        protocol: config.protocol,
+        metric: config.metric,
+        address: config.address,
+        elapses: `${elapsed}s`,
+      });
     }
   }
 

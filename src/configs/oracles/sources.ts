@@ -179,6 +179,7 @@ export const OracleSourceConfigs: { [key: string]: OracleConfig } = {
   UST: {
     currency: 'eth',
     sources: [OracleSourceUniswapv2List.UST_WETH],
+    coingeckoId: 'terrausd',
   },
   CVX: {
     currency: 'eth',

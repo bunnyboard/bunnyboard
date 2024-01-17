@@ -159,6 +159,8 @@ export const OracleConfigs: { [key: string]: { [key: string]: OracleConfig } } =
     '0xfa68fb4628dff1028cfec22b4162fccd0d45efb6': OracleSourceConfigs.MaticX,
     '0x03b54a6e9a984069379fae1a4fc4dbae93b3bccd': OracleSourceConfigs.wstETH,
     '0x3c499c542cef5e3811e1192ce70d8cc03d5c3359': OracleSourceConfigs.USDC,
+    '0x1d734a02ef1e1f5886e66b0673b71af5b53ffa94': OracleSourceConfigs.SD,
+    '0xc3c7d422809852031b44ab29eec9f1eff2a58756': OracleSourceConfigs.LDO,
   },
 
   // tokens on Bnbchain

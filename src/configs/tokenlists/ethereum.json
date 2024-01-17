@@ -1,4 +1,10 @@
 {
+  "0x0000000000000000000000000000000000000000": {
+    "chain": "ethereum",
+    "address": "0x0000000000000000000000000000000000000000",
+    "symbol": "ETH",
+    "decimals": 18
+  },
   "0x0000000000085d4780b73119b644ae5ecd22b376": {
     "chain": "ethereum",
     "address": "0x0000000000085d4780b73119b644ae5ecd22b376",
@@ -214,12 +220,6 @@
     "address": "0x99d8a9c45b2eca8864373a26d1459e3dff1e17f3",
     "symbol": "MIM",
     "decimals": 18
-  },
-  "0x9f8f72aa9304c8b593d555f12ef6589cc3a579a2": {
-    "chain": "ethereum",
-    "symbol": "MKR",
-    "decimals": 18,
-    "address": "0x9f8f72aa9304c8b593d555f12ef6589cc3a579a2"
   },
   "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48": {
     "chain": "ethereum",

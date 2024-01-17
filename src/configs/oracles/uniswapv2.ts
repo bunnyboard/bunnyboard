@@ -173,6 +173,13 @@ export const OracleSourceUniswapv2List: { [key: string]: OracleSourceUniv2 } = {
     baseToken: PolygonTokenList['0x385eeac5cb85a38a9a07a70c73e0a3271cfb54a7'],
     quotaToken: PolygonTokenList['0x2791bca1f2de4661ed88a30c99a7a9449aa84174'],
   },
+  SD_USDC: {
+    type: 'univ2',
+    chain: 'polygon',
+    address: '0x7d196c0c447fde421c72f88a1900bf3322f20e0a',
+    baseToken: PolygonTokenList['0x1d734a02ef1e1f5886e66b0673b71af5b53ffa94'],
+    quotaToken: PolygonTokenList['0x2791bca1f2de4661ed88a30c99a7a9449aa84174'],
+  },
   SUSHI_WETH: {
     type: 'univ2',
     chain: 'ethereum',
