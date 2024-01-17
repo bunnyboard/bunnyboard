@@ -78,6 +78,21 @@ async function getLendingMarketTokenNeedOracles(config: LendingMarketConfig): Pr
           });
         }
       }
+      break;
+    }
+    case 'liquity': {
+      if (config.debtToken) {
+        tokens.push({
+          chain: config.debtToken.chain,
+          address: config.debtToken.address,
+        });
+      }
+      if (config.collateralToken) {
+        tokens.push({
+          chain: config.collateralToken.chain,
+          address: config.collateralToken.address,
+        });
+      }
     }
   }
 

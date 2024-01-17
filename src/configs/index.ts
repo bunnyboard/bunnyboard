@@ -2,6 +2,7 @@ import { ProtocolConfig, Token } from '../types/configs';
 import { Aavev2Configs, Aavev3Configs } from './protocols/aave';
 import { CompoundConfigs } from './protocols/compound';
 import { IronbankConfigs } from './protocols/ironbank';
+import { LiquityConfigs } from './protocols/liquity';
 import { RadiantConfigs } from './protocols/radiant';
 import { SonneConfigs } from './protocols/sonne';
 import { VenusConfigs } from './protocols/venus';
@@ -43,4 +44,5 @@ export const ProtocolConfigs: { [key: string]: ProtocolConfig } = {
   venus: VenusConfigs,
   radiant: RadiantConfigs,
   sonne: SonneConfigs,
+  liquity: LiquityConfigs,
 };

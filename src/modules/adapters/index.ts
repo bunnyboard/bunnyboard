@@ -3,6 +3,7 @@ import { ContextServices, IProtocolAdapter } from '../../types/namespaces';
 import Aavev2Adapter from './aave/aavev2';
 import Aavev3Adapter from './aave/aavev3';
 import CompoundAdapter from './compound/compound';
+import LiquityAdapter from './liquity/liquity';
 import RadiantAdapter from './radiant/radiant';
 import VenusAdapter from './venus/venus';
 
@@ -15,6 +16,7 @@ function getProtocolAdapters(services: ContextServices): { [key: string]: IProto
     venus: new VenusAdapter(services, ProtocolConfigs.venus),
     radiant: new RadiantAdapter(services, ProtocolConfigs.radiant),
     sonne: new CompoundAdapter(services, ProtocolConfigs.sonne),
+    liquity: new LiquityAdapter(services, ProtocolConfigs.liquity),
   };
 }
 
