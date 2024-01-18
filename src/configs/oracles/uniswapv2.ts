@@ -2,7 +2,6 @@ import { OracleSourceUniv2 } from '../../types/oracles';
 import AvalancheTokenList from '../tokenlists/avalanche.json';
 import BnbchainTokenList from '../tokenlists/bnbchain.json';
 import EthereumTokenList from '../tokenlists/ethereum.json';
-import GnosisTokenList from '../tokenlists/gnosis.json';
 import OptimismTokenList from '../tokenlists/optimism.json';
 import PolygonTokenList from '../tokenlists/polygon.json';
 
@@ -325,13 +324,6 @@ export const OracleSourceUniswapv2List: { [key: string]: OracleSourceUniv2 } = {
     },
     quotaToken: EthereumTokenList['0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'],
   },
-  GNO_WXDAI: {
-    type: 'univ2',
-    chain: 'gnosis',
-    address: '0x321704900d52f44180068caa73778d5cd60695a6',
-    baseToken: GnosisTokenList['0x9c58bacc331c9aa871afd802db6379a98e80cedb'],
-    quotaToken: GnosisTokenList['0xe91d153e0b41518a2ce8dd3d7944fa863463a97d'],
-  },
   SONNE_USDC: {
     type: 'univ2',
     chain: 'optimism',
@@ -344,6 +336,20 @@ export const OracleSourceUniswapv2List: { [key: string]: OracleSourceUniv2 } = {
     chain: 'ethereum',
     address: '0xf55C33D94150d93c2cfb833bcCA30bE388b14964',
     baseToken: EthereumTokenList['0xa1faa113cbe53436df28ff0aee54275c13b40975'],
+    quotaToken: EthereumTokenList['0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'],
+  },
+  LRC_WETH: {
+    type: 'univ2',
+    chain: 'ethereum',
+    address: '0x8878df9e1a7c87dcbf6d3999d997f262c05d8c70',
+    baseToken: EthereumTokenList['0xbbbbca6a901c926f240b89eacb641d8aec7aeafd'],
+    quotaToken: EthereumTokenList['0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'],
+  },
+  GNO_WETH: {
+    type: 'univ2',
+    chain: 'ethereum',
+    address: '0x3e8468f66d30fc99f745481d4b383f89861702c6',
+    baseToken: EthereumTokenList['0x6810e776880c02933d47db1b9fc05908e5386b96'],
     quotaToken: EthereumTokenList['0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'],
   },
 };

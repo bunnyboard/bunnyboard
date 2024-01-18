@@ -294,8 +294,6 @@ export default class Aavev2Adapter extends ProtocolAdapter {
         borrowRate: rates.borrow,
         borrowRateStable: rates.borrowStable,
         loanToValueRate: this.getLoanToValueRate(reserveConfigData),
-        reserveRate: this.getReserveRate(reserveConfigData),
-        liquidationThresholdRate: this.getLiquidationThresholdRate(reserveConfigData),
 
         rewardSupplyRate: rewardRateForSupply,
         rewardBorrowRate: rewardRateForBorrow,

@@ -51,11 +51,6 @@ export interface LendingMarketState extends DayDataSnapshot {
   // the token collateral factor
   loanToValueRate: string;
 
-  // reserve rate
-  reserveRate: string;
-
-  liquidationThresholdRate: string;
-
   // borrow rate stable if any
   borrowRateStable?: string;
 

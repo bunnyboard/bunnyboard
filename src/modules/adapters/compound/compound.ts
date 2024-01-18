@@ -249,14 +249,6 @@ export default class CompoundAdapter extends ProtocolAdapter {
             params: [],
             blockNumber,
           });
-          const reserveFactorMantissa = await this.services.blockchain.readContract({
-            chain: marketConfig.chain,
-            abi: this.abiConfigs.eventAbis.cErc20,
-            target: cTokenContract,
-            method: 'reserveFactorMantissa',
-            params: [],
-            blockNumber,
-          });
           const ltv = await this.getMarketLoanToValueRate(marketConfig, cTokenContract, blockNumber);
 
           const totalDeposited = new BigNumber(totalCash.toString())
@@ -322,8 +314,6 @@ export default class CompoundAdapter extends ProtocolAdapter {
             supplyRate: supplyRate,
             borrowRate: borrowRate,
             loanToValueRate: ltv,
-            reserveRate: formatBigNumberToString(reserveFactorMantissa.toString(), 18),
-            liquidationThresholdRate: ltv,
 
             rewardSupplyRate: rewardSupplyRate,
             rewardBorrowRate: rewardBorrowRate,

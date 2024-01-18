@@ -13,6 +13,10 @@ export const OracleTypes = {
   // https://etherscan.io/address/0x3d9819210a31b4961b30ef54be2aed79b9c9cd3b
   // get oracle address from comptroller
   compoundOracle: 'compoundOracle',
+
+  // https://etherscan.io/address/0x76A9f30B45F4ebFD60Ce8a1c6e963b1605f7cB6d
+  // https://docs.makerdao.com/smart-contract-modules/core-module/spot-detailed-documentation
+  makerRwaPip: 'makerRwaPip',
 };
 const AllOracleTypes = Object.values(OracleTypes);
 export type OracleType = (typeof AllOracleTypes)[number];
@@ -45,6 +49,11 @@ export interface OracleSourceBearingToken extends OracleSourceBase {
 export interface OracleSourceCompoundOracle extends OracleSourceBase {
   cTokenAddress: string;
 }
+
+// this oracle using pip contract from Maker Dao
+// this support get price of MakerDao RWA
+// https://docs.makerdao.com/smart-contract-modules/core-module/spot-detailed-documentation
+export interface OracleSourceMakerRwaPip extends OracleSourceBase {}
 
 export interface OracleConfig {
   // if the currency is not usd

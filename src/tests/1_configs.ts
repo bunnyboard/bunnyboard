@@ -4,8 +4,10 @@ import { describe } from 'mocha';
 import { ProtocolConfigs } from '../configs';
 import AaveLendingPoolAbiV2 from '../configs/abi/aave/LendingPoolV2.json';
 import AaveLendingPoolAbiV3 from '../configs/abi/aave/LendingPoolV3.json';
+import CometAbi from '../configs/abi/compound/Comet.json';
 import ComptrollerAbi from '../configs/abi/compound/Comptroller.json';
 import cErc20Abi from '../configs/abi/compound/cErc20.json';
+import GemJoinAbi from '../configs/abi/maker/GemJoin.json';
 import { OracleConfigs } from '../configs/oracles/configs';
 import { CompoundLendingMarketConfig } from '../configs/protocols/compound';
 import { normalizeAddress } from '../lib/utils';
@@ -80,6 +82,35 @@ async function getLendingMarketTokenNeedOracles(config: LendingMarketConfig): Pr
       }
       break;
     }
+    case 'compoundv3': {
+      if (config.debtToken) {
+        tokens.push({
+          chain: config.debtToken.chain,
+          address: config.debtToken.address,
+        });
+      }
+      const numAssets = await blockchain.readContract({
+        chain: config.chain,
+        abi: CometAbi,
+        target: config.address,
+        method: 'numAssets',
+        params: [],
+      });
+      for (let i = 0; i < Number(numAssets); i++) {
+        const assetInfo = await blockchain.readContract({
+          chain: config.chain,
+          abi: CometAbi,
+          target: config.address,
+          method: 'getAssetInfo',
+          params: [i],
+        });
+        tokens.push({
+          chain: config.chain,
+          address: normalizeAddress(assetInfo.asset.toString()),
+        });
+      }
+      break;
+    }
     case 'liquity': {
       if (config.debtToken) {
         tokens.push({
@@ -93,6 +124,27 @@ async function getLendingMarketTokenNeedOracles(config: LendingMarketConfig): Pr
           address: config.collateralToken.address,
         });
       }
+      break;
+    }
+    case 'maker': {
+      const gem = await blockchain.readContract({
+        chain: config.chain,
+        abi: GemJoinAbi,
+        target: config.address,
+        method: 'gem',
+        params: [],
+      });
+      const token = await blockchain.getTokenInfo({
+        chain: config.chain,
+        address: gem,
+      });
+      if (token) {
+        tokens.push({
+          chain: token.chain,
+          address: token.address,
+        });
+      }
+      break;
     }
   }
 

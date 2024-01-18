@@ -1,5 +1,6 @@
 import { normalizeAddress } from '../../lib/utils';
 import { DataMetrics, LendingMarketConfig, ProtocolConfig, Token } from '../../types/configs';
+import EthereumTokenList from '../tokenlists/ethereum.json';
 
 export interface CompoundLendingMarketConfig extends LendingMarketConfig {
   governanceToken: Token | null;
@@ -54,71 +55,32 @@ export const CompoundConfigs: CompoundProtocolConfig = {
   ]),
 };
 
-// export const Compoundv3Configs: ProtocolConfig = {
-//   protocol: 'compoundv3',
-//   lendingMarkets: [
-//     {
-//       chain: 'ethereum',
-//       protocol: 'compoundv3',
-//       type: ' cdp',
-//       version: 'compoundv3',
-//       birthday: 1660521600, // Mon Aug 15 2022 00:00:00 GMT+0000
-//       debtToken: EthereumTokenList.USDC,
-//       address: '0xc3d688b66703497daa19211eedff47f25384cdc3', // USDC market
-//     },
-//     {
-//       chain: 'ethereum',
-//       protocol: 'compoundv3',
-//       type: ' cdp',
-//       version: 'compoundv3',
-//       birthday: 1673654400, // Sat Jan 14 2023 00:00:00 GMT+0000
-//       debtToken: EthereumTokenList.WETH,
-//       address: '0xa17581a9e3356d9a858b789d68b4d866e593ae94', // WETH market
-//     },
-//     {
-//       chain: 'arbitrum',
-//       protocol: 'compoundv3',
-//       type: ' cdp',
-//       version: 'compoundv3',
-//       birthday: 1683244800, // Fri May 05 2023 00:00:00 GMT+0000
-//       debtToken: ArbitrumTokenList['USDC.e'],
-//       address: '0xa5edbdd9646f8dff606d7448e414884c7d905dca', // USDC
-//     },
-//     {
-//       chain: 'arbitrum',
-//       protocol: 'compoundv3',
-//       type: ' cdp',
-//       version: 'compoundv3',
-//       birthday: 1692230400, // Thu Aug 17 2023 00:00:00 GMT+0000
-//       debtToken: ArbitrumTokenList.USDC,
-//       address: '0x9c4ec768c28520b50860ea7a15bd7213a9ff58bf', // USDC
-//     },
-//     {
-//       chain: 'base',
-//       protocol: 'compoundv3',
-//       type: ' cdp',
-//       version: 'compoundv3',
-//       birthday: 1691193600, // Sat Aug 05 2023 00:00:00 GMT+0000
-//       debtToken: BaseTokenList.USDbC,
-//       address: '0x9c4ec768c28520b50860ea7a15bd7213a9ff58bf', // USDC
-//     },
-//     {
-//       chain: 'base',
-//       protocol: 'compoundv3',
-//       type: ' cdp',
-//       version: 'compoundv3',
-//       birthday: 1691798400, // Sat Aug 12 2023 00:00:00 GMT+0000
-//       debtToken: BaseTokenList.USDC,
-//       address: '0x46e6b214b524310239732d51387075e0e70970bf', // USDC
-//     },
-//     {
-//       chain: 'polygon',
-//       protocol: 'compoundv3',
-//       type: ' cdp',
-//       version: 'compoundv3',
-//       birthday: 1676764800, // Sun Feb 19 2023 00:00:00 GMT+0000
-//       debtToken: PolygonTokenList['USDC.e'],
-//       address: '0xf25212e676d1f7f89cd72ffee66158f541246445', // USDC.e
-//     },
-//   ],
-// };
+export function formatCompoundv3LendingMarketConfig(configs: Array<LendingMarketConfig>): Array<LendingMarketConfig> {
+  return configs.map((config) => {
+    return {
+      ...config,
+
+      address: normalizeAddress(config.address),
+    };
+  });
+}
+
+export interface Compoundv3ProtocolConfig extends ProtocolConfig {
+  configs: Array<LendingMarketConfig>;
+}
+
+export const Compoundv3Configs: Compoundv3ProtocolConfig = {
+  protocol: 'compoundv3',
+  configs: formatCompoundv3LendingMarketConfig([
+    {
+      chain: 'ethereum',
+      protocol: 'compoundv3',
+      type: 'cdp',
+      version: 'compoundv3',
+      birthday: 1660435200, // Sun Aug 14 2022 00:00:00 GMT+0000
+      metric: DataMetrics.lending,
+      address: '0xc3d688b66703497daa19211eedff47f25384cdc3', // borrow operations
+      debtToken: EthereumTokenList['0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48'],
+    },
+  ]),
+};

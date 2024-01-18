@@ -16,6 +16,7 @@ import {
   OracleSourceBearingToken,
   OracleSourceChainlink,
   OracleSourceCompoundOracle,
+  OracleSourceMakerRwaPip,
   OracleSourceUniv2,
   OracleSourceUniv3,
 } from '../../types/oracles';
@@ -80,6 +81,15 @@ export default class OracleService extends CachingService implements IOracleServ
       }
       case 'savingDai': {
         const answer = await OracleLibs.getTokenPrice(source as OracleSourceBearingToken, blockNumber);
+        if (answer) {
+          await this.setCachingData(sourceCachingKey, answer);
+          return answer;
+        }
+
+        break;
+      }
+      case 'makerRwaPip': {
+        const answer = await OracleLibs.getTokenPrice(source as OracleSourceMakerRwaPip, blockNumber);
         if (answer) {
           await this.setCachingData(sourceCachingKey, answer);
           return answer;

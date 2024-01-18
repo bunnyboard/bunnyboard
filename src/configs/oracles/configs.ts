@@ -65,6 +65,8 @@ export const OracleConfigs: { [key: string]: { [key: string]: OracleConfig } } =
     '0x99d8a9c45b2eca8864373a26d1459e3dff1e17f3': OracleSourceConfigs.MIM,
     '0xdb25f211ab05b1c97d595516f45794528a807ad8': OracleSourceConfigs.EURS,
     '0x137ddb47ee24eaa998a535ab00378d6bfa84f893': OracleSourceConfigs.RDNT,
+    '0xbbbbca6a901c926f240b89eacb641d8aec7aeafd': OracleSourceConfigs.LRC,
+    '0x6810e776880c02933d47db1b9fc05908e5386b96': OracleSourceConfigs.GNO,
 
     // ironbank fixed forex
     '0x69681f8fde45345c3870bcd5eaf4a05a60e7d227': OracleSourceConfigs.GBP,
@@ -73,6 +75,9 @@ export const OracleConfigs: { [key: string]: { [key: string]: OracleConfig } } =
     '0x5555f75e3d5278082200fb451d1b6ba946d8e13b': OracleSourceConfigs.JPY,
     '0x95dfdc8161832e4ff7816ac4b6367ce201538253': OracleSourceConfigs.KRW,
     '0x1cc481ce2bd2ec7bf67d1be64d4878b16078f309': OracleSourceConfigs.CHF,
+
+    // maker dao rwa
+    '0x10b2aa5d77aa6484886d8e244f0686ab319a270d': OracleSourceConfigs.RWA001,
   },
 
   // tokens on Arbitrum One

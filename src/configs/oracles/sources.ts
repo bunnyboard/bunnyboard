@@ -476,7 +476,7 @@ export const OracleSourceConfigs: { [key: string]: OracleConfig } = {
   },
   GNO: {
     currency: 'usd',
-    sources: [OracleSourceUniswapv2List.GNO_WXDAI],
+    sources: [OracleSourceUniswapv2List.GNO_WETH],
   },
   sXDAI: {
     currency: 'usd',
@@ -509,5 +509,13 @@ export const OracleSourceConfigs: { [key: string]: OracleConfig } = {
   FDUSD: {
     currency: 'usd',
     sources: [OracleSourceUniswapv3List.FDUSD_USDT],
+  },
+  LRC: {
+    currency: 'eth',
+    sources: [OracleSourceUniswapv2List.LRC_WETH],
+  },
+  RWA001: {
+    currency: 'usd',
+    sources: [OracleSourceCustomList.MAKER_RWA001],
   },
 };

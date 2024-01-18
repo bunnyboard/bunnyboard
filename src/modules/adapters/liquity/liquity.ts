@@ -152,8 +152,6 @@ export default class LiquityAdapter extends ProtocolAdapter {
       // liquity must maintain 110% collateral value on debts
       // so, the loan to value is always 100 / 110 -> 0.9 -> 90%
       loanToValueRate: '0.9',
-      liquidationThresholdRate: '0.9',
-      reserveRate: '0',
     };
 
     result.data.push(dataState);
