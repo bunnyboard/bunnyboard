@@ -2,9 +2,14 @@ import { normalizeAddress } from '../../lib/utils';
 import { CdpLendingMarketConfig, DataMetrics, ProtocolConfig, Token } from '../../types/configs';
 import { AddressZero } from '../constants';
 
-export interface LiquityLendingMarketConfig extends CdpLendingMarketConfig {
-  borrowOperation: string;
+export interface LiquityTrove {
+  troveManager: string;
   collateralToken: Token;
+}
+
+export interface LiquityLendingMarketConfig extends CdpLendingMarketConfig {
+  address: string; // borrow operation
+  troves: Array<LiquityTrove>;
 }
 
 export interface LiquityProtocolConfig extends ProtocolConfig {
@@ -17,9 +22,16 @@ export function formatLiquityLendingMarketConfig(
   return configs.map((config) => {
     return {
       ...config,
-
       address: normalizeAddress(config.address),
-      borrowOperation: normalizeAddress(config.borrowOperation),
+      troves: config.troves.map((trove) => {
+        return {
+          troveManager: normalizeAddress(trove.troveManager),
+          collateralToken: {
+            ...trove.collateralToken,
+            address: normalizeAddress(trove.collateralToken.address),
+          },
+        };
+      }),
     };
   });
 }
@@ -33,20 +45,24 @@ export const LiquityConfigs: LiquityProtocolConfig = {
       version: 'liquity',
       birthday: 1617667200, // Tue Apr 06 2021 00:00:00 GMT+0000
       metric: DataMetrics.cdpLending,
-      address: '0xa39739ef8b0231dbfa0dcda07d7e29faabcf4bb2', // trove manager
-      borrowOperation: '0x24179cd81c9e782a4096035f7ec97fb8b783e007',
+      address: '0x24179cd81c9e782a4096035f7ec97fb8b783e007', // borrow operation
       debtToken: {
         chain: 'ethereum',
         symbol: 'LUSD',
         decimals: 18,
         address: '0x5f98805a4e8be255a32880fdec7f6728c6568ba0',
       },
-      collateralToken: {
-        chain: 'ethereum',
-        symbol: 'ETH',
-        decimals: 18,
-        address: AddressZero,
-      },
+      troves: [
+        {
+          troveManager: '0xa39739ef8b0231dbfa0dcda07d7e29faabcf4bb2',
+          collateralToken: {
+            chain: 'ethereum',
+            symbol: 'ETH',
+            decimals: 18,
+            address: AddressZero,
+          },
+        },
+      ],
     },
   ]),
 };

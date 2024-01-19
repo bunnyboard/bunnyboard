@@ -3,7 +3,7 @@ import { DAY } from '../../configs/constants';
 import EnvConfig from '../../configs/envConfig';
 import logger from '../../lib/logger';
 import { getDateString, getTimestamp, getTodayUTCTimestamp } from '../../lib/utils';
-import { DataMetrics, MetricConfig } from '../../types/configs';
+import { MetricConfig } from '../../types/configs';
 import { ContextServices, ContextStorages, ICollector, IProtocolAdapter } from '../../types/namespaces';
 import { RunCollectorOptions } from '../../types/options';
 import getProtocolAdapters from '../adapters';
@@ -55,19 +55,31 @@ export default class Collector implements ICollector {
         config: config,
         timestamp: timestamp,
       });
-      for (const data of result.data) {
-        let collectionName: string | null = null;
-        if (data.metric === DataMetrics.crossLending) {
-          collectionName = EnvConfig.mongodb.collections.lendingMarketStates;
-        }
 
-        if (collectionName) {
+      if (result.crossLending) {
+        for (const data of result.crossLending) {
           await this.storages.database.update({
-            collection: collectionName,
+            collection: EnvConfig.mongodb.collections.lendingMarketStates,
             keys: {
               chain: data.chain,
               protocol: data.protocol,
               address: data.address,
+              'token.address': data.token.address,
+            },
+            updates: {
+              ...data,
+            },
+            upsert: true,
+          });
+        }
+      }
+      if (result.cdpLending) {
+        for (const data of result.cdpLending) {
+          await this.storages.database.update({
+            collection: EnvConfig.mongodb.collections.lendingMarketStates,
+            keys: {
+              chain: data.chain,
+              protocol: data.protocol,
               'token.address': data.token.address,
             },
             updates: {
@@ -125,15 +137,16 @@ export default class Collector implements ICollector {
         const startExeTime = Math.floor(new Date().getTime() / 1000);
 
         if (this.adapters[config.protocol]) {
-          const { data } = await this.adapters[config.protocol].getSnapshotData(
+          const { crossLending, cdpLending } = await this.adapters[config.protocol].getSnapshotData(
             {
               config: config,
               timestamp: runTime,
             },
             this.storages,
           );
-          for (const snapshot of data) {
-            if (snapshot.metric === DataMetrics.crossLending) {
+
+          if (crossLending) {
+            for (const snapshot of crossLending) {
               await this.storages.database.update({
                 collection: EnvConfig.mongodb.collections.lendingMarketSnapshots,
                 keys: {
@@ -141,6 +154,24 @@ export default class Collector implements ICollector {
                   metric: snapshot.metric,
                   protocol: snapshot.protocol,
                   address: snapshot.address,
+                  'token.address': snapshot.token.address,
+                  timestamp: snapshot.timestamp,
+                },
+                updates: {
+                  ...snapshot,
+                },
+                upsert: true,
+              });
+            }
+          }
+          if (cdpLending) {
+            for (const snapshot of cdpLending) {
+              await this.storages.database.update({
+                collection: EnvConfig.mongodb.collections.lendingMarketSnapshots,
+                keys: {
+                  chain: snapshot.chain,
+                  metric: snapshot.metric,
+                  protocol: snapshot.protocol,
                   'token.address': snapshot.token.address,
                   timestamp: snapshot.timestamp,
                 },

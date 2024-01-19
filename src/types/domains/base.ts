@@ -49,6 +49,9 @@ export interface BaseActivityEvent {
   // we just increase actionIndex for other activities: logIndex:1, logIndex:2, ..., logIndex:n
   logIndex: string;
 
+  // this is the contract that emitted the event log
+  address: string;
+
   blockNumber: number;
 
   timestamp: number;

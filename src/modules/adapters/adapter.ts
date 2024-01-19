@@ -63,7 +63,8 @@ export default class ProtocolAdapter implements IProtocolAdapter {
 
   public async getStateData(options: GetAdapterDataOptions): Promise<GetStateDataResult> {
     return {
-      data: [],
+      crossLending: null,
+      cdpLending: null,
     };
   }
 
@@ -72,7 +73,8 @@ export default class ProtocolAdapter implements IProtocolAdapter {
     storages: ContextStorages,
   ): Promise<GetSnapshotDataResult> {
     return {
-      data: [],
+      crossLending: null,
+      cdpLending: null,
     };
   }
 

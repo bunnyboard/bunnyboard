@@ -167,7 +167,8 @@ export default class Aavev2Adapter extends ProtocolAdapter {
 
   public async getStateData(options: GetAdapterDataOptions): Promise<GetStateDataResult> {
     const result: GetStateDataResult = {
-      data: [],
+      crossLending: [],
+      cdpLending: null,
     };
 
     const blockNumber = await tryQueryBlockNumberAtTimestamp(
@@ -299,7 +300,9 @@ export default class Aavev2Adapter extends ProtocolAdapter {
         rewardBorrowRateStable: rewardRateForBorrowStable,
       };
 
-      result.data.push(dataState);
+      if (result.crossLending) {
+        result.crossLending.push(dataState);
+      }
     }
 
     return result;
@@ -309,11 +312,16 @@ export default class Aavev2Adapter extends ProtocolAdapter {
     options: GetAdapterDataOptions,
     storages: ContextStorages,
   ): Promise<GetSnapshotDataResult> {
-    const states = (await this.getStateData(options)).data;
+    const states = (await this.getStateData(options)).crossLending;
 
     const result: GetSnapshotDataResult = {
-      data: [],
+      crossLending: [],
+      cdpLending: null,
     };
+
+    if (!states) {
+      return result;
+    }
 
     const startDayTimestamp = options.timestamp;
     const endDayTimestamp = options.timestamp + DAY - 1;
@@ -353,7 +361,9 @@ export default class Aavev2Adapter extends ProtocolAdapter {
         totalFeesPaid: feesPaidFromBorrow.plus(feesPaidFromBorrowStable).toString(10),
       };
 
-      result.data.push(snapshotData);
+      if (result.crossLending) {
+        result.crossLending.push(snapshotData);
+      }
     }
 
     return result;

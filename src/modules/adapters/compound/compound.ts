@@ -83,6 +83,33 @@ export default class CompoundAdapter extends ProtocolAdapter {
     return '0';
   }
 
+  protected async getAllMarkets(
+    config: CompoundLendingMarketConfig,
+    blockNumber: number,
+  ): Promise<Array<string> | null> {
+    const abis: Array<any> = [
+      this.abiConfigs.eventAbis.comptroller,
+      CompoundComptrollerV1Abi,
+      IronbankComptrollerOldAbi,
+    ];
+
+    for (const abi of abis) {
+      const allMarkets = await this.services.blockchain.readContract({
+        chain: config.chain,
+        abi: abi,
+        target: config.address,
+        method: 'getAllMarkets',
+        params: [],
+        blockNumber,
+      });
+      if (allMarkets) {
+        return allMarkets as Array<string>;
+      }
+    }
+
+    return config.preDefinedMarkets ? config.preDefinedMarkets : null;
+  }
+
   protected async getMarketCompSpeeds(
     config: CompoundLendingMarketConfig,
     cTokenContract: string,
@@ -181,7 +208,8 @@ export default class CompoundAdapter extends ProtocolAdapter {
 
   public async getStateData(options: GetAdapterDataOptions): Promise<GetStateDataResult> {
     const result: GetStateDataResult = {
-      data: [],
+      crossLending: [],
+      cdpLending: null,
     };
 
     const marketConfig = options.config as CompoundLendingMarketConfig;
@@ -190,14 +218,7 @@ export default class CompoundAdapter extends ProtocolAdapter {
       options.timestamp,
     );
 
-    const allMarket = await this.services.blockchain.readContract({
-      chain: marketConfig.chain,
-      abi: this.abiConfigs.eventAbis.comptroller,
-      target: marketConfig.address,
-      method: 'getAllMarkets',
-      params: [],
-      blockNumber,
-    });
+    const allMarket = await this.getAllMarkets(marketConfig, blockNumber);
     if (allMarket) {
       for (let cTokenContract of allMarket) {
         cTokenContract = normalizeAddress(cTokenContract);
@@ -218,10 +239,12 @@ export default class CompoundAdapter extends ProtocolAdapter {
             params: [],
             blockNumber,
           });
-          token = await this.services.blockchain.getTokenInfo({
-            chain: marketConfig.chain,
-            address: underlying.toString(),
-          });
+          if (underlying) {
+            token = await this.services.blockchain.getTokenInfo({
+              chain: marketConfig.chain,
+              address: underlying.toString(),
+            });
+          }
         }
 
         if (token) {
@@ -318,7 +341,9 @@ export default class CompoundAdapter extends ProtocolAdapter {
             rewardBorrowRate: rewardBorrowRate,
           };
 
-          result.data.push(dataState);
+          if (result.crossLending) {
+            result.crossLending.push(dataState);
+          }
         }
       }
     }
@@ -337,14 +362,7 @@ export default class CompoundAdapter extends ProtocolAdapter {
       toBlock: options.toBlock,
     });
 
-    const allMarkets = await this.services.blockchain.readContract({
-      chain: options.config.chain,
-      abi: this.abiConfigs.eventAbis.comptroller,
-      target: options.config.address,
-      method: 'getAllMarkets',
-      params: [],
-      blockNumber: options.fromBlock,
-    });
+    const allMarkets = await this.getAllMarkets(options.config as CompoundLendingMarketConfig, options.fromBlock);
     if (allMarkets) {
       for (const cToken of allMarkets) {
         logs = logs.concat(
@@ -524,11 +542,15 @@ export default class CompoundAdapter extends ProtocolAdapter {
     options: GetAdapterDataOptions,
     storages: ContextStorages,
   ): Promise<GetSnapshotDataResult> {
-    const states = (await this.getStateData(options)).data;
-
+    const states = (await this.getStateData(options)).crossLending;
     const result: GetSnapshotDataResult = {
-      data: [],
+      crossLending: [],
+      cdpLending: null,
     };
+
+    if (!states) {
+      return result;
+    }
 
     // make sure activities were synced
     await this.syncActivities(options, storages);
@@ -564,7 +586,9 @@ export default class CompoundAdapter extends ProtocolAdapter {
         totalFeesPaid: feesPaidFromBorrow.toString(10),
       };
 
-      result.data.push(snapshotData);
+      if (result.crossLending) {
+        result.crossLending.push(snapshotData);
+      }
     }
 
     return result;

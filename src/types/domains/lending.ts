@@ -1,12 +1,7 @@
 import { Token } from '../configs';
-import { ActivityAction, BaseActivityEvent, DayDataSnapshot, TokenAmountEntry } from './base';
+import { BaseActivityEvent, DayDataSnapshot, TokenAmountEntry } from './base';
 
 export interface CrossLendingActivityEvent extends BaseActivityEvent {
-  action: ActivityAction;
-
-  // this is the contract that emitted the event log
-  address: string;
-
   // in case of liquidation, liquidator is considered as the main user of the transaction
   // so, we need to keep track the borrower address that was liquidated in this borrower address
   // also, an address can repay debts for another address, and this borrower address
@@ -19,6 +14,8 @@ export interface CrossLendingActivityEvent extends BaseActivityEvent {
   collateralToken?: Token;
   collateralAmount?: string;
 }
+
+export interface CdpLendingActivityEvent extends BaseActivityEvent {}
 
 export interface CrossLendingMarketState extends DayDataSnapshot {
   // market contract address
@@ -70,6 +67,67 @@ export interface CrossLendingMarketSnapshot extends CrossLendingMarketState {
   volumeLiquidated: Array<TokenAmountEntry>;
 
   // TotalFeesPaid = TotalBorrow * BorrowRate * TimePeriod / 365 days
+  totalFeesPaid: string;
+
+  numberOfUsers: number;
+  numberOfLenders: number;
+  numberOfBorrowers: number;
+  numberOfLiquidators: number;
+
+  numberOfTransactions: number;
+}
+
+export interface CdpCollateralState {
+  // contract address
+  address: string;
+
+  // the collateral token
+  token: Token;
+
+  // the token price (in US Dollar) at the snapshot timestamp
+  tokenPrice: string;
+
+  // total tokens were deposited into market
+  totalDeposited: string;
+
+  // current borrowing rate
+  borrowRate: string;
+
+  // the token collateral factor
+  loanToValueRate: string;
+}
+
+export interface CdpLendingMarketState extends DayDataSnapshot {
+  // the token, debts, collateral, or both
+  token: Token;
+
+  // the token price (in US Dollar) at the snapshot timestamp
+  tokenPrice: string;
+
+  // total debts token were borrowed
+  totalDebts: string;
+
+  // current lending supply rate
+  supplyRate: string;
+
+  // a list of collaterals were locked in the protocol
+  collaterals: Array<CdpCollateralState>;
+}
+
+export interface CdpCollateralSnapshot extends CdpCollateralState {
+  volumeDeposited: string;
+  volumeWithdrawn: string;
+  volumeLiquidated: string;
+}
+
+export interface CdpLendingMarketSnapshot extends CdpLendingMarketState {
+  // a list of collaterals were locked in the protocol
+  collaterals: Array<CdpCollateralSnapshot>;
+
+  volumeBorrowed: string;
+  volumeRepaid: string;
+
+  // TotalFeesPaid = TotalBorrow * BorrowRatePerCollateral * TimePeriod / 365 days
   totalFeesPaid: string;
 
   numberOfUsers: number;

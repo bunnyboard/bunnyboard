@@ -5,7 +5,7 @@ import { ContextServices } from '../types/namespaces';
 import { BasicCommand } from './basic';
 
 export class RunAdapterCommand extends BasicCommand {
-  public readonly name: string = 'runAdapter';
+  public readonly name: string = 'adapter';
   public readonly describe: string = 'Run adapter and print data metrics';
 
   constructor() {

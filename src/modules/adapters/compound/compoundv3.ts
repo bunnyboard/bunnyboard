@@ -12,7 +12,8 @@ export default class Compoundv3Adapter extends ProtocolAdapter {
 
   public async getStateData(options: GetAdapterDataOptions): Promise<GetStateDataResult> {
     const result: GetStateDataResult = {
-      data: [],
+      crossLending: null,
+      cdpLending: [],
     };
 
     // const marketConfig: LendingMarketConfig = options.config as LendingMarketConfig;
