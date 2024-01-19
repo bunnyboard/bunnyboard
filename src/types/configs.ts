@@ -68,8 +68,9 @@ export interface EnvConfig {
 }
 
 export const DataMetrics = {
-  lending: 'lending',
-  masterchef: 'masterchef',
+  crossLending: 'crossLending',
+  cdpLending: 'cdpLending',
+  staking: 'staking',
   perpetual: 'perpetual',
 };
 const Metrics = Object.values(DataMetrics);
@@ -80,10 +81,6 @@ export interface MetricConfig extends Contract {
   birthday: number;
 }
 
-export const LendingMarketTypes = {
-  cross: 'cross',
-  cdp: 'cdp',
-};
 export const LendingMarketVersions = {
   cross: {
     aavev2: 'aavev2',
@@ -97,27 +94,22 @@ export const LendingMarketVersions = {
   },
 };
 
-const MarketTypes = Object.values(LendingMarketTypes);
 const CrossVersions = Object.values(LendingMarketVersions.cross);
-const CdpVersions = Object.values(LendingMarketVersions.cdp);
-
-export type LendingMarketType = (typeof MarketTypes)[number];
 export type LendingCrossVersion = (typeof CrossVersions)[number];
-export type LendingCdpVersion = (typeof CdpVersions)[number];
-
-export interface LendingMarketConfig extends MetricConfig {
-  type: LendingMarketType;
-  version: LendingCrossVersion | LendingCdpVersion;
-
-  // in CDP market, there is a default debt token and a collateral token
-  // ex: DAI in Maker DAO
-  debtToken?: Token;
-  collateralToken?: Token;
+export interface CrossLendingMarketConfig extends MetricConfig {
+  version: LendingCrossVersion;
 
   // ignore these markets and tokens
   blacklists?: {
     [key: string]: boolean;
   };
+}
+
+const CdpVersions = Object.values(LendingMarketVersions.cdp);
+export type LendingCdpVersion = (typeof CdpVersions)[number];
+export interface CdpLendingMarketConfig extends MetricConfig {
+  version: LendingCdpVersion;
+  debtToken: Token;
 }
 
 export const MasterchefVersions = {

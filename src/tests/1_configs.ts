@@ -10,9 +10,10 @@ import cErc20Abi from '../configs/abi/compound/cErc20.json';
 import GemJoinAbi from '../configs/abi/maker/GemJoin.json';
 import { OracleConfigs } from '../configs/oracles/configs';
 import { CompoundLendingMarketConfig } from '../configs/protocols/compound';
+import { MakerLendingMarketConfig } from '../configs/protocols/maker';
 import { normalizeAddress } from '../lib/utils';
 import BlockchainService from '../services/blockchains/blockchain';
-import { DataMetrics, LendingMarketConfig, MetricConfig } from '../types/configs';
+import { CdpLendingMarketConfig, CrossLendingMarketConfig, DataMetrics, MetricConfig } from '../types/configs';
 
 const blockchain = new BlockchainService();
 
@@ -21,10 +22,12 @@ interface SimpleToken {
   address: string;
 }
 
-async function getLendingMarketTokenNeedOracles(config: LendingMarketConfig): Promise<Array<SimpleToken>> {
+async function getLendingMarketTokenNeedOracles(
+  config: CrossLendingMarketConfig | CdpLendingMarketConfig,
+): Promise<Array<SimpleToken>> {
   let tokens: Array<SimpleToken> = [];
 
-  const version = (config as LendingMarketConfig).version;
+  const version = config.version;
   switch (version) {
     case 'aavev2':
     case 'aavev3': {
@@ -70,8 +73,9 @@ async function getLendingMarketTokenNeedOracles(config: LendingMarketConfig): Pr
           method: 'underlying',
           params: [],
         });
+        const crossConfig = config as CrossLendingMarketConfig;
         if (underlying) {
-          if (config.blacklists && config.blacklists[normalizeAddress(cToken)]) {
+          if (crossConfig.blacklists && crossConfig.blacklists[normalizeAddress(cToken)]) {
             continue;
           }
           tokens.push({
@@ -83,10 +87,11 @@ async function getLendingMarketTokenNeedOracles(config: LendingMarketConfig): Pr
       break;
     }
     case 'compoundv3': {
-      if (config.debtToken) {
+      const cdpConfig = config as CdpLendingMarketConfig;
+      if (cdpConfig.debtToken) {
         tokens.push({
-          chain: config.debtToken.chain,
-          address: config.debtToken.address,
+          chain: cdpConfig.debtToken.chain,
+          address: cdpConfig.debtToken.address,
         });
       }
       const numAssets = await blockchain.readContract({
@@ -112,37 +117,35 @@ async function getLendingMarketTokenNeedOracles(config: LendingMarketConfig): Pr
       break;
     }
     case 'liquity': {
-      if (config.debtToken) {
+      const cdpConfig = config as CdpLendingMarketConfig;
+      if (cdpConfig.debtToken) {
         tokens.push({
-          chain: config.debtToken.chain,
-          address: config.debtToken.address,
-        });
-      }
-      if (config.collateralToken) {
-        tokens.push({
-          chain: config.collateralToken.chain,
-          address: config.collateralToken.address,
+          chain: cdpConfig.debtToken.chain,
+          address: cdpConfig.debtToken.address,
         });
       }
       break;
     }
     case 'maker': {
-      const gem = await blockchain.readContract({
-        chain: config.chain,
-        abi: GemJoinAbi,
-        target: config.address,
-        method: 'gem',
-        params: [],
-      });
-      const token = await blockchain.getTokenInfo({
-        chain: config.chain,
-        address: gem,
-      });
-      if (token) {
-        tokens.push({
-          chain: token.chain,
-          address: token.address,
+      const makerConfig = config as MakerLendingMarketConfig;
+      for (const gemConfig of makerConfig.gems) {
+        const gem = await blockchain.readContract({
+          chain: config.chain,
+          abi: GemJoinAbi,
+          target: gemConfig.address,
+          method: 'gem',
+          params: [],
         });
+        const token = await blockchain.getTokenInfo({
+          chain: config.chain,
+          address: gem,
+        });
+        if (token) {
+          tokens.push({
+            chain: token.chain,
+            address: token.address,
+          });
+        }
       }
       break;
     }
@@ -155,10 +158,14 @@ describe('data and configs', async function () {
   Object.values(ProtocolConfigs).map((protocolConfig) =>
     describe(`should have correct configs for protocol ${protocolConfig.protocol}`, async function () {
       protocolConfig.configs
-        .filter((config) => (config as MetricConfig).metric === DataMetrics.lending)
+        .filter(
+          (config) =>
+            (config as MetricConfig).metric === DataMetrics.crossLending ||
+            (config as MetricConfig).metric === DataMetrics.cdpLending,
+        )
         .map((lendingConfig) =>
           it(`should have correct configs for lending market ${lendingConfig.protocol}:${lendingConfig.chain}:${lendingConfig.address}`, async function () {
-            const tokens = await getLendingMarketTokenNeedOracles(lendingConfig as LendingMarketConfig);
+            const tokens = await getLendingMarketTokenNeedOracles(lendingConfig as any);
             for (const token of tokens) {
               expect(OracleConfigs[token.chain][token.address]).not.equal(
                 undefined,

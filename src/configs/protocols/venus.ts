@@ -8,9 +8,8 @@ export const VenusConfigs: CompoundProtocolConfig = {
     {
       chain: 'bnbchain',
       protocol: 'venus',
-      type: 'cross',
       version: 'compound',
-      metric: DataMetrics.lending,
+      metric: DataMetrics.crossLending,
       birthday: 1606089600, // Mon Nov 23 2020 00:00:00 GMT+0000
       address: '0xfD36E2c2a6789Db23113685031d7F16329158384',
       governanceToken: {

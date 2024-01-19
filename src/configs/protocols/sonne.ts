@@ -7,10 +7,9 @@ export const SonneConfigs: CompoundProtocolConfig = {
     {
       chain: 'optimism',
       protocol: 'sonne',
-      type: 'cross',
       version: 'compound',
       birthday: 1664409600, // Thu Sep 29 2022 00:00:00 GMT+0000
-      metric: DataMetrics.lending,
+      metric: DataMetrics.crossLending,
       address: '0x60CF091cD3f50420d50fD7f707414d0DF4751C58',
       governanceToken: {
         chain: 'optimism',
@@ -23,10 +22,9 @@ export const SonneConfigs: CompoundProtocolConfig = {
     {
       chain: 'base',
       protocol: 'sonne',
-      type: 'cross',
       version: 'compound',
       birthday: 1691798400, // Sat Aug 12 2023 00:00:00 GMT+0000
-      metric: DataMetrics.lending,
+      metric: DataMetrics.crossLending,
       address: '0x1DB2466d9F5e10D7090E7152B68d62703a2245F0',
       governanceToken: null,
       underlying: {},

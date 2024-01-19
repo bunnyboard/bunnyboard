@@ -1,5 +1,5 @@
 import { MetricConfig } from './configs';
-import { LendingActivityEvent, LendingMarketSnapshot, LendingMarketState } from './domains/lending';
+import { CrossLendingActivityEvent, CrossLendingMarketSnapshot, CrossLendingMarketState } from './domains/lending';
 
 export interface AdapterAbiConfigs {
   eventSignatures: any;
@@ -13,7 +13,7 @@ export interface TransformEventLogOptions {
 }
 
 export interface TransformEventLogResult {
-  activities: Array<LendingActivityEvent>;
+  activities: Array<CrossLendingActivityEvent>;
 }
 
 export interface GetAdapterDataOptions {
@@ -28,11 +28,11 @@ export interface GetAdapterEventLogsOptions {
 }
 
 export interface GetStateDataResult {
-  data: Array<LendingMarketState>;
+  data: Array<CrossLendingMarketState>;
 }
 
 export interface GetSnapshotDataResult {
-  data: Array<LendingMarketSnapshot>;
+  data: Array<CrossLendingMarketSnapshot>;
 }
 
 export interface RunCollectorOptions {

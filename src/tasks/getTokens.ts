@@ -5,7 +5,7 @@ import { AaveLendingMarketConfig } from '../configs/protocols/aave';
 import { CompoundLendingMarketConfig } from '../configs/protocols/compound';
 import AaveLibs from '../modules/libs/aave';
 import CompoundLibs from '../modules/libs/compound';
-import { DataMetrics, LendingMarketConfig, Token } from '../types/configs';
+import { CrossLendingMarketConfig, DataMetrics, Token } from '../types/configs';
 
 const directoryPath = './src/configs/tokenlists';
 
@@ -33,8 +33,8 @@ function loadExistedTokens(chain: string) {
 
   for (const protocolConfig of Object.values(ProtocolConfigs)) {
     for (const config of protocolConfig.configs) {
-      if (config.metric === DataMetrics.lending) {
-        const lendingConfig = config as LendingMarketConfig;
+      if (config.metric === DataMetrics.crossLending) {
+        const lendingConfig = config as CrossLendingMarketConfig;
         console.log(
           `Getting all tokens metadata from lending market ${lendingConfig.protocol}:${lendingConfig.chain}:${lendingConfig.address}`,
         );

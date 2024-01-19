@@ -11,7 +11,7 @@ import { tryQueryBlockNumberAtTimestamp } from '../../../lib/subsgraph';
 import { formatBigNumberToString, normalizeAddress } from '../../../lib/utils';
 import { DataMetrics, ProtocolConfig } from '../../../types/configs';
 import { ActivityAction, TokenAmountEntry } from '../../../types/domains/base';
-import { LendingMarketSnapshot, LendingMarketState } from '../../../types/domains/lending';
+import { CrossLendingMarketSnapshot, CrossLendingMarketState } from '../../../types/domains/lending';
 import { ContextServices, ContextStorages } from '../../../types/namespaces';
 import {
   GetAdapterDataOptions,
@@ -22,7 +22,7 @@ import {
   TransformEventLogResult,
 } from '../../../types/options';
 import ProtocolAdapter from '../adapter';
-import { countLendingDataFromActivities } from '../helpers';
+import { countCrossLendingDataFromActivities } from '../helpers';
 import { AaveEventInterfaces, Aavev2EventSignatures } from './abis';
 
 export interface AaveMarketRates {
@@ -275,9 +275,8 @@ export default class Aavev2Adapter extends ProtocolAdapter {
         }
       }
 
-      const dataState: LendingMarketState = {
-        type: marketConfig.type,
-        metric: DataMetrics.lending,
+      const dataState: CrossLendingMarketState = {
+        metric: DataMetrics.crossLending,
         chain: marketConfig.chain,
         protocol: marketConfig.protocol,
         address: normalizeAddress(marketConfig.address),
@@ -337,7 +336,7 @@ export default class Aavev2Adapter extends ProtocolAdapter {
         },
       });
 
-      const activityData = await countLendingDataFromActivities(documents);
+      const activityData = await countCrossLendingDataFromActivities(documents);
 
       const feesPaidFromBorrow = new BigNumber(stateData.totalBorrowed)
         .multipliedBy(stateData.borrowRate)
@@ -348,7 +347,7 @@ export default class Aavev2Adapter extends ProtocolAdapter {
         .multipliedBy(DAY)
         .dividedBy(YEAR);
 
-      const snapshotData: LendingMarketSnapshot = {
+      const snapshotData: CrossLendingMarketSnapshot = {
         ...stateData,
         ...activityData,
         totalFeesPaid: feesPaidFromBorrow.plus(feesPaidFromBorrowStable).toString(10),

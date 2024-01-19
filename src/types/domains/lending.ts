@@ -1,10 +1,10 @@
-import { LendingMarketType, Token } from '../configs';
+import { Token } from '../configs';
 import { ActivityAction, BaseActivityEvent, DayDataSnapshot, TokenAmountEntry } from './base';
 
-export interface LendingActivityEvent extends BaseActivityEvent {
+export interface CrossLendingActivityEvent extends BaseActivityEvent {
   action: ActivityAction;
 
-  // market contract address
+  // this is the contract that emitted the event log
   address: string;
 
   // in case of liquidation, liquidator is considered as the main user of the transaction
@@ -20,10 +20,7 @@ export interface LendingActivityEvent extends BaseActivityEvent {
   collateralAmount?: string;
 }
 
-export interface LendingMarketState extends DayDataSnapshot {
-  // cross-pool lending markets
-  type: LendingMarketType;
-
+export interface CrossLendingMarketState extends DayDataSnapshot {
   // market contract address
   address: string;
 
@@ -57,16 +54,12 @@ export interface LendingMarketState extends DayDataSnapshot {
   // incentive reward rate for suppliers
   rewardSupplyRate?: string;
 
-  // incentive reward rate for suppliers
+  // incentive reward rate for borrowers
   rewardBorrowRate?: string;
   rewardBorrowRateStable?: string;
-
-  // for CDP market
-  collateralToken?: Token;
-  collateralTokenPrice?: string;
 }
 
-export interface LendingMarketSnapshot extends LendingMarketState {
+export interface CrossLendingMarketSnapshot extends CrossLendingMarketState {
   volumeDeposited: string;
   volumeWithdrawn: string;
   volumeBorrowed: string;
@@ -79,7 +72,7 @@ export interface LendingMarketSnapshot extends LendingMarketState {
   // TotalFeesPaid = TotalBorrow * BorrowRate * TimePeriod / 365 days
   totalFeesPaid: string;
 
-  numberOfUniqueUsers: number;
+  numberOfUsers: number;
   numberOfLenders: number;
   numberOfBorrowers: number;
   numberOfLiquidators: number;

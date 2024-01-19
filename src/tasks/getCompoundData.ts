@@ -9,7 +9,7 @@ const dataPath = './src/configs/data/CompoundData.json';
 
 (async function () {
   for (const config of CompoundConfigs.configs) {
-    if (config.metric === DataMetrics.lending && config.type === LendingMarketVersions.cross.compound) {
+    if (config.metric === DataMetrics.crossLending && config.version === LendingMarketVersions.cross.compound) {
       const cTokens = await CompoundLibs.getComptrollerInfo(config);
       fs.writeFileSync(dataPath, JSON.stringify(cTokens));
     }

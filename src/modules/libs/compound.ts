@@ -5,7 +5,7 @@ import EnvConfig from '../../configs/envConfig';
 import { CompoundLendingMarketConfig } from '../../configs/protocols/compound';
 import { normalizeAddress } from '../../lib/utils';
 import BlockchainService from '../../services/blockchains/blockchain';
-import { LendingMarketConfig, Token } from '../../types/configs';
+import { CdpLendingMarketConfig, Token } from '../../types/configs';
 
 interface CTokenInfo {
   chain: string;
@@ -68,7 +68,7 @@ export default class CompoundLibs {
     return cTokens;
   }
 
-  public static async getCometInfo(lendingMarketConfig: LendingMarketConfig): Promise<CometInfo> {
+  public static async getCometInfo(lendingMarketConfig: CdpLendingMarketConfig): Promise<CometInfo> {
     const cometInfo: CometInfo = {
       chain: lendingMarketConfig.chain,
       address: lendingMarketConfig.address,

@@ -10,9 +10,9 @@ import EnvConfig from '../../../configs/envConfig';
 import { CompoundLendingMarketConfig } from '../../../configs/protocols/compound';
 import { tryQueryBlockNumberAtTimestamp } from '../../../lib/subsgraph';
 import { compareAddress, formatBigNumberToString, normalizeAddress } from '../../../lib/utils';
-import { DataMetrics, ProtocolConfig, Token } from '../../../types/configs';
+import { ProtocolConfig, Token } from '../../../types/configs';
 import { ActivityActions, TokenAmountEntry } from '../../../types/domains/base';
-import { LendingMarketSnapshot, LendingMarketState } from '../../../types/domains/lending';
+import { CrossLendingMarketSnapshot, CrossLendingMarketState } from '../../../types/domains/lending';
 import { ContextServices, ContextStorages } from '../../../types/namespaces';
 import {
   GetAdapterDataOptions,
@@ -24,7 +24,7 @@ import {
 } from '../../../types/options';
 import CompoundLibs from '../../libs/compound';
 import ProtocolAdapter from '../adapter';
-import { countLendingDataFromActivities } from '../helpers';
+import { countCrossLendingDataFromActivities } from '../helpers';
 import { CompoundEventInterfaces, CompoundEventSignatures } from './abis';
 
 interface Rates {
@@ -297,9 +297,8 @@ export default class CompoundAdapter extends ProtocolAdapter {
             }
           }
 
-          const dataState: LendingMarketState = {
-            type: marketConfig.type,
-            metric: DataMetrics.lending,
+          const dataState: CrossLendingMarketState = {
+            metric: marketConfig.metric,
             chain: marketConfig.chain,
             protocol: marketConfig.protocol,
             address: cTokenContract,
@@ -552,14 +551,14 @@ export default class CompoundAdapter extends ProtocolAdapter {
         },
       });
 
-      const activityData = await countLendingDataFromActivities(documents);
+      const activityData = await countCrossLendingDataFromActivities(documents);
 
       const feesPaidFromBorrow = new BigNumber(stateData.totalBorrowed)
         .multipliedBy(stateData.borrowRate)
         .multipliedBy(DAY)
         .dividedBy(YEAR);
 
-      const snapshotData: LendingMarketSnapshot = {
+      const snapshotData: CrossLendingMarketSnapshot = {
         ...stateData,
         ...activityData,
         totalFeesPaid: feesPaidFromBorrow.toString(10),

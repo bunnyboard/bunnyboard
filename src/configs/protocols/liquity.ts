@@ -1,9 +1,10 @@
 import { normalizeAddress } from '../../lib/utils';
-import { DataMetrics, LendingMarketConfig, ProtocolConfig } from '../../types/configs';
+import { CdpLendingMarketConfig, DataMetrics, ProtocolConfig, Token } from '../../types/configs';
 import { AddressZero } from '../constants';
 
-export interface LiquityLendingMarketConfig extends LendingMarketConfig {
+export interface LiquityLendingMarketConfig extends CdpLendingMarketConfig {
   borrowOperation: string;
+  collateralToken: Token;
 }
 
 export interface LiquityProtocolConfig extends ProtocolConfig {
@@ -29,10 +30,9 @@ export const LiquityConfigs: LiquityProtocolConfig = {
     {
       chain: 'ethereum',
       protocol: 'liquity',
-      type: 'cdp',
       version: 'liquity',
       birthday: 1617667200, // Tue Apr 06 2021 00:00:00 GMT+0000
-      metric: DataMetrics.lending,
+      metric: DataMetrics.cdpLending,
       address: '0xa39739ef8b0231dbfa0dcda07d7e29faabcf4bb2', // trove manager
       borrowOperation: '0x24179cd81c9e782a4096035f7ec97fb8b783e007',
       debtToken: {

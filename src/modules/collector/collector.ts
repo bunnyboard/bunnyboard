@@ -57,7 +57,7 @@ export default class Collector implements ICollector {
       });
       for (const data of result.data) {
         let collectionName: string | null = null;
-        if (data.metric === DataMetrics.lending) {
+        if (data.metric === DataMetrics.crossLending) {
           collectionName = EnvConfig.mongodb.collections.lendingMarketStates;
         }
 
@@ -133,21 +133,23 @@ export default class Collector implements ICollector {
             this.storages,
           );
           for (const snapshot of data) {
-            await this.storages.database.update({
-              collection: EnvConfig.mongodb.collections.lendingMarketSnapshots,
-              keys: {
-                chain: snapshot.chain,
-                metric: snapshot.metric,
-                protocol: snapshot.protocol,
-                address: snapshot.address,
-                'token.address': snapshot.token.address,
-                timestamp: snapshot.timestamp,
-              },
-              updates: {
-                ...snapshot,
-              },
-              upsert: true,
-            });
+            if (snapshot.metric === DataMetrics.crossLending) {
+              await this.storages.database.update({
+                collection: EnvConfig.mongodb.collections.lendingMarketSnapshots,
+                keys: {
+                  chain: snapshot.chain,
+                  metric: snapshot.metric,
+                  protocol: snapshot.protocol,
+                  address: snapshot.address,
+                  'token.address': snapshot.token.address,
+                  timestamp: snapshot.timestamp,
+                },
+                updates: {
+                  ...snapshot,
+                },
+                upsert: true,
+              });
+            }
           }
         }
 

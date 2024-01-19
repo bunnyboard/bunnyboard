@@ -2,7 +2,7 @@ import BigNumber from 'bignumber.js';
 
 import OracleService from '../../services/oracle/oracle';
 import { ActivityActions, BaseActivityEvent, TokenAmountEntry } from '../../types/domains/base';
-import { LendingActivityEvent } from '../../types/domains/lending';
+import { CrossLendingActivityEvent } from '../../types/domains/lending';
 
 interface LendingDataActivity {
   volumeDeposited: string;
@@ -10,15 +10,15 @@ interface LendingDataActivity {
   volumeBorrowed: string;
   volumeRepaid: string;
   volumeLiquidated: Array<TokenAmountEntry>;
-  numberOfUniqueUsers: number;
+  numberOfUsers: number;
   numberOfLenders: number;
   numberOfBorrowers: number;
   numberOfLiquidators: number;
   numberOfTransactions: number;
 }
 
-export async function countLendingDataFromActivities(
-  activities: Array<LendingActivityEvent>,
+export async function countCrossLendingDataFromActivities(
+  activities: Array<CrossLendingActivityEvent>,
 ): Promise<LendingDataActivity> {
   const oracle = new OracleService();
 
@@ -34,7 +34,7 @@ export async function countLendingDataFromActivities(
   const transactions: { [key: string]: boolean } = {};
   for (const document of activities) {
     const activityEvent = document as BaseActivityEvent;
-    const borrower = (activityEvent as LendingActivityEvent).borrower;
+    const borrower = (activityEvent as CrossLendingActivityEvent).borrower;
 
     if (!transactions[document.transactionHash]) {
       transactions[document.transactionHash] = true;
@@ -79,7 +79,7 @@ export async function countLendingDataFromActivities(
         break;
       }
       case ActivityActions.liquidate: {
-        const event = activityEvent as LendingActivityEvent;
+        const event = activityEvent as CrossLendingActivityEvent;
         if (event.collateralToken && event.collateralAmount) {
           const key = `${document.address}-${event.collateralToken.address}`;
           if (!volumeLiquidated[key]) {
@@ -120,7 +120,7 @@ export async function countLendingDataFromActivities(
     volumeBorrowed: volumeBorrowed.toString(10),
     volumeRepaid: volumeRepaid.toString(10),
     volumeLiquidated: Object.values(volumeLiquidated),
-    numberOfUniqueUsers: Object.keys(countUsers).length,
+    numberOfUsers: Object.keys(countUsers).length,
     numberOfLenders: Object.keys(countLenders).length,
     numberOfBorrowers: Object.keys(countBorrowers).length,
     numberOfLiquidators: Object.keys(countLiquidators).length,
