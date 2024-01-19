@@ -49,7 +49,7 @@ export default class LiquityAdapter extends ProtocolAdapter {
   ): Promise<GetTroveStateInfo> {
     const troveInfo = await this.services.blockchain.readContract({
       chain: market.chain,
-      target: market.troveManager,
+      target: market.address,
       abi: TroveManagerAbi,
       method: 'Troves',
       params: [decodedEvent.args._borrower],
@@ -77,7 +77,7 @@ export default class LiquityAdapter extends ProtocolAdapter {
   protected async getBorrowingFee(config: LiquityLendingMarketConfig, blockNumber: number): Promise<string> {
     const borrowingFee = await this.services.blockchain.readContract({
       chain: config.chain,
-      target: config.troveManager,
+      target: config.address,
       abi: TroveManagerAbi,
       method: 'getBorrowingRate',
       params: [],
@@ -103,7 +103,7 @@ export default class LiquityAdapter extends ProtocolAdapter {
     const totalDebt = await this.services.blockchain.readContract({
       chain: marketConfig.chain,
       abi: this.abiConfigs.eventAbis.troveManager,
-      target: marketConfig.troveManager,
+      target: marketConfig.address,
       method: 'getEntireSystemDebt',
       params: [],
       blockNumber: blockNumber,
@@ -111,7 +111,7 @@ export default class LiquityAdapter extends ProtocolAdapter {
     const totalColl = await this.services.blockchain.readContract({
       chain: marketConfig.chain,
       abi: this.abiConfigs.eventAbis.troveManager,
-      target: marketConfig.troveManager,
+      target: marketConfig.address,
       method: 'getEntireSystemColl',
       params: [],
       blockNumber: blockNumber,
@@ -164,14 +164,15 @@ export default class LiquityAdapter extends ProtocolAdapter {
 
     let logs = await this.services.blockchain.getContractLogs({
       chain: options.config.chain,
-      address: options.config.address,
+      address: config.borrowOperation,
       fromBlock: options.fromBlock,
       toBlock: options.toBlock,
     });
     logs = logs.concat(
+      // get liquidation events
       await this.services.blockchain.getContractLogs({
         chain: options.config.chain,
-        address: config.troveManager,
+        address: options.config.address,
         fromBlock: options.fromBlock,
         toBlock: options.toBlock,
       }),
@@ -193,7 +194,7 @@ export default class LiquityAdapter extends ProtocolAdapter {
       const signature = log.topics[0];
       const address = normalizeAddress(log.address);
 
-      if (signature === eventSignatures.TroveUpdated && address === marketConfig.address) {
+      if (signature === eventSignatures.TroveUpdated && address === marketConfig.borrowOperation) {
         const event: any = decodeEventLog({
           abi: this.abiConfigs.eventAbis.borrowOperation,
           data: log.data,
@@ -209,7 +210,7 @@ export default class LiquityAdapter extends ProtocolAdapter {
           result.activities.push({
             chain: marketConfig.chain,
             protocol: this.config.protocol,
-            address: marketConfig.address,
+            address: address,
             transactionHash: log.transactionHash,
             logIndex: log.logIndex.toString(),
             blockNumber: new BigNumber(log.blockNumber.toString()).toNumber(),
@@ -227,7 +228,7 @@ export default class LiquityAdapter extends ProtocolAdapter {
           result.activities.push({
             chain: marketConfig.chain,
             protocol: this.config.protocol,
-            address: marketConfig.address,
+            address: address,
             transactionHash: log.transactionHash,
             logIndex: log.logIndex.toString(),
             blockNumber: new BigNumber(log.blockNumber.toString()).toNumber(),
@@ -240,7 +241,7 @@ export default class LiquityAdapter extends ProtocolAdapter {
             collateralAmount: info.collAmount,
           });
         }
-      } else if (signature === eventSignatures.TroveLiquidated && address === marketConfig.troveManager) {
+      } else if (signature === eventSignatures.TroveLiquidated && address === marketConfig.address) {
         const event: any = decodeEventLog({
           abi: this.abiConfigs.eventAbis.troveManager,
           data: log.data,
@@ -253,7 +254,7 @@ export default class LiquityAdapter extends ProtocolAdapter {
         result.activities.push({
           chain: marketConfig.chain,
           protocol: this.config.protocol,
-          address: marketConfig.address,
+          address: address,
           transactionHash: log.transactionHash,
           logIndex: log.logIndex.toString(),
           blockNumber: new BigNumber(log.blockNumber.toString()).toNumber(),
@@ -365,6 +366,36 @@ export default class LiquityAdapter extends ProtocolAdapter {
           }
         }
       }
+
+      // collecting fees data
+      // const beginBlock = await tryQueryBlockNumberAtTimestamp(
+      //   EnvConfig.blockchains[options.config.chain].blockSubgraph,
+      //   startDayTimestamp,
+      // );
+      // const endBlock = await tryQueryBlockNumberAtTimestamp(
+      //   EnvConfig.blockchains[options.config.chain].blockSubgraph,
+      //   endDayTimestamp,
+      // );
+      // const logs = await this.services.blockchain.getContractLogs({
+      //   chain: options.config.chain,
+      //   address: options.config.address,
+      //   fromBlock: beginBlock,
+      //   toBlock: endBlock,
+      // })
+      //
+      // let feeCollected = new BigNumber(0);
+      // const eventSignature: LiquityEventInterfaces = this.abiConfigs.eventSignatures;
+      // for (const log of logs) {
+      //   const signature = log.topics[0];
+      //   if (signature === eventSignature.BorrowingFeePaid) {
+      //     const event: any = decodeEventLog({
+      //       abi: this.abiConfigs.eventAbis.borrowOperation,
+      //       data: log.data,
+      //       topics: log.topics,
+      //     });
+      //     feeCollected = feeCollected.plus(new BigNumber(event.args._LUSDFee));
+      //   }
+      // }
 
       result.data.push({
         ...stateData,

@@ -63,4 +63,7 @@ export interface BaseActivityEvent {
   token: Token;
 
   tokenAmount: string;
+
+  // in case additional data for some protocols
+  additional?: any;
 }
