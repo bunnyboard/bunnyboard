@@ -17,6 +17,12 @@
     "symbol": "RDNT",
     "decimals": 18
   },
+  "0x354a6da3fcde098f8389cad84b0182725c6c91de": {
+    "chain": "arbitrum",
+    "address": "0x354a6da3fcde098f8389cad84b0182725c6c91de",
+    "symbol": "COMP",
+    "decimals": 18
+  },
   "0x3f56e0c36d275367b8c502090edf38289b3dea0d": {
     "chain": "arbitrum",
     "address": "0x3f56e0c36d275367b8c502090edf38289b3dea0d",
@@ -81,6 +87,12 @@
     "chain": "arbitrum",
     "address": "0xf97f4df75117a78c1a5a0dbb814af92458539fb4",
     "symbol": "LINK",
+    "decimals": 18
+  },
+  "0xfc5a1a6eb076a2c7ad06ed22c90d7e710e35ad0a": {
+    "chain": "arbitrum",
+    "address": "0xfc5a1a6eb076a2c7ad06ed22c90d7e710e35ad0a",
+    "symbol": "GMX",
     "decimals": 18
   },
   "0xfd086bc7cd5c481dcc9c85ebe478a1c0b69fcbb9": {

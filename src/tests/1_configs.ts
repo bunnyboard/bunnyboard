@@ -9,7 +9,7 @@ import ComptrollerAbi from '../configs/abi/compound/Comptroller.json';
 import cErc20Abi from '../configs/abi/compound/cErc20.json';
 import GemJoinAbi from '../configs/abi/maker/GemJoin.json';
 import { OracleConfigs } from '../configs/oracles/configs';
-import { CompoundLendingMarketConfig } from '../configs/protocols/compound';
+import { CompoundLendingMarketConfig, Compoundv3LendingMarketConfig } from '../configs/protocols/compound';
 import { MakerLendingMarketConfig } from '../configs/protocols/maker';
 import { normalizeAddress } from '../lib/utils';
 import BlockchainService from '../services/blockchains/blockchain';
@@ -92,6 +92,12 @@ async function getLendingMarketTokenNeedOracles(
         tokens.push({
           chain: cdpConfig.debtToken.chain,
           address: cdpConfig.debtToken.address,
+        });
+      }
+      if ((cdpConfig as Compoundv3LendingMarketConfig).rewardToken) {
+        tokens.push({
+          chain: (cdpConfig as Compoundv3LendingMarketConfig).rewardToken.chain,
+          address: (cdpConfig as Compoundv3LendingMarketConfig).rewardToken.address,
         });
       }
       const numAssets = await blockchain.readContract({

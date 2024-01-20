@@ -23,6 +23,12 @@
     "symbol": "USDC",
     "decimals": 6
   },
+  "0x9e1028f5f1d5ede59748ffcee5532509976840e0": {
+    "chain": "base",
+    "address": "0x9e1028f5f1d5ede59748ffcee5532509976840e0",
+    "symbol": "COMP",
+    "decimals": 18
+  },
   "0xc1cba3fcea344f92d9239c08c0568f6f2f0ee452": {
     "chain": "base",
     "address": "0xc1cba3fcea344f92d9239c08c0568f6f2f0ee452",

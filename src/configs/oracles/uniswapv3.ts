@@ -153,4 +153,11 @@ export const OracleSourceUniswapv3List: { [key: string]: OracleSourceUniv3 } = {
     baseToken: EthereumTokenList['0xc5f0f7b66764F6ec8C8Dff7BA683102295E16409'],
     quotaToken: EthereumTokenList['0xdac17f958d2ee523a2206206994597c13d831ec7'],
   },
+  GMX_WETH: {
+    type: 'univ3',
+    chain: 'arbitrum',
+    address: '0x1aeedd3727a6431b8f070c0afaa81cc74f273882',
+    baseToken: ArbitrumTokenList['0xfc5a1a6eb076a2c7ad06ed22c90d7e710e35ad0a'],
+    quotaToken: ArbitrumTokenList['0x82af49447d8a07e3bd95bd0d56f35241523fbab1'],
+  },
 };

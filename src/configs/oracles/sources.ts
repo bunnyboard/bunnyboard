@@ -518,4 +518,8 @@ export const OracleSourceConfigs: { [key: string]: OracleConfig } = {
     currency: 'usd',
     sources: [OracleSourceCustomList.MAKER_RWA001],
   },
+  GMX: {
+    currency: 'eth',
+    sources: [OracleSourceUniswapv3List.GMX_WETH],
+  },
 };

@@ -101,6 +101,8 @@ export const OracleConfigs: { [key: string]: { [key: string]: OracleConfig } } =
     '0x17fc002b466eec40dae837fc4be5c67993ddbd6f': OracleSourceConfigs.FRAX,
     '0x912ce59144191c1204e64559fe8253a0e49e6548': OracleSourceConfigs.ARB,
     '0x3082cc23568ea640225c2467653db90e9250aaa0': OracleSourceConfigs.RDNT,
+    '0x354a6da3fcde098f8389cad84b0182725c6c91de': OracleSourceConfigs.COMP,
+    '0xfc5a1a6eb076a2c7ad06ed22c90d7e710e35ad0a': OracleSourceConfigs.GMX,
   },
 
   // tokens on Optimism
@@ -137,6 +139,7 @@ export const OracleConfigs: { [key: string]: { [key: string]: OracleConfig } } =
     '0xc1cba3fcea344f92d9239c08c0568f6f2f0ee452': OracleSourceConfigs.wstETH,
     '0x833589fcd6edb6e08f4c7c32d4f71b54bda02913': OracleSourceConfigs.USDC,
     '0x50c5725949a6f0c72e6c4a641f24049a917db0cb': OracleSourceConfigs.DAI,
+    '0x9e1028f5f1d5ede59748ffcee5532509976840e0': OracleSourceConfigs.COMP,
   },
 
   // tokens on Polygon
@@ -167,6 +170,7 @@ export const OracleConfigs: { [key: string]: { [key: string]: OracleConfig } } =
     '0x3c499c542cef5e3811e1192ce70d8cc03d5c3359': OracleSourceConfigs.USDC,
     '0x1d734a02ef1e1f5886e66b0673b71af5b53ffa94': OracleSourceConfigs.SD,
     '0xc3c7d422809852031b44ab29eec9f1eff2a58756': OracleSourceConfigs.LDO,
+    '0x8505b9d2254a7ae468c0e9dd10ccea3a837aef5c': OracleSourceConfigs.COMP,
   },
 
   // tokens on Bnbchain

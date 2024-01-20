@@ -77,6 +77,12 @@
     "symbol": "WETH",
     "decimals": 18
   },
+  "0x8505b9d2254a7ae468c0e9dd10ccea3a837aef5c": {
+    "chain": "polygon",
+    "address": "0x8505b9d2254a7ae468c0e9dd10ccea3a837aef5c",
+    "symbol": "COMP",
+    "decimals": 18
+  },
   "0x85955046df4668e1dd369d2de9f3aeb98dd2a369": {
     "chain": "polygon",
     "address": "0x85955046df4668e1dd369d2de9f3aeb98dd2a369",

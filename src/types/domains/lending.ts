@@ -92,6 +92,9 @@ export interface CdpCollateralState {
   // current borrowing rate
   borrowRate: string;
 
+  // incentive reward rate for borrowers
+  rewardBorrowRate?: string;
+
   // the token collateral factor
   loanToValueRate: string;
 }
@@ -103,11 +106,18 @@ export interface CdpLendingMarketState extends DayDataSnapshot {
   // the token price (in US Dollar) at the snapshot timestamp
   tokenPrice: string;
 
+  // total debt token are being supplied by lenders
+  // some protocols like compound III allow lenders to lend debt token (USDC)
+  totalDeposited?: string;
+
   // total debts token were borrowed
   totalDebts: string;
 
   // current lending supply rate
   supplyRate: string;
+
+  // incentive reward rate for suppliers
+  rewardSupplyRate?: string;
 
   // a list of collaterals were locked in the protocol
   collaterals: Array<CdpCollateralState>;
@@ -125,6 +135,8 @@ export interface CdpLendingMarketSnapshot extends CdpLendingMarketState {
 
   volumeBorrowed: string;
   volumeRepaid: string;
+  volumeDeposited?: string;
+  volumeWithdrawn?: string;
 
   // TotalFeesPaid = TotalBorrow * BorrowRatePerCollateral * TimePeriod / 365 days
   totalFeesPaid: string;

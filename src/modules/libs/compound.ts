@@ -68,7 +68,10 @@ export default class CompoundLibs {
     return cTokens;
   }
 
-  public static async getCometInfo(lendingMarketConfig: CdpLendingMarketConfig): Promise<CometInfo> {
+  public static async getCometInfo(
+    lendingMarketConfig: CdpLendingMarketConfig,
+    blockNumber: number,
+  ): Promise<CometInfo> {
     const cometInfo: CometInfo = {
       chain: lendingMarketConfig.chain,
       address: lendingMarketConfig.address,
@@ -83,6 +86,7 @@ export default class CompoundLibs {
       target: lendingMarketConfig.address,
       method: 'numAssets',
       params: [],
+      blockNumber: blockNumber === 0 ? undefined : blockNumber,
     });
     for (let i = 0; i < Number(numAssets); i++) {
       const assetInfo = await blockchain.readContract({
@@ -91,6 +95,7 @@ export default class CompoundLibs {
         target: lendingMarketConfig.address,
         method: 'getAssetInfo',
         params: [i],
+        blockNumber: blockNumber === 0 ? undefined : blockNumber,
       });
       const token = await blockchain.getTokenInfo({
         chain: lendingMarketConfig.chain,
