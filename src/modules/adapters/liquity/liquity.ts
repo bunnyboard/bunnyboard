@@ -1,17 +1,31 @@
 import BigNumber from 'bignumber.js';
+import { decodeEventLog } from 'viem';
 
 import BorrowOperationsAbi from '../../../configs/abi/liquity/BorrowOperations.json';
 import TroveManagerAbi from '../../../configs/abi/liquity/TroveManager.json';
+import { DAY } from '../../../configs/constants';
 import EnvConfig from '../../../configs/envConfig';
-import { LiquityLendingMarketConfig } from '../../../configs/protocols/liquity';
+import { LiquityLendingMarketConfig, LiquityTrove } from '../../../configs/protocols/liquity';
 import { tryQueryBlockNumberAtTimestamp } from '../../../lib/subsgraph';
-import { formatBigNumberToString } from '../../../lib/utils';
+import { compareAddress, formatBigNumberToString, normalizeAddress } from '../../../lib/utils';
 import { ProtocolConfig, Token } from '../../../types/configs';
-import { CdpLendingMarketState } from '../../../types/domains/lending';
-import { ContextServices } from '../../../types/namespaces';
-import { GetAdapterDataOptions, GetStateDataResult } from '../../../types/options';
+import { ActivityAction, ActivityActions } from '../../../types/domains/base';
+import {
+  CdpLendingActivityEvent,
+  CdpLendingMarketSnapshot,
+  CdpLendingMarketState,
+} from '../../../types/domains/lending';
+import { ContextServices, ContextStorages } from '../../../types/namespaces';
+import {
+  GetAdapterDataOptions,
+  GetAdapterEventLogsOptions,
+  GetSnapshotDataResult,
+  GetStateDataResult,
+  TransformEventLogOptions,
+  TransformEventLogResult,
+} from '../../../types/options';
 import ProtocolAdapter from '../adapter';
-import { LiquityEventSignatures } from './abis';
+import { LiquityEventInterfaces, LiquityEventSignatures } from './abis';
 
 interface GetTroveStateInfo {
   debtAmount: string;
@@ -138,6 +152,7 @@ export default class LiquityAdapter extends ProtocolAdapter {
         tokenPrice: collateralTokenPrice ? collateralTokenPrice : '0',
         totalDeposited: formatBigNumberToString(totalColl.toString(), collateralToken.decimals),
         borrowRate: formatBigNumberToString(borrowingFee, 18),
+
         // liquity must maintain 110% collateral value on debts
         // so, the loan to value is always 100 / 110 -> 0.9 -> 90%
         loanToValueRate: '0.9',
@@ -151,260 +166,326 @@ export default class LiquityAdapter extends ProtocolAdapter {
     return result;
   }
 
-  // public async getEventLogs(options: GetAdapterEventLogsOptions): Promise<Array<any>> {
-  //   const config = options.config as LiquityLendingMarketConfig;
-  //
-  //   let logs = await this.services.blockchain.getContractLogs({
-  //     chain: options.config.chain,
-  //     address: config.borrowOperation,
-  //     fromBlock: options.fromBlock,
-  //     toBlock: options.toBlock,
-  //   });
-  //   logs = logs.concat(
-  //     // get liquidation events
-  //     await this.services.blockchain.getContractLogs({
-  //       chain: options.config.chain,
-  //       address: options.config.address,
-  //       fromBlock: options.fromBlock,
-  //       toBlock: options.toBlock,
-  //     }),
-  //   );
-  //
-  //   return logs;
-  // }
-  //
-  // public async transformEventLogs(options: TransformEventLogOptions): Promise<TransformEventLogResult> {
-  //   const result: TransformEventLogResult = {
-  //     activities: [],
-  //   };
-  //
-  //   const eventSignatures: LiquityEventInterfaces = this.abiConfigs.eventSignatures;
-  //   const marketConfig: LiquityLendingMarketConfig = options.config as LiquityLendingMarketConfig;
-  //   const debtToken = marketConfig.debtToken as Token;
-  //   const collateralToken = marketConfig.collateralToken as Token;
-  //   for (const log of options.logs) {
-  //     const signature = log.topics[0];
-  //     const address = normalizeAddress(log.address);
-  //
-  //     if (signature === eventSignatures.TroveUpdated && address === marketConfig.borrowOperation) {
-  //       const event: any = decodeEventLog({
-  //         abi: this.abiConfigs.eventAbis.borrowOperation,
-  //         data: log.data,
-  //         topics: log.topics,
-  //       });
-  //       const operation = Number(event.args._operation);
-  //       const user = normalizeAddress(event.args._borrower);
-  //       if (operation === 0) {
-  //         // open trove
-  //         const amount = formatBigNumberToString(event.args._debt.toString(), debtToken.decimals);
-  //         const collateralAmount = formatBigNumberToString(event.args._coll.toString(), collateralToken.decimals);
-  //
-  //         result.activities.push({
-  //           chain: marketConfig.chain,
-  //           protocol: this.config.protocol,
-  //           address: address,
-  //           transactionHash: log.transactionHash,
-  //           logIndex: log.logIndex.toString(),
-  //           blockNumber: new BigNumber(log.blockNumber.toString()).toNumber(),
-  //           timestamp: log.timestamp,
-  //           action: 'borrow',
-  //           user: user,
-  //           token: debtToken,
-  //           tokenAmount: amount,
-  //           collateralToken: collateralToken,
-  //           collateralAmount: collateralAmount,
-  //         });
-  //       } else {
-  //         const info: GetTroveStateInfo = await this.getTroveState(marketConfig, event, Number(log.blockNumber));
-  //         const action: ActivityAction = info.isBorrow ? ActivityActions.borrow : ActivityActions.repay;
-  //         result.activities.push({
-  //           chain: marketConfig.chain,
-  //           protocol: this.config.protocol,
-  //           address: address,
-  //           transactionHash: log.transactionHash,
-  //           logIndex: log.logIndex.toString(),
-  //           blockNumber: new BigNumber(log.blockNumber.toString()).toNumber(),
-  //           timestamp: log.timestamp,
-  //           action: action,
-  //           user: user,
-  //           token: debtToken,
-  //           tokenAmount: info.debtAmount,
-  //           collateralToken: collateralToken,
-  //           collateralAmount: info.collAmount,
-  //         });
-  //       }
-  //     } else if (signature === eventSignatures.TroveLiquidated && address === marketConfig.address) {
-  //       const event: any = decodeEventLog({
-  //         abi: this.abiConfigs.eventAbis.troveManager,
-  //         data: log.data,
-  //         topics: log.topics,
-  //       });
-  //       const amount = formatBigNumberToString(event.args._debt.toString(), debtToken.decimals);
-  //       const collateralAmount = formatBigNumberToString(event.args._coll.toString(), collateralToken.decimals);
-  //       const borrower = normalizeAddress(event.args._borrower);
-  //
-  //       result.activities.push({
-  //         chain: marketConfig.chain,
-  //         protocol: this.config.protocol,
-  //         address: address,
-  //         transactionHash: log.transactionHash,
-  //         logIndex: log.logIndex.toString(),
-  //         blockNumber: new BigNumber(log.blockNumber.toString()).toNumber(),
-  //         timestamp: log.timestamp,
-  //         action: ActivityActions.liquidate,
-  //         user: borrower,
-  //         token: debtToken,
-  //         tokenAmount: amount,
-  //         collateralToken: collateralToken,
-  //         collateralAmount: collateralAmount,
-  //         borrower: borrower,
-  //       });
-  //     }
-  //   }
-  //
-  //   return result;
-  // }
-  //
-  // public async getSnapshotData(
-  //   options: GetAdapterDataOptions,
-  //   storages: ContextStorages,
-  // ): Promise<GetSnapshotDataResult> {
-  //   const states = (await this.getStateData(options)).data;
-  //
-  //   const result: GetSnapshotDataResult = {
-  //     data: [],
-  //   };
-  //
-  //   const startDayTimestamp = options.timestamp;
-  //   const endDayTimestamp = options.timestamp + DAY - 1;
-  //
-  //   // sync activities
-  //   await this.syncActivities(options, storages);
-  //
-  //   for (const stateData of states) {
-  //     const documents = await storages.database.query({
-  //       collection: EnvConfig.mongodb.collections.activities,
-  //       query: {
-  //         chain: stateData.chain,
-  //         protocol: stateData.protocol,
-  //         address: stateData.address,
-  //         'token.address': stateData.token.address,
-  //         'collateralToken.address': (stateData.collateralToken as Token).address,
-  //         timestamp: {
-  //           $gte: startDayTimestamp,
-  //           $lte: endDayTimestamp,
-  //         },
-  //       },
-  //     });
-  //
-  //     let volumeDeposited = new BigNumber(0);
-  //     let volumeWithdrawn = new BigNumber(0);
-  //     let volumeBorrowed = new BigNumber(0);
-  //     let volumeRepaid = new BigNumber(0);
-  //     const volumeLiquidated: { [key: string]: TokenAmountEntry } = {};
-  //     const countUsers: { [key: string]: boolean } = {};
-  //     const countBorrowers: { [key: string]: boolean } = {};
-  //     const transactions: { [key: string]: boolean } = {};
-  //
-  //     for (const document of documents) {
-  //       const activityEvent = document as LendingActivityEvent;
-  //
-  //       if (!transactions[document.transactionHash]) {
-  //         transactions[document.transactionHash] = true;
-  //       }
-  //
-  //       if (!countUsers[activityEvent.user]) {
-  //         countUsers[activityEvent.user] = true;
-  //       }
-  //
-  //       if (!countBorrowers[activityEvent.user]) {
-  //         countBorrowers[activityEvent.user] = true;
-  //       }
-  //
-  //       switch (activityEvent.action) {
-  //         case ActivityActions.borrow: {
-  //           volumeDeposited = volumeDeposited.plus(new BigNumber(activityEvent.collateralAmount as string));
-  //           volumeBorrowed = volumeBorrowed.plus(new BigNumber(activityEvent.tokenAmount));
-  //           break;
-  //         }
-  //         case ActivityActions.repay: {
-  //           volumeWithdrawn = volumeWithdrawn.plus(new BigNumber(activityEvent.collateralAmount as string));
-  //           volumeRepaid = volumeRepaid.plus(new BigNumber(activityEvent.tokenAmount));
-  //           break;
-  //         }
-  //         case ActivityActions.liquidate: {
-  //           volumeRepaid = volumeRepaid.plus(new BigNumber(activityEvent.tokenAmount as string));
-  //
-  //           if (activityEvent.collateralToken && activityEvent.collateralAmount) {
-  //             const key = `${document.address}-${activityEvent.collateralToken.address}`;
-  //             if (!volumeLiquidated[key]) {
-  //               const tokenPrice = await this.services.oracle.getTokenPriceUsd({
-  //                 chain: activityEvent.collateralToken.chain,
-  //                 address: activityEvent.collateralToken.address,
-  //                 timestamp: document.timestamp,
-  //               });
-  //               volumeLiquidated[key] = {
-  //                 token: activityEvent.collateralToken,
-  //                 amount: '0',
-  //                 tokenPrice: tokenPrice ? tokenPrice : ' 0',
-  //               };
-  //             }
-  //             volumeLiquidated[key].amount = new BigNumber(volumeLiquidated[key].amount)
-  //               .plus(new BigNumber(activityEvent.collateralAmount.toString()))
-  //               .toString(10);
-  //           }
-  //
-  //           break;
-  //         }
-  //       }
-  //     }
-  //
-  //     // collecting fees data
-  //     // const beginBlock = await tryQueryBlockNumberAtTimestamp(
-  //     //   EnvConfig.blockchains[options.config.chain].blockSubgraph,
-  //     //   startDayTimestamp,
-  //     // );
-  //     // const endBlock = await tryQueryBlockNumberAtTimestamp(
-  //     //   EnvConfig.blockchains[options.config.chain].blockSubgraph,
-  //     //   endDayTimestamp,
-  //     // );
-  //     // const logs = await this.services.blockchain.getContractLogs({
-  //     //   chain: options.config.chain,
-  //     //   address: options.config.address,
-  //     //   fromBlock: beginBlock,
-  //     //   toBlock: endBlock,
-  //     // })
-  //     //
-  //     // let feeCollected = new BigNumber(0);
-  //     // const eventSignature: LiquityEventInterfaces = this.abiConfigs.eventSignatures;
-  //     // for (const log of logs) {
-  //     //   const signature = log.topics[0];
-  //     //   if (signature === eventSignature.BorrowingFeePaid) {
-  //     //     const event: any = decodeEventLog({
-  //     //       abi: this.abiConfigs.eventAbis.borrowOperation,
-  //     //       data: log.data,
-  //     //       topics: log.topics,
-  //     //     });
-  //     //     feeCollected = feeCollected.plus(new BigNumber(event.args._LUSDFee));
-  //     //   }
-  //     // }
-  //
-  //     result.data.push({
-  //       ...stateData,
-  //       volumeDeposited: volumeDeposited.toString(10),
-  //       volumeWithdrawn: volumeWithdrawn.toString(10),
-  //       volumeBorrowed: volumeBorrowed.toString(10),
-  //       volumeRepaid: volumeRepaid.toString(10),
-  //       volumeLiquidated: Object.values(volumeLiquidated),
-  //       totalFeesPaid: volumeBorrowed.multipliedBy(new BigNumber(stateData.borrowRate)).toString(10),
-  //       numberOfUniqueUsers: Object.keys(countUsers).length,
-  //       numberOfLenders: 0,
-  //       numberOfBorrowers: Object.keys(countBorrowers).length,
-  //       numberOfLiquidators: 0,
-  //       numberOfTransactions: Object.keys(transactions).length,
-  //     });
-  //   }
-  //
-  //   return result;
-  // }
+  public async getEventLogs(options: GetAdapterEventLogsOptions): Promise<Array<any>> {
+    const config = options.config as LiquityLendingMarketConfig;
+
+    // get logs from borrow operation
+    let logs = await this.services.blockchain.getContractLogs({
+      chain: options.config.chain,
+      address: options.config.address,
+      fromBlock: options.fromBlock,
+      toBlock: options.toBlock,
+    });
+
+    // get logs from trove managers
+    for (const trove of config.troves) {
+      logs = logs.concat(
+        // get liquidation events
+        await this.services.blockchain.getContractLogs({
+          chain: options.config.chain,
+          address: trove.troveManager,
+          fromBlock: options.fromBlock,
+          toBlock: options.toBlock,
+        }),
+      );
+    }
+
+    return logs;
+  }
+
+  public async transformEventLogs(options: TransformEventLogOptions): Promise<TransformEventLogResult> {
+    const result: TransformEventLogResult = {
+      activities: [],
+    };
+
+    const eventSignatures: LiquityEventInterfaces = this.abiConfigs.eventSignatures;
+    const marketConfig: LiquityLendingMarketConfig = options.config as LiquityLendingMarketConfig;
+    const debtToken = marketConfig.debtToken as Token;
+    for (const log of options.logs) {
+      const signature = log.topics[0];
+      const address = normalizeAddress(log.address);
+
+      // todo: find the correct trove manager contract
+      const trove: LiquityTrove = marketConfig.troves[0];
+
+      if (signature === eventSignatures.TroveUpdated && compareAddress(address, marketConfig.address)) {
+        // borrow/repay
+        const event: any = decodeEventLog({
+          abi: this.abiConfigs.eventAbis.borrowOperation,
+          data: log.data,
+          topics: log.topics,
+        });
+        const operation = Number(event.args._operation);
+        const user = normalizeAddress(event.args._borrower);
+        if (operation === 0) {
+          // open trove
+          const amount = formatBigNumberToString(event.args._debt.toString(), debtToken.decimals);
+          const collateralAmount = formatBigNumberToString(event.args._coll.toString(), trove.collateralToken.decimals);
+
+          // push the borrow event
+          if (amount !== '0') {
+            result.activities.push({
+              chain: marketConfig.chain,
+              protocol: this.config.protocol,
+              address: address,
+              transactionHash: log.transactionHash,
+              logIndex: `${log.logIndex.toString()}:0`,
+              blockNumber: Number(log.blockNumber),
+              timestamp: log.timestamp,
+              action: 'borrow',
+              user: user,
+              token: debtToken,
+              tokenAmount: amount,
+            });
+          }
+
+          // push the deposit event
+          if (collateralAmount !== '0') {
+            result.activities.push({
+              chain: marketConfig.chain,
+              protocol: this.config.protocol,
+              address: address,
+              transactionHash: log.transactionHash,
+              logIndex: `${log.logIndex.toString()}:1`,
+              blockNumber: Number(log.blockNumber),
+              timestamp: log.timestamp,
+              action: 'deposit',
+              user: user,
+              token: trove.collateralToken,
+              tokenAmount: collateralAmount,
+            });
+          }
+        } else {
+          const info: GetTroveStateInfo = await this.getTroveState(
+            marketConfig.chain,
+            trove.troveManager,
+            event,
+            Number(log.blockNumber),
+          );
+          const action: ActivityAction = info.isBorrow ? ActivityActions.borrow : ActivityActions.repay;
+          const collateralAction: ActivityAction = info.isBorrow ? ActivityActions.deposit : ActivityActions.withdraw;
+
+          const amount = formatBigNumberToString(info.debtAmount, marketConfig.debtToken.decimals);
+          const collateralAmount = formatBigNumberToString(info.collAmount, trove.collateralToken.decimals);
+
+          if (amount !== '0') {
+            result.activities.push({
+              chain: marketConfig.chain,
+              protocol: this.config.protocol,
+              address: address,
+              transactionHash: log.transactionHash,
+              logIndex: `${log.logIndex.toString()}:0`,
+              blockNumber: Number(log.blockNumber),
+              timestamp: log.timestamp,
+              action: action,
+              user: user,
+              token: debtToken,
+              tokenAmount: amount,
+            });
+          }
+          if (collateralAmount !== '0') {
+            result.activities.push({
+              chain: marketConfig.chain,
+              protocol: this.config.protocol,
+              address: address,
+              transactionHash: log.transactionHash,
+              logIndex: `${log.logIndex.toString()}:1`,
+              blockNumber: Number(log.blockNumber),
+              timestamp: log.timestamp,
+              action: collateralAction,
+              user: user,
+              token: trove.collateralToken,
+              tokenAmount: collateralAmount,
+            });
+          }
+        }
+      } else if (signature === eventSignatures.TroveLiquidated && compareAddress(address, trove.troveManager)) {
+        const event: any = decodeEventLog({
+          abi: this.abiConfigs.eventAbis.troveManager,
+          data: log.data,
+          topics: log.topics,
+        });
+        const amount = formatBigNumberToString(event.args._debt.toString(), debtToken.decimals);
+        const collateralAmount = formatBigNumberToString(event.args._coll.toString(), trove.collateralToken.decimals);
+        const borrower = normalizeAddress(event.args._borrower);
+
+        if (amount !== '0') {
+          result.activities.push({
+            chain: marketConfig.chain,
+            protocol: this.config.protocol,
+            address: address,
+            transactionHash: log.transactionHash,
+            logIndex: `${log.logIndex.toString()}:0`,
+            blockNumber: Number(log.blockNumber),
+            timestamp: log.timestamp,
+            action: ActivityActions.repay,
+            user: borrower,
+            token: debtToken,
+            tokenAmount: amount,
+          });
+        }
+        if (collateralAmount !== '0') {
+          result.activities.push({
+            chain: marketConfig.chain,
+            protocol: this.config.protocol,
+            address: address,
+            transactionHash: log.transactionHash,
+            logIndex: `${log.logIndex.toString()}:1`,
+            blockNumber: Number(log.blockNumber),
+            timestamp: log.timestamp,
+            action: ActivityActions.liquidate,
+            user: borrower,
+            token: trove.collateralToken,
+            tokenAmount: collateralAmount,
+          });
+        }
+      }
+    }
+
+    return result;
+  }
+
+  public async getSnapshotData(
+    options: GetAdapterDataOptions,
+    storages: ContextStorages,
+  ): Promise<GetSnapshotDataResult> {
+    const states = (await this.getStateData(options)).cdpLending;
+
+    const result: GetSnapshotDataResult = {
+      crossLending: null,
+      cdpLending: [],
+    };
+
+    if (!states) {
+      return result;
+    }
+
+    const startDayTimestamp = options.timestamp;
+    const endDayTimestamp = options.timestamp + DAY - 1;
+
+    // sync activities
+    await this.syncActivities(options, storages);
+
+    for (const stateData of states) {
+      let volumeBorrowed = new BigNumber(0);
+      let volumeRepaid = new BigNumber(0);
+
+      const countBorrowers: { [key: string]: boolean } = {};
+      const transactions: { [key: string]: boolean } = {};
+
+      const snapshot: CdpLendingMarketSnapshot = {
+        ...stateData,
+        collaterals: [],
+
+        volumeBorrowed: '0',
+        volumeRepaid: '0',
+        totalFeesPaid: '0',
+        numberOfUsers: 0,
+        numberOfBorrowers: 0,
+        numberOfLenders: 0,
+        numberOfLiquidators: 0,
+        numberOfTransactions: 0,
+      };
+
+      // count borrow/repay events
+      const lusdEvents = await storages.database.query({
+        collection: EnvConfig.mongodb.collections.activities,
+        query: {
+          chain: stateData.chain,
+          protocol: stateData.protocol,
+          address: options.config.address, // borrow operation
+          'token.address': stateData.token.address,
+          timestamp: {
+            $gte: startDayTimestamp,
+            $lte: endDayTimestamp,
+          },
+        },
+      });
+
+      for (const event of lusdEvents) {
+        const activityEvent = event as CdpLendingActivityEvent;
+        if (!transactions[activityEvent.transactionHash]) {
+          transactions[activityEvent.transactionHash] = true;
+        }
+
+        if (!countBorrowers[activityEvent.user]) {
+          countBorrowers[activityEvent.user] = true;
+        }
+
+        switch (activityEvent.action) {
+          case ActivityActions.borrow: {
+            volumeBorrowed = volumeBorrowed.plus(new BigNumber(activityEvent.tokenAmount));
+            break;
+          }
+          case ActivityActions.repay: {
+            volumeRepaid = volumeRepaid.plus(new BigNumber(activityEvent.tokenAmount));
+            break;
+          }
+        }
+      }
+
+      snapshot.volumeBorrowed = volumeBorrowed.toString(10);
+      snapshot.volumeRepaid = volumeRepaid.toString(10);
+
+      for (const collateral of stateData.collaterals) {
+        let volumeDeposited = new BigNumber(0);
+        let volumeWithdrawn = new BigNumber(0);
+        let volumeLiquidated = new BigNumber(0);
+
+        // count deposit/withdraw/liquidate events
+        const collateralEvents = await storages.database.query({
+          collection: EnvConfig.mongodb.collections.activities,
+          query: {
+            chain: stateData.chain,
+            protocol: stateData.protocol,
+            address: options.config.address, // borrow operation
+            'token.address': collateral.token.address,
+            timestamp: {
+              $gte: startDayTimestamp,
+              $lte: endDayTimestamp,
+            },
+          },
+        });
+        for (const event of collateralEvents) {
+          const activityEvent = event as CdpLendingActivityEvent;
+
+          if (!transactions[activityEvent.transactionHash]) {
+            transactions[activityEvent.transactionHash] = true;
+          }
+
+          if (!countBorrowers[activityEvent.user]) {
+            countBorrowers[activityEvent.user] = true;
+          }
+
+          switch (activityEvent.action) {
+            case ActivityActions.deposit: {
+              volumeDeposited = volumeDeposited.plus(new BigNumber(activityEvent.tokenAmount));
+              break;
+            }
+            case ActivityActions.withdraw: {
+              volumeWithdrawn = volumeWithdrawn.plus(new BigNumber(activityEvent.tokenAmount));
+              break;
+            }
+            case ActivityActions.liquidate: {
+              volumeLiquidated = volumeLiquidated.plus(new BigNumber(activityEvent.tokenAmount));
+              break;
+            }
+          }
+        }
+
+        snapshot.collaterals.push({
+          ...collateral,
+          volumeDeposited: volumeDeposited.toString(10),
+          volumeWithdrawn: volumeWithdrawn.toString(10),
+          volumeLiquidated: volumeLiquidated.toString(10),
+        });
+      }
+
+      if (result.cdpLending) {
+        result.cdpLending.push(snapshot);
+      }
+    }
+
+    return result;
+  }
 }
