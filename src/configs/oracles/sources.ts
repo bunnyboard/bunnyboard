@@ -137,6 +137,7 @@ export const OracleSourceConfigs: { [key: string]: OracleConfig } = {
   GUSD: {
     currency: 'usd',
     sources: [OracleSourceChainlinkList.GUSD_USD],
+    coingeckoId: 'gemini-dollar',
   },
   FIL: {
     // renFIL
