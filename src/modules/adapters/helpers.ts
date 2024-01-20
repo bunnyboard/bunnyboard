@@ -11,9 +11,6 @@ interface LendingDataActivity {
   volumeRepaid: string;
   volumeLiquidated: Array<TokenAmountEntry>;
   numberOfUsers: number;
-  numberOfLenders: number;
-  numberOfBorrowers: number;
-  numberOfLiquidators: number;
   numberOfTransactions: number;
 }
 
@@ -28,9 +25,6 @@ export async function countCrossLendingDataFromActivities(
   let volumeRepaid = new BigNumber(0);
   const volumeLiquidated: { [key: string]: TokenAmountEntry } = {};
   const countUsers: { [key: string]: boolean } = {};
-  const countLenders: { [key: string]: boolean } = {};
-  const countBorrowers: { [key: string]: boolean } = {};
-  const countLiquidators: { [key: string]: boolean } = {};
   const transactions: { [key: string]: boolean } = {};
   for (const document of activities) {
     const activityEvent = document as BaseActivityEvent;
@@ -43,39 +37,26 @@ export async function countCrossLendingDataFromActivities(
     if (!countUsers[activityEvent.user]) {
       countUsers[activityEvent.user] = true;
     }
-    if (borrower) {
-      if (!countUsers[borrower]) {
-        countUsers[borrower] = true;
-      }
+
+    if (borrower && !countUsers[borrower]) {
+      countUsers[borrower] = true;
     }
 
     switch (activityEvent.action) {
       case ActivityActions.deposit: {
         volumeDeposited = volumeDeposited.plus(new BigNumber(activityEvent.tokenAmount));
-        if (!countLenders[activityEvent.user]) {
-          countLenders[activityEvent.user] = true;
-        }
         break;
       }
       case ActivityActions.withdraw: {
         volumeWithdrawn = volumeWithdrawn.plus(new BigNumber(activityEvent.tokenAmount));
-        if (!countLenders[activityEvent.user]) {
-          countLenders[activityEvent.user] = true;
-        }
         break;
       }
       case ActivityActions.borrow: {
         volumeBorrowed = volumeBorrowed.plus(new BigNumber(activityEvent.tokenAmount));
-        if (!countBorrowers[activityEvent.user]) {
-          countBorrowers[activityEvent.user] = true;
-        }
         break;
       }
       case ActivityActions.repay: {
         volumeRepaid = volumeRepaid.plus(new BigNumber(activityEvent.tokenAmount));
-        if (!countBorrowers[activityEvent.user]) {
-          countBorrowers[activityEvent.user] = true;
-        }
         break;
       }
       case ActivityActions.liquidate: {
@@ -98,17 +79,6 @@ export async function countCrossLendingDataFromActivities(
             .plus(new BigNumber(event.collateralAmount.toString()))
             .toString(10);
         }
-
-        if (borrower) {
-          if (!countBorrowers[borrower]) {
-            countBorrowers[borrower] = true;
-          }
-        }
-
-        // count liquidators
-        if (!countLiquidators[activityEvent.user]) {
-          countLiquidators[activityEvent.user] = true;
-        }
         break;
       }
     }
@@ -121,9 +91,6 @@ export async function countCrossLendingDataFromActivities(
     volumeRepaid: volumeRepaid.toString(10),
     volumeLiquidated: Object.values(volumeLiquidated),
     numberOfUsers: Object.keys(countUsers).length,
-    numberOfLenders: Object.keys(countLenders).length,
-    numberOfBorrowers: Object.keys(countBorrowers).length,
-    numberOfLiquidators: Object.keys(countLiquidators).length,
     numberOfTransactions: Object.keys(transactions).length,
   };
 }

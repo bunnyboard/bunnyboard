@@ -381,9 +381,6 @@ export default class LiquityAdapter extends ProtocolAdapter {
         volumeRepaid: '0',
         totalFeesPaid: '0',
         numberOfUsers: 0,
-        numberOfBorrowers: 0,
-        numberOfLenders: 0,
-        numberOfLiquidators: 0,
         numberOfTransactions: 0,
       };
 
@@ -480,6 +477,9 @@ export default class LiquityAdapter extends ProtocolAdapter {
           volumeLiquidated: volumeLiquidated.toString(10),
         });
       }
+
+      snapshot.numberOfUsers = Object.keys(countBorrowers).length;
+      snapshot.numberOfTransactions = Object.keys(transactions).length;
 
       if (result.cdpLending) {
         result.cdpLending.push(snapshot);

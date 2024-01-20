@@ -70,10 +70,6 @@ export interface CrossLendingMarketSnapshot extends CrossLendingMarketState {
   totalFeesPaid: string;
 
   numberOfUsers: number;
-  numberOfLenders: number;
-  numberOfBorrowers: number;
-  numberOfLiquidators: number;
-
   numberOfTransactions: number;
 }
 
@@ -89,6 +85,9 @@ export interface CdpCollateralState {
 
   // total tokens were deposited into market
   totalDeposited: string;
+
+  // total debts were borrowed by this collateral asset
+  totalDebts?: string;
 
   // current borrowing rate
   borrowRate: string;
@@ -131,9 +130,5 @@ export interface CdpLendingMarketSnapshot extends CdpLendingMarketState {
   totalFeesPaid: string;
 
   numberOfUsers: number;
-  numberOfLenders: number;
-  numberOfBorrowers: number;
-  numberOfLiquidators: number;
-
   numberOfTransactions: number;
 }
