@@ -81,3 +81,8 @@ export function fromLittleEndian64(bytes8: string): string {
 
   return new BigNumber(hexStringToDecimal(swapBytes8).toString()).dividedBy(1e9).toString(10);
 }
+
+export function countNumberOfUniqueValue(listObjects: Array<any>, countField: string): number {
+  const valueSet = new Set(listObjects.map((item) => item[countField]));
+  return Array.from(valueSet).length;
+}

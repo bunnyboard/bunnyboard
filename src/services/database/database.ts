@@ -166,4 +166,11 @@ export default class DatabaseService implements IDatabaseService {
       },
     );
   }
+
+  public async countDocuments(options: DatabaseQueryOptions): Promise<number> {
+    const collection = await this.getCollection(options.collection);
+    return await collection.countDocuments({
+      ...options.query,
+    });
+  }
 }

@@ -53,6 +53,10 @@ export interface EnvConfig {
       // save all activity events;
       activities: string;
 
+      // this collection will be used to faster serve overview and chart data for frontends
+      // there is a worker job run to aggregate data and save to this collection
+      aggregates: string;
+
       // save all data states of lending market
       lendingMarketStates: string;
 

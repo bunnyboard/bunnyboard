@@ -54,6 +54,9 @@ export interface IDatabaseService {
   // request to update documents
   update: (options: DatabaseUpdateOptions) => Promise<void>;
 
+  // return number of documents were found
+  countDocuments: (options: DatabaseQueryOptions) => Promise<number>;
+
   // delete a document
   bulkWrite: (options: DatabaseBulkWriteOptions) => Promise<void>;
 }

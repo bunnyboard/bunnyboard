@@ -3,7 +3,7 @@ import Collector from '../modules/collector/collector';
 import { ContextServices, ContextStorages } from '../types/namespaces';
 import { BasicCommand } from './basic';
 
-export class RunCollectorCommand extends BasicCommand {
+export class CollectorCommand extends BasicCommand {
   public readonly name: string = 'collector';
   public readonly describe: string = 'Run collector services';
 

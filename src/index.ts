@@ -1,36 +1,37 @@
 import dotenv from 'dotenv';
 import yargs from 'yargs/yargs';
 
+import { AdapterCommand } from './cmd/adapter';
+import { AggregatorCommand } from './cmd/aggregator';
+import { CollectorCommand } from './cmd/collector';
 import { GetTokenPriceCommand } from './cmd/getTokenPrice';
-import { RunAdapterCommand } from './cmd/runAdapter';
-import { RunCollectorCommand } from './cmd/runCollector';
+import { ServerCommand } from './cmd/server';
 
 (async function () {
   dotenv.config();
 
-  const runCollectorCommand = new RunCollectorCommand();
-  const runAdapterCommand = new RunAdapterCommand();
+  const collectorCommand = new CollectorCommand();
+  const adapterCommand = new AdapterCommand();
+  const aggregatorCommand = new AggregatorCommand();
+  const serverCommand = new ServerCommand();
   const getTokenPriceCommand = new GetTokenPriceCommand();
 
   yargs(process.argv.slice(2))
     .scriptName('bunnyboard')
-    .command(
-      runAdapterCommand.name,
-      runAdapterCommand.describe,
-      runAdapterCommand.setOptions,
-      runAdapterCommand.execute,
-    )
-    .command(
-      runCollectorCommand.name,
-      runCollectorCommand.describe,
-      runCollectorCommand.setOptions,
-      runCollectorCommand.execute,
-    )
+    .command(adapterCommand.name, adapterCommand.describe, adapterCommand.setOptions, adapterCommand.execute)
+    .command(collectorCommand.name, collectorCommand.describe, collectorCommand.setOptions, collectorCommand.execute)
     .command(
       getTokenPriceCommand.name,
       getTokenPriceCommand.describe,
       getTokenPriceCommand.setOptions,
       getTokenPriceCommand.execute,
     )
+    .command(
+      aggregatorCommand.name,
+      aggregatorCommand.describe,
+      aggregatorCommand.setOptions,
+      aggregatorCommand.execute,
+    )
+    .command(serverCommand.name, serverCommand.describe, serverCommand.setOptions, serverCommand.execute)
     .help().argv;
 })();
