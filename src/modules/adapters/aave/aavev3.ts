@@ -7,7 +7,7 @@ import { RAY_DECIMALS, YEAR } from '../../../configs/constants';
 import { AaveLendingMarketConfig } from '../../../configs/protocols/aave';
 import { formatBigNumberToString } from '../../../lib/utils';
 import { ProtocolConfig } from '../../../types/configs';
-import { TokenAmountEntry } from '../../../types/domains/base';
+import { TokenAmountItem } from '../../../types/domains/base';
 import { ContextServices } from '../../../types/namespaces';
 import Aavev2Adapter, { AaveMarketRates } from './aavev2';
 import { Aavev3EventSignatures } from './abis';
@@ -55,9 +55,9 @@ export default class Aavev3Adapter extends Aavev2Adapter {
     reserve: string,
     blockNumber: number,
   ): Promise<{
-    forSupply: Array<TokenAmountEntry>;
-    forBorrow: Array<TokenAmountEntry>;
-    forBorrowStable: Array<TokenAmountEntry>;
+    forSupply: Array<TokenAmountItem>;
+    forBorrow: Array<TokenAmountItem>;
+    forBorrowStable: Array<TokenAmountItem>;
   } | null> {
     const rewards: any = {
       forSupply: [],
@@ -138,17 +138,17 @@ export default class Aavev3Adapter extends Aavev2Adapter {
           rewards.forSupply.push({
             token: rewardToken,
             amount: formatBigNumberToString(rewardForSupply.toString(10), rewardToken.decimals),
-          } as TokenAmountEntry);
+          } as TokenAmountItem);
 
           rewards.forBorrow.push({
             token: rewardToken,
             amount: formatBigNumberToString(rewardForBorrow.toString(10), rewardToken.decimals),
-          } as TokenAmountEntry);
+          } as TokenAmountItem);
 
           rewards.forBorrowStable.push({
             token: rewardToken,
             amount: formatBigNumberToString(rewardForBorrowStable.toString(10), rewardToken.decimals),
-          } as TokenAmountEntry);
+          } as TokenAmountItem);
         }
       }
     }

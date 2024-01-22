@@ -5,7 +5,7 @@ import { YEAR } from '../../../configs/constants';
 import { AaveLendingMarketConfig } from '../../../configs/protocols/aave';
 import { formatBigNumberToString } from '../../../lib/utils';
 import { ProtocolConfig, Token } from '../../../types/configs';
-import { TokenAmountEntry } from '../../../types/domains/base';
+import { TokenAmountItem } from '../../../types/domains/base';
 import { ContextServices } from '../../../types/namespaces';
 import Aavev2Adapter from '../aave/aavev2';
 
@@ -44,9 +44,9 @@ export default class RadiantAdapter extends Aavev2Adapter {
     reserve: string,
     blockNumber: number,
   ): Promise<{
-    forSupply: Array<TokenAmountEntry>;
-    forBorrow: Array<TokenAmountEntry>;
-    forBorrowStable: Array<TokenAmountEntry>;
+    forSupply: Array<TokenAmountItem>;
+    forBorrow: Array<TokenAmountItem>;
+    forBorrowStable: Array<TokenAmountItem>;
   } | null> {
     const rewards: any = {
       forSupply: [],
@@ -112,12 +112,12 @@ export default class RadiantAdapter extends Aavev2Adapter {
       rewards.forSupply.push({
         token: rewardToken,
         amount: formatBigNumberToString(rewardForSupply.toString(10), rewardToken.decimals),
-      } as TokenAmountEntry);
+      } as TokenAmountItem);
 
       rewards.forBorrow.push({
         token: rewardToken,
         amount: formatBigNumberToString(rewardForBorrow.toString(10), rewardToken.decimals),
-      } as TokenAmountEntry);
+      } as TokenAmountItem);
     }
 
     return rewards;

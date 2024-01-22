@@ -68,7 +68,7 @@ export default class Compoundv3Adapter extends ProtocolAdapter {
       token: marketConfig.debtToken,
       tokenPrice: debtTokenPrice ? debtTokenPrice : '0',
       totalDebts: '0',
-      supplyRate: '0',
+      rateSupply: '0',
       collaterals: [],
     };
 
@@ -131,7 +131,7 @@ export default class Compoundv3Adapter extends ProtocolAdapter {
     });
     marketState.totalDeposited = formatBigNumberToString(totalSupply.toString(), marketConfig.debtToken.decimals);
     marketState.totalDebts = formatBigNumberToString(totalBorrow.toString(), marketConfig.debtToken.decimals);
-    marketState.supplyRate = formatBigNumberToString(
+    marketState.rateSupply = formatBigNumberToString(
       new BigNumber(supplyRate.toString()).multipliedBy(YEAR).toString(10),
       18,
     );
@@ -158,7 +158,7 @@ export default class Compoundv3Adapter extends ProtocolAdapter {
       : '0';
 
     // todo, check why 15 decimals here
-    marketState.rewardSupplyRate = formatBigNumberToString(rewardSupplyRate, 15);
+    marketState.rateRewardSupply = formatBigNumberToString(rewardSupplyRate, 15);
 
     for (const asset of cometInfo.collaterals) {
       const assetPrice = await this.services.oracle.getTokenPriceUsd({
@@ -191,11 +191,11 @@ export default class Compoundv3Adapter extends ProtocolAdapter {
         token: asset,
         tokenPrice: assetPrice ? assetPrice : '0',
         totalDeposited: totalDeposited,
-        borrowRate: formatBigNumberToString(new BigNumber(borrowRate.toString()).multipliedBy(YEAR).toString(10), 18),
-        loanToValueRate: loanToValue,
+        rateBorrow: formatBigNumberToString(new BigNumber(borrowRate.toString()).multipliedBy(YEAR).toString(10), 18),
+        rateLoanToValueRate: loanToValue,
 
         // todo, check why 15 decimals here
-        rewardBorrowRate: formatBigNumberToString(rewardBorrowRate, 15),
+        rateRewardBorrow: formatBigNumberToString(rewardBorrowRate, 15),
       });
     }
 
@@ -485,7 +485,7 @@ export default class Compoundv3Adapter extends ProtocolAdapter {
       }
 
       if (stateData.collaterals.length > 0) {
-        const fees = new BigNumber(stateData.collaterals[0].borrowRate)
+        const fees = new BigNumber(stateData.collaterals[0].rateBorrow)
           .multipliedBy(new BigNumber(stateData.totalDebts))
           .multipliedBy(DAY)
           .dividedBy(YEAR);

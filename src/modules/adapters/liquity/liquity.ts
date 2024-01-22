@@ -112,7 +112,7 @@ export default class LiquityAdapter extends ProtocolAdapter {
       token: debtToken,
       tokenPrice: debtTokenPrice ? debtTokenPrice : '0',
       totalDebts: '0',
-      supplyRate: '0',
+      rateSupply: '0',
       collaterals: [],
     };
 
@@ -151,11 +151,11 @@ export default class LiquityAdapter extends ProtocolAdapter {
         token: collateralToken,
         tokenPrice: collateralTokenPrice ? collateralTokenPrice : '0',
         totalDeposited: formatBigNumberToString(totalColl.toString(), collateralToken.decimals),
-        borrowRate: formatBigNumberToString(borrowingFee, 18),
+        rateBorrow: formatBigNumberToString(borrowingFee, 18),
 
         // liquity must maintain 110% collateral value on debts
         // so, the loan to value is always 100 / 110 -> 0.9 -> 90%
-        loanToValueRate: '0.9',
+        rateLoanToValueRate: '0.9',
       });
     }
 

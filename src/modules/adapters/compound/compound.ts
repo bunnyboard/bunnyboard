@@ -11,7 +11,7 @@ import { CompoundLendingMarketConfig } from '../../../configs/protocols/compound
 import { tryQueryBlockNumberAtTimestamp } from '../../../lib/subsgraph';
 import { compareAddress, formatBigNumberToString, normalizeAddress } from '../../../lib/utils';
 import { ProtocolConfig, Token } from '../../../types/configs';
-import { ActivityActions, TokenAmountEntry } from '../../../types/domains/base';
+import { ActivityActions, TokenAmountItem } from '../../../types/domains/base';
 import { CrossLendingMarketSnapshot, CrossLendingMarketState } from '../../../types/domains/lending';
 import { ContextServices, ContextStorages } from '../../../types/namespaces';
 import {
@@ -38,8 +38,8 @@ interface Speeds {
 }
 
 interface Rewards {
-  forLenders: Array<TokenAmountEntry>;
-  forBorrowers: Array<TokenAmountEntry>;
+  forLenders: Array<TokenAmountItem>;
+  forBorrowers: Array<TokenAmountItem>;
 }
 
 export default class CompoundAdapter extends ProtocolAdapter {
@@ -333,12 +333,12 @@ export default class CompoundAdapter extends ProtocolAdapter {
             totalDeposited: formatBigNumberToString(totalDeposited.toString(10), token.decimals),
             totalBorrowed: formatBigNumberToString(totalBorrowed.toString(10), token.decimals),
 
-            supplyRate: supplyRate,
-            borrowRate: borrowRate,
-            loanToValueRate: ltv,
+            rateSupply: supplyRate,
+            rateBorrow: borrowRate,
+            rateLoanToValue: ltv,
 
-            rewardSupplyRate: rewardSupplyRate,
-            rewardBorrowRate: rewardBorrowRate,
+            rateRewardSupply: rewardSupplyRate,
+            rateRewardBorrow: rewardBorrowRate,
           };
 
           if (result.crossLending) {
@@ -576,7 +576,7 @@ export default class CompoundAdapter extends ProtocolAdapter {
       const activityData = await countCrossLendingDataFromActivities(documents);
 
       const feesPaidFromBorrow = new BigNumber(stateData.totalBorrowed)
-        .multipliedBy(stateData.borrowRate)
+        .multipliedBy(stateData.rateBorrow)
         .multipliedBy(DAY)
         .dividedBy(YEAR);
 

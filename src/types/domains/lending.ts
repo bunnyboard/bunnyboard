@@ -1,5 +1,5 @@
 import { Token } from '../configs';
-import { BaseActivityEvent, DayDataSnapshot, TokenAmountEntry } from './base';
+import { BaseActivityEvent, DayDataSnapshot, TokenAmountItem } from './base';
 
 export interface CrossLendingActivityEvent extends BaseActivityEvent {
   // in case of liquidation, liquidator is considered as the main user of the transaction
@@ -37,23 +37,23 @@ export interface CrossLendingMarketState extends DayDataSnapshot {
   totalBorrowedStable?: string;
 
   // current lending supply rate
-  supplyRate: string;
+  rateSupply: string;
 
   // current borrowing rate
-  borrowRate: string;
+  rateBorrow: string;
 
   // the token collateral factor
-  loanToValueRate: string;
+  rateLoanToValue: string;
 
   // borrow rate stable if any
-  borrowRateStable?: string;
+  rateBorrowStable?: string;
 
   // incentive reward rate for suppliers
-  rewardSupplyRate?: string;
+  rateRewardSupply?: string;
 
   // incentive reward rate for borrowers
-  rewardBorrowRate?: string;
-  rewardBorrowRateStable?: string;
+  rateRewardBorrow?: string;
+  rateRewardBorrowStable?: string;
 }
 
 export interface CrossLendingMarketSnapshot extends CrossLendingMarketState {
@@ -64,7 +64,7 @@ export interface CrossLendingMarketSnapshot extends CrossLendingMarketState {
 
   // a list of collateral assets were liquidated
   // by borrowing this market asset token
-  volumeLiquidated: Array<TokenAmountEntry>;
+  volumeLiquidated: Array<TokenAmountItem>;
 
   // TotalFeesPaid = TotalBorrow * BorrowRate * TimePeriod / 365 days
   totalFeesPaid: string;
@@ -90,13 +90,13 @@ export interface CdpCollateralState {
   totalDebts?: string;
 
   // current borrowing rate
-  borrowRate: string;
+  rateBorrow: string;
 
   // incentive reward rate for borrowers
-  rewardBorrowRate?: string;
+  rateRewardBorrow?: string;
 
   // the token collateral factor
-  loanToValueRate: string;
+  rateLoanToValueRate: string;
 }
 
 export interface CdpLendingMarketState extends DayDataSnapshot {
@@ -114,10 +114,10 @@ export interface CdpLendingMarketState extends DayDataSnapshot {
   totalDebts: string;
 
   // current lending supply rate
-  supplyRate: string;
+  rateSupply: string;
 
   // incentive reward rate for suppliers
-  rewardSupplyRate?: string;
+  rateRewardSupply?: string;
 
   // a list of collaterals were locked in the protocol
   collaterals: Array<CdpCollateralState>;

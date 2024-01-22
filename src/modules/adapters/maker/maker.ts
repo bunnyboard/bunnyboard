@@ -93,7 +93,7 @@ export default class MakerAdapter extends ProtocolAdapter {
       token: marketConfig.debtToken,
       tokenPrice: debtTokenPrice ? debtTokenPrice : '0',
       totalDebts: formatBigNumberToString(debt.toString(), RAD_DECIMALS),
-      supplyRate: '0',
+      rateSupply: '0',
       collaterals: [],
     };
 
@@ -193,8 +193,8 @@ export default class MakerAdapter extends ProtocolAdapter {
           address: gemConfig.address,
           totalDebts: totalBorrowed,
           totalDeposited: totalDeposited,
-          borrowRate: borrowRate.toString(10),
-          loanToValueRate: loanToValue.toString(10),
+          rateBorrow: borrowRate.toString(10),
+          rateLoanToValueRate: loanToValue.toString(10),
         });
       }
     }
@@ -448,7 +448,7 @@ export default class MakerAdapter extends ProtocolAdapter {
           }
         }
 
-        const fees = new BigNumber(collateral.borrowRate)
+        const fees = new BigNumber(collateral.rateBorrow)
           .multipliedBy(new BigNumber(collateral.totalDebts ? collateral.totalDebts : '0'))
           .multipliedBy(DAY)
           .dividedBy(YEAR);

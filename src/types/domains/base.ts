@@ -1,6 +1,6 @@
 import { DataMetric, Token } from '../configs';
 
-export interface TokenAmountEntry {
+export interface TokenAmountItem {
   token: Token;
   amount: string;
   tokenPrice?: string;

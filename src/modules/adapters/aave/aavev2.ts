@@ -10,7 +10,7 @@ import { AaveLendingMarketConfig } from '../../../configs/protocols/aave';
 import { tryQueryBlockNumberAtTimestamp } from '../../../lib/subsgraph';
 import { formatBigNumberToString, normalizeAddress } from '../../../lib/utils';
 import { DataMetrics, ProtocolConfig } from '../../../types/configs';
-import { ActivityAction, TokenAmountEntry } from '../../../types/domains/base';
+import { ActivityAction, TokenAmountItem } from '../../../types/domains/base';
 import { CrossLendingMarketSnapshot, CrossLendingMarketState } from '../../../types/domains/lending';
 import { ContextServices, ContextStorages } from '../../../types/namespaces';
 import {
@@ -290,14 +290,14 @@ export default class Aavev2Adapter extends ProtocolAdapter {
         totalBorrowed: formatBigNumberToString(totalBorrowed.variable, token.decimals),
         totalBorrowedStable: formatBigNumberToString(totalBorrowed.stable, token.decimals),
 
-        supplyRate: rates.supply,
-        borrowRate: rates.borrow,
-        borrowRateStable: rates.borrowStable,
-        loanToValueRate: this.getLoanToValueRate(reserveConfigData),
+        rateSupply: rates.supply,
+        rateBorrow: rates.borrow,
+        rateBorrowStable: rates.borrowStable,
+        rateLoanToValue: this.getLoanToValueRate(reserveConfigData),
 
-        rewardSupplyRate: rewardRateForSupply,
-        rewardBorrowRate: rewardRateForBorrow,
-        rewardBorrowRateStable: rewardRateForBorrowStable,
+        rateRewardSupply: rewardRateForSupply,
+        rateRewardBorrow: rewardRateForBorrow,
+        rateRewardBorrowStable: rewardRateForBorrowStable,
       };
 
       if (result.crossLending) {
@@ -347,11 +347,11 @@ export default class Aavev2Adapter extends ProtocolAdapter {
       const activityData = await countCrossLendingDataFromActivities(documents);
 
       const feesPaidFromBorrow = new BigNumber(stateData.totalBorrowed)
-        .multipliedBy(stateData.borrowRate)
+        .multipliedBy(stateData.rateBorrow)
         .multipliedBy(DAY)
         .dividedBy(YEAR);
       const feesPaidFromBorrowStable = new BigNumber(stateData.totalBorrowed)
-        .multipliedBy(stateData.borrowRateStable ? stateData.borrowRateStable : '0')
+        .multipliedBy(stateData.rateBorrowStable ? stateData.rateBorrowStable : '0')
         .multipliedBy(DAY)
         .dividedBy(YEAR);
 
@@ -413,9 +413,9 @@ export default class Aavev2Adapter extends ProtocolAdapter {
     reserve: string,
     blockNumber: number,
   ): Promise<{
-    forSupply: Array<TokenAmountEntry>;
-    forBorrow: Array<TokenAmountEntry>;
-    forBorrowStable: Array<TokenAmountEntry>;
+    forSupply: Array<TokenAmountItem>;
+    forBorrow: Array<TokenAmountItem>;
+    forBorrowStable: Array<TokenAmountItem>;
   } | null> {
     const rewards: any = {
       forSupply: [],
@@ -496,17 +496,17 @@ export default class Aavev2Adapter extends ProtocolAdapter {
     rewards.forSupply.push({
       token: rewardToken,
       amount: formatBigNumberToString(rewardForSupply.toString(10), rewardToken.decimals),
-    } as TokenAmountEntry);
+    } as TokenAmountItem);
 
     rewards.forBorrow.push({
       token: rewardToken,
       amount: formatBigNumberToString(rewardForBorrow.toString(10), rewardToken.decimals),
-    } as TokenAmountEntry);
+    } as TokenAmountItem);
 
     rewards.forBorrowStable.push({
       token: rewardToken,
       amount: formatBigNumberToString(rewardForBorrowStable.toString(10), rewardToken.decimals),
-    } as TokenAmountEntry);
+    } as TokenAmountItem);
 
     return rewards;
   }

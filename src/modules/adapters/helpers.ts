@@ -1,7 +1,7 @@
 import BigNumber from 'bignumber.js';
 
 import OracleService from '../../services/oracle/oracle';
-import { ActivityActions, BaseActivityEvent, TokenAmountEntry } from '../../types/domains/base';
+import { ActivityActions, BaseActivityEvent, TokenAmountItem } from '../../types/domains/base';
 import { CrossLendingActivityEvent } from '../../types/domains/lending';
 
 interface LendingDataActivity {
@@ -9,7 +9,7 @@ interface LendingDataActivity {
   volumeWithdrawn: string;
   volumeBorrowed: string;
   volumeRepaid: string;
-  volumeLiquidated: Array<TokenAmountEntry>;
+  volumeLiquidated: Array<TokenAmountItem>;
   numberOfUsers: number;
   numberOfTransactions: number;
 }
@@ -23,7 +23,7 @@ export async function countCrossLendingDataFromActivities(
   let volumeWithdrawn = new BigNumber(0);
   let volumeBorrowed = new BigNumber(0);
   let volumeRepaid = new BigNumber(0);
-  const volumeLiquidated: { [key: string]: TokenAmountEntry } = {};
+  const volumeLiquidated: { [key: string]: TokenAmountItem } = {};
   const countUsers: { [key: string]: boolean } = {};
   const transactions: { [key: string]: boolean } = {};
   for (const document of activities) {
