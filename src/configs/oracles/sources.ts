@@ -342,6 +342,7 @@ export const OracleSourceConfigs: { [key: string]: OracleConfig } = {
   SXP: {
     currency: 'bnb',
     sources: [OracleSourceUniswapv2List.SXP_WBNB],
+    coingeckoId: 'swipe',
   },
   wBETH: {
     currency: 'eth',
@@ -386,6 +387,7 @@ export const OracleSourceConfigs: { [key: string]: OracleConfig } = {
   XVS: {
     currency: 'bnb',
     sources: [OracleSourceUniswapv2List.XVS_WBNB],
+    coingeckoId: 'venus',
   },
   HAY: {
     currency: 'usd',

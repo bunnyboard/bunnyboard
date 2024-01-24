@@ -398,14 +398,6 @@ export default class Aavev2Adapter extends ProtocolAdapter {
     return formatBigNumberToString(configData[1].toString(), 4);
   }
 
-  protected getReserveRate(configData: any): string {
-    return formatBigNumberToString(configData[4].toString(), 4);
-  }
-
-  protected getLiquidationThresholdRate(configData: any): string {
-    return formatBigNumberToString(configData[2].toString(), 4);
-  }
-
   // return amount of token rewards in one year
   // based on current emission
   protected async getIncentiveRewards(

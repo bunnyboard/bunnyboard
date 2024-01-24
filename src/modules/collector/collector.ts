@@ -41,8 +41,22 @@ export default class Collector implements ICollector {
   }
 
   public async run(options: RunCollectorOptions): Promise<void> {
-    await this.collectStates(options);
-    await this.collectSnapshots(options);
+    const { service } = options;
+
+    logger.info('start to run data collector', {
+      service: this.name,
+      chain: options.chain ? options.chain : 'none',
+      protocol: options.protocol ? options.protocol : 'none',
+      type: options.service ? options.service : 'all',
+    });
+
+    if (!service || service === 'state') {
+      await this.collectStates(options);
+    }
+
+    if (!service || service === 'snapshot') {
+      await this.collectSnapshots(options);
+    }
   }
 
   protected async collectStates(options: RunCollectorOptions): Promise<void> {

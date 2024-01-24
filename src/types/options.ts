@@ -54,4 +54,6 @@ export interface RunCollectorOptions {
   // force sync from given from timestamp
   fromTime?: number;
   force?: boolean;
+
+  service?: 'state' | 'snapshot';
 }

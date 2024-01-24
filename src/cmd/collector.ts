@@ -23,6 +23,7 @@ export class CollectorCommand extends BasicCommand {
         protocol: argv.protocol !== '' ? argv.protocol : undefined,
         fromTime: argv.fromTime ? argv.fromTime : undefined,
         force: argv.force,
+        service: argv.service === 'state' || argv.service === 'snapshot' ? argv.service : undefined,
       });
 
       if (argv.exit) {
@@ -37,7 +38,7 @@ export class CollectorCommand extends BasicCommand {
     return yargs.option({
       chain: {
         type: 'string',
-        default: 'ethereum',
+        default: '',
         describe: 'Collect all protocols data on given chain.',
       },
       protocol: {
@@ -54,6 +55,11 @@ export class CollectorCommand extends BasicCommand {
         type: 'boolean',
         default: false,
         describe: 'Force collect data from given from block number.',
+      },
+      service: {
+        type: 'string',
+        default: 'all',
+        describe: 'Run collector with given service: state, snapshot, or both.',
       },
 
       exit: {

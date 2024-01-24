@@ -1,7 +1,7 @@
 import BigNumber from 'bignumber.js';
 
 import { DataValueItem } from '../../../types/aggregates/common';
-import { AggCrossLendingMarketState } from '../../../types/aggregates/lending';
+import { AggCrossLendingMarketSnapshot, AggCrossLendingMarketState } from '../../../types/aggregates/lending';
 import { Token } from '../../../types/configs';
 
 export default class DataTransform {
@@ -34,9 +34,9 @@ export default class DataTransform {
   }
 
   public static transformToCrossLendingMarketSnapshot(
-    databaseDocument: any,
-    previousDocument: any = null,
-  ): AggCrossLendingMarketState {
+    databaseDocument: any, // the snapshot of given day
+    previousDocument: any = null, // the snapshot of given previous day
+  ): AggCrossLendingMarketSnapshot {
     const dataFields: Array<string> = [
       'totalDeposited',
       'totalBorrowed',
