@@ -74,8 +74,6 @@ export default class ProtocolAdapter implements IProtocolAdapter {
       endBlock,
     );
 
-    const stateKey = `state-snapshot-${options.config.protocol}-${options.config.chain}-${options.config.metric}-${options.config.address}`;
-
     const logs = await this.getEventLogs({
       config: options.config,
       fromBlock: beginBlock,
@@ -111,18 +109,6 @@ export default class ProtocolAdapter implements IProtocolAdapter {
     await storages.database.bulkWrite({
       collection: EnvConfig.mongodb.collections.activities,
       operations: activityOperations,
-    });
-
-    await storages.database.update({
-      collection: EnvConfig.mongodb.collections.states,
-      keys: {
-        name: stateKey,
-      },
-      updates: {
-        name: stateKey,
-        timestamp: options.fromTime,
-      },
-      upsert: true,
     });
 
     const endExeTime = Math.floor(new Date().getTime() / 1000);

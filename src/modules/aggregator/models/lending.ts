@@ -104,7 +104,8 @@ export default class LendingDataAggregator implements DataAggregator {
 
     for (const field of fields) {
       if ((dataState as any)[field] && previousValueUsds[field]) {
-        (dataState as any)[field].changedValueUsd = ((dataState as any)[field].valueUsd - previousValueUsds[field]) / previousValueUsds[field] * 100;
+        (dataState as any)[field].changedValueUsd =
+          (((dataState as any)[field].valueUsd - previousValueUsds[field]) / previousValueUsds[field]) * 100;
       }
     }
 
