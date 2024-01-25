@@ -2,6 +2,10 @@ import BigNumber from 'bignumber.js';
 
 import { DAY } from '../../../configs/constants';
 import {
+  CdpCollateralDataState,
+  CdpLendingMarketDataState,
+  CdpLendingMarketDataTimeframe,
+  CdpLendingMarketDataTimeframeWithChanges,
   CrossLendingMarketDataState,
   CrossLendingMarketDataTimeframe,
   CrossLendingMarketDataTimeframeWithChanges,
@@ -109,6 +113,91 @@ export default class CollectorDataTransform {
           stateWithChanges.dailyChangesTotalBorrowedStable = new BigNumber(state.totalBorrowedStable)
             .minus(new BigNumber(timeframeLast24Hours.totalBorrowedStable))
             .dividedBy(new BigNumber(timeframeLast24Hours.totalBorrowedStable))
+            .toString(10);
+        }
+      }
+    }
+
+    return stateWithChanges;
+  }
+
+  public static transformCdpLendingStates(
+    state: CdpLendingMarketDataState,
+    timeframeLast24Hours: CdpLendingMarketDataTimeframe | undefined,
+    timeframeLast48Hours: CdpLendingMarketDataTimeframe | undefined,
+  ): CdpLendingMarketDataTimeframeWithChanges {
+    const stateWithChanges: CdpLendingMarketDataTimeframeWithChanges = {
+      ...state,
+
+      timefrom: state.timestamp - DAY,
+      timeto: state.timestamp,
+
+      volumeDeposited: '0',
+      volumeWithdrawn: '0',
+      volumeBorrowed: '0',
+      volumeRepaid: '0',
+      volumeFeesPaid: '0',
+
+      numberOfUsers: 0,
+      numberOfTransactions: 0,
+
+      dailyChangesTokenPrice: '0',
+      dailyChangesTotalDebts: '0',
+      dailyChangesTotalDeposited: '0',
+      dailyChangesVolumeDeposited: '0',
+      dailyChangesVolumeWithdrawn: '0',
+      dailyChangesVolumeBorrowed: '0',
+      dailyChangesVolumeRepaid: '0',
+      dailyChangesVolumeFeesPaid: '0',
+
+      collaterals: state.collaterals.map((item: CdpCollateralDataState) => {
+        return {
+          ...item,
+
+          volumeDeposited: '0',
+          volumeWithdrawn: '0',
+          volumeLiquidated: '0',
+
+          dailyChangesTokenPrice: '0',
+          dailyChangesTotalDeposited: '0',
+          dailyChangesVolumeDeposited: '0',
+          dailyChangesVolumeWithdrawn: '0',
+          dailyChangesVolumeLiquidated: '0',
+        };
+      }),
+    };
+
+    if (timeframeLast24Hours) {
+      stateWithChanges.volumeDeposited = timeframeLast24Hours.volumeDeposited;
+      stateWithChanges.volumeWithdrawn = timeframeLast24Hours.volumeWithdrawn;
+      stateWithChanges.volumeBorrowed = timeframeLast24Hours.volumeBorrowed;
+      stateWithChanges.volumeRepaid = timeframeLast24Hours.volumeRepaid;
+      stateWithChanges.volumeFeesPaid = timeframeLast24Hours.volumeFeesPaid;
+      stateWithChanges.numberOfUsers = timeframeLast24Hours.numberOfUsers;
+      stateWithChanges.numberOfTransactions = timeframeLast24Hours.numberOfTransactions;
+
+      if (timeframeLast48Hours) {
+        if (timeframeLast24Hours.tokenPrice !== '0') {
+          stateWithChanges.dailyChangesTokenPrice = new BigNumber(state.tokenPrice)
+            .minus(new BigNumber(timeframeLast24Hours.tokenPrice))
+            .dividedBy(new BigNumber(timeframeLast24Hours.tokenPrice))
+            .toString(10);
+        }
+
+        if (timeframeLast24Hours.totalDebts !== '0') {
+          stateWithChanges.dailyChangesTotalDebts = new BigNumber(state.totalDebts)
+            .minus(new BigNumber(timeframeLast24Hours.totalDebts))
+            .dividedBy(new BigNumber(timeframeLast24Hours.totalDebts))
+            .toString(10);
+        }
+        if (
+          state.totalDeposited &&
+          timeframeLast24Hours.totalDeposited &&
+          timeframeLast24Hours.totalDeposited !== '0'
+        ) {
+          stateWithChanges.dailyChangesTotalDeposited = new BigNumber(state.totalDeposited)
+            .minus(new BigNumber(timeframeLast24Hours.totalDeposited))
+            .dividedBy(new BigNumber(timeframeLast24Hours.totalDeposited))
             .toString(10);
         }
       }

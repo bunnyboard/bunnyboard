@@ -82,6 +82,7 @@ export default class StateCollector {
             collection: EnvConfig.mongodb.collections.lendingMarketStates,
             keys: {
               chain: data.chain,
+              metric: data.metric,
               protocol: data.protocol,
               address: data.address,
               'token.address': data.token.address,
@@ -101,6 +102,7 @@ export default class StateCollector {
             keys: {
               chain: data.chain,
               protocol: data.protocol,
+              metric: data.metric,
               'token.address': data.token.address,
             },
             updates: {

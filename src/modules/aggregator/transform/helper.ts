@@ -28,12 +28,14 @@ export default class HelperTransform {
       }
 
       for (const field of fields) {
-        groupPerTimestamp[timestamp][field].value = new BigNumber(groupPerTimestamp[timestamp][field].value)
-          .plus(new BigNumber(data[field]))
-          .toNumber();
-        groupPerTimestamp[timestamp][field].valueUsd = data[`${field}Usd`]
-          ? new BigNumber(groupPerTimestamp[timestamp][field].value).plus(new BigNumber(data[`${field}Usd`])).toNumber()
+        const usdValue = data[`${field}Usd`]
+          ? new BigNumber(groupPerTimestamp[timestamp][field].valueUsd)
+              .plus(new BigNumber(data[`${field}Usd`]))
+              .toNumber()
           : 0;
+
+        groupPerTimestamp[timestamp][field].value += usdValue;
+        groupPerTimestamp[timestamp][field].valueUsd += usdValue;
       }
     }
 

@@ -57,10 +57,6 @@ export interface CrossLendingMarketDataState extends DataState {
 }
 
 export interface CrossLendingMarketDataTimeframe extends CrossLendingMarketDataState, DataTimeframe {
-  // data was collected in the timeframe of fromTime to toTime
-  timefrom: number;
-  timeto: number;
-
   // fees were paid by borrowers theoretically
   // VolumeFeesPaid = TotalBorrow * BorrowRate * TimePeriod / 365 days
   volumeFeesPaid: string;
@@ -150,10 +146,6 @@ export interface CdpLendingMarketDataState extends DataState {
 }
 
 export interface CdpLendingMarketDataTimeframe extends CdpLendingMarketDataState, DataTimeframe {
-  // data was collected in the timeframe of fromTime to toTime
-  timefrom: number;
-  timeto: number;
-
   // fees were paid by borrowers theoretically
   // VolumeFeesPaid = TotalBorrow * BorrowRate * TimePeriod / 365 days
   volumeFeesPaid: string;
@@ -169,4 +161,31 @@ export interface CdpLendingMarketDataTimeframe extends CdpLendingMarketDataState
 
   // a list of collaterals were locked in the protocol
   collaterals: Array<CdpCollateralDataTimeframe>;
+}
+
+export interface CdpCollateralDataTimeframeWithChanges extends CdpCollateralDataTimeframe {
+  dailyChangesTokenPrice: string;
+
+  dailyChangesTotalDeposited: string;
+  dailyChangesTotalDebts?: string;
+
+  dailyChangesVolumeDeposited: string;
+  dailyChangesVolumeWithdrawn: string;
+  dailyChangesVolumeLiquidated: string;
+}
+
+export interface CdpLendingMarketDataTimeframeWithChanges extends CdpLendingMarketDataTimeframe {
+  dailyChangesTokenPrice: string;
+
+  dailyChangesTotalDebts: string;
+  dailyChangesTotalDeposited?: string;
+
+  dailyChangesVolumeFeesPaid: string;
+  dailyChangesVolumeBorrowed: string;
+  dailyChangesVolumeRepaid: string;
+
+  dailyChangesVolumeDeposited?: string;
+  dailyChangesVolumeWithdrawn?: string;
+
+  collaterals: Array<CdpCollateralDataTimeframeWithChanges>;
 }

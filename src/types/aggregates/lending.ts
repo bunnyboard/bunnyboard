@@ -45,6 +45,7 @@ export interface AggCrossLendingDayData {
   volumeWithdrawn: DataValueItem;
   volumeBorrowed: DataValueItem;
   volumeRepaid: DataValueItem;
+  volumeFeesPaid: DataValueItem;
 }
 
 export interface AggCrossLendingOverallState {
@@ -59,4 +60,15 @@ export interface AggCrossLendingOverallState {
   numberOfProtocols: number;
   markets: Array<AggCrossLendingMarketState>;
   dayData: Array<AggCrossLendingDayData>;
+}
+
+export interface AggCdpLendingCollateralSnapshot {
+  token: Token; // collateral token
+}
+
+export interface AggCdpLendingMarketSnapshot {
+  chain: string;
+  protocol: string;
+  address: string;
+  token: Token; // debt token
 }

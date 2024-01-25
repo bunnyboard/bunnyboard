@@ -75,17 +75,25 @@ export default class LendingDataAggregator implements DataAggregator {
       },
     });
 
+    const previousValueUsds: any = {};
     for (const item of states) {
       const market = DataTransform.transformToCrossLendingMarketState(item);
       for (const field of fields) {
         (dataState as any)[field].valueUsd += (market as any)[field].valueUsd;
 
         // calculate previous snapshot data
-        const previousTokenPrice = (market.tokenPrice.valueUsd * Number(market.tokenPrice.changedValueUsd)) / 100;
-        const previousBalance = ((market as any)[field].value * Number((market as any)[field].changedValue)) / 100;
-        const previousBalanceUsd = previousBalance * previousTokenPrice;
-        (dataState as any)[field].changedValueUsd =
-          (((dataState as any)[field].valueUsd - previousBalanceUsd) / previousBalanceUsd) * 100;
+        // ChangedValueUsd = y/x - 1
+        // y / ChangedValueUsd + 1
+        const previousTokenPrice = market.tokenPrice.valueUsd / (Number(market.tokenPrice.changedValueUsd) / 100 + 1);
+        const previousValue = (market as any)[field].value / (Number((market as any)[field].changedValue) / 100 + 1);
+        const previousValueUsd = previousValue * previousTokenPrice;
+        (market as any)[field].changedValueUsd =
+          (((market as any)[field].valueUsd - previousValueUsd) / previousValueUsd) * 100;
+
+        if (!previousValueUsds[field]) {
+          previousValueUsds[field] = 0;
+        }
+        previousValueUsds[field] += previousValueUsd;
       }
 
       dataState.markets.push(market);
@@ -93,6 +101,12 @@ export default class LendingDataAggregator implements DataAggregator {
 
     dataState.numberOfProtocols = countNumberOfUniqueValue(dataState.markets, 'protocol');
     dataState.numberOfChains = countNumberOfUniqueValue(dataState.markets, 'chain');
+
+    for (const field of fields) {
+      if ((dataState as any)[field] && previousValueUsds[field]) {
+        (dataState as any)[field].changedValueUsd = ((dataState as any)[field].valueUsd - previousValueUsds[field]) / previousValueUsds[field] * 100;
+      }
+    }
 
     // process snapshots and build charts items
     let snapshots = await this.database.query({
@@ -123,6 +137,9 @@ export default class LendingDataAggregator implements DataAggregator {
           .multipliedBy(new BigNumber(snapshot.tokenPrice))
           .toString(10),
         volumeRepaidUsd: new BigNumber(snapshot.volumeRepaid)
+          .multipliedBy(new BigNumber(snapshot.tokenPrice))
+          .toString(10),
+        volumeFeesPaidUsd: new BigNumber(snapshot.volumeFeesPaid)
           .multipliedBy(new BigNumber(snapshot.tokenPrice))
           .toString(10),
       };

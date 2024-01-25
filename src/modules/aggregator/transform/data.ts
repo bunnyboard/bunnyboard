@@ -91,8 +91,8 @@ export default class DataTransform {
     const dataFields: Array<string> = [
       'totalDeposited',
       'totalBorrowed',
-      'totalFeesPaid',
 
+      'volumeFeesPaid',
       'volumeDeposited',
       'volumeWithdrawn',
       'volumeBorrowed',
