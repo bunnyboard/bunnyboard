@@ -61,6 +61,7 @@ export default class SnapshotCollector {
 
           if (crossLending) {
             for (const snapshot of crossLending) {
+              console.log(snapshot.timestamp)
               await this.storages.database.update({
                 collection: EnvConfig.mongodb.collections.lendingMarketSnapshots,
                 keys: {
@@ -108,6 +109,7 @@ export default class SnapshotCollector {
           metric: config.metric,
           address: config.address,
           date: getDateString(runTime),
+          time: runTime,
           elapses: `${elapsed}s`,
         });
 
