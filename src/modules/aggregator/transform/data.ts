@@ -1,35 +1,86 @@
 import BigNumber from 'bignumber.js';
 
 import { DataValueItem } from '../../../types/aggregates/common';
-import { AggCrossLendingMarketSnapshot, AggCrossLendingMarketState } from '../../../types/aggregates/lending';
+import { AggCrossLendingMarketSnapshot } from '../../../types/aggregates/lending';
+import { CrossLendingMarketDataTimeframeWithChanges } from '../../../types/collectors/lending';
 import { Token } from '../../../types/configs';
 
 export default class DataTransform {
-  public static transformToCrossLendingMarketState(databaseDocument: any): AggCrossLendingMarketState {
+  public static transformToCrossLendingMarketState(databaseDocument: any): AggCrossLendingMarketSnapshot {
+    const dataWithChanges = databaseDocument as CrossLendingMarketDataTimeframeWithChanges;
+
     return {
-      chain: databaseDocument.chain,
-      protocol: databaseDocument.protocol,
-      address: databaseDocument.address,
-      token: databaseDocument.token as Token,
-      tokenPrice: new BigNumber(databaseDocument.tokenPrice).toNumber(),
+      chain: dataWithChanges.chain,
+      protocol: dataWithChanges.protocol,
+      address: dataWithChanges.address,
+      token: dataWithChanges.token as Token,
+      tokenPrice: {
+        value: new BigNumber(dataWithChanges.tokenPrice).toNumber(),
+        valueUsd: new BigNumber(dataWithChanges.tokenPrice).toNumber(),
+        changedValue: new BigNumber(dataWithChanges.dailyChangesTokenPrice).multipliedBy(100).toNumber(),
+        changedValueUsd: new BigNumber(dataWithChanges.dailyChangesTokenPrice).multipliedBy(100).toNumber(),
+      },
       totalDeposited: {
-        value: new BigNumber(databaseDocument.totalDeposited).toNumber(),
-        valueUsd: new BigNumber(databaseDocument.totalDeposited)
-          .multipliedBy(new BigNumber(databaseDocument.tokenPrice))
+        value: new BigNumber(dataWithChanges.totalDeposited).toNumber(),
+        valueUsd: new BigNumber(dataWithChanges.totalDeposited)
+          .multipliedBy(new BigNumber(dataWithChanges.tokenPrice))
           .toNumber(),
+        changedValue: new BigNumber(dataWithChanges.dailyChangesTotalDeposited).multipliedBy(100).toNumber(),
       },
       totalBorrowed: {
-        value: new BigNumber(databaseDocument.totalBorrowed).toNumber(),
-        valueUsd: new BigNumber(databaseDocument.totalBorrowed)
-          .multipliedBy(new BigNumber(databaseDocument.tokenPrice))
+        value: new BigNumber(dataWithChanges.totalBorrowed).toNumber(),
+        valueUsd: new BigNumber(dataWithChanges.totalBorrowed)
+          .multipliedBy(new BigNumber(dataWithChanges.tokenPrice))
           .toNumber(),
+        changedValue: new BigNumber(dataWithChanges.dailyChangesTotalBorrowed).multipliedBy(100).toNumber(),
       },
-      rateSupply: new BigNumber(databaseDocument.rateSupply).multipliedBy(100).toNumber(),
-      rateBorrow: new BigNumber(databaseDocument.rateBorrow).multipliedBy(100).toNumber(),
-      rateRewardSupply: new BigNumber(databaseDocument.rateRewardSupply).multipliedBy(100).toNumber(),
-      rateRewardBorrow: new BigNumber(databaseDocument.rateRewardBorrow).multipliedBy(100).toNumber(),
-      rateLoanToValue: new BigNumber(databaseDocument.rateLoanToValue).multipliedBy(100).toNumber(),
-      timestamp: databaseDocument.timestamp,
+      volumeDeposited: {
+        value: new BigNumber(dataWithChanges.volumeDeposited).toNumber(),
+        valueUsd: new BigNumber(dataWithChanges.volumeDeposited)
+          .multipliedBy(new BigNumber(dataWithChanges.tokenPrice))
+          .toNumber(),
+        changedValue: new BigNumber(dataWithChanges.dailyChangesVolumeDeposited).multipliedBy(100).toNumber(),
+      },
+      volumeWithdrawn: {
+        value: new BigNumber(dataWithChanges.volumeWithdrawn).toNumber(),
+        valueUsd: new BigNumber(dataWithChanges.volumeWithdrawn)
+          .multipliedBy(new BigNumber(dataWithChanges.tokenPrice))
+          .toNumber(),
+        changedValue: new BigNumber(dataWithChanges.dailyChangesVolumeWithdrawn).multipliedBy(100).toNumber(),
+      },
+      volumeBorrowed: {
+        value: new BigNumber(dataWithChanges.volumeBorrowed).toNumber(),
+        valueUsd: new BigNumber(dataWithChanges.volumeBorrowed)
+          .multipliedBy(new BigNumber(dataWithChanges.tokenPrice))
+          .toNumber(),
+        changedValue: new BigNumber(dataWithChanges.dailyChangesVolumeBorrowed).multipliedBy(100).toNumber(),
+      },
+      volumeRepaid: {
+        value: new BigNumber(dataWithChanges.volumeRepaid).toNumber(),
+        valueUsd: new BigNumber(dataWithChanges.volumeRepaid)
+          .multipliedBy(new BigNumber(dataWithChanges.tokenPrice))
+          .toNumber(),
+        changedValue: new BigNumber(dataWithChanges.dailyChangesVolumeRepaid).multipliedBy(100).toNumber(),
+      },
+      volumeFeesPaid: {
+        value: new BigNumber(dataWithChanges.volumeFeesPaid).toNumber(),
+        valueUsd: new BigNumber(dataWithChanges.volumeFeesPaid)
+          .multipliedBy(new BigNumber(dataWithChanges.tokenPrice))
+          .toNumber(),
+        changedValue: new BigNumber(dataWithChanges.dailyChangesVolumeFeesPaid).multipliedBy(100).toNumber(),
+      },
+      rateSupply: new BigNumber(dataWithChanges.rateSupply).multipliedBy(100).toNumber(),
+      rateBorrow: new BigNumber(dataWithChanges.rateBorrow).multipliedBy(100).toNumber(),
+      rateRewardSupply: new BigNumber(dataWithChanges.rateRewardSupply ? dataWithChanges.rateRewardSupply : '0')
+        .multipliedBy(100)
+        .toNumber(),
+      rateRewardBorrow: new BigNumber(dataWithChanges.rateRewardBorrow ? dataWithChanges.rateRewardBorrow : '0')
+        .multipliedBy(100)
+        .toNumber(),
+      rateLoanToValue: new BigNumber(dataWithChanges.rateLoanToValue).multipliedBy(100).toNumber(),
+      numberOfUsers: dataWithChanges.numberOfUsers,
+      numberOfTransactions: dataWithChanges.numberOfTransactions,
+      timestamp: dataWithChanges.timestamp,
     };
   }
 

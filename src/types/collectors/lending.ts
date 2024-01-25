@@ -1,5 +1,5 @@
 import { Token } from '../configs';
-import { BaseActivityEvent, DayDataSnapshot, TokenAmountItem } from './base';
+import { BaseActivityEvent, DataState, DataTimeframe, TokenValueItem } from './base';
 
 export interface CrossLendingActivityEvent extends BaseActivityEvent {
   // in case of liquidation, liquidator is considered as the main user of the transaction
@@ -17,7 +17,7 @@ export interface CrossLendingActivityEvent extends BaseActivityEvent {
 
 export interface CdpLendingActivityEvent extends BaseActivityEvent {}
 
-export interface CrossLendingMarketState extends DayDataSnapshot {
+export interface CrossLendingMarketDataState extends DataState {
   // market contract address
   address: string;
 
@@ -56,7 +56,16 @@ export interface CrossLendingMarketState extends DayDataSnapshot {
   rateRewardBorrowStable?: string;
 }
 
-export interface CrossLendingMarketSnapshot extends CrossLendingMarketState {
+export interface CrossLendingMarketDataTimeframe extends CrossLendingMarketDataState, DataTimeframe {
+  // data was collected in the timeframe of fromTime to toTime
+  timefrom: number;
+  timeto: number;
+
+  // fees were paid by borrowers theoretically
+  // VolumeFeesPaid = TotalBorrow * BorrowRate * TimePeriod / 365 days
+  volumeFeesPaid: string;
+
+  // count volumes on every actions
   volumeDeposited: string;
   volumeWithdrawn: string;
   volumeBorrowed: string;
@@ -64,16 +73,27 @@ export interface CrossLendingMarketSnapshot extends CrossLendingMarketState {
 
   // a list of collateral assets were liquidated
   // by borrowing this market asset token
-  volumeLiquidated: Array<TokenAmountItem>;
+  volumeLiquidated: Array<TokenValueItem>;
 
-  // TotalFeesPaid = TotalBorrow * BorrowRate * TimePeriod / 365 days
-  totalFeesPaid: string;
-
+  // count number of users and transactions
   numberOfUsers: number;
   numberOfTransactions: number;
 }
 
-export interface CdpCollateralState {
+export interface CrossLendingMarketDataTimeframeWithChanges extends CrossLendingMarketDataTimeframe {
+  dailyChangesTokenPrice: string;
+  dailyChangesTotalDeposited: string;
+  dailyChangesTotalBorrowed: string;
+  dailyChangesTotalBorrowedStable?: string;
+
+  dailyChangesVolumeDeposited: string;
+  dailyChangesVolumeWithdrawn: string;
+  dailyChangesVolumeBorrowed: string;
+  dailyChangesVolumeRepaid: string;
+  dailyChangesVolumeFeesPaid: string;
+}
+
+export interface CdpCollateralDataState {
   // contract address
   address: string;
 
@@ -99,7 +119,13 @@ export interface CdpCollateralState {
   rateLoanToValueRate: string;
 }
 
-export interface CdpLendingMarketState extends DayDataSnapshot {
+export interface CdpCollateralDataTimeframe extends CdpCollateralDataState {
+  volumeDeposited: string;
+  volumeWithdrawn: string;
+  volumeLiquidated: string;
+}
+
+export interface CdpLendingMarketDataState extends DataState {
   // the token, debts, collateral, or both
   token: Token;
 
@@ -120,27 +146,27 @@ export interface CdpLendingMarketState extends DayDataSnapshot {
   rateRewardSupply?: string;
 
   // a list of collaterals were locked in the protocol
-  collaterals: Array<CdpCollateralState>;
+  collaterals: Array<CdpCollateralDataState>;
 }
 
-export interface CdpCollateralSnapshot extends CdpCollateralState {
-  volumeDeposited: string;
-  volumeWithdrawn: string;
-  volumeLiquidated: string;
-}
+export interface CdpLendingMarketDataTimeframe extends CdpLendingMarketDataState, DataTimeframe {
+  // data was collected in the timeframe of fromTime to toTime
+  timefrom: number;
+  timeto: number;
 
-export interface CdpLendingMarketSnapshot extends CdpLendingMarketState {
-  // a list of collaterals were locked in the protocol
-  collaterals: Array<CdpCollateralSnapshot>;
+  // fees were paid by borrowers theoretically
+  // VolumeFeesPaid = TotalBorrow * BorrowRate * TimePeriod / 365 days
+  volumeFeesPaid: string;
 
   volumeBorrowed: string;
   volumeRepaid: string;
+
   volumeDeposited?: string;
   volumeWithdrawn?: string;
 
-  // TotalFeesPaid = TotalBorrow * BorrowRatePerCollateral * TimePeriod / 365 days
-  totalFeesPaid: string;
-
   numberOfUsers: number;
   numberOfTransactions: number;
+
+  // a list of collaterals were locked in the protocol
+  collaterals: Array<CdpCollateralDataTimeframe>;
 }

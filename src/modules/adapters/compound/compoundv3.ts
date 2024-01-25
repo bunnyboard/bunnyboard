@@ -8,22 +8,23 @@ import EnvConfig from '../../../configs/envConfig';
 import { Compoundv3LendingMarketConfig } from '../../../configs/protocols/compound';
 import { tryQueryBlockNumberAtTimestamp } from '../../../lib/subsgraph';
 import { compareAddress, formatBigNumberToString, normalizeAddress } from '../../../lib/utils';
-import { ProtocolConfig } from '../../../types/configs';
-import { ActivityActions } from '../../../types/domains/base';
+import { ActivityActions } from '../../../types/collectors/base';
 import {
   CdpLendingActivityEvent,
-  CdpLendingMarketSnapshot,
-  CdpLendingMarketState,
-} from '../../../types/domains/lending';
-import { ContextServices, ContextStorages } from '../../../types/namespaces';
+  CdpLendingMarketDataState,
+  CdpLendingMarketDataTimeframe,
+} from '../../../types/collectors/lending';
 import {
-  GetAdapterDataOptions,
+  GetAdapterDataStateOptions,
+  GetAdapterDataStateResult,
+  GetAdapterDataTimeframeOptions,
+  GetAdapterDataTimeframeResult,
   GetAdapterEventLogsOptions,
-  GetSnapshotDataResult,
-  GetStateDataResult,
   TransformEventLogOptions,
   TransformEventLogResult,
-} from '../../../types/options';
+} from '../../../types/collectors/options';
+import { ProtocolConfig } from '../../../types/configs';
+import { ContextServices, ContextStorages } from '../../../types/namespaces';
 import CompoundLibs from '../../libs/compound';
 import ProtocolAdapter from '../adapter';
 import { Compoundv3EventInterfaces, Compoundv3EventSignatures } from './abis';
@@ -41,8 +42,8 @@ export default class Compoundv3Adapter extends ProtocolAdapter {
     };
   }
 
-  public async getStateData(options: GetAdapterDataOptions): Promise<GetStateDataResult> {
-    const result: GetStateDataResult = {
+  public async getDataState(options: GetAdapterDataStateOptions): Promise<GetAdapterDataStateResult> {
+    const result: GetAdapterDataStateResult = {
       crossLending: null,
       cdpLending: [],
     };
@@ -60,7 +61,7 @@ export default class Compoundv3Adapter extends ProtocolAdapter {
       timestamp: options.timestamp,
     });
 
-    const marketState: CdpLendingMarketState = {
+    const marketState: CdpLendingMarketDataState = {
       chain: options.config.chain,
       protocol: options.config.protocol,
       metric: options.config.metric,
@@ -345,12 +346,17 @@ export default class Compoundv3Adapter extends ProtocolAdapter {
     return result;
   }
 
-  public async getSnapshotData(
-    options: GetAdapterDataOptions,
+  public async getDataTimeframe(
+    options: GetAdapterDataTimeframeOptions,
     storages: ContextStorages,
-  ): Promise<GetSnapshotDataResult> {
-    const states = (await this.getStateData(options)).cdpLending;
-    const result: GetSnapshotDataResult = {
+  ): Promise<GetAdapterDataTimeframeResult> {
+    const states = (
+      await this.getDataState({
+        config: options.config,
+        timestamp: options.fromTime,
+      })
+    ).cdpLending;
+    const result: GetAdapterDataTimeframeResult = {
       crossLending: null,
       cdpLending: [],
     };
@@ -362,21 +368,20 @@ export default class Compoundv3Adapter extends ProtocolAdapter {
     // make sure activities were synced
     await this.syncActivities(options, storages);
 
-    const startDayTimestamp = options.timestamp;
-    const endDayTimestamp = options.timestamp + DAY - 1;
-
     const marketConfig = options.config as Compoundv3LendingMarketConfig;
     for (const stateData of states) {
-      const snapshot: CdpLendingMarketSnapshot = {
+      const snapshot: CdpLendingMarketDataTimeframe = {
         ...stateData,
         volumeBorrowed: '0',
         volumeRepaid: '0',
         volumeDeposited: '0',
         volumeWithdrawn: '0',
-        totalFeesPaid: '0',
+        volumeFeesPaid: '0',
         numberOfUsers: 0,
         numberOfTransactions: 0,
         collaterals: [],
+        timefrom: options.fromTime,
+        timeto: options.toTime,
       };
 
       const countUsers: { [key: string]: boolean } = {};
@@ -390,8 +395,8 @@ export default class Compoundv3Adapter extends ProtocolAdapter {
           address: marketConfig.address,
           'token.address': marketConfig.debtToken.address,
           timestamp: {
-            $gte: startDayTimestamp,
-            $lte: endDayTimestamp,
+            $gte: options.fromTime,
+            $lte: options.toTime,
           },
         },
       });
@@ -443,8 +448,8 @@ export default class Compoundv3Adapter extends ProtocolAdapter {
             address: collateral.address,
             'token.address': collateral.token.address,
             timestamp: {
-              $gte: startDayTimestamp,
-              $lte: endDayTimestamp,
+              $gte: options.fromTime,
+              $lte: options.toTime,
             },
           },
         });
@@ -489,7 +494,7 @@ export default class Compoundv3Adapter extends ProtocolAdapter {
           .multipliedBy(new BigNumber(stateData.totalDebts))
           .multipliedBy(DAY)
           .dividedBy(YEAR);
-        snapshot.totalFeesPaid = fees.toString(10);
+        snapshot.volumeFeesPaid = fees.toString(10);
       }
 
       if (result.cdpLending) {

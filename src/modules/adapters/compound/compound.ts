@@ -10,18 +10,19 @@ import EnvConfig from '../../../configs/envConfig';
 import { CompoundLendingMarketConfig } from '../../../configs/protocols/compound';
 import { tryQueryBlockNumberAtTimestamp } from '../../../lib/subsgraph';
 import { compareAddress, formatBigNumberToString, normalizeAddress } from '../../../lib/utils';
-import { ProtocolConfig, Token } from '../../../types/configs';
-import { ActivityActions, TokenAmountItem } from '../../../types/domains/base';
-import { CrossLendingMarketSnapshot, CrossLendingMarketState } from '../../../types/domains/lending';
-import { ContextServices, ContextStorages } from '../../../types/namespaces';
+import { ActivityActions, TokenValueItem } from '../../../types/collectors/base';
+import { CrossLendingMarketDataState, CrossLendingMarketDataTimeframe } from '../../../types/collectors/lending';
 import {
-  GetAdapterDataOptions,
+  GetAdapterDataStateOptions,
+  GetAdapterDataStateResult,
+  GetAdapterDataTimeframeOptions,
+  GetAdapterDataTimeframeResult,
   GetAdapterEventLogsOptions,
-  GetSnapshotDataResult,
-  GetStateDataResult,
   TransformEventLogOptions,
   TransformEventLogResult,
-} from '../../../types/options';
+} from '../../../types/collectors/options';
+import { ProtocolConfig, Token } from '../../../types/configs';
+import { ContextServices, ContextStorages } from '../../../types/namespaces';
 import CompoundLibs from '../../libs/compound';
 import ProtocolAdapter from '../adapter';
 import { countCrossLendingDataFromActivities } from '../helpers';
@@ -38,8 +39,8 @@ interface Speeds {
 }
 
 interface Rewards {
-  forLenders: Array<TokenAmountItem>;
-  forBorrowers: Array<TokenAmountItem>;
+  forLenders: Array<TokenValueItem>;
+  forBorrowers: Array<TokenValueItem>;
 }
 
 export default class CompoundAdapter extends ProtocolAdapter {
@@ -206,8 +207,8 @@ export default class CompoundAdapter extends ProtocolAdapter {
     };
   }
 
-  public async getStateData(options: GetAdapterDataOptions): Promise<GetStateDataResult> {
-    const result: GetStateDataResult = {
+  public async getDataState(options: GetAdapterDataStateOptions): Promise<GetAdapterDataStateResult> {
+    const result: GetAdapterDataStateResult = {
       crossLending: [],
       cdpLending: null,
     };
@@ -320,7 +321,7 @@ export default class CompoundAdapter extends ProtocolAdapter {
             }
           }
 
-          const dataState: CrossLendingMarketState = {
+          const dataState: CrossLendingMarketDataState = {
             metric: marketConfig.metric,
             chain: marketConfig.chain,
             protocol: marketConfig.protocol,
@@ -392,7 +393,10 @@ export default class CompoundAdapter extends ProtocolAdapter {
       const signature = log.topics[0];
       const address = normalizeAddress(log.address);
 
-      if (this.supportSignature(signature) && allContracts.indexOf(address) !== -1) {
+      if (
+        Object.values(this.abiConfigs.eventSignatures).indexOf(signature) !== -1 &&
+        allContracts.indexOf(address) !== -1
+      ) {
         if (
           signature === eventSignatures.DistributedSupplierRewards ||
           signature === eventSignatures.DistributedBorrowerRewards
@@ -538,12 +542,17 @@ export default class CompoundAdapter extends ProtocolAdapter {
     return result;
   }
 
-  public async getSnapshotData(
-    options: GetAdapterDataOptions,
+  public async getDataTimeframe(
+    options: GetAdapterDataTimeframeOptions,
     storages: ContextStorages,
-  ): Promise<GetSnapshotDataResult> {
-    const states = (await this.getStateData(options)).crossLending;
-    const result: GetSnapshotDataResult = {
+  ): Promise<GetAdapterDataTimeframeResult> {
+    const states = (
+      await this.getDataState({
+        config: options.config,
+        timestamp: options.fromTime,
+      })
+    ).crossLending;
+    const result: GetAdapterDataTimeframeResult = {
       crossLending: [],
       cdpLending: null,
     };
@@ -555,9 +564,6 @@ export default class CompoundAdapter extends ProtocolAdapter {
     // make sure activities were synced
     await this.syncActivities(options, storages);
 
-    const startDayTimestamp = options.timestamp;
-    const endDayTimestamp = options.timestamp + DAY - 1;
-
     for (const stateData of states) {
       const documents = await storages.database.query({
         collection: EnvConfig.mongodb.collections.activities,
@@ -567,8 +573,8 @@ export default class CompoundAdapter extends ProtocolAdapter {
           address: stateData.address,
           'token.address': stateData.token.address,
           timestamp: {
-            $gte: startDayTimestamp,
-            $lte: endDayTimestamp,
+            $gte: options.fromTime,
+            $lte: options.toTime,
           },
         },
       });
@@ -580,10 +586,12 @@ export default class CompoundAdapter extends ProtocolAdapter {
         .multipliedBy(DAY)
         .dividedBy(YEAR);
 
-      const snapshotData: CrossLendingMarketSnapshot = {
+      const snapshotData: CrossLendingMarketDataTimeframe = {
         ...stateData,
         ...activityData,
-        totalFeesPaid: feesPaidFromBorrow.toString(10),
+        volumeFeesPaid: feesPaidFromBorrow.toString(10),
+        timefrom: options.fromTime,
+        timeto: options.toTime,
       };
 
       if (result.crossLending) {

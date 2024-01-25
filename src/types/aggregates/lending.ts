@@ -6,8 +6,8 @@ export interface AggCrossLendingMarketState {
   protocol: string;
   address: string;
   token: Token;
-  tokenPrice: number;
 
+  tokenPrice: DataValueItem;
   totalDeposited: DataValueItem;
   totalBorrowed: DataValueItem;
 
@@ -31,7 +31,7 @@ export interface AggCrossLendingMarketSnapshot extends AggCrossLendingMarketStat
   volumeWithdrawn: DataValueItem;
   volumeBorrowed: DataValueItem;
   volumeRepaid: DataValueItem;
-  totalFeesPaid: DataValueItem;
+  volumeFeesPaid: DataValueItem;
 
   numberOfUsers: number;
   numberOfTransactions: number;
@@ -50,6 +50,11 @@ export interface AggCrossLendingDayData {
 export interface AggCrossLendingOverallState {
   totalDeposited: DataValueItem;
   totalBorrowed: DataValueItem;
+  volumeDeposited: DataValueItem;
+  volumeWithdrawn: DataValueItem;
+  volumeBorrowed: DataValueItem;
+  volumeRepaid: DataValueItem;
+  volumeFeesPaid: DataValueItem;
   numberOfChains: number;
   numberOfProtocols: number;
   markets: Array<AggCrossLendingMarketState>;

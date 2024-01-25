@@ -4,8 +4,8 @@ import ChefIncentiveControllerAbi from '../../../configs/abi/radiant/ChefIncenti
 import { YEAR } from '../../../configs/constants';
 import { AaveLendingMarketConfig } from '../../../configs/protocols/aave';
 import { formatBigNumberToString } from '../../../lib/utils';
+import { TokenValueItem } from '../../../types/collectors/base';
 import { ProtocolConfig, Token } from '../../../types/configs';
-import { TokenAmountItem } from '../../../types/domains/base';
 import { ContextServices } from '../../../types/namespaces';
 import Aavev2Adapter from '../aave/aavev2';
 
@@ -44,9 +44,9 @@ export default class RadiantAdapter extends Aavev2Adapter {
     reserve: string,
     blockNumber: number,
   ): Promise<{
-    forSupply: Array<TokenAmountItem>;
-    forBorrow: Array<TokenAmountItem>;
-    forBorrowStable: Array<TokenAmountItem>;
+    forSupply: Array<TokenValueItem>;
+    forBorrow: Array<TokenValueItem>;
+    forBorrowStable: Array<TokenValueItem>;
   } | null> {
     const rewards: any = {
       forSupply: [],
@@ -112,12 +112,12 @@ export default class RadiantAdapter extends Aavev2Adapter {
       rewards.forSupply.push({
         token: rewardToken,
         amount: formatBigNumberToString(rewardForSupply.toString(10), rewardToken.decimals),
-      } as TokenAmountItem);
+      } as TokenValueItem);
 
       rewards.forBorrow.push({
         token: rewardToken,
         amount: formatBigNumberToString(rewardForBorrow.toString(10), rewardToken.decimals),
-      } as TokenAmountItem);
+      } as TokenValueItem);
     }
 
     return rewards;

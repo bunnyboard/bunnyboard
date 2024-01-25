@@ -1,19 +1,18 @@
-import { DAY } from '../../configs/constants';
 import EnvConfig from '../../configs/envConfig';
 import logger from '../../lib/logger';
 import { tryQueryBlockNumberAtTimestamp, tryQueryBlockTimestamps } from '../../lib/subsgraph';
-import { compareAddress, getDateString } from '../../lib/utils';
-import { ProtocolConfig } from '../../types/configs';
-import { ContextServices, ContextStorages, IProtocolAdapter } from '../../types/namespaces';
 import {
   AdapterAbiConfigs,
-  GetAdapterDataOptions,
+  GetAdapterDataStateOptions,
+  GetAdapterDataStateResult,
+  GetAdapterDataTimeframeOptions,
+  GetAdapterDataTimeframeResult,
   GetAdapterEventLogsOptions,
-  GetSnapshotDataResult,
-  GetStateDataResult,
   TransformEventLogOptions,
   TransformEventLogResult,
-} from '../../types/options';
+} from '../../types/collectors/options';
+import { ProtocolConfig } from '../../types/configs';
+import { ContextServices, ContextStorages, IProtocolAdapter } from '../../types/namespaces';
 
 export default class ProtocolAdapter implements IProtocolAdapter {
   public readonly name: string = 'adapter';
@@ -31,24 +30,21 @@ export default class ProtocolAdapter implements IProtocolAdapter {
     };
   }
 
-  protected supportSignature(signature: string): boolean {
-    for (const sig of Object.values(this.abiConfigs.eventSignatures)) {
-      if (sig === signature) {
-        return true;
-      }
-    }
-
-    return false;
+  public async getDataState(options: GetAdapterDataStateOptions): Promise<GetAdapterDataStateResult> {
+    return {
+      crossLending: null,
+      cdpLending: null,
+    };
   }
 
-  protected supportContract(address: string): boolean {
-    for (const contract of this.config.configs) {
-      if (compareAddress(address, contract.address)) {
-        return true;
-      }
-    }
-
-    return false;
+  public async getDataTimeframe(
+    options: GetAdapterDataTimeframeOptions,
+    storages: ContextStorages,
+  ): Promise<GetAdapterDataTimeframeResult> {
+    return {
+      crossLending: null,
+      cdpLending: null,
+    };
   }
 
   public async getEventLogs(options: GetAdapterEventLogsOptions): Promise<Array<any>> {
@@ -61,36 +57,16 @@ export default class ProtocolAdapter implements IProtocolAdapter {
     };
   }
 
-  public async getStateData(options: GetAdapterDataOptions): Promise<GetStateDataResult> {
-    return {
-      crossLending: null,
-      cdpLending: null,
-    };
-  }
-
-  public async getSnapshotData(
-    options: GetAdapterDataOptions,
-    storages: ContextStorages,
-  ): Promise<GetSnapshotDataResult> {
-    return {
-      crossLending: null,
-      cdpLending: null,
-    };
-  }
-
-  protected async syncActivities(options: GetAdapterDataOptions, storages: ContextStorages): Promise<void> {
+  protected async syncActivities(options: GetAdapterDataTimeframeOptions, storages: ContextStorages): Promise<void> {
     const startExeTime = Math.floor(new Date().getTime() / 1000);
-
-    const startDayTimestamp = options.timestamp;
-    const endDayTimestamp = options.timestamp + DAY - 1;
 
     const beginBlock = await tryQueryBlockNumberAtTimestamp(
       EnvConfig.blockchains[options.config.chain].blockSubgraph,
-      startDayTimestamp,
+      options.fromTime,
     );
     const endBlock = await tryQueryBlockNumberAtTimestamp(
       EnvConfig.blockchains[options.config.chain].blockSubgraph,
-      endDayTimestamp,
+      options.toTime,
     );
     const blocktimes = await tryQueryBlockTimestamps(
       EnvConfig.blockchains[options.config.chain].blockSubgraph as string,
@@ -144,7 +120,7 @@ export default class ProtocolAdapter implements IProtocolAdapter {
       },
       updates: {
         name: stateKey,
-        timestamp: options.timestamp,
+        timestamp: options.fromTime,
       },
       upsert: true,
     });
@@ -158,7 +134,8 @@ export default class ProtocolAdapter implements IProtocolAdapter {
       protocol: options.config.protocol,
       metric: options.config.metric,
       address: options.config.address,
-      date: getDateString(options.timestamp),
+      fromTime: options.fromTime,
+      toTime: options.toTime,
       activities: activityOperations.length,
       elapses: `${elapsed}s`,
     });

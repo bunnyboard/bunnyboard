@@ -1,12 +1,12 @@
 import { DataMetric, Token } from '../configs';
 
-export interface TokenAmountItem {
+export interface TokenValueItem {
   token: Token;
   amount: string;
   tokenPrice?: string;
 }
 
-export interface DayDataSnapshot {
+export interface DataState {
   // the protocol id
   protocol: string;
 
@@ -16,10 +16,13 @@ export interface DayDataSnapshot {
   // chain where data was collected
   chain: string;
 
-  // StartDayTimestamp
-  // historical data was query at the StartDayTimestamp
-  // volumes were count from the StartDayTimestamp to EndDayTimestamp - 1
+  // every data piece was collected from `fromTime` to `toTime`
   timestamp: number;
+}
+
+export interface DataTimeframe extends DataState {
+  timefrom: number;
+  timeto: number;
 }
 
 export const ActivityActions = {

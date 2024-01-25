@@ -3,27 +3,27 @@ import { decodeEventLog } from 'viem';
 
 import BorrowOperationsAbi from '../../../configs/abi/liquity/BorrowOperations.json';
 import TroveManagerAbi from '../../../configs/abi/liquity/TroveManager.json';
-import { DAY } from '../../../configs/constants';
 import EnvConfig from '../../../configs/envConfig';
 import { LiquityLendingMarketConfig, LiquityTrove } from '../../../configs/protocols/liquity';
 import { tryQueryBlockNumberAtTimestamp } from '../../../lib/subsgraph';
 import { compareAddress, formatBigNumberToString, normalizeAddress } from '../../../lib/utils';
-import { ProtocolConfig, Token } from '../../../types/configs';
-import { ActivityAction, ActivityActions } from '../../../types/domains/base';
+import { ActivityAction, ActivityActions } from '../../../types/collectors/base';
 import {
   CdpLendingActivityEvent,
-  CdpLendingMarketSnapshot,
-  CdpLendingMarketState,
-} from '../../../types/domains/lending';
-import { ContextServices, ContextStorages } from '../../../types/namespaces';
+  CdpLendingMarketDataState,
+  CdpLendingMarketDataTimeframe,
+} from '../../../types/collectors/lending';
 import {
-  GetAdapterDataOptions,
+  GetAdapterDataStateOptions,
+  GetAdapterDataStateResult,
+  GetAdapterDataTimeframeOptions,
+  GetAdapterDataTimeframeResult,
   GetAdapterEventLogsOptions,
-  GetSnapshotDataResult,
-  GetStateDataResult,
   TransformEventLogOptions,
   TransformEventLogResult,
-} from '../../../types/options';
+} from '../../../types/collectors/options';
+import { ProtocolConfig, Token } from '../../../types/configs';
+import { ContextServices, ContextStorages } from '../../../types/namespaces';
 import ProtocolAdapter from '../adapter';
 import { LiquityEventInterfaces, LiquityEventSignatures } from './abis';
 
@@ -85,8 +85,8 @@ export default class LiquityAdapter extends ProtocolAdapter {
     return borrowingFee.toString();
   }
 
-  public async getStateData(options: GetAdapterDataOptions): Promise<GetStateDataResult> {
-    const result: GetStateDataResult = {
+  public async getDataState(options: GetAdapterDataStateOptions): Promise<GetAdapterDataStateResult> {
+    const result: GetAdapterDataStateResult = {
       crossLending: null,
       cdpLending: [],
     };
@@ -104,7 +104,7 @@ export default class LiquityAdapter extends ProtocolAdapter {
       timestamp: options.timestamp,
     });
 
-    const marketState: CdpLendingMarketState = {
+    const marketState: CdpLendingMarketDataState = {
       chain: options.config.chain,
       protocol: options.config.protocol,
       metric: options.config.metric,
@@ -345,13 +345,18 @@ export default class LiquityAdapter extends ProtocolAdapter {
     return result;
   }
 
-  public async getSnapshotData(
-    options: GetAdapterDataOptions,
+  public async getDataTimeframe(
+    options: GetAdapterDataTimeframeOptions,
     storages: ContextStorages,
-  ): Promise<GetSnapshotDataResult> {
-    const states = (await this.getStateData(options)).cdpLending;
+  ): Promise<GetAdapterDataTimeframeResult> {
+    const states = (
+      await this.getDataState({
+        config: options.config,
+        timestamp: options.fromTime,
+      })
+    ).cdpLending;
 
-    const result: GetSnapshotDataResult = {
+    const result: GetAdapterDataTimeframeResult = {
       crossLending: null,
       cdpLending: [],
     };
@@ -359,9 +364,6 @@ export default class LiquityAdapter extends ProtocolAdapter {
     if (!states) {
       return result;
     }
-
-    const startDayTimestamp = options.timestamp;
-    const endDayTimestamp = options.timestamp + DAY - 1;
 
     // sync activities
     await this.syncActivities(options, storages);
@@ -373,15 +375,18 @@ export default class LiquityAdapter extends ProtocolAdapter {
       const countBorrowers: { [key: string]: boolean } = {};
       const transactions: { [key: string]: boolean } = {};
 
-      const snapshot: CdpLendingMarketSnapshot = {
+      const snapshot: CdpLendingMarketDataTimeframe = {
         ...stateData,
         collaterals: [],
 
         volumeBorrowed: '0',
         volumeRepaid: '0',
-        totalFeesPaid: '0',
+        volumeFeesPaid: '0',
         numberOfUsers: 0,
         numberOfTransactions: 0,
+
+        timefrom: options.fromTime,
+        timeto: options.toTime,
       };
 
       // count borrow/repay events
@@ -393,8 +398,8 @@ export default class LiquityAdapter extends ProtocolAdapter {
           address: options.config.address, // borrow operation
           'token.address': stateData.token.address,
           timestamp: {
-            $gte: startDayTimestamp,
-            $lte: endDayTimestamp,
+            $gte: options.fromTime,
+            $lte: options.toTime,
           },
         },
       });
@@ -438,8 +443,8 @@ export default class LiquityAdapter extends ProtocolAdapter {
             address: options.config.address, // borrow operation
             'token.address': collateral.token.address,
             timestamp: {
-              $gte: startDayTimestamp,
-              $lte: endDayTimestamp,
+              $gte: options.fromTime,
+              $lte: options.toTime,
             },
           },
         });

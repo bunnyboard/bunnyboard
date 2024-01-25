@@ -31,7 +31,7 @@ export class AdapterCommand extends BasicCommand {
             `collect data metric:${config.metric} protocol:${config.protocol} chain:${config.chain} address:${config.address}`,
           );
           data = data.concat(
-            await adapters[protocol].getStateData({
+            await adapters[protocol].getDataState({
               config: config,
               timestamp: timestamp,
             }),

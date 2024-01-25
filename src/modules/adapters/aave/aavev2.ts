@@ -8,19 +8,20 @@ import { DAY, RAY_DECIMALS, YEAR } from '../../../configs/constants';
 import EnvConfig from '../../../configs/envConfig';
 import { AaveLendingMarketConfig } from '../../../configs/protocols/aave';
 import { tryQueryBlockNumberAtTimestamp } from '../../../lib/subsgraph';
-import { formatBigNumberToString, normalizeAddress } from '../../../lib/utils';
-import { DataMetrics, ProtocolConfig } from '../../../types/configs';
-import { ActivityAction, TokenAmountItem } from '../../../types/domains/base';
-import { CrossLendingMarketSnapshot, CrossLendingMarketState } from '../../../types/domains/lending';
-import { ContextServices, ContextStorages } from '../../../types/namespaces';
+import { compareAddress, formatBigNumberToString, normalizeAddress } from '../../../lib/utils';
+import { ActivityAction, TokenValueItem } from '../../../types/collectors/base';
+import { CrossLendingMarketDataState, CrossLendingMarketDataTimeframe } from '../../../types/collectors/lending';
 import {
-  GetAdapterDataOptions,
+  GetAdapterDataStateOptions,
+  GetAdapterDataStateResult,
+  GetAdapterDataTimeframeOptions,
+  GetAdapterDataTimeframeResult,
   GetAdapterEventLogsOptions,
-  GetSnapshotDataResult,
-  GetStateDataResult,
   TransformEventLogOptions,
   TransformEventLogResult,
-} from '../../../types/options';
+} from '../../../types/collectors/options';
+import { DataMetrics, ProtocolConfig } from '../../../types/configs';
+import { ContextServices, ContextStorages } from '../../../types/namespaces';
 import ProtocolAdapter from '../adapter';
 import { countCrossLendingDataFromActivities } from '../helpers';
 import { AaveEventInterfaces, Aavev2EventSignatures } from './abis';
@@ -64,7 +65,10 @@ export default class Aavev2Adapter extends ProtocolAdapter {
       const signature = log.topics[0];
       const address = normalizeAddress(log.address);
 
-      if (this.supportSignature(signature) && this.supportContract(address)) {
+      if (
+        Object.values(this.abiConfigs.eventSignatures).indexOf(signature) !== -1 &&
+        compareAddress(options.config.address, address)
+      ) {
         const event: any = decodeEventLog({
           abi: this.abiConfigs.eventAbis.lendingPool,
           data: log.data,
@@ -165,8 +169,8 @@ export default class Aavev2Adapter extends ProtocolAdapter {
     return result;
   }
 
-  public async getStateData(options: GetAdapterDataOptions): Promise<GetStateDataResult> {
-    const result: GetStateDataResult = {
+  public async getDataState(options: GetAdapterDataStateOptions): Promise<GetAdapterDataStateResult> {
+    const result: GetAdapterDataStateResult = {
       crossLending: [],
       cdpLending: null,
     };
@@ -276,7 +280,7 @@ export default class Aavev2Adapter extends ProtocolAdapter {
         }
       }
 
-      const dataState: CrossLendingMarketState = {
+      const dataState: CrossLendingMarketDataState = {
         metric: DataMetrics.crossLending,
         chain: marketConfig.chain,
         protocol: marketConfig.protocol,
@@ -308,13 +312,18 @@ export default class Aavev2Adapter extends ProtocolAdapter {
     return result;
   }
 
-  public async getSnapshotData(
-    options: GetAdapterDataOptions,
+  public async getDataTimeframe(
+    options: GetAdapterDataTimeframeOptions,
     storages: ContextStorages,
-  ): Promise<GetSnapshotDataResult> {
-    const states = (await this.getStateData(options)).crossLending;
+  ): Promise<GetAdapterDataTimeframeResult> {
+    const states = (
+      await this.getDataState({
+        config: options.config,
+        timestamp: options.fromTime,
+      })
+    ).crossLending;
 
-    const result: GetSnapshotDataResult = {
+    const result: GetAdapterDataTimeframeResult = {
       crossLending: [],
       cdpLending: null,
     };
@@ -322,9 +331,6 @@ export default class Aavev2Adapter extends ProtocolAdapter {
     if (!states) {
       return result;
     }
-
-    const startDayTimestamp = options.timestamp;
-    const endDayTimestamp = options.timestamp + DAY - 1;
 
     // sync activities
     await this.syncActivities(options, storages);
@@ -338,8 +344,8 @@ export default class Aavev2Adapter extends ProtocolAdapter {
           address: stateData.address,
           'token.address': stateData.token.address,
           timestamp: {
-            $gte: startDayTimestamp,
-            $lte: endDayTimestamp,
+            $gte: options.fromTime,
+            $lte: options.toTime,
           },
         },
       });
@@ -355,10 +361,14 @@ export default class Aavev2Adapter extends ProtocolAdapter {
         .multipliedBy(DAY)
         .dividedBy(YEAR);
 
-      const snapshotData: CrossLendingMarketSnapshot = {
+      const snapshotData: CrossLendingMarketDataTimeframe = {
         ...stateData,
         ...activityData,
-        totalFeesPaid: feesPaidFromBorrow.plus(feesPaidFromBorrowStable).toString(10),
+
+        volumeFeesPaid: feesPaidFromBorrow.plus(feesPaidFromBorrowStable).toString(10),
+
+        timefrom: options.fromTime,
+        timeto: options.toTime,
       };
 
       if (result.crossLending) {
@@ -405,9 +415,9 @@ export default class Aavev2Adapter extends ProtocolAdapter {
     reserve: string,
     blockNumber: number,
   ): Promise<{
-    forSupply: Array<TokenAmountItem>;
-    forBorrow: Array<TokenAmountItem>;
-    forBorrowStable: Array<TokenAmountItem>;
+    forSupply: Array<TokenValueItem>;
+    forBorrow: Array<TokenValueItem>;
+    forBorrowStable: Array<TokenValueItem>;
   } | null> {
     const rewards: any = {
       forSupply: [],
@@ -488,17 +498,17 @@ export default class Aavev2Adapter extends ProtocolAdapter {
     rewards.forSupply.push({
       token: rewardToken,
       amount: formatBigNumberToString(rewardForSupply.toString(10), rewardToken.decimals),
-    } as TokenAmountItem);
+    } as TokenValueItem);
 
     rewards.forBorrow.push({
       token: rewardToken,
       amount: formatBigNumberToString(rewardForBorrow.toString(10), rewardToken.decimals),
-    } as TokenAmountItem);
+    } as TokenValueItem);
 
     rewards.forBorrowStable.push({
       token: rewardToken,
       amount: formatBigNumberToString(rewardForBorrowStable.toString(10), rewardToken.decimals),
-    } as TokenAmountItem);
+    } as TokenValueItem);
 
     return rewards;
   }

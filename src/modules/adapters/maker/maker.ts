@@ -12,22 +12,23 @@ import EnvConfig from '../../../configs/envConfig';
 import { MakerLendingMarketConfig } from '../../../configs/protocols/maker';
 import { tryQueryBlockNumberAtTimestamp } from '../../../lib/subsgraph';
 import { compareAddress, formatBigNumberToString, normalizeAddress } from '../../../lib/utils';
-import { ProtocolConfig, Token } from '../../../types/configs';
-import { ActivityActions } from '../../../types/domains/base';
+import { ActivityActions } from '../../../types/collectors/base';
 import {
   CdpLendingActivityEvent,
-  CdpLendingMarketSnapshot,
-  CdpLendingMarketState,
-} from '../../../types/domains/lending';
-import { ContextServices, ContextStorages } from '../../../types/namespaces';
+  CdpLendingMarketDataState,
+  CdpLendingMarketDataTimeframe,
+} from '../../../types/collectors/lending';
 import {
-  GetAdapterDataOptions,
+  GetAdapterDataStateOptions,
+  GetAdapterDataStateResult,
+  GetAdapterDataTimeframeOptions,
+  GetAdapterDataTimeframeResult,
   GetAdapterEventLogsOptions,
-  GetSnapshotDataResult,
-  GetStateDataResult,
   TransformEventLogOptions,
   TransformEventLogResult,
-} from '../../../types/options';
+} from '../../../types/collectors/options';
+import { ProtocolConfig, Token } from '../../../types/configs';
+import { ContextServices, ContextStorages } from '../../../types/namespaces';
 import ProtocolAdapter from '../adapter';
 import { MakerEventInterfaces, MakerEventSignatures } from './abis';
 
@@ -47,8 +48,8 @@ export default class MakerAdapter extends ProtocolAdapter {
     };
   }
 
-  public async getStateData(options: GetAdapterDataOptions): Promise<GetStateDataResult> {
-    const result: GetStateDataResult = {
+  public async getDataState(options: GetAdapterDataStateOptions): Promise<GetAdapterDataStateResult> {
+    const result: GetAdapterDataStateResult = {
       crossLending: null,
       cdpLending: [],
     };
@@ -85,7 +86,7 @@ export default class MakerAdapter extends ProtocolAdapter {
       timestamp: options.timestamp,
     });
 
-    const stateData: CdpLendingMarketState = {
+    const stateData: CdpLendingMarketDataState = {
       protocol: options.config.protocol,
       chain: options.config.chain,
       metric: options.config.metric,
@@ -328,13 +329,18 @@ export default class MakerAdapter extends ProtocolAdapter {
     return result;
   }
 
-  public async getSnapshotData(
-    options: GetAdapterDataOptions,
+  public async getDataTimeframe(
+    options: GetAdapterDataTimeframeOptions,
     storages: ContextStorages,
-  ): Promise<GetSnapshotDataResult> {
-    const states = (await this.getStateData(options)).cdpLending;
+  ): Promise<GetAdapterDataTimeframeResult> {
+    const states = (
+      await this.getDataState({
+        config: options.config,
+        timestamp: options.fromTime,
+      })
+    ).cdpLending;
 
-    const result: GetSnapshotDataResult = {
+    const result: GetAdapterDataTimeframeResult = {
       crossLending: null,
       cdpLending: [],
     };
@@ -343,22 +349,21 @@ export default class MakerAdapter extends ProtocolAdapter {
       return result;
     }
 
-    const startDayTimestamp = options.timestamp;
-    const endDayTimestamp = options.timestamp + DAY - 1;
-
     // sync activities
     await this.syncActivities(options, storages);
 
     const marketConfig = options.config as MakerLendingMarketConfig;
     for (const stateData of states) {
-      const snapshot: CdpLendingMarketSnapshot = {
+      const snapshot: CdpLendingMarketDataTimeframe = {
         ...stateData,
         volumeBorrowed: '0',
         volumeRepaid: '0',
-        totalFeesPaid: '0',
+        volumeFeesPaid: '0',
         numberOfUsers: 0,
         numberOfTransactions: 0,
         collaterals: [],
+        timefrom: options.fromTime,
+        timeto: options.toTime,
       };
 
       const countUsers: { [key: string]: boolean } = {};
@@ -372,8 +377,8 @@ export default class MakerAdapter extends ProtocolAdapter {
           address: marketConfig.daiJoin,
           'token.address': marketConfig.debtToken.address,
           timestamp: {
-            $gte: startDayTimestamp,
-            $lte: endDayTimestamp,
+            $gte: options.fromTime,
+            $lte: options.toTime,
           },
         },
       });
@@ -415,8 +420,8 @@ export default class MakerAdapter extends ProtocolAdapter {
             address: collateral.address,
             'token.address': collateral.token.address,
             timestamp: {
-              $gte: startDayTimestamp,
-              $lte: endDayTimestamp,
+              $gte: options.fromTime,
+              $lte: options.toTime,
             },
           },
         });
@@ -452,7 +457,7 @@ export default class MakerAdapter extends ProtocolAdapter {
           .multipliedBy(new BigNumber(collateral.totalDebts ? collateral.totalDebts : '0'))
           .multipliedBy(DAY)
           .dividedBy(YEAR);
-        snapshot.totalFeesPaid = new BigNumber(snapshot.totalFeesPaid).plus(fees).toString(10);
+        snapshot.volumeFeesPaid = new BigNumber(snapshot.volumeFeesPaid).plus(fees).toString(10);
 
         snapshot.collaterals.push({
           ...collateral,

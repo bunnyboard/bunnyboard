@@ -165,5 +165,16 @@ export const Aavev3Configs: AaveProtocolConfig = {
       dataProvider: '0x501B4c19dd9C2e06E94dA7b6D5Ed4ddA013EC741',
       incentiveController: '0xaD4F91D26254B6B0C6346b390dDA2991FDE2F20d',
     },
+    {
+      chain: 'bnbchain',
+      protocol: 'aavev3',
+      version: 'aavev3',
+      birthday: 1706054400, // Wed Jan 24 2024 00:00:00 GMT+0000
+      metric: DataMetrics.crossLending,
+      address: '0x6807dc923806fE8Fd134338EABCA509979a7e0cB',
+      priceOracle: '0x39bc1bfDa2130d6Bb6DBEfd366939b4c7aa7C697',
+      dataProvider: '0x41585C50524fb8c3899B43D7D797d9486AAc94DB',
+      incentiveController: '0xC206C2764A9dBF27d599613b8F9A63ACd1160ab4',
+    },
   ]),
 };

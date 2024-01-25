@@ -1,17 +1,19 @@
 import { IBlockchainService } from '../services/blockchains/domains';
 import { IDatabaseService } from '../services/database/domains';
 import { IOracleService } from '../services/oracle/domains';
-import { ProtocolConfig } from './configs';
+import { AggDataQueryOptions, AggDataQueryResult } from './aggregates/options';
 import {
   AdapterAbiConfigs,
-  GetAdapterDataOptions,
+  GetAdapterDataStateOptions,
+  GetAdapterDataStateResult,
+  GetAdapterDataTimeframeOptions,
+  GetAdapterDataTimeframeResult,
   GetAdapterEventLogsOptions,
-  GetSnapshotDataResult,
-  GetStateDataResult,
   RunCollectorOptions,
   TransformEventLogOptions,
   TransformEventLogResult,
-} from './options';
+} from './collectors/options';
+import { ProtocolConfig } from './configs';
 
 export interface ContextStorages {
   database: IDatabaseService;
@@ -33,17 +35,20 @@ export interface IProtocolAdapter {
   // and abi for parsing
   abiConfigs: AdapterAbiConfigs;
 
-  // transform raw event log into activities
-  transformEventLogs: (options: TransformEventLogOptions) => Promise<TransformEventLogResult>;
-
   // get logs related to the protocol
   getEventLogs: (options: GetAdapterEventLogsOptions) => Promise<Array<any>>;
 
-  // get state data
-  getStateData: (options: GetAdapterDataOptions) => Promise<GetStateDataResult>;
+  // transform raw event log into activities
+  transformEventLogs: (options: TransformEventLogOptions) => Promise<TransformEventLogResult>;
 
-  // get snapshot data
-  getSnapshotData: (options: GetAdapterDataOptions, storages: ContextStorages) => Promise<GetSnapshotDataResult>;
+  // get data state of a metric config
+  getDataState: (options: GetAdapterDataStateOptions) => Promise<GetAdapterDataStateResult>;
+
+  // get data in a given timeframe
+  getDataTimeframe: (
+    options: GetAdapterDataTimeframeOptions,
+    storages: ContextStorages,
+  ) => Promise<GetAdapterDataTimeframeResult>;
 }
 
 export interface ICollector {
@@ -52,4 +57,14 @@ export interface ICollector {
   storages: ContextStorages;
 
   run: (options: RunCollectorOptions) => Promise<void>;
+}
+
+export interface DataAggregator {
+  name: string;
+  database: IDatabaseService;
+
+  query: (options: AggDataQueryOptions) => Promise<AggDataQueryResult | null>;
+
+  // expect to aggregate data and update to database
+  runUpdate: () => Promise<void>;
 }

@@ -7,9 +7,9 @@ import { countNumberOfUniqueValue, normalizeAddress } from '../../../lib/utils';
 import { IDatabaseService } from '../../../services/database/domains';
 import { AggDataAggregateNames, AggDataTypes } from '../../../types/aggregates/common';
 import { AggCrossLendingOverallState } from '../../../types/aggregates/lending';
-import { DataAggregator } from '../../../types/aggregates/namespaces';
 import { AggDataQueryOptions, AggDataQueryResult, AggLendingDataQueryFilters } from '../../../types/aggregates/options';
 import { DataMetrics } from '../../../types/configs';
+import { DataAggregator } from '../../../types/namespaces';
 import DataTransform from '../transform/data';
 import HelperTransform from '../transform/helper';
 
@@ -31,11 +31,41 @@ export default class LendingDataAggregator implements DataAggregator {
         value: 0,
         valueUsd: 0,
       },
+      volumeDeposited: {
+        value: 0,
+        valueUsd: 0,
+      },
+      volumeWithdrawn: {
+        value: 0,
+        valueUsd: 0,
+      },
+      volumeBorrowed: {
+        value: 0,
+        valueUsd: 0,
+      },
+      volumeRepaid: {
+        value: 0,
+        valueUsd: 0,
+      },
+      volumeFeesPaid: {
+        value: 0,
+        valueUsd: 0,
+      },
       numberOfChains: 0,
       numberOfProtocols: 0,
       markets: [],
       dayData: [],
     };
+
+    const fields: Array<string> = [
+      'totalDeposited',
+      'totalBorrowed',
+      'volumeDeposited',
+      'volumeWithdrawn',
+      'volumeBorrowed',
+      'volumeRepaid',
+      'volumeFeesPaid',
+    ];
 
     // get all cross lending states
     const states = await this.database.query({
@@ -44,11 +74,19 @@ export default class LendingDataAggregator implements DataAggregator {
         metric: DataMetrics.crossLending,
       },
     });
+
     for (const item of states) {
       const market = DataTransform.transformToCrossLendingMarketState(item);
+      for (const field of fields) {
+        (dataState as any)[field].valueUsd += (market as any)[field].valueUsd;
 
-      dataState.totalDeposited.valueUsd += market.totalDeposited.valueUsd;
-      dataState.totalBorrowed.valueUsd += market.totalBorrowed.valueUsd;
+        // calculate previous snapshot data
+        const previousTokenPrice = (market.tokenPrice.valueUsd * Number(market.tokenPrice.changedValueUsd)) / 100;
+        const previousBalance = ((market as any)[field].value * Number((market as any)[field].changedValue)) / 100;
+        const previousBalanceUsd = previousBalance * previousTokenPrice;
+        (dataState as any)[field].changedValueUsd =
+          (((dataState as any)[field].valueUsd - previousBalanceUsd) / previousBalanceUsd) * 100;
+      }
 
       dataState.markets.push(market);
     }
@@ -90,14 +128,6 @@ export default class LendingDataAggregator implements DataAggregator {
       };
     });
 
-    const fields: Array<string> = [
-      'totalDeposited',
-      'totalBorrowed',
-      'volumeDeposited',
-      'volumeWithdrawn',
-      'volumeBorrowed',
-      'volumeRepaid',
-    ];
     dataState.dayData = HelperTransform.buildupDayDataValueItems(snapshots, fields);
     dataState.dayData = dataState.dayData.sort(function (a: any, b: any) {
       return a.timestamp > b.timestamp ? 1 : -1;

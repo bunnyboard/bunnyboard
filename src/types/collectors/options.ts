@@ -1,11 +1,11 @@
-import { MetricConfig } from './configs';
+import { MetricConfig } from '../configs';
+import { CrossLendingActivityEvent } from './lending';
 import {
-  CdpLendingMarketSnapshot,
-  CdpLendingMarketState,
-  CrossLendingActivityEvent,
-  CrossLendingMarketSnapshot,
-  CrossLendingMarketState,
-} from './domains/lending';
+  CdpLendingMarketDataState,
+  CdpLendingMarketDataTimeframe,
+  CrossLendingMarketDataState,
+  CrossLendingMarketDataTimeframe,
+} from './lending';
 
 export interface AdapterAbiConfigs {
   eventSignatures: any;
@@ -22,7 +22,7 @@ export interface TransformEventLogResult {
   activities: Array<CrossLendingActivityEvent>;
 }
 
-export interface GetAdapterDataOptions {
+export interface GetAdapterDataStateOptions {
   config: MetricConfig;
   timestamp: number;
 }
@@ -33,14 +33,20 @@ export interface GetAdapterEventLogsOptions {
   toBlock: number;
 }
 
-export interface GetStateDataResult {
-  crossLending: Array<CrossLendingMarketState> | null;
-  cdpLending: Array<CdpLendingMarketState> | null;
+export interface GetAdapterDataTimeframeOptions {
+  config: MetricConfig;
+  fromTime: number;
+  toTime: number;
 }
 
-export interface GetSnapshotDataResult {
-  crossLending: Array<CrossLendingMarketSnapshot> | null;
-  cdpLending: Array<CdpLendingMarketSnapshot> | null;
+export interface GetAdapterDataStateResult {
+  crossLending: Array<CrossLendingMarketDataState> | null;
+  cdpLending: Array<CdpLendingMarketDataState> | null;
+}
+
+export interface GetAdapterDataTimeframeResult {
+  crossLending: Array<CrossLendingMarketDataTimeframe> | null;
+  cdpLending: Array<CdpLendingMarketDataTimeframe> | null;
 }
 
 export interface RunCollectorOptions {
