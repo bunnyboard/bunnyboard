@@ -136,7 +136,7 @@ export const Aavev3Configs: AaveProtocolConfig = {
       chain: 'base',
       protocol: 'aavev3',
       version: 'aavev3',
-      birthday: 1691539200, // Wed Aug 09 2023 00:00:00 GMT+0000
+      birthday: 1692662400, // Tue Aug 22 2023 00:00:00 GMT+0000
       metric: DataMetrics.crossLending,
       address: '0xa238dd80c259a72e81d7e4664a9801593f98d1c5',
       priceOracle: '0x2Cc0Fc26eD4563A5ce5e8bdcfe1A2878676Ae156',

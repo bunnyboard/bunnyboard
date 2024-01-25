@@ -128,7 +128,7 @@ export default class ProtocolAdapter implements IProtocolAdapter {
     const endExeTime = Math.floor(new Date().getTime() / 1000);
     const elapsed = endExeTime - startExeTime;
 
-    logger.info('sync protocol activities', {
+    logger.debug('sync protocol activities', {
       service: this.name,
       chain: options.config.chain,
       protocol: options.config.protocol,
