@@ -200,6 +200,96 @@ export default class CollectorDataTransform {
             .dividedBy(new BigNumber(timeframeLast24Hours.totalDeposited))
             .toString(10);
         }
+
+        // volumes on debt token
+        if (timeframeLast48Hours.volumeFeesPaid !== '0') {
+          stateWithChanges.dailyChangesVolumeFeesPaid = new BigNumber(timeframeLast24Hours.volumeFeesPaid)
+            .minus(new BigNumber(timeframeLast48Hours.volumeFeesPaid))
+            .dividedBy(new BigNumber(timeframeLast48Hours.volumeFeesPaid))
+            .toString(10);
+        }
+        if (timeframeLast48Hours.volumeBorrowed !== '0') {
+          stateWithChanges.dailyChangesVolumeBorrowed = new BigNumber(timeframeLast24Hours.volumeBorrowed)
+            .minus(new BigNumber(timeframeLast48Hours.volumeBorrowed))
+            .dividedBy(new BigNumber(timeframeLast48Hours.volumeBorrowed))
+            .toString(10);
+        }
+        if (timeframeLast48Hours.volumeRepaid !== '0') {
+          stateWithChanges.dailyChangesVolumeRepaid = new BigNumber(timeframeLast24Hours.volumeRepaid)
+            .minus(new BigNumber(timeframeLast48Hours.volumeRepaid))
+            .dividedBy(new BigNumber(timeframeLast48Hours.volumeRepaid))
+            .toString(10);
+        }
+        if (timeframeLast48Hours.volumeDeposited !== '0') {
+          if (timeframeLast48Hours.volumeDeposited && timeframeLast24Hours.volumeDeposited) {
+            stateWithChanges.dailyChangesVolumeDeposited = new BigNumber(timeframeLast24Hours.volumeDeposited)
+              .minus(new BigNumber(timeframeLast48Hours.volumeDeposited))
+              .dividedBy(new BigNumber(timeframeLast48Hours.volumeDeposited))
+              .toString(10);
+          }
+        }
+        if (timeframeLast48Hours.volumeWithdrawn !== '0') {
+          if (timeframeLast48Hours.volumeWithdrawn && timeframeLast24Hours.volumeWithdrawn) {
+            stateWithChanges.dailyChangesVolumeWithdrawn = new BigNumber(timeframeLast24Hours.volumeWithdrawn)
+              .minus(new BigNumber(timeframeLast48Hours.volumeWithdrawn))
+              .dividedBy(new BigNumber(timeframeLast48Hours.volumeWithdrawn))
+              .toString(10);
+          }
+        }
+
+        // process collaterals
+        for (let i = 0; i < stateWithChanges.collaterals.length; i++) {
+          if (timeframeLast24Hours.collaterals[i].tokenPrice !== '0') {
+            stateWithChanges.collaterals[i].dailyChangesTokenPrice = new BigNumber(state.collaterals[i].tokenPrice)
+              .minus(new BigNumber(timeframeLast24Hours.collaterals[i].tokenPrice))
+              .dividedBy(new BigNumber(timeframeLast24Hours.collaterals[i].tokenPrice))
+              .toString(10);
+          }
+
+          if (timeframeLast24Hours.collaterals[i].totalDeposited !== '0') {
+            stateWithChanges.collaterals[i].dailyChangesTotalDeposited = new BigNumber(
+              state.collaterals[i].totalDeposited,
+            )
+              .minus(new BigNumber(timeframeLast24Hours.collaterals[i].totalDeposited))
+              .dividedBy(new BigNumber(timeframeLast24Hours.collaterals[i].totalDeposited))
+              .toString(10);
+          }
+          if (timeframeLast24Hours.collaterals[i].totalDebts !== '0') {
+            if (state.collaterals[i].totalDebts && timeframeLast24Hours.collaterals[i].totalDebts) {
+              stateWithChanges.collaterals[i].dailyChangesTotalDebts = new BigNumber(
+                state.collaterals[i].totalDebts as string,
+              )
+                .minus(new BigNumber(timeframeLast24Hours.collaterals[i].totalDebts as string))
+                .dividedBy(new BigNumber(timeframeLast24Hours.collaterals[i].totalDebts as string))
+                .toString(10);
+            }
+          }
+
+          if (timeframeLast48Hours.collaterals[i].volumeDeposited !== '0') {
+            stateWithChanges.collaterals[i].dailyChangesVolumeDeposited = new BigNumber(
+              timeframeLast24Hours.collaterals[i].volumeDeposited,
+            )
+              .minus(new BigNumber(timeframeLast48Hours.collaterals[i].volumeDeposited))
+              .dividedBy(new BigNumber(timeframeLast48Hours.collaterals[i].volumeDeposited))
+              .toString(10);
+          }
+          if (timeframeLast48Hours.collaterals[i].volumeWithdrawn !== '0') {
+            stateWithChanges.collaterals[i].dailyChangesVolumeWithdrawn = new BigNumber(
+              timeframeLast24Hours.collaterals[i].volumeWithdrawn,
+            )
+              .minus(new BigNumber(timeframeLast48Hours.collaterals[i].volumeWithdrawn))
+              .dividedBy(new BigNumber(timeframeLast48Hours.collaterals[i].volumeWithdrawn))
+              .toString(10);
+          }
+          if (timeframeLast48Hours.collaterals[i].volumeLiquidated !== '0') {
+            stateWithChanges.collaterals[i].dailyChangesVolumeLiquidated = new BigNumber(
+              timeframeLast24Hours.collaterals[i].volumeLiquidated,
+            )
+              .minus(new BigNumber(timeframeLast48Hours.collaterals[i].volumeLiquidated))
+              .dividedBy(new BigNumber(timeframeLast48Hours.collaterals[i].volumeLiquidated))
+              .toString(10);
+          }
+        }
       }
     }
 

@@ -6,6 +6,7 @@ export const AggDataTypes = {
 
 export const AggDataAggregateNames = {
   crossLendingDataState: 'crossLendingDataState',
+  cdpLendingDataState: 'cdpLendingDataState',
 };
 
 export interface DataValueItem {

@@ -2,7 +2,10 @@ import { DAY } from '../../configs/constants';
 import EnvConfig from '../../configs/envConfig';
 import logger from '../../lib/logger';
 import { getTimestamp } from '../../lib/utils';
-import { CrossLendingMarketDataTimeframeWithChanges } from '../../types/collectors/lending';
+import {
+  CdpLendingMarketDataTimeframeWithChanges,
+  CrossLendingMarketDataTimeframeWithChanges,
+} from '../../types/collectors/lending';
 import { RunCollectorOptions } from '../../types/collectors/options';
 import { MetricConfig } from '../../types/configs';
 import { ContextServices, ContextStorages, IProtocolAdapter } from '../../types/namespaces';
@@ -97,16 +100,41 @@ export default class StateCollector {
 
       if (state.cdpLending) {
         for (const data of state.cdpLending) {
+          let stateWithChanges: CdpLendingMarketDataTimeframeWithChanges =
+            CollectorDataTransform.transformCdpLendingStates(data, undefined, undefined);
+
+          if (timeframeLast24Hours.cdpLending && timeframeLast48Hours.cdpLending) {
+            const dataLast24Hours = timeframeLast24Hours.cdpLending.filter(
+              (item) =>
+                item.chain === data.chain &&
+                item.protocol === data.protocol &&
+                item.token.address === data.token.address,
+            )[0];
+            const dataLast48Hours = timeframeLast48Hours.cdpLending.filter(
+              (item) =>
+                item.chain === data.chain &&
+                item.protocol === data.protocol &&
+                item.token.address === data.token.address,
+            )[0];
+            if (dataLast24Hours && dataLast48Hours) {
+              stateWithChanges = CollectorDataTransform.transformCdpLendingStates(
+                data,
+                dataLast24Hours,
+                dataLast48Hours,
+              );
+            }
+          }
+
           await this.storages.database.update({
             collection: EnvConfig.mongodb.collections.lendingMarketStates,
             keys: {
               chain: data.chain,
-              protocol: data.protocol,
               metric: data.metric,
+              protocol: data.protocol,
               'token.address': data.token.address,
             },
             updates: {
-              ...data,
+              ...stateWithChanges,
             },
             upsert: true,
           });

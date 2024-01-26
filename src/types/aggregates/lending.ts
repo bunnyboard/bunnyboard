@@ -64,6 +64,8 @@ export interface AggCrossLendingOverallState {
 
 export interface AggCdpLendingCollateralSnapshot {
   token: Token; // collateral token
+  tokenPrice: DataValueItem;
+  totalDeposited: DataValueItem;
 }
 
 export interface AggCdpLendingMarketSnapshot {

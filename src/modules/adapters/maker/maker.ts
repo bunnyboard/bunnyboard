@@ -383,8 +383,6 @@ export default class MakerAdapter extends ProtocolAdapter {
         },
       });
 
-      let volumeBorrowed = new BigNumber(0);
-      let volumeRepaid = new BigNumber(0);
       for (const event of daiEvents) {
         const activityEvent = event as CdpLendingActivityEvent;
         if (!transactions[activityEvent.transactionHash]) {
@@ -397,11 +395,15 @@ export default class MakerAdapter extends ProtocolAdapter {
 
         switch (activityEvent.action) {
           case ActivityActions.borrow: {
-            volumeBorrowed = volumeBorrowed.plus(new BigNumber(activityEvent.tokenAmount));
+            snapshot.volumeBorrowed = new BigNumber(snapshot.volumeBorrowed)
+              .plus(new BigNumber(activityEvent.tokenAmount))
+              .toString(10);
             break;
           }
           case ActivityActions.repay: {
-            volumeRepaid = volumeRepaid.plus(new BigNumber(activityEvent.tokenAmount));
+            snapshot.volumeRepaid = new BigNumber(snapshot.volumeRepaid)
+              .plus(new BigNumber(activityEvent.tokenAmount))
+              .toString(10);
             break;
           }
         }
