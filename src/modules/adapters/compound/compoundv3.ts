@@ -193,7 +193,7 @@ export default class Compoundv3Adapter extends ProtocolAdapter {
         tokenPrice: assetPrice ? assetPrice : '0',
         totalDeposited: totalDeposited,
         rateBorrow: formatBigNumberToString(new BigNumber(borrowRate.toString()).multipliedBy(YEAR).toString(10), 18),
-        rateLoanToValueRate: loanToValue,
+        rateLoanToValue: loanToValue,
 
         // todo, check why 15 decimals here
         rateRewardBorrow: formatBigNumberToString(rewardBorrowRate, 15),
@@ -273,7 +273,10 @@ export default class Compoundv3Adapter extends ProtocolAdapter {
             if (signature === Compoundv3EventSignatures.Supply) {
               action = ActivityActions.repay;
 
-              for (const logItem of options.logs) {
+              for (const logItem of options.logs.filter(
+                (item) =>
+                  Number(item.blockNumber) === Number(log.blockNumber) && item.transactionHash === log.transactionHash,
+              )) {
                 if (
                   logItem.topics[0] === Erc20TransferEventSignature &&
                   compareAddress(logItem.address, marketConfig.address)
@@ -284,7 +287,10 @@ export default class Compoundv3Adapter extends ProtocolAdapter {
             } else {
               action = ActivityActions.borrow;
 
-              for (const logItem of options.logs) {
+              for (const logItem of options.logs.filter(
+                (item) =>
+                  Number(item.blockNumber) === Number(log.blockNumber) && item.transactionHash === log.transactionHash,
+              )) {
                 if (
                   logItem.topics[0] === Erc20TransferEventSignature &&
                   compareAddress(logItem.address, marketConfig.address)

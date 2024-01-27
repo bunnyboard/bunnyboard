@@ -3,10 +3,11 @@ import BigNumber from 'bignumber.js';
 import EnvConfig from '../../../configs/envConfig';
 import { DefaultRecordPerPage } from '../../../configs/policies';
 import logger from '../../../lib/logger';
+import { calChangesOf_Y_From_X_List } from '../../../lib/math';
 import { countNumberOfUniqueValue, normalizeAddress } from '../../../lib/utils';
 import { IDatabaseService } from '../../../services/database/domains';
 import { AggDataAggregateNames, AggDataTypes } from '../../../types/aggregates/common';
-import { AggCrossLendingOverallState } from '../../../types/aggregates/lending';
+import { AggCdpLendingOverallState, AggCrossLendingOverallState } from '../../../types/aggregates/lending';
 import { AggDataQueryOptions, AggDataQueryResult, AggLendingDataQueryFilters } from '../../../types/aggregates/options';
 import { DataMetrics } from '../../../types/configs';
 import { DataAggregator } from '../../../types/namespaces';
@@ -154,6 +155,119 @@ export default class LendingDataAggregator implements DataAggregator {
     return dataState;
   }
 
+  private async aggregateCdpLendingDataState(): Promise<AggCdpLendingOverallState> {
+    const dataState: AggCdpLendingOverallState = {
+      totalDebts: {
+        value: 0,
+        valueUsd: 0,
+      },
+      totalCollateralDeposited: {
+        value: 0,
+        valueUsd: 0,
+      },
+      volumeBorrowed: {
+        value: 0,
+        valueUsd: 0,
+      },
+      volumeRepaid: {
+        value: 0,
+        valueUsd: 0,
+      },
+      volumeFeesPaid: {
+        value: 0,
+        valueUsd: 0,
+      },
+      markets: [],
+      dayData: [],
+    };
+
+    // get all cross lending states
+    const states = await this.database.query({
+      collection: EnvConfig.mongodb.collections.lendingMarketStates,
+      query: {
+        metric: DataMetrics.cdpLending,
+      },
+    });
+
+    for (const state of states) {
+      const market = DataTransform.transformToCdpLendingMarketState(state);
+
+      dataState.totalDebts.valueUsd += market.totalDebts.valueUsd;
+      dataState.volumeBorrowed.valueUsd += market.volumeBorrowed.valueUsd;
+      dataState.volumeRepaid.valueUsd += market.volumeRepaid.valueUsd;
+      dataState.volumeFeesPaid.valueUsd += market.volumeFeesPaid.valueUsd;
+
+      if (market.totalDeposited) {
+        if (!dataState.totalDeposited) {
+          dataState.totalDeposited = {
+            value: 0,
+            valueUsd: 0,
+          };
+        }
+        dataState.totalDeposited.valueUsd += market.totalDeposited.valueUsd;
+      }
+      if (market.volumeDeposited) {
+        if (!dataState.volumeDeposited) {
+          dataState.volumeDeposited = {
+            value: 0,
+            valueUsd: 0,
+          };
+        }
+        dataState.volumeDeposited.valueUsd += market.volumeDeposited.valueUsd;
+      }
+      if (market.volumeWithdrawn) {
+        if (!dataState.volumeWithdrawn) {
+          dataState.volumeWithdrawn = {
+            value: 0,
+            valueUsd: 0,
+          };
+        }
+        dataState.volumeWithdrawn.valueUsd += market.volumeWithdrawn.valueUsd;
+      }
+
+      for (const collateral of market.collaterals) {
+        dataState.totalCollateralDeposited.valueUsd += collateral.totalDeposited.valueUsd;
+      }
+
+      dataState.markets.push(market);
+    }
+
+    dataState.totalDebts.changedValueUsd = calChangesOf_Y_From_X_List(
+      dataState.markets.map((market) => {
+        return {
+          value: market.totalDebts.valueUsd,
+          change: market.totalDebts.changedValueUsd ? market.totalDebts.changedValueUsd : 0,
+        };
+      }),
+    );
+    dataState.volumeBorrowed.changedValueUsd = calChangesOf_Y_From_X_List(
+      dataState.markets.map((market) => {
+        return {
+          value: market.volumeBorrowed.valueUsd,
+          change: market.volumeBorrowed.changedValueUsd ? market.volumeBorrowed.changedValueUsd : 0,
+        };
+      }),
+    );
+    dataState.volumeRepaid.changedValueUsd = calChangesOf_Y_From_X_List(
+      dataState.markets.map((market) => {
+        return {
+          value: market.volumeRepaid.valueUsd,
+          change: market.volumeRepaid.changedValueUsd ? market.volumeRepaid.changedValueUsd : 0,
+        };
+      }),
+    );
+    dataState.volumeFeesPaid.changedValueUsd = calChangesOf_Y_From_X_List(
+      dataState.markets.map((market) => {
+        return {
+          value: market.volumeFeesPaid.valueUsd,
+          change: market.volumeFeesPaid.changedValueUsd ? market.volumeFeesPaid.changedValueUsd : 0,
+        };
+      }),
+    );
+
+    return dataState;
+  }
+
   public async runUpdate(): Promise<void> {
     const crossLendingDataState = await this.aggregateCrossLendingDataState();
 
@@ -172,6 +286,25 @@ export default class LendingDataAggregator implements DataAggregator {
     logger.info(`aggregated and updated data`, {
       service: this.name,
       name: AggDataAggregateNames.crossLendingDataState,
+    });
+
+    const cdpLendingDataState = await this.aggregateCdpLendingDataState();
+
+    await this.database.update({
+      collection: EnvConfig.mongodb.collections.aggregates,
+      keys: {
+        name: AggDataAggregateNames.cdpLendingDataState,
+      },
+      updates: {
+        name: AggDataAggregateNames.cdpLendingDataState,
+        ...cdpLendingDataState,
+      },
+      upsert: true,
+    });
+
+    logger.info(`aggregated and updated data`, {
+      service: this.name,
+      name: AggDataAggregateNames.cdpLendingDataState,
     });
   }
 

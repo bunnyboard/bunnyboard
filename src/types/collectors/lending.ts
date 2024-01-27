@@ -112,7 +112,7 @@ export interface CdpCollateralDataState {
   rateRewardBorrow?: string;
 
   // the token collateral factor
-  rateLoanToValueRate: string;
+  rateLoanToValue: string;
 }
 
 export interface CdpCollateralDataTimeframe extends CdpCollateralDataState {
@@ -136,7 +136,7 @@ export interface CdpLendingMarketDataState extends DataState {
   totalDebts: string;
 
   // current lending supply rate
-  rateSupply: string;
+  rateSupply?: string;
 
   // incentive reward rate for suppliers
   rateRewardSupply?: string;

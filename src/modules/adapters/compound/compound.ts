@@ -410,7 +410,7 @@ export default class CompoundAdapter extends ProtocolAdapter {
           const token = (options.config as CompoundLendingMarketConfig).governanceToken;
           const cToken = allCTokens.filter((item) => compareAddress(item.cToken, event.args.cToken.toString()))[0];
           if (cToken && token) {
-            const user = normalizeAddress(event.args.supplier);
+            const user = normalizeAddress(event.args.supplier ? event.args.supplier : event.args.borrower);
             const tokenAmount = formatBigNumberToString(event.args.compDelta.toString(), token.decimals);
             result.activities.push({
               chain: options.chain,

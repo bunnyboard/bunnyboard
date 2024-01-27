@@ -94,7 +94,6 @@ export default class MakerAdapter extends ProtocolAdapter {
       token: marketConfig.debtToken,
       tokenPrice: debtTokenPrice ? debtTokenPrice : '0',
       totalDebts: formatBigNumberToString(debt.toString(), RAD_DECIMALS),
-      rateSupply: '0',
       collaterals: [],
     };
 
@@ -195,7 +194,7 @@ export default class MakerAdapter extends ProtocolAdapter {
           totalDebts: totalBorrowed,
           totalDeposited: totalDeposited,
           rateBorrow: borrowRate.toString(10),
-          rateLoanToValueRate: loanToValue.toString(10),
+          rateLoanToValue: loanToValue.toString(10),
         });
       }
     }
