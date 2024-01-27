@@ -90,6 +90,7 @@ export interface AggCdpLendingMarketSnapshot {
 
   totalDeposited?: DataValueItem;
   totalDebts: DataValueItem;
+  totalCollateralDeposited: DataValueItem;
 
   rateSupply?: number;
   rateRewardSupply?: number;

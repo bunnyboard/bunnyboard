@@ -1,6 +1,6 @@
 import BigNumber from 'bignumber.js';
 
-import { calChangesOf_Y_From_XP, calValueOf_X_Amount_Price_P } from '../../../lib/math';
+import { calChangesOf_Y_From_XP, calChangesOf_Y_From_X_List, calValueOf_X_Amount_Price_P } from '../../../lib/math';
 import { DataValueItem } from '../../../types/aggregates/common';
 import { AggCdpLendingMarketSnapshot, AggCrossLendingMarketSnapshot } from '../../../types/aggregates/lending';
 import {
@@ -168,6 +168,10 @@ export default class DataTransform {
             dataWithChanges.dailyChangesTokenPrice,
           ) * 100,
       },
+      totalCollateralDeposited: {
+        value: 0,
+        valueUsd: 0,
+      },
       totalDeposited:
         dataWithChanges.totalDeposited && dataWithChanges.dailyChangesTotalDeposited
           ? {
@@ -263,6 +267,11 @@ export default class DataTransform {
     };
 
     for (const collateral of dataWithChanges.collaterals) {
+      snapshot.totalCollateralDeposited.valueUsd += calValueOf_X_Amount_Price_P(
+        collateral.totalDeposited,
+        collateral.tokenPrice,
+      );
+
       snapshot.collaterals.push({
         address: collateral.address,
         token: collateral.token,
@@ -328,6 +337,21 @@ export default class DataTransform {
         rateLoanToValue: collateral.rateLoanToValue ? new BigNumber(collateral.rateLoanToValue).toNumber() : undefined,
       });
     }
+
+    snapshot.totalCollateralDeposited.changedValueUsd =
+      calChangesOf_Y_From_X_List(
+        dataWithChanges.collaterals.map((collateral) => {
+          return {
+            value: new BigNumber(collateral.totalDeposited).multipliedBy(collateral.tokenPrice).toNumber(),
+            change: calChangesOf_Y_From_XP(
+              collateral.totalDeposited,
+              collateral.dailyChangesTotalDeposited,
+              collateral.dailyChangesTokenPrice,
+              collateral.dailyChangesTokenPrice,
+            ),
+          };
+        }),
+      ) * 100;
 
     return snapshot;
   }

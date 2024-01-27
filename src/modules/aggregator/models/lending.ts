@@ -193,6 +193,7 @@ export default class LendingDataAggregator implements DataAggregator {
       const market = DataTransform.transformToCdpLendingMarketState(state);
 
       dataState.totalDebts.valueUsd += market.totalDebts.valueUsd;
+      dataState.totalCollateralDeposited.valueUsd += market.totalCollateralDeposited.valueUsd;
       dataState.volumeBorrowed.valueUsd += market.volumeBorrowed.valueUsd;
       dataState.volumeRepaid.valueUsd += market.volumeRepaid.valueUsd;
       dataState.volumeFeesPaid.valueUsd += market.volumeFeesPaid.valueUsd;
@@ -225,10 +226,6 @@ export default class LendingDataAggregator implements DataAggregator {
         dataState.volumeWithdrawn.valueUsd += market.volumeWithdrawn.valueUsd;
       }
 
-      for (const collateral of market.collaterals) {
-        dataState.totalCollateralDeposited.valueUsd += collateral.totalDeposited.valueUsd;
-      }
-
       dataState.markets.push(market);
     }
 
@@ -237,6 +234,14 @@ export default class LendingDataAggregator implements DataAggregator {
         return {
           value: market.totalDebts.valueUsd,
           change: market.totalDebts.changedValueUsd ? market.totalDebts.changedValueUsd : 0,
+        };
+      }),
+    );
+    dataState.totalCollateralDeposited.changedValueUsd = calChangesOf_Y_From_X_List(
+      dataState.markets.map((market) => {
+        return {
+          value: market.totalCollateralDeposited.valueUsd,
+          change: market.totalCollateralDeposited.changedValueUsd ? market.totalCollateralDeposited.changedValueUsd : 0,
         };
       }),
     );
