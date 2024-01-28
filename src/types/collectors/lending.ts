@@ -155,7 +155,7 @@ export interface CdpLendingMarketDataTimeframe extends CdpLendingMarketDataState
   collaterals: Array<CdpCollateralDataTimeframe>;
 }
 
-export interface CdpLendingMarketDataStateWithTimeframes {
+export interface CdpLendingMarketDataStateWithTimeframes extends CdpLendingMarketDataState {
   timeframe24Hours: CdpLendingMarketDataTimeframe | null;
   timeframe48Hours: CdpLendingMarketDataTimeframe | null;
 }

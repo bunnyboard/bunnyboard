@@ -2,6 +2,10 @@ import { DataTimeframe } from '../collectors/base';
 import { Token } from '../configs';
 import { DataValueItem } from './common';
 
+//
+///// Cross Lending /////
+//
+
 export interface AggCrossLendingMarketSnapshot extends DataTimeframe {
   address: string;
   token: Token;
@@ -66,6 +70,10 @@ export interface AggCrossLendingOverallState {
   dayData: Array<AggCrossLendingDayData>;
 }
 
+//
+///// CDP Lending /////
+//
+
 export interface AggCdpLendingCollateralSnapshot {
   address: string;
 
@@ -94,7 +102,7 @@ export interface AggCdpLendingCollateralSnapshot {
 export interface AggCdpLendingMarketSnapshot extends DataTimeframe {
   token: Token; // debt token
 
-  tokenPrice: DataValueItem;
+  tokenPrice: number;
 
   totalDebts: DataValueItem;
   totalDeposited?: DataValueItem;
@@ -148,6 +156,7 @@ export interface AggCdpLendingOverallState {
   volumeBorrowed: DataValueItem;
   volumeRepaid: DataValueItem;
   volumeFeesPaid: DataValueItem;
+
   volumeDeposited?: DataValueItem;
   volumeWithdrawn?: DataValueItem;
 

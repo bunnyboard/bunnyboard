@@ -5,6 +5,7 @@ import { normalizeAddress } from '../../../../lib/utils';
 import { IDatabaseService } from '../../../../services/database/domains';
 import { DataMetrics } from '../../../../types/configs';
 import { DataAggregator } from '../../../../types/namespaces';
+import CdpLendingDataAggregator from '../../models/cdpLending';
 import CrossLendingDataAggregator from '../../models/crossLending';
 import { writeResponse } from '../middleware';
 
@@ -17,6 +18,10 @@ export function getRouter(database: IDatabaseService): Router {
     switch (request.params.metric) {
       case DataMetrics.crossLending: {
         aggregator = new CrossLendingDataAggregator(database);
+        break;
+      }
+      case DataMetrics.cdpLending: {
+        aggregator = new CdpLendingDataAggregator(database);
         break;
       }
     }
