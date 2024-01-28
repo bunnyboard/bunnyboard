@@ -2,6 +2,7 @@ import { Router } from 'express';
 
 import { IDatabaseService } from '../../../services/database/domains';
 import { middleware } from './middleware';
+import * as activityRouter from './routes/activity';
 import * as aggregateRouter from './routes/aggregate';
 import * as lendingRouter from './routes/lending';
 
@@ -15,6 +16,9 @@ export function getRouter(database: IDatabaseService): Router {
 
   // get data were aggregated by data worker
   router.use('/aggregate', aggregateRouter.getRouter(database));
+
+  // query activities
+  router.use('/activity', activityRouter.getRouter(database));
 
   return router;
 }
