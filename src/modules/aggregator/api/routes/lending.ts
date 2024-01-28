@@ -12,10 +12,10 @@ import { writeResponse } from '../middleware';
 export function getRouter(database: IDatabaseService): Router {
   const router = Router({ mergeParams: true });
 
-  router.post('/query/:metric/:name', async (request: Request, response: Response) => {
+  router.post('/query/:name', async (request: Request, response: Response) => {
     let aggregator: DataAggregator | null = null;
 
-    switch (request.params.metric) {
+    switch (request.body.metric) {
       case DataMetrics.crossLending: {
         aggregator = new CrossLendingDataAggregator(database);
         break;
