@@ -76,17 +76,9 @@ export interface CrossLendingMarketDataTimeframe extends CrossLendingMarketDataS
   numberOfTransactions: number;
 }
 
-export interface CrossLendingMarketDataTimeframeWithChanges extends CrossLendingMarketDataTimeframe {
-  dailyChangesTokenPrice: string;
-  dailyChangesTotalDeposited: string;
-  dailyChangesTotalBorrowed: string;
-  dailyChangesTotalBorrowedStable?: string;
-
-  dailyChangesVolumeDeposited: string;
-  dailyChangesVolumeWithdrawn: string;
-  dailyChangesVolumeBorrowed: string;
-  dailyChangesVolumeRepaid: string;
-  dailyChangesVolumeFeesPaid: string;
+export interface CrossLendingMarketDataStateWithTimeframes extends CrossLendingMarketDataState {
+  timeframe24Hours: CrossLendingMarketDataTimeframe | null;
+  timeframe48Hours: CrossLendingMarketDataTimeframe | null;
 }
 
 export interface CdpCollateralDataState {
@@ -163,29 +155,7 @@ export interface CdpLendingMarketDataTimeframe extends CdpLendingMarketDataState
   collaterals: Array<CdpCollateralDataTimeframe>;
 }
 
-export interface CdpCollateralDataTimeframeWithChanges extends CdpCollateralDataTimeframe {
-  dailyChangesTokenPrice: string;
-
-  dailyChangesTotalDeposited: string;
-  dailyChangesTotalDebts?: string;
-
-  dailyChangesVolumeDeposited: string;
-  dailyChangesVolumeWithdrawn: string;
-  dailyChangesVolumeLiquidated: string;
-}
-
-export interface CdpLendingMarketDataTimeframeWithChanges extends CdpLendingMarketDataTimeframe {
-  dailyChangesTokenPrice: string;
-
-  dailyChangesTotalDebts: string;
-  dailyChangesTotalDeposited?: string;
-
-  dailyChangesVolumeFeesPaid: string;
-  dailyChangesVolumeBorrowed: string;
-  dailyChangesVolumeRepaid: string;
-
-  dailyChangesVolumeDeposited?: string;
-  dailyChangesVolumeWithdrawn?: string;
-
-  collaterals: Array<CdpCollateralDataTimeframeWithChanges>;
+export interface CdpLendingMarketDataStateWithTimeframes {
+  timeframe24Hours: CdpLendingMarketDataTimeframe | null;
+  timeframe48Hours: CdpLendingMarketDataTimeframe | null;
 }

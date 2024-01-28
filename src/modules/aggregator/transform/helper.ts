@@ -1,51 +1,38 @@
-import BigNumber from 'bignumber.js';
+import { AggCrossLendingOverallState } from '../../../types/aggregates/lending';
 
-import { DataValueItem } from '../../../types/aggregates/common';
-
-export default class HelperTransform {
-  // this helper function help to group, count and build up a DayData list
-  // for example, given a list of data snapshot, there are multiple snapshots
-  // at a given timestamp (day timestamp).
-  // it helps to sum up these snapshots with a given field names
-  public static buildupDayDataValueItems(dataList: Array<any>, fields: Array<string>): Array<any> {
-    const items: Array<any> = [];
-
-    const groupPerTimestamp: {
-      [key: number]: {
-        [key: string]: DataValueItem;
-      };
-    } = {};
-    for (const data of dataList) {
-      const timestamp = data.timestamp;
-      if (!groupPerTimestamp[timestamp]) {
-        groupPerTimestamp[timestamp] = {};
-        for (const field of fields) {
-          groupPerTimestamp[timestamp][field] = {
-            value: 0,
-            valueUsd: 0,
-          };
-        }
-      }
-
-      for (const field of fields) {
-        const usdValue = data[`${field}Usd`]
-          ? new BigNumber(groupPerTimestamp[timestamp][field].valueUsd)
-              .plus(new BigNumber(data[`${field}Usd`]))
-              .toNumber()
-          : 0;
-
-        groupPerTimestamp[timestamp][field].value += usdValue;
-        groupPerTimestamp[timestamp][field].valueUsd += usdValue;
-      }
-    }
-
-    for (const [timestamp, data] of Object.entries(groupPerTimestamp)) {
-      items.push({
-        timestamp: Number(timestamp),
-        ...data,
-      });
-    }
-
-    return items;
+export default class AggregatorTransformHelper {
+  public static getDefaultAggCrossLendingOverallState(): AggCrossLendingOverallState {
+    return {
+      totalDeposited: {
+        value: 0,
+        valueUsd: 0,
+      },
+      totalBorrowed: {
+        value: 0,
+        valueUsd: 0,
+      },
+      volumeDeposited: {
+        value: 0,
+        valueUsd: 0,
+      },
+      volumeWithdrawn: {
+        value: 0,
+        valueUsd: 0,
+      },
+      volumeBorrowed: {
+        value: 0,
+        valueUsd: 0,
+      },
+      volumeRepaid: {
+        value: 0,
+        valueUsd: 0,
+      },
+      volumeFeesPaid: {
+        value: 0,
+        valueUsd: 0,
+      },
+      markets: [],
+      dayData: [],
+    };
   }
 }

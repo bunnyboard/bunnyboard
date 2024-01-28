@@ -1,5 +1,5 @@
 import { IDatabaseService } from '../../services/database/domains';
-import LendingDataAggregator from './models/lending';
+import CrossLendingDataAggregator from './models/crossLending';
 
 export default class DataAggregatorWorker {
   private readonly _database: IDatabaseService;
@@ -9,8 +9,8 @@ export default class DataAggregatorWorker {
   }
 
   public async runUpdate(): Promise<void> {
-    const lendingAggregator = new LendingDataAggregator(this._database);
+    const crossLendingAggregator = new CrossLendingDataAggregator(this._database);
 
-    await lendingAggregator.runUpdate();
+    await crossLendingAggregator.runUpdate();
   }
 }

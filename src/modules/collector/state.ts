@@ -3,13 +3,12 @@ import EnvConfig from '../../configs/envConfig';
 import logger from '../../lib/logger';
 import { getTimestamp } from '../../lib/utils';
 import {
-  CdpLendingMarketDataTimeframeWithChanges,
-  CrossLendingMarketDataTimeframeWithChanges,
+  CdpLendingMarketDataStateWithTimeframes,
+  CrossLendingMarketDataStateWithTimeframes,
 } from '../../types/collectors/lending';
 import { RunCollectorOptions } from '../../types/collectors/options';
 import { MetricConfig } from '../../types/configs';
 import { ContextServices, ContextStorages, IProtocolAdapter } from '../../types/namespaces';
-import CollectorDataTransform from './transform/data';
 
 export default class StateCollector {
   public readonly name: string = 'collector.state';
@@ -53,45 +52,50 @@ export default class StateCollector {
       );
 
       if (state.crossLending) {
-        for (const data of state.crossLending) {
-          let stateWithChanges: CrossLendingMarketDataTimeframeWithChanges =
-            CollectorDataTransform.transformCrossLendingStates(data, undefined, undefined);
+        for (const dateState of state.crossLending) {
+          let stateWithTimeframes: CrossLendingMarketDataStateWithTimeframes = {
+            ...dateState,
+            timeframe24Hours: null,
+            timeframe48Hours: null,
+          };
 
-          if (timeframeLast24Hours.crossLending && timeframeLast48Hours.crossLending) {
+          if (timeframeLast24Hours.crossLending) {
             const dataLast24Hours = timeframeLast24Hours.crossLending.filter(
               (item) =>
-                item.chain === data.chain &&
-                item.protocol === data.protocol &&
-                item.address === data.address &&
-                item.token.address === data.token.address,
+                item.chain === dateState.chain &&
+                item.protocol === dateState.protocol &&
+                item.address === dateState.address &&
+                item.token.address === dateState.token.address,
             )[0];
+            if (dataLast24Hours) {
+              stateWithTimeframes.timeframe24Hours = dataLast24Hours;
+            }
+          }
+
+          if (timeframeLast48Hours.crossLending) {
             const dataLast48Hours = timeframeLast48Hours.crossLending.filter(
               (item) =>
-                item.chain === data.chain &&
-                item.protocol === data.protocol &&
-                item.address === data.address &&
-                item.token.address === data.token.address,
+                item.chain === dateState.chain &&
+                item.protocol === dateState.protocol &&
+                item.address === dateState.address &&
+                item.token.address === dateState.token.address,
             )[0];
-            if (dataLast24Hours && dataLast48Hours) {
-              stateWithChanges = CollectorDataTransform.transformCrossLendingStates(
-                data,
-                dataLast24Hours,
-                dataLast48Hours,
-              );
+            if (dataLast48Hours) {
+              stateWithTimeframes.timeframe48Hours = dataLast48Hours;
             }
           }
 
           await this.storages.database.update({
             collection: EnvConfig.mongodb.collections.lendingMarketStates,
             keys: {
-              chain: data.chain,
-              metric: data.metric,
-              protocol: data.protocol,
-              address: data.address,
-              'token.address': data.token.address,
+              chain: dateState.chain,
+              metric: dateState.metric,
+              protocol: dateState.protocol,
+              address: dateState.address,
+              'token.address': dateState.token.address,
             },
             updates: {
-              ...stateWithChanges,
+              ...stateWithTimeframes,
             },
             upsert: true,
           });
@@ -99,42 +103,47 @@ export default class StateCollector {
       }
 
       if (state.cdpLending) {
-        for (const data of state.cdpLending) {
-          let stateWithChanges: CdpLendingMarketDataTimeframeWithChanges =
-            CollectorDataTransform.transformCdpLendingStates(data, undefined, undefined);
+        for (const dataState of state.cdpLending) {
+          let stateWithTimeframes: CdpLendingMarketDataStateWithTimeframes = {
+            ...dataState,
+            timeframe24Hours: null,
+            timeframe48Hours: null,
+          };
 
-          if (timeframeLast24Hours.cdpLending && timeframeLast48Hours.cdpLending) {
+          if (timeframeLast24Hours.cdpLending) {
             const dataLast24Hours = timeframeLast24Hours.cdpLending.filter(
               (item) =>
-                item.chain === data.chain &&
-                item.protocol === data.protocol &&
-                item.token.address === data.token.address,
+                item.chain === dataState.chain &&
+                item.protocol === dataState.protocol &&
+                item.token.address === dataState.token.address,
             )[0];
+            if (dataLast24Hours) {
+              stateWithTimeframes.timeframe24Hours = dataLast24Hours;
+            }
+          }
+
+          if (timeframeLast48Hours.cdpLending) {
             const dataLast48Hours = timeframeLast48Hours.cdpLending.filter(
               (item) =>
-                item.chain === data.chain &&
-                item.protocol === data.protocol &&
-                item.token.address === data.token.address,
+                item.chain === dataState.chain &&
+                item.protocol === dataState.protocol &&
+                item.token.address === dataState.token.address,
             )[0];
-            if (dataLast24Hours && dataLast48Hours) {
-              stateWithChanges = CollectorDataTransform.transformCdpLendingStates(
-                data,
-                dataLast24Hours,
-                dataLast48Hours,
-              );
+            if (dataLast48Hours) {
+              stateWithTimeframes.timeframe48Hours = dataLast48Hours;
             }
           }
 
           await this.storages.database.update({
             collection: EnvConfig.mongodb.collections.lendingMarketStates,
             keys: {
-              chain: data.chain,
-              metric: data.metric,
-              protocol: data.protocol,
-              'token.address': data.token.address,
+              chain: dataState.chain,
+              metric: dataState.metric,
+              protocol: dataState.protocol,
+              'token.address': dataState.token.address,
             },
             updates: {
-              ...stateWithChanges,
+              ...stateWithTimeframes,
             },
             upsert: true,
           });

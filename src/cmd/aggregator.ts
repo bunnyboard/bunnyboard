@@ -1,5 +1,5 @@
 import { sleep } from '../lib/utils';
-import DataAggregatorWorker from '../modules/aggregator/aggregator';
+import DataAggregatorWorker from '../modules/aggregator/worker';
 import { BasicCommand } from './basic';
 
 export class AggregatorCommand extends BasicCommand {

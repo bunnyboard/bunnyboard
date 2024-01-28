@@ -1,13 +1,12 @@
+import { DataTimeframe } from '../collectors/base';
 import { Token } from '../configs';
 import { DataValueItem } from './common';
 
-export interface AggCrossLendingMarketState {
-  chain: string;
-  protocol: string;
+export interface AggCrossLendingMarketSnapshot extends DataTimeframe {
   address: string;
   token: Token;
+  tokenPrice: number;
 
-  tokenPrice: DataValueItem;
   totalDeposited: DataValueItem;
   totalBorrowed: DataValueItem;
 
@@ -21,12 +20,7 @@ export interface AggCrossLendingMarketState {
 
   rateLoanToValue: number;
 
-  // the last time data were updated
-  // or 00:00 UTC per day
-  timestamp: number;
-}
-
-export interface AggCrossLendingMarketSnapshot extends AggCrossLendingMarketState {
+  // last 24h volumes
   volumeDeposited: DataValueItem;
   volumeWithdrawn: DataValueItem;
   volumeBorrowed: DataValueItem;
@@ -37,36 +31,50 @@ export interface AggCrossLendingMarketSnapshot extends AggCrossLendingMarketStat
   numberOfTransactions: number;
 }
 
+// day data is total value across all markets
+// serve for chart building purpose
 export interface AggCrossLendingDayData {
   timestamp: number;
+
   totalDeposited: DataValueItem;
   totalBorrowed: DataValueItem;
+
   volumeDeposited: DataValueItem;
   volumeWithdrawn: DataValueItem;
   volumeBorrowed: DataValueItem;
   volumeRepaid: DataValueItem;
+
   volumeFeesPaid: DataValueItem;
 }
 
+// overall state and data across all cross lending markets
 export interface AggCrossLendingOverallState {
   totalDeposited: DataValueItem;
   totalBorrowed: DataValueItem;
+
   volumeDeposited: DataValueItem;
   volumeWithdrawn: DataValueItem;
   volumeBorrowed: DataValueItem;
   volumeRepaid: DataValueItem;
+
   volumeFeesPaid: DataValueItem;
-  numberOfChains: number;
-  numberOfProtocols: number;
+
+  // last 24h snapshots
   markets: Array<AggCrossLendingMarketSnapshot>;
+
+  // all-time day data
   dayData: Array<AggCrossLendingDayData>;
 }
 
 export interface AggCdpLendingCollateralSnapshot {
   address: string;
+
   token: Token; // collateral token
-  tokenPrice: DataValueItem;
+  tokenPrice: number;
+
   totalDeposited: DataValueItem;
+
+  // on some protocols, we can calculate how many debts were issued by this collateral asset
   totalDebts?: DataValueItem;
 
   // current borrowing rate
@@ -78,29 +86,32 @@ export interface AggCdpLendingCollateralSnapshot {
   volumeDeposited: DataValueItem;
   volumeWithdrawn: DataValueItem;
   volumeLiquidated: DataValueItem;
+
+  // on some protocols, we can calculate how many fees will be collected daily by this collateral asset
+  volumeFeesPaid?: DataValueItem;
 }
 
-export interface AggCdpLendingMarketSnapshot {
-  timestamp: number;
-
-  chain: string;
-  protocol: string;
+export interface AggCdpLendingMarketSnapshot extends DataTimeframe {
   token: Token; // debt token
+
   tokenPrice: DataValueItem;
 
-  totalDeposited?: DataValueItem;
   totalDebts: DataValueItem;
-  totalCollateralDeposited: DataValueItem;
-
-  rateSupply?: number;
-  rateRewardSupply?: number;
+  totalDeposited?: DataValueItem;
 
   volumeFeesPaid: DataValueItem;
   volumeBorrowed: DataValueItem;
   volumeRepaid: DataValueItem;
-
   volumeDeposited?: DataValueItem;
   volumeWithdrawn?: DataValueItem;
+
+  totalCollateralDeposited: DataValueItem;
+  volumeCollateralDeposited: DataValueItem;
+  volumeCollateralWithdrawn: DataValueItem;
+  volumeCollateralLiquidated: DataValueItem;
+
+  rateSupply?: number;
+  rateRewardSupply?: number;
 
   numberOfUsers: number;
   numberOfTransactions: number;
@@ -113,37 +124,44 @@ export interface AggCdpLendingDayData {
 
   // total value in USD of debts across all markets
   totalDebts: DataValueItem;
-
-  // total debt tokens were being deposited
-  // some protocols like compound v3 use deposited USDC as debt token
-  totalDeposited?: DataValueItem;
-
-  // total value of all backing collaterals in USD
-  totalCollateralDeposited: DataValueItem;
-
   // volume of debts token were borrowed and repaid in USD
   volumeBorrowed: DataValueItem;
   volumeRepaid: DataValueItem;
-
-  // deposit/withdraw volume of debt tokens and collateral tokens in USD
-  volumeDeposited: DataValueItem;
-  volumeWithdrawn: DataValueItem;
-
-  // volume of fees were paid by borrowers in USD
   volumeFeesPaid: DataValueItem;
+
+  // total value of all backing collaterals in USD
+  totalCollateralDeposited: DataValueItem;
+  // deposit/withdraw/liquidate volume collateral tokens in USD
+  volumeCollateralDeposited: DataValueItem;
+  volumeCollateralWithdrawn: DataValueItem;
+  volumeCollateralLiquidated: DataValueItem;
 }
 
 export interface AggCdpLendingOverallState {
+  // total debts were issued
   totalDebts: DataValueItem;
-  totalCollateralDeposited: DataValueItem;
+
+  // total debt tokens were being deposited if any
+  totalDeposited?: DataValueItem;
+
+  // volume borrow and repay debts
   volumeBorrowed: DataValueItem;
   volumeRepaid: DataValueItem;
-
-  totalDeposited?: DataValueItem;
+  volumeFeesPaid: DataValueItem;
   volumeDeposited?: DataValueItem;
   volumeWithdrawn?: DataValueItem;
 
-  volumeFeesPaid: DataValueItem;
+  // total collateral were being locked
+  totalCollateralDeposited: DataValueItem;
+
+  // volume of deposit and withdraw collaterals
+  volumeCollateralDeposited: DataValueItem;
+  volumeCollateralWithdrawn: DataValueItem;
+  volumeCollateralLiquidated: DataValueItem;
+
+  // last 24h market snapshots
   markets: Array<AggCdpLendingMarketSnapshot>;
+
+  // all-time day data
   dayData: Array<AggCdpLendingDayData>;
 }
