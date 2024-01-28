@@ -25,7 +25,7 @@ export default class CdpLendingDataAggregator implements DataAggregator {
   private async aggregateCdpLendingDataState(): Promise<AggCdpLendingOverallState> {
     const dataState: AggCdpLendingOverallState = AggregatorTransformHelper.getDefaultAggCdpLendingOverallState();
 
-    // get all cross lending states
+    // get all cdp lending states
     const states = await this.database.query({
       collection: EnvConfig.mongodb.collections.lendingMarketStates,
       query: {
@@ -143,11 +143,11 @@ export default class CdpLendingDataAggregator implements DataAggregator {
     const snapshots = await this.database.query({
       collection: EnvConfig.mongodb.collections.lendingMarketSnapshots,
       query: {
-        metric: DataMetrics.crossLending,
+        metric: DataMetrics.cdpLending,
       },
     });
     const transformedSnapshots = snapshots.map((snapshot) =>
-      AggregatorTransformModel.transformCdpLendingMarketSnapshot(snapshot, null, null),
+      AggregatorTransformModel.transformCdpLendingMarketSnapshot(snapshot, snapshot, snapshot),
     );
 
     dataState.dayData = groupAndSumObjectList(
