@@ -1,5 +1,6 @@
 import EnvConfig from '../../../configs/envConfig';
 import { DefaultRecordPerPage } from '../../../configs/policies';
+import { groupAndSumObjectList } from '../../../lib/helper';
 import logger from '../../../lib/logger';
 import { calChangesOf_Total_From_Items, calValueOf_Amount_With_Price } from '../../../lib/math';
 import { normalizeAddress } from '../../../lib/utils';
@@ -137,6 +138,71 @@ export default class CdpLendingDataAggregator implements DataAggregator {
         };
       }),
     );
+
+    // process snapshots and build up day data list
+    const snapshots = await this.database.query({
+      collection: EnvConfig.mongodb.collections.lendingMarketSnapshots,
+      query: {
+        metric: DataMetrics.crossLending,
+      },
+    });
+    const transformedSnapshots = snapshots.map((snapshot) =>
+      AggregatorTransformModel.transformCdpLendingMarketSnapshot(snapshot, null, null),
+    );
+
+    dataState.dayData = groupAndSumObjectList(
+      transformedSnapshots.map((snapshot) => {
+        return {
+          timestamp: snapshot.timestamp,
+          totalDebts: snapshot.totalDebts.valueUsd,
+          volumeBorrowed: snapshot.volumeBorrowed.valueUsd,
+          volumeRepaid: snapshot.volumeRepaid.valueUsd,
+          volumeFeesPaid: snapshot.volumeFeesPaid.valueUsd,
+
+          totalCollateralDeposited: snapshot.totalCollateralDeposited.valueUsd,
+          volumeCollateralDeposited: snapshot.volumeCollateralDeposited.valueUsd,
+          volumeCollateralWithdrawn: snapshot.volumeCollateralWithdrawn.valueUsd,
+          volumeCollateralLiquidated: snapshot.volumeCollateralLiquidated.valueUsd,
+        };
+      }),
+      'timestamp',
+    ).map((item) => {
+      return {
+        timestamp: item.timestamp,
+        totalDebts: {
+          value: 0,
+          valueUsd: item.totalDebts,
+        },
+        volumeBorrowed: {
+          value: 0,
+          valueUsd: item.volumeBorrowed,
+        },
+        volumeRepaid: {
+          value: 0,
+          valueUsd: item.volumeRepaid,
+        },
+        volumeFeesPaid: {
+          value: 0,
+          valueUsd: item.volumeFeesPaid,
+        },
+        totalCollateralDeposited: {
+          value: 0,
+          valueUsd: item.totalCollateralDeposited,
+        },
+        volumeCollateralDeposited: {
+          value: 0,
+          valueUsd: item.volumeCollateralDeposited,
+        },
+        volumeCollateralWithdrawn: {
+          value: 0,
+          valueUsd: item.volumeCollateralWithdrawn,
+        },
+        volumeCollateralLiquidated: {
+          value: 0,
+          valueUsd: item.volumeCollateralLiquidated,
+        },
+      };
+    });
 
     return dataState;
   }
