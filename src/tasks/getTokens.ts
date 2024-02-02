@@ -5,7 +5,8 @@ import { AaveLendingMarketConfig } from '../configs/protocols/aave';
 import { CompoundLendingMarketConfig } from '../configs/protocols/compound';
 import AaveLibs from '../modules/libs/aave';
 import CompoundLibs from '../modules/libs/compound';
-import { CrossLendingMarketConfig, DataMetrics, Token } from '../types/configs';
+import GmxLibs from '../modules/libs/gmx';
+import { CrossLendingMarketConfig, DataMetrics, PerpetualMarketConfig, Token } from '../types/configs';
 
 const directoryPath = './src/configs/tokenlists';
 
@@ -42,13 +43,25 @@ function loadExistedTokens(chain: string) {
         let tokens: Array<Token> = [];
 
         if (lendingConfig.version === 'aavev2' || lendingConfig.version === 'aavev3') {
-          tokens = await AaveLibs.getMarketReserves(lendingConfig as AaveLendingMarketConfig);
+          const marketInfo = await AaveLibs.getMarketInfo(lendingConfig as AaveLendingMarketConfig);
+          if (marketInfo) {
+            tokens = marketInfo.reserves.concat(marketInfo.rewardTokens);
+          }
         } else if (lendingConfig.version === 'compound') {
           const cTokens = await CompoundLibs.getComptrollerInfo(lendingConfig as CompoundLendingMarketConfig);
           tokens = cTokens.map((item) => item.underlying);
         }
 
         for (const token of tokens) {
+          tokenByChains[token.chain][token.address] = token;
+        }
+      } else if (config.metric === DataMetrics.perpetual) {
+        const perpetualConfig = config as PerpetualMarketConfig;
+        console.log(
+          `Getting all tokens metadata from perpetual market ${perpetualConfig.protocol}:${perpetualConfig.chain}:${perpetualConfig.address}`,
+        );
+        const vaultInfo = await GmxLibs.getVaultInfo(perpetualConfig.chain, perpetualConfig.address);
+        for (const token of vaultInfo.tokens) {
           tokenByChains[token.chain][token.address] = token;
         }
       }

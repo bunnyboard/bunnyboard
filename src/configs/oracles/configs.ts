@@ -67,6 +67,8 @@ export const OracleConfigs: { [key: string]: { [key: string]: OracleConfig } } =
     '0x137ddb47ee24eaa998a535ab00378d6bfa84f893': OracleSourceConfigs.RDNT,
     '0xbbbbca6a901c926f240b89eacb641d8aec7aeafd': OracleSourceConfigs.LRC,
     '0x6810e776880c02933d47db1b9fc05908e5386b96': OracleSourceConfigs.GNO,
+    '0xa1faa113cbe53436df28ff0aee54275c13b40975': OracleSourceConfigs.ALPHA,
+    '0xc5f0f7b66764f6ec8c8dff7ba683102295e16409': OracleSourceConfigs.FDUSD,
 
     // ironbank fixed forex
     '0x69681f8fde45345c3870bcd5eaf4a05a60e7d227': OracleSourceConfigs.GBP,
@@ -103,6 +105,8 @@ export const OracleConfigs: { [key: string]: { [key: string]: OracleConfig } } =
     '0x3082cc23568ea640225c2467653db90e9250aaa0': OracleSourceConfigs.RDNT,
     '0x354a6da3fcde098f8389cad84b0182725c6c91de': OracleSourceConfigs.COMP,
     '0xfc5a1a6eb076a2c7ad06ed22c90d7e710e35ad0a': OracleSourceConfigs.GMX,
+    '0xfa7f8980b0f1e64a2062791cc3b0871572f1f7f0': OracleSourceConfigs.UNI,
+    '0xfea7a6a0b346362bf88a9e4a88416b77a57d6c2a': OracleSourceConfigs.MIM,
   },
 
   // tokens on Optimism

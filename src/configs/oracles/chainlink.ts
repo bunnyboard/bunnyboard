@@ -158,4 +158,10 @@ export const OracleSourceChainlinkList: { [key: string]: OracleSourceChainlink }
     address: '0x449d117117838fFA61263B61dA6301AA2a88B13A',
     decimals: 8,
   },
+  DOGE_USD: {
+    type: 'chainlink',
+    chain: 'ethereum',
+    address: '0x2465CefD3b488BE410b941b1d4b2767088e2A028',
+    decimals: 8,
+  },
 };

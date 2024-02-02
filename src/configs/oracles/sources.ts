@@ -324,8 +324,8 @@ export const OracleSourceConfigs: { [key: string]: OracleConfig } = {
     sources: [OracleSourceUniswapv2List.CAKE_WBNB],
   },
   DOGE: {
-    currency: 'bnb',
-    sources: [OracleSourceUniswapv2List.DOGE_WBNB],
+    currency: 'usd',
+    sources: [OracleSourceChainlinkList.DOGE_USD],
   },
   DOT: {
     currency: 'bnb',

@@ -6,6 +6,7 @@ import {
   CrossLendingMarketDataState,
   CrossLendingMarketDataTimeframe,
 } from './lending';
+import { PerpetualMarketDataState, PerpetualMarketDataTimeframe } from './perpetutal';
 
 export interface AdapterAbiConfigs {
   eventSignatures: any;
@@ -40,13 +41,15 @@ export interface GetAdapterDataTimeframeOptions {
 }
 
 export interface GetAdapterDataStateResult {
-  crossLending: Array<CrossLendingMarketDataState> | null;
-  cdpLending: Array<CdpLendingMarketDataState> | null;
+  crossLending?: Array<CrossLendingMarketDataState> | null;
+  cdpLending?: Array<CdpLendingMarketDataState> | null;
+  perpetual?: Array<PerpetualMarketDataState> | null;
 }
 
 export interface GetAdapterDataTimeframeResult {
-  crossLending: Array<CrossLendingMarketDataTimeframe> | null;
-  cdpLending: Array<CdpLendingMarketDataTimeframe> | null;
+  crossLending?: Array<CrossLendingMarketDataTimeframe> | null;
+  cdpLending?: Array<CdpLendingMarketDataTimeframe> | null;
+  perpetual?: Array<PerpetualMarketDataTimeframe> | null;
 }
 
 export interface RunCollectorOptions {

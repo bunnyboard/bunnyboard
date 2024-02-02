@@ -1,6 +1,7 @@
 import { ProtocolConfig, Token } from '../types/configs';
 import { Aavev2Configs, Aavev3Configs } from './protocols/aave';
 import { CompoundConfigs, Compoundv3Configs } from './protocols/compound';
+import { GmxConfigs } from './protocols/gmx';
 import { IronbankConfigs } from './protocols/ironbank';
 import { LiquityConfigs } from './protocols/liquity';
 import { MakerConfigs } from './protocols/maker';
@@ -50,4 +51,5 @@ export const ProtocolConfigs: { [key: string]: ProtocolConfig } = {
   liquity: LiquityConfigs,
   maker: MakerConfigs,
   spark: SparkConfigs,
+  gmx: GmxConfigs,
 };

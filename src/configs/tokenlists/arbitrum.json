@@ -89,6 +89,12 @@
     "symbol": "LINK",
     "decimals": 18
   },
+  "0xfa7f8980b0f1e64a2062791cc3b0871572f1f7f0": {
+    "chain": "arbitrum",
+    "address": "0xfa7f8980b0f1e64a2062791cc3b0871572f1f7f0",
+    "symbol": "UNI",
+    "decimals": 18
+  },
   "0xfc5a1a6eb076a2c7ad06ed22c90d7e710e35ad0a": {
     "chain": "arbitrum",
     "address": "0xfc5a1a6eb076a2c7ad06ed22c90d7e710e35ad0a",
@@ -100,6 +106,12 @@
     "address": "0xfd086bc7cd5c481dcc9c85ebe478a1c0b69fcbb9",
     "symbol": "USDT",
     "decimals": 6
+  },
+  "0xfea7a6a0b346362bf88a9e4a88416b77a57d6c2a": {
+    "chain": "arbitrum",
+    "address": "0xfea7a6a0b346362bf88a9e4a88416b77a57d6c2a",
+    "symbol": "MIM",
+    "decimals": 18
   },
   "0xff970a61a04b1ca14834a43f5de4533ebddb5cc8": {
     "chain": "arbitrum",

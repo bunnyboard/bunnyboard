@@ -256,13 +256,6 @@ export const OracleSourceUniswapv2List: { [key: string]: OracleSourceUniv2 } = {
     baseToken: BnbchainTokenList['0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82'],
     quotaToken: BnbchainTokenList['0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c'],
   },
-  DOGE_WBNB: {
-    type: 'univ2',
-    chain: 'bnbchain',
-    address: '0xac109c8025f272414fd9e2faa805a583708a017f',
-    baseToken: BnbchainTokenList['0xba2ae424d960c26247dd6c32edc70b295c744c43'],
-    quotaToken: BnbchainTokenList['0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c'],
-  },
   DOT_WBNB: {
     type: 'univ2',
     chain: 'bnbchain',
