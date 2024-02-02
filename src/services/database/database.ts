@@ -81,6 +81,12 @@ export default class DatabaseService implements IDatabaseService {
     const lendingMarketSnapshotsCollection = await this.getCollection(
       envConfig.mongodb.collections.lendingMarketSnapshots,
     );
+    const perpetualMarketStatesCollection = await this.getCollection(
+      envConfig.mongodb.collections.perpetualMarketStates,
+    );
+    const perpetualMarketSnapshotsCollection = await this.getCollection(
+      envConfig.mongodb.collections.perpetualMarketSnapshots,
+    );
 
     statesCollection.createIndex({ name: 1 }, { background: true });
     cachingCollection.createIndex({ name: 1 }, { background: true });
@@ -90,6 +96,14 @@ export default class DatabaseService implements IDatabaseService {
       { background: true },
     );
     lendingMarketSnapshotsCollection.createIndex(
+      { chain: 1, protocol: 1, address: 1, 'token.address': 1, timestamp: 1 },
+      { background: true },
+    );
+    perpetualMarketStatesCollection.createIndex(
+      { chain: 1, protocol: 1, address: 1, 'token.address': 1 },
+      { background: true },
+    );
+    perpetualMarketSnapshotsCollection.createIndex(
       { chain: 1, protocol: 1, address: 1, 'token.address': 1, timestamp: 1 },
       { background: true },
     );

@@ -19,6 +19,8 @@ const envConfig: EnvConfig = {
       aggregates: `${MongodbPrefix}.aggregates`,
       lendingMarketStates: `${MongodbPrefix}.lendingMarketStates`,
       lendingMarketSnapshots: `${MongodbPrefix}.lendingMarketSnapshots`,
+      perpetualMarketStates: `${MongodbPrefix}.perpetualMarketStates`,
+      perpetualMarketSnapshots: `${MongodbPrefix}.perpetualMarketSnapshots`,
     },
   },
   blockchains: BlockchainConfigs,

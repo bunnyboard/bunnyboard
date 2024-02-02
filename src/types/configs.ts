@@ -62,6 +62,12 @@ export interface EnvConfig {
 
       // save all data snapshots of lending market
       lendingMarketSnapshots: string;
+
+      // save all data states of perpetual market
+      perpetualMarketStates: string;
+
+      // save all snapshots of perpetual market
+      perpetualMarketSnapshots: string;
     };
   };
 

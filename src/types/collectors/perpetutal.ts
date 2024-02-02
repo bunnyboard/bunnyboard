@@ -30,3 +30,8 @@ export interface PerpetualMarketDataTimeframe extends PerpetualMarketDataState, 
   numberOfUsers: number;
   numberOfTransactions: number;
 }
+
+export interface PerpetualMarketDataStateWithTimeframes extends PerpetualMarketDataState {
+  timeframe24Hours: PerpetualMarketDataTimeframe | null;
+  timeframe48Hours: PerpetualMarketDataTimeframe | null;
+}

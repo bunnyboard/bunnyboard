@@ -7,6 +7,7 @@ import {
   CrossLendingMarketDataStateWithTimeframes,
 } from '../../types/collectors/lending';
 import { RunCollectorOptions } from '../../types/collectors/options';
+import { PerpetualMarketDataStateWithTimeframes } from '../../types/collectors/perpetutal';
 import { MetricConfig } from '../../types/configs';
 import { ContextServices, ContextStorages, IProtocolAdapter } from '../../types/namespaces';
 
@@ -136,6 +137,54 @@ export default class StateCollector {
 
           await this.storages.database.update({
             collection: EnvConfig.mongodb.collections.lendingMarketStates,
+            keys: {
+              chain: dataState.chain,
+              metric: dataState.metric,
+              protocol: dataState.protocol,
+              'token.address': dataState.token.address,
+            },
+            updates: {
+              ...stateWithTimeframes,
+            },
+            upsert: true,
+          });
+        }
+      }
+
+      if (state.perpetual) {
+        for (const dataState of state.perpetual) {
+          let stateWithTimeframes: PerpetualMarketDataStateWithTimeframes = {
+            ...dataState,
+            timeframe24Hours: null,
+            timeframe48Hours: null,
+          };
+
+          if (timeframeLast24Hours.perpetual) {
+            const dataLast24Hours = timeframeLast24Hours.perpetual.filter(
+              (item) =>
+                item.chain === dataState.chain &&
+                item.protocol === dataState.protocol &&
+                item.token.address === dataState.token.address,
+            )[0];
+            if (dataLast24Hours) {
+              stateWithTimeframes.timeframe24Hours = dataLast24Hours;
+            }
+          }
+
+          if (timeframeLast48Hours.perpetual) {
+            const dataLast48Hours = timeframeLast48Hours.perpetual.filter(
+              (item) =>
+                item.chain === dataState.chain &&
+                item.protocol === dataState.protocol &&
+                item.token.address === dataState.token.address,
+            )[0];
+            if (dataLast48Hours) {
+              stateWithTimeframes.timeframe48Hours = dataLast48Hours;
+            }
+          }
+
+          await this.storages.database.update({
+            collection: EnvConfig.mongodb.collections.perpetualMarketStates,
             keys: {
               chain: dataState.chain,
               metric: dataState.metric,

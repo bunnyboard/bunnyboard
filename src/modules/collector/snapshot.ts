@@ -50,7 +50,7 @@ export default class SnapshotCollector {
         const startExeTime = Math.floor(new Date().getTime() / 1000);
 
         if (this.adapters[config.protocol]) {
-          const { crossLending, cdpLending } = await this.adapters[config.protocol].getDataTimeframe(
+          const { crossLending, cdpLending, perpetual } = await this.adapters[config.protocol].getDataTimeframe(
             {
               config: config,
               fromTime: runTime,
@@ -82,6 +82,24 @@ export default class SnapshotCollector {
             for (const snapshot of cdpLending) {
               await this.storages.database.update({
                 collection: EnvConfig.mongodb.collections.lendingMarketSnapshots,
+                keys: {
+                  chain: snapshot.chain,
+                  metric: snapshot.metric,
+                  protocol: snapshot.protocol,
+                  'token.address': snapshot.token.address,
+                  timestamp: snapshot.timestamp,
+                },
+                updates: {
+                  ...snapshot,
+                },
+                upsert: true,
+              });
+            }
+          }
+          if (perpetual) {
+            for (const snapshot of perpetual) {
+              await this.storages.database.update({
+                collection: EnvConfig.mongodb.collections.perpetualMarketSnapshots,
                 keys: {
                   chain: snapshot.chain,
                   metric: snapshot.metric,
