@@ -4,7 +4,7 @@ export default defineConfig({
   test: {
     exclude: [...configDefaults.exclude, './build'],
     testTimeout: 0,
-    maxWorkers: 5,
-    maxConcurrency: 5,
+    maxWorkers: 10,
+    maxConcurrency: 10,
   },
 });

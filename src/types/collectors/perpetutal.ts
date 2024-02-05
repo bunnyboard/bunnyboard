@@ -21,10 +21,15 @@ export interface PerpetualMarketDataState extends DataState {
 
 export interface PerpetualMarketDataTimeframe extends PerpetualMarketDataState, DataTimeframe {
   volumeFeesPaidUsd: string;
+
+  // volumes of open interests
   volumeOpenInterestShortUsd: string;
   volumeOpenInterestLongUsd: string;
-  volumeTradingShort: string;
-  volumeTradingLong: string;
+
+  // total volumes includes open/close or adjust position size
+  volumeShortUsd: string;
+  volumeLongUsd: string;
+
   volumeLiquidatedUsd: string;
 
   numberOfUsers: number;

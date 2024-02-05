@@ -255,6 +255,7 @@ export const OracleSourceConfigs: { [key: string]: OracleConfig } = {
   MIM: {
     currency: 'usd',
     sources: [OracleSourceUniswapv3List.MIM_USDC],
+    coingeckoId: 'magic-internet-money',
   },
   FXS: {
     currency: 'usd',

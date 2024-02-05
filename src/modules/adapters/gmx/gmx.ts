@@ -180,8 +180,8 @@ export default class GmxAdapter extends ProtocolAdapter {
         volumeLiquidatedUsd: '0',
         volumeOpenInterestShortUsd: '0',
         volumeOpenInterestLongUsd: '0',
-        volumeTradingShort: '0',
-        volumeTradingLong: '0',
+        volumeShortUsd: '0',
+        volumeLongUsd: '0',
         timefrom: options.fromTime,
         timeto: options.toTime,
         numberOfUsers: 0,
@@ -240,8 +240,8 @@ export default class GmxAdapter extends ProtocolAdapter {
                     .toString(10);
                 }
 
-                marketSnapshots[marketKey].volumeTradingLong = new BigNumber(
-                  marketSnapshots[marketKey].volumeTradingLong,
+                marketSnapshots[marketKey].volumeLongUsd = new BigNumber(
+                  marketSnapshots[marketKey].volumeLongUsd,
                 )
                   .plus(sizeDelta)
                   .toString(10);
@@ -253,8 +253,8 @@ export default class GmxAdapter extends ProtocolAdapter {
                     .plus(sizeDelta)
                     .toString(10);
                 }
-                marketSnapshots[marketKey].volumeTradingShort = new BigNumber(
-                  marketSnapshots[marketKey].volumeTradingShort,
+                marketSnapshots[marketKey].volumeShortUsd = new BigNumber(
+                  marketSnapshots[marketKey].volumeShortUsd,
                 )
                   .plus(sizeDelta)
                   .toString(10);
