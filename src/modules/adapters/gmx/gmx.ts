@@ -177,11 +177,12 @@ export default class GmxAdapter extends ProtocolAdapter {
       marketSnapshots[key] = {
         ...state,
         volumeFeesPaidUsd: '0',
-        volumeLiquidatedUsd: '0',
+        volumeLiquidationLongUsd: '0',
+        volumeLiquidationShortUsd: '0',
         volumeOpenInterestShortUsd: '0',
         volumeOpenInterestLongUsd: '0',
-        volumeShortUsd: '0',
-        volumeLongUsd: '0',
+        volumeTradingLongUsd: '0',
+        volumeTradingShortUsd: '0',
         timefrom: options.fromTime,
         timeto: options.toTime,
         numberOfUsers: 0,
@@ -240,7 +241,9 @@ export default class GmxAdapter extends ProtocolAdapter {
                     .toString(10);
                 }
 
-                marketSnapshots[marketKey].volumeLongUsd = new BigNumber(marketSnapshots[marketKey].volumeLongUsd)
+                marketSnapshots[marketKey].volumeTradingLongUsd = new BigNumber(
+                  marketSnapshots[marketKey].volumeTradingLongUsd,
+                )
                   .plus(sizeDelta)
                   .toString(10);
               } else {
@@ -251,7 +254,9 @@ export default class GmxAdapter extends ProtocolAdapter {
                     .plus(sizeDelta)
                     .toString(10);
                 }
-                marketSnapshots[marketKey].volumeShortUsd = new BigNumber(marketSnapshots[marketKey].volumeShortUsd)
+                marketSnapshots[marketKey].volumeTradingShortUsd = new BigNumber(
+                  marketSnapshots[marketKey].volumeTradingShortUsd,
+                )
                   .plus(sizeDelta)
                   .toString(10);
               }
@@ -265,14 +270,23 @@ export default class GmxAdapter extends ProtocolAdapter {
             chain: marketConfig.chain,
             address: event.args.indexToken,
           });
+          const isLong = Boolean(event.args.isLong);
           if (token) {
             const marketKey = `${marketConfig.chain}:${marketConfig.address}:${token.address}`;
             if (marketSnapshots[marketKey]) {
-              marketSnapshots[marketKey].volumeLiquidatedUsd = new BigNumber(
-                marketSnapshots[marketKey].volumeLiquidatedUsd,
-              )
-                .plus(new BigNumber(event.args.size.toString()).dividedBy(1e30))
-                .toString(10);
+              if (isLong) {
+                marketSnapshots[marketKey].volumeLiquidationLongUsd = new BigNumber(
+                  marketSnapshots[marketKey].volumeLiquidationLongUsd,
+                )
+                  .plus(new BigNumber(event.args.size.toString()).dividedBy(1e30))
+                  .toString(10);
+              } else {
+                marketSnapshots[marketKey].volumeLiquidationShortUsd = new BigNumber(
+                  marketSnapshots[marketKey].volumeLiquidationShortUsd,
+                )
+                  .plus(new BigNumber(event.args.size.toString()).dividedBy(1e30))
+                  .toString(10);
+              }
             }
           }
 

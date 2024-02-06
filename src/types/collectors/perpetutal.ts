@@ -12,8 +12,8 @@ export interface PerpetualMarketDataState extends DataState {
   totalDeposited: string;
 
   // total size of all positions
-  totalOpenInterestShortUsd: string;
   totalOpenInterestLongUsd: string;
+  totalOpenInterestShortUsd: string;
 
   // borrow rate
   rateBorrow: string;
@@ -23,14 +23,15 @@ export interface PerpetualMarketDataTimeframe extends PerpetualMarketDataState, 
   volumeFeesPaidUsd: string;
 
   // volumes of open interests
-  volumeOpenInterestShortUsd: string;
   volumeOpenInterestLongUsd: string;
+  volumeOpenInterestShortUsd: string;
 
   // total volumes includes open/close or adjust position size
-  volumeShortUsd: string;
-  volumeLongUsd: string;
+  volumeTradingLongUsd: string;
+  volumeTradingShortUsd: string;
 
-  volumeLiquidatedUsd: string;
+  volumeLiquidationLongUsd: string;
+  volumeLiquidationShortUsd: string;
 
   numberOfUsers: number;
   numberOfTransactions: number;

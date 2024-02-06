@@ -17,7 +17,7 @@ const timestamp = 1704240000; // Wed Jan 03 2024 00:00:00 GMT+0000
 const ArbAddressWbtc = '0x2f2a2543b76a4166549f7aab2e75bef0aefc5b0f';
 const ArbAddressWeth = '0x82af49447d8a07e3bd95bd0d56f35241523fbab1';
 
-test('should get data state correctly - adapter:gmx', async function () {
+test('should get data state correctly - arbitrum tokens weth, wbtc at timestamp 1704240000', async function () {
   const gmxAdapter = new GmxAdapter(
     {
       blockchain: blockchain,
@@ -54,8 +54,15 @@ test('should get data state correctly - adapter:gmx', async function () {
   let totalVolumeTrading = 0;
   let totalVolumeLiquidation = 0;
   for (const market of arbDataSnapshots.perpetual ? arbDataSnapshots.perpetual : []) {
-    totalVolumeTrading += new BigNumber(market.volumeLongUsd).plus(new BigNumber(market.volumeShortUsd)).toNumber();
-    totalVolumeLiquidation += new BigNumber(market.volumeLiquidatedUsd).toNumber();
+    // volume long + short
+    totalVolumeTrading += new BigNumber(market.volumeTradingLongUsd)
+      .plus(new BigNumber(market.volumeTradingShortUsd))
+      .toNumber();
+
+    // liquidation long + short
+    totalVolumeLiquidation += new BigNumber(market.volumeLiquidationLongUsd)
+      .plus(new BigNumber(market.volumeLiquidationShortUsd))
+      .toNumber();
   }
 
   expect(totalVolumeTrading).equal(91457499.59782092);

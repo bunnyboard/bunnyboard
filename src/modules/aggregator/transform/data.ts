@@ -412,33 +412,43 @@ export default class AggregatorTransformModel {
             )
           : undefined,
       },
-      volumeLong: {
+      volumeTradingLong: {
         value: 0,
-        valueUsd: convertToNumber(dataTimeframeLast24Hours.volumeLongUsd),
+        valueUsd: convertToNumber(dataTimeframeLast24Hours.volumeTradingLongUsd),
         changedValueUsd: dataTimeframeLast48Hours
           ? calChangesOf_Current_From_Previous(
-              dataTimeframeLast24Hours.volumeLongUsd,
-              dataTimeframeLast48Hours.volumeLongUsd,
+              dataTimeframeLast24Hours.volumeTradingLongUsd,
+              dataTimeframeLast48Hours.volumeTradingLongUsd,
             )
           : undefined,
       },
-      volumeShort: {
+      volumeTradingShort: {
         value: 0,
-        valueUsd: convertToNumber(dataTimeframeLast24Hours.volumeShortUsd),
+        valueUsd: convertToNumber(dataTimeframeLast24Hours.volumeTradingShortUsd),
         changedValueUsd: dataTimeframeLast48Hours
           ? calChangesOf_Current_From_Previous(
-              dataTimeframeLast24Hours.volumeShortUsd,
-              dataTimeframeLast48Hours.volumeShortUsd,
+              dataTimeframeLast24Hours.volumeTradingShortUsd,
+              dataTimeframeLast48Hours.volumeTradingShortUsd,
             )
           : undefined,
       },
-      volumeLiquidated: {
+      volumeLiquidationLong: {
         value: 0,
-        valueUsd: convertToNumber(dataTimeframeLast24Hours.volumeLiquidatedUsd),
+        valueUsd: convertToNumber(dataTimeframeLast24Hours.volumeLiquidationLongUsd),
         changedValueUsd: dataTimeframeLast48Hours
           ? calChangesOf_Current_From_Previous(
-              dataTimeframeLast24Hours.volumeLiquidatedUsd,
-              dataTimeframeLast48Hours.volumeLiquidatedUsd,
+              dataTimeframeLast24Hours.volumeLiquidationLongUsd,
+              dataTimeframeLast48Hours.volumeLiquidationLongUsd,
+            )
+          : undefined,
+      },
+      volumeLiquidationShort: {
+        value: 0,
+        valueUsd: convertToNumber(dataTimeframeLast24Hours.volumeLiquidationShortUsd),
+        changedValueUsd: dataTimeframeLast48Hours
+          ? calChangesOf_Current_From_Previous(
+              dataTimeframeLast24Hours.volumeLiquidationShortUsd,
+              dataTimeframeLast48Hours.volumeLiquidationShortUsd,
             )
           : undefined,
       },

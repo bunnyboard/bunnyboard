@@ -18,11 +18,15 @@ export interface AggPerpetualMarketSnapshot extends DataTimeframe {
   rateBorrow: number;
 
   volumeFeesPaid: DataValueItem;
-  volumeOpenInterestShort: DataValueItem;
+
   volumeOpenInterestLong: DataValueItem;
-  volumeShort: DataValueItem;
-  volumeLong: DataValueItem;
-  volumeLiquidated: DataValueItem;
+  volumeOpenInterestShort: DataValueItem;
+
+  volumeTradingLong: DataValueItem;
+  volumeTradingShort: DataValueItem;
+
+  volumeLiquidationLong: DataValueItem;
+  volumeLiquidationShort: DataValueItem;
 
   numberOfUsers: number;
   numberOfTransactions: number;
@@ -33,27 +37,31 @@ export interface AggePerpetualDayData {
 
   totalDeposited: DataValueItem;
 
-  totalOpenInterestShort: DataValueItem;
   totalOpenInterestLong: DataValueItem;
+  totalOpenInterestShort: DataValueItem;
 
   volumeFeesPaid: DataValueItem;
 
-  volumeShort: DataValueItem;
-  volumeLong: DataValueItem;
-  volumeLiquidated: DataValueItem;
+  volumeTradingLong: DataValueItem;
+  volumeTradingShort: DataValueItem;
+
+  volumeLiquidationLong: DataValueItem;
+  volumeLiquidationShort: DataValueItem;
 }
 
 export interface AggPerpetualOverallState {
   totalDeposited: DataValueItem;
 
-  totalOpenInterestShort: DataValueItem;
   totalOpenInterestLong: DataValueItem;
+  totalOpenInterestShort: DataValueItem;
 
   volumeFeesPaid: DataValueItem;
 
-  volumeShort: DataValueItem;
-  volumeLong: DataValueItem;
-  volumeLiquidated: DataValueItem;
+  volumeTradingLong: DataValueItem;
+  volumeTradingShort: DataValueItem;
+
+  volumeLiquidationLong: DataValueItem;
+  volumeLiquidationShort: DataValueItem;
 
   // a list of 24h market snapshots
   markets: Array<AggPerpetualMarketSnapshot>;

@@ -94,15 +94,19 @@ export default class AggregatorTransformHelper {
         value: 0,
         valueUsd: 0,
       },
-      volumeShort: {
+      volumeTradingLong: {
         value: 0,
         valueUsd: 0,
       },
-      volumeLong: {
+      volumeTradingShort: {
         value: 0,
         valueUsd: 0,
       },
-      volumeLiquidated: {
+      volumeLiquidationLong: {
+        value: 0,
+        valueUsd: 0,
+      },
+      volumeLiquidationShort: {
         value: 0,
         valueUsd: 0,
       },

@@ -51,9 +51,12 @@ export default class PerpetualDataAggregator extends BaseDataAggregator {
         );
 
         dataState.volumeFeesPaid.valueUsd += snapshot.volumeFeesPaid.valueUsd;
-        dataState.volumeLong.valueUsd += snapshot.volumeLong.valueUsd;
-        dataState.volumeShort.valueUsd += snapshot.volumeShort.valueUsd;
-        dataState.volumeLiquidated.valueUsd += snapshot.volumeLiquidated.valueUsd;
+
+        dataState.volumeTradingLong.valueUsd += snapshot.volumeTradingLong.valueUsd;
+        dataState.volumeTradingShort.valueUsd += snapshot.volumeTradingShort.valueUsd;
+
+        dataState.volumeLiquidationLong.valueUsd += snapshot.volumeLiquidationLong.valueUsd;
+        dataState.volumeLiquidationShort.valueUsd += snapshot.volumeLiquidationShort.valueUsd;
 
         dataState.markets.push(snapshot);
       }
@@ -94,27 +97,35 @@ export default class PerpetualDataAggregator extends BaseDataAggregator {
         };
       }),
     );
-    dataState.volumeLong.changedValueUsd = calChangesOf_Total_From_Items(
+    dataState.volumeTradingLong.changedValueUsd = calChangesOf_Total_From_Items(
       dataState.markets.map((snapshot) => {
         return {
-          value: snapshot.volumeLong.valueUsd,
-          change: snapshot.volumeLong.changedValueUsd ? snapshot.volumeLong.changedValueUsd : 0,
+          value: snapshot.volumeTradingLong.valueUsd,
+          change: snapshot.volumeTradingLong.changedValueUsd ? snapshot.volumeTradingLong.changedValueUsd : 0,
         };
       }),
     );
-    dataState.volumeShort.changedValueUsd = calChangesOf_Total_From_Items(
+    dataState.volumeTradingShort.changedValueUsd = calChangesOf_Total_From_Items(
       dataState.markets.map((snapshot) => {
         return {
-          value: snapshot.volumeShort.valueUsd,
-          change: snapshot.volumeShort.changedValueUsd ? snapshot.volumeShort.changedValueUsd : 0,
+          value: snapshot.volumeTradingShort.valueUsd,
+          change: snapshot.volumeTradingShort.changedValueUsd ? snapshot.volumeTradingShort.changedValueUsd : 0,
         };
       }),
     );
-    dataState.volumeLiquidated.changedValueUsd = calChangesOf_Total_From_Items(
+    dataState.volumeLiquidationLong.changedValueUsd = calChangesOf_Total_From_Items(
       dataState.markets.map((snapshot) => {
         return {
-          value: snapshot.volumeLiquidated.valueUsd,
-          change: snapshot.volumeLiquidated.changedValueUsd ? snapshot.volumeLiquidated.changedValueUsd : 0,
+          value: snapshot.volumeLiquidationLong.valueUsd,
+          change: snapshot.volumeLiquidationLong.changedValueUsd ? snapshot.volumeLiquidationLong.changedValueUsd : 0,
+        };
+      }),
+    );
+    dataState.volumeLiquidationShort.changedValueUsd = calChangesOf_Total_From_Items(
+      dataState.markets.map((snapshot) => {
+        return {
+          value: snapshot.volumeLiquidationShort.valueUsd,
+          change: snapshot.volumeLiquidationShort.changedValueUsd ? snapshot.volumeLiquidationShort.changedValueUsd : 0,
         };
       }),
     );
@@ -135,9 +146,10 @@ export default class PerpetualDataAggregator extends BaseDataAggregator {
           totalOpenInterestLong: convertToNumber(snapshot.totalOpenInterestLongUsd),
           totalOpenInterestShort: convertToNumber(snapshot.totalOpenInterestShortUsd),
           volumeFeesPaid: convertToNumber(snapshot.volumeFeesPaidUsd),
-          volumeShort: convertToNumber(snapshot.volumeShortUsd),
-          volumeLong: convertToNumber(snapshot.volumeLongUsd),
-          volumeLiquidated: convertToNumber(snapshot.volumeLiquidatedUsd),
+          volumeTradingLong: convertToNumber(snapshot.volumeTradingLongUsd),
+          volumeTradingShort: convertToNumber(snapshot.volumeTradingShortUsd),
+          volumeLiquidationLong: convertToNumber(snapshot.volumeLiquidationLongUsd),
+          volumeLiquidationShort: convertToNumber(snapshot.volumeLiquidationShortUsd),
         };
       }),
       'timestamp',
@@ -160,17 +172,21 @@ export default class PerpetualDataAggregator extends BaseDataAggregator {
           value: 0,
           valueUsd: item.volumeFeesPaid,
         },
-        volumeShort: {
+        volumeTradingLong: {
           value: 0,
-          valueUsd: item.volumeShort,
+          valueUsd: item.volumeTradingLong,
         },
-        volumeLong: {
+        volumeTradingShort: {
           value: 0,
-          valueUsd: item.volumeLong,
+          valueUsd: item.volumeTradingShort,
         },
-        volumeLiquidated: {
+        volumeLiquidationLong: {
           value: 0,
-          valueUsd: item.volumeLiquidated,
+          valueUsd: item.volumeLiquidationLong,
+        },
+        volumeLiquidationShort: {
+          value: 0,
+          valueUsd: item.volumeLiquidationShort,
         },
       };
     });
