@@ -11,12 +11,14 @@ import {
   AggCdpLendingMarketSnapshot,
   AggCrossLendingMarketSnapshot,
 } from '../../../types/aggregates/lending';
+import { AggPerpetualMarketSnapshot } from '../../../types/aggregates/perpetual';
 import {
   CdpLendingMarketDataState,
   CdpLendingMarketDataTimeframe,
   CrossLendingMarketDataState,
   CrossLendingMarketDataTimeframe,
 } from '../../../types/collectors/lending';
+import { PerpetualMarketDataState, PerpetualMarketDataTimeframe } from '../../../types/collectors/perpetutal';
 
 function transformValueWithTokenPrice(
   dataTimeframeLast24Hours: any,
@@ -333,5 +335,116 @@ export default class AggregatorTransformModel {
     );
 
     return snapshot;
+  }
+
+  // PerpetualMarketDataTimeframe -> AggPerpetualMarketSnapshot
+  public static transformPerpetualMarketSnapshot(
+    timeframeLast24Hours: any,
+    timeframeLast48Hours: any,
+    currentDataState: any,
+  ): AggPerpetualMarketSnapshot {
+    const dataTimeframeLast24Hours: PerpetualMarketDataTimeframe = timeframeLast24Hours as PerpetualMarketDataTimeframe;
+    const dataTimeframeLast48Hours: PerpetualMarketDataTimeframe | null = timeframeLast48Hours
+      ? (timeframeLast48Hours as PerpetualMarketDataTimeframe)
+      : null;
+    const dataState: PerpetualMarketDataState = currentDataState ? currentDataState : timeframeLast24Hours;
+
+    return {
+      metric: dataTimeframeLast24Hours.metric,
+      timestamp: dataTimeframeLast24Hours.timestamp,
+      timefrom: dataTimeframeLast24Hours.timefrom,
+      timeto: dataTimeframeLast24Hours.timeto,
+
+      chain: dataState.chain,
+      protocol: dataState.protocol,
+      address: dataState.address,
+      token: dataState.token,
+      tokenPrice: convertToNumber(dataState.tokenPrice),
+
+      rateBorrow: convertToNumber(dataState.rateBorrow),
+
+      totalDeposited: transformValueWithTokenPrice(dataState, dataTimeframeLast24Hours, 'totalDeposited'),
+
+      totalOpenInterestLong: {
+        value: 0,
+        valueUsd: convertToNumber(dataState.totalOpenInterestLongUsd),
+        changedValueUsd: calChangesOf_Current_From_Previous(
+          dataState.totalOpenInterestLongUsd,
+          dataTimeframeLast24Hours.totalOpenInterestLongUsd,
+        ),
+      },
+      totalOpenInterestShort: {
+        value: 0,
+        valueUsd: convertToNumber(dataState.totalOpenInterestShortUsd),
+        changedValueUsd: calChangesOf_Current_From_Previous(
+          dataState.totalOpenInterestShortUsd,
+          dataTimeframeLast24Hours.totalOpenInterestShortUsd,
+        ),
+      },
+
+      volumeFeesPaid: {
+        value: 0,
+        valueUsd: convertToNumber(dataTimeframeLast24Hours.volumeFeesPaidUsd),
+        changedValueUsd: dataTimeframeLast48Hours
+          ? calChangesOf_Current_From_Previous(
+              dataTimeframeLast24Hours.volumeFeesPaidUsd,
+              dataTimeframeLast48Hours.volumeFeesPaidUsd,
+            )
+          : undefined,
+      },
+      volumeOpenInterestLong: {
+        value: 0,
+        valueUsd: convertToNumber(dataTimeframeLast24Hours.volumeOpenInterestLongUsd),
+        changedValueUsd: dataTimeframeLast48Hours
+          ? calChangesOf_Current_From_Previous(
+              dataTimeframeLast24Hours.volumeOpenInterestLongUsd,
+              dataTimeframeLast48Hours.volumeOpenInterestLongUsd,
+            )
+          : undefined,
+      },
+      volumeOpenInterestShort: {
+        value: 0,
+        valueUsd: convertToNumber(dataTimeframeLast24Hours.volumeOpenInterestShortUsd),
+        changedValueUsd: dataTimeframeLast48Hours
+          ? calChangesOf_Current_From_Previous(
+              dataTimeframeLast24Hours.volumeOpenInterestShortUsd,
+              dataTimeframeLast48Hours.volumeOpenInterestShortUsd,
+            )
+          : undefined,
+      },
+      volumeLong: {
+        value: 0,
+        valueUsd: convertToNumber(dataTimeframeLast24Hours.volumeLongUsd),
+        changedValueUsd: dataTimeframeLast48Hours
+          ? calChangesOf_Current_From_Previous(
+              dataTimeframeLast24Hours.volumeLongUsd,
+              dataTimeframeLast48Hours.volumeLongUsd,
+            )
+          : undefined,
+      },
+      volumeShort: {
+        value: 0,
+        valueUsd: convertToNumber(dataTimeframeLast24Hours.volumeShortUsd),
+        changedValueUsd: dataTimeframeLast48Hours
+          ? calChangesOf_Current_From_Previous(
+              dataTimeframeLast24Hours.volumeShortUsd,
+              dataTimeframeLast48Hours.volumeShortUsd,
+            )
+          : undefined,
+      },
+      volumeLiquidated: {
+        value: 0,
+        valueUsd: convertToNumber(dataTimeframeLast24Hours.volumeLiquidatedUsd),
+        changedValueUsd: dataTimeframeLast48Hours
+          ? calChangesOf_Current_From_Previous(
+              dataTimeframeLast24Hours.volumeLiquidatedUsd,
+              dataTimeframeLast48Hours.volumeLiquidatedUsd,
+            )
+          : undefined,
+      },
+
+      numberOfUsers: convertToNumber(dataTimeframeLast24Hours.numberOfUsers),
+      numberOfTransactions: convertToNumber(dataTimeframeLast24Hours.numberOfTransactions),
+    };
   }
 }

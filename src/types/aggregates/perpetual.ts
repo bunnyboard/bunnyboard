@@ -7,7 +7,7 @@ export interface AggPerpetualMarketSnapshot extends DataTimeframe {
 
   // every market was identity by a given token
   token: Token;
-  tokenPrice: string;
+  tokenPrice: number;
 
   // total tokens locked, market size too
   totalDeposited: DataValueItem;
@@ -20,9 +20,9 @@ export interface AggPerpetualMarketSnapshot extends DataTimeframe {
   volumeFeesPaid: DataValueItem;
   volumeOpenInterestShort: DataValueItem;
   volumeOpenInterestLong: DataValueItem;
-  volumeTradingShort: DataValueItem;
-  volumeTradingLong: DataValueItem;
-  volumeLiquidatedUsd: DataValueItem;
+  volumeShort: DataValueItem;
+  volumeLong: DataValueItem;
+  volumeLiquidated: DataValueItem;
 
   numberOfUsers: number;
   numberOfTransactions: number;
@@ -33,5 +33,31 @@ export interface AggePerpetualDayData {
 
   totalDeposited: DataValueItem;
 
-  totalOpenInterestShortUsd: DataValueItem;
+  totalOpenInterestShort: DataValueItem;
+  totalOpenInterestLong: DataValueItem;
+
+  volumeFeesPaid: DataValueItem;
+
+  volumeShort: DataValueItem;
+  volumeLong: DataValueItem;
+  volumeLiquidated: DataValueItem;
+}
+
+export interface AggPerpetualOverallState {
+  totalDeposited: DataValueItem;
+
+  totalOpenInterestShort: DataValueItem;
+  totalOpenInterestLong: DataValueItem;
+
+  volumeFeesPaid: DataValueItem;
+
+  volumeShort: DataValueItem;
+  volumeLong: DataValueItem;
+  volumeLiquidated: DataValueItem;
+
+  // a list of 24h market snapshots
+  markets: Array<AggPerpetualMarketSnapshot>;
+
+  // all-time day data
+  dayData: Array<AggePerpetualDayData>;
 }

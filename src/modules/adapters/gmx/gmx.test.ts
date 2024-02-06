@@ -54,9 +54,7 @@ test('should get data state correctly - adapter:gmx', async function () {
   let totalVolumeTrading = 0;
   let totalVolumeLiquidation = 0;
   for (const market of arbDataSnapshots.perpetual ? arbDataSnapshots.perpetual : []) {
-    totalVolumeTrading += new BigNumber(market.volumeLongUsd)
-      .plus(new BigNumber(market.volumeShortUsd))
-      .toNumber();
+    totalVolumeTrading += new BigNumber(market.volumeLongUsd).plus(new BigNumber(market.volumeShortUsd)).toNumber();
     totalVolumeLiquidation += new BigNumber(market.volumeLiquidatedUsd).toNumber();
   }
 

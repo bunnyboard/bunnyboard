@@ -1,25 +1,21 @@
 import EnvConfig from '../../../configs/envConfig';
-import { DefaultRecordPerPage } from '../../../configs/policies';
 import { groupAndSumObjectList } from '../../../lib/helper';
 import logger from '../../../lib/logger';
 import { calChangesOf_Total_From_Items, calValueOf_Amount_With_Price } from '../../../lib/math';
-import { normalizeAddress } from '../../../lib/utils';
 import { IDatabaseService } from '../../../services/database/domains';
-import { AggDataAggregateNames, AggDataTypes } from '../../../types/aggregates/common';
+import { AggDataAggregateNames } from '../../../types/aggregates/common';
 import { AggCrossLendingOverallState } from '../../../types/aggregates/lending';
-import { AggDataQueryOptions, AggDataQueryResult, AggLendingDataQueryFilters } from '../../../types/aggregates/options';
 import { CrossLendingMarketDataStateWithTimeframes } from '../../../types/collectors/lending';
 import { DataMetrics } from '../../../types/configs';
-import { DataAggregator } from '../../../types/namespaces';
 import AggregatorTransformModel from '../transform/data';
 import AggregatorTransformHelper from '../transform/helper';
+import BaseDataAggregator from './base';
 
-export default class CrossLendingDataAggregator implements DataAggregator {
+export default class CrossLendingDataAggregator extends BaseDataAggregator {
   public readonly name: string = 'aggregator.crossLending';
-  public readonly database: IDatabaseService;
 
   constructor(database: IDatabaseService) {
-    this.database = database;
+    super(database);
   }
 
   private async aggregateCrossLendingDataState(): Promise<AggCrossLendingOverallState> {
@@ -194,101 +190,5 @@ export default class CrossLendingDataAggregator implements DataAggregator {
       service: this.name,
       name: AggDataAggregateNames.crossLendingDataState,
     });
-  }
-
-  public async query(options: AggDataQueryOptions): Promise<AggDataQueryResult | null> {
-    const { type, metric, paging } = options;
-    const filters = options.filters as AggLendingDataQueryFilters;
-
-    const query: any = {
-      metric: metric,
-    };
-    if (filters.chain) {
-      query.chain = filters.chain;
-    }
-    if (filters.protocol) {
-      query.protocol = filters.protocol;
-    }
-    if (filters.action) {
-      query.action = filters.action;
-    }
-    if (filters.timestamp) {
-      query.timestamp = Number(filters.timestamp);
-    }
-    if (filters.token) {
-      query['token.address'] = normalizeAddress(filters.token);
-    }
-
-    let collectionName = null;
-    switch (type) {
-      case AggDataTypes.snapshot: {
-        collectionName = EnvConfig.mongodb.collections.lendingMarketSnapshots;
-        break;
-      }
-      case AggDataTypes.activity: {
-        collectionName = EnvConfig.mongodb.collections.activities;
-        break;
-      }
-    }
-
-    if (collectionName) {
-      const queryPage = paging.page;
-      const queryOrder = { timestamp: paging.order === 'oldest' ? 1 : -1 };
-
-      const totalPage = Math.floor(
-        (await this.database.countDocuments({
-          collection: collectionName,
-          query: query,
-        })) /
-          DefaultRecordPerPage +
-          1,
-      );
-
-      const result: AggDataQueryResult = {
-        totalPage: totalPage,
-        returnPage: queryPage,
-        returnOrder: paging.order,
-        data: [],
-      };
-
-      const documents: Array<any> = await this.database.query({
-        collection: collectionName,
-        query: query,
-        options: {
-          limit: DefaultRecordPerPage,
-          skip: queryPage * DefaultRecordPerPage,
-          order: queryOrder,
-        },
-      });
-
-      if (type === AggDataTypes.snapshot && metric === DataMetrics.crossLending) {
-        for (const document of documents) {
-          // we find the previous snapshot data if any
-          const previousSnapshot = await this.database.find({
-            collection: EnvConfig.mongodb.collections.lendingMarketSnapshots,
-            query: {
-              chain: document.chain,
-              protocol: document.protocol,
-              metric: document.metric,
-              address: document.address,
-              'token.address': document.token.address,
-              timestamp: Number(document.timestamp) - 24 * 60 * 60,
-            },
-          });
-          result.data.push(
-            AggregatorTransformModel.transformCrossLendingMarketSnapshot(document, previousSnapshot, null),
-          );
-        }
-      } else {
-        for (const document of documents) {
-          delete document._id;
-          result.data.push(document);
-        }
-      }
-
-      return result;
-    }
-
-    return null;
   }
 }

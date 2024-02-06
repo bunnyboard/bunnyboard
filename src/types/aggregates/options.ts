@@ -1,11 +1,9 @@
-export interface AggLendingDataQueryFilters {
+export interface AggDataQueryFilters {
   chain: string | null | undefined;
 
   protocol: string | null | undefined;
 
   token: string | null | undefined; // token address
-
-  action: string | null | undefined;
 
   timestamp: number | null | undefined;
 }
@@ -21,7 +19,7 @@ export interface AggDataQueryOptions {
   type: string;
   metric: string;
 
-  filters: AggLendingDataQueryFilters;
+  filters: AggDataQueryFilters;
 
   paging: AggDataQueryPaging;
 }

@@ -1,4 +1,5 @@
 import { AggCdpLendingOverallState, AggCrossLendingOverallState } from '../../../types/aggregates/lending';
+import { AggPerpetualOverallState } from '../../../types/aggregates/perpetual';
 
 export default class AggregatorTransformHelper {
   public static getDefaultAggCrossLendingOverallState(): AggCrossLendingOverallState {
@@ -67,6 +68,41 @@ export default class AggregatorTransformHelper {
         valueUsd: 0,
       },
       volumeCollateralLiquidated: {
+        value: 0,
+        valueUsd: 0,
+      },
+      markets: [],
+      dayData: [],
+    };
+  }
+
+  public static getDefaultAggPerpetualOverallState(): AggPerpetualOverallState {
+    return {
+      totalDeposited: {
+        value: 0,
+        valueUsd: 0,
+      },
+      totalOpenInterestLong: {
+        value: 0,
+        valueUsd: 0,
+      },
+      totalOpenInterestShort: {
+        value: 0,
+        valueUsd: 0,
+      },
+      volumeFeesPaid: {
+        value: 0,
+        valueUsd: 0,
+      },
+      volumeShort: {
+        value: 0,
+        valueUsd: 0,
+      },
+      volumeLong: {
+        value: 0,
+        valueUsd: 0,
+      },
+      volumeLiquidated: {
         value: 0,
         valueUsd: 0,
       },

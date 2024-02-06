@@ -240,9 +240,7 @@ export default class GmxAdapter extends ProtocolAdapter {
                     .toString(10);
                 }
 
-                marketSnapshots[marketKey].volumeLongUsd = new BigNumber(
-                  marketSnapshots[marketKey].volumeLongUsd,
-                )
+                marketSnapshots[marketKey].volumeLongUsd = new BigNumber(marketSnapshots[marketKey].volumeLongUsd)
                   .plus(sizeDelta)
                   .toString(10);
               } else {
@@ -253,9 +251,7 @@ export default class GmxAdapter extends ProtocolAdapter {
                     .plus(sizeDelta)
                     .toString(10);
                 }
-                marketSnapshots[marketKey].volumeShortUsd = new BigNumber(
-                  marketSnapshots[marketKey].volumeShortUsd,
-                )
+                marketSnapshots[marketKey].volumeShortUsd = new BigNumber(marketSnapshots[marketKey].volumeShortUsd)
                   .plus(sizeDelta)
                   .toString(10);
               }
