@@ -1,6 +1,3 @@
-import EnvConfig from '../../configs/envConfig';
-import logger from '../../lib/logger';
-import { tryQueryBlockNumberAtTimestamp, tryQueryBlockTimestamps } from '../../lib/subsgraph';
 import {
   AdapterAbiConfigs,
   GetAdapterDataStateOptions,
@@ -55,75 +52,5 @@ export default class ProtocolAdapter implements IProtocolAdapter {
     return {
       activities: [],
     };
-  }
-
-  protected async syncActivities(options: GetAdapterDataTimeframeOptions, storages: ContextStorages): Promise<void> {
-    const startExeTime = Math.floor(new Date().getTime() / 1000);
-
-    const beginBlock = await tryQueryBlockNumberAtTimestamp(
-      EnvConfig.blockchains[options.config.chain].blockSubgraph,
-      options.fromTime,
-    );
-    const endBlock = await tryQueryBlockNumberAtTimestamp(
-      EnvConfig.blockchains[options.config.chain].blockSubgraph,
-      options.toTime,
-    );
-    const blocktimes = await tryQueryBlockTimestamps(
-      EnvConfig.blockchains[options.config.chain].blockSubgraph as string,
-      beginBlock,
-      endBlock,
-    );
-
-    const logs = await this.getEventLogs({
-      config: options.config,
-      fromBlock: beginBlock,
-      toBlock: endBlock,
-    });
-
-    const { activities } = await this.transformEventLogs({
-      chain: options.config.chain,
-      config: options.config,
-      logs: logs,
-    });
-
-    const activityOperations: Array<any> = [];
-    for (const activity of activities) {
-      activityOperations.push({
-        updateOne: {
-          filter: {
-            chain: options.config.chain,
-            transactionHash: activity.transactionHash,
-            logIndex: activity.logIndex,
-          },
-          update: {
-            $set: {
-              ...activity,
-              timestamp: blocktimes[activity.blockNumber] ? blocktimes[activity.blockNumber] : 0,
-            },
-          },
-          upsert: true,
-        },
-      });
-    }
-
-    await storages.database.bulkWrite({
-      collection: EnvConfig.mongodb.collections.activities,
-      operations: activityOperations,
-    });
-
-    const endExeTime = Math.floor(new Date().getTime() / 1000);
-    const elapsed = endExeTime - startExeTime;
-
-    logger.debug('sync protocol activities', {
-      service: this.name,
-      chain: options.config.chain,
-      protocol: options.config.protocol,
-      metric: options.config.metric,
-      address: options.config.address,
-      fromTime: options.fromTime,
-      toTime: options.toTime,
-      activities: activityOperations.length,
-      elapses: `${elapsed}s`,
-    });
   }
 }

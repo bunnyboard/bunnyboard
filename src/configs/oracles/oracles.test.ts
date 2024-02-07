@@ -38,16 +38,5 @@ for (const list of TokenLists) {
         expect(OracleConfigs[token.chain][token.address]).not.equal(undefined);
       }
     });
-    // test(`can get token price ${token.chain}:${token.address}`, async function () {
-    //   if (!Blacklists[token.chain] || Blacklists[token.chain].indexOf(token.address) === -1) {
-    //     const tokenPrice = await oracle.getTokenPriceUsd({
-    //       chain: token.chain,
-    //       address: token.address,
-    //       timestamp: getTimestamp(),
-    //     });
-    //     expect(tokenPrice).not.equal(null);
-    //     expect(tokenPrice).not.equal('0');
-    //   }
-    // });
   }
 }

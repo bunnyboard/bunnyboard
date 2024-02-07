@@ -526,4 +526,8 @@ export const OracleSourceConfigs: { [key: string]: OracleConfig } = {
     currency: 'eth',
     sources: [OracleSourceUniswapv3List.GMX_WETH],
   },
+  SOL: {
+    currency: 'usd',
+    sources: [OracleSourceChainlinkList.SOL_USD],
+  },
 };

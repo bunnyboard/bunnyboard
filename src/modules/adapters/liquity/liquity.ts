@@ -364,8 +364,27 @@ export default class LiquityAdapter extends ProtocolAdapter {
       return result;
     }
 
-    // sync activities
-    await this.syncActivities(options, storages);
+    // make sure activities were synced
+    const beginBlock = await tryQueryBlockNumberAtTimestamp(
+      EnvConfig.blockchains[options.config.chain].blockSubgraph,
+      options.fromTime,
+    );
+    const endBlock = await tryQueryBlockNumberAtTimestamp(
+      EnvConfig.blockchains[options.config.chain].blockSubgraph,
+      options.toTime,
+    );
+
+    const logs = await this.getEventLogs({
+      config: options.config,
+      fromBlock: beginBlock,
+      toBlock: endBlock,
+    });
+
+    const { activities } = await this.transformEventLogs({
+      chain: options.config.chain,
+      config: options.config,
+      logs: logs,
+    });
 
     for (const stateData of states) {
       let volumeBorrowed = new BigNumber(0);
@@ -389,19 +408,13 @@ export default class LiquityAdapter extends ProtocolAdapter {
       };
 
       // count borrow/repay events
-      const lusdEvents = await storages.database.query({
-        collection: EnvConfig.mongodb.collections.activities,
-        query: {
-          chain: stateData.chain,
-          protocol: stateData.protocol,
-          address: options.config.address, // borrow operation
-          'token.address': stateData.token.address,
-          timestamp: {
-            $gte: options.fromTime,
-            $lte: options.toTime,
-          },
-        },
-      });
+      const lusdEvents = activities.filter(
+        (activity) =>
+          activity.chain === stateData.chain &&
+          activity.protocol === stateData.protocol &&
+          activity.address === options.config.address &&
+          activity.token.address === stateData.token.address,
+      );
 
       for (const event of lusdEvents) {
         const activityEvent = event as CdpLendingActivityEvent;
@@ -434,19 +447,13 @@ export default class LiquityAdapter extends ProtocolAdapter {
         let volumeLiquidated = new BigNumber(0);
 
         // count deposit/withdraw/liquidate events
-        const collateralEvents = await storages.database.query({
-          collection: EnvConfig.mongodb.collections.activities,
-          query: {
-            chain: stateData.chain,
-            protocol: stateData.protocol,
-            address: options.config.address, // borrow operation
-            'token.address': collateral.token.address,
-            timestamp: {
-              $gte: options.fromTime,
-              $lte: options.toTime,
-            },
-          },
-        });
+        const collateralEvents = activities.filter(
+          (activity) =>
+            activity.chain === stateData.chain &&
+            activity.protocol === stateData.protocol &&
+            activity.address === options.config.address &&
+            activity.token.address === collateral.token.address,
+        );
         for (const event of collateralEvents) {
           const activityEvent = event as CdpLendingActivityEvent;
 

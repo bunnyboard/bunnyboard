@@ -372,7 +372,26 @@ export default class Compoundv3Adapter extends ProtocolAdapter {
     }
 
     // make sure activities were synced
-    await this.syncActivities(options, storages);
+    const beginBlock = await tryQueryBlockNumberAtTimestamp(
+      EnvConfig.blockchains[options.config.chain].blockSubgraph,
+      options.fromTime,
+    );
+    const endBlock = await tryQueryBlockNumberAtTimestamp(
+      EnvConfig.blockchains[options.config.chain].blockSubgraph,
+      options.toTime,
+    );
+
+    const logs = await this.getEventLogs({
+      config: options.config,
+      fromBlock: beginBlock,
+      toBlock: endBlock,
+    });
+
+    const { activities } = await this.transformEventLogs({
+      chain: options.config.chain,
+      config: options.config,
+      logs: logs,
+    });
 
     const marketConfig = options.config as Compoundv3LendingMarketConfig;
     for (const stateData of states) {
@@ -393,19 +412,13 @@ export default class Compoundv3Adapter extends ProtocolAdapter {
       const countUsers: { [key: string]: boolean } = {};
       const transactions: { [key: string]: boolean } = {};
 
-      const baseTokenEvents = await storages.database.query({
-        collection: EnvConfig.mongodb.collections.activities,
-        query: {
-          chain: stateData.chain,
-          protocol: stateData.protocol,
-          address: marketConfig.address,
-          'token.address': marketConfig.debtToken.address,
-          timestamp: {
-            $gte: options.fromTime,
-            $lte: options.toTime,
-          },
-        },
-      });
+      const baseTokenEvents = activities.filter(
+        (activity) =>
+          activity.chain === stateData.chain &&
+          activity.protocol === stateData.protocol &&
+          activity.address === marketConfig.address &&
+          activity.token.address === marketConfig.debtToken.address,
+      );
 
       let volumeBorrowedBaseToken = new BigNumber(0);
       let volumeRepaidBaseToken = new BigNumber(0);
@@ -446,19 +459,13 @@ export default class Compoundv3Adapter extends ProtocolAdapter {
         let volumeWithdrawn = new BigNumber(0);
         let volumeLiquidated = new BigNumber(0);
 
-        const collateralEvents = await storages.database.query({
-          collection: EnvConfig.mongodb.collections.activities,
-          query: {
-            chain: stateData.chain,
-            protocol: stateData.protocol,
-            address: collateral.address,
-            'token.address': collateral.token.address,
-            timestamp: {
-              $gte: options.fromTime,
-              $lte: options.toTime,
-            },
-          },
-        });
+        const collateralEvents = activities.filter(
+          (activity) =>
+            activity.chain === stateData.chain &&
+            activity.protocol === stateData.protocol &&
+            activity.address === marketConfig.address &&
+            activity.token.address === collateral.token.address,
+        );
 
         for (const event of collateralEvents) {
           const activityEvent = event as CdpLendingActivityEvent;

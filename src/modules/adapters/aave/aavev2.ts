@@ -332,23 +332,35 @@ export default class Aavev2Adapter extends ProtocolAdapter {
       return result;
     }
 
-    // sync activities
-    await this.syncActivities(options, storages);
+    const beginBlock = await tryQueryBlockNumberAtTimestamp(
+      EnvConfig.blockchains[options.config.chain].blockSubgraph,
+      options.fromTime,
+    );
+    const endBlock = await tryQueryBlockNumberAtTimestamp(
+      EnvConfig.blockchains[options.config.chain].blockSubgraph,
+      options.toTime,
+    );
+
+    const logs = await this.getEventLogs({
+      config: options.config,
+      fromBlock: beginBlock,
+      toBlock: endBlock,
+    });
+
+    const { activities } = await this.transformEventLogs({
+      chain: options.config.chain,
+      config: options.config,
+      logs: logs,
+    });
 
     for (const stateData of states) {
-      const documents = await storages.database.query({
-        collection: EnvConfig.mongodb.collections.activities,
-        query: {
-          chain: stateData.chain,
-          protocol: stateData.protocol,
-          address: stateData.address,
-          'token.address': stateData.token.address,
-          timestamp: {
-            $gte: options.fromTime,
-            $lte: options.toTime,
-          },
-        },
-      });
+      const documents = activities.filter(
+        (activity) =>
+          activity.chain === stateData.chain &&
+          activity.protocol === stateData.protocol &&
+          activity.address === stateData.address &&
+          activity.token.address === stateData.token.address,
+      );
 
       const activityData = await countCrossLendingDataFromActivities(documents);
 

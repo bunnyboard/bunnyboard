@@ -348,8 +348,27 @@ export default class MakerAdapter extends ProtocolAdapter {
       return result;
     }
 
-    // sync activities
-    await this.syncActivities(options, storages);
+    // make sure activities were synced
+    const beginBlock = await tryQueryBlockNumberAtTimestamp(
+      EnvConfig.blockchains[options.config.chain].blockSubgraph,
+      options.fromTime,
+    );
+    const endBlock = await tryQueryBlockNumberAtTimestamp(
+      EnvConfig.blockchains[options.config.chain].blockSubgraph,
+      options.toTime,
+    );
+
+    const logs = await this.getEventLogs({
+      config: options.config,
+      fromBlock: beginBlock,
+      toBlock: endBlock,
+    });
+
+    const { activities } = await this.transformEventLogs({
+      chain: options.config.chain,
+      config: options.config,
+      logs: logs,
+    });
 
     const marketConfig = options.config as MakerLendingMarketConfig;
     for (const stateData of states) {
@@ -368,19 +387,13 @@ export default class MakerAdapter extends ProtocolAdapter {
       const countUsers: { [key: string]: boolean } = {};
       const transactions: { [key: string]: boolean } = {};
 
-      const daiEvents = await storages.database.query({
-        collection: EnvConfig.mongodb.collections.activities,
-        query: {
-          chain: stateData.chain,
-          protocol: stateData.protocol,
-          address: marketConfig.daiJoin,
-          'token.address': marketConfig.debtToken.address,
-          timestamp: {
-            $gte: options.fromTime,
-            $lte: options.toTime,
-          },
-        },
-      });
+      const daiEvents = activities.filter(
+        (activity) =>
+          activity.chain === stateData.chain &&
+          activity.protocol === stateData.protocol &&
+          activity.address === marketConfig.daiJoin &&
+          activity.token.address === marketConfig.debtToken.address,
+      );
 
       for (const event of daiEvents) {
         const activityEvent = event as CdpLendingActivityEvent;
@@ -413,19 +426,13 @@ export default class MakerAdapter extends ProtocolAdapter {
         let volumeWithdrawn = new BigNumber(0);
         let volumeLiquidated = new BigNumber(0);
 
-        const collateralEvents = await storages.database.query({
-          collection: EnvConfig.mongodb.collections.activities,
-          query: {
-            chain: stateData.chain,
-            protocol: stateData.protocol,
-            address: collateral.address,
-            'token.address': collateral.token.address,
-            timestamp: {
-              $gte: options.fromTime,
-              $lte: options.toTime,
-            },
-          },
-        });
+        const collateralEvents = activities.filter(
+          (activity) =>
+            activity.chain === stateData.chain &&
+            activity.protocol === stateData.protocol &&
+            activity.address === collateral.address &&
+            activity.token.address === collateral.token.address,
+        );
 
         for (const event of collateralEvents) {
           const activityEvent = event as CdpLendingActivityEvent;

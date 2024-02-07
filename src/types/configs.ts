@@ -42,16 +42,7 @@ export interface EnvConfig {
     databaseName: string;
     connectionUri: string;
     collections: {
-      // states collection is used to save any states of any services
-      // for example, when we sync logs from a contract,
-      // we need to save the latest block where logs were sync
       states: string;
-
-      // save any kind of cache
-      caching: string;
-
-      // save all activity events;
-      activities: string;
 
       // this collection will be used to faster serve overview and chart data for frontends
       // there is a worker job run to aggregate data and save to this collection
@@ -122,26 +113,16 @@ export interface CdpLendingMarketConfig extends MetricConfig {
   debtToken: Token;
 }
 
-export const MasterchefVersions = {
-  origin: 'origin', // the original sushi masterchef
-  masterv2: 'masterv2', // sushi masterchef v2
-  mini: 'mini', // the minichef version of sushi were deployed other chains
+export const PerpetualMarketVersions = {
+  gmx: 'gmx',
+  gmxv2: 'gmxv2',
 };
+const AllPerpetualMarketVersions = Object.values(PerpetualMarketVersions);
+export type PerpetualVersion = (typeof AllPerpetualMarketVersions)[number];
 
-const ChefVersions = Object.values(MasterchefVersions);
-export type MasterchefVersion = (typeof ChefVersions)[number];
-
-export interface MasterchefConfig extends MetricConfig {
-  version: MasterchefVersion;
-
-  // the reward token - ex: SUSHI
-  rewardToken: Token;
-
-  // original sushi masterchef is 10%
-  devRewardSharePercentage: number;
+export interface PerpetualMarketConfig extends MetricConfig {
+  version: PerpetualVersion;
 }
-
-export interface PerpetualMarketConfig extends MetricConfig {}
 
 export interface ProtocolConfig {
   protocol: string;

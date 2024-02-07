@@ -3,10 +3,17 @@ import * as fs from 'fs';
 import { ProtocolConfigs } from '../configs';
 import { AaveLendingMarketConfig } from '../configs/protocols/aave';
 import { CompoundLendingMarketConfig } from '../configs/protocols/compound';
+import { Gmxv2PerpetualMarketConfig } from '../configs/protocols/gmx';
 import AaveLibs from '../modules/libs/aave';
 import CompoundLibs from '../modules/libs/compound';
 import GmxLibs from '../modules/libs/gmx';
-import { CrossLendingMarketConfig, DataMetrics, PerpetualMarketConfig, Token } from '../types/configs';
+import {
+  CrossLendingMarketConfig,
+  DataMetrics,
+  PerpetualMarketConfig,
+  PerpetualMarketVersions,
+  Token,
+} from '../types/configs';
 
 const directoryPath = './src/configs/tokenlists';
 
@@ -37,7 +44,7 @@ function loadExistedTokens(chain: string) {
       if (config.metric === DataMetrics.crossLending) {
         const lendingConfig = config as CrossLendingMarketConfig;
         console.log(
-          `Getting all tokens metadata from lending market ${lendingConfig.protocol}:${lendingConfig.chain}:${lendingConfig.address}`,
+          `getting all tokens metadata from lending market ${lendingConfig.protocol}:${lendingConfig.chain}:${lendingConfig.address}`,
         );
 
         let tokens: Array<Token> = [];
@@ -58,12 +65,23 @@ function loadExistedTokens(chain: string) {
       } else if (config.metric === DataMetrics.perpetual) {
         const perpetualConfig = config as PerpetualMarketConfig;
         console.log(
-          `Getting all tokens metadata from perpetual market ${perpetualConfig.protocol}:${perpetualConfig.chain}:${perpetualConfig.address}`,
+          `getting all tokens metadata from perpetual market ${perpetualConfig.protocol}:${perpetualConfig.chain}:${perpetualConfig.address}`,
         );
-        const vaultInfo = await GmxLibs.getVaultInfo(perpetualConfig.chain, perpetualConfig.address);
-        for (const token of vaultInfo.tokens) {
-          tokenByChains[token.chain][token.address] = token;
+        if (perpetualConfig.version === PerpetualMarketVersions.gmx) {
+          const vaultInfo = await GmxLibs.getVaultInfo(perpetualConfig.chain, perpetualConfig.address);
+          for (const token of vaultInfo.tokens) {
+            tokenByChains[token.chain][token.address] = token;
+          }
+        } else if (perpetualConfig.version === PerpetualMarketVersions.gmxv2) {
+          const pools = await GmxLibs.getMarketListV2(perpetualConfig as Gmxv2PerpetualMarketConfig);
+          for (const pool of pools) {
+            tokenByChains[pool.chain][pool.indexToken.address] = pool.indexToken;
+            tokenByChains[pool.chain][pool.longToken.address] = pool.longToken;
+            tokenByChains[pool.chain][pool.shortToken.address] = pool.shortToken;
+          }
         }
+      } else {
+        console.log(`warning: cannot recognize config metric ${config.metric} protocol ${config.protocol}`);
       }
     }
   }

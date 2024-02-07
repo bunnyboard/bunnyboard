@@ -1,9 +1,21 @@
 {
+  "0x0000000000000000000000000000000000000000": {
+    "chain": "arbitrum",
+    "address": "0x0000000000000000000000000000000000000000",
+    "symbol": "ETH",
+    "decimals": 18
+  },
   "0x17fc002b466eec40dae837fc4be5c67993ddbd6f": {
     "chain": "arbitrum",
     "address": "0x17fc002b466eec40dae837fc4be5c67993ddbd6f",
     "symbol": "FRAX",
     "decimals": 18
+  },
+  "0x2bcc6d6cdbbdc0a4071e48bb3b969b06b3330c07": {
+    "chain": "arbitrum",
+    "address": "0x2bcc6d6cdbbdc0a4071e48bb3b969b06b3330c07",
+    "symbol": "SOL",
+    "decimals": 9
   },
   "0x2f2a2543b76a4166549f7aab2e75bef0aefc5b0f": {
     "chain": "arbitrum",
@@ -29,6 +41,12 @@
     "symbol": "MAI",
     "decimals": 18
   },
+  "0x47904963fc8b2340414262125af798b9655e58cd": {
+    "chain": "arbitrum",
+    "symbol": "BTC",
+    "decimals": 18,
+    "address": "0x47904963fc8b2340414262125af798b9655e58cd"
+  },
   "0x5979d7b546e38e414f7e9822514be443a4800529": {
     "chain": "arbitrum",
     "address": "0x5979d7b546e38e414f7e9822514be443a4800529",
@@ -53,17 +71,41 @@
     "symbol": "LUSD",
     "decimals": 18
   },
+  "0xa9004a5421372e1d83fb1f85b0fc986c912f91f3": {
+    "chain": "arbitrum",
+    "address": "0xa9004a5421372e1d83fb1f85b0fc986c912f91f3",
+    "symbol": "WBNB",
+    "decimals": 18
+  },
   "0xaf88d065e77c8cc2239327c5edb3a432268e5831": {
     "chain": "arbitrum",
     "address": "0xaf88d065e77c8cc2239327c5edb3a432268e5831",
     "symbol": "USDC",
     "decimals": 6
   },
+  "0xb46a094bc4b0adbd801e14b9db95e05e28962764": {
+    "chain": "arbitrum",
+    "symbol": "LTC",
+    "decimals": 18,
+    "address": "0xb46a094bc4b0adbd801e14b9db95e05e28962764"
+  },
   "0xba5ddd1f9d7f570dc94a51479a000e3bce967196": {
     "chain": "arbitrum",
     "address": "0xba5ddd1f9d7f570dc94a51479a000e3bce967196",
     "symbol": "AAVE",
     "decimals": 18
+  },
+  "0xc14e065b0067de91534e032868f5ac6ecf2c6868": {
+    "chain": "arbitrum",
+    "symbol": "XRP",
+    "decimals": 18,
+    "address": "0xc14e065b0067de91534e032868f5ac6ecf2c6868"
+  },
+  "0xc4da4c24fd591125c3f47b340b6f4f76111883d8": {
+    "chain": "arbitrum",
+    "symbol": "DOGE",
+    "decimals": 18,
+    "address": "0xc4da4c24fd591125c3f47b340b6f4f76111883d8"
   },
   "0xd22a58f79e9481d1a88e00c343885a588b34b68b": {
     "chain": "arbitrum",
