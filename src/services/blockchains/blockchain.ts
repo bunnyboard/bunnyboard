@@ -5,6 +5,7 @@ import { DefaultQueryLogsBlockRangeSingleContract, TokenList } from '../../confi
 import ERC20Abi from '../../configs/abi/ERC20.json';
 import { AddressE, AddressF, AddressZero } from '../../configs/constants';
 import EnvConfig from '../../configs/envConfig';
+import { tryQueryBlockTimestamps } from '../../lib/subsgraph';
 import { compareAddress, normalizeAddress } from '../../lib/utils';
 import { Token } from '../../types/configs';
 import { CachingService } from '../caching/caching';
@@ -114,7 +115,18 @@ export default class BlockchainService extends CachingService implements IBlockc
       startBlock += DefaultQueryLogsBlockRangeSingleContract;
     }
 
-    return logs;
+    const blocktimes = await tryQueryBlockTimestamps(
+      EnvConfig.blockchains[options.chain].blockSubgraph,
+      options.fromBlock,
+      options.toBlock,
+    );
+
+    return logs.map((log) => {
+      return {
+        ...log,
+        timestamp: blocktimes[Number(log.blockNumber)],
+      };
+    });
   }
 
   public async readContract(options: ReadContractOptions): Promise<any> {
