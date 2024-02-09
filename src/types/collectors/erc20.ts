@@ -1,5 +1,5 @@
-import { DataState } from './base';
 import { Token } from '../configs';
+import { DataState } from './base';
 
 export interface Erc20DataState extends DataState {
   token: Token;

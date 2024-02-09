@@ -50,14 +50,11 @@ export default class SnapshotCollector {
         const startExeTime = Math.floor(new Date().getTime() / 1000);
 
         if (this.adapters[config.protocol]) {
-          const { crossLending, cdpLending, perpetual } = await this.adapters[config.protocol].getDataTimeframe(
-            {
-              config: config,
-              fromTime: runTime,
-              toTime: runTime + DAY - 1,
-            },
-            this.storages,
-          );
+          const { crossLending, cdpLending, perpetual } = await this.adapters[config.protocol].getDataTimeframe({
+            config: config,
+            fromTime: runTime,
+            toTime: runTime + DAY - 1,
+          });
 
           if (crossLending) {
             for (const snapshot of crossLending) {

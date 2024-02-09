@@ -34,23 +34,17 @@ export default class StateCollector {
         timestamp: timestamp,
       });
 
-      const timeframeLast24Hours = await this.adapters[config.protocol].getDataTimeframe(
-        {
-          config: config,
-          fromTime: timestamp - DAY,
-          toTime: timestamp,
-        },
-        this.storages,
-      );
+      const timeframeLast24Hours = await this.adapters[config.protocol].getDataTimeframe({
+        config: config,
+        fromTime: timestamp - DAY,
+        toTime: timestamp,
+      });
 
-      const timeframeLast48Hours = await this.adapters[config.protocol].getDataTimeframe(
-        {
-          config: config,
-          fromTime: timestamp - DAY * 2,
-          toTime: timestamp - DAY,
-        },
-        this.storages,
-      );
+      const timeframeLast48Hours = await this.adapters[config.protocol].getDataTimeframe({
+        config: config,
+        fromTime: timestamp - DAY * 2,
+        toTime: timestamp - DAY,
+      });
 
       if (state.crossLending) {
         for (const dateState of state.crossLending) {

@@ -4,13 +4,11 @@ import { expect, test } from 'vitest';
 import { ProtocolConfigs } from '../../../configs';
 import { DAY } from '../../../configs/constants';
 import BlockchainService from '../../../services/blockchains/blockchain';
-import DatabaseService from '../../../services/database/database';
 import OracleService from '../../../services/oracle/oracle';
 import GmxAdapter from './gmx';
 
 const oracle = new OracleService();
 const blockchain = new BlockchainService();
-const database = new DatabaseService();
 
 const timestamp = 1704240000; // Wed Jan 03 2024 00:00:00 GMT+0000
 
@@ -34,16 +32,11 @@ test('should get data state correctly - arbitrum tokens weth, wbtc at timestamp 
     config: ProtocolConfigs.gmx.configs[0],
     timestamp: timestamp,
   });
-  const arbDataSnapshots = await gmxAdapter.getDataTimeframe(
-    {
-      config: ProtocolConfigs.gmx.configs[0],
-      fromTime: timestamp,
-      toTime: timestamp + DAY - 1,
-    },
-    {
-      database: database,
-    },
-  );
+  const arbDataSnapshots = await gmxAdapter.getDataTimeframe({
+    config: ProtocolConfigs.gmx.configs[0],
+    fromTime: timestamp,
+    toTime: timestamp + DAY - 1,
+  });
 
   // there are 10 whitelisted tokens
   expect(arbDataState.perpetual).not.equal(undefined);

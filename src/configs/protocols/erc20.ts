@@ -21,5 +21,5 @@ export const TokenBoardConfigs: Erc20ProtocolConfig = {
       stablecoin: true,
       address: '0x6b175474e89094c44da98b954eedeac495271d0f',
     },
-  ]
-}
+  ],
+};
