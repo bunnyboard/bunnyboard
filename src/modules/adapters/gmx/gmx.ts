@@ -16,7 +16,7 @@ import {
 } from '../../../types/collectors/options';
 import { PerpetualMarketDataTimeframe } from '../../../types/collectors/perpetutal';
 import { DataMetrics, ProtocolConfig } from '../../../types/configs';
-import { ContextServices, ContextStorages } from '../../../types/namespaces';
+import { ContextServices } from '../../../types/namespaces';
 import GmxLibs, { GmxVaultInfo } from '../../libs/gmx';
 import ProtocolAdapter from '../adapter';
 import { GmxEventInterfaces, GmxEventSignatures } from './abis';
@@ -140,10 +140,7 @@ export default class GmxAdapter extends ProtocolAdapter {
     return logs;
   }
 
-  public async getDataTimeframe(
-    options: GetAdapterDataTimeframeOptions,
-    storages: ContextStorages,
-  ): Promise<GetAdapterDataTimeframeResult> {
+  public async getDataTimeframe(options: GetAdapterDataTimeframeOptions): Promise<GetAdapterDataTimeframeResult> {
     const states = (
       await this.getDataState({
         config: options.config,

@@ -24,7 +24,7 @@ import {
   TransformEventLogResult,
 } from '../../../types/collectors/options';
 import { ProtocolConfig } from '../../../types/configs';
-import { ContextServices, ContextStorages } from '../../../types/namespaces';
+import { ContextServices } from '../../../types/namespaces';
 import CompoundLibs from '../../libs/compound';
 import ProtocolAdapter from '../adapter';
 import { Compoundv3EventInterfaces, Compoundv3EventSignatures } from './abis';
@@ -352,10 +352,7 @@ export default class Compoundv3Adapter extends ProtocolAdapter {
     return result;
   }
 
-  public async getDataTimeframe(
-    options: GetAdapterDataTimeframeOptions,
-    storages: ContextStorages,
-  ): Promise<GetAdapterDataTimeframeResult> {
+  public async getDataTimeframe(options: GetAdapterDataTimeframeOptions): Promise<GetAdapterDataTimeframeResult> {
     const states = (
       await this.getDataState({
         config: options.config,

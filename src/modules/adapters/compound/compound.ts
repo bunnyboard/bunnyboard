@@ -22,7 +22,7 @@ import {
   TransformEventLogResult,
 } from '../../../types/collectors/options';
 import { ProtocolConfig, Token } from '../../../types/configs';
-import { ContextServices, ContextStorages } from '../../../types/namespaces';
+import { ContextServices } from '../../../types/namespaces';
 import CompoundLibs from '../../libs/compound';
 import ProtocolAdapter from '../adapter';
 import { countCrossLendingDataFromActivities } from '../helpers';
@@ -542,10 +542,7 @@ export default class CompoundAdapter extends ProtocolAdapter {
     return result;
   }
 
-  public async getDataTimeframe(
-    options: GetAdapterDataTimeframeOptions,
-    storages: ContextStorages,
-  ): Promise<GetAdapterDataTimeframeResult> {
+  public async getDataTimeframe(options: GetAdapterDataTimeframeOptions): Promise<GetAdapterDataTimeframeResult> {
     const states = (
       await this.getDataState({
         config: options.config,

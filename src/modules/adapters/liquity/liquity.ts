@@ -23,7 +23,7 @@ import {
   TransformEventLogResult,
 } from '../../../types/collectors/options';
 import { ProtocolConfig, Token } from '../../../types/configs';
-import { ContextServices, ContextStorages } from '../../../types/namespaces';
+import { ContextServices } from '../../../types/namespaces';
 import ProtocolAdapter from '../adapter';
 import { LiquityEventInterfaces, LiquityEventSignatures } from './abis';
 
@@ -344,10 +344,7 @@ export default class LiquityAdapter extends ProtocolAdapter {
     return result;
   }
 
-  public async getDataTimeframe(
-    options: GetAdapterDataTimeframeOptions,
-    storages: ContextStorages,
-  ): Promise<GetAdapterDataTimeframeResult> {
+  public async getDataTimeframe(options: GetAdapterDataTimeframeOptions): Promise<GetAdapterDataTimeframeResult> {
     const states = (
       await this.getDataState({
         config: options.config,

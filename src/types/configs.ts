@@ -73,6 +73,7 @@ export const DataMetrics = {
   cdpLending: 'cdpLending',
   staking: 'staking',
   perpetual: 'perpetual',
+  erc20: 'erc20',
 };
 const Metrics = Object.values(DataMetrics);
 export type DataMetric = (typeof Metrics)[number];

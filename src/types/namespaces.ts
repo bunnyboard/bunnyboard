@@ -45,10 +45,7 @@ export interface IProtocolAdapter {
   getDataState: (options: GetAdapterDataStateOptions) => Promise<GetAdapterDataStateResult>;
 
   // get data in a given timeframe
-  getDataTimeframe: (
-    options: GetAdapterDataTimeframeOptions,
-    storages: ContextStorages,
-  ) => Promise<GetAdapterDataTimeframeResult>;
+  getDataTimeframe: (options: GetAdapterDataTimeframeOptions) => Promise<GetAdapterDataTimeframeResult>;
 }
 
 export interface ICollector {

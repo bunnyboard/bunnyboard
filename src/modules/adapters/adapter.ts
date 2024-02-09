@@ -9,7 +9,7 @@ import {
   TransformEventLogResult,
 } from '../../types/collectors/options';
 import { ProtocolConfig } from '../../types/configs';
-import { ContextServices, ContextStorages, IProtocolAdapter } from '../../types/namespaces';
+import { ContextServices, IProtocolAdapter } from '../../types/namespaces';
 
 export default class ProtocolAdapter implements IProtocolAdapter {
   public readonly name: string = 'adapter';
@@ -34,10 +34,7 @@ export default class ProtocolAdapter implements IProtocolAdapter {
     };
   }
 
-  public async getDataTimeframe(
-    options: GetAdapterDataTimeframeOptions,
-    storages: ContextStorages,
-  ): Promise<GetAdapterDataTimeframeResult> {
+  public async getDataTimeframe(options: GetAdapterDataTimeframeOptions): Promise<GetAdapterDataTimeframeResult> {
     return {
       crossLending: null,
       cdpLending: null,
