@@ -73,3 +73,28 @@ export interface BaseActivityEvent {
   // in case additional data for some protocols
   additional?: any;
 }
+
+export const UserAddressTags = {
+  lender: 'lender',
+  borrower: 'borrower',
+  liquidator: 'liquidator',
+  trader: 'trader',
+  liquidityProvider: 'liquidityProvider',
+};
+
+const AddressTags = Object.values(UserAddressTags);
+export type UserAddressTag = (typeof AddressTags)[number];
+
+export interface UserAddress {
+  protocol: string;
+  chain: string;
+  metric: DataMetric;
+  tag: UserAddressTag;
+  address: string;
+
+  // first time the address interact with protocol
+  timeFirstSeen: number;
+
+  // last time the address data on protocol is updated
+  timestamp: number;
+}

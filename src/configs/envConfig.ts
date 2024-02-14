@@ -15,6 +15,7 @@ const envConfig: EnvConfig = {
     collections: {
       states: `${MongodbPrefix}.states`,
       aggregates: `${MongodbPrefix}.aggregates`,
+      addresses: `${MongodbPrefix}.addresses`,
       lendingMarketStates: `${MongodbPrefix}.lendingMarketStates`,
       lendingMarketSnapshots: `${MongodbPrefix}.lendingMarketSnapshots`,
       perpetualMarketStates: `${MongodbPrefix}.perpetualMarketStates`,

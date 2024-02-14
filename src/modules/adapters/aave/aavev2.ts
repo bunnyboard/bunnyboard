@@ -9,7 +9,14 @@ import EnvConfig from '../../../configs/envConfig';
 import { AaveLendingMarketConfig } from '../../../configs/protocols/aave';
 import { tryQueryBlockNumberAtTimestamp } from '../../../lib/subsgraph';
 import { compareAddress, formatBigNumberToString, normalizeAddress } from '../../../lib/utils';
-import { ActivityAction, TokenValueItem } from '../../../types/collectors/base';
+import {
+  ActivityAction,
+  ActivityActions,
+  TokenValueItem,
+  UserAddress,
+  UserAddressTag,
+  UserAddressTags,
+} from '../../../types/collectors/base';
 import { CrossLendingMarketDataState, CrossLendingMarketDataTimeframe } from '../../../types/collectors/lending';
 import {
   GetAdapterDataStateOptions,
@@ -348,6 +355,57 @@ export default class Aavev2Adapter extends ProtocolAdapter {
       chain: options.config.chain,
       config: options.config,
       logs: logs,
+    });
+
+    const addresses: { [key: string]: UserAddress } = {};
+    for (const activity of activities) {
+      if (activity.borrower) {
+        if (!addresses[activity.borrower]) {
+          addresses[activity.borrower] = {
+            chain: options.config.chain,
+            protocol: options.config.protocol,
+            metric: options.config.metric,
+            tag: UserAddressTags.borrower,
+            address: activity.borrower,
+            timeFirstSeen: activity.timestamp,
+            timestamp: options.toTime,
+          };
+        } else {
+          addresses[activity.borrower].timeFirstSeen =
+            addresses[activity.borrower].timeFirstSeen > activity.timestamp
+              ? activity.timestamp
+              : addresses[activity.borrower].timeFirstSeen;
+        }
+      }
+
+      let userAddressTag: UserAddressTag = UserAddressTags.borrower;
+      if (activity.action === ActivityActions.deposit || activity.action === ActivityActions.withdraw) {
+        userAddressTag = UserAddressTags.lender;
+      } else if (activity.action === ActivityActions.liquidate) {
+        userAddressTag = UserAddressTags.liquidator;
+      }
+
+      if (!addresses[activity.user]) {
+        addresses[activity.user] = {
+          chain: options.config.chain,
+          protocol: options.config.protocol,
+          metric: options.config.metric,
+          tag: userAddressTag,
+          address: activity.user,
+          timeFirstSeen: activity.timestamp,
+          timestamp: options.toTime,
+        };
+      } else {
+        addresses[activity.user].timeFirstSeen =
+          addresses[activity.user].timeFirstSeen > activity.timestamp
+            ? activity.timestamp
+            : addresses[activity.user].timeFirstSeen;
+      }
+    }
+
+    await this.saveAddresses({
+      storages: options.storages,
+      addresses: Object.values(addresses),
     });
 
     for (const stateData of states) {

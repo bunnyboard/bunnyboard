@@ -48,6 +48,9 @@ export interface EnvConfig {
       // there is a worker job run to aggregate data and save to this collection
       aggregates: string;
 
+      // address save protocol users addresses
+      addresses: string;
+
       // save all data states of lending market
       lendingMarketStates: string;
 

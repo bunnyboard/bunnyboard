@@ -74,6 +74,11 @@ export default class DatabaseService implements IDatabaseService {
   }
 
   private async setupIndies(): Promise<void> {
+    const statesCollection = await this.getCollection(envConfig.mongodb.collections.states);
+    const addressesCollection = await this.getCollection(envConfig.mongodb.collections.addresses);
+    statesCollection.createIndex({ name: 1 }, { background: true });
+    addressesCollection.createIndex({ protocol: 1, metric: 1, chain: 1, address: 1 }, { background: true });
+
     const lendingMarketStatesCollection = await this.getCollection(envConfig.mongodb.collections.lendingMarketStates);
     const lendingMarketSnapshotsCollection = await this.getCollection(
       envConfig.mongodb.collections.lendingMarketSnapshots,

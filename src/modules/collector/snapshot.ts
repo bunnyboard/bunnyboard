@@ -51,6 +51,7 @@ export default class SnapshotCollector {
 
         if (this.adapters[config.protocol]) {
           const { crossLending, cdpLending, perpetual } = await this.adapters[config.protocol].getDataTimeframe({
+            storages: this.storages,
             config: config,
             fromTime: runTime,
             toTime: runTime + DAY - 1,

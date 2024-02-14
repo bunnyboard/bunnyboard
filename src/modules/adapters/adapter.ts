@@ -1,5 +1,7 @@
+import EnvConfig from '../../configs/envConfig';
 import {
   AdapterAbiConfigs,
+  AdapterSaveAddressesOptions,
   GetAdapterDataStateOptions,
   GetAdapterDataStateResult,
   GetAdapterDataTimeframeOptions,
@@ -49,5 +51,38 @@ export default class ProtocolAdapter implements IProtocolAdapter {
     return {
       activities: [],
     };
+  }
+
+  public async saveAddresses(options: AdapterSaveAddressesOptions): Promise<void> {
+    if (options.storages) {
+      await options.storages.database.bulkWrite({
+        collection: EnvConfig.mongodb.collections.addresses,
+        operations: options.addresses
+          .sort(function (a, b) {
+            return a.timestamp > b.timestamp ? 1 : -1;
+          })
+          .map((address) => {
+            return {
+              updateOne: {
+                filter: {
+                  chain: address.chain,
+                  protocol: address.protocol,
+                  metric: address.metric,
+                  address: address.address,
+                },
+                update: {
+                  $set: {
+                    ...address,
+                  },
+                  $setOnInsert: {
+                    timeFirstSeen: address.timeFirstSeen,
+                  },
+                },
+                upsert: true,
+              },
+            };
+          }),
+      });
+    }
   }
 }
