@@ -101,6 +101,10 @@ export const LendingMarketVersions = {
 
 const CrossVersions = Object.values(LendingMarketVersions.cross);
 export type LendingCrossVersion = (typeof CrossVersions)[number];
+
+const CdpVersions = Object.values(LendingMarketVersions.cdp);
+export type LendingCdpVersion = (typeof CdpVersions)[number];
+
 export interface CrossLendingMarketConfig extends MetricConfig {
   version: LendingCrossVersion;
 
@@ -110,8 +114,6 @@ export interface CrossLendingMarketConfig extends MetricConfig {
   };
 }
 
-const CdpVersions = Object.values(LendingMarketVersions.cdp);
-export type LendingCdpVersion = (typeof CdpVersions)[number];
 export interface CdpLendingMarketConfig extends MetricConfig {
   version: LendingCdpVersion;
   debtToken: Token;

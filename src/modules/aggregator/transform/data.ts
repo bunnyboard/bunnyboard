@@ -9,7 +9,7 @@ import { DataValueItem } from '../../../types/aggregates/common';
 import {
   AggCdpLendingCollateralSnapshot,
   AggCdpLendingMarketSnapshot,
-  AggCrossLendingMarketSnapshot,
+  AggCrossLendingReserveSnapshot,
 } from '../../../types/aggregates/lending';
 import { AggPerpetualMarketSnapshot } from '../../../types/aggregates/perpetual';
 import {
@@ -49,12 +49,12 @@ function transformValueWithTokenPrice(
 }
 
 export default class AggregatorTransformModel {
-  // CrossLendingMarketDataTimeframe -> AggCrossLendingMarketSnapshot
+  // CrossLendingMarketDataTimeframe -> AggCrossLendingReserveSnapshot
   public static transformCrossLendingMarketSnapshot(
     timeframeLast24Hours: any,
     timeframeLast48Hours: any,
     currentDataState: any | null,
-  ): AggCrossLendingMarketSnapshot {
+  ): AggCrossLendingReserveSnapshot {
     const dataTimeframeLast24Hours: CrossLendingMarketDataTimeframe =
       timeframeLast24Hours as CrossLendingMarketDataTimeframe;
     const dataTimeframeLast48Hours: CrossLendingMarketDataTimeframe | null = timeframeLast48Hours

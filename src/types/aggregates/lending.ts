@@ -1,4 +1,4 @@
-import { DataTimeframe } from '../collectors/base';
+import { DataState, DataTimeframe } from '../collectors/base';
 import { Token } from '../configs';
 import { DataValueItem } from './common';
 
@@ -6,7 +6,7 @@ import { DataValueItem } from './common';
 ///// Cross Lending /////
 //
 
-export interface AggCrossLendingMarketSnapshot extends DataTimeframe {
+export interface AggCrossLendingReserveSnapshot extends DataTimeframe {
   address: string;
   token: Token;
   tokenPrice: number;
@@ -49,6 +49,20 @@ export interface AggCrossLendingDayData {
   volumeRepaid: DataValueItem;
 
   volumeFeesPaid: DataValueItem;
+}
+
+export interface AggCrossLendingMarketSnapshot extends DataState {
+  totalDeposited: DataValueItem;
+  totalBorrowed: DataValueItem;
+
+  // last 24h volumes
+  volumeDeposited: DataValueItem;
+  volumeWithdrawn: DataValueItem;
+  volumeBorrowed: DataValueItem;
+  volumeRepaid: DataValueItem;
+  volumeFeesPaid: DataValueItem;
+
+  reserves: Array<AggCrossLendingReserveSnapshot>;
 }
 
 // overall state and data across all cross lending markets

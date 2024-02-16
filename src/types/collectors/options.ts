@@ -1,6 +1,5 @@
 import { MetricConfig } from '../configs';
 import { ContextStorages } from '../namespaces';
-import { UserAddress } from './base';
 import { CrossLendingActivityEvent } from './lending';
 import {
   CdpLendingMarketDataState,
@@ -34,11 +33,6 @@ export interface GetAdapterEventLogsOptions {
   config: MetricConfig;
   fromBlock: number;
   toBlock: number;
-}
-
-export interface AdapterSaveAddressesOptions {
-  storages?: ContextStorages;
-  addresses: Array<UserAddress>;
 }
 
 export interface GetAdapterDataTimeframeOptions {

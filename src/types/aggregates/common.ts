@@ -1,9 +1,3 @@
-export const AggDataTypes = {
-  snapshot: 'snapshot',
-  activity: 'activity',
-  aggregate: 'aggregate',
-};
-
 export const AggDataAggregateNames = {
   crossLendingDataState: 'crossLendingDataState',
   cdpLendingDataState: 'cdpLendingDataState',

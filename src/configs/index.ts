@@ -20,7 +20,8 @@ import TokenListMetis from './tokenlists/metis.json';
 import TokenListOptimism from './tokenlists/optimism.json';
 import TokenListPolygon from './tokenlists/polygon.json';
 
-export const DefaultQueryLogsBlockRangeSingleContract = 1000;
+export const DefaultQueryContractLogsBlockRange = 1000;
+export const DefaultQueryRecordPerPage = 100;
 
 export const TokenList: {
   [key: string]: {

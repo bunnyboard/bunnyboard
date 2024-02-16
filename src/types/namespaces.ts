@@ -8,10 +8,7 @@ import {
   GetAdapterDataStateResult,
   GetAdapterDataTimeframeOptions,
   GetAdapterDataTimeframeResult,
-  GetAdapterEventLogsOptions,
   RunCollectorOptions,
-  TransformEventLogOptions,
-  TransformEventLogResult,
 } from './collectors/options';
 import { ProtocolConfig } from './configs';
 
@@ -34,12 +31,6 @@ export interface IProtocolAdapter {
   // known contract event log signature
   // and abi for parsing
   abiConfigs: AdapterAbiConfigs;
-
-  // get logs related to the protocol
-  getEventLogs: (options: GetAdapterEventLogsOptions) => Promise<Array<any>>;
-
-  // transform raw event log into activities
-  transformEventLogs: (options: TransformEventLogOptions) => Promise<TransformEventLogResult>;
 
   // get data state of a metric config
   getDataState: (options: GetAdapterDataStateOptions) => Promise<GetAdapterDataStateResult>;

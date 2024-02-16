@@ -1,7 +1,7 @@
 import BigNumber from 'bignumber.js';
 import { Address, PublicClient, createPublicClient, http } from 'viem';
 
-import { DefaultQueryLogsBlockRangeSingleContract, TokenList } from '../../configs';
+import { DefaultQueryContractLogsBlockRange, TokenList } from '../../configs';
 import ERC20Abi from '../../configs/abi/ERC20.json';
 import { AddressE, AddressF, AddressZero } from '../../configs/constants';
 import EnvConfig from '../../configs/envConfig';
@@ -101,9 +101,9 @@ export default class BlockchainService extends CachingService implements IBlockc
     let startBlock = options.fromBlock;
     while (startBlock <= options.toBlock) {
       const toBlock =
-        startBlock + DefaultQueryLogsBlockRangeSingleContract > options.toBlock
+        startBlock + DefaultQueryContractLogsBlockRange > options.toBlock
           ? options.toBlock
-          : startBlock + DefaultQueryLogsBlockRangeSingleContract;
+          : startBlock + DefaultQueryContractLogsBlockRange;
       logs = logs.concat(
         await client.getLogs({
           address: options.address as Address,
@@ -112,7 +112,7 @@ export default class BlockchainService extends CachingService implements IBlockc
         }),
       );
 
-      startBlock += DefaultQueryLogsBlockRangeSingleContract;
+      startBlock += DefaultQueryContractLogsBlockRange;
     }
 
     const blocktimes = await tryQueryBlockTimestamps(

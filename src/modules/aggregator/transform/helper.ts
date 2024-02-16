@@ -1,7 +1,54 @@
-import { AggCdpLendingOverallState, AggCrossLendingOverallState } from '../../../types/aggregates/lending';
+import {
+  AggCdpLendingOverallState,
+  AggCrossLendingMarketSnapshot,
+  AggCrossLendingOverallState,
+} from '../../../types/aggregates/lending';
 import { AggPerpetualOverallState } from '../../../types/aggregates/perpetual';
+import { DataMetrics } from '../../../types/configs';
 
 export default class AggregatorTransformHelper {
+  public static getDefaultAggCrossLendingProtocolMarket(
+    protocol: string,
+    chain: string,
+    timestamp: number,
+  ): AggCrossLendingMarketSnapshot {
+    return {
+      protocol,
+      chain,
+      metric: DataMetrics.crossLending,
+      timestamp,
+      totalDeposited: {
+        value: 0,
+        valueUsd: 0,
+      },
+      totalBorrowed: {
+        value: 0,
+        valueUsd: 0,
+      },
+      volumeDeposited: {
+        value: 0,
+        valueUsd: 0,
+      },
+      volumeWithdrawn: {
+        value: 0,
+        valueUsd: 0,
+      },
+      volumeBorrowed: {
+        value: 0,
+        valueUsd: 0,
+      },
+      volumeRepaid: {
+        value: 0,
+        valueUsd: 0,
+      },
+      volumeFeesPaid: {
+        value: 0,
+        valueUsd: 0,
+      },
+      reserves: [],
+    };
+  }
+
   public static getDefaultAggCrossLendingOverallState(): AggCrossLendingOverallState {
     return {
       totalDeposited: {

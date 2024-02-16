@@ -1,5 +1,5 @@
+import { DefaultQueryRecordPerPage } from '../../../configs';
 import EnvConfig from '../../../configs/envConfig';
-import { DefaultRecordPerPage } from '../../../configs/policies';
 import { normalizeAddress } from '../../../lib/utils';
 import { IDatabaseService } from '../../../services/database/domains';
 import { AggDataQueryFilters, AggDataQueryOptions, AggDataQueryResult } from '../../../types/aggregates/options';
@@ -59,7 +59,7 @@ export default class BaseDataAggregator implements DataAggregator {
           collection: collectionName,
           query: query,
         })) /
-          DefaultRecordPerPage +
+          DefaultQueryRecordPerPage +
           1,
       );
 
@@ -74,8 +74,8 @@ export default class BaseDataAggregator implements DataAggregator {
         collection: collectionName,
         query: query,
         options: {
-          limit: DefaultRecordPerPage,
-          skip: queryPage * DefaultRecordPerPage,
+          limit: DefaultQueryRecordPerPage,
+          skip: queryPage * DefaultQueryRecordPerPage,
           order: queryOrder,
         },
       });
@@ -95,7 +95,7 @@ export default class BaseDataAggregator implements DataAggregator {
             },
           });
           result.data.push(
-            AggregatorTransformModel.transformCrossLendingMarketSnapshot(document, previousSnapshot, null),
+            AggregatorTransformModel.transformCrossLendingMarketSnapshot(document, previousSnapshot, document),
           );
         }
       } else if (metric === DataMetrics.cdpLending) {
@@ -112,7 +112,7 @@ export default class BaseDataAggregator implements DataAggregator {
             },
           });
           result.data.push(
-            AggregatorTransformModel.transformCdpLendingMarketSnapshot(document, previousSnapshot, null),
+            AggregatorTransformModel.transformCdpLendingMarketSnapshot(document, previousSnapshot, document),
           );
         }
       } else if (metric === DataMetrics.perpetual) {
@@ -129,7 +129,9 @@ export default class BaseDataAggregator implements DataAggregator {
               timestamp: Number(document.timestamp) - 24 * 60 * 60,
             },
           });
-          result.data.push(AggregatorTransformModel.transformPerpetualMarketSnapshot(document, previousSnapshot, null));
+          result.data.push(
+            AggregatorTransformModel.transformPerpetualMarketSnapshot(document, previousSnapshot, document),
+          );
         }
       } else {
         for (const document of documents) {
