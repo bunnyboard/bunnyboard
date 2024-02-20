@@ -412,7 +412,7 @@ export default class CrossLendingDataAggregator extends BaseDataAggregator {
     if (chain) {
       query.chain = chain;
     }
-    if (protocol) {
+    if (timestamp) {
       query.timestamp = timestamp;
     }
 
