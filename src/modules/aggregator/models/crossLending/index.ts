@@ -149,6 +149,14 @@ export default class CrossLendingDataAggregator extends BaseDataAggregator {
           };
         }),
       );
+      market.feesPaidTheoretically.changedValueUsd = calChangesOf_Total_From_Items(
+        market.reserves.map((snapshot) => {
+          return {
+            value: snapshot.feesPaidTheoretically.valueUsd,
+            change: snapshot.feesPaidTheoretically.changedValueUsd ? snapshot.feesPaidTheoretically.changedValueUsd : 0,
+          };
+        }),
+      );
 
       return market;
     });
