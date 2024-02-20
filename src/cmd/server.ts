@@ -32,7 +32,7 @@ export class ServerCommand extends BasicCommand {
 
     app.use('/', express.static(path.join('.', 'public')));
 
-    const swaggerDocument = YAML.load('./src/apiDocs/data-api-board.yml');
+    const swaggerDocument = YAML.load('./src/modules/aggregator/api/docs/data-api-board.yml');
     app.use('/apiDocs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
     app.listen(port, () => {

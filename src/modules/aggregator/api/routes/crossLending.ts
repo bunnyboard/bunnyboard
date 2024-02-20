@@ -58,14 +58,13 @@ export function getRouter(database: IDatabaseService): Router {
   });
 
   // this query aims to help query all snapshots of a given market add timestamp
-  router.get('/market/:protocol/:chain/reserves', async (request: Request, response: Response) => {
-    const { protocol, chain } = request.params;
-    const { timestamp } = request.query;
+  router.get('/reserves', async (request: Request, response: Response) => {
+    const { protocol, chain, timestamp } = request.query;
 
     const aggregator = new CrossLendingDataAggregator(database);
     const reserves = await aggregator.getReserves(
-      chain,
-      protocol,
+      chain ? chain.toString() : null,
+      protocol ? protocol.toString() : null,
       timestamp ? Number(timestamp) : getTodayUTCTimestamp(),
     );
 
