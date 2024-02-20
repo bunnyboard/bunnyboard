@@ -1,6 +1,8 @@
 import cors from 'cors';
 import express from 'express';
 import path from 'path';
+import swaggerUi from 'swagger-ui-express';
+import YAML from 'yamljs';
 
 import logger from '../lib/logger';
 import getRouter from '../modules/aggregator/api/api';
@@ -29,6 +31,9 @@ export class ServerCommand extends BasicCommand {
     app.use('/board', router);
 
     app.use('/', express.static(path.join('.', 'public')));
+
+    const swaggerDocument = YAML.load('./src/apiDocs/data-api-board.yml');
+    app.use('/apiDocs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
     app.listen(port, () => {
       logger.info('started the restful api server', {
