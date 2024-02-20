@@ -1,3 +1,4 @@
+import { DAY } from '../../../../configs/constants';
 import EnvConfig from '../../../../configs/envConfig';
 import { calChangesOf_Total_From_Items, calValueOf_Amount_With_Price } from '../../../../lib/math';
 import { getTimestamp } from '../../../../lib/utils';
@@ -5,17 +6,17 @@ import { IDatabaseService } from '../../../../services/database/domains';
 import {
   AggCrossLendingDataOverall,
   AggCrossLendingMarketDataOverall,
-  AggCrossLendingMarketSnapshot, AggCrossLendingReserveSnapshot
+  AggCrossLendingMarketSnapshot,
+  AggCrossLendingReserveSnapshot,
 } from '../../../../types/aggregates/crossLending';
 import {
   CrossLendingReserveDataStateWithTimeframes,
-  CrossLendingReserveDataTimeframe
+  CrossLendingReserveDataTimeframe,
 } from '../../../../types/collectors/crossLending';
 import { DataMetrics } from '../../../../types/configs';
 import BaseDataAggregator from '../../base';
-import CrossLendingDataTransformer from './transform';
 import { groupReserveSnapshotsToDayData } from './helpers';
-import { DAY } from '../../../../configs/constants';
+import CrossLendingDataTransformer from './transform';
 
 export default class CrossLendingDataAggregator extends BaseDataAggregator {
   public readonly name: string = 'aggregator.crossLending';
@@ -244,14 +245,14 @@ export default class CrossLendingDataAggregator extends BaseDataAggregator {
           address: snapshot.address,
           'token.address': snapshot.token.address,
           timestamp: snapshot.timestamp - DAY,
-        }
+        },
       });
       aggSnapshots.push(
         CrossLendingDataTransformer.transformCrossLendingMarketSnapshot(
           snapshot,
           previousSnapshot ? previousSnapshot : null,
           snapshot,
-        )
+        ),
       );
     }
 
@@ -317,10 +318,10 @@ export default class CrossLendingDataAggregator extends BaseDataAggregator {
       query: {
         chain: chain,
         protocol: protocol,
-      }
+      },
     });
 
-    marketData.dayData = groupReserveSnapshotsToDayData(reserveSnapshots as Array<CrossLendingReserveDataTimeframe>)
+    marketData.dayData = groupReserveSnapshotsToDayData(reserveSnapshots as Array<CrossLendingReserveDataTimeframe>);
 
     return marketData;
   }

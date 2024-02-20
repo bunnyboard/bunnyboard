@@ -169,10 +169,15 @@ export default class CrossLendingDataTransformer {
       : null;
     const dataState: CrossLendingReserveDataState = currentDataState ? currentDataState : timeframeLast24Hours;
 
-    let feesIn24hs = new BigNumber(timeframeLast24Hours.totalBorrowed)
-      .multipliedBy(new BigNumber(timeframeLast24Hours.rateBorrow));
+    let feesIn24hs = new BigNumber(timeframeLast24Hours.totalBorrowed).multipliedBy(
+      new BigNumber(timeframeLast24Hours.rateBorrow),
+    );
     if (timeframeLast24Hours.rateBorrowStable && timeframeLast24Hours.totalBorrowedStable) {
-      feesIn24hs = feesIn24hs.plus(new BigNumber(timeframeLast24Hours.totalBorrowedStable).multipliedBy(new BigNumber(timeframeLast24Hours.rateBorrowStable)));
+      feesIn24hs = feesIn24hs.plus(
+        new BigNumber(timeframeLast24Hours.totalBorrowedStable).multipliedBy(
+          new BigNumber(timeframeLast24Hours.rateBorrowStable),
+        ),
+      );
     }
 
     return {

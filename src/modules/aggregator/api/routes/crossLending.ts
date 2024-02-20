@@ -24,9 +24,9 @@ export function getRouter(database: IDatabaseService): Router {
   // at a given timestamp
   // a cross lending market includes a given protocol and chain
   router.get('/markets', async (request: Request, response: Response) => {
-    const { unixTimestamp } = request.query;
+    let { timestamp = 0 } = request.query;
 
-    const timestamp = unixTimestamp ? Number(unixTimestamp) : getTodayUTCTimestamp();
+    timestamp = timestamp ? Number(timestamp) : getTodayUTCTimestamp();
     if (timestamp === 0) {
       await writeResponse(database, request, response, HttpStatusCode.BadRequest, {
         error: 'invalid given timestamp',

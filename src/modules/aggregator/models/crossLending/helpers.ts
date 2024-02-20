@@ -1,16 +1,20 @@
-import { CrossLendingReserveDataTimeframe } from '../../../../types/collectors/crossLending';
-import { AggCrossLendingDayData } from '../../../../types/aggregates/crossLending';
-import { groupAndSumObjectList } from '../../../../lib/helper';
-import { calValueOf_Amount_With_Price } from '../../../../lib/math';
 import BigNumber from 'bignumber.js';
 
-export function groupReserveSnapshotsToDayData(reserveSnapshots: Array<CrossLendingReserveDataTimeframe>): Array<AggCrossLendingDayData> {
+import { groupAndSumObjectList } from '../../../../lib/helper';
+import { calValueOf_Amount_With_Price } from '../../../../lib/math';
+import { AggCrossLendingDayData } from '../../../../types/aggregates/crossLending';
+import { CrossLendingReserveDataTimeframe } from '../../../../types/collectors/crossLending';
+
+export function groupReserveSnapshotsToDayData(
+  reserveSnapshots: Array<CrossLendingReserveDataTimeframe>,
+): Array<AggCrossLendingDayData> {
   return groupAndSumObjectList(
     reserveSnapshots.map((snapshot) => {
-      let fees = new BigNumber(snapshot.totalBorrowed)
-        .multipliedBy(new BigNumber(snapshot.rateBorrow));
+      let fees = new BigNumber(snapshot.totalBorrowed).multipliedBy(new BigNumber(snapshot.rateBorrow));
       if (snapshot.rateBorrowStable && snapshot.totalBorrowedStable) {
-        fees = fees.plus(new BigNumber(snapshot.totalBorrowedStable).multipliedBy(new BigNumber(snapshot.rateBorrowStable)));
+        fees = fees.plus(
+          new BigNumber(snapshot.totalBorrowedStable).multipliedBy(new BigNumber(snapshot.rateBorrowStable)),
+        );
       }
 
       return {
@@ -25,7 +29,7 @@ export function groupReserveSnapshotsToDayData(reserveSnapshots: Array<CrossLend
       };
     }),
     'timestamp',
-  ).map(item => {
+  ).map((item) => {
     return {
       timestamp: item.timestamp,
       totalDeposited: {
@@ -56,6 +60,6 @@ export function groupReserveSnapshotsToDayData(reserveSnapshots: Array<CrossLend
         value: 0,
         valueUsd: item.volumeRepaid,
       },
-    }
-  })
+    };
+  });
 }
