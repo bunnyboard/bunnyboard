@@ -283,16 +283,21 @@ export default class CrossLendingDataAggregator extends BaseDataAggregator {
       },
     });
 
-    const marketUsers: { [key: string]: boolean } = {};
-    const marketTransactions: { [key: string]: boolean } = {};
+    const reserveSnapshots: Array<AggCrossLendingReserveSnapshot> = [];
     for (const reserveState of reserveStates) {
       const reserveStateWithTimeframes = reserveState as CrossLendingReserveDataStateWithTimeframes;
-      const reserveSnapshot = CrossLendingDataTransformer.transformCrossLendingMarketSnapshot(
-        reserveStateWithTimeframes.timeframe24Hours,
-        reserveStateWithTimeframes.timeframe48Hours,
-        reserveStateWithTimeframes,
+      reserveSnapshots.push(
+        CrossLendingDataTransformer.transformCrossLendingMarketSnapshot(
+          reserveStateWithTimeframes.timeframe24Hours,
+          reserveStateWithTimeframes.timeframe48Hours,
+          reserveStateWithTimeframes,
+        ),
       );
+    }
 
+    const marketUsers: { [key: string]: boolean } = {};
+    const marketTransactions: { [key: string]: boolean } = {};
+    for (const reserveSnapshot of reserveSnapshots) {
       marketData.totalDeposited.valueUsd += reserveSnapshot.totalDeposited.valueUsd;
       marketData.totalBorrowed.valueUsd += reserveSnapshot.totalBorrowed.valueUsd;
       marketData.volumeDeposited.valueUsd += reserveSnapshot.volumeDeposited.valueUsd;
@@ -301,6 +306,11 @@ export default class CrossLendingDataAggregator extends BaseDataAggregator {
       marketData.volumeRepaid.valueUsd += reserveSnapshot.volumeRepaid.valueUsd;
       marketData.feesPaidTheoretically.valueUsd += reserveSnapshot.feesPaidTheoretically.valueUsd;
 
+      marketData.reserves.push(reserveSnapshot);
+    }
+
+    for (const reserveState of reserveStates) {
+      const reserveStateWithTimeframes = reserveState as CrossLendingReserveDataStateWithTimeframes;
       if (reserveStateWithTimeframes.timeframe24Hours) {
         for (const address of reserveStateWithTimeframes.timeframe24Hours.addresses) {
           if (!marketUsers[address]) {
@@ -313,15 +323,70 @@ export default class CrossLendingDataAggregator extends BaseDataAggregator {
           }
         }
       }
-
-      marketData.reserves.push(reserveSnapshot);
     }
 
     marketData.numberOfUsers = Object.keys(marketUsers).length;
     marketData.numberOfTransactions = Object.keys(marketTransactions).length;
 
+    marketData.totalDeposited.changedValueUsd = calChangesOf_Total_From_Items(
+      reserveSnapshots.map((item) => {
+        return {
+          value: item.totalDeposited.valueUsd,
+          change: item.totalDeposited.changedValueUsd ? item.totalDeposited.changedValueUsd : 0,
+        };
+      }),
+    );
+    marketData.totalBorrowed.changedValueUsd = calChangesOf_Total_From_Items(
+      reserveSnapshots.map((item) => {
+        return {
+          value: item.totalBorrowed.valueUsd,
+          change: item.totalBorrowed.changedValueUsd ? item.totalBorrowed.changedValueUsd : 0,
+        };
+      }),
+    );
+    marketData.volumeDeposited.changedValueUsd = calChangesOf_Total_From_Items(
+      reserveSnapshots.map((item) => {
+        return {
+          value: item.volumeDeposited.valueUsd,
+          change: item.volumeDeposited.changedValueUsd ? item.volumeDeposited.changedValueUsd : 0,
+        };
+      }),
+    );
+    marketData.volumeWithdrawn.changedValueUsd = calChangesOf_Total_From_Items(
+      reserveSnapshots.map((item) => {
+        return {
+          value: item.volumeWithdrawn.valueUsd,
+          change: item.volumeWithdrawn.changedValueUsd ? item.volumeWithdrawn.changedValueUsd : 0,
+        };
+      }),
+    );
+    marketData.volumeBorrowed.changedValueUsd = calChangesOf_Total_From_Items(
+      reserveSnapshots.map((item) => {
+        return {
+          value: item.volumeBorrowed.valueUsd,
+          change: item.volumeBorrowed.changedValueUsd ? item.volumeBorrowed.changedValueUsd : 0,
+        };
+      }),
+    );
+    marketData.volumeRepaid.changedValueUsd = calChangesOf_Total_From_Items(
+      reserveSnapshots.map((item) => {
+        return {
+          value: item.volumeRepaid.valueUsd,
+          change: item.volumeRepaid.changedValueUsd ? item.volumeRepaid.changedValueUsd : 0,
+        };
+      }),
+    );
+    marketData.feesPaidTheoretically.changedValueUsd = calChangesOf_Total_From_Items(
+      reserveSnapshots.map((item) => {
+        return {
+          value: item.feesPaidTheoretically.valueUsd,
+          change: item.feesPaidTheoretically.changedValueUsd ? item.feesPaidTheoretically.changedValueUsd : 0,
+        };
+      }),
+    );
+
     // process snapshots
-    const reserveSnapshots = await this.database.query({
+    const snapshots = await this.database.query({
       collection: EnvConfig.mongodb.collections.crossLendingReserveSnapshots.name,
       query: {
         chain: chain,
@@ -329,7 +394,7 @@ export default class CrossLendingDataAggregator extends BaseDataAggregator {
       },
     });
 
-    marketData.dayData = groupReserveSnapshotsToDayData(reserveSnapshots as Array<CrossLendingReserveDataTimeframe>);
+    marketData.dayData = groupReserveSnapshotsToDayData(snapshots as Array<CrossLendingReserveDataTimeframe>);
 
     return marketData;
   }
