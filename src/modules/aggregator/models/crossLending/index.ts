@@ -398,4 +398,24 @@ export default class CrossLendingDataAggregator extends BaseDataAggregator {
 
     return marketData;
   }
+
+  // this function help to query reserve snapshots
+  public async getReserves(
+    chain: string,
+    protocol: string,
+    timestamp: number,
+  ): Promise<Array<AggCrossLendingReserveSnapshot>> {
+    const reserveSnapshots = await this.database.query({
+      collection: EnvConfig.mongodb.collections.crossLendingReserveSnapshots.name,
+      query: {
+        chain,
+        protocol,
+        timestamp,
+      },
+    });
+
+    return reserveSnapshots.map((item) =>
+      CrossLendingDataTransformer.transformCrossLendingMarketSnapshot(item, null, item),
+    );
+  }
 }
