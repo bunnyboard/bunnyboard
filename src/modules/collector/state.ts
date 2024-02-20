@@ -2,10 +2,8 @@ import { DAY } from '../../configs/constants';
 import EnvConfig from '../../configs/envConfig';
 import logger from '../../lib/logger';
 import { getTimestamp } from '../../lib/utils';
-import {
-  CdpLendingMarketDataStateWithTimeframes,
-  CrossLendingMarketDataStateWithTimeframes,
-} from '../../types/collectors/lending';
+import { CdpLendingMarketDataStateWithTimeframes } from '../../types/collectors/cdpLending';
+import { CrossLendingReserveDataStateWithTimeframes } from '../../types/collectors/crossLending';
 import { RunCollectorOptions } from '../../types/collectors/options';
 import { PerpetualMarketDataStateWithTimeframes } from '../../types/collectors/perpetutal';
 import { MetricConfig } from '../../types/configs';
@@ -48,7 +46,7 @@ export default class StateCollector {
 
       if (state.crossLending) {
         for (const dateState of state.crossLending) {
-          let stateWithTimeframes: CrossLendingMarketDataStateWithTimeframes = {
+          let stateWithTimeframes: CrossLendingReserveDataStateWithTimeframes = {
             ...dateState,
             timeframe24Hours: null,
             timeframe48Hours: null,
@@ -81,7 +79,7 @@ export default class StateCollector {
           }
 
           await this.storages.database.update({
-            collection: EnvConfig.mongodb.collections.lendingMarketStates,
+            collection: EnvConfig.mongodb.collections.crossLendingReserveStates.name,
             keys: {
               chain: dateState.chain,
               metric: dateState.metric,
@@ -130,7 +128,7 @@ export default class StateCollector {
           }
 
           await this.storages.database.update({
-            collection: EnvConfig.mongodb.collections.lendingMarketStates,
+            collection: EnvConfig.mongodb.collections.cdpLendingMarketStates.name,
             keys: {
               chain: dataState.chain,
               metric: dataState.metric,
@@ -178,7 +176,7 @@ export default class StateCollector {
           }
 
           await this.storages.database.update({
-            collection: EnvConfig.mongodb.collections.perpetualMarketStates,
+            collection: EnvConfig.mongodb.collections.perpetualReserveStates.name,
             keys: {
               chain: dataState.chain,
               metric: dataState.metric,

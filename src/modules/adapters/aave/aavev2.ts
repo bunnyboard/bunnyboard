@@ -4,13 +4,13 @@ import { decodeEventLog } from 'viem';
 import AaveDataProviderV2Abi from '../../../configs/abi/aave/DataProviderV2.json';
 import AaveIncentiveControllerV2Abi from '../../../configs/abi/aave/IncentiveControllerV2.json';
 import AaveLendingPoolV2Abi from '../../../configs/abi/aave/LendingPoolV2.json';
-import { DAY, RAY_DECIMALS, YEAR } from '../../../configs/constants';
+import { RAY_DECIMALS, YEAR } from '../../../configs/constants';
 import EnvConfig from '../../../configs/envConfig';
 import { AaveLendingMarketConfig } from '../../../configs/protocols/aave';
 import { tryQueryBlockNumberAtTimestamp } from '../../../lib/subsgraph';
 import { compareAddress, formatBigNumberToString, normalizeAddress } from '../../../lib/utils';
 import { ActivityAction, TokenValueItem } from '../../../types/collectors/base';
-import { CrossLendingMarketDataState, CrossLendingMarketDataTimeframe } from '../../../types/collectors/lending';
+import { CrossLendingReserveDataState, CrossLendingReserveDataTimeframe } from '../../../types/collectors/crossLending';
 import {
   GetAdapterDataStateOptions,
   GetAdapterDataStateResult,
@@ -280,7 +280,7 @@ export default class Aavev2Adapter extends ProtocolAdapter {
         }
       }
 
-      const dataState: CrossLendingMarketDataState = {
+      const dataState: CrossLendingReserveDataState = {
         metric: DataMetrics.crossLending,
         chain: marketConfig.chain,
         protocol: marketConfig.protocol,
@@ -361,20 +361,9 @@ export default class Aavev2Adapter extends ProtocolAdapter {
 
       const activityData = await countCrossLendingDataFromActivities(documents);
 
-      const feesPaidFromBorrow = new BigNumber(stateData.totalBorrowed)
-        .multipliedBy(stateData.rateBorrow)
-        .multipliedBy(DAY)
-        .dividedBy(YEAR);
-      const feesPaidFromBorrowStable = new BigNumber(stateData.totalBorrowed)
-        .multipliedBy(stateData.rateBorrowStable ? stateData.rateBorrowStable : '0')
-        .multipliedBy(DAY)
-        .dividedBy(YEAR);
-
-      const snapshotData: CrossLendingMarketDataTimeframe = {
+      const snapshotData: CrossLendingReserveDataTimeframe = {
         ...stateData,
         ...activityData,
-
-        volumeFeesPaid: feesPaidFromBorrow.plus(feesPaidFromBorrowStable).toString(10),
 
         timefrom: options.fromTime,
         timeto: options.toTime,

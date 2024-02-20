@@ -5,8 +5,6 @@ import {
   GetAdapterDataTimeframeOptions,
   GetAdapterDataTimeframeResult,
   GetAdapterEventLogsOptions,
-  TransformEventLogOptions,
-  TransformEventLogResult,
 } from '../../types/collectors/options';
 import { ProtocolConfig } from '../../types/configs';
 import { ContextServices, IProtocolAdapter } from '../../types/namespaces';
@@ -43,11 +41,5 @@ export default class ProtocolAdapter implements IProtocolAdapter {
 
   public async getEventLogs(options: GetAdapterEventLogsOptions): Promise<Array<any>> {
     return [];
-  }
-
-  public async transformEventLogs(options: TransformEventLogOptions): Promise<TransformEventLogResult> {
-    return {
-      activities: [],
-    };
   }
 }

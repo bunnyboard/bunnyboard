@@ -1,7 +1,7 @@
 export const AggDataAggregateNames = {
-  crossLendingDataState: 'crossLendingDataState',
-  cdpLendingDataState: 'cdpLendingDataState',
-  perpetualDataState: 'perpetualDataState',
+  crossLendingDataOverall: 'crossLendingDataOverall',
+  cdpLendingDataOverall: 'cdpLendingDataOverall',
+  perpetualDataOverall: 'perpetualDataOverall',
 };
 
 export interface DataValueItem {

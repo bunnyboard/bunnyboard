@@ -1,3 +1,5 @@
+import { MongoCollectionConfig } from '../services/database/domains';
+
 export type ChainFamily = 'evm';
 
 export interface Token {
@@ -37,32 +39,25 @@ export interface Blockchain {
   blockSubgraph: string;
 }
 
+export interface DatabaseCollectionConfig {
+  cachingStates: MongoCollectionConfig;
+  dataAggregates: MongoCollectionConfig;
+
+  crossLendingReserveStates: MongoCollectionConfig;
+  crossLendingReserveSnapshots: MongoCollectionConfig;
+
+  cdpLendingMarketStates: MongoCollectionConfig;
+  cdpLendingMarketSnapshots: MongoCollectionConfig;
+
+  perpetualReserveStates: MongoCollectionConfig;
+  perpetualReserveSnapshots: MongoCollectionConfig;
+}
+
 export interface EnvConfig {
   mongodb: {
     databaseName: string;
     connectionUri: string;
-    collections: {
-      states: string;
-
-      // this collection will be used to faster serve overview and chart data for frontends
-      // there is a worker job run to aggregate data and save to this collection
-      aggregates: string;
-
-      // address save protocol users addresses
-      addresses: string;
-
-      // save all data states of lending market
-      lendingMarketStates: string;
-
-      // save all data snapshots of lending market
-      lendingMarketSnapshots: string;
-
-      // save all data states of perpetual market
-      perpetualMarketStates: string;
-
-      // save all snapshots of perpetual market
-      perpetualMarketSnapshots: string;
-    };
+    collections: DatabaseCollectionConfig;
   };
 
   // we pre-define supported blockchains here

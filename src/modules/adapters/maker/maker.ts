@@ -7,7 +7,7 @@ import GemJoinAbi from '../../../configs/abi/maker/GemJoin.json';
 import JugAbi from '../../../configs/abi/maker/Jug.json';
 import SpotAbi from '../../../configs/abi/maker/Spot.json';
 import VatAbi from '../../../configs/abi/maker/Vat.json';
-import { DAY, ONE_RAY, RAD_DECIMALS, RAY_DECIMALS, YEAR } from '../../../configs/constants';
+import { ONE_RAY, RAD_DECIMALS, RAY_DECIMALS, YEAR } from '../../../configs/constants';
 import EnvConfig from '../../../configs/envConfig';
 import { MakerLendingMarketConfig } from '../../../configs/protocols/maker';
 import { tryQueryBlockNumberAtTimestamp } from '../../../lib/subsgraph';
@@ -17,7 +17,7 @@ import {
   CdpLendingActivityEvent,
   CdpLendingMarketDataState,
   CdpLendingMarketDataTimeframe,
-} from '../../../types/collectors/lending';
+} from '../../../types/collectors/cdpLending';
 import {
   GetAdapterDataStateOptions,
   GetAdapterDataStateResult,
@@ -93,7 +93,7 @@ export default class MakerAdapter extends ProtocolAdapter {
       timestamp: options.timestamp,
       token: marketConfig.debtToken,
       tokenPrice: debtTokenPrice ? debtTokenPrice : '0',
-      totalDebts: formatBigNumberToString(debt.toString(), RAD_DECIMALS),
+      totalBorrowed: formatBigNumberToString(debt.toString(), RAD_DECIMALS),
       collaterals: [],
     };
 
@@ -371,14 +371,15 @@ export default class MakerAdapter extends ProtocolAdapter {
     for (const stateData of states) {
       const snapshot: CdpLendingMarketDataTimeframe = {
         ...stateData,
-        volumeBorrowed: '0',
-        volumeRepaid: '0',
-        volumeFeesPaid: '0',
-        numberOfUsers: 0,
-        numberOfTransactions: 0,
-        collaterals: [],
         timefrom: options.fromTime,
         timeto: options.toTime,
+
+        volumeBorrowed: '0',
+        volumeRepaid: '0',
+
+        addresses: [],
+        transactions: [],
+        collaterals: [],
       };
 
       const countUsers: { [key: string]: boolean } = {};
@@ -458,12 +459,6 @@ export default class MakerAdapter extends ProtocolAdapter {
           }
         }
 
-        const fees = new BigNumber(collateral.rateBorrow)
-          .multipliedBy(new BigNumber(collateral.totalDebts ? collateral.totalDebts : '0'))
-          .multipliedBy(DAY)
-          .dividedBy(YEAR);
-        snapshot.volumeFeesPaid = new BigNumber(snapshot.volumeFeesPaid).plus(fees).toString(10);
-
         snapshot.collaterals.push({
           ...collateral,
           volumeDeposited: volumeDeposited.toString(10),
@@ -472,8 +467,8 @@ export default class MakerAdapter extends ProtocolAdapter {
         });
       }
 
-      snapshot.numberOfUsers = Object.keys(countUsers).length;
-      snapshot.numberOfTransactions = Object.keys(transactions).length;
+      snapshot.addresses = Object.keys(countUsers);
+      snapshot.transactions = Object.keys(transactions);
 
       if (result.cdpLending) {
         result.cdpLending.push(snapshot);

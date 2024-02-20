@@ -1,5 +1,10 @@
 import { Collection } from 'mongodb';
 
+export interface MongoCollectionConfig {
+  name: string;
+  indies: Array<any>;
+}
+
 export interface MongoQueryOptions {
   limit: number;
   skip: number;

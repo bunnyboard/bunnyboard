@@ -3,7 +3,7 @@ import { decodeEventLog } from 'viem';
 
 import CometAbi from '../../../configs/abi/compound/Comet.json';
 import CometRewardsAbi from '../../../configs/abi/compound/CometRewards.json';
-import { DAY, Erc20TransferEventSignature, YEAR } from '../../../configs/constants';
+import { Erc20TransferEventSignature, YEAR } from '../../../configs/constants';
 import EnvConfig from '../../../configs/envConfig';
 import { Compoundv3LendingMarketConfig } from '../../../configs/protocols/compound';
 import { tryQueryBlockNumberAtTimestamp } from '../../../lib/subsgraph';
@@ -13,7 +13,7 @@ import {
   CdpLendingActivityEvent,
   CdpLendingMarketDataState,
   CdpLendingMarketDataTimeframe,
-} from '../../../types/collectors/lending';
+} from '../../../types/collectors/cdpLending';
 import {
   GetAdapterDataStateOptions,
   GetAdapterDataStateResult,
@@ -68,7 +68,7 @@ export default class Compoundv3Adapter extends ProtocolAdapter {
       timestamp: options.timestamp,
       token: marketConfig.debtToken,
       tokenPrice: debtTokenPrice ? debtTokenPrice : '0',
-      totalDebts: '0',
+      totalBorrowed: '0',
       rateSupply: '0',
       collaterals: [],
     };
@@ -131,7 +131,7 @@ export default class Compoundv3Adapter extends ProtocolAdapter {
       blockNumber: blockNumber,
     });
     marketState.totalDeposited = formatBigNumberToString(totalSupply.toString(), marketConfig.debtToken.decimals);
-    marketState.totalDebts = formatBigNumberToString(totalBorrow.toString(), marketConfig.debtToken.decimals);
+    marketState.totalBorrowed = formatBigNumberToString(totalBorrow.toString(), marketConfig.debtToken.decimals);
     marketState.rateSupply = formatBigNumberToString(
       new BigNumber(supplyRate.toString()).multipliedBy(YEAR).toString(10),
       18,
@@ -154,7 +154,7 @@ export default class Compoundv3Adapter extends ProtocolAdapter {
       ? new BigNumber(baseTrackingBorrowSpeed.toString())
           .multipliedBy(YEAR)
           .multipliedBy(rewardTokenPrice ? rewardTokenPrice : '0')
-          .dividedBy(new BigNumber(marketState.totalDebts).multipliedBy(debtTokenPrice))
+          .dividedBy(new BigNumber(marketState.totalBorrowed).multipliedBy(debtTokenPrice))
           .toString(10)
       : '0';
 
@@ -394,19 +394,21 @@ export default class Compoundv3Adapter extends ProtocolAdapter {
     for (const stateData of states) {
       const snapshot: CdpLendingMarketDataTimeframe = {
         ...stateData,
+        timefrom: options.fromTime,
+        timeto: options.toTime,
+
         volumeBorrowed: '0',
         volumeRepaid: '0',
         volumeDeposited: '0',
         volumeWithdrawn: '0',
-        volumeFeesPaid: '0',
-        numberOfUsers: 0,
-        numberOfTransactions: 0,
+
+        addresses: [],
+        transactions: [],
+
         collaterals: [],
-        timefrom: options.fromTime,
-        timeto: options.toTime,
       };
 
-      const countUsers: { [key: string]: boolean } = {};
+      const addresses: { [key: string]: boolean } = {};
       const transactions: { [key: string]: boolean } = {};
 
       const baseTokenEvents = activities.filter(
@@ -427,8 +429,8 @@ export default class Compoundv3Adapter extends ProtocolAdapter {
           transactions[activityEvent.transactionHash] = true;
         }
 
-        if (!countUsers[activityEvent.user]) {
-          countUsers[activityEvent.user] = true;
+        if (!addresses[activityEvent.user]) {
+          addresses[activityEvent.user] = true;
         }
 
         switch (activityEvent.action) {
@@ -471,8 +473,8 @@ export default class Compoundv3Adapter extends ProtocolAdapter {
             transactions[activityEvent.transactionHash] = true;
           }
 
-          if (!countUsers[activityEvent.user]) {
-            countUsers[activityEvent.user] = true;
+          if (!addresses[activityEvent.user]) {
+            addresses[activityEvent.user] = true;
           }
 
           switch (activityEvent.action) {
@@ -499,13 +501,8 @@ export default class Compoundv3Adapter extends ProtocolAdapter {
         });
       }
 
-      if (stateData.collaterals.length > 0) {
-        const fees = new BigNumber(stateData.collaterals[0].rateBorrow)
-          .multipliedBy(new BigNumber(stateData.totalDebts))
-          .multipliedBy(DAY)
-          .dividedBy(YEAR);
-        snapshot.volumeFeesPaid = fees.toString(10);
-      }
+      snapshot.addresses = Object.keys(addresses);
+      snapshot.transactions = Object.keys(transactions);
 
       if (result.cdpLending) {
         result.cdpLending.push(snapshot);

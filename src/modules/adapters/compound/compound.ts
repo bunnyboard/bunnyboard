@@ -5,13 +5,13 @@ import CompoundComptrollerAbi from '../../../configs/abi/compound/Comptroller.js
 import CompoundComptrollerV1Abi from '../../../configs/abi/compound/ComptrollerV1.json';
 import cErc20Abi from '../../../configs/abi/compound/cErc20.json';
 import IronbankComptrollerOldAbi from '../../../configs/abi/ironbank/FirstComptroller.json';
-import { ChainBlockPeriods, DAY, YEAR } from '../../../configs/constants';
+import { ChainBlockPeriods, YEAR } from '../../../configs/constants';
 import EnvConfig from '../../../configs/envConfig';
 import { CompoundLendingMarketConfig } from '../../../configs/protocols/compound';
 import { tryQueryBlockNumberAtTimestamp } from '../../../lib/subsgraph';
 import { compareAddress, formatBigNumberToString, normalizeAddress } from '../../../lib/utils';
 import { ActivityActions, TokenValueItem } from '../../../types/collectors/base';
-import { CrossLendingMarketDataState, CrossLendingMarketDataTimeframe } from '../../../types/collectors/lending';
+import { CrossLendingReserveDataState, CrossLendingReserveDataTimeframe } from '../../../types/collectors/crossLending';
 import {
   GetAdapterDataStateOptions,
   GetAdapterDataStateResult,
@@ -321,7 +321,7 @@ export default class CompoundAdapter extends ProtocolAdapter {
             }
           }
 
-          const dataState: CrossLendingMarketDataState = {
+          const dataState: CrossLendingReserveDataState = {
             metric: marketConfig.metric,
             chain: marketConfig.chain,
             protocol: marketConfig.protocol,
@@ -591,15 +591,9 @@ export default class CompoundAdapter extends ProtocolAdapter {
 
       const activityData = await countCrossLendingDataFromActivities(documents);
 
-      const feesPaidFromBorrow = new BigNumber(stateData.totalBorrowed)
-        .multipliedBy(stateData.rateBorrow)
-        .multipliedBy(DAY)
-        .dividedBy(YEAR);
-
-      const snapshotData: CrossLendingMarketDataTimeframe = {
+      const snapshotData: CrossLendingReserveDataTimeframe = {
         ...stateData,
         ...activityData,
-        volumeFeesPaid: feesPaidFromBorrow.toString(10),
         timefrom: options.fromTime,
         timeto: options.toTime,
       };

@@ -2,7 +2,7 @@ import BigNumber from 'bignumber.js';
 
 import OracleService from '../../services/oracle/oracle';
 import { ActivityActions, BaseActivityEvent, TokenValueItem } from '../../types/collectors/base';
-import { CrossLendingActivityEvent } from '../../types/collectors/lending';
+import { CrossLendingActivityEvent } from '../../types/collectors/crossLending';
 
 interface LendingDataActivity {
   volumeDeposited: string;
@@ -10,8 +10,8 @@ interface LendingDataActivity {
   volumeBorrowed: string;
   volumeRepaid: string;
   volumeLiquidated: Array<TokenValueItem>;
-  numberOfUsers: number;
-  numberOfTransactions: number;
+  addresses: Array<string>;
+  transactions: Array<string>;
 }
 
 export async function countCrossLendingDataFromActivities(
@@ -24,7 +24,7 @@ export async function countCrossLendingDataFromActivities(
   let volumeBorrowed = new BigNumber(0);
   let volumeRepaid = new BigNumber(0);
   const volumeLiquidated: { [key: string]: TokenValueItem } = {};
-  const countUsers: { [key: string]: boolean } = {};
+  const addresses: { [key: string]: boolean } = {};
   const transactions: { [key: string]: boolean } = {};
   for (const document of activities) {
     const activityEvent = document as BaseActivityEvent;
@@ -34,12 +34,12 @@ export async function countCrossLendingDataFromActivities(
       transactions[document.transactionHash] = true;
     }
 
-    if (!countUsers[activityEvent.user]) {
-      countUsers[activityEvent.user] = true;
+    if (!addresses[activityEvent.user]) {
+      addresses[activityEvent.user] = true;
     }
 
-    if (borrower && !countUsers[borrower]) {
-      countUsers[borrower] = true;
+    if (borrower && !addresses[borrower]) {
+      addresses[borrower] = true;
     }
 
     switch (activityEvent.action) {
@@ -90,7 +90,7 @@ export async function countCrossLendingDataFromActivities(
     volumeBorrowed: volumeBorrowed.toString(10),
     volumeRepaid: volumeRepaid.toString(10),
     volumeLiquidated: Object.values(volumeLiquidated),
-    numberOfUsers: Object.keys(countUsers).length,
-    numberOfTransactions: Object.keys(transactions).length,
+    addresses: Object.keys(addresses),
+    transactions: Object.keys(transactions),
   };
 }

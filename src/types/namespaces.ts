@@ -1,7 +1,6 @@
 import { IBlockchainService } from '../services/blockchains/domains';
 import { IDatabaseService } from '../services/database/domains';
 import { IOracleService } from '../services/oracle/domains';
-import { AggDataQueryOptions, AggDataQueryResult } from './aggregates/options';
 import {
   AdapterAbiConfigs,
   GetAdapterDataStateOptions,
@@ -50,8 +49,6 @@ export interface ICollector {
 export interface DataAggregator {
   name: string;
   database: IDatabaseService;
-
-  query: (options: AggDataQueryOptions) => Promise<AggDataQueryResult | null>;
 
   // expect to aggregate data and update to database
   runUpdate: () => Promise<void>;

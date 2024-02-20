@@ -1,6 +1,6 @@
 import { Collection, MongoClient } from 'mongodb';
 
-import envConfig from '../../configs/envConfig';
+import EnvConfig from '../../configs/envConfig';
 import logger from '../../lib/logger';
 import { sleep } from '../../lib/utils';
 import {
@@ -74,38 +74,12 @@ export default class DatabaseService implements IDatabaseService {
   }
 
   private async setupIndies(): Promise<void> {
-    const statesCollection = await this.getCollection(envConfig.mongodb.collections.states);
-    const addressesCollection = await this.getCollection(envConfig.mongodb.collections.addresses);
-    statesCollection.createIndex({ name: 1 }, { background: true });
-    addressesCollection.createIndex({ protocol: 1, metric: 1, chain: 1, address: 1 }, { background: true });
-
-    const lendingMarketStatesCollection = await this.getCollection(envConfig.mongodb.collections.lendingMarketStates);
-    const lendingMarketSnapshotsCollection = await this.getCollection(
-      envConfig.mongodb.collections.lendingMarketSnapshots,
-    );
-    const perpetualMarketStatesCollection = await this.getCollection(
-      envConfig.mongodb.collections.perpetualMarketStates,
-    );
-    const perpetualMarketSnapshotsCollection = await this.getCollection(
-      envConfig.mongodb.collections.perpetualMarketSnapshots,
-    );
-
-    lendingMarketStatesCollection.createIndex(
-      { chain: 1, protocol: 1, address: 1, 'token.address': 1 },
-      { background: true },
-    );
-    lendingMarketSnapshotsCollection.createIndex(
-      { chain: 1, protocol: 1, address: 1, 'token.address': 1, timestamp: 1 },
-      { background: true },
-    );
-    perpetualMarketStatesCollection.createIndex(
-      { chain: 1, protocol: 1, address: 1, 'token.address': 1 },
-      { background: true },
-    );
-    perpetualMarketSnapshotsCollection.createIndex(
-      { chain: 1, protocol: 1, address: 1, 'token.address': 1, timestamp: 1 },
-      { background: true },
-    );
+    for (const collectionConfig of Object.values(EnvConfig.mongodb.collections)) {
+      const collection = await this.getCollection(collectionConfig.name);
+      for (const indexConfig of collectionConfig.indies) {
+        collection.createIndex(indexConfig, { background: true });
+      }
+    }
   }
 
   public async insert(options: DatabaseInsertOptions): Promise<void> {

@@ -25,7 +25,7 @@ export default class SnapshotCollector {
       let runTime = options.fromTime ? options.fromTime : config.birthday;
       if (!options.force) {
         const latestState = await this.storages.database.find({
-          collection: EnvConfig.mongodb.collections.states,
+          collection: EnvConfig.mongodb.collections.cachingStates.name,
           query: {
             name: stateKey,
           },
@@ -60,7 +60,7 @@ export default class SnapshotCollector {
           if (crossLending) {
             for (const snapshot of crossLending) {
               await this.storages.database.update({
-                collection: EnvConfig.mongodb.collections.lendingMarketSnapshots,
+                collection: EnvConfig.mongodb.collections.crossLendingReserveSnapshots.name,
                 keys: {
                   chain: snapshot.chain,
                   metric: snapshot.metric,
@@ -79,7 +79,7 @@ export default class SnapshotCollector {
           if (cdpLending) {
             for (const snapshot of cdpLending) {
               await this.storages.database.update({
-                collection: EnvConfig.mongodb.collections.lendingMarketSnapshots,
+                collection: EnvConfig.mongodb.collections.cdpLendingMarketSnapshots.name,
                 keys: {
                   chain: snapshot.chain,
                   metric: snapshot.metric,
@@ -97,7 +97,7 @@ export default class SnapshotCollector {
           if (perpetual) {
             for (const snapshot of perpetual) {
               await this.storages.database.update({
-                collection: EnvConfig.mongodb.collections.perpetualMarketSnapshots,
+                collection: EnvConfig.mongodb.collections.perpetualReserveSnapshots.name,
                 keys: {
                   chain: snapshot.chain,
                   metric: snapshot.metric,

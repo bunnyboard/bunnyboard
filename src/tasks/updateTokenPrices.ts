@@ -11,10 +11,12 @@ import OracleService from '../services/oracle/oracle';
   await database.connect(EnvConfig.mongodb.connectionUri, EnvConfig.mongodb.databaseName);
 
   const collections: Array<string> = [
-    EnvConfig.mongodb.collections.lendingMarketStates,
-    EnvConfig.mongodb.collections.lendingMarketSnapshots,
-    EnvConfig.mongodb.collections.perpetualMarketStates,
-    EnvConfig.mongodb.collections.perpetualMarketSnapshots,
+    EnvConfig.mongodb.collections.crossLendingReserveStates.name,
+    EnvConfig.mongodb.collections.crossLendingReserveSnapshots.name,
+    EnvConfig.mongodb.collections.cdpLendingMarketStates.name,
+    EnvConfig.mongodb.collections.cdpLendingMarketSnapshots.name,
+    EnvConfig.mongodb.collections.perpetualReserveStates.name,
+    EnvConfig.mongodb.collections.perpetualReserveSnapshots.name,
   ];
 
   for (const collection of collections) {

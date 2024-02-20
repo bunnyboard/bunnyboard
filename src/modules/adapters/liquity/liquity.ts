@@ -12,7 +12,7 @@ import {
   CdpLendingActivityEvent,
   CdpLendingMarketDataState,
   CdpLendingMarketDataTimeframe,
-} from '../../../types/collectors/lending';
+} from '../../../types/collectors/cdpLending';
 import {
   GetAdapterDataStateOptions,
   GetAdapterDataStateResult,
@@ -111,7 +111,7 @@ export default class LiquityAdapter extends ProtocolAdapter {
       timestamp: options.timestamp,
       token: debtToken,
       tokenPrice: debtTokenPrice ? debtTokenPrice : '0',
-      totalDebts: '0',
+      totalBorrowed: '0',
       collaterals: [],
     };
 
@@ -141,16 +141,16 @@ export default class LiquityAdapter extends ProtocolAdapter {
 
       const borrowingFee = await this.getBorrowingFee(marketConfig.chain, troveConfig.troveManager, blockNumber);
 
-      marketState.totalDebts = new BigNumber(marketState.totalDebts)
+      marketState.totalBorrowed = new BigNumber(marketState.totalBorrowed)
         .plus(formatBigNumberToString(totalDebt.toString(), debtToken.decimals))
         .toString(10);
 
       marketState.collaterals.push({
-        address: troveConfig.troveManager,
+        address: marketConfig.address,
         token: collateralToken,
         tokenPrice: collateralTokenPrice ? collateralTokenPrice : '0',
         totalDeposited: formatBigNumberToString(totalColl.toString(), collateralToken.decimals),
-        rateBorrow: formatBigNumberToString(borrowingFee, 18),
+        rateBorrow: formatBigNumberToString(borrowingFee, 18), // liquity charged on-time paid fee
 
         // liquity must maintain 110% collateral value on debts
         // so, the loan to value is always 100 / 110 -> 0.9 -> 90%
@@ -387,21 +387,18 @@ export default class LiquityAdapter extends ProtocolAdapter {
       let volumeBorrowed = new BigNumber(0);
       let volumeRepaid = new BigNumber(0);
 
-      const countBorrowers: { [key: string]: boolean } = {};
+      const addresses: { [key: string]: boolean } = {};
       const transactions: { [key: string]: boolean } = {};
 
       const snapshot: CdpLendingMarketDataTimeframe = {
         ...stateData,
-        collaterals: [],
-
-        volumeBorrowed: '0',
-        volumeRepaid: '0',
-        volumeFeesPaid: '0',
-        numberOfUsers: 0,
-        numberOfTransactions: 0,
-
         timefrom: options.fromTime,
         timeto: options.toTime,
+        volumeBorrowed: '0',
+        volumeRepaid: '0',
+        addresses: [],
+        transactions: [],
+        collaterals: [],
       };
 
       // count borrow/repay events
@@ -419,8 +416,8 @@ export default class LiquityAdapter extends ProtocolAdapter {
           transactions[activityEvent.transactionHash] = true;
         }
 
-        if (!countBorrowers[activityEvent.user]) {
-          countBorrowers[activityEvent.user] = true;
+        if (!addresses[activityEvent.user]) {
+          addresses[activityEvent.user] = true;
         }
 
         switch (activityEvent.action) {
@@ -458,8 +455,8 @@ export default class LiquityAdapter extends ProtocolAdapter {
             transactions[activityEvent.transactionHash] = true;
           }
 
-          if (!countBorrowers[activityEvent.user]) {
-            countBorrowers[activityEvent.user] = true;
+          if (!addresses[activityEvent.user]) {
+            addresses[activityEvent.user] = true;
           }
 
           switch (activityEvent.action) {
@@ -486,8 +483,8 @@ export default class LiquityAdapter extends ProtocolAdapter {
         });
       }
 
-      snapshot.numberOfUsers = Object.keys(countBorrowers).length;
-      snapshot.numberOfTransactions = Object.keys(transactions).length;
+      snapshot.addresses = Object.keys(addresses);
+      snapshot.transactions = Object.keys(transactions);
 
       if (result.cdpLending) {
         result.cdpLending.push(snapshot);

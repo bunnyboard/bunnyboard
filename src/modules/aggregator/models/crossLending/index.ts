@@ -1,15 +1,21 @@
-import EnvConfig from '../../../configs/envConfig';
-import { groupAndSumObjectList } from '../../../lib/helper';
-import logger from '../../../lib/logger';
-import { calChangesOf_Total_From_Items, calValueOf_Amount_With_Price } from '../../../lib/math';
-import { IDatabaseService } from '../../../services/database/domains';
-import { AggDataAggregateNames } from '../../../types/aggregates/common';
-import { AggCrossLendingMarketSnapshot, AggCrossLendingOverallState } from '../../../types/aggregates/lending';
-import { CrossLendingMarketDataStateWithTimeframes } from '../../../types/collectors/lending';
-import { DataMetrics } from '../../../types/configs';
-import AggregatorTransformModel from '../transform/data';
-import AggregatorTransformHelper from '../transform/helper';
-import BaseDataAggregator from './base';
+import EnvConfig from '../../../../configs/envConfig';
+import { calChangesOf_Total_From_Items, calValueOf_Amount_With_Price } from '../../../../lib/math';
+import { getTimestamp } from '../../../../lib/utils';
+import { IDatabaseService } from '../../../../services/database/domains';
+import {
+  AggCrossLendingDataOverall,
+  AggCrossLendingMarketDataOverall,
+  AggCrossLendingMarketSnapshot, AggCrossLendingReserveSnapshot
+} from '../../../../types/aggregates/crossLending';
+import {
+  CrossLendingReserveDataStateWithTimeframes,
+  CrossLendingReserveDataTimeframe
+} from '../../../../types/collectors/crossLending';
+import { DataMetrics } from '../../../../types/configs';
+import BaseDataAggregator from '../../base';
+import CrossLendingDataTransformer from './transform';
+import { groupReserveSnapshotsToDayData } from './helpers';
+import { DAY } from '../../../../configs/constants';
 
 export default class CrossLendingDataAggregator extends BaseDataAggregator {
   public readonly name: string = 'aggregator.crossLending';
@@ -18,12 +24,13 @@ export default class CrossLendingDataAggregator extends BaseDataAggregator {
     super(database);
   }
 
-  private async aggregateCrossLendingDataState(): Promise<AggCrossLendingOverallState> {
-    const dataState: AggCrossLendingOverallState = AggregatorTransformHelper.getDefaultAggCrossLendingOverallState();
+  // get current overall data across all markets
+  public async getDataOverall(): Promise<AggCrossLendingDataOverall> {
+    const dataState: AggCrossLendingDataOverall = CrossLendingDataTransformer.getDefaultAggCrossLendingDataOverall();
 
     // get all cross lending states
     const states = await this.database.query({
-      collection: EnvConfig.mongodb.collections.lendingMarketStates,
+      collection: EnvConfig.mongodb.collections.crossLendingReserveStates.name,
       query: {
         metric: DataMetrics.crossLending,
       },
@@ -31,11 +38,11 @@ export default class CrossLendingDataAggregator extends BaseDataAggregator {
 
     const markets: { [key: string]: AggCrossLendingMarketSnapshot } = {};
     for (const stateItem of states) {
-      const stateWithTimeframes = stateItem as CrossLendingMarketDataStateWithTimeframes;
+      const stateWithTimeframes = stateItem as CrossLendingReserveDataStateWithTimeframes;
 
       const marketId = `${stateWithTimeframes.protocol}-${stateWithTimeframes.chain}`;
       if (!markets[marketId]) {
-        markets[marketId] = AggregatorTransformHelper.getDefaultAggCrossLendingProtocolMarket(
+        markets[marketId] = CrossLendingDataTransformer.getDefaultAggCrossLendingMarketSnapshot(
           stateWithTimeframes.protocol,
           stateWithTimeframes.chain,
           stateWithTimeframes.timestamp,
@@ -57,19 +64,19 @@ export default class CrossLendingDataAggregator extends BaseDataAggregator {
       );
 
       if (stateWithTimeframes.timeframe24Hours) {
-        const snapshot = AggregatorTransformModel.transformCrossLendingMarketSnapshot(
+        const snapshot = CrossLendingDataTransformer.transformCrossLendingMarketSnapshot(
           stateWithTimeframes.timeframe24Hours,
           stateWithTimeframes.timeframe48Hours,
           stateItem,
         );
 
-        dataState.volumeFeesPaid.valueUsd += snapshot.volumeFeesPaid.valueUsd;
+        dataState.feesPaidTheoretically.valueUsd += snapshot.feesPaidTheoretically.valueUsd;
         dataState.volumeDeposited.valueUsd += snapshot.volumeDeposited.valueUsd;
         dataState.volumeWithdrawn.valueUsd += snapshot.volumeWithdrawn.valueUsd;
         dataState.volumeBorrowed.valueUsd += snapshot.volumeBorrowed.valueUsd;
         dataState.volumeRepaid.valueUsd += snapshot.volumeRepaid.valueUsd;
 
-        markets[marketId].volumeFeesPaid.valueUsd += snapshot.volumeFeesPaid.valueUsd;
+        markets[marketId].feesPaidTheoretically.valueUsd += snapshot.feesPaidTheoretically.valueUsd;
         markets[marketId].volumeDeposited.valueUsd += snapshot.volumeDeposited.valueUsd;
         markets[marketId].volumeWithdrawn.valueUsd += snapshot.volumeWithdrawn.valueUsd;
         markets[marketId].volumeBorrowed.valueUsd += snapshot.volumeBorrowed.valueUsd;
@@ -164,11 +171,11 @@ export default class CrossLendingDataAggregator extends BaseDataAggregator {
       }),
     );
 
-    dataState.volumeFeesPaid.changedValueUsd = calChangesOf_Total_From_Items(
+    dataState.feesPaidTheoretically.changedValueUsd = calChangesOf_Total_From_Items(
       dataState.markets.map((snapshot) => {
         return {
-          value: snapshot.volumeFeesPaid.valueUsd,
-          change: snapshot.volumeFeesPaid.changedValueUsd ? snapshot.volumeFeesPaid.changedValueUsd : 0,
+          value: snapshot.feesPaidTheoretically.valueUsd,
+          change: snapshot.feesPaidTheoretically.changedValueUsd ? snapshot.feesPaidTheoretically.changedValueUsd : 0,
         };
       }),
     );
@@ -207,80 +214,114 @@ export default class CrossLendingDataAggregator extends BaseDataAggregator {
 
     // process snapshots and build up day data list
     const snapshots = await this.database.query({
-      collection: EnvConfig.mongodb.collections.lendingMarketSnapshots,
+      collection: EnvConfig.mongodb.collections.crossLendingReserveSnapshots.name,
       query: {
         metric: DataMetrics.crossLending,
       },
     });
-    dataState.dayData = groupAndSumObjectList(
-      snapshots.map((snapshot) => {
-        return {
-          timestamp: snapshot.timestamp,
-          totalDeposited: calValueOf_Amount_With_Price(snapshot.totalDeposited, snapshot.tokenPrice),
-          totalBorrowed: calValueOf_Amount_With_Price(snapshot.totalBorrowed, snapshot.tokenPrice),
-          volumeFeesPaid: calValueOf_Amount_With_Price(snapshot.volumeFeesPaid, snapshot.tokenPrice),
-          volumeDeposited: calValueOf_Amount_With_Price(snapshot.volumeDeposited, snapshot.tokenPrice),
-          volumeWithdrawn: calValueOf_Amount_With_Price(snapshot.volumeWithdrawn, snapshot.tokenPrice),
-          volumeBorrowed: calValueOf_Amount_With_Price(snapshot.volumeBorrowed, snapshot.tokenPrice),
-          volumeRepaid: calValueOf_Amount_With_Price(snapshot.volumeRepaid, snapshot.tokenPrice),
-        };
-      }),
-      'timestamp',
-    ).map((item) => {
-      return {
-        timestamp: item.timestamp,
-        totalDeposited: {
-          value: 0,
-          valueUsd: item.totalDeposited,
-        },
-        totalBorrowed: {
-          value: 0,
-          valueUsd: item.totalBorrowed,
-        },
-        volumeFeesPaid: {
-          value: 0,
-          valueUsd: item.volumeFeesPaid,
-        },
-        volumeDeposited: {
-          value: 0,
-          valueUsd: item.volumeDeposited,
-        },
-        volumeWithdrawn: {
-          value: 0,
-          valueUsd: item.volumeWithdrawn,
-        },
-        volumeBorrowed: {
-          value: 0,
-          valueUsd: item.volumeBorrowed,
-        },
-        volumeRepaid: {
-          value: 0,
-          valueUsd: item.volumeRepaid,
-        },
-      };
-    });
+    dataState.dayData = groupReserveSnapshotsToDayData(snapshots as Array<CrossLendingReserveDataTimeframe>);
 
     return dataState;
   }
 
-  public async runUpdate(): Promise<void> {
-    const crossLendingDataState = await this.aggregateCrossLendingDataState();
-
-    await this.database.update({
-      collection: EnvConfig.mongodb.collections.aggregates,
-      keys: {
-        name: AggDataAggregateNames.crossLendingDataState,
+  // we save data in form of every single reserve (protocol-chain-token)
+  // this function group reserves into a market (protocol-chain)
+  public async getMarkets(timestamp: number): Promise<Array<AggCrossLendingMarketSnapshot>> {
+    const snapshots: Array<any> = await this.database.query({
+      collection: EnvConfig.mongodb.collections.crossLendingReserveSnapshots.name,
+      query: {
+        timestamp: timestamp,
       },
-      updates: {
-        name: AggDataAggregateNames.crossLendingDataState,
-        ...crossLendingDataState,
-      },
-      upsert: true,
     });
 
-    logger.info(`aggregated and updated data`, {
-      service: this.name,
-      name: AggDataAggregateNames.crossLendingDataState,
+    const aggSnapshots: Array<AggCrossLendingReserveSnapshot> = [];
+    for (const snapshot of snapshots) {
+      const previousSnapshot = await this.database.find({
+        collection: EnvConfig.mongodb.collections.crossLendingReserveSnapshots.name,
+        query: {
+          chain: snapshot.chain,
+          protocol: snapshot.protocol,
+          address: snapshot.address,
+          'token.address': snapshot.token.address,
+          timestamp: snapshot.timestamp - DAY,
+        }
+      });
+      aggSnapshots.push(
+        CrossLendingDataTransformer.transformCrossLendingMarketSnapshot(
+          snapshot,
+          previousSnapshot ? previousSnapshot : null,
+          snapshot,
+        )
+      );
+    }
+
+    return CrossLendingDataTransformer.transformCrossReservesToMarkets(aggSnapshots);
+  }
+
+  // this function aims to return all data for given market (protocol-chain)
+  public async getMarket(protocol: string, chain: string): Promise<AggCrossLendingMarketDataOverall> {
+    const marketData: AggCrossLendingMarketDataOverall = {
+      ...CrossLendingDataTransformer.getDefaultAggCrossLendingMarketSnapshot(protocol, chain, getTimestamp()),
+      dayData: [],
+    };
+
+    // get states
+    const reserveStates = await this.database.query({
+      collection: EnvConfig.mongodb.collections.crossLendingReserveStates.name,
+      query: {
+        chain: chain,
+        protocol: protocol,
+      },
     });
+
+    const marketUsers: { [key: string]: boolean } = {};
+    const marketTransactions: { [key: string]: boolean } = {};
+    for (const reserveState of reserveStates) {
+      const reserveStateWithTimeframes = reserveState as CrossLendingReserveDataStateWithTimeframes;
+      const reserveSnapshot = CrossLendingDataTransformer.transformCrossLendingMarketSnapshot(
+        reserveStateWithTimeframes.timeframe24Hours,
+        reserveStateWithTimeframes.timeframe48Hours,
+        reserveStateWithTimeframes,
+      );
+
+      marketData.totalDeposited.valueUsd += reserveSnapshot.totalDeposited.valueUsd;
+      marketData.totalBorrowed.valueUsd += reserveSnapshot.totalBorrowed.valueUsd;
+      marketData.volumeDeposited.valueUsd += reserveSnapshot.volumeDeposited.valueUsd;
+      marketData.volumeWithdrawn.valueUsd += reserveSnapshot.volumeWithdrawn.valueUsd;
+      marketData.volumeBorrowed.valueUsd += reserveSnapshot.volumeBorrowed.valueUsd;
+      marketData.volumeRepaid.valueUsd += reserveSnapshot.volumeRepaid.valueUsd;
+      marketData.feesPaidTheoretically.valueUsd += reserveSnapshot.feesPaidTheoretically.valueUsd;
+
+      if (reserveStateWithTimeframes.timeframe24Hours) {
+        for (const address of reserveStateWithTimeframes.timeframe24Hours.addresses) {
+          if (!marketUsers[address]) {
+            marketUsers[address] = true;
+          }
+        }
+        for (const transaction of reserveStateWithTimeframes.timeframe24Hours.transactions) {
+          if (!marketTransactions[transaction]) {
+            marketTransactions[transaction] = true;
+          }
+        }
+      }
+
+      marketData.reserves.push(reserveSnapshot);
+    }
+
+    marketData.numberOfUsers = Object.keys(marketUsers).length;
+    marketData.numberOfTransactions = Object.keys(marketTransactions).length;
+
+    // process snapshots
+    const reserveSnapshots = await this.database.query({
+      collection: EnvConfig.mongodb.collections.crossLendingReserveSnapshots.name,
+      query: {
+        chain: chain,
+        protocol: protocol,
+      }
+    });
+
+    marketData.dayData = groupReserveSnapshotsToDayData(reserveSnapshots as Array<CrossLendingReserveDataTimeframe>)
+
+    return marketData;
   }
 }
