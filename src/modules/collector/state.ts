@@ -48,8 +48,16 @@ export default class StateCollector {
         for (const dateState of state.crossLending) {
           let stateWithTimeframes: CrossLendingReserveDataStateWithTimeframes = {
             ...dateState,
-            timeframe24Hours: null,
-            timeframe48Hours: null,
+            timefrom: timestamp - DAY,
+            timeto: timestamp,
+            volumeDeposited: '0',
+            volumeWithdrawn: '0',
+            volumeBorrowed: '0',
+            volumeRepaid: '0',
+            volumeLiquidated: [],
+            addresses: [],
+            transactions: [],
+            last24Hours: null,
           };
 
           if (timeframeLast24Hours.crossLending) {
@@ -61,20 +69,7 @@ export default class StateCollector {
                 item.token.address === dateState.token.address,
             )[0];
             if (dataLast24Hours) {
-              stateWithTimeframes.timeframe24Hours = dataLast24Hours;
-            }
-          }
-
-          if (timeframeLast48Hours.crossLending) {
-            const dataLast48Hours = timeframeLast48Hours.crossLending.filter(
-              (item) =>
-                item.chain === dateState.chain &&
-                item.protocol === dateState.protocol &&
-                item.address === dateState.address &&
-                item.token.address === dateState.token.address,
-            )[0];
-            if (dataLast48Hours) {
-              stateWithTimeframes.timeframe48Hours = dataLast48Hours;
+              stateWithTimeframes.last24Hours = dataLast24Hours;
             }
           }
 

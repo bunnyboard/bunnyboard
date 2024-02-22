@@ -68,7 +68,7 @@ export interface CrossLendingReserveDataTimeframe extends CrossLendingReserveDat
   transactions: Array<string>;
 }
 
-export interface CrossLendingReserveDataStateWithTimeframes extends CrossLendingReserveDataState {
-  timeframe24Hours: CrossLendingReserveDataTimeframe | null;
-  timeframe48Hours: CrossLendingReserveDataTimeframe | null;
+export interface CrossLendingReserveDataStateWithTimeframes extends CrossLendingReserveDataTimeframe {
+  // previous day data
+  last24Hours: CrossLendingReserveDataTimeframe | null;
 }

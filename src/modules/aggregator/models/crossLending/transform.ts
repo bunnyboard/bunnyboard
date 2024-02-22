@@ -6,10 +6,7 @@ import {
   AggCrossLendingMarketSnapshot,
   AggCrossLendingReserveSnapshot,
 } from '../../../../types/aggregates/crossLending';
-import {
-  CrossLendingReserveDataState,
-  CrossLendingReserveDataTimeframe,
-} from '../../../../types/collectors/crossLending';
+import { CrossLendingReserveDataTimeframe } from '../../../../types/collectors/crossLending';
 import { DataMetrics } from '../../../../types/configs';
 import { transformValueWithTokenPrice } from '../../helper';
 
@@ -158,25 +155,16 @@ export default class CrossLendingDataTransformer {
   }
 
   public static transformCrossLendingMarketSnapshot(
-    timeframeLast24Hours: any,
-    timeframeLast48Hours: any,
     currentDataState: any | null,
+    last24Hours: any,
   ): AggCrossLendingReserveSnapshot {
-    const dataTimeframeLast24Hours: CrossLendingReserveDataTimeframe =
-      timeframeLast24Hours as CrossLendingReserveDataTimeframe;
-    const dataTimeframeLast48Hours: CrossLendingReserveDataTimeframe | null = timeframeLast48Hours
-      ? (timeframeLast48Hours as CrossLendingReserveDataTimeframe)
-      : null;
-    const dataState: CrossLendingReserveDataState = currentDataState ? currentDataState : timeframeLast24Hours;
+    const dataState: CrossLendingReserveDataTimeframe = currentDataState;
+    const dataTimeframeLast24Hours: CrossLendingReserveDataTimeframe = last24Hours as CrossLendingReserveDataTimeframe;
 
-    let feesIn24hs = new BigNumber(timeframeLast24Hours.totalBorrowed).multipliedBy(
-      new BigNumber(timeframeLast24Hours.rateBorrow),
-    );
-    if (timeframeLast24Hours.rateBorrowStable && timeframeLast24Hours.totalBorrowedStable) {
+    let feesIn24hs = new BigNumber(dataState.totalBorrowed).multipliedBy(new BigNumber(dataState.rateBorrow));
+    if (dataState.rateBorrowStable && dataState.totalBorrowedStable) {
       feesIn24hs = feesIn24hs.plus(
-        new BigNumber(timeframeLast24Hours.totalBorrowedStable).multipliedBy(
-          new BigNumber(timeframeLast24Hours.rateBorrowStable),
-        ),
+        new BigNumber(dataState.totalBorrowedStable).multipliedBy(new BigNumber(dataState.rateBorrowStable)),
       );
     }
 
@@ -195,36 +183,22 @@ export default class CrossLendingDataTransformer {
       totalDeposited: transformValueWithTokenPrice(dataState, dataTimeframeLast24Hours, 'totalDeposited'),
       totalBorrowed: transformValueWithTokenPrice(dataState, dataTimeframeLast24Hours, 'totalBorrowed'),
 
-      volumeDeposited: transformValueWithTokenPrice(
-        dataTimeframeLast24Hours,
-        dataTimeframeLast48Hours,
-        'volumeDeposited',
-      ),
-      volumeWithdrawn: transformValueWithTokenPrice(
-        dataTimeframeLast24Hours,
-        dataTimeframeLast48Hours,
-        'volumeWithdrawn',
-      ),
-      volumeBorrowed: transformValueWithTokenPrice(
-        dataTimeframeLast24Hours,
-        dataTimeframeLast48Hours,
-        'volumeBorrowed',
-      ),
-      volumeRepaid: transformValueWithTokenPrice(dataTimeframeLast24Hours, dataTimeframeLast48Hours, 'volumeRepaid'),
+      volumeDeposited: transformValueWithTokenPrice(dataState, dataTimeframeLast24Hours, 'volumeDeposited'),
+      volumeWithdrawn: transformValueWithTokenPrice(dataState, dataTimeframeLast24Hours, 'volumeWithdrawn'),
+      volumeBorrowed: transformValueWithTokenPrice(dataState, dataTimeframeLast24Hours, 'volumeBorrowed'),
+      volumeRepaid: transformValueWithTokenPrice(dataState, dataTimeframeLast24Hours, 'volumeRepaid'),
 
       feesPaidTheoretically: transformValueWithTokenPrice(
         {
-          tokenPrice: dataTimeframeLast24Hours.tokenPrice,
+          tokenPrice: dataState.tokenPrice,
           feesPaidTheoretically: feesIn24hs.toString(10),
         },
-        dataTimeframeLast48Hours
-          ? {
-              tokenPrice: dataTimeframeLast48Hours.tokenPrice,
-              feesPaidTheoretically: new BigNumber(dataTimeframeLast48Hours.totalBorrowed)
-                .multipliedBy(new BigNumber(dataTimeframeLast48Hours.rateBorrow))
-                .toString(10),
-            }
-          : undefined,
+        {
+          tokenPrice: dataTimeframeLast24Hours.tokenPrice,
+          feesPaidTheoretically: new BigNumber(dataTimeframeLast24Hours.totalBorrowed)
+            .multipliedBy(new BigNumber(dataTimeframeLast24Hours.rateBorrow))
+            .toString(10),
+        },
         'feesPaidTheoretically',
       ),
 

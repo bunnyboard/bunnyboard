@@ -64,11 +64,10 @@ export default class CrossLendingDataAggregator extends BaseDataAggregator {
         stateItem.tokenPrice,
       );
 
-      if (stateWithTimeframes.timeframe24Hours) {
+      if (stateWithTimeframes.last24Hours) {
         const snapshot = CrossLendingDataTransformer.transformCrossLendingMarketSnapshot(
-          stateWithTimeframes.timeframe24Hours,
-          stateWithTimeframes.timeframe48Hours,
           stateItem,
+          stateWithTimeframes.last24Hours,
         );
 
         dataState.feesPaidTheoretically.valueUsd += snapshot.feesPaidTheoretically.valueUsd;
@@ -259,7 +258,6 @@ export default class CrossLendingDataAggregator extends BaseDataAggregator {
         CrossLendingDataTransformer.transformCrossLendingMarketSnapshot(
           snapshot,
           previousSnapshot ? previousSnapshot : null,
-          snapshot,
         ),
       );
     }
@@ -288,9 +286,8 @@ export default class CrossLendingDataAggregator extends BaseDataAggregator {
       const reserveStateWithTimeframes = reserveState as CrossLendingReserveDataStateWithTimeframes;
       reserveSnapshots.push(
         CrossLendingDataTransformer.transformCrossLendingMarketSnapshot(
-          reserveStateWithTimeframes.timeframe24Hours,
-          reserveStateWithTimeframes.timeframe48Hours,
-          reserveStateWithTimeframes,
+          reserveState,
+          reserveStateWithTimeframes.last24Hours,
         ),
       );
     }
@@ -311,13 +308,13 @@ export default class CrossLendingDataAggregator extends BaseDataAggregator {
 
     for (const reserveState of reserveStates) {
       const reserveStateWithTimeframes = reserveState as CrossLendingReserveDataStateWithTimeframes;
-      if (reserveStateWithTimeframes.timeframe24Hours) {
-        for (const address of reserveStateWithTimeframes.timeframe24Hours.addresses) {
+      if (reserveStateWithTimeframes.last24Hours) {
+        for (const address of reserveStateWithTimeframes.last24Hours.addresses) {
           if (!marketUsers[address]) {
             marketUsers[address] = true;
           }
         }
-        for (const transaction of reserveStateWithTimeframes.timeframe24Hours.transactions) {
+        for (const transaction of reserveStateWithTimeframes.last24Hours.transactions) {
           if (!marketTransactions[transaction]) {
             marketTransactions[transaction] = true;
           }
@@ -421,8 +418,6 @@ export default class CrossLendingDataAggregator extends BaseDataAggregator {
       query: query,
     });
 
-    return reserveSnapshots.map((item) =>
-      CrossLendingDataTransformer.transformCrossLendingMarketSnapshot(item, null, item),
-    );
+    return reserveSnapshots.map((item) => CrossLendingDataTransformer.transformCrossLendingMarketSnapshot(item, null));
   }
 }
