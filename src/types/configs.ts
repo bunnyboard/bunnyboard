@@ -41,7 +41,6 @@ export interface Blockchain {
 
 export interface DatabaseCollectionConfig {
   cachingStates: MongoCollectionConfig;
-  dataAggregates: MongoCollectionConfig;
 
   crossLendingReserveStates: MongoCollectionConfig;
   crossLendingReserveSnapshots: MongoCollectionConfig;

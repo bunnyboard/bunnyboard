@@ -14,14 +14,6 @@ export const DatabaseCollectionConfigs: DatabaseCollectionConfig = {
       },
     ],
   },
-  dataAggregates: {
-    name: `${MongodbPrefix}.dataAggregates`,
-    indies: [
-      {
-        name: 1,
-      },
-    ],
-  },
   crossLendingReserveStates: {
     name: `${MongodbPrefix}.crossLendingReserveStates`,
     indies: [

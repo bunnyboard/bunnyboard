@@ -114,6 +114,18 @@ export default class SnapshotCollector {
           }
         }
 
+        await this.storages.database.update({
+          collection: EnvConfig.mongodb.collections.cachingStates.name,
+          keys: {
+            name: stateKey,
+          },
+          updates: {
+            name: stateKey,
+            timestamp: runTime,
+          },
+          upsert: true,
+        });
+
         const endExeTime = Math.floor(new Date().getTime() / 1000);
         const elapsed = endExeTime - startExeTime;
 
