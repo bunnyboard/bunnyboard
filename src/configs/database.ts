@@ -33,7 +33,10 @@ export const DatabaseCollectionConfigs: DatabaseCollectionConfig = {
         protocol: 1,
         address: 1,
         'token.address': 1,
-        timestamp: 12,
+        timestamp: 1,
+      },
+      {
+        timestamp: 1,
       },
     ],
   },

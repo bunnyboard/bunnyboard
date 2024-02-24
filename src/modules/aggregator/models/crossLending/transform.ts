@@ -1,8 +1,10 @@
 import BigNumber from 'bignumber.js';
 
-import { convertToNumber, convertToPercentage } from '../../../../lib/math';
+import { groupAndSumObjectList } from '../../../../lib/helper';
+import { calChangesOf_Total_From_Items, convertToNumber, convertToPercentage } from '../../../../lib/math';
 import {
   AggCrossLendingDataOverall,
+  AggCrossLendingDayData,
   AggCrossLendingMarketSnapshot,
   AggCrossLendingReserveSnapshot,
 } from '../../../../types/aggregates/crossLending';
@@ -84,17 +86,16 @@ export default class CrossLendingDataTransformer {
         value: 0,
         valueUsd: 0,
       },
-      numberOfUsers: 0,
-      numberOfTransactions: 0,
       reserves: [],
     };
   }
 
+  // Array<AggCrossLendingReserveSnapshot> -> Array<AggCrossLendingMarketSnapshot>
   public static transformCrossReservesToMarkets(
     reserves: Array<AggCrossLendingReserveSnapshot>,
   ): Array<AggCrossLendingMarketSnapshot> {
     // we transform all reserves to a list of market
-    // by grouping protocol and chain
+    // group by protocol and chain
 
     const markets: { [key: string]: AggCrossLendingMarketSnapshot } = {};
     for (const reserve of reserves) {
@@ -135,8 +136,6 @@ export default class CrossLendingDataTransformer {
             value: 0,
             valueUsd: 0,
           },
-          numberOfTransactions: 0,
-          numberOfUsers: 0,
           reserves: [],
         };
       }
@@ -151,69 +150,188 @@ export default class CrossLendingDataTransformer {
       markets[marketId].reserves.push(reserve);
     }
 
+    for (const marketKey of Object.keys(markets)) {
+      markets[marketKey].totalDeposited.changedValueUsd = calChangesOf_Total_From_Items(
+        markets[marketKey].reserves.map((reserve) => {
+          return {
+            value: reserve.totalDeposited.valueUsd,
+            change: reserve.totalDeposited.changedValueUsd ? reserve.totalDeposited.changedValueUsd : 0,
+          };
+        }),
+      );
+      markets[marketKey].totalBorrowed.changedValueUsd = calChangesOf_Total_From_Items(
+        markets[marketKey].reserves.map((reserve) => {
+          return {
+            value: reserve.totalBorrowed.valueUsd,
+            change: reserve.totalBorrowed.changedValueUsd ? reserve.totalBorrowed.changedValueUsd : 0,
+          };
+        }),
+      );
+      markets[marketKey].volumeDeposited.changedValueUsd = calChangesOf_Total_From_Items(
+        markets[marketKey].reserves.map((reserve) => {
+          return {
+            value: reserve.volumeDeposited.valueUsd,
+            change: reserve.volumeDeposited.changedValueUsd ? reserve.volumeDeposited.changedValueUsd : 0,
+          };
+        }),
+      );
+      markets[marketKey].volumeWithdrawn.changedValueUsd = calChangesOf_Total_From_Items(
+        markets[marketKey].reserves.map((reserve) => {
+          return {
+            value: reserve.volumeWithdrawn.valueUsd,
+            change: reserve.volumeWithdrawn.changedValueUsd ? reserve.volumeWithdrawn.changedValueUsd : 0,
+          };
+        }),
+      );
+      markets[marketKey].volumeBorrowed.changedValueUsd = calChangesOf_Total_From_Items(
+        markets[marketKey].reserves.map((reserve) => {
+          return {
+            value: reserve.volumeBorrowed.valueUsd,
+            change: reserve.volumeBorrowed.changedValueUsd ? reserve.volumeBorrowed.changedValueUsd : 0,
+          };
+        }),
+      );
+      markets[marketKey].volumeRepaid.changedValueUsd = calChangesOf_Total_From_Items(
+        markets[marketKey].reserves.map((reserve) => {
+          return {
+            value: reserve.volumeRepaid.valueUsd,
+            change: reserve.volumeRepaid.changedValueUsd ? reserve.volumeRepaid.changedValueUsd : 0,
+          };
+        }),
+      );
+      markets[marketKey].feesPaidTheoretically.changedValueUsd = calChangesOf_Total_From_Items(
+        markets[marketKey].reserves.map((reserve) => {
+          return {
+            value: reserve.feesPaidTheoretically.valueUsd,
+            change: reserve.feesPaidTheoretically.changedValueUsd ? reserve.feesPaidTheoretically.changedValueUsd : 0,
+          };
+        }),
+      );
+    }
+
     return Object.values(markets);
   }
 
-  public static transformCrossLendingMarketSnapshot(
-    currentDataState: any | null,
-    last24Hours: any,
+  // CrossLendingReserveDataTimeframe -> AggCrossLendingReserveSnapshot
+  public static transformCrossLendingReserveSnapshot(
+    // from CurrentTime - DAY -> CurrentTime
+    currentLast24Hours: CrossLendingReserveDataTimeframe,
+    // from CurrentTime - 2 * DAY -> CurrentTime - DAY
+    previousLast24Hours: CrossLendingReserveDataTimeframe | null,
   ): AggCrossLendingReserveSnapshot {
-    const dataState: CrossLendingReserveDataTimeframe = currentDataState;
-    const dataTimeframeLast24Hours: CrossLendingReserveDataTimeframe = last24Hours as CrossLendingReserveDataTimeframe;
-
-    let feesIn24hs = new BigNumber(dataState.totalBorrowed).multipliedBy(new BigNumber(dataState.rateBorrow));
-    if (dataState.rateBorrowStable && dataState.totalBorrowedStable) {
+    // Fees = FeesBorrow + FeesBorrowStable
+    let feesIn24hs = new BigNumber(currentLast24Hours.totalBorrowed).multipliedBy(
+      new BigNumber(currentLast24Hours.rateBorrow),
+    );
+    if (currentLast24Hours.rateBorrowStable && currentLast24Hours.totalBorrowedStable) {
       feesIn24hs = feesIn24hs.plus(
-        new BigNumber(dataState.totalBorrowedStable).multipliedBy(new BigNumber(dataState.rateBorrowStable)),
+        new BigNumber(currentLast24Hours.totalBorrowedStable).multipliedBy(
+          new BigNumber(currentLast24Hours.rateBorrowStable),
+        ),
       );
     }
 
     return {
-      metric: dataState.metric,
-      timestamp: dataState.timestamp,
-      timefrom: dataTimeframeLast24Hours.timefrom,
-      timeto: dataTimeframeLast24Hours.timeto,
+      metric: currentLast24Hours.metric,
+      timestamp: currentLast24Hours.timestamp,
+      timefrom: currentLast24Hours.timefrom,
+      timeto: currentLast24Hours.timeto,
 
-      chain: dataState.chain,
-      protocol: dataState.protocol,
-      address: dataState.address,
-      token: dataState.token,
-      tokenPrice: convertToNumber(dataState.tokenPrice),
+      chain: currentLast24Hours.chain,
+      protocol: currentLast24Hours.protocol,
+      address: currentLast24Hours.address,
+      token: currentLast24Hours.token,
+      tokenPrice: convertToNumber(currentLast24Hours.tokenPrice),
 
-      totalDeposited: transformValueWithTokenPrice(dataState, dataTimeframeLast24Hours, 'totalDeposited'),
-      totalBorrowed: transformValueWithTokenPrice(dataState, dataTimeframeLast24Hours, 'totalBorrowed'),
+      totalDeposited: transformValueWithTokenPrice(currentLast24Hours, previousLast24Hours, 'totalDeposited'),
+      totalBorrowed: transformValueWithTokenPrice(currentLast24Hours, previousLast24Hours, 'totalBorrowed'),
 
-      volumeDeposited: transformValueWithTokenPrice(dataState, dataTimeframeLast24Hours, 'volumeDeposited'),
-      volumeWithdrawn: transformValueWithTokenPrice(dataState, dataTimeframeLast24Hours, 'volumeWithdrawn'),
-      volumeBorrowed: transformValueWithTokenPrice(dataState, dataTimeframeLast24Hours, 'volumeBorrowed'),
-      volumeRepaid: transformValueWithTokenPrice(dataState, dataTimeframeLast24Hours, 'volumeRepaid'),
+      volumeDeposited: transformValueWithTokenPrice(currentLast24Hours, previousLast24Hours, 'volumeDeposited'),
+      volumeWithdrawn: transformValueWithTokenPrice(currentLast24Hours, previousLast24Hours, 'volumeWithdrawn'),
+      volumeBorrowed: transformValueWithTokenPrice(currentLast24Hours, previousLast24Hours, 'volumeBorrowed'),
+      volumeRepaid: transformValueWithTokenPrice(currentLast24Hours, previousLast24Hours, 'volumeRepaid'),
 
       feesPaidTheoretically: transformValueWithTokenPrice(
         {
-          tokenPrice: dataState.tokenPrice,
+          tokenPrice: currentLast24Hours.tokenPrice,
           feesPaidTheoretically: feesIn24hs.toString(10),
         },
-        {
-          tokenPrice: dataTimeframeLast24Hours.tokenPrice,
-          feesPaidTheoretically: new BigNumber(dataTimeframeLast24Hours.totalBorrowed)
-            .multipliedBy(new BigNumber(dataTimeframeLast24Hours.rateBorrow))
-            .toString(10),
-        },
+        previousLast24Hours
+          ? {
+              tokenPrice: previousLast24Hours.tokenPrice,
+              feesPaidTheoretically: new BigNumber(previousLast24Hours.totalBorrowed)
+                .multipliedBy(new BigNumber(previousLast24Hours.rateBorrow))
+                .toString(10),
+            }
+          : null,
         'feesPaidTheoretically',
       ),
 
-      rateSupply: convertToPercentage(dataState.rateSupply),
-      rateBorrow: convertToPercentage(dataState.rateBorrow),
-      rateBorrowStable: dataState.rateBorrowStable ? convertToPercentage(dataState.rateBorrowStable) : undefined,
-      rateRewardSupply: convertToPercentage(dataState.rateRewardSupply),
-      rateRewardBorrow: convertToPercentage(dataState.rateRewardBorrow),
-      rateRewardBorrowStable: dataState.rateRewardBorrowStable
-        ? convertToPercentage(dataState.rateRewardBorrowStable)
+      rateSupply: convertToPercentage(currentLast24Hours.rateSupply),
+      rateBorrow: convertToPercentage(currentLast24Hours.rateBorrow),
+      rateBorrowStable: currentLast24Hours.rateBorrowStable
+        ? convertToPercentage(currentLast24Hours.rateBorrowStable)
         : undefined,
-      rateLoanToValue: convertToPercentage(dataState.rateLoanToValue),
-
-      numberOfUsers: dataTimeframeLast24Hours.addresses.length,
-      numberOfTransactions: dataTimeframeLast24Hours.transactions.length,
+      rateRewardSupply: convertToPercentage(currentLast24Hours.rateRewardSupply),
+      rateRewardBorrow: convertToPercentage(currentLast24Hours.rateRewardBorrow),
+      rateRewardBorrowStable: currentLast24Hours.rateRewardBorrowStable
+        ? convertToPercentage(currentLast24Hours.rateRewardBorrowStable)
+        : undefined,
+      rateLoanToValue: convertToPercentage(currentLast24Hours.rateLoanToValue),
     };
+  }
+
+  // Array<AggCrossLendingReserveSnapshot> => Array<AggCrossLendingDayData>
+  public static transformCrossReservesToDayData(
+    reserveSnapshots: Array<AggCrossLendingReserveSnapshot>,
+  ): Array<AggCrossLendingDayData> {
+    // timestamp => AggCrossLendingDayData
+    return groupAndSumObjectList(
+      reserveSnapshots.map((snapshot) => {
+        return {
+          timestamp: snapshot.timestamp,
+          totalDeposited: snapshot.totalDeposited.valueUsd,
+          totalBorrowed: snapshot.totalBorrowed.valueUsd,
+          feesPaidTheoretically: snapshot.feesPaidTheoretically.valueUsd,
+          volumeDeposited: snapshot.volumeDeposited.valueUsd,
+          volumeWithdrawn: snapshot.volumeWithdrawn.valueUsd,
+          volumeBorrowed: snapshot.volumeBorrowed.valueUsd,
+          volumeRepaid: snapshot.volumeRepaid.valueUsd,
+        };
+      }),
+      'timestamp',
+    ).map((item) => {
+      return {
+        timestamp: item.timestamp,
+        totalDeposited: {
+          value: item.totalDeposited,
+          valueUsd: item.totalDeposited,
+        },
+        totalBorrowed: {
+          value: item.totalBorrowed,
+          valueUsd: item.totalBorrowed,
+        },
+        feesPaidTheoretically: {
+          value: item.feesPaidTheoretically,
+          valueUsd: item.feesPaidTheoretically,
+        },
+        volumeDeposited: {
+          value: item.volumeDeposited,
+          valueUsd: item.volumeDeposited,
+        },
+        volumeWithdrawn: {
+          value: item.volumeWithdrawn,
+          valueUsd: item.volumeWithdrawn,
+        },
+        volumeBorrowed: {
+          value: item.volumeBorrowed,
+          valueUsd: item.volumeBorrowed,
+        },
+        volumeRepaid: {
+          value: item.volumeRepaid,
+          valueUsd: item.volumeRepaid,
+        },
+      };
+    });
   }
 }

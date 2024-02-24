@@ -116,13 +116,22 @@ export default class DatabaseService implements IDatabaseService {
     const collection = await this.getCollection(options.collection);
 
     if (options.options) {
-      return await collection
-        .find({
-          ...options.query,
-        })
-        .limit(options.options.limit)
-        .sort(options.options.order)
-        .toArray();
+      if (options.options.limit === 0) {
+        return await collection
+          .find({
+            ...options.query,
+          })
+          .sort(options.options.order)
+          .toArray();
+      } else {
+        return await collection
+          .find({
+            ...options.query,
+          })
+          .limit(options.options.limit)
+          .sort(options.options.order)
+          .toArray();
+      }
     } else {
       return await collection
         .find({

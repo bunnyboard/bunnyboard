@@ -29,9 +29,6 @@ export interface AggCrossLendingReserveSnapshot extends DataTimeframe {
   // theoretically borrow fees will be paid
   // FeesPaidTheoretically = TotalBorrow * BorrowRate
   feesPaidTheoretically: DataValueItem;
-
-  numberOfUsers: number;
-  numberOfTransactions: number;
 }
 
 export interface AggCrossLendingMarketSnapshot extends DataState {
@@ -44,9 +41,6 @@ export interface AggCrossLendingMarketSnapshot extends DataState {
   volumeRepaid: DataValueItem;
 
   feesPaidTheoretically: DataValueItem;
-
-  numberOfUsers: number;
-  numberOfTransactions: number;
 
   reserves: Array<AggCrossLendingReserveSnapshot>;
 }
