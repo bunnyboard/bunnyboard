@@ -81,7 +81,6 @@ export default class CrossLendingDataAggregator extends BaseDataAggregator {
         timestamp: { $gt: 0 },
       },
     });
-    console.log(snapshots);
     dataState.dayData = CrossLendingDataTransformer.transformCrossReservesToDayData(
       snapshots.map((snapshot) => CrossLendingDataTransformer.transformCrossLendingReserveSnapshot(snapshot, null)),
     );

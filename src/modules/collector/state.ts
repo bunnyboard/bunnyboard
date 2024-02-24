@@ -69,7 +69,26 @@ export default class StateCollector {
                 item.token.address === dateState.token.address,
             )[0];
             if (dataLast24Hours) {
-              stateWithTimeframes.last24Hours = dataLast24Hours;
+              stateWithTimeframes.volumeDeposited = dataLast24Hours.volumeDeposited;
+              stateWithTimeframes.volumeWithdrawn = dataLast24Hours.volumeWithdrawn;
+              stateWithTimeframes.volumeBorrowed = dataLast24Hours.volumeBorrowed;
+              stateWithTimeframes.volumeRepaid = dataLast24Hours.volumeRepaid;
+              stateWithTimeframes.volumeLiquidated = dataLast24Hours.volumeLiquidated;
+              stateWithTimeframes.addresses = dataLast24Hours.addresses;
+              stateWithTimeframes.transactions = dataLast24Hours.transactions;
+            }
+          }
+
+          if (timeframeLast48Hours.crossLending) {
+            const dataLast48Hours = timeframeLast48Hours.crossLending.filter(
+              (item) =>
+                item.chain === dateState.chain &&
+                item.protocol === dateState.protocol &&
+                item.address === dateState.address &&
+                item.token.address === dateState.token.address,
+            )[0];
+            if (dataLast48Hours) {
+              stateWithTimeframes.last24Hours = dataLast48Hours;
             }
           }
 
