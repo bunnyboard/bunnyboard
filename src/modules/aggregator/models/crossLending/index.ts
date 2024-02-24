@@ -194,27 +194,35 @@ export default class CrossLendingDataAggregator extends BaseDataAggregator {
     if (chain) {
       query.chain = chain;
     }
-    if (timestamp) {
-      query.timestamp = timestamp;
-    }
 
-    const snapshots = await this.database.query({
-      collection: EnvConfig.mongodb.collections.crossLendingReserveSnapshots.name,
-      query: query,
-    });
+    let snapshots: Array<any> = [];
+    if (timestamp === 0) {
+      await this.database.query({
+        collection: EnvConfig.mongodb.collections.crossLendingReserveStates.name,
+        query: query,
+      });
+    } else {
+      query.timestamp = timestamp;
+      snapshots = await this.database.query({
+        collection: EnvConfig.mongodb.collections.crossLendingReserveSnapshots.name,
+        query: query,
+      });
+    }
 
     const reserveSnapshots: Array<AggCrossLendingReserveSnapshot> = [];
     for (const snapshot of snapshots) {
-      const previousSnapshot = await this.database.find({
-        collection: EnvConfig.mongodb.collections.crossLendingReserveSnapshots.name,
-        query: {
-          chain: snapshot.chain,
-          protocol: snapshot.protocol,
-          address: snapshot.address,
-          'token.address': snapshot.token.address,
-          timestamp: snapshot.timestamp - DAY,
-        },
-      });
+      const previousSnapshot = snapshot.last24Hours
+        ? snapshot.last24Hours
+        : await this.database.find({
+            collection: EnvConfig.mongodb.collections.crossLendingReserveSnapshots.name,
+            query: {
+              chain: snapshot.chain,
+              protocol: snapshot.protocol,
+              address: snapshot.address,
+              'token.address': snapshot.token.address,
+              timestamp: snapshot.timestamp - DAY,
+            },
+          });
       reserveSnapshots.push(
         CrossLendingDataTransformer.transformCrossLendingReserveSnapshot(snapshot, previousSnapshot),
       );

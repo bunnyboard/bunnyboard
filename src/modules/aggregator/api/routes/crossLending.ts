@@ -1,7 +1,6 @@
 import { HttpStatusCode } from 'axios';
 import { Request, Response, Router } from 'express';
 
-import { getTodayUTCTimestamp } from '../../../../lib/utils';
 import { IDatabaseService } from '../../../../services/database/domains';
 import CrossLendingDataAggregator from '../../models/crossLending';
 import { writeResponse } from '../middleware';
@@ -24,23 +23,14 @@ export function getRouter(database: IDatabaseService): Router {
   // at a given timestamp
   // a cross lending market includes a given protocol and chain
   router.get('/markets', async (request: Request, response: Response) => {
-    let { timestamp = 0 } = request.query;
+    const { timestamp } = request.query;
 
-    timestamp = timestamp ? Number(timestamp) : getTodayUTCTimestamp();
-    if (timestamp === 0) {
-      await writeResponse(database, request, response, HttpStatusCode.BadRequest, {
-        error: 'invalid given timestamp',
-        data: [],
-      });
-    } else {
-      const aggregator = new CrossLendingDataAggregator(database);
-
-      const markets = await aggregator.getMarkets(timestamp);
-      await writeResponse(database, request, response, HttpStatusCode.Ok, {
-        error: null,
-        data: markets,
-      });
-    }
+    const aggregator = new CrossLendingDataAggregator(database);
+    const markets = await aggregator.getMarkets(timestamp ? Number(timestamp) : 0);
+    await writeResponse(database, request, response, HttpStatusCode.Ok, {
+      error: null,
+      data: markets,
+    });
   });
 
   // this query aims to help query all data of a given cross lending market
@@ -65,7 +55,7 @@ export function getRouter(database: IDatabaseService): Router {
     const reserves = await aggregator.getReserves(
       chain ? chain.toString() : null,
       protocol ? protocol.toString() : null,
-      timestamp ? Number(timestamp) : getTodayUTCTimestamp(),
+      timestamp ? Number(timestamp) : 0,
     );
 
     await writeResponse(database, request, response, HttpStatusCode.Ok, {
