@@ -85,3 +85,14 @@ export interface AggCrossLendingDataOverall {
 export interface AggCrossLendingMarketDataOverall extends AggCrossLendingMarketSnapshot {
   dayData: Array<AggCrossLendingDayData>;
 }
+
+export interface AggCrossLendingReserveDayData extends AggCrossLendingDayData {
+  rateSupply: number;
+  rateBorrow: number;
+  rateBorrowStable?: number;
+}
+
+// overall data of a cross lending reserve
+export interface AggCrossLendingReserveDataOverall extends AggCrossLendingReserveSnapshot {
+  dayData: Array<AggCrossLendingReserveDayData>;
+}

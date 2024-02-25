@@ -64,5 +64,31 @@ export function getRouter(database: IDatabaseService): Router {
     });
   });
 
+  // this query aims to help query overall data of a given reserve
+  router.get('/reserve/:protocol/:chain/:tokenAddress', async (request: Request, response: Response) => {
+    const { protocol, chain, tokenAddress } = request.params;
+    const { contract } = request.query;
+
+    const aggregator = new CrossLendingDataAggregator(database);
+    const reserve = await aggregator.getReserve({
+      chain,
+      protocol,
+      tokenAddress,
+      contract: contract ? contract.toString() : undefined,
+    });
+
+    if (reserve) {
+      await writeResponse(database, request, response, HttpStatusCode.Ok, {
+        error: null,
+        data: reserve,
+      });
+    } else {
+      await writeResponse(database, request, response, HttpStatusCode.NotFound, {
+        error: 'reserve not found',
+        data: null,
+      });
+    }
+  });
+
   return router;
 }

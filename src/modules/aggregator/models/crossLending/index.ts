@@ -1,18 +1,40 @@
 import { DAY } from '../../../../configs/constants';
 import EnvConfig from '../../../../configs/envConfig';
 import { calChangesOf_Total_From_Items } from '../../../../lib/math';
+import { normalizeAddress } from '../../../../lib/utils';
 import { IDatabaseService } from '../../../../services/database/domains';
 import { DataValueItem } from '../../../../types/aggregates/common';
 import {
   AggCrossLendingDataOverall,
   AggCrossLendingMarketDataOverall,
   AggCrossLendingMarketSnapshot,
+  AggCrossLendingReserveDataOverall,
   AggCrossLendingReserveSnapshot,
 } from '../../../../types/aggregates/crossLending';
-import { CrossLendingReserveDataStateWithTimeframes } from '../../../../types/collectors/crossLending';
+import {
+  CrossLendingReserveDataStateWithTimeframes,
+  CrossLendingReserveDataTimeframe,
+} from '../../../../types/collectors/crossLending';
 import { DataMetrics } from '../../../../types/configs';
 import BaseDataAggregator from '../../base';
 import CrossLendingDataTransformer from './transform';
+
+const DataFields: Array<string> = [
+  'totalDeposited',
+  'totalBorrowed',
+  'feesPaidTheoretically',
+  'volumeDeposited',
+  'volumeWithdrawn',
+  'volumeBorrowed',
+  'volumeRepaid',
+];
+
+export interface GetCrossLendingReserveOptions {
+  chain: string;
+  protocol: string;
+  contract?: string;
+  tokenAddress: string;
+}
 
 export default class CrossLendingDataAggregator extends BaseDataAggregator {
   public readonly name: string = 'aggregator.crossLending';
@@ -23,16 +45,6 @@ export default class CrossLendingDataAggregator extends BaseDataAggregator {
 
   private async getDataOverallInternal(): Promise<AggCrossLendingDataOverall> {
     const dataState: AggCrossLendingDataOverall = CrossLendingDataTransformer.getDefaultAggCrossLendingDataOverall();
-
-    const fields: Array<string> = [
-      'totalDeposited',
-      'totalBorrowed',
-      'feesPaidTheoretically',
-      'volumeDeposited',
-      'volumeWithdrawn',
-      'volumeBorrowed',
-      'volumeRepaid',
-    ];
 
     // get all cross lending states
     const states = await this.database.query({
@@ -55,14 +67,14 @@ export default class CrossLendingDataAggregator extends BaseDataAggregator {
 
     const markets = CrossLendingDataTransformer.transformCrossReservesToMarkets(reserveSnapshots);
     for (const market of markets) {
-      for (const field of fields) {
+      for (const field of DataFields) {
         ((dataState as any)[field] as DataValueItem).valueUsd += ((market as any)[field] as DataValueItem).valueUsd;
       }
 
       dataState.markets.push(market);
     }
 
-    for (const field of fields) {
+    for (const field of DataFields) {
       ((dataState as any)[field] as DataValueItem).changedValueUsd = calChangesOf_Total_From_Items(
         markets.map((market) => {
           const item = market as any;
@@ -229,5 +241,59 @@ export default class CrossLendingDataAggregator extends BaseDataAggregator {
     }
 
     return reserveSnapshots;
+  }
+
+  public async getReserve(options: GetCrossLendingReserveOptions): Promise<AggCrossLendingReserveDataOverall | null> {
+    const query: any = {
+      chain: options.chain,
+      protocol: options.protocol,
+      'token.address': normalizeAddress(options.tokenAddress),
+    };
+
+    if (options.contract) {
+      query.address = normalizeAddress(options.contract);
+    }
+
+    const reserveStates = await this.database.query({
+      collection: EnvConfig.mongodb.collections.crossLendingReserveStates.name,
+      query: query,
+    });
+
+    const firstReserveFound = reserveStates[0];
+    if (firstReserveFound) {
+      const reserveSnapshot = CrossLendingDataTransformer.transformCrossLendingReserveSnapshot(
+        firstReserveFound as CrossLendingReserveDataTimeframe,
+        firstReserveFound.last24Hours,
+      );
+
+      // process snapshots
+      const snapshots = await this.database.query({
+        collection: EnvConfig.mongodb.collections.crossLendingReserveSnapshots.name,
+        query: query,
+      });
+
+      return {
+        ...reserveSnapshot,
+        dayData: snapshots.map((item) => {
+          const snapshot = CrossLendingDataTransformer.transformCrossLendingReserveSnapshot(item, null);
+          return {
+            timestamp: snapshot.timestamp,
+            totalDeposited: snapshot.totalDeposited,
+            totalBorrowed: snapshot.totalBorrowed,
+            volumeDeposited: snapshot.volumeDeposited,
+            volumeWithdrawn: snapshot.volumeWithdrawn,
+            volumeBorrowed: snapshot.volumeBorrowed,
+            volumeRepaid: snapshot.volumeRepaid,
+            feesPaidTheoretically: snapshot.feesPaidTheoretically,
+            rateSupply: snapshot.rateSupply,
+            rateBorrow: snapshot.rateBorrow,
+            rateBorrowStable: snapshot.rateBorrowStable,
+          };
+        }),
+      };
+    }
+
+    // reserve not found
+    return null;
   }
 }
