@@ -160,4 +160,11 @@ export const OracleSourceUniswapv3List: { [key: string]: OracleSourceUniv3 } = {
     baseToken: ArbitrumTokenList['0xfc5a1a6eb076a2c7ad06ed22c90d7e710e35ad0a'],
     quotaToken: ArbitrumTokenList['0x82af49447d8a07e3bd95bd0d56f35241523fbab1'],
   },
+  PYUSD_USDC: {
+    type: 'univ3',
+    chain: 'ethereum',
+    address: '0x13394005c1012e708fce1eb974f1130fdc73a5ce',
+    baseToken: EthereumTokenList['0x6c3ea9036406852006290770bedfcaba0e23a0e8'],
+    quotaToken: EthereumTokenList['0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48'],
+  },
 };

@@ -69,6 +69,7 @@ export const OracleConfigs: { [key: string]: { [key: string]: OracleConfig } } =
     '0x6810e776880c02933d47db1b9fc05908e5386b96': OracleSourceConfigs.GNO,
     '0xa1faa113cbe53436df28ff0aee54275c13b40975': OracleSourceConfigs.ALPHA,
     '0xc5f0f7b66764f6ec8c8dff7ba683102295e16409': OracleSourceConfigs.FDUSD,
+    '0x6c3ea9036406852006290770bedfcaba0e23a0e8': OracleSourceConfigs.PYUSD,
 
     // ironbank fixed forex
     '0x69681f8fde45345c3870bcd5eaf4a05a60e7d227': OracleSourceConfigs.GBP,

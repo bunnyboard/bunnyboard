@@ -530,4 +530,8 @@ export const OracleSourceConfigs: { [key: string]: OracleConfig } = {
     currency: 'usd',
     sources: [OracleSourceChainlinkList.SOL_USD],
   },
+  PYUSD: {
+    currency: 'usd',
+    sources: [OracleSourceUniswapv3List.PYUSD_USDC],
+  },
 };
