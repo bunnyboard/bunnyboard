@@ -23,6 +23,8 @@ import TokenListPolygon from './tokenlists/polygon.json';
 export const DefaultQueryContractLogsBlockRange = 1000;
 export const DefaultQueryRecordPerPage = 100;
 
+export const DefaultMemcacheTime = 300; // 5 minutes
+
 export const TokenList: {
   [key: string]: {
     [key: string]: Token;

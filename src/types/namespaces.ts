@@ -1,4 +1,5 @@
 import { IBlockchainService } from '../services/blockchains/domains';
+import { IMemcacheService } from '../services/caching/domains';
 import { IDatabaseService } from '../services/database/domains';
 import { IOracleService } from '../services/oracle/domains';
 import {
@@ -13,6 +14,7 @@ import { ProtocolConfig } from './configs';
 
 export interface ContextStorages {
   database: IDatabaseService;
+  memcache: IMemcacheService;
 }
 
 export interface ContextServices {

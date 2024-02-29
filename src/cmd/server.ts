@@ -19,7 +19,7 @@ export class ServerCommand extends BasicCommand {
   public async execute(argv: any) {
     const storages = await super.getStorages();
 
-    const router = getRouter(storages.database);
+    const router = getRouter(storages);
 
     const port = argv.port || process.env.PORT || '8080';
 
