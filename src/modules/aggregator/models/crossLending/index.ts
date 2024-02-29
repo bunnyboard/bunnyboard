@@ -18,6 +18,7 @@ import {
 import { DataMetrics } from '../../../../types/configs';
 import BaseDataAggregator from '../../base';
 import CrossLendingDataTransformer from './transform';
+import logger from '../../../../lib/logger';
 
 const DataFields: Array<string> = [
   'totalDeposited',
@@ -35,6 +36,8 @@ export interface GetCrossLendingReserveOptions {
   contract?: string;
   tokenAddress: string;
 }
+
+const OverallDataCachingKey = `CrossLendingOverallData`;
 
 export default class CrossLendingDataAggregator extends BaseDataAggregator {
   public readonly name: string = 'aggregator.crossLending';
@@ -102,7 +105,17 @@ export default class CrossLendingDataAggregator extends BaseDataAggregator {
 
   // get current overall data across all markets
   public async getDataOverall(): Promise<AggCrossLendingDataOverall> {
-    return await this.getDataOverallInternal();
+    const overallData = await this.database.find({
+      collection: EnvConfig.mongodb.collections.cachingData.name,
+      query: {
+        name: OverallDataCachingKey,
+      },
+    });
+    if (overallData) {
+      return overallData.data as AggCrossLendingDataOverall;
+    } else {
+      return await this.getDataOverallInternal();
+    }
   }
 
   // we save data in form of every single reserve (protocol-chain-token)
@@ -295,5 +308,25 @@ export default class CrossLendingDataAggregator extends BaseDataAggregator {
 
     // reserve not found
     return null;
+  }
+
+  public async runUpdate(): Promise<void> {
+    const overallData = await this.getDataOverallInternal();
+    await this.database.update({
+      collection: EnvConfig.mongodb.collections.cachingData.name,
+      keys: {
+        name: OverallDataCachingKey,
+      },
+      updates: {
+        name: OverallDataCachingKey,
+        data: overallData,
+      },
+      upsert: true,
+    });
+
+    logger.info('updated caching data', {
+      service: this.name,
+      name: OverallDataCachingKey,
+    });
   }
 }

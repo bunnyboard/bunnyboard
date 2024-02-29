@@ -14,6 +14,14 @@ export const DatabaseCollectionConfigs: DatabaseCollectionConfig = {
       },
     ],
   },
+  cachingData: {
+    name: `${MongodbPrefix}.cachingData`,
+    indies: [
+      {
+        name: 1,
+      },
+    ],
+  },
   crossLendingReserveStates: {
     name: `${MongodbPrefix}.crossLendingReserveStates`,
     indies: [
