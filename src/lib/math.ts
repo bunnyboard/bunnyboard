@@ -37,6 +37,11 @@ export function calChangesOf_Current_From_Previous(
   return ((X - Y) / Y) * 100;
 }
 
+interface ItemX {
+  value: number | string;
+  change: number | string;
+}
+
 // we have a list of values and its change percentages
 // we need to calculate the change percentage value of total values
 //
@@ -51,10 +56,6 @@ export function calChangesOf_Current_From_Previous(
 //
 // the Xc should be in the percentage value (*100)
 // the Yc return also in percentage value
-interface ItemX {
-  value: number | string;
-  change: number | string;
-}
 export function calChangesOf_Total_From_Items(items: Array<ItemX>): number {
   let Y = 0;
   let previousY = 0;
@@ -72,4 +73,29 @@ export function calChangesOf_Total_From_Items(items: Array<ItemX>): number {
   }
 
   return previousY > 0 ? ((Y - previousY) / previousY) * 100 : 0;
+}
+
+// we have 2 numbers (ItemX) with their values and changes
+// now we want to calculate number of percentage in changes of their difference
+//
+// give:
+// X is the bigger number than Y
+// Xc is the change percentage of X, Yc is the change percentage of Y
+// what is the change percentage of (X-Y)?
+//
+// an example of this problem:
+// we have the total market cap (T) is 1000 and its change percentage in last 24 hours is 1%
+// we have BTC market cap (T) is 800 and its change percentage in last 24 hours is 4%
+// we want to know the change percentage of other coins in the last 24 hours?
+export function calChangesOf_Two_Number_Diff(biggerNumber: ItemX, smallerNumber: ItemX): number {
+  const previousBiggerValue = new BigNumber(biggerNumber.value)
+    .multipliedBy(new BigNumber(biggerNumber.change))
+    .dividedBy(100);
+  const previousSmallerValue = new BigNumber(biggerNumber.value)
+    .multipliedBy(new BigNumber(smallerNumber.change))
+    .dividedBy(100);
+  const currentDiff = new BigNumber(biggerNumber.value).minus(new BigNumber(smallerNumber.value));
+  const previousDiff = new BigNumber(previousBiggerValue).minus(new BigNumber(previousSmallerValue));
+
+  return currentDiff.minus(previousDiff).multipliedBy(100).dividedBy(previousDiff).toNumber();
 }

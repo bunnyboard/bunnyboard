@@ -9,7 +9,7 @@ import EnvConfig from '../../../configs/envConfig';
 import { AaveLendingMarketConfig } from '../../../configs/protocols/aave';
 import { tryQueryBlockNumberAtTimestamp } from '../../../lib/subsgraph';
 import { compareAddress, formatBigNumberToString, normalizeAddress } from '../../../lib/utils';
-import { ActivityAction, TokenValueItem } from '../../../types/collectors/base';
+import { ActivityAction, ActivityActions, TokenValueItem } from '../../../types/collectors/base';
 import { CrossLendingReserveDataState, CrossLendingReserveDataTimeframe } from '../../../types/collectors/crossLending';
 import {
   GetAdapterDataStateOptions,
@@ -98,14 +98,12 @@ export default class Aavev2Adapter extends ProtocolAdapter {
             }
 
             let user = normalizeAddress(event.args.user.toString());
-            let borrower: string | null = null;
             if (signature === eventSignatures.Deposit || signature === eventSignatures.Borrow) {
               user = normalizeAddress(event.args.onBehalfOf.toString());
             } else if (signature === eventSignatures.Withdraw) {
               user = normalizeAddress(event.args.to.toString());
             } else if (signature === eventSignatures.Repay) {
               user = normalizeAddress(event.args.repayer.toString());
-              borrower = normalizeAddress(event.args.user.toString());
             }
 
             const amount = formatBigNumberToString(event.args.amount.toString(), reserve.decimals);
@@ -122,14 +120,17 @@ export default class Aavev2Adapter extends ProtocolAdapter {
               user: user,
               token: reserve,
               tokenAmount: amount,
-              borrower: borrower ? borrower : undefined,
             });
           }
         } else {
+          // on LiquidationCall event, we conduct 2 activities
+          // the first one logIndex:0 is the debt repay activity
+          // the second one logIndex:1 is the liquidate activity
           const reserve = await this.services.blockchain.getTokenInfo({
             chain: options.chain,
             address: event.args.debtAsset.toString(),
           });
+
           const collateral = await this.services.blockchain.getTokenInfo({
             chain: options.chain,
             address: event.args.collateralAsset.toString(),
@@ -137,29 +138,40 @@ export default class Aavev2Adapter extends ProtocolAdapter {
 
           if (reserve && collateral) {
             const user = normalizeAddress(event.args.liquidator.toString());
-            const borrower = normalizeAddress(event.args.user.toString());
             const amount = formatBigNumberToString(event.args.debtToCover.toString(), reserve.decimals);
-
             const collateralAmount = formatBigNumberToString(
               event.args.liquidatedCollateralAmount.toString(),
               collateral.decimals,
             );
+
+            // debt cover repay activity
             result.activities.push({
               chain: options.chain,
               protocol: this.config.protocol,
               address: address,
               transactionHash: log.transactionHash,
-              logIndex: log.logIndex.toString(),
+              logIndex: `${log.logIndex.toString()}:0`,
               blockNumber: new BigNumber(log.blockNumber.toString()).toNumber(),
               timestamp: log.timestamp,
-              action: 'liquidate',
+              action: ActivityActions.repay,
               user: user,
               token: reserve,
               tokenAmount: amount,
+            });
 
-              borrower: borrower,
-              collateralToken: collateral,
-              collateralAmount: collateralAmount,
+            // liquidation activity
+            result.activities.push({
+              chain: options.chain,
+              protocol: this.config.protocol,
+              address: address,
+              transactionHash: log.transactionHash,
+              logIndex: `${log.logIndex.toString()}:1`,
+              blockNumber: new BigNumber(log.blockNumber.toString()).toNumber(),
+              timestamp: log.timestamp,
+              action: ActivityActions.liquidate,
+              user: user,
+              token: collateral,
+              tokenAmount: collateralAmount,
             });
           }
         }
@@ -359,7 +371,7 @@ export default class Aavev2Adapter extends ProtocolAdapter {
           activity.token.address === stateData.token.address,
       );
 
-      const activityData = await countCrossLendingDataFromActivities(documents);
+      const activityData = countCrossLendingDataFromActivities(documents);
 
       const snapshotData: CrossLendingReserveDataTimeframe = {
         ...stateData,

@@ -54,7 +54,7 @@ export default class StateCollector {
             volumeWithdrawn: '0',
             volumeBorrowed: '0',
             volumeRepaid: '0',
-            volumeLiquidated: [],
+            volumeLiquidated: '0',
             addresses: [],
             transactions: [],
             last24Hours: null,

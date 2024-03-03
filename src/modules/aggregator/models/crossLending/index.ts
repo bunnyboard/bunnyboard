@@ -1,5 +1,6 @@
 import { DAY } from '../../../../configs/constants';
 import EnvConfig from '../../../../configs/envConfig';
+import logger from '../../../../lib/logger';
 import { calChangesOf_Total_From_Items } from '../../../../lib/math';
 import { normalizeAddress } from '../../../../lib/utils';
 import { IDatabaseService } from '../../../../services/database/domains';
@@ -18,7 +19,6 @@ import {
 import { DataMetrics } from '../../../../types/configs';
 import BaseDataAggregator from '../../base';
 import CrossLendingDataTransformer from './transform';
-import logger from '../../../../lib/logger';
 
 const DataFields: Array<string> = [
   'totalDeposited',
@@ -291,12 +291,14 @@ export default class CrossLendingDataAggregator extends BaseDataAggregator {
           const snapshot = CrossLendingDataTransformer.transformCrossLendingReserveSnapshot(item, null);
           return {
             timestamp: snapshot.timestamp,
+            totalValueLocked: snapshot.totalValueLocked,
             totalDeposited: snapshot.totalDeposited,
             totalBorrowed: snapshot.totalBorrowed,
             volumeDeposited: snapshot.volumeDeposited,
             volumeWithdrawn: snapshot.volumeWithdrawn,
             volumeBorrowed: snapshot.volumeBorrowed,
             volumeRepaid: snapshot.volumeRepaid,
+            volumeLiquidated: snapshot.volumeLiquidated,
             feesPaidTheoretically: snapshot.feesPaidTheoretically,
             rateSupply: snapshot.rateSupply,
             rateBorrow: snapshot.rateBorrow,

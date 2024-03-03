@@ -7,6 +7,11 @@ export interface AggCrossLendingReserveSnapshot extends DataTimeframe {
   token: Token;
   tokenPrice: number;
 
+  // actually total value locked of all tokens in contracts
+  // TotalValueLocked = TotalDeposited - TotalBorrowed
+  totalValueLocked: DataValueItem;
+
+  // the market size, total value is being controlled
   totalDeposited: DataValueItem;
   totalBorrowed: DataValueItem;
 
@@ -25,6 +30,7 @@ export interface AggCrossLendingReserveSnapshot extends DataTimeframe {
   volumeWithdrawn: DataValueItem;
   volumeBorrowed: DataValueItem;
   volumeRepaid: DataValueItem;
+  volumeLiquidated: DataValueItem;
 
   // theoretically borrow fees will be paid
   // FeesPaidTheoretically = TotalBorrow * BorrowRate
@@ -32,6 +38,7 @@ export interface AggCrossLendingReserveSnapshot extends DataTimeframe {
 }
 
 export interface AggCrossLendingMarketSnapshot extends DataState {
+  totalValueLocked: DataValueItem;
   totalDeposited: DataValueItem;
   totalBorrowed: DataValueItem;
 
@@ -39,6 +46,7 @@ export interface AggCrossLendingMarketSnapshot extends DataState {
   volumeWithdrawn: DataValueItem;
   volumeBorrowed: DataValueItem;
   volumeRepaid: DataValueItem;
+  volumeLiquidated: DataValueItem;
 
   feesPaidTheoretically: DataValueItem;
 
@@ -50,6 +58,7 @@ export interface AggCrossLendingMarketSnapshot extends DataState {
 export interface AggCrossLendingDayData {
   timestamp: number;
 
+  totalValueLocked: DataValueItem;
   totalDeposited: DataValueItem;
   totalBorrowed: DataValueItem;
 
@@ -57,12 +66,14 @@ export interface AggCrossLendingDayData {
   volumeWithdrawn: DataValueItem;
   volumeBorrowed: DataValueItem;
   volumeRepaid: DataValueItem;
+  volumeLiquidated: DataValueItem;
 
   feesPaidTheoretically: DataValueItem;
 }
 
 // overall state and data across all cross lending markets
 export interface AggCrossLendingDataOverall {
+  totalValueLocked: DataValueItem;
   totalDeposited: DataValueItem;
   totalBorrowed: DataValueItem;
 
@@ -70,6 +81,7 @@ export interface AggCrossLendingDataOverall {
   volumeWithdrawn: DataValueItem;
   volumeBorrowed: DataValueItem;
   volumeRepaid: DataValueItem;
+  volumeLiquidated: DataValueItem;
 
   feesPaidTheoretically: DataValueItem;
 

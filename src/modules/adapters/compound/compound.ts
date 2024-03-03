@@ -438,7 +438,6 @@ export default class CompoundAdapter extends ProtocolAdapter {
             if (signature !== eventSignatures.Liquidate) {
               let action = '';
               let user = '';
-              let borrower: string | undefined = undefined;
               let tokenAmount = '';
 
               switch (signature) {
@@ -463,7 +462,6 @@ export default class CompoundAdapter extends ProtocolAdapter {
                 case eventSignatures.Repay: {
                   action = ActivityActions.repay;
                   user = normalizeAddress(event.args.payer);
-                  borrower = normalizeAddress(event.args.borrower);
                   tokenAmount = formatBigNumberToString(event.args.repayAmount.toString(), cToken.underlying.decimals);
                   break;
                 }
@@ -481,12 +479,9 @@ export default class CompoundAdapter extends ProtocolAdapter {
                 user: user,
                 token: cToken.underlying,
                 tokenAmount: tokenAmount,
-                borrower: borrower,
               });
             } else {
-              const action = ActivityActions.liquidate;
               const user = normalizeAddress(event.args.liquidator);
-              const borrower = normalizeAddress(event.args.borrower);
               const tokenAmount = formatBigNumberToString(
                 event.args.repayAmount.toString(),
                 cToken.underlying.decimals,
@@ -523,13 +518,24 @@ export default class CompoundAdapter extends ProtocolAdapter {
                     logIndex: log.logIndex.toString(),
                     blockNumber: new BigNumber(log.blockNumber.toString()).toNumber(),
                     timestamp: log.timestamp,
-                    action: action,
+                    action: ActivityActions.repay,
                     user: user,
                     token: cToken.underlying,
                     tokenAmount: tokenAmount,
-                    borrower: borrower,
-                    collateralToken: cTokenCollateral.underlying,
-                    collateralAmount: collateralAmount,
+                  });
+
+                  result.activities.push({
+                    chain: options.chain,
+                    protocol: this.config.protocol,
+                    address: address,
+                    transactionHash: log.transactionHash,
+                    logIndex: log.logIndex.toString(),
+                    blockNumber: new BigNumber(log.blockNumber.toString()).toNumber(),
+                    timestamp: log.timestamp,
+                    action: ActivityActions.liquidate,
+                    user: user,
+                    token: cTokenCollateral.underlying,
+                    tokenAmount: collateralAmount,
                   });
                 }
               }

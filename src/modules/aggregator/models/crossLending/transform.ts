@@ -1,7 +1,13 @@
 import BigNumber from 'bignumber.js';
 
 import { groupAndSumObjectList } from '../../../../lib/helper';
-import { calChangesOf_Total_From_Items, convertToNumber, convertToPercentage } from '../../../../lib/math';
+import {
+  calChangesOf_Total_From_Items,
+  calChangesOf_Two_Number_Diff,
+  convertToNumber,
+  convertToPercentage,
+} from '../../../../lib/math';
+import { DataValueItem } from '../../../../types/aggregates/common';
 import {
   AggCrossLendingDataOverall,
   AggCrossLendingDayData,
@@ -15,6 +21,10 @@ import { transformValueWithTokenPrice } from '../../helper';
 export default class CrossLendingDataTransformer {
   public static getDefaultAggCrossLendingDataOverall(): AggCrossLendingDataOverall {
     return {
+      totalValueLocked: {
+        value: 0,
+        valueUsd: 0,
+      },
       totalDeposited: {
         value: 0,
         valueUsd: 0,
@@ -36,6 +46,10 @@ export default class CrossLendingDataTransformer {
         valueUsd: 0,
       },
       volumeRepaid: {
+        value: 0,
+        valueUsd: 0,
+      },
+      volumeLiquidated: {
         value: 0,
         valueUsd: 0,
       },
@@ -66,6 +80,10 @@ export default class CrossLendingDataTransformer {
           protocol: reserve.protocol,
           timestamp: reserve.timestamp,
 
+          totalValueLocked: {
+            value: 0,
+            valueUsd: 0,
+          },
           totalDeposited: {
             value: 0,
             valueUsd: 0,
@@ -90,6 +108,10 @@ export default class CrossLendingDataTransformer {
             value: 0,
             valueUsd: 0,
           },
+          volumeLiquidated: {
+            value: 0,
+            valueUsd: 0,
+          },
           feesPaidTheoretically: {
             value: 0,
             valueUsd: 0,
@@ -104,6 +126,7 @@ export default class CrossLendingDataTransformer {
       markets[marketId].volumeWithdrawn.valueUsd += reserve.volumeWithdrawn.valueUsd;
       markets[marketId].volumeBorrowed.valueUsd += reserve.volumeBorrowed.valueUsd;
       markets[marketId].volumeRepaid.valueUsd += reserve.volumeRepaid.valueUsd;
+      markets[marketId].volumeLiquidated.valueUsd += reserve.volumeLiquidated.valueUsd;
       markets[marketId].feesPaidTheoretically.valueUsd += reserve.feesPaidTheoretically.valueUsd;
       markets[marketId].reserves.push(reserve);
     }
@@ -189,6 +212,40 @@ export default class CrossLendingDataTransformer {
       );
     }
 
+    const totalDeposited = transformValueWithTokenPrice(currentLast24Hours, previousLast24Hours, 'totalDeposited');
+    const totalBorrowed = transformValueWithTokenPrice(currentLast24Hours, previousLast24Hours, 'totalBorrowed');
+
+    const totalValueLocked: DataValueItem = {
+      value: totalDeposited.value - totalBorrowed.value,
+      valueUsd: totalDeposited.valueUsd - totalBorrowed.valueUsd,
+      changedValue: calChangesOf_Two_Number_Diff(
+        {
+          value: totalDeposited.value,
+          change: totalDeposited.changedValue ? totalDeposited.changedValue : '0',
+        },
+        {
+          value: totalBorrowed.value,
+          change: totalBorrowed.changedValue ? totalBorrowed.changedValue : '0',
+        },
+      ),
+      changedValueUsd: calChangesOf_Two_Number_Diff(
+        {
+          value: totalDeposited.valueUsd,
+          change: totalDeposited.changedValueUsd ? totalDeposited.changedValueUsd : '0',
+        },
+        {
+          value: totalBorrowed.valueUsd,
+          change: totalBorrowed.changedValueUsd ? totalBorrowed.changedValueUsd : '0',
+        },
+      ),
+    };
+
+    const volumeDeposited = transformValueWithTokenPrice(currentLast24Hours, previousLast24Hours, 'volumeDeposited');
+    const volumeWithdrawn = transformValueWithTokenPrice(currentLast24Hours, previousLast24Hours, 'volumeWithdrawn');
+    const volumeBorrowed = transformValueWithTokenPrice(currentLast24Hours, previousLast24Hours, 'volumeBorrowed');
+    const volumeRepaid = transformValueWithTokenPrice(currentLast24Hours, previousLast24Hours, 'volumeRepaid');
+    const volumeLiquidated = transformValueWithTokenPrice(currentLast24Hours, previousLast24Hours, 'volumeLiquidated');
+
     return {
       metric: currentLast24Hours.metric,
       timestamp: currentLast24Hours.timestamp,
@@ -201,13 +258,15 @@ export default class CrossLendingDataTransformer {
       token: currentLast24Hours.token,
       tokenPrice: convertToNumber(currentLast24Hours.tokenPrice),
 
-      totalDeposited: transformValueWithTokenPrice(currentLast24Hours, previousLast24Hours, 'totalDeposited'),
-      totalBorrowed: transformValueWithTokenPrice(currentLast24Hours, previousLast24Hours, 'totalBorrowed'),
+      totalValueLocked: totalValueLocked,
+      totalDeposited: totalDeposited,
+      totalBorrowed: totalBorrowed,
 
-      volumeDeposited: transformValueWithTokenPrice(currentLast24Hours, previousLast24Hours, 'volumeDeposited'),
-      volumeWithdrawn: transformValueWithTokenPrice(currentLast24Hours, previousLast24Hours, 'volumeWithdrawn'),
-      volumeBorrowed: transformValueWithTokenPrice(currentLast24Hours, previousLast24Hours, 'volumeBorrowed'),
-      volumeRepaid: transformValueWithTokenPrice(currentLast24Hours, previousLast24Hours, 'volumeRepaid'),
+      volumeDeposited: volumeDeposited,
+      volumeWithdrawn: volumeWithdrawn,
+      volumeBorrowed: volumeBorrowed,
+      volumeRepaid: volumeRepaid,
+      volumeLiquidated: volumeLiquidated,
 
       feesPaidTheoretically: transformValueWithTokenPrice(
         {
@@ -248,6 +307,7 @@ export default class CrossLendingDataTransformer {
       reserveSnapshots.map((snapshot) => {
         return {
           timestamp: snapshot.timestamp,
+          totalValueLocked: snapshot.totalDeposited.valueUsd - snapshot.totalBorrowed.valueUsd,
           totalDeposited: snapshot.totalDeposited.valueUsd,
           totalBorrowed: snapshot.totalBorrowed.valueUsd,
           feesPaidTheoretically: snapshot.feesPaidTheoretically.valueUsd,
@@ -255,12 +315,17 @@ export default class CrossLendingDataTransformer {
           volumeWithdrawn: snapshot.volumeWithdrawn.valueUsd,
           volumeBorrowed: snapshot.volumeBorrowed.valueUsd,
           volumeRepaid: snapshot.volumeRepaid.valueUsd,
+          volumeLiquidated: snapshot.volumeLiquidated.valueUsd,
         };
       }),
       'timestamp',
     ).map((item) => {
       return {
         timestamp: item.timestamp,
+        totalValueLocked: {
+          value: item.totalValueLocked,
+          valueUsd: item.totalValueLocked,
+        },
         totalDeposited: {
           value: item.totalDeposited,
           valueUsd: item.totalDeposited,
@@ -288,6 +353,10 @@ export default class CrossLendingDataTransformer {
         volumeRepaid: {
           value: item.volumeRepaid,
           valueUsd: item.volumeRepaid,
+        },
+        volumeLiquidated: {
+          value: item.volumeLiquidated,
+          valueUsd: item.volumeLiquidated,
         },
       };
     });
