@@ -3,77 +3,68 @@ import { BaseActivityEvent, DataState, DataTimeframe } from './base';
 
 export interface CdpLendingActivityEvent extends BaseActivityEvent {}
 
-export interface CdpCollateralDataState {
-  // contract address
+export interface CdpLendingCollateralDataState extends DataState {
+  // lending logic contract for this collateral
   address: string;
 
-  // the collateral token
+  // token
   token: Token;
 
-  // the token price (in US Dollar) at the snapshot timestamp
+  // the token price
   tokenPrice: string;
 
-  // total tokens were deposited into market
+  // total token were deposited as collateral
   totalDeposited: string;
 
-  // total debts were borrowed by this collateral asset
-  totalDebts?: string;
+  // total debts were issued by this collateral
+  totalBorrowed?: string;
 
-  // current borrowing rate
+  // borrow interest
   rateBorrow: string;
-
-  // incentive reward rate for borrowers
-  rateRewardBorrow?: string;
-
-  // the token collateral factor
+  // one-time paid borrow fee
+  feeBorrow: string;
+  // LTV
   rateLoanToValue: string;
 }
 
-export interface CdpCollateralDataTimeframe extends CdpCollateralDataState {
+export interface CdpLendingAssetDataState extends DataState {
+  // token
+  token: Token;
+
+  // the token price
+  tokenPrice: string;
+
+  // total debt were borrowed
+  totalBorrowed: string;
+
+  // some protocol allow to supply debt asset
+  totalDeposited?: string;
+  rateSupply?: string;
+
+  // a list of collaterals
+  collaterals: Array<CdpLendingCollateralDataState>;
+}
+
+export interface CdpLendingCollateralDataTimeframe extends CdpLendingCollateralDataState, DataTimeframe {
   volumeDeposited: string;
   volumeWithdrawn: string;
   volumeLiquidated: string;
 }
 
-export interface CdpLendingMarketDataState extends DataState {
-  // the token, debts, collateral, or both
-  token: Token;
-
-  // the token price (in US Dollar) at the snapshot timestamp
-  tokenPrice: string;
-
-  // total debt token are being supplied by lenders
-  // some protocols like compound III allow lenders to lend debt token (USDC)
-  totalDeposited?: string;
-
-  // total debts token were borrowed
-  totalBorrowed: string;
-
-  // current lending supply rate
-  rateSupply?: string;
-
-  // incentive reward rate for suppliers
-  rateRewardSupply?: string;
-
-  // a list of collaterals were locked in the protocol
-  collaterals: Array<CdpCollateralDataState>;
-}
-
-export interface CdpLendingMarketDataTimeframe extends CdpLendingMarketDataState, DataTimeframe {
-  volumeBorrowed: string;
-  volumeRepaid: string;
-
+export interface CdpLendingAssetDataTimeframe extends CdpLendingAssetDataState, DataTimeframe {
   volumeDeposited?: string;
   volumeWithdrawn?: string;
+
+  volumeBorrowed: string;
+  volumeRepaid: string;
 
   addresses: Array<string>;
   transactions: Array<string>;
 
-  // a list of collaterals were locked in the protocol
-  collaterals: Array<CdpCollateralDataTimeframe>;
+  collaterals: Array<CdpLendingCollateralDataTimeframe>;
 }
 
-export interface CdpLendingMarketDataStateWithTimeframes extends CdpLendingMarketDataState {
-  timeframe24Hours: CdpLendingMarketDataTimeframe | null;
-  timeframe48Hours: CdpLendingMarketDataTimeframe | null;
+export interface CdpLendingAssetDataStateWithTimeframes extends CdpLendingAssetDataTimeframe {
+  // previous day data
+  last24Hours: CdpLendingAssetDataTimeframe | null;
 }

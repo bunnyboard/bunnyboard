@@ -1,4 +1,4 @@
-import { DAY } from '../../configs/constants';
+import { TimeUnits } from '../../configs/constants';
 import EnvConfig from '../../configs/envConfig';
 import logger from '../../lib/logger';
 import { getDateString, getTodayUTCTimestamp } from '../../lib/utils';
@@ -50,11 +50,11 @@ export default class SnapshotCollector {
         const startExeTime = Math.floor(new Date().getTime() / 1000);
 
         if (this.adapters[config.protocol]) {
-          const { crossLending, cdpLending, perpetual } = await this.adapters[config.protocol].getDataTimeframe({
+          const { crossLending, cdpLending } = await this.adapters[config.protocol].getDataTimeframe({
             storages: this.storages,
             config: config,
             fromTime: runTime,
-            toTime: runTime + DAY - 1,
+            toTime: runTime + TimeUnits.SecondsPerDay - 1,
           });
 
           if (crossLending) {
@@ -76,28 +76,11 @@ export default class SnapshotCollector {
               });
             }
           }
+
           if (cdpLending) {
             for (const snapshot of cdpLending) {
               await this.storages.database.update({
-                collection: EnvConfig.mongodb.collections.cdpLendingMarketSnapshots.name,
-                keys: {
-                  chain: snapshot.chain,
-                  metric: snapshot.metric,
-                  protocol: snapshot.protocol,
-                  'token.address': snapshot.token.address,
-                  timestamp: snapshot.timestamp,
-                },
-                updates: {
-                  ...snapshot,
-                },
-                upsert: true,
-              });
-            }
-          }
-          if (perpetual) {
-            for (const snapshot of perpetual) {
-              await this.storages.database.update({
-                collection: EnvConfig.mongodb.collections.perpetualReserveSnapshots.name,
+                collection: EnvConfig.mongodb.collections.cdpLendingAssetSnapshots.name,
                 keys: {
                   chain: snapshot.chain,
                   metric: snapshot.metric,
@@ -140,7 +123,7 @@ export default class SnapshotCollector {
           elapses: `${elapsed}s`,
         });
 
-        runTime += DAY;
+        runTime += TimeUnits.SecondsPerDay;
       }
     }
   }

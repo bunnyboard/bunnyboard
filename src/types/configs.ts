@@ -46,11 +46,8 @@ export interface DatabaseCollectionConfig {
   crossLendingReserveStates: MongoCollectionConfig;
   crossLendingReserveSnapshots: MongoCollectionConfig;
 
-  cdpLendingMarketStates: MongoCollectionConfig;
-  cdpLendingMarketSnapshots: MongoCollectionConfig;
-
-  perpetualReserveStates: MongoCollectionConfig;
-  perpetualReserveSnapshots: MongoCollectionConfig;
+  cdpLendingAssetStates: MongoCollectionConfig;
+  cdpLendingAssetSnapshots: MongoCollectionConfig;
 }
 
 export interface EnvConfig {

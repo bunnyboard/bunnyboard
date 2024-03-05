@@ -3,7 +3,7 @@ import { decodeEventLog } from 'viem';
 
 import CometAbi from '../../../configs/abi/compound/Comet.json';
 import CometRewardsAbi from '../../../configs/abi/compound/CometRewards.json';
-import { Erc20TransferEventSignature, YEAR } from '../../../configs/constants';
+import { Erc20TransferEventSignature, TimeUnits } from '../../../configs/constants';
 import EnvConfig from '../../../configs/envConfig';
 import { Compoundv3LendingMarketConfig } from '../../../configs/protocols/compound';
 import { tryQueryBlockNumberAtTimestamp } from '../../../lib/subsgraph';
@@ -11,8 +11,8 @@ import { compareAddress, formatBigNumberToString, normalizeAddress } from '../..
 import { ActivityActions } from '../../../types/collectors/base';
 import {
   CdpLendingActivityEvent,
-  CdpLendingMarketDataState,
-  CdpLendingMarketDataTimeframe,
+  CdpLendingAssetDataState,
+  CdpLendingAssetDataTimeframe,
 } from '../../../types/collectors/cdpLending';
 import {
   GetAdapterDataStateOptions,
@@ -61,7 +61,7 @@ export default class Compoundv3Adapter extends ProtocolAdapter {
       timestamp: options.timestamp,
     });
 
-    const marketState: CdpLendingMarketDataState = {
+    const marketState: CdpLendingAssetDataState = {
       chain: options.config.chain,
       protocol: options.config.protocol,
       metric: options.config.metric,
@@ -69,6 +69,7 @@ export default class Compoundv3Adapter extends ProtocolAdapter {
       token: marketConfig.debtToken,
       tokenPrice: debtTokenPrice ? debtTokenPrice : '0',
       totalBorrowed: '0',
+      totalDeposited: '0',
       rateSupply: '0',
       collaterals: [],
     };
@@ -106,14 +107,6 @@ export default class Compoundv3Adapter extends ProtocolAdapter {
       params: [utilization.toString()],
       blockNumber: blockNumber,
     });
-    const baseTrackingSupplySpeed = await this.services.blockchain.readContract({
-      chain: marketConfig.chain,
-      abi: this.abiConfigs.eventAbis.comet,
-      target: marketConfig.address,
-      method: 'baseTrackingSupplySpeed',
-      params: [],
-      blockNumber: blockNumber,
-    });
     const borrowRate = await this.services.blockchain.readContract({
       chain: marketConfig.chain,
       abi: this.abiConfigs.eventAbis.comet,
@@ -122,44 +115,12 @@ export default class Compoundv3Adapter extends ProtocolAdapter {
       params: [utilization.toString()],
       blockNumber: blockNumber,
     });
-    const baseTrackingBorrowSpeed = await this.services.blockchain.readContract({
-      chain: marketConfig.chain,
-      abi: this.abiConfigs.eventAbis.comet,
-      target: marketConfig.address,
-      method: 'baseTrackingBorrowSpeed',
-      params: [],
-      blockNumber: blockNumber,
-    });
     marketState.totalDeposited = formatBigNumberToString(totalSupply.toString(), marketConfig.debtToken.decimals);
     marketState.totalBorrowed = formatBigNumberToString(totalBorrow.toString(), marketConfig.debtToken.decimals);
     marketState.rateSupply = formatBigNumberToString(
-      new BigNumber(supplyRate.toString()).multipliedBy(YEAR).toString(10),
+      new BigNumber(supplyRate.toString()).multipliedBy(TimeUnits.SecondsPerYear).toString(10),
       18,
     );
-
-    const rewardTokenPrice = await this.services.oracle.getTokenPriceUsd({
-      chain: marketConfig.rewardToken.chain,
-      address: marketConfig.rewardToken.address,
-      timestamp: options.timestamp,
-    });
-
-    const rewardSupplyRate = debtTokenPrice
-      ? new BigNumber(baseTrackingSupplySpeed.toString())
-          .multipliedBy(YEAR)
-          .multipliedBy(rewardTokenPrice ? rewardTokenPrice : '0')
-          .dividedBy(new BigNumber(marketState.totalDeposited).multipliedBy(debtTokenPrice))
-          .toString(10)
-      : '0';
-    const rewardBorrowRate = debtTokenPrice
-      ? new BigNumber(baseTrackingBorrowSpeed.toString())
-          .multipliedBy(YEAR)
-          .multipliedBy(rewardTokenPrice ? rewardTokenPrice : '0')
-          .dividedBy(new BigNumber(marketState.totalBorrowed).multipliedBy(debtTokenPrice))
-          .toString(10)
-      : '0';
-
-    // todo, check why 15 decimals here
-    marketState.rateRewardSupply = formatBigNumberToString(rewardSupplyRate, 15);
 
     for (const asset of cometInfo.collaterals) {
       const assetPrice = await this.services.oracle.getTokenPriceUsd({
@@ -188,15 +149,20 @@ export default class Compoundv3Adapter extends ProtocolAdapter {
       const loanToValue = formatBigNumberToString(assetInfo.borrowCollateralFactor.toString(), 18);
 
       marketState.collaterals.push({
+        chain: options.config.chain,
+        protocol: options.config.protocol,
+        metric: options.config.metric,
+        timestamp: options.timestamp,
         address: marketConfig.address,
         token: asset,
         tokenPrice: assetPrice ? assetPrice : '0',
         totalDeposited: totalDeposited,
-        rateBorrow: formatBigNumberToString(new BigNumber(borrowRate.toString()).multipliedBy(YEAR).toString(10), 18),
+        rateBorrow: formatBigNumberToString(
+          new BigNumber(borrowRate.toString()).multipliedBy(TimeUnits.SecondsPerYear).toString(10),
+          18,
+        ),
+        feeBorrow: '0',
         rateLoanToValue: loanToValue,
-
-        // todo, check why 15 decimals here
-        rateRewardBorrow: formatBigNumberToString(rewardBorrowRate, 15),
       });
     }
 
@@ -392,7 +358,7 @@ export default class Compoundv3Adapter extends ProtocolAdapter {
 
     const marketConfig = options.config as Compoundv3LendingMarketConfig;
     for (const stateData of states) {
-      const snapshot: CdpLendingMarketDataTimeframe = {
+      const snapshot: CdpLendingAssetDataTimeframe = {
         ...stateData,
         timefrom: options.fromTime,
         timeto: options.toTime,
@@ -495,6 +461,9 @@ export default class Compoundv3Adapter extends ProtocolAdapter {
 
         snapshot.collaterals.push({
           ...collateral,
+          timefrom: options.fromTime,
+          timeto: options.toTime,
+
           volumeDeposited: volumeDeposited.toString(10),
           volumeWithdrawn: volumeWithdrawn.toString(10),
           volumeLiquidated: volumeLiquidated.toString(10),

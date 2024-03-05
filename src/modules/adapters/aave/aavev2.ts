@@ -4,7 +4,7 @@ import { decodeEventLog } from 'viem';
 import AaveDataProviderV2Abi from '../../../configs/abi/aave/DataProviderV2.json';
 import AaveIncentiveControllerV2Abi from '../../../configs/abi/aave/IncentiveControllerV2.json';
 import AaveLendingPoolV2Abi from '../../../configs/abi/aave/LendingPoolV2.json';
-import { RAY_DECIMALS, YEAR } from '../../../configs/constants';
+import { SolidityUnits, TimeUnits } from '../../../configs/constants';
 import EnvConfig from '../../../configs/envConfig';
 import { AaveLendingMarketConfig } from '../../../configs/protocols/aave';
 import { tryQueryBlockNumberAtTimestamp } from '../../../lib/subsgraph';
@@ -408,9 +408,9 @@ export default class Aavev2Adapter extends ProtocolAdapter {
 
   protected getMarketRates(reserveData: any): AaveMarketRates {
     return {
-      supply: formatBigNumberToString(reserveData[3].toString(), RAY_DECIMALS),
-      borrow: formatBigNumberToString(reserveData[4].toString(), RAY_DECIMALS),
-      borrowStable: formatBigNumberToString(reserveData[5].toString(), RAY_DECIMALS),
+      supply: formatBigNumberToString(reserveData[3].toString(), SolidityUnits.RayDecimals),
+      borrow: formatBigNumberToString(reserveData[4].toString(), SolidityUnits.RayDecimals),
+      borrowStable: formatBigNumberToString(reserveData[5].toString(), SolidityUnits.RayDecimals),
     };
   }
 
@@ -494,15 +494,19 @@ export default class Aavev2Adapter extends ProtocolAdapter {
     let rewardForBorrowStable = new BigNumber(0);
 
     if (aTokenAssetInfo) {
-      rewardForSupply = rewardForSupply.plus(new BigNumber(aTokenAssetInfo[0].toString())).multipliedBy(YEAR);
+      rewardForSupply = rewardForSupply
+        .plus(new BigNumber(aTokenAssetInfo[0].toString()))
+        .multipliedBy(TimeUnits.SecondsPerYear);
     }
     if (variableDebtAssetInfo) {
-      rewardForBorrow = rewardForBorrow.plus(new BigNumber(variableDebtAssetInfo[0].toString())).multipliedBy(YEAR);
+      rewardForBorrow = rewardForBorrow
+        .plus(new BigNumber(variableDebtAssetInfo[0].toString()))
+        .multipliedBy(TimeUnits.SecondsPerYear);
     }
     if (stableDebtAssetInfo) {
       rewardForBorrowStable = rewardForBorrowStable
         .plus(new BigNumber(stableDebtAssetInfo[0].toString()))
-        .multipliedBy(YEAR);
+        .multipliedBy(TimeUnits.SecondsPerYear);
     }
 
     rewards.forSupply.push({

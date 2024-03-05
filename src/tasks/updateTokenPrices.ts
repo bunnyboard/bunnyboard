@@ -13,10 +13,8 @@ import OracleService from '../services/oracle/oracle';
   const collections: Array<string> = [
     EnvConfig.mongodb.collections.crossLendingReserveStates.name,
     EnvConfig.mongodb.collections.crossLendingReserveSnapshots.name,
-    EnvConfig.mongodb.collections.cdpLendingMarketStates.name,
-    EnvConfig.mongodb.collections.cdpLendingMarketSnapshots.name,
-    EnvConfig.mongodb.collections.perpetualReserveStates.name,
-    EnvConfig.mongodb.collections.perpetualReserveSnapshots.name,
+    EnvConfig.mongodb.collections.cdpLendingAssetStates.name,
+    EnvConfig.mongodb.collections.cdpLendingAssetSnapshots.name,
   ];
 
   for (const collection of collections) {

@@ -1,9 +1,3 @@
-export const AggDataAggregateNames = {
-  crossLendingDataOverall: 'crossLendingDataOverall',
-  cdpLendingDataOverall: 'cdpLendingDataOverall',
-  perpetualDataOverall: 'perpetualDataOverall',
-};
-
 export interface DataValueItem {
   // present value in base unit
   // ex: how many ETH tokens?
@@ -23,4 +17,9 @@ export interface DataValueItem {
 
   // in usd value
   changedValueUsd?: number;
+}
+
+export interface DataValue {
+  value: number;
+  changedDay?: number;
 }

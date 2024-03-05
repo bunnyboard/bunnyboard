@@ -1,4 +1,4 @@
-import { DAY } from '../../../../configs/constants';
+import { TimeUnits } from '../../../../configs/constants';
 import EnvConfig from '../../../../configs/envConfig';
 import logger from '../../../../lib/logger';
 import { calChangesOf_Total_From_Items } from '../../../../lib/math';
@@ -148,7 +148,7 @@ export default class CrossLendingDataAggregator extends BaseDataAggregator {
               protocol: snapshot.protocol,
               address: snapshot.address,
               'token.address': snapshot.token.address,
-              timestamp: snapshot.timestamp - DAY,
+              timestamp: snapshot.timestamp - TimeUnits.SecondsPerDay,
             },
           });
       aggSnapshots.push(
@@ -245,7 +245,7 @@ export default class CrossLendingDataAggregator extends BaseDataAggregator {
               protocol: snapshot.protocol,
               address: snapshot.address,
               'token.address': snapshot.token.address,
-              timestamp: snapshot.timestamp - DAY,
+              timestamp: snapshot.timestamp - TimeUnits.SecondsPerDay,
             },
           });
       reserveSnapshots.push(

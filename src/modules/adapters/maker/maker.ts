@@ -7,7 +7,7 @@ import GemJoinAbi from '../../../configs/abi/maker/GemJoin.json';
 import JugAbi from '../../../configs/abi/maker/Jug.json';
 import SpotAbi from '../../../configs/abi/maker/Spot.json';
 import VatAbi from '../../../configs/abi/maker/Vat.json';
-import { ONE_RAY, RAD_DECIMALS, RAY_DECIMALS, YEAR } from '../../../configs/constants';
+import { SolidityUnits, TimeUnits } from '../../../configs/constants';
 import EnvConfig from '../../../configs/envConfig';
 import { MakerLendingMarketConfig } from '../../../configs/protocols/maker';
 import { tryQueryBlockNumberAtTimestamp } from '../../../lib/subsgraph';
@@ -15,8 +15,8 @@ import { compareAddress, formatBigNumberToString, normalizeAddress } from '../..
 import { ActivityActions } from '../../../types/collectors/base';
 import {
   CdpLendingActivityEvent,
-  CdpLendingMarketDataState,
-  CdpLendingMarketDataTimeframe,
+  CdpLendingAssetDataState,
+  CdpLendingAssetDataTimeframe,
 } from '../../../types/collectors/cdpLending';
 import {
   GetAdapterDataStateOptions,
@@ -86,14 +86,14 @@ export default class MakerAdapter extends ProtocolAdapter {
       timestamp: options.timestamp,
     });
 
-    const stateData: CdpLendingMarketDataState = {
+    const stateData: CdpLendingAssetDataState = {
       protocol: options.config.protocol,
       chain: options.config.chain,
       metric: options.config.metric,
       timestamp: options.timestamp,
       token: marketConfig.debtToken,
       tokenPrice: debtTokenPrice ? debtTokenPrice : '0',
-      totalBorrowed: formatBigNumberToString(debt.toString(), RAD_DECIMALS),
+      totalBorrowed: formatBigNumberToString(debt.toString(), SolidityUnits.RayDecimals),
       collaterals: [],
     };
 
@@ -165,35 +165,40 @@ export default class MakerAdapter extends ProtocolAdapter {
         // spot is the collateral ratio borrowers must maintain to avoid liquidation
         // for example 145%
         // so, the loan to value = 100 % / 145% = 68.96%
-        const loanToValue = new BigNumber(100).multipliedBy(ONE_RAY).dividedBy(new BigNumber(spot));
+        const loanToValue = new BigNumber(100).multipliedBy(SolidityUnits.OneRay).dividedBy(new BigNumber(spot));
         const totalBorrowed = formatBigNumberToString(
           art.multipliedBy(rate).toString(10),
-          RAY_DECIMALS + debtToken.decimals,
+          SolidityUnits.RayDecimals + debtToken.decimals,
         );
         const totalDeposited = formatBigNumberToString(gemBalance.toString(), collateralToken.decimals);
 
         // https://docs.makerdao.com/smart-contract-modules/rates-module/jug-detailed-documentation
-        const duty = new BigNumber(jugInfo[0].toString()).dividedBy(ONE_RAY);
-        const base = new BigNumber(jugBase.toString()).dividedBy(ONE_RAY);
+        const duty = new BigNumber(jugInfo[0].toString()).dividedBy(SolidityUnits.OneRay);
+        const base = new BigNumber(jugBase.toString()).dividedBy(SolidityUnits.OneRay);
         const elapsed = 3600;
 
         const deltaRate = duty
           .plus(base)
           .pow(elapsed)
-          .multipliedBy(rate.dividedBy(ONE_RAY))
-          .minus(rate.dividedBy(ONE_RAY));
+          .multipliedBy(rate.dividedBy(SolidityUnits.OneRay))
+          .minus(rate.dividedBy(SolidityUnits.OneRay));
 
-        const interestAmount = art.multipliedBy(deltaRate.multipliedBy(YEAR).dividedBy(elapsed));
+        const interestAmount = art.multipliedBy(deltaRate.multipliedBy(TimeUnits.SecondsPerYear).dividedBy(elapsed));
 
         const borrowRate = art.eq(0) ? new BigNumber(0) : interestAmount.dividedBy(art);
 
         stateData.collaterals.push({
+          protocol: options.config.protocol,
+          chain: options.config.chain,
+          metric: options.config.metric,
+          timestamp: options.timestamp,
           token: collateralToken,
           tokenPrice: collateralTokenPrice ? collateralTokenPrice : '',
           address: gemConfig.address,
-          totalDebts: totalBorrowed,
           totalDeposited: totalDeposited,
+          totalBorrowed: totalBorrowed,
           rateBorrow: borrowRate.toString(10),
+          feeBorrow: '0',
           rateLoanToValue: loanToValue.toString(10),
         });
       }
@@ -369,7 +374,7 @@ export default class MakerAdapter extends ProtocolAdapter {
 
     const marketConfig = options.config as MakerLendingMarketConfig;
     for (const stateData of states) {
-      const snapshot: CdpLendingMarketDataTimeframe = {
+      const snapshot: CdpLendingAssetDataTimeframe = {
         ...stateData,
         timefrom: options.fromTime,
         timeto: options.toTime,
@@ -461,6 +466,8 @@ export default class MakerAdapter extends ProtocolAdapter {
 
         snapshot.collaterals.push({
           ...collateral,
+          timefrom: options.fromTime,
+          timeto: options.toTime,
           volumeDeposited: volumeDeposited.toString(10),
           volumeWithdrawn: volumeWithdrawn.toString(10),
           volumeLiquidated: volumeLiquidated.toString(10),

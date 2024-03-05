@@ -5,7 +5,7 @@ import CompoundComptrollerAbi from '../../../configs/abi/compound/Comptroller.js
 import CompoundComptrollerV1Abi from '../../../configs/abi/compound/ComptrollerV1.json';
 import cErc20Abi from '../../../configs/abi/compound/cErc20.json';
 import IronbankComptrollerOldAbi from '../../../configs/abi/ironbank/FirstComptroller.json';
-import { ChainBlockPeriods, YEAR } from '../../../configs/constants';
+import { ChainBlockPeriods, TimeUnits } from '../../../configs/constants';
 import EnvConfig from '../../../configs/envConfig';
 import { CompoundLendingMarketConfig } from '../../../configs/protocols/compound';
 import { tryQueryBlockNumberAtTimestamp } from '../../../lib/subsgraph';
@@ -155,7 +155,7 @@ export default class CompoundAdapter extends ProtocolAdapter {
     const speeds = await this.getMarketCompSpeeds(config, cTokenContract, blockNumber);
 
     if (speeds) {
-      const blockPerYear = YEAR / ChainBlockPeriods[config.chain];
+      const blockPerYear = TimeUnits.SecondsPerYear / ChainBlockPeriods[config.chain];
       const compPerYearForSuppliers = new BigNumber(speeds.supplySpeed).multipliedBy(blockPerYear).toString(10);
       const compPerYearForBorrowers = new BigNumber(speeds.supplySpeed).multipliedBy(blockPerYear).toString(10);
 
@@ -197,9 +197,11 @@ export default class CompoundAdapter extends ProtocolAdapter {
     });
 
     const supplyRate = new BigNumber(supplyRatePerBlock ? supplyRatePerBlock : '0').multipliedBy(
-      Math.floor(YEAR / ChainBlockPeriods[chain]),
+      Math.floor(TimeUnits.SecondsPerYear / ChainBlockPeriods[chain]),
     );
-    const borrowRate = new BigNumber(borrowRatePerBlock).multipliedBy(Math.floor(YEAR / ChainBlockPeriods[chain]));
+    const borrowRate = new BigNumber(borrowRatePerBlock).multipliedBy(
+      Math.floor(TimeUnits.SecondsPerYear / ChainBlockPeriods[chain]),
+    );
 
     return {
       supplyRate: formatBigNumberToString(supplyRate.toString(10), 18),

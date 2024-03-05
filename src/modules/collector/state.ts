@@ -1,11 +1,10 @@
-import { DAY } from '../../configs/constants';
+import { TimeUnits } from '../../configs/constants';
 import EnvConfig from '../../configs/envConfig';
 import logger from '../../lib/logger';
 import { getTimestamp } from '../../lib/utils';
-import { CdpLendingMarketDataStateWithTimeframes } from '../../types/collectors/cdpLending';
+import { CdpLendingAssetDataStateWithTimeframes } from '../../types/collectors/cdpLending';
 import { CrossLendingReserveDataStateWithTimeframes } from '../../types/collectors/crossLending';
 import { RunCollectorOptions } from '../../types/collectors/options';
-import { PerpetualMarketDataStateWithTimeframes } from '../../types/collectors/perpetutal';
 import { MetricConfig } from '../../types/configs';
 import { ContextServices, ContextStorages, IProtocolAdapter } from '../../types/namespaces';
 
@@ -34,21 +33,21 @@ export default class StateCollector {
 
       const timeframeLast24Hours = await this.adapters[config.protocol].getDataTimeframe({
         config: config,
-        fromTime: timestamp - DAY,
+        fromTime: timestamp - TimeUnits.SecondsPerDay,
         toTime: timestamp,
       });
 
       const timeframeLast48Hours = await this.adapters[config.protocol].getDataTimeframe({
         config: config,
-        fromTime: timestamp - DAY * 2,
-        toTime: timestamp - DAY,
+        fromTime: timestamp - TimeUnits.SecondsPerDay * 2,
+        toTime: timestamp - TimeUnits.SecondsPerDay,
       });
 
       if (state.crossLending) {
         for (const dateState of state.crossLending) {
           let stateWithTimeframes: CrossLendingReserveDataStateWithTimeframes = {
             ...dateState,
-            timefrom: timestamp - DAY,
+            timefrom: timestamp - TimeUnits.SecondsPerDay,
             timeto: timestamp,
             volumeDeposited: '0',
             volumeWithdrawn: '0',
@@ -107,95 +106,65 @@ export default class StateCollector {
             upsert: true,
           });
         }
-      }
+      } else if (state.cdpLending) {
+        for (const dateState of state.cdpLending) {
+          let stateWithTimeframes: CdpLendingAssetDataStateWithTimeframes = {
+            ...dateState,
 
-      if (state.cdpLending) {
-        for (const dataState of state.cdpLending) {
-          let stateWithTimeframes: CdpLendingMarketDataStateWithTimeframes = {
-            ...dataState,
-            timeframe24Hours: null,
-            timeframe48Hours: null,
+            timefrom: timestamp - TimeUnits.SecondsPerDay,
+            timeto: timestamp,
+            volumeDeposited: '0',
+            volumeWithdrawn: '0',
+            volumeBorrowed: '0',
+            volumeRepaid: '0',
+            addresses: [],
+            transactions: [],
+            collaterals: [],
+            last24Hours: null,
           };
 
           if (timeframeLast24Hours.cdpLending) {
             const dataLast24Hours = timeframeLast24Hours.cdpLending.filter(
               (item) =>
-                item.chain === dataState.chain &&
-                item.protocol === dataState.protocol &&
-                item.token.address === dataState.token.address,
+                item.chain === dateState.chain &&
+                item.protocol === dateState.protocol &&
+                item.token.address === dateState.token.address,
             )[0];
             if (dataLast24Hours) {
-              stateWithTimeframes.timeframe24Hours = dataLast24Hours;
+              stateWithTimeframes.totalBorrowed = dataLast24Hours.totalBorrowed;
+              stateWithTimeframes.volumeBorrowed = dataLast24Hours.volumeBorrowed;
+              stateWithTimeframes.volumeRepaid = dataLast24Hours.volumeRepaid;
+
+              stateWithTimeframes.addresses = dataLast24Hours.addresses;
+              stateWithTimeframes.transactions = dataLast24Hours.transactions;
+              stateWithTimeframes.collaterals = dataLast24Hours.collaterals;
+
+              // can be undefined
+              stateWithTimeframes.totalDeposited = dataLast24Hours.totalDeposited;
+              stateWithTimeframes.volumeDeposited = dataLast24Hours.volumeDeposited;
+              stateWithTimeframes.volumeWithdrawn = dataLast24Hours.volumeWithdrawn;
             }
           }
 
           if (timeframeLast48Hours.cdpLending) {
             const dataLast48Hours = timeframeLast48Hours.cdpLending.filter(
               (item) =>
-                item.chain === dataState.chain &&
-                item.protocol === dataState.protocol &&
-                item.token.address === dataState.token.address,
+                item.chain === dateState.chain &&
+                item.protocol === dateState.protocol &&
+                item.token.address === dateState.token.address,
             )[0];
             if (dataLast48Hours) {
-              stateWithTimeframes.timeframe48Hours = dataLast48Hours;
+              stateWithTimeframes.last24Hours = dataLast48Hours;
             }
           }
 
           await this.storages.database.update({
-            collection: EnvConfig.mongodb.collections.cdpLendingMarketStates.name,
+            collection: EnvConfig.mongodb.collections.cdpLendingAssetStates.name,
             keys: {
-              chain: dataState.chain,
-              metric: dataState.metric,
-              protocol: dataState.protocol,
-              'token.address': dataState.token.address,
-            },
-            updates: {
-              ...stateWithTimeframes,
-            },
-            upsert: true,
-          });
-        }
-      }
-
-      if (state.perpetual) {
-        for (const dataState of state.perpetual) {
-          let stateWithTimeframes: PerpetualMarketDataStateWithTimeframes = {
-            ...dataState,
-            timeframe24Hours: null,
-            timeframe48Hours: null,
-          };
-
-          if (timeframeLast24Hours.perpetual) {
-            const dataLast24Hours = timeframeLast24Hours.perpetual.filter(
-              (item) =>
-                item.chain === dataState.chain &&
-                item.protocol === dataState.protocol &&
-                item.token.address === dataState.token.address,
-            )[0];
-            if (dataLast24Hours) {
-              stateWithTimeframes.timeframe24Hours = dataLast24Hours;
-            }
-          }
-
-          if (timeframeLast48Hours.perpetual) {
-            const dataLast48Hours = timeframeLast48Hours.perpetual.filter(
-              (item) =>
-                item.chain === dataState.chain &&
-                item.protocol === dataState.protocol &&
-                item.token.address === dataState.token.address,
-            )[0];
-            if (dataLast48Hours) {
-              stateWithTimeframes.timeframe48Hours = dataLast48Hours;
-            }
-          }
-
-          await this.storages.database.update({
-            collection: EnvConfig.mongodb.collections.perpetualReserveStates.name,
-            keys: {
-              chain: dataState.chain,
-              metric: dataState.metric,
-              protocol: dataState.protocol,
-              'token.address': dataState.token.address,
+              chain: dateState.chain,
+              metric: dateState.metric,
+              protocol: dateState.protocol,
+              'token.address': dateState.token.address,
             },
             updates: {
               ...stateWithTimeframes,

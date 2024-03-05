@@ -1,7 +1,7 @@
 import BigNumber from 'bignumber.js';
 
 import ChefIncentiveControllerAbi from '../../../configs/abi/radiant/ChefIncentiveController.json';
-import { YEAR } from '../../../configs/constants';
+import { TimeUnits } from '../../../configs/constants';
 import { AaveLendingMarketConfig } from '../../../configs/protocols/aave';
 import { formatBigNumberToString } from '../../../lib/utils';
 import { TokenValueItem } from '../../../types/collectors/base';
@@ -101,11 +101,11 @@ export default class RadiantAdapter extends Aavev2Adapter {
 
     if (aTokenAssetInfo && variableDebtAssetInfo) {
       const rewardForSupply = new BigNumber(rewardsPerSecond.toString())
-        .multipliedBy(YEAR)
+        .multipliedBy(TimeUnits.SecondsPerYear)
         .multipliedBy(new BigNumber(aTokenAssetInfo[1].toString())) // allocPoint
         .dividedBy(new BigNumber(totalAllocPoint));
       const rewardForBorrow = new BigNumber(rewardsPerSecond.toString())
-        .multipliedBy(YEAR)
+        .multipliedBy(TimeUnits.SecondsPerYear)
         .multipliedBy(new BigNumber(variableDebtAssetInfo[1].toString())) // allocPoint
         .dividedBy(new BigNumber(totalAllocPoint));
 

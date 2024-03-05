@@ -48,8 +48,8 @@ export const DatabaseCollectionConfigs: DatabaseCollectionConfig = {
       },
     ],
   },
-  cdpLendingMarketStates: {
-    name: `${MongodbPrefix}.cdpLendingMarketStates`,
+  cdpLendingAssetStates: {
+    name: `${MongodbPrefix}.cdpLendingAssetStates`,
     indies: [
       {
         chain: 1,
@@ -58,35 +58,12 @@ export const DatabaseCollectionConfigs: DatabaseCollectionConfig = {
       },
     ],
   },
-  cdpLendingMarketSnapshots: {
-    name: `${MongodbPrefix}.cdpLendingMarketSnapshots`,
+  cdpLendingAssetSnapshots: {
+    name: `${MongodbPrefix}.cdpLendingAssetSnapshots`,
     indies: [
       {
         chain: 1,
         protocol: 1,
-        'token.address': 1,
-        timestamp: 1,
-      },
-    ],
-  },
-  perpetualReserveStates: {
-    name: `${MongodbPrefix}.perpetualReserveStates`,
-    indies: [
-      {
-        chain: 1,
-        protocol: 1,
-        address: 1,
-        'token.address': 1,
-      },
-    ],
-  },
-  perpetualReserveSnapshots: {
-    name: `${MongodbPrefix}.perpetualReserveSnapshots`,
-    indies: [
-      {
-        chain: 1,
-        protocol: 1,
-        address: 1,
         'token.address': 1,
         timestamp: 1,
       },

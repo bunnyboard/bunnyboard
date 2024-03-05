@@ -14,6 +14,15 @@ export function convertToPercentage(X: number | string | BigNumber | undefined):
   return new BigNumber(X).multipliedBy(100).toNumber();
 }
 
+// convert rate to percentage
+export function convertRateToPercentage(X: number | string | BigNumber | undefined): number {
+  if (X === undefined) {
+    return 0;
+  }
+
+  return new BigNumber(X).multipliedBy(100).toNumber();
+}
+
 // given an amount of tokens and its price
 // return the value in USD
 export function calValueOf_Amount_With_Price(
@@ -35,6 +44,17 @@ export function calChangesOf_Current_From_Previous(
   const Y = convertToNumber(previous);
 
   return ((X - Y) / Y) * 100;
+}
+
+// calculate previous value from current value and changed percentage
+//
+// give X is the current value and n is the percentage of X compared to Y (previous value)
+// we need to find the y value
+export function calPreviousOf_Current_And_Change(
+  current: number | string | BigNumber,
+  changePercentage: number | string | BigNumber,
+): number {
+  return new BigNumber(current).multipliedBy(100).dividedBy(new BigNumber(changePercentage).plus(100)).toNumber();
 }
 
 interface ItemX {

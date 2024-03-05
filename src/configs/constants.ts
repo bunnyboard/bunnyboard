@@ -1,14 +1,19 @@
 import BigNumber from 'bignumber.js';
 
 // time
-export const DAY = 24 * 60 * 60;
-export const YEAR = 365 * DAY;
+export const TimeUnits = {
+  SecondsPerDay: 24 * 60 * 60,
+  DaysPerYear: 365,
+  SecondsPerYear: 365 * 24 * 60 * 60,
+};
 
 // solidity unit
-export const ONE_RAY = new BigNumber(1e27).toString(10);
-export const ONE_RAD = new BigNumber(1e45).toString(10);
-export const RAY_DECIMALS = 27;
-export const RAD_DECIMALS = 45;
+export const SolidityUnits = {
+  OneRay: new BigNumber(1e27).toString(10),
+  OneRad: new BigNumber(1e45).toString(10),
+  RayDecimals: 27,
+  RadDecimals: 45,
+};
 
 export const BlockSubGraphEndpoints: { [key: string]: string } = {
   ethereum: 'https://api.thegraph.com/subgraphs/name/blocklytics/ethereum-blocks',

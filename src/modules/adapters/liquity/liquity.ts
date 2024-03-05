@@ -10,8 +10,8 @@ import { compareAddress, formatBigNumberToString, normalizeAddress } from '../..
 import { ActivityAction, ActivityActions } from '../../../types/collectors/base';
 import {
   CdpLendingActivityEvent,
-  CdpLendingMarketDataState,
-  CdpLendingMarketDataTimeframe,
+  CdpLendingAssetDataState,
+  CdpLendingAssetDataTimeframe,
 } from '../../../types/collectors/cdpLending';
 import {
   GetAdapterDataStateOptions,
@@ -104,7 +104,7 @@ export default class LiquityAdapter extends ProtocolAdapter {
       timestamp: options.timestamp,
     });
 
-    const marketState: CdpLendingMarketDataState = {
+    const assetState: CdpLendingAssetDataState = {
       chain: options.config.chain,
       protocol: options.config.protocol,
       metric: options.config.metric,
@@ -115,8 +115,13 @@ export default class LiquityAdapter extends ProtocolAdapter {
       collaterals: [],
     };
 
-    for (const troveConfig of marketConfig.troves) {
-      const collateralToken = troveConfig.collateralToken;
+    for (const trove of marketConfig.troves) {
+      const collateralTokenPrice = await this.services.oracle.getTokenPriceUsd({
+        chain: trove.collateralToken.chain,
+        address: trove.collateralToken.address,
+        timestamp: options.timestamp,
+      });
+
       const totalDebt = await this.services.blockchain.readContract({
         chain: marketConfig.chain,
         abi: this.abiConfigs.eventAbis.troveManager,
@@ -125,6 +130,10 @@ export default class LiquityAdapter extends ProtocolAdapter {
         params: [],
         blockNumber: blockNumber,
       });
+      assetState.totalBorrowed = new BigNumber(assetState.totalBorrowed)
+        .plus(formatBigNumberToString(totalDebt.toString(), debtToken.decimals))
+        .toString(10);
+
       const totalColl = await this.services.blockchain.readContract({
         chain: marketConfig.chain,
         abi: this.abiConfigs.eventAbis.troveManager,
@@ -133,24 +142,22 @@ export default class LiquityAdapter extends ProtocolAdapter {
         params: [],
         blockNumber: blockNumber,
       });
-      const collateralTokenPrice = await this.services.oracle.getTokenPriceUsd({
-        chain: collateralToken.chain,
-        address: collateralToken.address,
+
+      const borrowingFee = await this.getBorrowingFee(marketConfig.chain, trove.troveManager, blockNumber);
+
+      assetState.collaterals.push({
+        chain: options.config.chain,
+        protocol: options.config.protocol,
+        metric: options.config.metric,
         timestamp: options.timestamp,
-      });
-
-      const borrowingFee = await this.getBorrowingFee(marketConfig.chain, troveConfig.troveManager, blockNumber);
-
-      marketState.totalBorrowed = new BigNumber(marketState.totalBorrowed)
-        .plus(formatBigNumberToString(totalDebt.toString(), debtToken.decimals))
-        .toString(10);
-
-      marketState.collaterals.push({
-        address: marketConfig.address,
-        token: collateralToken,
+        address: trove.troveManager,
+        token: trove.collateralToken,
         tokenPrice: collateralTokenPrice ? collateralTokenPrice : '0',
-        totalDeposited: formatBigNumberToString(totalColl.toString(), collateralToken.decimals),
-        rateBorrow: formatBigNumberToString(borrowingFee, 18), // liquity charged on-time paid fee
+        totalDeposited: formatBigNumberToString(totalColl.toString(), trove.collateralToken.decimals),
+        rateBorrow: '0',
+
+        // liquity charged on-time paid fee
+        feeBorrow: formatBigNumberToString(borrowingFee, 18),
 
         // liquity must maintain 110% collateral value on debts
         // so, the loan to value is always 100 / 110 -> 0.9 -> 90%
@@ -159,7 +166,7 @@ export default class LiquityAdapter extends ProtocolAdapter {
     }
 
     if (result.cdpLending) {
-      result.cdpLending.push(marketState);
+      result.cdpLending.push(assetState);
     }
 
     return result;
@@ -390,7 +397,7 @@ export default class LiquityAdapter extends ProtocolAdapter {
       const addresses: { [key: string]: boolean } = {};
       const transactions: { [key: string]: boolean } = {};
 
-      const snapshot: CdpLendingMarketDataTimeframe = {
+      const snapshot: CdpLendingAssetDataTimeframe = {
         ...stateData,
         timefrom: options.fromTime,
         timeto: options.toTime,
@@ -477,6 +484,8 @@ export default class LiquityAdapter extends ProtocolAdapter {
 
         snapshot.collaterals.push({
           ...collateral,
+          timefrom: options.fromTime,
+          timeto: options.toTime,
           volumeDeposited: volumeDeposited.toString(10),
           volumeWithdrawn: volumeWithdrawn.toString(10),
           volumeLiquidated: volumeLiquidated.toString(10),

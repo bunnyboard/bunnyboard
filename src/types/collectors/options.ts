@@ -1,6 +1,6 @@
 import { MetricConfig } from '../configs';
 import { ContextStorages } from '../namespaces';
-import { CdpLendingMarketDataState, CdpLendingMarketDataTimeframe } from './cdpLending';
+import { CdpLendingAssetDataState, CdpLendingAssetDataTimeframe } from './cdpLending';
 import {
   CrossLendingActivityEvent,
   CrossLendingReserveDataState,
@@ -43,13 +43,13 @@ export interface GetAdapterDataTimeframeOptions {
 
 export interface GetAdapterDataStateResult {
   crossLending?: Array<CrossLendingReserveDataState> | null;
-  cdpLending?: Array<CdpLendingMarketDataState> | null;
+  cdpLending?: Array<CdpLendingAssetDataState> | null;
   perpetual?: Array<PerpetualMarketDataState> | null;
 }
 
 export interface GetAdapterDataTimeframeResult {
   crossLending?: Array<CrossLendingReserveDataTimeframe> | null;
-  cdpLending?: Array<CdpLendingMarketDataTimeframe> | null;
+  cdpLending?: Array<CdpLendingAssetDataTimeframe> | null;
   perpetual?: Array<PerpetualMarketDataTimeframe> | null;
 }
 
