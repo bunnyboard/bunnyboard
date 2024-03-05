@@ -4,7 +4,7 @@ import logger from '../../../../lib/logger';
 import { calChangesOf_Total_From_Items } from '../../../../lib/math';
 import { normalizeAddress } from '../../../../lib/utils';
 import { IDatabaseService } from '../../../../services/database/domains';
-import { DataValueItem } from '../../../../types/aggregates/common';
+import { DataValue } from '../../../../types/aggregates/common';
 import {
   AggCrossLendingDataOverall,
   AggCrossLendingMarketDataOverall,
@@ -71,19 +71,19 @@ export default class CrossLendingDataAggregator extends BaseDataAggregator {
     const markets = CrossLendingDataTransformer.transformCrossReservesToMarkets(reserveSnapshots);
     for (const market of markets) {
       for (const field of DataFields) {
-        ((dataState as any)[field] as DataValueItem).valueUsd += ((market as any)[field] as DataValueItem).valueUsd;
+        ((dataState as any)[field] as DataValue).value += ((market as any)[field] as DataValue).value;
       }
 
       dataState.markets.push(market);
     }
 
     for (const field of DataFields) {
-      ((dataState as any)[field] as DataValueItem).changedValueUsd = calChangesOf_Total_From_Items(
+      ((dataState as any)[field] as DataValue).changedDay = calChangesOf_Total_From_Items(
         markets.map((market) => {
           const item = market as any;
           return {
-            value: item[field].valueUsd,
-            change: item[field].changedValueUsd ? item[field].changedValueUsd : 0,
+            value: item[field].value,
+            change: item[field].changedDay ? item[field].changedDay : 0,
           };
         }),
       );
@@ -291,18 +291,18 @@ export default class CrossLendingDataAggregator extends BaseDataAggregator {
           const snapshot = CrossLendingDataTransformer.transformCrossLendingReserveSnapshot(item, null);
           return {
             timestamp: snapshot.timestamp,
-            totalValueLocked: snapshot.totalValueLocked,
-            totalDeposited: snapshot.totalDeposited,
-            totalBorrowed: snapshot.totalBorrowed,
-            volumeDeposited: snapshot.volumeDeposited,
-            volumeWithdrawn: snapshot.volumeWithdrawn,
-            volumeBorrowed: snapshot.volumeBorrowed,
-            volumeRepaid: snapshot.volumeRepaid,
-            volumeLiquidated: snapshot.volumeLiquidated,
-            feesPaidTheoretically: snapshot.feesPaidTheoretically,
-            rateSupply: snapshot.rateSupply,
-            rateBorrow: snapshot.rateBorrow,
-            rateBorrowStable: snapshot.rateBorrowStable,
+            totalValueLocked: snapshot.totalValueLocked.value,
+            totalDeposited: snapshot.totalDeposited.value,
+            totalBorrowed: snapshot.totalBorrowed.value,
+            volumeDeposited: snapshot.volumeDeposited.value,
+            volumeWithdrawn: snapshot.volumeWithdrawn.value,
+            volumeBorrowed: snapshot.volumeBorrowed.value,
+            volumeRepaid: snapshot.volumeRepaid.value,
+            volumeLiquidated: snapshot.volumeLiquidated.value,
+            feesPaidTheoretically: snapshot.feesPaidTheoretically.value,
+            rateSupply: snapshot.rateSupply.value,
+            rateBorrow: snapshot.rateBorrow.value,
+            rateBorrowStable: snapshot.rateBorrowStable ? snapshot.rateBorrowStable.value : undefined,
           };
         }),
       };

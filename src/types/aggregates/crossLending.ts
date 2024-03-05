@@ -1,6 +1,6 @@
 import { DataState, DataTimeframe } from '../collectors/base';
 import { Token } from '../configs';
-import { DataValueItem } from './common';
+import { DataValue } from './common';
 
 export interface AggCrossLendingReserveSnapshot extends DataTimeframe {
   address: string;
@@ -9,46 +9,45 @@ export interface AggCrossLendingReserveSnapshot extends DataTimeframe {
 
   // actually total value locked of all tokens in contracts
   // TotalValueLocked = TotalDeposited - TotalBorrowed
-  totalValueLocked: DataValueItem;
+  totalValueLocked: DataValue;
 
   // the market size, total value is being controlled
-  totalDeposited: DataValueItem;
-  totalBorrowed: DataValueItem;
+  totalDeposited: DataValue;
+  totalBorrowed: DataValue;
 
-  rateSupply: number;
-  rateBorrow: number;
-  rateBorrowStable?: number;
-
-  rateRewardSupply: number;
-  rateRewardBorrow: number;
-  rateRewardBorrowStable?: number;
+  rateSupply: DataValue;
+  rateBorrow: DataValue;
+  rateBorrowStable?: DataValue;
 
   rateLoanToValue: number;
 
   // last 24h volumes
-  volumeDeposited: DataValueItem;
-  volumeWithdrawn: DataValueItem;
-  volumeBorrowed: DataValueItem;
-  volumeRepaid: DataValueItem;
-  volumeLiquidated: DataValueItem;
+  volumeDeposited: DataValue;
+  volumeWithdrawn: DataValue;
+  volumeBorrowed: DataValue;
+  volumeRepaid: DataValue;
+  volumeLiquidated: DataValue;
 
   // theoretically borrow fees will be paid
   // FeesPaidTheoretically = TotalBorrow * BorrowRate
-  feesPaidTheoretically: DataValueItem;
+  feesPaidTheoretically: DataValue;
+
+  numberOfUsers: DataValue;
+  numberOfTransactions: DataValue;
 }
 
 export interface AggCrossLendingMarketSnapshot extends DataState {
-  totalValueLocked: DataValueItem;
-  totalDeposited: DataValueItem;
-  totalBorrowed: DataValueItem;
+  totalValueLocked: DataValue;
+  totalDeposited: DataValue;
+  totalBorrowed: DataValue;
 
-  volumeDeposited: DataValueItem;
-  volumeWithdrawn: DataValueItem;
-  volumeBorrowed: DataValueItem;
-  volumeRepaid: DataValueItem;
-  volumeLiquidated: DataValueItem;
+  volumeDeposited: DataValue;
+  volumeWithdrawn: DataValue;
+  volumeBorrowed: DataValue;
+  volumeRepaid: DataValue;
+  volumeLiquidated: DataValue;
 
-  feesPaidTheoretically: DataValueItem;
+  feesPaidTheoretically: DataValue;
 
   reserves: Array<AggCrossLendingReserveSnapshot>;
 }
@@ -58,32 +57,32 @@ export interface AggCrossLendingMarketSnapshot extends DataState {
 export interface AggCrossLendingDayData {
   timestamp: number;
 
-  totalValueLocked: DataValueItem;
-  totalDeposited: DataValueItem;
-  totalBorrowed: DataValueItem;
+  totalValueLocked: number;
+  totalDeposited: number;
+  totalBorrowed: number;
 
-  volumeDeposited: DataValueItem;
-  volumeWithdrawn: DataValueItem;
-  volumeBorrowed: DataValueItem;
-  volumeRepaid: DataValueItem;
-  volumeLiquidated: DataValueItem;
+  volumeDeposited: number;
+  volumeWithdrawn: number;
+  volumeBorrowed: number;
+  volumeRepaid: number;
+  volumeLiquidated: number;
 
-  feesPaidTheoretically: DataValueItem;
+  feesPaidTheoretically: number;
 }
 
 // overall state and data across all cross lending markets
 export interface AggCrossLendingDataOverall {
-  totalValueLocked: DataValueItem;
-  totalDeposited: DataValueItem;
-  totalBorrowed: DataValueItem;
+  totalValueLocked: DataValue;
+  totalDeposited: DataValue;
+  totalBorrowed: DataValue;
 
-  volumeDeposited: DataValueItem;
-  volumeWithdrawn: DataValueItem;
-  volumeBorrowed: DataValueItem;
-  volumeRepaid: DataValueItem;
-  volumeLiquidated: DataValueItem;
+  volumeDeposited: DataValue;
+  volumeWithdrawn: DataValue;
+  volumeBorrowed: DataValue;
+  volumeRepaid: DataValue;
+  volumeLiquidated: DataValue;
 
-  feesPaidTheoretically: DataValueItem;
+  feesPaidTheoretically: DataValue;
 
   // last 24h snapshots
   markets: Array<AggCrossLendingMarketSnapshot>;

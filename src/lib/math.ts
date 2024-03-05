@@ -5,15 +5,6 @@ export function convertToNumber(X: number | string | BigNumber): number {
   return new BigNumber(X).toNumber();
 }
 
-// convert any value to percentage
-export function convertToPercentage(X: number | string | BigNumber | undefined): number {
-  if (X === undefined) {
-    return 0;
-  }
-
-  return new BigNumber(X).multipliedBy(100).toNumber();
-}
-
 // convert rate to percentage
 export function convertRateToPercentage(X: number | string | BigNumber | undefined): number {
   if (X === undefined) {

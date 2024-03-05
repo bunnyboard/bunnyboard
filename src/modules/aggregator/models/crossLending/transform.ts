@@ -1,13 +1,15 @@
 import BigNumber from 'bignumber.js';
 
+import { TimeUnits } from '../../../../configs/constants';
 import { groupAndSumObjectList } from '../../../../lib/helper';
 import {
+  calChangesOf_Current_From_Previous,
   calChangesOf_Total_From_Items,
   calChangesOf_Two_Number_Diff,
+  convertRateToPercentage,
   convertToNumber,
-  convertToPercentage,
 } from '../../../../lib/math';
-import { DataValueItem } from '../../../../types/aggregates/common';
+import { DataValue } from '../../../../types/aggregates/common';
 import {
   AggCrossLendingDataOverall,
   AggCrossLendingDayData,
@@ -16,46 +18,37 @@ import {
 } from '../../../../types/aggregates/crossLending';
 import { CrossLendingReserveDataTimeframe } from '../../../../types/collectors/crossLending';
 import { DataMetrics } from '../../../../types/configs';
-import { transformValueWithTokenPrice } from '../../helper';
+import { transformTokenValueToUsd } from '../../helper';
 
 export default class CrossLendingDataTransformer {
   public static getDefaultAggCrossLendingDataOverall(): AggCrossLendingDataOverall {
     return {
       totalValueLocked: {
         value: 0,
-        valueUsd: 0,
       },
       totalDeposited: {
         value: 0,
-        valueUsd: 0,
       },
       totalBorrowed: {
         value: 0,
-        valueUsd: 0,
       },
       volumeDeposited: {
         value: 0,
-        valueUsd: 0,
       },
       volumeWithdrawn: {
         value: 0,
-        valueUsd: 0,
       },
       volumeBorrowed: {
         value: 0,
-        valueUsd: 0,
       },
       volumeRepaid: {
         value: 0,
-        valueUsd: 0,
       },
       volumeLiquidated: {
         value: 0,
-        valueUsd: 0,
       },
       feesPaidTheoretically: {
         value: 0,
-        valueUsd: 0,
       },
       markets: [],
       dayData: [],
@@ -82,109 +75,101 @@ export default class CrossLendingDataTransformer {
 
           totalValueLocked: {
             value: 0,
-            valueUsd: 0,
           },
           totalDeposited: {
             value: 0,
-            valueUsd: 0,
           },
           totalBorrowed: {
             value: 0,
-            valueUsd: 0,
           },
           volumeDeposited: {
             value: 0,
-            valueUsd: 0,
           },
           volumeWithdrawn: {
             value: 0,
-            valueUsd: 0,
           },
           volumeBorrowed: {
             value: 0,
-            valueUsd: 0,
           },
           volumeRepaid: {
             value: 0,
-            valueUsd: 0,
           },
           volumeLiquidated: {
             value: 0,
-            valueUsd: 0,
           },
           feesPaidTheoretically: {
             value: 0,
-            valueUsd: 0,
           },
           reserves: [],
         };
       }
 
-      markets[marketId].totalDeposited.valueUsd += reserve.totalDeposited.valueUsd;
-      markets[marketId].totalBorrowed.valueUsd += reserve.totalBorrowed.valueUsd;
-      markets[marketId].volumeDeposited.valueUsd += reserve.volumeDeposited.valueUsd;
-      markets[marketId].volumeWithdrawn.valueUsd += reserve.volumeWithdrawn.valueUsd;
-      markets[marketId].volumeBorrowed.valueUsd += reserve.volumeBorrowed.valueUsd;
-      markets[marketId].volumeRepaid.valueUsd += reserve.volumeRepaid.valueUsd;
-      markets[marketId].volumeLiquidated.valueUsd += reserve.volumeLiquidated.valueUsd;
-      markets[marketId].feesPaidTheoretically.valueUsd += reserve.feesPaidTheoretically.valueUsd;
+      markets[marketId].totalDeposited.value += reserve.totalDeposited.value;
+      markets[marketId].totalBorrowed.value += reserve.totalBorrowed.value;
+      markets[marketId].volumeDeposited.value += reserve.volumeDeposited.value;
+      markets[marketId].volumeWithdrawn.value += reserve.volumeWithdrawn.value;
+      markets[marketId].volumeBorrowed.value += reserve.volumeBorrowed.value;
+      markets[marketId].volumeRepaid.value += reserve.volumeRepaid.value;
+      markets[marketId].volumeLiquidated.value += reserve.volumeLiquidated.value;
+      markets[marketId].feesPaidTheoretically.value += reserve.feesPaidTheoretically.value;
+
       markets[marketId].reserves.push(reserve);
     }
 
     for (const marketKey of Object.keys(markets)) {
-      markets[marketKey].totalDeposited.changedValueUsd = calChangesOf_Total_From_Items(
+      markets[marketKey].totalDeposited.changedDay = calChangesOf_Total_From_Items(
         markets[marketKey].reserves.map((reserve) => {
           return {
-            value: reserve.totalDeposited.valueUsd,
-            change: reserve.totalDeposited.changedValueUsd ? reserve.totalDeposited.changedValueUsd : 0,
+            value: reserve.totalDeposited.value,
+            change: reserve.totalDeposited.changedDay ? reserve.totalDeposited.changedDay : 0,
           };
         }),
       );
-      markets[marketKey].totalBorrowed.changedValueUsd = calChangesOf_Total_From_Items(
+      markets[marketKey].totalBorrowed.value = calChangesOf_Total_From_Items(
         markets[marketKey].reserves.map((reserve) => {
           return {
-            value: reserve.totalBorrowed.valueUsd,
-            change: reserve.totalBorrowed.changedValueUsd ? reserve.totalBorrowed.changedValueUsd : 0,
+            value: reserve.totalBorrowed.value,
+            change: reserve.totalBorrowed.changedDay ? reserve.totalBorrowed.changedDay : 0,
           };
         }),
       );
-      markets[marketKey].volumeDeposited.changedValueUsd = calChangesOf_Total_From_Items(
+      markets[marketKey].volumeDeposited.changedDay = calChangesOf_Total_From_Items(
         markets[marketKey].reserves.map((reserve) => {
           return {
-            value: reserve.volumeDeposited.valueUsd,
-            change: reserve.volumeDeposited.changedValueUsd ? reserve.volumeDeposited.changedValueUsd : 0,
+            value: reserve.volumeDeposited.value,
+            change: reserve.volumeDeposited.changedDay ? reserve.volumeDeposited.changedDay : 0,
           };
         }),
       );
-      markets[marketKey].volumeWithdrawn.changedValueUsd = calChangesOf_Total_From_Items(
+      markets[marketKey].volumeWithdrawn.changedDay = calChangesOf_Total_From_Items(
         markets[marketKey].reserves.map((reserve) => {
           return {
-            value: reserve.volumeWithdrawn.valueUsd,
-            change: reserve.volumeWithdrawn.changedValueUsd ? reserve.volumeWithdrawn.changedValueUsd : 0,
+            value: reserve.volumeWithdrawn.value,
+            change: reserve.volumeWithdrawn.changedDay ? reserve.volumeWithdrawn.changedDay : 0,
           };
         }),
       );
-      markets[marketKey].volumeBorrowed.changedValueUsd = calChangesOf_Total_From_Items(
+      markets[marketKey].volumeBorrowed.changedDay = calChangesOf_Total_From_Items(
         markets[marketKey].reserves.map((reserve) => {
           return {
-            value: reserve.volumeBorrowed.valueUsd,
-            change: reserve.volumeBorrowed.changedValueUsd ? reserve.volumeBorrowed.changedValueUsd : 0,
+            value: reserve.volumeBorrowed.value,
+            change: reserve.volumeBorrowed.changedDay ? reserve.volumeBorrowed.changedDay : 0,
           };
         }),
       );
-      markets[marketKey].volumeRepaid.changedValueUsd = calChangesOf_Total_From_Items(
+      markets[marketKey].volumeRepaid.changedDay = calChangesOf_Total_From_Items(
         markets[marketKey].reserves.map((reserve) => {
           return {
-            value: reserve.volumeRepaid.valueUsd,
-            change: reserve.volumeRepaid.changedValueUsd ? reserve.volumeRepaid.changedValueUsd : 0,
+            value: reserve.volumeRepaid.value,
+            change: reserve.volumeRepaid.changedDay ? reserve.volumeRepaid.changedDay : 0,
           };
         }),
       );
-      markets[marketKey].feesPaidTheoretically.changedValueUsd = calChangesOf_Total_From_Items(
+      markets[marketKey].feesPaidTheoretically.changedDay = calChangesOf_Total_From_Items(
         markets[marketKey].reserves.map((reserve) => {
           return {
-            value: reserve.feesPaidTheoretically.valueUsd,
-            change: reserve.feesPaidTheoretically.changedValueUsd ? reserve.feesPaidTheoretically.changedValueUsd : 0,
+            value: reserve.feesPaidTheoretically.value,
+            change: reserve.feesPaidTheoretically.changedDay ? reserve.feesPaidTheoretically.changedDay : 0,
           };
         }),
       );
@@ -212,39 +197,84 @@ export default class CrossLendingDataTransformer {
       );
     }
 
-    const totalDeposited = transformValueWithTokenPrice(currentLast24Hours, previousLast24Hours, 'totalDeposited');
-    const totalBorrowed = transformValueWithTokenPrice(currentLast24Hours, previousLast24Hours, 'totalBorrowed');
+    // Fee = TotalBorrow * BorrowRate / 365
+    let feesPaidPrevious = 0;
+    let feesPaidCurrent =
+      (convertToNumber(currentLast24Hours.totalBorrowed) * convertToNumber(currentLast24Hours.rateBorrow)) /
+      TimeUnits.DaysPerYear;
+    if (currentLast24Hours.rateBorrowStable) {
+      feesPaidCurrent +=
+        (convertToNumber(currentLast24Hours.totalBorrowed) * convertToNumber(currentLast24Hours.rateBorrowStable)) /
+        TimeUnits.DaysPerYear;
+    }
+    if (previousLast24Hours) {
+      feesPaidPrevious =
+        (convertToNumber(previousLast24Hours.totalBorrowed) * convertToNumber(previousLast24Hours.rateBorrow)) /
+        TimeUnits.DaysPerYear;
+      if (previousLast24Hours.rateBorrowStable) {
+        feesPaidPrevious +=
+          (convertToNumber(previousLast24Hours.totalBorrowed) * convertToNumber(previousLast24Hours.rateBorrowStable)) /
+          TimeUnits.DaysPerYear;
+      }
+    }
 
-    const totalValueLocked: DataValueItem = {
+    const totalDeposited = transformTokenValueToUsd({
+      currentValue: currentLast24Hours,
+      previousValue: previousLast24Hours,
+      tokenPriceField: 'tokenPrice',
+      tokenValueField: 'totalDeposited',
+    });
+    const totalBorrowed = transformTokenValueToUsd({
+      currentValue: currentLast24Hours,
+      previousValue: previousLast24Hours,
+      tokenPriceField: 'tokenPrice',
+      tokenValueField: 'totalDeposited',
+    });
+
+    const totalValueLocked: DataValue = {
       value: totalDeposited.value - totalBorrowed.value,
-      valueUsd: totalDeposited.valueUsd - totalBorrowed.valueUsd,
-      changedValue: calChangesOf_Two_Number_Diff(
+      changedDay: calChangesOf_Two_Number_Diff(
         {
           value: totalDeposited.value,
-          change: totalDeposited.changedValue ? totalDeposited.changedValue : '0',
+          change: totalDeposited.changedDay ? totalDeposited.changedDay : '0',
         },
         {
           value: totalBorrowed.value,
-          change: totalBorrowed.changedValue ? totalBorrowed.changedValue : '0',
-        },
-      ),
-      changedValueUsd: calChangesOf_Two_Number_Diff(
-        {
-          value: totalDeposited.valueUsd,
-          change: totalDeposited.changedValueUsd ? totalDeposited.changedValueUsd : '0',
-        },
-        {
-          value: totalBorrowed.valueUsd,
-          change: totalBorrowed.changedValueUsd ? totalBorrowed.changedValueUsd : '0',
+          change: totalBorrowed.changedDay ? totalBorrowed.changedDay : '0',
         },
       ),
     };
 
-    const volumeDeposited = transformValueWithTokenPrice(currentLast24Hours, previousLast24Hours, 'volumeDeposited');
-    const volumeWithdrawn = transformValueWithTokenPrice(currentLast24Hours, previousLast24Hours, 'volumeWithdrawn');
-    const volumeBorrowed = transformValueWithTokenPrice(currentLast24Hours, previousLast24Hours, 'volumeBorrowed');
-    const volumeRepaid = transformValueWithTokenPrice(currentLast24Hours, previousLast24Hours, 'volumeRepaid');
-    const volumeLiquidated = transformValueWithTokenPrice(currentLast24Hours, previousLast24Hours, 'volumeLiquidated');
+    const volumeDeposited = transformTokenValueToUsd({
+      currentValue: currentLast24Hours,
+      previousValue: previousLast24Hours,
+      tokenPriceField: 'tokenPrice',
+      tokenValueField: 'volumeDeposited',
+    });
+    const volumeWithdrawn = transformTokenValueToUsd({
+      currentValue: currentLast24Hours,
+      previousValue: previousLast24Hours,
+      tokenPriceField: 'tokenPrice',
+      tokenValueField: 'volumeWithdrawn',
+    });
+    const volumeBorrowed = transformTokenValueToUsd({
+      currentValue: currentLast24Hours,
+      previousValue: previousLast24Hours,
+      tokenPriceField: 'tokenPrice',
+      tokenValueField: 'volumeBorrowed',
+    });
+    const volumeRepaid = transformTokenValueToUsd({
+      currentValue: currentLast24Hours,
+      previousValue: previousLast24Hours,
+      tokenPriceField: 'tokenPrice',
+      tokenValueField: 'volumeRepaid',
+    });
+    const volumeLiquidated = transformTokenValueToUsd({
+      currentValue: currentLast24Hours,
+      previousValue: previousLast24Hours,
+      tokenPriceField: 'tokenPrice',
+      tokenValueField: 'volumeLiquidated',
+    });
 
     return {
       metric: currentLast24Hours.metric,
@@ -268,33 +298,56 @@ export default class CrossLendingDataTransformer {
       volumeRepaid: volumeRepaid,
       volumeLiquidated: volumeLiquidated,
 
-      feesPaidTheoretically: transformValueWithTokenPrice(
-        {
-          tokenPrice: currentLast24Hours.tokenPrice,
-          feesPaidTheoretically: feesIn24hs.toString(10),
-        },
-        previousLast24Hours
-          ? {
-              tokenPrice: previousLast24Hours.tokenPrice,
-              feesPaidTheoretically: new BigNumber(previousLast24Hours.totalBorrowed)
-                .multipliedBy(new BigNumber(previousLast24Hours.rateBorrow))
-                .toString(10),
-            }
-          : null,
-        'feesPaidTheoretically',
-      ),
+      feesPaidTheoretically: {
+        value: feesPaidCurrent,
+        changedDay: calChangesOf_Current_From_Previous(feesPaidCurrent, feesPaidPrevious),
+      },
 
-      rateSupply: convertToPercentage(currentLast24Hours.rateSupply),
-      rateBorrow: convertToPercentage(currentLast24Hours.rateBorrow),
+      rateSupply: {
+        value: convertRateToPercentage(currentLast24Hours.rateSupply),
+        changedDay: previousLast24Hours
+          ? calChangesOf_Current_From_Previous(currentLast24Hours.rateSupply, previousLast24Hours.rateSupply)
+          : undefined,
+      },
+      rateBorrow: {
+        value: convertRateToPercentage(currentLast24Hours.rateBorrow),
+        changedDay: previousLast24Hours
+          ? calChangesOf_Current_From_Previous(currentLast24Hours.rateBorrow, previousLast24Hours.rateBorrow)
+          : undefined,
+      },
       rateBorrowStable: currentLast24Hours.rateBorrowStable
-        ? convertToPercentage(currentLast24Hours.rateBorrowStable)
+        ? {
+            value: convertRateToPercentage(currentLast24Hours.rateBorrowStable),
+            changedDay:
+              previousLast24Hours && previousLast24Hours.rateBorrowStable
+                ? calChangesOf_Current_From_Previous(
+                    currentLast24Hours.rateBorrowStable,
+                    previousLast24Hours.rateBorrowStable,
+                  )
+                : undefined,
+          }
         : undefined,
-      rateRewardSupply: convertToPercentage(currentLast24Hours.rateRewardSupply),
-      rateRewardBorrow: convertToPercentage(currentLast24Hours.rateRewardBorrow),
-      rateRewardBorrowStable: currentLast24Hours.rateRewardBorrowStable
-        ? convertToPercentage(currentLast24Hours.rateRewardBorrowStable)
-        : undefined,
-      rateLoanToValue: convertToPercentage(currentLast24Hours.rateLoanToValue),
+
+      rateLoanToValue: convertRateToPercentage(currentLast24Hours.rateLoanToValue),
+
+      numberOfUsers: {
+        value: currentLast24Hours.addresses.length,
+        changedDay: previousLast24Hours
+          ? calChangesOf_Current_From_Previous(
+              currentLast24Hours.addresses.length,
+              previousLast24Hours.addresses.length,
+            )
+          : undefined,
+      },
+      numberOfTransactions: {
+        value: currentLast24Hours.transactions.length,
+        changedDay: previousLast24Hours
+          ? calChangesOf_Current_From_Previous(
+              currentLast24Hours.transactions.length,
+              previousLast24Hours.transactions.length,
+            )
+          : undefined,
+      },
     };
   }
 
@@ -307,57 +360,30 @@ export default class CrossLendingDataTransformer {
       reserveSnapshots.map((snapshot) => {
         return {
           timestamp: snapshot.timestamp,
-          totalValueLocked: snapshot.totalDeposited.valueUsd - snapshot.totalBorrowed.valueUsd,
-          totalDeposited: snapshot.totalDeposited.valueUsd,
-          totalBorrowed: snapshot.totalBorrowed.valueUsd,
-          feesPaidTheoretically: snapshot.feesPaidTheoretically.valueUsd,
-          volumeDeposited: snapshot.volumeDeposited.valueUsd,
-          volumeWithdrawn: snapshot.volumeWithdrawn.valueUsd,
-          volumeBorrowed: snapshot.volumeBorrowed.valueUsd,
-          volumeRepaid: snapshot.volumeRepaid.valueUsd,
-          volumeLiquidated: snapshot.volumeLiquidated.valueUsd,
+          totalValueLocked: snapshot.totalDeposited.value - snapshot.totalBorrowed.value,
+          totalDeposited: snapshot.totalDeposited.value,
+          totalBorrowed: snapshot.totalBorrowed.value,
+          feesPaidTheoretically: snapshot.feesPaidTheoretically.value,
+          volumeDeposited: snapshot.volumeDeposited.value,
+          volumeWithdrawn: snapshot.volumeWithdrawn.value,
+          volumeBorrowed: snapshot.volumeBorrowed.value,
+          volumeRepaid: snapshot.volumeRepaid.value,
+          volumeLiquidated: snapshot.volumeLiquidated.value,
         };
       }),
       'timestamp',
     ).map((item) => {
       return {
         timestamp: item.timestamp,
-        totalValueLocked: {
-          value: item.totalValueLocked,
-          valueUsd: item.totalValueLocked,
-        },
-        totalDeposited: {
-          value: item.totalDeposited,
-          valueUsd: item.totalDeposited,
-        },
-        totalBorrowed: {
-          value: item.totalBorrowed,
-          valueUsd: item.totalBorrowed,
-        },
-        feesPaidTheoretically: {
-          value: item.feesPaidTheoretically,
-          valueUsd: item.feesPaidTheoretically,
-        },
-        volumeDeposited: {
-          value: item.volumeDeposited,
-          valueUsd: item.volumeDeposited,
-        },
-        volumeWithdrawn: {
-          value: item.volumeWithdrawn,
-          valueUsd: item.volumeWithdrawn,
-        },
-        volumeBorrowed: {
-          value: item.volumeBorrowed,
-          valueUsd: item.volumeBorrowed,
-        },
-        volumeRepaid: {
-          value: item.volumeRepaid,
-          valueUsd: item.volumeRepaid,
-        },
-        volumeLiquidated: {
-          value: item.volumeLiquidated,
-          valueUsd: item.volumeLiquidated,
-        },
+        totalValueLocked: item.totalValueLocked,
+        totalDeposited: item.totalDeposited,
+        totalBorrowed: item.totalBorrowed,
+        feesPaidTheoretically: item.feesPaidTheoretically,
+        volumeDeposited: item.volumeDeposited,
+        volumeWithdrawn: item.volumeWithdrawn,
+        volumeBorrowed: item.volumeBorrowed,
+        volumeRepaid: item.volumeRepaid,
+        volumeLiquidated: item.volumeLiquidated,
       };
     });
   }
