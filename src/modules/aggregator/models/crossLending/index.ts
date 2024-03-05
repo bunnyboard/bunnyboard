@@ -21,6 +21,7 @@ import BaseDataAggregator from '../../base';
 import CrossLendingDataTransformer from './transform';
 
 const DataFields: Array<string> = [
+  'totalValueLocked',
   'totalDeposited',
   'totalBorrowed',
   'feesPaidTheoretically',
@@ -99,6 +100,8 @@ export default class CrossLendingDataAggregator extends BaseDataAggregator {
     dataState.dayData = CrossLendingDataTransformer.transformCrossReservesToDayData(
       snapshots.map((snapshot) => CrossLendingDataTransformer.transformCrossLendingReserveSnapshot(snapshot, null)),
     );
+
+    console.log(dataState);
 
     return dataState;
   }

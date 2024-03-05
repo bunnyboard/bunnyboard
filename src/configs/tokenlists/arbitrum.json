@@ -47,6 +47,12 @@
     "decimals": 18,
     "address": "0x47904963fc8b2340414262125af798b9655e58cd"
   },
+  "0x565609faf65b92f7be02468acf86f8979423e514": {
+    "chain": "arbitrum",
+    "address": "0x565609faf65b92f7be02468acf86f8979423e514",
+    "symbol": "WAVAX",
+    "decimals": 18
+  },
   "0x5979d7b546e38e414f7e9822514be443a4800529": {
     "chain": "arbitrum",
     "address": "0x5979d7b546e38e414f7e9822514be443a4800529",

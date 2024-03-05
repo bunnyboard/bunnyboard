@@ -1,5 +1,3 @@
-import BigNumber from 'bignumber.js';
-
 import { TimeUnits } from '../../../../configs/constants';
 import { groupAndSumObjectList } from '../../../../lib/helper';
 import {
@@ -125,7 +123,7 @@ export default class CrossLendingDataTransformer {
           };
         }),
       );
-      markets[marketKey].totalBorrowed.value = calChangesOf_Total_From_Items(
+      markets[marketKey].totalBorrowed.changedDay = calChangesOf_Total_From_Items(
         markets[marketKey].reserves.map((reserve) => {
           return {
             value: reserve.totalBorrowed.value,
@@ -185,18 +183,6 @@ export default class CrossLendingDataTransformer {
     // from CurrentTime - 2 * DAY -> CurrentTime - DAY
     previousLast24Hours: CrossLendingReserveDataTimeframe | null,
   ): AggCrossLendingReserveSnapshot {
-    // Fees = FeesBorrow + FeesBorrowStable
-    let feesIn24hs = new BigNumber(currentLast24Hours.totalBorrowed).multipliedBy(
-      new BigNumber(currentLast24Hours.rateBorrow),
-    );
-    if (currentLast24Hours.rateBorrowStable && currentLast24Hours.totalBorrowedStable) {
-      feesIn24hs = feesIn24hs.plus(
-        new BigNumber(currentLast24Hours.totalBorrowedStable).multipliedBy(
-          new BigNumber(currentLast24Hours.rateBorrowStable),
-        ),
-      );
-    }
-
     // Fee = TotalBorrow * BorrowRate / 365
     let feesPaidPrevious = 0;
     let feesPaidCurrent =
@@ -228,7 +214,7 @@ export default class CrossLendingDataTransformer {
       currentValue: currentLast24Hours,
       previousValue: previousLast24Hours,
       tokenPriceField: 'tokenPrice',
-      tokenValueField: 'totalDeposited',
+      tokenValueField: 'totalBorrowed',
     });
 
     const totalValueLocked: DataValue = {

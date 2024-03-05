@@ -114,6 +114,7 @@ export const OracleConfigs: { [key: string]: { [key: string]: OracleConfig } } =
     '0xb46a094bc4b0adbd801e14b9db95e05e28962764': OracleSourceConfigs.LTC,
     '0xc14e065b0067de91534e032868f5ac6ecf2c6868': OracleSourceConfigs.XRP,
     '0xc4da4c24fd591125c3f47b340b6f4f76111883d8': OracleSourceConfigs.DOGE,
+    '0x565609faf65b92f7be02468acf86f8979423e514': OracleSourceConfigs.AVAX,
   },
 
   // tokens on Optimism
