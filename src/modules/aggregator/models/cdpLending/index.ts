@@ -1,8 +1,14 @@
+import { TimeUnits } from '../../../../configs/constants';
 import EnvConfig from '../../../../configs/envConfig';
 import logger from '../../../../lib/logger';
 import { calChangesOf_Total_From_Items } from '../../../../lib/math';
 import { IDatabaseService } from '../../../../services/database/domains';
-import { AggCdpLendingDataOverall } from '../../../../types/aggregates/cdpLending';
+import {
+  AggCdpLendingCollateralSnapshot,
+  AggCdpLendingDataOverall,
+  AggCdpLendingMarketDataOverall,
+  AggCdpLendingMarketSnapshot,
+} from '../../../../types/aggregates/cdpLending';
 import { DataValue } from '../../../../types/aggregates/common';
 import { CdpLendingAssetDataStateWithTimeframes } from '../../../../types/collectors/cdpLending';
 import { DataMetrics } from '../../../../types/configs';
@@ -103,6 +109,160 @@ export default class CdpLendingDataAggregator extends BaseDataAggregator {
     } else {
       return await this.getDataOverallInternal();
     }
+  }
+
+  // get a list of market data at a given timestamp
+  // if the timestamp was zero, return latest state
+  public async getMarkets(timestamp: number): Promise<Array<AggCdpLendingMarketSnapshot>> {
+    let snapshots: Array<any>;
+    if (timestamp === 0) {
+      snapshots = await this.database.query({
+        collection: EnvConfig.mongodb.collections.cdpLendingAssetStates.name,
+        query: {},
+      });
+    } else {
+      snapshots = await this.database.query({
+        collection: EnvConfig.mongodb.collections.cdpLendingAssetSnapshots.name,
+        query: {
+          timestamp: timestamp,
+        },
+      });
+    }
+
+    const markets: Array<AggCdpLendingMarketSnapshot> = [];
+    for (const snapshot of snapshots) {
+      const previousSnapshot = snapshot.last24Hours
+        ? snapshot.last24Hours
+        : snapshot.last24Hours
+          ? snapshot.last24Hours
+          : await this.database.find({
+              collection: EnvConfig.mongodb.collections.cdpLendingAssetSnapshots.name,
+              query: {
+                chain: snapshot.chain,
+                protocol: snapshot.protocol,
+                'token.address': snapshot.token.address,
+                timestamp: snapshot.timestamp - TimeUnits.SecondsPerDay,
+              },
+            });
+
+      markets.push(CdpLendingDataTransformer.transformCdpLendingMarketSnapshot(snapshot, previousSnapshot));
+    }
+
+    return markets;
+  }
+
+  // get a market detail includes current states and history day data
+  public async getMarket(
+    protocol: string,
+    chain: string,
+    token: string,
+  ): Promise<AggCdpLendingMarketDataOverall | null> {
+    // get state
+    const state = await this.database.find({
+      collection: EnvConfig.mongodb.collections.cdpLendingAssetStates.name,
+      query: {
+        protocol,
+        chain,
+        'token.address': token,
+      },
+    });
+
+    if (state) {
+      const marketData: AggCdpLendingMarketDataOverall = {
+        ...CdpLendingDataTransformer.transformCdpLendingMarketSnapshot(state, state.last24Hours),
+        dayData: [],
+      };
+
+      const snapshots = await this.database.query({
+        collection: EnvConfig.mongodb.collections.cdpLendingAssetSnapshots.name,
+        query: {
+          protocol,
+          chain,
+          'token.address': token,
+        },
+      });
+
+      const marketSnapshots: Array<AggCdpLendingMarketSnapshot> = [];
+      for (const snapshot of snapshots) {
+        const previousSnapshot = snapshots.filter(
+          (item) =>
+            item.chain === snapshot.chain &&
+            item.protocol === snapshot.protocol &&
+            item.token.address === snapshot.token.address &&
+            item.timestamp === snapshot.timestamp - TimeUnits.SecondsPerDay,
+        )[0];
+
+        marketSnapshots.push(CdpLendingDataTransformer.transformCdpLendingMarketSnapshot(snapshot, previousSnapshot));
+      }
+
+      marketData.dayData = CdpLendingDataTransformer.transformCdpLendingDayData(marketSnapshots);
+
+      return marketData;
+    }
+
+    return null;
+  }
+
+  // get list collateral assets of given market at given timestamp
+  // if the timestamp is zero, return current data state
+  public async getMarketCollaterals(
+    protocol: string,
+    chain: string,
+    token: string,
+    timestamp: number,
+  ): Promise<Array<AggCdpLendingCollateralSnapshot>> {
+    const collaterals: Array<AggCdpLendingCollateralSnapshot> = [];
+
+    const currentMarketData =
+      timestamp === 0
+        ? await this.database.find({
+            collection: EnvConfig.mongodb.collections.cdpLendingAssetStates.name,
+            query: {
+              protocol,
+              chain,
+              'token.address': token,
+            },
+          })
+        : await this.database.find({
+            collection: EnvConfig.mongodb.collections.cdpLendingAssetSnapshots.name,
+            query: {
+              protocol,
+              chain,
+              'token.address': token,
+              timestamp: timestamp,
+            },
+          });
+    const previousMarketData =
+      timestamp === 0
+        ? currentMarketData.last24Hours
+        : await this.database.find({
+            collection: EnvConfig.mongodb.collections.cdpLendingAssetSnapshots.name,
+            query: {
+              protocol,
+              chain,
+              'token.address': token,
+              timestamp: timestamp - TimeUnits.SecondsPerDay,
+            },
+          });
+
+    if (currentMarketData) {
+      for (const collateral of currentMarketData.collaterals) {
+        const previousCollateral = previousMarketData
+          ? previousMarketData.collaterals.filter(
+              (item: any) => item.chain === chain && item.protocol === protocol && item.token.address === token,
+            )
+          : undefined;
+
+        const snapshot = CdpLendingDataTransformer.transformCdpLendingCollateralSnapshot(
+          collateral,
+          previousCollateral,
+        );
+
+        collaterals.push(snapshot);
+      }
+    }
+
+    return collaterals;
   }
 
   public async runUpdate(): Promise<void> {

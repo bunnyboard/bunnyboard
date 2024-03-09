@@ -117,3 +117,7 @@ export interface AggCdpLendingDataOverall {
   // all-time day data
   dayData: Array<AggCdpLendingDayData>;
 }
+
+export interface AggCdpLendingMarketDataOverall extends AggCdpLendingMarketSnapshot {
+  dayData: Array<AggCdpLendingDayData>;
+}
