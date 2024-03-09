@@ -12,7 +12,7 @@ export function getRouter(storages: ContextStorages): Router {
 
   // get overall data across all markets
   router.get('/overall', async (request: Request, response: Response) => {
-    const cacheKey = generateDataHashMD5(`crossLending-overall`);
+    const cacheKey = generateDataHashMD5(`cdpLending-overall`);
     const cacheData = await storages.memcache.getCachingData(cacheKey);
 
     if (cacheData) {
@@ -38,7 +38,7 @@ export function getRouter(storages: ContextStorages): Router {
   router.get('/markets', async (request: Request, response: Response) => {
     const timestamp = request.query.timestamp ? Number(request.query.timestamp) : 0;
 
-    const cacheKey = generateDataHashMD5(`crossLending-markets-${timestamp}`);
+    const cacheKey = generateDataHashMD5(`cdpLending-markets-${timestamp}`);
     const cacheData = await storages.memcache.getCachingData(cacheKey);
 
     if (cacheData) {
@@ -64,7 +64,7 @@ export function getRouter(storages: ContextStorages): Router {
     const { chain, protocol, debtTokenAddress } = request.params;
     const tokenAddress = normalizeAddress(debtTokenAddress);
 
-    const cacheKey = generateDataHashMD5(`crossLending-market-${protocol}-${chain}-${tokenAddress}`);
+    const cacheKey = generateDataHashMD5(`cdpLending-market-${protocol}-${chain}-${tokenAddress}`);
     const cacheData = await storages.memcache.getCachingData(cacheKey);
 
     if (cacheData) {
@@ -91,7 +91,7 @@ export function getRouter(storages: ContextStorages): Router {
     const timestamp = request.query.timestamp ? Number(request.query.timestamp) : 0;
     const tokenAddress = normalizeAddress(debtTokenAddress);
 
-    const cacheKey = generateDataHashMD5(`crossLending-collaterals-${protocol}-${chain}-${tokenAddress}-${timestamp}`);
+    const cacheKey = generateDataHashMD5(`cdpLending-collaterals-${protocol}-${chain}-${tokenAddress}-${timestamp}`);
     const cacheData = await storages.memcache.getCachingData(cacheKey);
 
     if (cacheData) {
