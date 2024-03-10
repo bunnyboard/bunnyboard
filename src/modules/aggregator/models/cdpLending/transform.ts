@@ -115,15 +115,6 @@ export default class CdpLendingDataTransformer {
             )
           : undefined,
       },
-      feeBorrow: {
-        value: convertRateToPercentage(currentLast24Hours.feeBorrow),
-        changedDay: previousLast24Hours
-          ? calPreviousOf_Current_And_Change(
-              convertRateToPercentage(currentLast24Hours.feeBorrow),
-              convertRateToPercentage(previousLast24Hours.feeBorrow),
-            )
-          : undefined,
-      },
 
       rateLoanToValue: convertRateToPercentage(currentLast24Hours.rateLoanToValue),
     };

@@ -19,7 +19,6 @@ export interface AggCdpLendingCollateralSnapshot extends DataTimeframe {
 
   // current borrowing rate
   rateBorrow: DataValue;
-  feeBorrow: DataValue;
 
   rateLoanToValue: number;
 

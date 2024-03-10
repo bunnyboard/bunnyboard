@@ -29,7 +29,7 @@ const DataFields: Array<string> = [
   'volumeCollateralLiquidated',
 ];
 
-const OverallDataCachingKey = `CdpLendingOverallData`;
+const OverallDataCachingKey = 'CdpLendingOverallData';
 
 export default class CdpLendingDataAggregator extends BaseDataAggregator {
   public readonly name: string = 'aggregator.cdpLending';

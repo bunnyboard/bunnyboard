@@ -38,7 +38,7 @@ export interface GetCrossLendingReserveOptions {
   tokenAddress: string;
 }
 
-const OverallDataCachingKey = `CrossLendingOverallData`;
+const OverallDataCachingKey = 'CrossLendingOverallData';
 
 export default class CrossLendingDataAggregator extends BaseDataAggregator {
   public readonly name: string = 'aggregator.crossLending';
