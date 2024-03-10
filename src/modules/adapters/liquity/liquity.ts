@@ -311,25 +311,9 @@ export default class LiquityAdapter extends ProtocolAdapter {
           data: log.data,
           topics: log.topics,
         });
-        const amount = formatBigNumberToString(event.args._debt.toString(), debtToken.decimals);
         const collateralAmount = formatBigNumberToString(event.args._coll.toString(), trove.collateralToken.decimals);
         const borrower = normalizeAddress(event.args._borrower);
 
-        if (amount !== '0') {
-          result.activities.push({
-            chain: marketConfig.chain,
-            protocol: this.config.protocol,
-            address: address,
-            transactionHash: log.transactionHash,
-            logIndex: `${log.logIndex.toString()}:0`,
-            blockNumber: Number(log.blockNumber),
-            timestamp: log.timestamp,
-            action: ActivityActions.repay,
-            user: borrower,
-            token: debtToken,
-            tokenAmount: amount,
-          });
-        }
         if (collateralAmount !== '0') {
           result.activities.push({
             chain: marketConfig.chain,
@@ -452,7 +436,6 @@ export default class LiquityAdapter extends ProtocolAdapter {
           (activity) =>
             activity.chain === stateData.chain &&
             activity.protocol === stateData.protocol &&
-            activity.address === options.config.address &&
             activity.token.address === collateral.token.address,
         );
         for (const event of collateralEvents) {

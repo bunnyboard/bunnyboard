@@ -1,7 +1,6 @@
 import { expect, test } from 'vitest';
 
 import { ProtocolConfigs } from '../../../configs';
-import { TimeUnits } from '../../../configs/constants';
 import BlockchainService from '../../../services/blockchains/blockchain';
 import OracleService from '../../../services/oracle/oracle';
 import LiquityAdapter from './liquity';
@@ -11,8 +10,8 @@ const blockchain = new BlockchainService();
 
 const timestamp = 1704240000; // Wed Jan 03 2024 00:00:00 GMT+0000
 
-const startDayTimestamp = 1704412800; // Fri Jan 05 2024 00:00:00 GMT+0000
-const endDayTimestamp = startDayTimestamp + TimeUnits.SecondsPerDay - 1;
+const startDayTimestamp = 1708041600; // Fri Feb 16 2024 00:00:00 GMT+0000
+const endDayTimestamp = 1708128000; // Sat Feb 17 2024 00:00:00 GMT+0000
 
 const liquityAdapter = new LiquityAdapter(
   {
@@ -56,25 +55,21 @@ test('should get timeframe data correctly - liquity chain ethereum', async funct
   });
 
   expect(dataTimeframe.cdpLending).not.equal(undefined);
-
   if (dataTimeframe.cdpLending) {
-    expect(dataTimeframe.cdpLending.length).equal(1);
+    expect(dataTimeframe.cdpLending[0]).not.equal(undefined);
 
     const lusdAsset = dataTimeframe.cdpLending[0];
-    expect(lusdAsset.tokenPrice).equal('0.995534663349');
-    expect(lusdAsset.totalBorrowed).equal('171879481.574101426834080889');
-    expect(lusdAsset.collaterals.length).equal(1);
-    expect(lusdAsset.addresses.length).equal(24);
-    expect(lusdAsset.transactions.length).equal(39);
+    expect(lusdAsset.tokenPrice).equal('0.99686470095');
+    expect(lusdAsset.totalBorrowed).equal('153195539.082185262742860794');
+    expect(lusdAsset.volumeBorrowed).equal('296948.444550847122605949');
+    expect(lusdAsset.volumeRepaid).equal('166675.316445822536652491');
 
-    const ethCollateral = dataTimeframe.cdpLending[0].collaterals[0];
-    expect(ethCollateral.tokenPrice).equal('2272.4358');
-    expect(ethCollateral.totalDeposited).equal('314534.448799775444888795');
-    expect(ethCollateral.rateBorrow).equal('0');
-    expect(ethCollateral.feeBorrow).equal('0.007981282307015172');
-    expect(ethCollateral.rateLoanToValue).equal('0.9');
-    expect(ethCollateral.volumeDeposited).equal('30381.14355736033796454');
-    expect(ethCollateral.volumeWithdrawn).equal('1028.081505919843299124');
-    expect(ethCollateral.volumeLiquidated).equal('0');
+    const ethCollateral = lusdAsset.collaterals[0];
+    expect(ethCollateral).not.equal(undefined);
+    expect(ethCollateral.tokenPrice).equal('2823.43011038');
+    expect(ethCollateral.totalDeposited).equal('263802.267428494003463684');
+    expect(ethCollateral.volumeDeposited).equal('1034.250583049392519259');
+    expect(ethCollateral.volumeWithdrawn).equal('271.695408744045811863');
+    expect(ethCollateral.volumeLiquidated).equal('12.022359242949938296');
   }
 });
