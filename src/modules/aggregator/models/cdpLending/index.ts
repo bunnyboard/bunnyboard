@@ -256,6 +256,7 @@ export default class CdpLendingDataAggregator extends BaseDataAggregator {
         const snapshot = CdpLendingDataTransformer.transformCdpLendingCollateralSnapshot(
           collateral,
           previousCollateral,
+          currentMarketData.tokenPrice,
         );
 
         collaterals.push(snapshot);

@@ -165,7 +165,10 @@ export default class MakerAdapter extends ProtocolAdapter {
         // spot is the collateral ratio borrowers must maintain to avoid liquidation
         // for example 145%
         // so, the loan to value = 100 % / 145% = 68.96%
-        const loanToValue = new BigNumber(100).multipliedBy(SolidityUnits.OneRay).dividedBy(new BigNumber(spot));
+        const loanToValue = new BigNumber(100)
+          .multipliedBy(SolidityUnits.OneRay)
+          .dividedBy(new BigNumber(spot))
+          .dividedBy(100);
         const totalBorrowed = formatBigNumberToString(
           art.multipliedBy(rate).toString(10),
           SolidityUnits.RayDecimals + debtToken.decimals,

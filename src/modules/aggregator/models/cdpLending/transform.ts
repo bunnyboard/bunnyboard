@@ -3,6 +3,7 @@ import { groupAndSumObjectList } from '../../../../lib/helper';
 import {
   calChangesOf_Current_From_Previous,
   calPreviousOf_Current_And_Change,
+  calValueOf_Amount_With_Price,
   convertRateToPercentage,
   convertToNumber,
 } from '../../../../lib/math';
@@ -59,7 +60,20 @@ export default class CdpLendingDataTransformer {
     currentLast24Hours: CdpLendingCollateralDataTimeframe,
     // from CurrentTime - 2 * DAY -> CurrentTime - DAY
     previousLast24Hours: CdpLendingCollateralDataTimeframe | null | undefined,
+    // if the price was not given, use $1
+    debtTokenPrice: string | undefined | null,
   ): AggCdpLendingCollateralSnapshot {
+    const currentTotalBorrowValueUsd = calValueOf_Amount_With_Price(
+      currentLast24Hours.totalBorrowed ? currentLast24Hours.totalBorrowed : 0,
+      debtTokenPrice ? debtTokenPrice : 1,
+    );
+    const previousTotalBorrowValueUsd = previousLast24Hours
+      ? calValueOf_Amount_With_Price(
+          currentLast24Hours.totalBorrowed ? currentLast24Hours.totalBorrowed : 0,
+          debtTokenPrice ? debtTokenPrice : 1,
+        )
+      : 0;
+
     return {
       metric: currentLast24Hours.metric,
       timestamp: currentLast24Hours.timestamp,
@@ -79,12 +93,10 @@ export default class CdpLendingDataTransformer {
         tokenPriceField: 'tokenPrice',
       }),
       totalBorrowed: currentLast24Hours.totalBorrowed
-        ? transformTokenValueToUsd({
-            currentValue: currentLast24Hours,
-            previousValue: previousLast24Hours,
-            tokenValueField: 'totalBorrowed',
-            tokenPriceField: 'tokenPrice',
-          })
+        ? {
+            value: currentTotalBorrowValueUsd,
+            changedDay: calChangesOf_Current_From_Previous(currentTotalBorrowValueUsd, previousTotalBorrowValueUsd),
+          }
         : undefined,
 
       volumeDeposited: transformTokenValueToUsd({
@@ -148,7 +160,11 @@ export default class CdpLendingDataTransformer {
               collateral.token.address === item.token.address,
           )[0]
         : undefined;
-      return CdpLendingDataTransformer.transformCdpLendingCollateralSnapshot(collateral, previousCollateralDaySnapshot);
+      return CdpLendingDataTransformer.transformCdpLendingCollateralSnapshot(
+        collateral,
+        previousCollateralDaySnapshot,
+        currentLast24Hours.tokenPrice,
+      );
     });
 
     for (const collateral of collaterals) {
