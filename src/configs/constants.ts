@@ -9,8 +9,10 @@ export const TimeUnits = {
 
 // solidity unit
 export const SolidityUnits = {
+  OneWad: new BigNumber(1e18).toString(10),
   OneRay: new BigNumber(1e27).toString(10),
   OneRad: new BigNumber(1e45).toString(10),
+  WadDecimals: 18,
   RayDecimals: 27,
   RadDecimals: 45,
 };

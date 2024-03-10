@@ -518,9 +518,57 @@ export const OracleSourceConfigs: { [key: string]: OracleConfig } = {
     currency: 'eth',
     sources: [OracleSourceUniswapv2List.LRC_WETH],
   },
-  RWA001: {
+  MAKER_RWA001: {
     currency: 'usd',
     sources: [OracleSourceCustomList.MAKER_RWA001],
+  },
+  MAKER_RWA002: {
+    currency: 'usd',
+    sources: [OracleSourceCustomList.MAKER_RWA002],
+  },
+  MAKER_RWA003: {
+    currency: 'usd',
+    sources: [OracleSourceCustomList.MAKER_RWA003],
+  },
+  MAKER_RWA004: {
+    currency: 'usd',
+    sources: [OracleSourceCustomList.MAKER_RWA004],
+  },
+  MAKER_RWA005: {
+    currency: 'usd',
+    sources: [OracleSourceCustomList.MAKER_RWA005],
+  },
+  MAKER_RWA006: {
+    currency: 'usd',
+    sources: [OracleSourceCustomList.MAKER_RWA006],
+  },
+  MAKER_RWA007: {
+    currency: 'usd',
+    sources: [OracleSourceCustomList.MAKER_RWA007],
+  },
+  MAKER_RWA009: {
+    currency: 'usd',
+    sources: [OracleSourceCustomList.MAKER_RWA009],
+  },
+  MAKER_RWA008: {
+    currency: 'usd',
+    sources: [OracleSourceCustomList.MAKER_RWA008],
+  },
+  MAKER_RWA012: {
+    currency: 'usd',
+    sources: [OracleSourceCustomList.MAKER_RWA012],
+  },
+  MAKER_RWA013: {
+    currency: 'usd',
+    sources: [OracleSourceCustomList.MAKER_RWA013],
+  },
+  MAKER_RWA014: {
+    currency: 'usd',
+    sources: [OracleSourceCustomList.MAKER_RWA014],
+  },
+  MAKER_RWA015: {
+    currency: 'usd',
+    sources: [OracleSourceCustomList.MAKER_RWA015],
   },
   GMX: {
     currency: 'eth',

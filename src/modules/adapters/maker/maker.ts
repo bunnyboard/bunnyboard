@@ -93,7 +93,7 @@ export default class MakerAdapter extends ProtocolAdapter {
       timestamp: options.timestamp,
       token: marketConfig.debtToken,
       tokenPrice: debtTokenPrice ? debtTokenPrice : '0',
-      totalBorrowed: formatBigNumberToString(debt.toString(), SolidityUnits.RayDecimals),
+      totalBorrowed: formatBigNumberToString(debt.toString(), SolidityUnits.RadDecimals),
       collaterals: [],
     };
 

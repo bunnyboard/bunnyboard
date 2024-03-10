@@ -1,7 +1,8 @@
 import BigNumber from 'bignumber.js';
 
-import PipAbi from '../../configs/abi/maker/Pip.json';
+import VatAbi from '../../configs/abi/maker/Vat.json';
 import SavingDaiAbi from '../../configs/abi/spark/SavingDai.json';
+import { SolidityUnits } from '../../configs/constants';
 import { formatBigNumberToString } from '../../lib/utils';
 import BlockchainService from '../../services/blockchains/blockchain';
 import { OracleSourceBearingToken, OracleSourceMakerRwaPip } from '../../types/oracles';
@@ -30,17 +31,23 @@ export default class OracleLibs {
         break;
       }
       case 'makerRwaPip': {
+        config = config as OracleSourceMakerRwaPip;
         const blockchain = new BlockchainService();
-        const result = await blockchain.readContract({
+        const vatInfo = await blockchain.readContract({
           chain: config.chain,
-          abi: PipAbi,
+          abi: VatAbi,
           target: config.address,
-          method: 'read',
-          params: [],
+          method: 'ilks',
+          params: [config.ilk],
           blockNumber,
         });
-        if (result) {
-          return formatBigNumberToString(new BigNumber(result.toString(), 16).toString(10), 18);
+        if (vatInfo) {
+          const art = new BigNumber(vatInfo[0].toString());
+          const rate = new BigNumber(vatInfo[1].toString());
+          return formatBigNumberToString(
+            art.multipliedBy(rate).toString(10),
+            SolidityUnits.RayDecimals + SolidityUnits.WadDecimals,
+          );
         }
 
         break;

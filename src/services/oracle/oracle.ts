@@ -37,7 +37,8 @@ export default class OracleService extends CachingService implements IOracleServ
       | OracleSourceUniv2
       | OracleSourceUniv3
       | OracleSourceBearingToken
-      | OracleSourceCompoundOracle,
+      | OracleSourceCompoundOracle
+      | OracleSourceMakerRwaPip,
     timestamp: number,
   ): Promise<string | null> {
     const sourceCachingKey = `source:${source.type}:${source.chain}:${source.address}:${timestamp}`;

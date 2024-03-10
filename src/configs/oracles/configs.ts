@@ -80,7 +80,19 @@ export const OracleConfigs: { [key: string]: { [key: string]: OracleConfig } } =
     '0x1cc481ce2bd2ec7bf67d1be64d4878b16078f309': OracleSourceConfigs.CHF,
 
     // maker dao rwa
-    '0x10b2aa5d77aa6484886d8e244f0686ab319a270d': OracleSourceConfigs.RWA001,
+    '0x10b2aa5d77aa6484886d8e244f0686ab319a270d': OracleSourceConfigs.MAKER_RWA001,
+    '0xaaa760c2027817169d7c8db0dc61a2fb4c19ac23': OracleSourceConfigs.MAKER_RWA002,
+    '0x07f0a80ad7aeb7bfb7f139ea71b3c8f7e17156b9': OracleSourceConfigs.MAKER_RWA003,
+    '0x873f2101047a62f84456e3b2b13df2287925d3f9': OracleSourceConfigs.MAKER_RWA004,
+    '0x6db236515e90fc831d146f5829407746eddc5296': OracleSourceConfigs.MAKER_RWA005,
+    '0x4ee03cfbf6e784c462839f5954d60f7c2b60b113': OracleSourceConfigs.MAKER_RWA006,
+    '0x078fb926b041a816facced3614cf1e4bc3c723bd': OracleSourceConfigs.MAKER_RWA007,
+    '0xb9737098b50d7c536b6416daeb32879444f59fca': OracleSourceConfigs.MAKER_RWA008,
+    '0x8b9734bbaa628bfc0c9f323ba08ed184e5b88da2': OracleSourceConfigs.MAKER_RWA009,
+    '0x3c7f1379b5ac286eb3636668deae71eaa5f7518c': OracleSourceConfigs.MAKER_RWA012,
+    '0xd6c7fd4392d328e4a8f8bc50f4128b64f4db2d4c': OracleSourceConfigs.MAKER_RWA013,
+    '0x75dca04c4acc1ffb0aef940e5b49e2c17416008a': OracleSourceConfigs.MAKER_RWA014,
+    '0xf5e5e706efc841bed1d24460cd04028075cdbfde': OracleSourceConfigs.MAKER_RWA015,
   },
 
   // tokens on Arbitrum One

@@ -53,7 +53,10 @@ export interface OracleSourceCompoundOracle extends OracleSourceBase {
 // this oracle using pip contract from Maker Dao
 // this support get price of MakerDao RWA
 // https://docs.makerdao.com/smart-contract-modules/core-module/spot-detailed-documentation
-export interface OracleSourceMakerRwaPip extends OracleSourceBase {}
+export interface OracleSourceMakerRwaPip extends OracleSourceBase {
+  // get from ilk from collateral join contract
+  ilk: string; //
+}
 
 export interface OracleConfig {
   // if the currency is not usd
@@ -67,6 +70,7 @@ export interface OracleConfig {
     | OracleSourceUniv3
     | OracleSourceBearingToken
     | OracleSourceCompoundOracle
+    | OracleSourceMakerRwaPip
   >;
 
   // if the coingecko id was given
