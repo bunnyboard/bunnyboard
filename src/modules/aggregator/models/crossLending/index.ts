@@ -29,6 +29,7 @@ const DataFields: Array<string> = [
   'volumeWithdrawn',
   'volumeBorrowed',
   'volumeRepaid',
+  'volumeLiquidated',
 ];
 
 export interface GetCrossLendingReserveOptions {
