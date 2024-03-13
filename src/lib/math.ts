@@ -34,6 +34,8 @@ export function calChangesOf_Current_From_Previous(
   const X = convertToNumber(current);
   const Y = convertToNumber(previous);
 
+  if (Y === 0) return 0;
+
   return ((X - Y) / Y) * 100;
 }
 

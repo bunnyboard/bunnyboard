@@ -69,7 +69,7 @@ export default class CdpLendingDataTransformer {
     );
     const previousTotalBorrowValueUsd = previousLast24Hours
       ? calValueOf_Amount_With_Price(
-          currentLast24Hours.totalBorrowed ? currentLast24Hours.totalBorrowed : 0,
+          previousLast24Hours.totalBorrowed ? previousLast24Hours.totalBorrowed : 0,
           debtTokenPrice ? debtTokenPrice : 1,
         )
       : 0;
@@ -157,7 +157,8 @@ export default class CdpLendingDataTransformer {
             (item) =>
               collateral.chain === item.chain &&
               collateral.protocol === item.protocol &&
-              collateral.token.address === item.token.address,
+              collateral.token.address === item.token.address &&
+              collateral.address === item.address,
           )[0]
         : undefined;
       return CdpLendingDataTransformer.transformCdpLendingCollateralSnapshot(
