@@ -49,6 +49,7 @@ export default class CdpLendingDataTransformer {
       volumeCollateralLiquidated: {
         value: 0,
       },
+      rateCollateralization: 0,
       markets: [],
       dayData: [],
     };
@@ -281,6 +282,8 @@ export default class CdpLendingDataTransformer {
           })
         : undefined,
 
+      rateCollateralization:
+        (totalCollateralDepositedCurrent / convertToNumber(currentLast24Hours.totalBorrowed)) * 100,
       feesPaidTheoretically: {
         value: feesPaidTheoreticallyCurrent,
         changedDay: calChangesOf_Current_From_Previous(feesPaidTheoreticallyCurrent, feesPaidTheoreticallyPrevious),

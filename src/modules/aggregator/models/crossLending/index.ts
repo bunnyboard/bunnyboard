@@ -30,6 +30,7 @@ const DataFields: Array<string> = [
   'volumeBorrowed',
   'volumeRepaid',
   'volumeLiquidated',
+  'volumeTotal',
 ];
 
 export interface GetCrossLendingReserveOptions {
@@ -301,9 +302,11 @@ export default class CrossLendingDataAggregator extends BaseDataAggregator {
             volumeBorrowed: snapshot.volumeBorrowed.value,
             volumeRepaid: snapshot.volumeRepaid.value,
             volumeLiquidated: snapshot.volumeLiquidated.value,
+            volumeTotal: snapshot.volumeTotal.value,
             feesPaidTheoretically: snapshot.feesPaidTheoretically.value,
             rateSupply: snapshot.rateSupply.value,
             rateBorrow: snapshot.rateBorrow.value,
+            rateUtilization: (snapshot.totalBorrowed.value / snapshot.totalDeposited.value) * 100,
             rateBorrowStable: snapshot.rateBorrowStable ? snapshot.rateBorrowStable.value : undefined,
           };
         }),

@@ -38,6 +38,8 @@ export interface AggCdpLendingMarketSnapshot extends DataTimeframe {
   totalDeposited?: DataValue;
   rateSupply?: DataValue;
 
+  rateCollateralization: number;
+
   // if borrow rate, interestDaily = totalBorrowed * rateBorrow
   // if borrow fee, interestDaily = volumeBorrowed * feeBorrow
   feesPaidTheoretically: DataValue;
@@ -109,6 +111,8 @@ export interface AggCdpLendingDataOverall {
   volumeCollateralDeposited: DataValue;
   volumeCollateralWithdrawn: DataValue;
   volumeCollateralLiquidated: DataValue;
+
+  rateCollateralization: number;
 
   // last 24h market snapshots
   markets: Array<AggCdpLendingMarketSnapshot>;

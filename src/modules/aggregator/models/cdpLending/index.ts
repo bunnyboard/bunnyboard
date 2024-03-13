@@ -93,6 +93,9 @@ export default class CdpLendingDataAggregator extends BaseDataAggregator {
       snapshots.map((snapshot) => CdpLendingDataTransformer.transformCdpLendingMarketSnapshot(snapshot, null)),
     );
 
+    dataOverall.rateCollateralization =
+      (dataOverall.totalCollateralDeposited.value / dataOverall.totalBorrowed.value) * 100;
+
     return dataOverall;
   }
 

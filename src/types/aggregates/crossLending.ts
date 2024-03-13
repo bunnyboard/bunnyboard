@@ -20,6 +20,7 @@ export interface AggCrossLendingReserveSnapshot extends DataTimeframe {
   rateBorrowStable?: DataValue;
 
   rateLoanToValue: number;
+  rateUtilization: number;
 
   // last 24h volumes
   volumeDeposited: DataValue;
@@ -27,6 +28,7 @@ export interface AggCrossLendingReserveSnapshot extends DataTimeframe {
   volumeBorrowed: DataValue;
   volumeRepaid: DataValue;
   volumeLiquidated: DataValue;
+  volumeTotal: DataValue;
 
   // theoretically borrow fees will be paid
   // FeesPaidTheoretically = TotalBorrow * BorrowRate
@@ -46,6 +48,7 @@ export interface AggCrossLendingMarketSnapshot extends DataState {
   volumeBorrowed: DataValue;
   volumeRepaid: DataValue;
   volumeLiquidated: DataValue;
+  volumeTotal: DataValue;
 
   feesPaidTheoretically: DataValue;
 
@@ -66,6 +69,7 @@ export interface AggCrossLendingDayData {
   volumeBorrowed: number;
   volumeRepaid: number;
   volumeLiquidated: number;
+  volumeTotal: number;
 
   feesPaidTheoretically: number;
 }
@@ -81,6 +85,7 @@ export interface AggCrossLendingDataOverall {
   volumeBorrowed: DataValue;
   volumeRepaid: DataValue;
   volumeLiquidated: DataValue;
+  volumeTotal: DataValue;
 
   feesPaidTheoretically: DataValue;
 
@@ -101,6 +106,7 @@ export interface AggCrossLendingReserveDayData extends AggCrossLendingDayData {
   rateSupply: number;
   rateBorrow: number;
   rateBorrowStable?: number;
+  rateUtilization: number;
 }
 
 // overall data of a cross lending reserve

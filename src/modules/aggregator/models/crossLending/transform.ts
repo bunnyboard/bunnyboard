@@ -45,6 +45,9 @@ export default class CrossLendingDataTransformer {
       volumeLiquidated: {
         value: 0,
       },
+      volumeTotal: {
+        value: 0,
+      },
       feesPaidTheoretically: {
         value: 0,
       },
@@ -95,6 +98,9 @@ export default class CrossLendingDataTransformer {
           volumeLiquidated: {
             value: 0,
           },
+          volumeTotal: {
+            value: 0,
+          },
           feesPaidTheoretically: {
             value: 0,
           },
@@ -110,6 +116,7 @@ export default class CrossLendingDataTransformer {
       markets[marketId].volumeBorrowed.value += reserve.volumeBorrowed.value;
       markets[marketId].volumeRepaid.value += reserve.volumeRepaid.value;
       markets[marketId].volumeLiquidated.value += reserve.volumeLiquidated.value;
+      markets[marketId].volumeTotal.value += reserve.volumeTotal.value;
       markets[marketId].feesPaidTheoretically.value += reserve.feesPaidTheoretically.value;
 
       markets[marketId].reserves.push(reserve);
@@ -177,6 +184,14 @@ export default class CrossLendingDataTransformer {
           return {
             value: reserve.volumeLiquidated.value,
             change: reserve.volumeLiquidated.changedDay ? reserve.volumeLiquidated.changedDay : 0,
+          };
+        }),
+      );
+      markets[marketKey].volumeTotal.changedDay = calChangesOf_Total_From_Items(
+        markets[marketKey].reserves.map((reserve) => {
+          return {
+            value: reserve.volumeTotal.value,
+            change: reserve.volumeTotal.changedDay ? reserve.volumeTotal.changedDay : 0,
           };
         }),
       );
@@ -279,6 +294,37 @@ export default class CrossLendingDataTransformer {
       tokenValueField: 'volumeLiquidated',
     });
 
+    const volumeTotal: DataValue = {
+      value:
+        volumeDeposited.value +
+        volumeWithdrawn.value +
+        volumeBorrowed.value +
+        volumeRepaid.value +
+        volumeLiquidated.value,
+      changedDay: calChangesOf_Total_From_Items([
+        {
+          value: volumeDeposited.value,
+          change: volumeDeposited.changedDay ? volumeDeposited.changedDay : 0,
+        },
+        {
+          value: volumeWithdrawn.value,
+          change: volumeWithdrawn.changedDay ? volumeWithdrawn.changedDay : 0,
+        },
+        {
+          value: volumeBorrowed.value,
+          change: volumeBorrowed.changedDay ? volumeBorrowed.changedDay : 0,
+        },
+        {
+          value: volumeRepaid.value,
+          change: volumeRepaid.changedDay ? volumeRepaid.changedDay : 0,
+        },
+        {
+          value: volumeLiquidated.value,
+          change: volumeLiquidated.changedDay ? volumeLiquidated.changedDay : 0,
+        },
+      ]),
+    };
+
     return {
       metric: currentLast24Hours.metric,
       timestamp: currentLast24Hours.timestamp,
@@ -300,6 +346,7 @@ export default class CrossLendingDataTransformer {
       volumeBorrowed: volumeBorrowed,
       volumeRepaid: volumeRepaid,
       volumeLiquidated: volumeLiquidated,
+      volumeTotal: volumeTotal,
 
       feesPaidTheoretically: {
         value: feesPaidCurrent,
@@ -332,6 +379,7 @@ export default class CrossLendingDataTransformer {
         : undefined,
 
       rateLoanToValue: convertRateToPercentage(currentLast24Hours.rateLoanToValue),
+      rateUtilization: (totalBorrowed.value / totalDeposited.value) * 100,
 
       numberOfUsers: {
         value: currentLast24Hours.addresses.length,
@@ -372,6 +420,7 @@ export default class CrossLendingDataTransformer {
           volumeBorrowed: snapshot.volumeBorrowed.value,
           volumeRepaid: snapshot.volumeRepaid.value,
           volumeLiquidated: snapshot.volumeLiquidated.value,
+          volumeTotal: snapshot.volumeTotal.value,
         };
       }),
       'timestamp',
@@ -387,6 +436,7 @@ export default class CrossLendingDataTransformer {
         volumeBorrowed: item.volumeBorrowed,
         volumeRepaid: item.volumeRepaid,
         volumeLiquidated: item.volumeLiquidated,
+        volumeTotal: item.volumeTotal,
       };
     });
   }
