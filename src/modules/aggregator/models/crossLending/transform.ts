@@ -240,6 +240,10 @@ export default class CrossLendingDataTransformer {
       ),
     };
 
+    if (currentLast24Hours.token.address === '0x853d955acef822db058eb8505911ed77f175b99e') {
+      console.log(totalDeposited, totalBorrowed, totalValueLocked);
+    }
+
     const volumeDeposited = transformTokenValueToUsd({
       currentValue: currentLast24Hours,
       previousValue: previousLast24Hours,

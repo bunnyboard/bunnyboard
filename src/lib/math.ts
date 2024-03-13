@@ -101,14 +101,10 @@ export function calChangesOf_Total_From_Items(items: Array<ItemX>): number {
 // we have BTC market cap (T) is 800 and its change percentage in last 24 hours is 4%
 // we want to know the change percentage of other coins in the last 24 hours?
 export function calChangesOf_Two_Number_Diff(biggerNumber: ItemX, smallerNumber: ItemX): number {
-  const previousBiggerValue = new BigNumber(biggerNumber.value)
-    .multipliedBy(new BigNumber(biggerNumber.change))
-    .dividedBy(100);
-  const previousSmallerValue = new BigNumber(biggerNumber.value)
-    .multipliedBy(new BigNumber(smallerNumber.change))
-    .dividedBy(100);
-  const currentDiff = new BigNumber(biggerNumber.value).minus(new BigNumber(smallerNumber.value));
-  const previousDiff = new BigNumber(previousBiggerValue).minus(new BigNumber(previousSmallerValue));
+  const previousBigger = calPreviousOf_Current_And_Change(biggerNumber.value, biggerNumber.change);
+  const previousSmaller = calPreviousOf_Current_And_Change(smallerNumber.value, smallerNumber.change);
+  const currentDiff = new BigNumber(biggerNumber.value).minus(new BigNumber(smallerNumber.value)).toNumber();
+  const previousDiff = previousBigger - previousSmaller;
 
-  return currentDiff.minus(previousDiff).multipliedBy(100).dividedBy(previousDiff).toNumber();
+  return ((previousDiff - currentDiff) / previousDiff) * 100;
 }
