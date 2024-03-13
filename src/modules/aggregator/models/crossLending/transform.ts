@@ -172,6 +172,14 @@ export default class CrossLendingDataTransformer {
           };
         }),
       );
+      markets[marketKey].volumeLiquidated.changedDay = calChangesOf_Total_From_Items(
+        markets[marketKey].reserves.map((reserve) => {
+          return {
+            value: reserve.volumeLiquidated.value,
+            change: reserve.volumeLiquidated.changedDay ? reserve.volumeLiquidated.changedDay : 0,
+          };
+        }),
+      );
       markets[marketKey].feesPaidTheoretically.changedDay = calChangesOf_Total_From_Items(
         markets[marketKey].reserves.map((reserve) => {
           return {
@@ -239,10 +247,6 @@ export default class CrossLendingDataTransformer {
         },
       ),
     };
-
-    if (currentLast24Hours.token.address === '0x853d955acef822db058eb8505911ed77f175b99e') {
-      console.log(totalDeposited, totalBorrowed, totalValueLocked);
-    }
 
     const volumeDeposited = transformTokenValueToUsd({
       currentValue: currentLast24Hours,
