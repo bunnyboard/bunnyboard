@@ -51,6 +51,7 @@ export interface AggCrossLendingMarketSnapshot extends DataState {
   volumeTotal: DataValue;
 
   feesPaidTheoretically: DataValue;
+  rateUtilization: number;
 
   reserves: Array<AggCrossLendingReserveSnapshot>;
 }
@@ -88,6 +89,8 @@ export interface AggCrossLendingDataOverall {
   volumeTotal: DataValue;
 
   feesPaidTheoretically: DataValue;
+
+  rateUtilization: number;
 
   // last 24h snapshots
   markets: Array<AggCrossLendingMarketSnapshot>;

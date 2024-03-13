@@ -103,6 +103,8 @@ export default class CrossLendingDataAggregator extends BaseDataAggregator {
       snapshots.map((snapshot) => CrossLendingDataTransformer.transformCrossLendingReserveSnapshot(snapshot, null)),
     );
 
+    dataState.rateUtilization = (dataState.totalBorrowed.value / dataState.totalDeposited.value) * 100;
+
     return dataState;
   }
 

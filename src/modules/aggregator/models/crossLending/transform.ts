@@ -51,6 +51,7 @@ export default class CrossLendingDataTransformer {
       feesPaidTheoretically: {
         value: 0,
       },
+      rateUtilization: 0,
       markets: [],
       dayData: [],
     };
@@ -104,6 +105,7 @@ export default class CrossLendingDataTransformer {
           feesPaidTheoretically: {
             value: 0,
           },
+          rateUtilization: 0,
           reserves: [],
         };
       }
@@ -203,6 +205,8 @@ export default class CrossLendingDataTransformer {
           };
         }),
       );
+      markets[marketKey].rateUtilization =
+        (markets[marketKey].totalBorrowed.value / markets[marketKey].totalBorrowed.value) * 100;
     }
 
     return Object.values(markets);
