@@ -101,8 +101,6 @@ export default class CrossLendingDataAggregator extends BaseDataAggregator {
       snapshots.map((snapshot) => CrossLendingDataTransformer.transformCrossLendingReserveSnapshot(snapshot, null)),
     );
 
-    console.log(dataState);
-
     return dataState;
   }
 

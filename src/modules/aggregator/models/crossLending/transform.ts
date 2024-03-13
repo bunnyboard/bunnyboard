@@ -102,6 +102,7 @@ export default class CrossLendingDataTransformer {
         };
       }
 
+      markets[marketId].totalValueLocked.value += reserve.totalValueLocked.value;
       markets[marketId].totalDeposited.value += reserve.totalDeposited.value;
       markets[marketId].totalBorrowed.value += reserve.totalBorrowed.value;
       markets[marketId].volumeDeposited.value += reserve.volumeDeposited.value;
@@ -115,6 +116,14 @@ export default class CrossLendingDataTransformer {
     }
 
     for (const marketKey of Object.keys(markets)) {
+      markets[marketKey].totalValueLocked.changedDay = calChangesOf_Total_From_Items(
+        markets[marketKey].reserves.map((reserve) => {
+          return {
+            value: reserve.totalValueLocked.value,
+            change: reserve.totalValueLocked.changedDay ? reserve.totalValueLocked.changedDay : 0,
+          };
+        }),
+      );
       markets[marketKey].totalDeposited.changedDay = calChangesOf_Total_From_Items(
         markets[marketKey].reserves.map((reserve) => {
           return {
