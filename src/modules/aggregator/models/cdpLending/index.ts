@@ -1,7 +1,7 @@
 import { TimeUnits } from '../../../../configs/constants';
 import EnvConfig from '../../../../configs/envConfig';
 import logger from '../../../../lib/logger';
-import { calChangesOf_Total_From_Items } from '../../../../lib/math';
+import { calChangesOf_Total_From_Items, calPreviousOf_Current_And_Change } from '../../../../lib/math';
 import { IDatabaseService } from '../../../../services/database/domains';
 import {
   AggCdpLendingCollateralSnapshot,
@@ -93,8 +93,18 @@ export default class CdpLendingDataAggregator extends BaseDataAggregator {
       snapshots.map((snapshot) => CdpLendingDataTransformer.transformCdpLendingMarketSnapshot(snapshot, null)),
     );
 
-    dataOverall.rateCollateralization =
-      (dataOverall.totalCollateralDeposited.value / dataOverall.totalBorrowed.value) * 100;
+    const previousTotalCollateralDeposited = calPreviousOf_Current_And_Change(
+      dataOverall.totalCollateralDeposited.value,
+      dataOverall.totalCollateralDeposited.changedDay ? dataOverall.totalCollateralDeposited.changedDay : 0,
+    );
+    const previousTotalBorrowed = calPreviousOf_Current_And_Change(
+      dataOverall.totalBorrowed.value,
+      dataOverall.totalBorrowed.changedDay ? dataOverall.totalBorrowed.changedDay : 0,
+    );
+    dataOverall.rateCollateralization = {
+      value: (dataOverall.totalCollateralDeposited.value / dataOverall.totalBorrowed.value) * 100,
+      changedDay: (previousTotalCollateralDeposited / previousTotalBorrowed) * 100,
+    };
 
     return dataOverall;
   }

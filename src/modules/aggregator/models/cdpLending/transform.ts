@@ -49,7 +49,9 @@ export default class CdpLendingDataTransformer {
       volumeCollateralLiquidated: {
         value: 0,
       },
-      rateCollateralization: 0,
+      rateCollateralization: {
+        value: 0,
+      },
       markets: [],
       dayData: [],
     };
@@ -282,8 +284,12 @@ export default class CdpLendingDataTransformer {
           })
         : undefined,
 
-      rateCollateralization:
-        (totalCollateralDepositedCurrent / convertToNumber(currentLast24Hours.totalBorrowed)) * 100,
+      rateCollateralization: {
+        value: (totalCollateralDepositedCurrent / convertToNumber(currentLast24Hours.totalBorrowed)) * 100,
+        changedDay: previousLast24Hours
+          ? (totalCollateralDepositedPrevious / convertToNumber(previousLast24Hours.totalBorrowed)) * 100
+          : undefined,
+      },
       feesPaidTheoretically: {
         value: feesPaidTheoreticallyCurrent,
         changedDay: calChangesOf_Current_From_Previous(feesPaidTheoreticallyCurrent, feesPaidTheoreticallyPrevious),
@@ -349,6 +355,8 @@ export default class CdpLendingDataTransformer {
           totalValueLocked: marketSnapshot.totalValueLocked.value,
           totalBorrowed: marketSnapshot.totalBorrowed.value,
           feesPaidTheoretically: marketSnapshot.feesPaidTheoretically.value,
+          rateCollateralization:
+            (marketSnapshot.totalCollateralDeposited.value / marketSnapshot.totalBorrowed.value) * 100,
 
           volumeBorrowed: marketSnapshot.volumeBorrowed.value,
           volumeRepaid: marketSnapshot.volumeRepaid.value,
@@ -367,6 +375,7 @@ export default class CdpLendingDataTransformer {
           totalValueLocked: item.totalValueLocked,
           totalBorrowed: item.totalBorrowed,
           feesPaidTheoretically: item.feesPaidTheoretically,
+          rateCollateralization: item.rateCollateralization,
 
           volumeBorrowed: item.volumeBorrowed,
           volumeRepaid: item.volumeRepaid,

@@ -32,8 +32,8 @@ export class ServerCommand extends BasicCommand {
 
     app.use('/', express.static(path.join('.', 'public')));
 
-    const swaggerDocument = YAML.load('./src/modules/aggregator/api/docs/data-api-board.yml');
-    app.use('/apiDocs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+    const swaggerDocument = YAML.load('./docs/api/api-data-board.yml');
+    app.use('/apiDocs/dataBoard', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
     app.listen(port, () => {
       logger.info('started the restful api server', {

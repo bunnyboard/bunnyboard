@@ -29,6 +29,13 @@ export interface GetContractLogsOptions {
   toBlock: number;
 }
 
+export interface Multicall3Call {
+  target: string; // target/contract address
+  abi: any; // target ABI
+  method: string;
+  params: Array<any>;
+}
+
 export interface IBlockchainService {
   // should be labeled as blockchain
   name: string;
@@ -43,4 +50,7 @@ export interface IBlockchainService {
 
   // read contract public method
   readContract: (call: ReadContractOptions) => Promise<any>;
+
+  // multicall3
+  multicall3: (chain: string, calls: Array<Multicall3Call>) => Promise<any>;
 }

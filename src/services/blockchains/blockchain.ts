@@ -3,13 +3,19 @@ import { Address, PublicClient, createPublicClient, http } from 'viem';
 
 import { DefaultQueryContractLogsBlockRange, TokenList } from '../../configs';
 import ERC20Abi from '../../configs/abi/ERC20.json';
-import { AddressE, AddressF, AddressZero } from '../../configs/constants';
+import { AddressE, AddressF, AddressMulticall3, AddressZero } from '../../configs/constants';
 import EnvConfig from '../../configs/envConfig';
 import { tryQueryBlockTimestamps } from '../../lib/subsgraph';
 import { compareAddress, normalizeAddress } from '../../lib/utils';
 import { Token } from '../../types/configs';
 import { CachingService } from '../caching/caching';
-import { GetContractLogsOptions, GetTokenOptions, IBlockchainService, ReadContractOptions } from './domains';
+import {
+  GetContractLogsOptions,
+  GetTokenOptions,
+  IBlockchainService,
+  Multicall3Call,
+  ReadContractOptions,
+} from './domains';
 
 export default class BlockchainService extends CachingService implements IBlockchainService {
   public readonly name: string = 'blockchain';
@@ -165,5 +171,24 @@ export default class BlockchainService extends CachingService implements IBlockc
     }
 
     return null;
+  }
+
+  public async multicall3(chain: string, calls: Array<Multicall3Call>): Promise<any> {
+    const client = this.getPublicClient(chain);
+
+    const contracts = calls.map((call) => {
+      return {
+        address: call.target as Address,
+        abi: call.abi,
+        functionName: call.method,
+        args: call.params,
+      } as const;
+    });
+
+    return await client.multicall({
+      multicallAddress: AddressMulticall3,
+      contracts: contracts,
+      allowFailure: false,
+    });
   }
 }
