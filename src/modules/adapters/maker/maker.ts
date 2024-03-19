@@ -98,41 +98,28 @@ export default class MakerAdapter extends ProtocolAdapter {
     };
 
     for (const gemConfig of marketConfig.gems) {
-      const gem = await this.services.blockchain.readContract({
+      const collateralTokenPrice = await this.services.oracle.getTokenPriceUsd({
         chain: marketConfig.chain,
-        abi: this.abiConfigs.eventAbis.gemJoin,
-        target: gemConfig.address,
-        method: 'gem',
-        params: [],
-      });
-      const ilk = await this.services.blockchain.readContract({
-        chain: marketConfig.chain,
-        abi: this.abiConfigs.eventAbis.gemJoin,
-        target: gemConfig.address,
-        method: 'ilk',
-        params: [],
+        address: gemConfig.collateralToken.address,
+        timestamp: options.timestamp,
       });
 
-      const collateralToken = await this.services.blockchain.getTokenInfo({
-        chain: marketConfig.chain,
-        address: gem,
-      });
       const gemBalance = await this.services.blockchain.readContract({
         chain: marketConfig.chain,
         abi: Erc20Abi,
-        target: gem,
+        target: gemConfig.collateralToken.address,
         method: 'balanceOf',
         params: [gemConfig.address],
         blockNumber: blockNumber,
       });
 
-      if (collateralToken && gemBalance) {
+      if (collateralTokenPrice && gemBalance) {
         const vatInfo = await this.services.blockchain.readContract({
           chain: marketConfig.chain,
           abi: this.abiConfigs.eventAbis.vat,
           target: marketConfig.vat,
           method: 'ilks',
-          params: [ilk],
+          params: [gemConfig.ilk],
           blockNumber: blockNumber,
         });
         const spotInfo = await this.services.blockchain.readContract({
@@ -140,7 +127,7 @@ export default class MakerAdapter extends ProtocolAdapter {
           abi: this.abiConfigs.eventAbis.spot,
           target: marketConfig.spot,
           method: 'ilks',
-          params: [ilk],
+          params: [gemConfig.ilk],
           blockNumber: blockNumber,
         });
         const jugInfo = await this.services.blockchain.readContract({
@@ -148,14 +135,8 @@ export default class MakerAdapter extends ProtocolAdapter {
           abi: this.abiConfigs.eventAbis.jug,
           target: marketConfig.jug,
           method: 'ilks',
-          params: [ilk],
+          params: [gemConfig.ilk],
           blockNumber: blockNumber,
-        });
-
-        const collateralTokenPrice = await this.services.oracle.getTokenPriceUsd({
-          chain: marketConfig.chain,
-          address: collateralToken.address,
-          timestamp: options.timestamp,
         });
 
         const art = new BigNumber(vatInfo[0].toString());
@@ -173,7 +154,7 @@ export default class MakerAdapter extends ProtocolAdapter {
           art.multipliedBy(rate).toString(10),
           SolidityUnits.RayDecimals + debtToken.decimals,
         );
-        const totalDeposited = formatBigNumberToString(gemBalance.toString(), collateralToken.decimals);
+        const totalDeposited = formatBigNumberToString(gemBalance.toString(), gemConfig.collateralToken.decimals);
 
         // https://docs.makerdao.com/smart-contract-modules/rates-module/jug-detailed-documentation
         const duty = new BigNumber(jugInfo[0].toString()).dividedBy(SolidityUnits.OneRay);
@@ -195,7 +176,7 @@ export default class MakerAdapter extends ProtocolAdapter {
           chain: options.config.chain,
           metric: options.config.metric,
           timestamp: options.timestamp,
-          token: collateralToken,
+          token: gemConfig.collateralToken,
           tokenPrice: collateralTokenPrice ? collateralTokenPrice : '',
           address: gemConfig.address,
           totalDeposited: totalDeposited,
