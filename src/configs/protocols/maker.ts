@@ -1,6 +1,6 @@
 import { normalizeAddress } from '../../lib/utils';
 import { CdpLendingMarketConfig, DataMetrics, LendingMarketVersions, ProtocolConfig, Token } from '../../types/configs';
-import EthereumTokenList from '../tokenlists/ethereum.json';
+import { TokensBook } from '../data';
 
 const MakerDaiJoinContract = '0x9759a6ac90977b93b58547b4a71c78317f391a28';
 const MakerVatContract = '0x35d1b3f3d7966a1dfe207aa4514c12a259a0492b';
@@ -103,7 +103,7 @@ const MakerMarket: MakerLendingMarketConfig = {
     const [address, collateral] = item.split(':');
     return {
       address: address,
-      collateralToken: (EthereumTokenList as any)[normalizeAddress(collateral)],
+      collateralToken: (TokensBook.ethereum as any)[normalizeAddress(collateral)],
     };
   }),
 };

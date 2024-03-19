@@ -6,10 +6,7 @@ import {
   ProtocolConfig,
   Token,
 } from '../../types/configs';
-import ArbitrumTokenList from '../tokenlists/arbitrum.json';
-import BaseTokenList from '../tokenlists/base.json';
-import EthereumTokenList from '../tokenlists/ethereum.json';
-import PolygonTokenList from '../tokenlists/polygon.json';
+import { TokensBook } from '../data';
 
 export interface CompoundLendingMarketConfig extends CrossLendingMarketConfig {
   governanceToken: Token | null;
@@ -116,8 +113,8 @@ export const Compoundv3Configs: Compoundv3ProtocolConfig = {
       birthday: 1660435200, // Sun Aug 14 2022 00:00:00 GMT+0000
       metric: DataMetrics.cdpLending,
       address: '0xc3d688b66703497daa19211eedff47f25384cdc3', // cUSDCv3
-      debtToken: EthereumTokenList['0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48'],
-      rewardToken: EthereumTokenList['0xc00e94cb662c3520282e6f5717214004a7f26888'],
+      debtToken: TokensBook.ethereum['0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48'],
+      rewardToken: TokensBook.ethereum['0xc00e94cb662c3520282e6f5717214004a7f26888'],
     },
     {
       chain: 'ethereum',
@@ -126,8 +123,8 @@ export const Compoundv3Configs: Compoundv3ProtocolConfig = {
       birthday: 1673654400, // Sat Jan 14 2023 00:00:00 GMT+0000
       metric: DataMetrics.cdpLending,
       address: '0xA17581A9E3356d9A858b789D68B4d866e593aE94', // cWETHv3
-      debtToken: EthereumTokenList['0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'],
-      rewardToken: EthereumTokenList['0xc00e94cb662c3520282e6f5717214004a7f26888'],
+      debtToken: TokensBook.ethereum['0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'],
+      rewardToken: TokensBook.ethereum['0xc00e94cb662c3520282e6f5717214004a7f26888'],
     },
     {
       chain: 'polygon',
@@ -136,8 +133,8 @@ export const Compoundv3Configs: Compoundv3ProtocolConfig = {
       birthday: 1676764800, // Sun Feb 19 2023 00:00:00 GMT+0000
       metric: DataMetrics.cdpLending,
       address: '0xF25212E676D1F7F89Cd72fFEe66158f541246445', // cWETHv3
-      debtToken: PolygonTokenList['0x2791bca1f2de4661ed88a30c99a7a9449aa84174'],
-      rewardToken: PolygonTokenList['0x8505b9d2254a7ae468c0e9dd10ccea3a837aef5c'], // COMP on polygon
+      debtToken: TokensBook.polygon['0x2791bca1f2de4661ed88a30c99a7a9449aa84174'],
+      rewardToken: TokensBook.polygon['0x8505b9d2254a7ae468c0e9dd10ccea3a837aef5c'], // COMP on polygon
     },
     {
       chain: 'arbitrum',
@@ -146,8 +143,8 @@ export const Compoundv3Configs: Compoundv3ProtocolConfig = {
       birthday: 1683244800, // Fri May 05 2023 00:00:00 GMT+0000
       metric: DataMetrics.cdpLending,
       address: '0xA5EDBDD9646f8dFF606d7448e414884C7d905dCA', // cUSDCv3
-      debtToken: ArbitrumTokenList['0xff970a61a04b1ca14834a43f5de4533ebddb5cc8'],
-      rewardToken: ArbitrumTokenList['0x354a6da3fcde098f8389cad84b0182725c6c91de'], // COMP on arbitrum
+      debtToken: TokensBook.arbitrum['0xff970a61a04b1ca14834a43f5de4533ebddb5cc8'],
+      rewardToken: TokensBook.arbitrum['0x354a6da3fcde098f8389cad84b0182725c6c91de'], // COMP on arbitrum
     },
     {
       chain: 'arbitrum',
@@ -156,8 +153,8 @@ export const Compoundv3Configs: Compoundv3ProtocolConfig = {
       birthday: 1692230400, // Thu Aug 17 2023 00:00:00 GMT+0000
       metric: DataMetrics.cdpLending,
       address: '0x9c4ec768c28520B50860ea7a15bd7213a9fF58bf', // cUSDCv3 Native
-      debtToken: ArbitrumTokenList['0xaf88d065e77c8cc2239327c5edb3a432268e5831'],
-      rewardToken: ArbitrumTokenList['0x354a6da3fcde098f8389cad84b0182725c6c91de'], // COMP on arbitrum
+      debtToken: TokensBook.arbitrum['0xaf88d065e77c8cc2239327c5edb3a432268e5831'],
+      rewardToken: TokensBook.arbitrum['0x354a6da3fcde098f8389cad84b0182725c6c91de'], // COMP on arbitrum
     },
     {
       chain: 'base',
@@ -166,8 +163,8 @@ export const Compoundv3Configs: Compoundv3ProtocolConfig = {
       birthday: 1691193600, // Sat Aug 05 2023 00:00:00 GMT+0000
       metric: DataMetrics.cdpLending,
       address: '0x9c4ec768c28520B50860ea7a15bd7213a9fF58bf', // cUSDCv3
-      debtToken: BaseTokenList['0xd9aaec86b65d86f6a7b5b1b0c42ffa531710b6ca'],
-      rewardToken: BaseTokenList['0x9e1028f5f1d5ede59748ffcee5532509976840e0'], // COMP on base
+      debtToken: TokensBook.base['0xd9aaec86b65d86f6a7b5b1b0c42ffa531710b6ca'],
+      rewardToken: TokensBook.base['0x9e1028f5f1d5ede59748ffcee5532509976840e0'], // COMP on base
     },
     {
       chain: 'base',
@@ -176,8 +173,8 @@ export const Compoundv3Configs: Compoundv3ProtocolConfig = {
       birthday: 1691798400, // Sat Aug 12 2023 00:00:00 GMT+0000
       metric: DataMetrics.cdpLending,
       address: '0x46e6b214b524310239732D51387075E0e70970bf', // cWETHv3
-      debtToken: BaseTokenList['0x4200000000000000000000000000000000000006'],
-      rewardToken: BaseTokenList['0x9e1028f5f1d5ede59748ffcee5532509976840e0'], // COMP on base
+      debtToken: TokensBook.base['0x4200000000000000000000000000000000000006'],
+      rewardToken: TokensBook.base['0x9e1028f5f1d5ede59748ffcee5532509976840e0'], // COMP on base
     },
   ]),
 };

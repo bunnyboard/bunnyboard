@@ -1,5 +1,6 @@
 import { normalizeAddress } from '../../lib/utils';
 import { CrossLendingMarketConfig, DataMetrics, ProtocolConfig } from '../../types/configs';
+import { AddressesBook } from '../data';
 
 export interface AaveLendingMarketConfig extends CrossLendingMarketConfig {
   priceOracle: string;
@@ -33,10 +34,10 @@ export const Aavev2Configs: AaveProtocolConfig = {
       version: 'aavev2',
       birthday: 1606780800, // Tue Dec 01 2020 00:00:00 GMT+0000
       metric: DataMetrics.crossLending,
-      address: '0x7d2768de32b0b80b7a3454c06bdac94a69ddc7a9',
-      priceOracle: '0xa50ba011c48153de246e5192c8f9258a2ba79ca9',
-      dataProvider: '0x057835Ad21a177dbdd3090bB1CAE03EaCF78Fc6d',
-      incentiveController: '0xd784927Ff2f95ba542BfC824c8a8a98F3495f6b5',
+      address: AddressesBook.ethereum.Aavev2LendingPool,
+      priceOracle: AddressesBook.ethereum.Aavev2PriceOracle,
+      dataProvider: AddressesBook.ethereum.Aavev2DataProvider,
+      incentiveController: AddressesBook.ethereum.Aavev2IncentiveController,
     },
     {
       chain: 'polygon',
@@ -44,10 +45,10 @@ export const Aavev2Configs: AaveProtocolConfig = {
       version: 'aavev2',
       birthday: 1617235200, // Thu Apr 01 2021 00:00:00 GMT+0000
       metric: DataMetrics.crossLending,
-      address: '0x8dff5e27ea6b7ac08ebfdf9eb090f32ee9a30fcf',
-      priceOracle: '0x0229f777b0fab107f9591a41d5f02e4e98db6f2d',
-      dataProvider: '0x7551b5D2763519d4e37e8B81929D336De671d46d',
-      incentiveController: '0x357D51124f59836DeD84c8a1730D72B749d8BC23',
+      address: AddressesBook.polygon.Aavev2LendingPool,
+      priceOracle: AddressesBook.polygon.Aavev2PriceOracle,
+      dataProvider: AddressesBook.polygon.Aavev2DataProvider,
+      incentiveController: AddressesBook.polygon.Aavev2IncentiveController,
     },
     {
       chain: 'avalanche',

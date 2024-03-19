@@ -15,17 +15,37 @@ const chains = [
 ];
 
 for (const chain of chains) {
-  const tokenLis = require(`../src/configs/tokenlists/${chain}.json`);
-  for (const [key] of Object.entries(tokenLis)) {
-    tokenLis[key].address = tokenLis[key].address.toLowerCase();
+  // pretty token configs
+  const tokenList = require(`../src/configs/data/tokenlists/${chain}.json`);
+  for (const [key] of Object.entries(tokenList)) {
+    tokenList[key].address = tokenList[key].address.toLowerCase();
   }
 
-  let ordered = Object.keys(tokenLis)
+  let ordered = Object.keys(tokenList)
     .sort()
     .reduce((obj, key) => {
-      obj[key] = tokenLis[key];
+      obj[key] = tokenList[key];
       return obj;
     }, {});
 
-  fs.writeFileSync(`./src/configs/tokenlists/${chain}.json`, JSON.stringify(ordered).toString());
+  fs.writeFileSync(`./src/configs/data/tokenlists/${chain}.json`, JSON.stringify(ordered).toString());
+
+  // pretty address configs
+  const addressBookPath = `./src/configs/data/addresses/${chain}.json`;
+  if (fs.existsSync(addressBookPath)) {
+    const addressBook = require(`../src/configs/data/addresses/${chain}.json`);
+
+    for (const [key, value] of Object.entries(addressBook)) {
+      addressBook[key] = value.toLowerCase();
+    }
+
+    let addressOrdered = Object.keys(addressBook)
+      .sort()
+      .reduce((obj, key) => {
+        obj[key] = addressBook[key];
+        return obj;
+      }, {});
+
+    fs.writeFileSync(`./src/configs/data/addresses/${chain}.json`, JSON.stringify(addressOrdered).toString());
+  }
 }

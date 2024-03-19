@@ -1,0 +1,6 @@
+{
+  "Aavev2DataProvider": "0x057835ad21a177dbdd3090bb1cae03eacf78fc6d",
+  "Aavev2IncentiveController": "0xd784927ff2f95ba542bfc824c8a8a98f3495f6b5",
+  "Aavev2LendingPool": "0x7d2768de32b0b80b7a3454c06bdac94a69ddc7a9",
+  "Aavev2PriceOracle": "0xa50ba011c48153de246e5192c8f9258a2ba79ca9"
+}
