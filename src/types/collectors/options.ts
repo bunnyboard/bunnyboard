@@ -54,6 +54,8 @@ export interface GetAdapterDataTimeframeResult {
 }
 
 export interface RunCollectorOptions {
+  board?: string; // tokenboard
+
   // if chain was given, run collector with given chain
   chain?: string;
 

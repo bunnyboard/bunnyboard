@@ -26,27 +26,29 @@ export default class StateCollector {
     for (const config of configs) {
       const startExeTime = Math.floor(new Date().getTime() / 1000);
 
-      const state = await this.adapters[config.protocol].getDataState({
+      const adapter = this.adapters[config.protocol];
+
+      const state = await adapter.getDataState({
         config: config,
         timestamp: timestamp,
       });
 
-      const timeframeLast24Hours = await this.adapters[config.protocol].getDataTimeframe({
+      const timeframeLast24Hours = await adapter.getDataTimeframe({
         config: config,
         fromTime: timestamp - TimeUnits.SecondsPerDay,
         toTime: timestamp,
       });
 
-      const timeframeLast48Hours = await this.adapters[config.protocol].getDataTimeframe({
+      const timeframeLast48Hours = await adapter.getDataTimeframe({
         config: config,
         fromTime: timestamp - TimeUnits.SecondsPerDay * 2,
         toTime: timestamp - TimeUnits.SecondsPerDay,
       });
 
       if (state.crossLending) {
-        for (const dateState of state.crossLending) {
-          let stateWithTimeframes: CrossLendingReserveDataStateWithTimeframes = {
-            ...dateState,
+        for (const dataState of state.crossLending) {
+          const stateWithTimeframes: CrossLendingReserveDataStateWithTimeframes = {
+            ...dataState,
             timefrom: timestamp - TimeUnits.SecondsPerDay,
             timeto: timestamp,
             volumeDeposited: '0',
@@ -62,10 +64,10 @@ export default class StateCollector {
           if (timeframeLast24Hours.crossLending) {
             const dataLast24Hours = timeframeLast24Hours.crossLending.filter(
               (item) =>
-                item.chain === dateState.chain &&
-                item.protocol === dateState.protocol &&
-                item.address === dateState.address &&
-                item.token.address === dateState.token.address,
+                item.chain === dataState.chain &&
+                item.protocol === dataState.protocol &&
+                item.address === dataState.address &&
+                item.token.address === dataState.token.address,
             )[0];
             if (dataLast24Hours) {
               stateWithTimeframes.volumeDeposited = dataLast24Hours.volumeDeposited;
@@ -81,10 +83,10 @@ export default class StateCollector {
           if (timeframeLast48Hours.crossLending) {
             const dataLast48Hours = timeframeLast48Hours.crossLending.filter(
               (item) =>
-                item.chain === dateState.chain &&
-                item.protocol === dateState.protocol &&
-                item.address === dateState.address &&
-                item.token.address === dateState.token.address,
+                item.chain === dataState.chain &&
+                item.protocol === dataState.protocol &&
+                item.address === dataState.address &&
+                item.token.address === dataState.token.address,
             )[0];
             if (dataLast48Hours) {
               stateWithTimeframes.last24Hours = dataLast48Hours;
@@ -94,11 +96,11 @@ export default class StateCollector {
           await this.storages.database.update({
             collection: EnvConfig.mongodb.collections.crossLendingReserveStates.name,
             keys: {
-              chain: dateState.chain,
-              metric: dateState.metric,
-              protocol: dateState.protocol,
-              address: dateState.address,
-              'token.address': dateState.token.address,
+              chain: dataState.chain,
+              metric: dataState.metric,
+              protocol: dataState.protocol,
+              address: dataState.address,
+              'token.address': dataState.token.address,
             },
             updates: {
               ...stateWithTimeframes,
@@ -107,9 +109,9 @@ export default class StateCollector {
           });
         }
       } else if (state.cdpLending) {
-        for (const dateState of state.cdpLending) {
-          let stateWithTimeframes: CdpLendingAssetDataStateWithTimeframes = {
-            ...dateState,
+        for (const dataState of state.cdpLending) {
+          const stateWithTimeframes: CdpLendingAssetDataStateWithTimeframes = {
+            ...dataState,
 
             timefrom: timestamp - TimeUnits.SecondsPerDay,
             timeto: timestamp,
@@ -126,9 +128,9 @@ export default class StateCollector {
           if (timeframeLast24Hours.cdpLending) {
             const dataLast24Hours = timeframeLast24Hours.cdpLending.filter(
               (item) =>
-                item.chain === dateState.chain &&
-                item.protocol === dateState.protocol &&
-                item.token.address === dateState.token.address,
+                item.chain === dataState.chain &&
+                item.protocol === dataState.protocol &&
+                item.token.address === dataState.token.address,
             )[0];
             if (dataLast24Hours) {
               stateWithTimeframes.totalBorrowed = dataLast24Hours.totalBorrowed;
@@ -149,9 +151,9 @@ export default class StateCollector {
           if (timeframeLast48Hours.cdpLending) {
             const dataLast48Hours = timeframeLast48Hours.cdpLending.filter(
               (item) =>
-                item.chain === dateState.chain &&
-                item.protocol === dateState.protocol &&
-                item.token.address === dateState.token.address,
+                item.chain === dataState.chain &&
+                item.protocol === dataState.protocol &&
+                item.token.address === dataState.token.address,
             )[0];
             if (dataLast48Hours) {
               stateWithTimeframes.last24Hours = dataLast48Hours;
@@ -161,10 +163,10 @@ export default class StateCollector {
           await this.storages.database.update({
             collection: EnvConfig.mongodb.collections.cdpLendingAssetStates.name,
             keys: {
-              chain: dateState.chain,
-              metric: dateState.metric,
-              protocol: dateState.protocol,
-              'token.address': dateState.token.address,
+              chain: dataState.chain,
+              metric: dataState.metric,
+              protocol: dataState.protocol,
+              'token.address': dataState.token.address,
             },
             updates: {
               ...stateWithTimeframes,

@@ -49,8 +49,10 @@ export default class SnapshotCollector {
       while (runTime <= today) {
         const startExeTime = Math.floor(new Date().getTime() / 1000);
 
-        if (this.adapters[config.protocol]) {
-          const { crossLending, cdpLending } = await this.adapters[config.protocol].getDataTimeframe({
+        const adapter = this.adapters[config.protocol];
+
+        if (adapter) {
+          const { crossLending, cdpLending } = await adapter.getDataTimeframe({
             storages: this.storages,
             config: config,
             fromTime: runTime,

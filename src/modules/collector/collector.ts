@@ -3,7 +3,7 @@ import logger from '../../lib/logger';
 import { RunCollectorOptions } from '../../types/collectors/options';
 import { MetricConfig } from '../../types/configs';
 import { ContextServices, ContextStorages, ICollector, IProtocolAdapter } from '../../types/namespaces';
-import getProtocolAdapters from '../adapters';
+import { getProtocolAdapters } from '../adapters';
 import SnapshotCollector from './snapshot';
 import StateCollector from './state';
 

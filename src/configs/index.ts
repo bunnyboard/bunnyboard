@@ -1,4 +1,5 @@
-import { ProtocolConfig } from '../types/configs';
+import { BoardConfig, ProtocolConfig } from '../types/configs';
+import { TokenBoardConfigs } from './boards/tokenboard';
 import { AddressesBook, TokensBook } from './data';
 import { Aavev2Configs, Aavev3Configs } from './protocols/aave';
 import { CompoundConfigs, Compoundv3Configs } from './protocols/compound';
@@ -33,4 +34,8 @@ export const ProtocolConfigs: { [key: string]: ProtocolConfig } = {
   spark: SparkConfigs,
   gmx: GmxConfigs,
   gmxv2: Gmxv2Configs,
+};
+
+export const BoardConfigs: { [key: string]: BoardConfig } = {
+  tokenboard: TokenBoardConfigs,
 };

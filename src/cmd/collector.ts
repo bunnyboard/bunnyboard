@@ -1,4 +1,5 @@
 import { sleep } from '../lib/utils';
+import BoardCollector from '../modules/collector/board/collector';
 import Collector from '../modules/collector/collector';
 import { ContextServices, ContextStorages } from '../types/namespaces';
 import { BasicCommand } from './basic';
@@ -15,10 +16,14 @@ export class CollectorCommand extends BasicCommand {
     const services: ContextServices = await super.getServices();
     const storages: ContextStorages = await super.getStorages();
 
-    const collector = new Collector(storages, services);
+    const board = argv.board;
+
+    const collector =
+      board === 'tokenboard' ? new BoardCollector(storages, services) : new Collector(storages, services);
 
     do {
       await collector.run({
+        board: argv.board !== '' ? argv.board : undefined,
         chain: argv.chain !== '' ? argv.chain : undefined,
         protocol: argv.protocol !== '' ? argv.protocol : undefined,
         fromTime: argv.fromTime ? argv.fromTime : undefined,
@@ -36,6 +41,11 @@ export class CollectorCommand extends BasicCommand {
 
   public setOptions(yargs: any) {
     return yargs.option({
+      board: {
+        type: 'string',
+        default: '',
+        describe: 'Collect all data on given board config.',
+      },
       chain: {
         type: 'string',
         default: '',

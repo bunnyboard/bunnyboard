@@ -10,7 +10,8 @@ import {
   GetAdapterDataTimeframeResult,
   RunCollectorOptions,
 } from './collectors/options';
-import { ProtocolConfig } from './configs';
+import { TokenBoardErc20DataState, TokenBoardErc20DataTimeframe } from './collectors/tokenboard';
+import { MetricConfig, ProtocolConfig } from './configs';
 
 export interface ContextStorages {
   database: IDatabaseService;
@@ -38,6 +39,20 @@ export interface IProtocolAdapter {
 
   // get data in a given timeframe
   getDataTimeframe: (options: GetAdapterDataTimeframeOptions) => Promise<GetAdapterDataTimeframeResult>;
+}
+
+// board adapter get on-chain data for all protocols
+// in common metrics
+export interface IBoardAdapter {
+  name: string;
+  services: ContextServices;
+
+  getDataState: (config: MetricConfig, timestamp: number) => Promise<TokenBoardErc20DataState | null>;
+  getDataTimeframe: (
+    config: MetricConfig,
+    fromTime: number,
+    toTime: number,
+  ) => Promise<TokenBoardErc20DataTimeframe | null>;
 }
 
 export interface ICollector {

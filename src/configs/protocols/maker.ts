@@ -111,5 +111,5 @@ const MakerMarket: MakerLendingMarketConfig = {
 
 export const MakerConfigs: MakerProtocolConfig = {
   protocol: 'maker',
-  configs: formatMakerConfigs([MakerMarket]),
+  configs: [...formatMakerConfigs([MakerMarket])],
 };

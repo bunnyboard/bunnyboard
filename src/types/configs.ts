@@ -48,6 +48,10 @@ export interface DatabaseCollectionConfig {
 
   cdpLendingAssetStates: MongoCollectionConfig;
   cdpLendingAssetSnapshots: MongoCollectionConfig;
+
+  tokenBoardErc20States: MongoCollectionConfig;
+  tokenBoardErc20Snapshots: MongoCollectionConfig;
+  tokenBoardErc20Balances: MongoCollectionConfig;
 }
 
 export interface EnvConfig {
@@ -68,7 +72,7 @@ export const DataMetrics = {
   cdpLending: 'cdpLending',
   staking: 'staking',
   perpetual: 'perpetual',
-  erc20: 'erc20',
+  tokenBoardErc20: 'tokenBoardErc20',
 };
 const Metrics = Object.values(DataMetrics);
 export type DataMetric = (typeof Metrics)[number];
@@ -122,8 +126,16 @@ export interface PerpetualMarketConfig extends MetricConfig {
   version: PerpetualVersion;
 }
 
+export interface TokenBoardErc20Config extends MetricConfig, Token {
+  stablecoin: boolean;
+}
+
 export interface ProtocolConfig {
   protocol: string;
-
   configs: Array<MetricConfig>;
+}
+
+export interface BoardConfig {
+  board: string;
+  configs: Array<TokenBoardErc20Config>;
 }

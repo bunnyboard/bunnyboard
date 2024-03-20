@@ -1,6 +1,6 @@
 import { ProtocolConfigs } from '../configs';
 import { compareAddress, getTimestamp } from '../lib/utils';
-import getProtocolAdapters from '../modules/adapters';
+import { getProtocolAdapters } from '../modules/adapters';
 import { ContextServices } from '../types/namespaces';
 import { BasicCommand } from './basic';
 

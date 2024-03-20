@@ -69,4 +69,49 @@ export const DatabaseCollectionConfigs: DatabaseCollectionConfig = {
       },
     ],
   },
+  tokenBoardErc20States: {
+    name: `${MongodbPrefix}.tokenBoardErc20States`,
+    indies: [
+      {
+        chain: 1,
+        protocol: 1,
+        address: 1,
+      },
+      {
+        chain: 1,
+        protocol: 1,
+        address: 1,
+        stablecoin: 1,
+      },
+    ],
+  },
+  tokenBoardErc20Snapshots: {
+    name: `${MongodbPrefix}.tokenBoardErc20Snapshots`,
+    indies: [
+      {
+        chain: 1,
+        protocol: 1,
+        address: 1,
+        timestamp: 1,
+      },
+      {
+        chain: 1,
+        protocol: 1,
+        address: 1,
+        stablecoin: 1,
+        timestamp: 1,
+      },
+    ],
+  },
+  tokenBoardErc20Balances: {
+    name: `${MongodbPrefix}.tokenBoardErc20Balances`,
+    indies: [
+      {
+        chain: 1,
+        address: 1, // token address
+        holder: 1, // holder address
+        timestamp: 1,
+      },
+    ],
+  },
 };
