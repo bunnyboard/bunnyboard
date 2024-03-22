@@ -1,4 +1,5 @@
 import EnvConfig from '../../../../configs/envConfig';
+import logger from '../../../../lib/logger';
 import { AggTokenBoardErc20DataOverall, AggTokenBoardErc20DayData } from '../../../../types/aggregates/tokenBoard';
 import { TokenBoardErc20DataStateWithTimeframes } from '../../../../types/collectors/tokenBoard';
 import { Token } from '../../../../types/configs';
@@ -106,5 +107,30 @@ export default class TokenBoardDataAggregator extends BaseDataAggregator {
         decimals: item._id.decimals,
       };
     });
+  }
+
+  public async runUpdate(): Promise<void> {
+    const tokens = await this.getTokenBoardErc20List();
+    for (const token of tokens) {
+      const cachingKey = `tokenboard-erc20-overall-${token.chain}-${token.address}`;
+      const tokenDataOverall = await this.getTokenBoardErc20DataOverallInternal(token.chain, token.address);
+
+      await this.database.update({
+        collection: EnvConfig.mongodb.collections.cachingData.name,
+        keys: {
+          name: cachingKey,
+        },
+        updates: {
+          name: cachingKey,
+          data: tokenDataOverall,
+        },
+        upsert: true,
+      });
+
+      logger.info('updated caching data', {
+        service: this.name,
+        name: cachingKey,
+      });
+    }
   }
 }
