@@ -9,11 +9,12 @@ import {
   CrossLendingReserveDataStateWithTimeframes,
   CrossLendingReserveDataTimeframe,
 } from '../../types/collectors/crossLending';
+import { TokenBoardErc20DataStateWithTimeframes } from '../../types/collectors/tokenboard';
 import { DataMetrics, MetricConfig } from '../../types/configs';
 import { ContextServices, ContextStorages } from '../../types/namespaces';
 import { ProcessDataSnapshotOptions, ProcessDataStateOptions } from './collector';
 
-export default class DataProcessor {
+export default class DataCollectorProcessor {
   public readonly services: ContextServices;
   public readonly storages: ContextStorages;
 
@@ -32,6 +33,10 @@ export default class DataProcessor {
         await this.processCdpLendingDataState(config, options);
         break;
       }
+      case DataMetrics.tokenBoardErc20: {
+        await this.processTokenBoardDataState(config, options);
+        break;
+      }
     }
   }
 
@@ -43,6 +48,10 @@ export default class DataProcessor {
       }
       case DataMetrics.cdpLending: {
         await this.processCdpLendingDataSnapshots(config, options);
+        break;
+      }
+      case DataMetrics.tokenBoardErc20: {
+        await this.processTokenBoardDataSnapshots(config, options);
         break;
       }
     }
@@ -224,5 +233,69 @@ export default class DataProcessor {
         upsert: true,
       });
     }
+  }
+
+  private async processTokenBoardDataState(config: MetricConfig, options: ProcessDataStateOptions): Promise<void> {
+    const dataState = options.state;
+    const stateWithTimeframes: TokenBoardErc20DataStateWithTimeframes = {
+      ...dataState,
+      timefrom: options.timestamp - TimeUnits.SecondsPerDay,
+      timeto: options.timestamp,
+      volumeTransfer: '0',
+      volumeMint: '0',
+      volumeBurn: '0',
+      volumeOnDex: '0',
+      addressBalances: [],
+      last24Hours: null,
+    };
+
+    if (options.timeframeLast24Hours) {
+      stateWithTimeframes.volumeTransfer = options.timeframeLast24Hours.volumeTransfer;
+      stateWithTimeframes.volumeMint = options.timeframeLast24Hours.volumeMint;
+      stateWithTimeframes.volumeBurn = options.timeframeLast24Hours.volumeBurn;
+      stateWithTimeframes.volumeOnDex = options.timeframeLast24Hours.volumeOnDex;
+      stateWithTimeframes.addressBalances = options.timeframeLast24Hours.addressBalances;
+    }
+
+    if (options.timeframeLast48Hours) {
+      if (options.timeframeLast48Hours) {
+        stateWithTimeframes.last24Hours = options.timeframeLast48Hours;
+      }
+    }
+
+    await this.storages.database.update({
+      collection: EnvConfig.mongodb.collections.tokenBoardErc20States.name,
+      keys: {
+        chain: dataState.chain,
+        metric: dataState.metric,
+        protocol: dataState.protocol,
+        address: dataState.address,
+      },
+      updates: {
+        ...stateWithTimeframes,
+      },
+      upsert: true,
+    });
+  }
+
+  private async processTokenBoardDataSnapshots(
+    config: MetricConfig,
+    options: ProcessDataSnapshotOptions,
+  ): Promise<void> {
+    const snapshot = options.data;
+    await this.storages.database.update({
+      collection: EnvConfig.mongodb.collections.tokenBoardErc20Snapshots.name,
+      keys: {
+        chain: snapshot.chain,
+        metric: snapshot.metric,
+        protocol: snapshot.protocol,
+        address: snapshot.address,
+        timestamp: snapshot.timestamp,
+      },
+      updates: {
+        ...snapshot,
+      },
+      upsert: true,
+    });
   }
 }

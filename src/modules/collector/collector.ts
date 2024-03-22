@@ -8,7 +8,7 @@ import { DataMetrics, MetricConfig } from '../../types/configs';
 import { ContextServices, ContextStorages, IDataCollector, IProtocolAdapter } from '../../types/namespaces';
 import { getProtocolAdapters } from '../adapters';
 import TokenBoardErc20Adapter from '../adapters/tokenboard/erc20';
-import DataProcessor from './processor';
+import DataCollectorProcessor from './processor';
 
 export interface ProcessDataStateOptions {
   timestamp: number;
@@ -27,12 +27,12 @@ export default class DataCollector implements IDataCollector {
   public readonly storages: ContextStorages;
 
   protected readonly adapters: { [key: string]: IProtocolAdapter };
-  protected readonly processor: DataProcessor;
+  protected readonly processor: DataCollectorProcessor;
 
   constructor(storages: ContextStorages, services: ContextServices) {
     this.services = services;
     this.storages = storages;
-    this.processor = new DataProcessor(storages, services);
+    this.processor = new DataCollectorProcessor(storages, services);
 
     // get all supported adapters
     this.adapters = getProtocolAdapters(services);
@@ -76,7 +76,7 @@ export default class DataCollector implements IDataCollector {
       metric: options.metric ? options.metric : 'none',
       chain: options.chain ? options.chain : 'none',
       protocol: options.protocol ? options.protocol : 'none',
-      type: options.service ? options.service : 'all',
+      type: options.service ? options.service : 'none',
       configs: configs.length,
     });
 
