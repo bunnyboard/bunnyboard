@@ -20,14 +20,14 @@ export default class TokenBoardDataTransformer {
     const addressBalanceCurrent: any = {};
     const addressBalancePrevious: any = {};
     for (const balance of currentLast24Hours.addressBalances) {
-      if (!addressBalanceCurrent[balance.address]) {
-        addressBalanceCurrent[balance.address] = true;
+      if (!addressBalanceCurrent[balance.holder]) {
+        addressBalanceCurrent[balance.holder] = true;
       }
     }
     if (previousLast24Hours) {
       for (const balance of previousLast24Hours.addressBalances) {
-        if (!addressBalancePrevious[balance.address]) {
-          addressBalancePrevious[balance.address] = true;
+        if (!addressBalancePrevious[balance.holder]) {
+          addressBalancePrevious[balance.holder] = true;
         }
       }
     }
