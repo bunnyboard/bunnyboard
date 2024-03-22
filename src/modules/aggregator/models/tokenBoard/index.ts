@@ -1,7 +1,7 @@
 import EnvConfig from '../../../../configs/envConfig';
 import { AggTokenBoardErc20DataOverall, AggTokenBoardErc20DayData } from '../../../../types/aggregates/tokenBoard';
 import { TokenBoardErc20DataStateWithTimeframes } from '../../../../types/collectors/tokenBoard';
-import { DataMetrics, Token } from '../../../../types/configs';
+import { Token } from '../../../../types/configs';
 import BaseDataAggregator from '../../base';
 import TokenBoardDataTransformer from './transform';
 
@@ -16,7 +16,6 @@ export default class TokenBoardDataAggregator extends BaseDataAggregator {
     const tokenDataState = await this.database.find({
       collection: EnvConfig.mongodb.collections.tokenBoardErc20States.name,
       query: {
-        metric: DataMetrics.tokenBoardErc20,
         chain: chain,
         address: address,
       },
@@ -34,7 +33,6 @@ export default class TokenBoardDataAggregator extends BaseDataAggregator {
       const snapshots = await this.database.query({
         collection: EnvConfig.mongodb.collections.tokenBoardErc20Snapshots.name,
         query: {
-          metric: DataMetrics.tokenBoardErc20,
           chain: chain,
           address: address,
         },

@@ -72,16 +72,10 @@ export const DatabaseCollectionConfigs: DatabaseCollectionConfig = {
   tokenBoardErc20States: {
     name: `${MongodbPrefix}.tokenBoardErc20States`,
     indies: [
+      // write new documents
       {
         chain: 1,
-        protocol: 1,
         address: 1,
-      },
-      {
-        chain: 1,
-        protocol: 1,
-        address: 1,
-        stablecoin: 1,
       },
     ],
   },
@@ -90,15 +84,7 @@ export const DatabaseCollectionConfigs: DatabaseCollectionConfig = {
     indies: [
       {
         chain: 1,
-        protocol: 1,
         address: 1,
-        timestamp: 1,
-      },
-      {
-        chain: 1,
-        protocol: 1,
-        address: 1,
-        stablecoin: 1,
         timestamp: 1,
       },
     ],
