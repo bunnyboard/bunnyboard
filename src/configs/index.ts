@@ -1,5 +1,5 @@
 import { DexConfig, ProtocolConfig, Token } from '../types/configs';
-import { TokenBoardErc20Configs } from './boards/tokenboard';
+import { TokenBoardErc20Configs } from './boards/tokenBoard';
 import { TokensBook, TokensBookBase } from './data';
 import { Aavev2Configs, Aavev3Configs } from './protocols/aave';
 import { CompoundConfigs, Compoundv3Configs } from './protocols/compound';
@@ -34,8 +34,8 @@ export const ProtocolConfigs: { [key: string]: ProtocolConfig } = {
   // gmx: GmxConfigs,
   // gmxv2: Gmxv2Configs,
 
-  tokenboard: {
-    protocol: 'tokenboard',
+  tokenBoard: {
+    protocol: 'tokenBoard',
     configs: TokenBoardErc20Configs,
   },
 };

@@ -9,7 +9,7 @@ import {
   CrossLendingReserveDataStateWithTimeframes,
   CrossLendingReserveDataTimeframe,
 } from '../../types/collectors/crossLending';
-import { TokenBoardErc20DataStateWithTimeframes } from '../../types/collectors/tokenboard';
+import { TokenBoardErc20DataStateWithTimeframes } from '../../types/collectors/tokenBoard';
 import { DataMetrics, MetricConfig } from '../../types/configs';
 import { ContextServices, ContextStorages } from '../../types/namespaces';
 import { ProcessDataSnapshotOptions, ProcessDataStateOptions } from './collector';

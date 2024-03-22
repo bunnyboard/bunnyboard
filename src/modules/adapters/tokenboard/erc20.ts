@@ -11,7 +11,7 @@ import {
   TokenBoardErc20AddressBalance,
   TokenBoardErc20DataState,
   TokenBoardErc20DataTimeframe,
-} from '../../../types/collectors/tokenboard';
+} from '../../../types/collectors/tokenBoard';
 import { TokenBoardErc20Config } from '../../../types/configs';
 import { ContextServices } from '../../../types/namespaces';
 import ProtocolAdapter from '../adapter';
