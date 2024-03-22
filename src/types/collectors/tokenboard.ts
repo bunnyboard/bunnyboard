@@ -23,6 +23,9 @@ export interface TokenBoardErc20DataTimeframe extends DataTimeframe, TokenBoardE
   // total Transfer to address(0)
   volumeBurn: string;
 
+  // volume transfer on Dex include swap and add/remove liquidity
+  volumeOnDex: string;
+
   // a list of addresses sent or received tokens
   addressBalances: Array<TokenBoardErc20AddressBalance>;
 }

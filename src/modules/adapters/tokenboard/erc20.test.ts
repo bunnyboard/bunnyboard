@@ -23,6 +23,10 @@ test('should get data correctly - DAI on ethereum at 1704240000', async function
     toTime: afterTimestamp,
   });
 
+  if (daiErc20data) {
+    daiErc20data.addressBalances = [];
+  }
+
   expect(daiErc20data).not.equal(undefined);
   expect(daiErc20data).not.equal(null);
 
@@ -32,6 +36,7 @@ test('should get data correctly - DAI on ethereum at 1704240000', async function
     expect(daiErc20data.volumeTransfer).equal('6042551819.035898071353784991');
     expect(daiErc20data.volumeMint).equal('1120697073.366964930233022859');
     expect(daiErc20data.volumeBurn).equal('1108138340.995936841009856534');
+    expect(daiErc20data.volumeOnDex).equal('158783809.757688462187798766');
   }
 });
 

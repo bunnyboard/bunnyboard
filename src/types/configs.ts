@@ -128,6 +128,13 @@ export interface DexConfig extends MetricConfig {
 
 export interface TokenBoardErc20Config extends MetricConfig, Token {
   stablecoin: boolean;
+
+  // these addresses will be used for trading volume tracking
+  // for example, when an amount of token were transferred out of liquidity pool
+  // we count it as buy volume
+  // when an amount of token were transferred into liquidity pool
+  // we count it as sell volume
+  liquidityPools: Array<string>;
 }
 
 export interface ProtocolConfig {
