@@ -31,27 +31,29 @@ export default class TokenBoardDataAggregator extends BaseDataAggregator {
 
       // query history snapshots
       const dayData: Array<AggTokenBoardErc20DayData> = [];
-      const snapshots = await this.database.query({
-        collection: EnvConfig.mongodb.collections.tokenBoardErc20Snapshots.name,
-        query: {
-          chain: chain,
-          address: address,
-          timestamp: { $gt: 0 },
-        },
+
+      const collection = await this.database.getCollection(EnvConfig.mongodb.collections.tokenBoardErc20Snapshots.name);
+      const cursor = collection.find({
+        chain: chain,
+        address: address,
+        timestamp: { $gt: 0 },
       });
-      for (const rawSnapshot of snapshots) {
-        const snapshot = TokenBoardDataTransformer.transformTokenBoardErc20Snapshot(rawSnapshot, null);
-        dayData.push({
-          timestamp: snapshot.timestamp,
-          tokenPrice: snapshot.tokenPrice.value,
-          totalSupply: snapshot.totalSupply.value,
-          fullDilutedValuation: snapshot.fullDilutedValuation.value,
-          volumeTransfer: snapshot.volumeTransfer.value,
-          volumeMint: snapshot.volumeMint.value,
-          volumeBurn: snapshot.volumeBurn.value,
-          volumeOnDex: snapshot.volumeOnDex.value,
-          numberOfActiveHolders: snapshot.numberOfActiveHolders.value,
-        });
+      while (await cursor.hasNext()) {
+        const document: any = await cursor.next();
+        if (document) {
+          const snapshot = TokenBoardDataTransformer.transformTokenBoardErc20Snapshot(document, null);
+          dayData.push({
+            timestamp: snapshot.timestamp,
+            tokenPrice: snapshot.tokenPrice.value,
+            totalSupply: snapshot.totalSupply.value,
+            fullDilutedValuation: snapshot.fullDilutedValuation.value,
+            volumeTransfer: snapshot.volumeTransfer.value,
+            volumeMint: snapshot.volumeMint.value,
+            volumeBurn: snapshot.volumeBurn.value,
+            volumeOnDex: snapshot.volumeOnDex.value,
+            numberOfActiveHolders: snapshot.numberOfActiveHolders.value,
+          });
+        }
       }
 
       return {
