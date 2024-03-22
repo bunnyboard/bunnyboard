@@ -26,7 +26,7 @@ export class WorkerCommand extends BasicCommand {
     return yargs.option({
       interval: {
         type: 'number',
-        default: 300,
+        default: 600,
         describe: 'Number of seconds the worker going to sleep.',
       },
     });

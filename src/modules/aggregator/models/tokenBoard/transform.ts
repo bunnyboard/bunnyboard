@@ -1,4 +1,4 @@
-import { calPreviousOf_Current_And_Change, convertToNumber } from '../../../../lib/math';
+import { calChangesOf_Current_From_Previous, convertToNumber } from '../../../../lib/math';
 import { AggTokenBoardErc20Snapshot } from '../../../../types/aggregates/tokenBoard';
 import { TokenBoardErc20DataTimeframe } from '../../../../types/collectors/tokenBoard';
 import { transformTokenValueToUsd } from '../../helper';
@@ -47,20 +47,20 @@ export default class TokenBoardDataTransformer {
       tokenPrice: {
         value: convertToNumber(currentLast24Hours.tokenPrice),
         changedDay: previousLast24Hours
-          ? calPreviousOf_Current_And_Change(currentLast24Hours.tokenPrice, previousLast24Hours.tokenPrice)
+          ? calChangesOf_Current_From_Previous(currentLast24Hours.tokenPrice, previousLast24Hours.tokenPrice)
           : undefined,
       },
       totalSupply: {
         value: convertToNumber(currentLast24Hours.totalSupply),
         changedDay: previousLast24Hours
-          ? calPreviousOf_Current_And_Change(currentLast24Hours.totalSupply, previousLast24Hours.totalSupply)
+          ? calChangesOf_Current_From_Previous(currentLast24Hours.totalSupply, previousLast24Hours.totalSupply)
           : undefined,
       },
       fullDilutedValuation: {
         value: fullDilutedValuationCurrent,
         changedDay:
           fullDilutedValuationPrevious > 0
-            ? calPreviousOf_Current_And_Change(fullDilutedValuationCurrent, fullDilutedValuationPrevious)
+            ? calChangesOf_Current_From_Previous(fullDilutedValuationCurrent, fullDilutedValuationPrevious)
             : undefined,
       },
 
@@ -92,7 +92,7 @@ export default class TokenBoardDataTransformer {
         value: Object.keys(addressBalanceCurrent).length,
         changedDay:
           Object.keys(addressBalancePrevious).length > 0
-            ? calPreviousOf_Current_And_Change(
+            ? calChangesOf_Current_From_Previous(
                 Object.keys(addressBalanceCurrent).length,
                 Object.keys(addressBalancePrevious).length,
               )

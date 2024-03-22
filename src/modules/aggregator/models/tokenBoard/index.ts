@@ -36,6 +36,7 @@ export default class TokenBoardDataAggregator extends BaseDataAggregator {
         query: {
           chain: chain,
           address: address,
+          timestamp: { $gt: 0 },
         },
       });
       for (const rawSnapshot of snapshots) {
@@ -77,7 +78,7 @@ export default class TokenBoardDataAggregator extends BaseDataAggregator {
     if (overallData) {
       return overallData.data as AggTokenBoardErc20DataOverall;
     } else {
-      return await this.getTokenBoardErc20DataOverallInternal(chain, address);
+      return null;
     }
   }
 
