@@ -20,14 +20,11 @@ import {
 } from '../../../types/collectors/cdpLending';
 import {
   GetAdapterDataStateOptions,
-  GetAdapterDataStateResult,
   GetAdapterDataTimeframeOptions,
-  GetAdapterDataTimeframeResult,
-  GetAdapterEventLogsOptions,
   TransformEventLogOptions,
   TransformEventLogResult,
 } from '../../../types/collectors/options';
-import { ProtocolConfig, Token } from '../../../types/configs';
+import { MetricConfig, Token } from '../../../types/configs';
 import { ContextServices } from '../../../types/namespaces';
 import ProtocolAdapter from '../adapter';
 import { MakerEventInterfaces, MakerEventSignatures } from './abis';
@@ -35,8 +32,8 @@ import { MakerEventInterfaces, MakerEventSignatures } from './abis';
 export default class MakerAdapter extends ProtocolAdapter {
   public readonly name: string = 'adapter.maker';
 
-  constructor(services: ContextServices, config: ProtocolConfig) {
-    super(services, config);
+  constructor(services: ContextServices) {
+    super(services);
 
     this.abiConfigs.eventSignatures = MakerEventSignatures;
     this.abiConfigs.eventAbis = {
@@ -48,11 +45,8 @@ export default class MakerAdapter extends ProtocolAdapter {
     };
   }
 
-  public async getDataState(options: GetAdapterDataStateOptions): Promise<GetAdapterDataStateResult> {
-    const result: GetAdapterDataStateResult = {
-      crossLending: null,
-      cdpLending: [],
-    };
+  public async getDataState(options: GetAdapterDataStateOptions): Promise<Array<CdpLendingAssetDataState> | null> {
+    const result: Array<CdpLendingAssetDataState> = [];
 
     const blockNumber = await tryQueryBlockNumberAtTimestamp(
       EnvConfig.blockchains[options.config.chain].blockSubgraph,
@@ -188,32 +182,30 @@ export default class MakerAdapter extends ProtocolAdapter {
       }
     }
 
-    if (result.cdpLending) {
-      result.cdpLending.push(stateData);
-    }
+    result.push(stateData);
 
     return result;
   }
 
-  public async getEventLogs(options: GetAdapterEventLogsOptions): Promise<Array<any>> {
-    const config = options.config as MakerLendingMarketConfig;
+  public async getEventLogs(config: MetricConfig, fromBlock: number, toBlock: number): Promise<Array<any>> {
+    const makerConfig = config as MakerLendingMarketConfig;
 
     // get events from dai join
     let logs = await this.services.blockchain.getContractLogs({
-      chain: options.config.chain,
-      address: config.daiJoin,
-      fromBlock: options.fromBlock,
-      toBlock: options.toBlock,
+      chain: makerConfig.chain,
+      address: makerConfig.daiJoin,
+      fromBlock: fromBlock,
+      toBlock: toBlock,
     });
 
     // get events from gem joins
-    for (const gemConfig of config.gems) {
+    for (const gemConfig of makerConfig.gems) {
       logs = logs.concat(
         await this.services.blockchain.getContractLogs({
-          chain: options.config.chain,
+          chain: makerConfig.chain,
           address: gemConfig.address,
-          fromBlock: options.fromBlock,
-          toBlock: options.toBlock,
+          fromBlock: fromBlock,
+          toBlock: toBlock,
         }),
       );
     }
@@ -248,7 +240,7 @@ export default class MakerAdapter extends ProtocolAdapter {
           const action = signature === eventSignatures.Join ? ActivityActions.repay : ActivityActions.borrow;
           result.activities.push({
             chain: marketConfig.chain,
-            protocol: this.config.protocol,
+            protocol: options.config.protocol,
             address: address,
             transactionHash: log.transactionHash,
             logIndex: log.logIndex.toString(),
@@ -267,7 +259,7 @@ export default class MakerAdapter extends ProtocolAdapter {
               const action = signature === eventSignatures.Exit ? ActivityActions.withdraw : ActivityActions.deposit;
               result.activities.push({
                 chain: marketConfig.chain,
-                protocol: this.config.protocol,
+                protocol: options.config.protocol,
                 address: address,
                 transactionHash: log.transactionHash,
                 logIndex: log.logIndex.toString(),
@@ -298,7 +290,7 @@ export default class MakerAdapter extends ProtocolAdapter {
 
             result.activities.push({
               chain: marketConfig.chain,
-              protocol: this.config.protocol,
+              protocol: options.config.protocol,
               address: address,
               transactionHash: log.transactionHash,
               logIndex: log.logIndex.toString(),
@@ -317,22 +309,18 @@ export default class MakerAdapter extends ProtocolAdapter {
     return result;
   }
 
-  public async getDataTimeframe(options: GetAdapterDataTimeframeOptions): Promise<GetAdapterDataTimeframeResult> {
-    const states = (
-      await this.getDataState({
-        config: options.config,
-        timestamp: options.fromTime,
-      })
-    ).cdpLending;
-
-    const result: GetAdapterDataTimeframeResult = {
-      crossLending: null,
-      cdpLending: [],
-    };
-
+  public async getDataTimeframe(
+    options: GetAdapterDataTimeframeOptions,
+  ): Promise<Array<CdpLendingAssetDataTimeframe> | null> {
+    const states = await this.getDataState({
+      config: options.config,
+      timestamp: options.fromTime,
+    });
     if (!states) {
-      return result;
+      return null;
     }
+
+    const result: Array<CdpLendingAssetDataTimeframe> = [];
 
     // make sure activities were synced
     const beginBlock = await tryQueryBlockNumberAtTimestamp(
@@ -344,11 +332,7 @@ export default class MakerAdapter extends ProtocolAdapter {
       options.toTime,
     );
 
-    const logs = await this.getEventLogs({
-      config: options.config,
-      fromBlock: beginBlock,
-      toBlock: endBlock,
-    });
+    const logs = await this.getEventLogs(options.config, beginBlock, endBlock);
 
     const { activities } = await this.transformEventLogs({
       chain: options.config.chain,
@@ -461,9 +445,7 @@ export default class MakerAdapter extends ProtocolAdapter {
       snapshot.addresses = Object.keys(countUsers);
       snapshot.transactions = Object.keys(transactions);
 
-      if (result.cdpLending) {
-        result.cdpLending.push(snapshot);
-      }
+      result.push(snapshot);
     }
 
     return result;

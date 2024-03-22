@@ -5,7 +5,7 @@ import { TimeUnits } from '../../../configs/constants';
 import { AaveLendingMarketConfig } from '../../../configs/protocols/aave';
 import { formatBigNumberToString } from '../../../lib/utils';
 import { TokenValueItem } from '../../../types/collectors/base';
-import { ProtocolConfig, Token } from '../../../types/configs';
+import { Token } from '../../../types/configs';
 import { ContextServices } from '../../../types/namespaces';
 import Aavev2Adapter from '../aave/aavev2';
 
@@ -33,8 +33,8 @@ const RadiantTokens: { [key: string]: Token } = {
 export default class RadiantAdapter extends Aavev2Adapter {
   public readonly name: string = 'adapter.radiant';
 
-  constructor(services: ContextServices, config: ProtocolConfig) {
-    super(services, config);
+  constructor(services: ContextServices) {
+    super(services);
   }
 
   // return amount of token rewards in one year

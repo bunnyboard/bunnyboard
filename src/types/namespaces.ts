@@ -5,13 +5,9 @@ import { IOracleService } from '../services/oracle/domains';
 import {
   AdapterAbiConfigs,
   GetAdapterDataStateOptions,
-  GetAdapterDataStateResult,
   GetAdapterDataTimeframeOptions,
-  GetAdapterDataTimeframeResult,
   RunCollectorOptions,
 } from './collectors/options';
-import { TokenBoardErc20DataState, TokenBoardErc20DataTimeframe } from './collectors/tokenboard';
-import { MetricConfig, ProtocolConfig } from './configs';
 
 export interface ContextStorages {
   database: IDatabaseService;
@@ -23,39 +19,20 @@ export interface ContextServices {
   oracle: IOracleService;
 }
 
+// protocol adapter get on-chain data for
 export interface IProtocolAdapter {
   name: string;
   services: ContextServices;
-
-  // protocol config
-  config: ProtocolConfig;
 
   // known contract event log signature
   // and abi for parsing
   abiConfigs: AdapterAbiConfigs;
 
-  // get data state of a metric config
-  getDataState: (options: GetAdapterDataStateOptions) => Promise<GetAdapterDataStateResult>;
-
-  // get data in a given timeframe
-  getDataTimeframe: (options: GetAdapterDataTimeframeOptions) => Promise<GetAdapterDataTimeframeResult>;
+  getDataState: (options: GetAdapterDataStateOptions) => Promise<any>;
+  getDataTimeframe: (options: GetAdapterDataTimeframeOptions) => Promise<any>;
 }
 
-// board adapter get on-chain data for all protocols
-// in common metrics
-export interface IBoardAdapter {
-  name: string;
-  services: ContextServices;
-
-  getDataState: (config: MetricConfig, timestamp: number) => Promise<TokenBoardErc20DataState | null>;
-  getDataTimeframe: (
-    config: MetricConfig,
-    fromTime: number,
-    toTime: number,
-  ) => Promise<TokenBoardErc20DataTimeframe | null>;
-}
-
-export interface ICollector {
+export interface IDataCollector {
   name: string;
   services: ContextServices;
   storages: ContextStorages;
@@ -63,7 +40,7 @@ export interface ICollector {
   run: (options: RunCollectorOptions) => Promise<void>;
 }
 
-export interface DataAggregator {
+export interface IDataAggregator {
   name: string;
   database: IDatabaseService;
 

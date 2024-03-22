@@ -14,14 +14,11 @@ import { ActivityActions, TokenValueItem } from '../../../types/collectors/base'
 import { CrossLendingReserveDataState, CrossLendingReserveDataTimeframe } from '../../../types/collectors/crossLending';
 import {
   GetAdapterDataStateOptions,
-  GetAdapterDataStateResult,
   GetAdapterDataTimeframeOptions,
-  GetAdapterDataTimeframeResult,
-  GetAdapterEventLogsOptions,
   TransformEventLogOptions,
   TransformEventLogResult,
 } from '../../../types/collectors/options';
-import { ProtocolConfig, Token } from '../../../types/configs';
+import { MetricConfig, Token } from '../../../types/configs';
 import { ContextServices } from '../../../types/namespaces';
 import CompoundLibs from '../../libs/compound';
 import ProtocolAdapter from '../adapter';
@@ -46,8 +43,8 @@ interface Rewards {
 export default class CompoundAdapter extends ProtocolAdapter {
   public readonly name: string = 'adapter.compound';
 
-  constructor(services: ContextServices, config: ProtocolConfig) {
-    super(services, config);
+  constructor(services: ContextServices) {
+    super(services);
 
     this.abiConfigs.eventSignatures = CompoundEventSignatures;
     this.abiConfigs.eventAbis = {
@@ -209,11 +206,8 @@ export default class CompoundAdapter extends ProtocolAdapter {
     };
   }
 
-  public async getDataState(options: GetAdapterDataStateOptions): Promise<GetAdapterDataStateResult> {
-    const result: GetAdapterDataStateResult = {
-      crossLending: [],
-      cdpLending: null,
-    };
+  public async getDataState(options: GetAdapterDataStateOptions): Promise<Array<CrossLendingReserveDataState> | null> {
+    const result: Array<CrossLendingReserveDataState> = [];
 
     const marketConfig = options.config as CompoundLendingMarketConfig;
     const blockNumber = await tryQueryBlockNumberAtTimestamp(
@@ -344,9 +338,7 @@ export default class CompoundAdapter extends ProtocolAdapter {
             rateRewardBorrow: rewardBorrowRate,
           };
 
-          if (result.crossLending) {
-            result.crossLending.push(dataState);
-          }
+          result.push(dataState);
         }
       }
     }
@@ -354,26 +346,26 @@ export default class CompoundAdapter extends ProtocolAdapter {
     return result;
   }
 
-  public async getEventLogs(options: GetAdapterEventLogsOptions): Promise<Array<any>> {
+  public async getEventLogs(config: MetricConfig, fromBlock: number, toBlock: number): Promise<Array<any>> {
     let logs: Array<any> = [];
 
     // get comptroller logs
     logs = await this.services.blockchain.getContractLogs({
-      chain: options.config.chain,
-      address: options.config.address,
-      fromBlock: options.fromBlock,
-      toBlock: options.toBlock,
+      chain: config.chain,
+      address: config.address,
+      fromBlock: fromBlock,
+      toBlock: toBlock,
     });
 
-    const allMarkets = await this.getAllMarkets(options.config as CompoundLendingMarketConfig, options.fromBlock);
+    const allMarkets = await this.getAllMarkets(config as CompoundLendingMarketConfig, fromBlock);
     if (allMarkets) {
       for (const cToken of allMarkets) {
         logs = logs.concat(
           await this.services.blockchain.getContractLogs({
-            chain: options.config.chain,
+            chain: config.chain,
             address: cToken.toString(),
-            fromBlock: options.fromBlock,
-            toBlock: options.toBlock,
+            fromBlock: fromBlock,
+            toBlock: toBlock,
           }),
         );
       }
@@ -416,7 +408,7 @@ export default class CompoundAdapter extends ProtocolAdapter {
             const tokenAmount = formatBigNumberToString(event.args.compDelta.toString(), token.decimals);
             result.activities.push({
               chain: options.chain,
-              protocol: this.config.protocol,
+              protocol: options.config.protocol,
               address: address,
               transactionHash: log.transactionHash,
               logIndex: log.logIndex.toString(),
@@ -471,7 +463,7 @@ export default class CompoundAdapter extends ProtocolAdapter {
 
               result.activities.push({
                 chain: options.chain,
-                protocol: this.config.protocol,
+                protocol: options.config.protocol,
                 address: address,
                 transactionHash: log.transactionHash,
                 logIndex: log.logIndex.toString(),
@@ -514,7 +506,7 @@ export default class CompoundAdapter extends ProtocolAdapter {
 
                   result.activities.push({
                     chain: options.chain,
-                    protocol: this.config.protocol,
+                    protocol: options.config.protocol,
                     address: address,
                     transactionHash: log.transactionHash,
                     logIndex: log.logIndex.toString(),
@@ -528,7 +520,7 @@ export default class CompoundAdapter extends ProtocolAdapter {
 
                   result.activities.push({
                     chain: options.chain,
-                    protocol: this.config.protocol,
+                    protocol: options.config.protocol,
                     address: address,
                     transactionHash: log.transactionHash,
                     logIndex: log.logIndex.toString(),
@@ -550,21 +542,18 @@ export default class CompoundAdapter extends ProtocolAdapter {
     return result;
   }
 
-  public async getDataTimeframe(options: GetAdapterDataTimeframeOptions): Promise<GetAdapterDataTimeframeResult> {
-    const states = (
-      await this.getDataState({
-        config: options.config,
-        timestamp: options.fromTime,
-      })
-    ).crossLending;
-    const result: GetAdapterDataTimeframeResult = {
-      crossLending: [],
-      cdpLending: null,
-    };
-
+  public async getDataTimeframe(
+    options: GetAdapterDataTimeframeOptions,
+  ): Promise<Array<CrossLendingReserveDataTimeframe> | null> {
+    const states = await this.getDataState({
+      config: options.config,
+      timestamp: options.fromTime,
+    });
     if (!states) {
-      return result;
+      return null;
     }
+
+    const result: Array<CrossLendingReserveDataTimeframe> = [];
 
     // make sure activities were synced
     const beginBlock = await tryQueryBlockNumberAtTimestamp(
@@ -576,11 +565,7 @@ export default class CompoundAdapter extends ProtocolAdapter {
       options.toTime,
     );
 
-    const logs = await this.getEventLogs({
-      config: options.config,
-      fromBlock: beginBlock,
-      toBlock: endBlock,
-    });
+    const logs = await this.getEventLogs(options.config, beginBlock, endBlock);
 
     const { activities } = await this.transformEventLogs({
       chain: options.config.chain,
@@ -606,9 +591,7 @@ export default class CompoundAdapter extends ProtocolAdapter {
         timeto: options.toTime,
       };
 
-      if (result.crossLending) {
-        result.crossLending.push(snapshotData);
-      }
+      result.push(snapshotData);
     }
 
     return result;

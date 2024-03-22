@@ -68,6 +68,7 @@ export interface EnvConfig {
 }
 
 export const DataMetrics = {
+  dex: 'dex',
   crossLending: 'crossLending',
   cdpLending: 'cdpLending',
   staking: 'staking',
@@ -115,15 +116,14 @@ export interface CdpLendingMarketConfig extends MetricConfig {
   debtToken: Token;
 }
 
-export const PerpetualMarketVersions = {
-  gmx: 'gmx',
-  gmxv2: 'gmxv2',
+export const DexVersions = {
+  uniswapv2: 'uniswapv2',
+  uniswapv3: 'uniswapv3',
 };
-const AllPerpetualMarketVersions = Object.values(PerpetualMarketVersions);
-export type PerpetualVersion = (typeof AllPerpetualMarketVersions)[number];
-
-export interface PerpetualMarketConfig extends MetricConfig {
-  version: PerpetualVersion;
+const AllDexVersions = Object.values(DexVersions);
+export type DexVersion = (typeof AllDexVersions)[number];
+export interface DexConfig extends MetricConfig {
+  version: DexVersion;
 }
 
 export interface TokenBoardErc20Config extends MetricConfig, Token {

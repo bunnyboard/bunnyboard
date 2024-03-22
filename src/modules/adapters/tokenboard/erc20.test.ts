@@ -1,9 +1,9 @@
 import { expect, test } from 'vitest';
 
-import { BoardConfigs, ProtocolConfigs } from '../../../configs';
 import BlockchainService from '../../../services/blockchains/blockchain';
 import OracleService from '../../../services/oracle/oracle';
 import TokenBoardErc20Adapter from './erc20';
+import { ProtocolConfigs } from '../../../configs';
 
 const oracle = new OracleService();
 const blockchain = new BlockchainService();
@@ -12,19 +12,16 @@ const timestamp = 1704240000; // Wed Jan 03 2024 00:00:00 GMT+0000
 const afterTimestamp = 1704326400; // Thu Jan 04 2024 00:00:00 GMT+0000
 
 test('should get data correctly - DAI on ethereum at 1704240000', async function () {
-  const erc20Adapter = new TokenBoardErc20Adapter(
-    {
-      blockchain: blockchain,
-      oracle: oracle,
-    },
-    BoardConfigs.tokenboard,
-  );
+  const erc20Adapter = new TokenBoardErc20Adapter({
+    blockchain: blockchain,
+    oracle: oracle,
+  });
 
-  const daiErc20data = await erc20Adapter.getDataTimeframe(
-    ProtocolConfigs.tokenboard.configs[0],
-    timestamp,
-    afterTimestamp,
-  );
+  const daiErc20data = await erc20Adapter.getDataTimeframe({
+    config: ProtocolConfigs.tokenboard.configs[0],
+    fromTime: timestamp,
+    toTime: afterTimestamp,
+  });
 
   expect(daiErc20data).not.equal(undefined);
   expect(daiErc20data).not.equal(null);
@@ -39,15 +36,16 @@ test('should get data correctly - DAI on ethereum at 1704240000', async function
 });
 
 test('should get data correctly - MKR on ethereum at 1704240000', async function () {
-  const erc20Adapter = new TokenBoardErc20Adapter(
-    {
-      blockchain: blockchain,
-      oracle: oracle,
-    },
-    BoardConfigs.tokenboard,
-  );
+  const erc20Adapter = new TokenBoardErc20Adapter({
+    blockchain: blockchain,
+    oracle: oracle,
+  });
 
-  const mkrTokenData = await erc20Adapter.getDataState(ProtocolConfigs.tokenboard.configs[1], timestamp);
+  const mkrTokenData = await erc20Adapter.getDataTimeframe({
+    config: ProtocolConfigs.tokenboard.configs[1],
+    fromTime: timestamp,
+    toTime: afterTimestamp,
+  });
 
   expect(mkrTokenData).not.equal(undefined);
   expect(mkrTokenData).not.equal(null);

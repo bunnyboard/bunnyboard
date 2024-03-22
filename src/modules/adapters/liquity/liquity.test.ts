@@ -13,13 +13,10 @@ const timestamp = 1704240000; // Wed Jan 03 2024 00:00:00 GMT+0000
 const startDayTimestamp = 1708041600; // Fri Feb 16 2024 00:00:00 GMT+0000
 const endDayTimestamp = 1708128000; // Sat Feb 17 2024 00:00:00 GMT+0000
 
-const liquityAdapter = new LiquityAdapter(
-  {
-    blockchain: blockchain,
-    oracle: oracle,
-  },
-  ProtocolConfigs.liquity,
-);
+const liquityAdapter = new LiquityAdapter({
+  blockchain: blockchain,
+  oracle: oracle,
+});
 const configEthereum = ProtocolConfigs.liquity.configs.filter((item) => item.chain === 'ethereum')[0];
 
 test('should get state data correctly - liquity chain ethereum', async function () {
@@ -28,17 +25,17 @@ test('should get state data correctly - liquity chain ethereum', async function 
     timestamp: timestamp,
   });
 
-  expect(dataState.cdpLending).not.equal(undefined);
+  expect(dataState).not.equal(undefined);
 
-  if (dataState.cdpLending) {
-    expect(dataState.cdpLending.length).equal(1);
+  if (dataState) {
+    expect(dataState.length).equal(1);
 
-    const lusdAsset = dataState.cdpLending[0];
+    const lusdAsset = dataState[0];
     expect(lusdAsset.tokenPrice).equal('0.99439893273');
     expect(lusdAsset.totalBorrowed).equal('174892809.938681132585837145');
     expect(lusdAsset.collaterals.length).equal(1);
 
-    const ethCollateral = dataState.cdpLending[0].collaterals[0];
+    const ethCollateral = dataState[0].collaterals[0];
     expect(ethCollateral.tokenPrice).equal('2358.45');
     expect(ethCollateral.totalDeposited).equal('316094.699304118193290095');
     expect(ethCollateral.rateBorrow).equal('0');
@@ -54,11 +51,11 @@ test('should get timeframe data correctly - liquity chain ethereum', async funct
     toTime: endDayTimestamp,
   });
 
-  expect(dataTimeframe.cdpLending).not.equal(undefined);
-  if (dataTimeframe.cdpLending) {
-    expect(dataTimeframe.cdpLending[0]).not.equal(undefined);
+  expect(dataTimeframe).not.equal(undefined);
+  if (dataTimeframe) {
+    expect(dataTimeframe[0]).not.equal(undefined);
 
-    const lusdAsset = dataTimeframe.cdpLending[0];
+    const lusdAsset = dataTimeframe[0];
     expect(lusdAsset.tokenPrice).equal('0.99686470095');
     expect(lusdAsset.totalBorrowed).equal('153195539.082185262742860794');
     expect(lusdAsset.volumeBorrowed).equal('296948.444550847122605949');

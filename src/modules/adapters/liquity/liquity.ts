@@ -15,14 +15,11 @@ import {
 } from '../../../types/collectors/cdpLending';
 import {
   GetAdapterDataStateOptions,
-  GetAdapterDataStateResult,
   GetAdapterDataTimeframeOptions,
-  GetAdapterDataTimeframeResult,
-  GetAdapterEventLogsOptions,
   TransformEventLogOptions,
   TransformEventLogResult,
 } from '../../../types/collectors/options';
-import { ProtocolConfig, Token } from '../../../types/configs';
+import { MetricConfig, Token } from '../../../types/configs';
 import { ContextServices } from '../../../types/namespaces';
 import ProtocolAdapter from '../adapter';
 import { LiquityEventInterfaces, LiquityEventSignatures } from './abis';
@@ -36,8 +33,8 @@ interface GetTroveStateInfo {
 export default class LiquityAdapter extends ProtocolAdapter {
   public readonly name: string = 'adapter.liquity';
 
-  constructor(services: ContextServices, config: ProtocolConfig) {
-    super(services, config);
+  constructor(services: ContextServices) {
+    super(services);
 
     this.abiConfigs.eventSignatures = LiquityEventSignatures;
     this.abiConfigs.eventAbis = {
@@ -85,11 +82,8 @@ export default class LiquityAdapter extends ProtocolAdapter {
     return borrowingFee.toString();
   }
 
-  public async getDataState(options: GetAdapterDataStateOptions): Promise<GetAdapterDataStateResult> {
-    const result: GetAdapterDataStateResult = {
-      crossLending: null,
-      cdpLending: [],
-    };
+  public async getDataState(options: GetAdapterDataStateOptions): Promise<Array<CdpLendingAssetDataState> | null> {
+    const result: Array<CdpLendingAssetDataState> = [];
 
     const blockNumber = await tryQueryBlockNumberAtTimestamp(
       EnvConfig.blockchains[options.config.chain].blockSubgraph,
@@ -165,33 +159,31 @@ export default class LiquityAdapter extends ProtocolAdapter {
       });
     }
 
-    if (result.cdpLending) {
-      result.cdpLending.push(assetState);
-    }
+    result.push(assetState);
 
     return result;
   }
 
-  public async getEventLogs(options: GetAdapterEventLogsOptions): Promise<Array<any>> {
-    const config = options.config as LiquityLendingMarketConfig;
+  public async getEventLogs(config: MetricConfig, fromBlock: number, toBlock: number): Promise<Array<any>> {
+    const liquityConfig = config as LiquityLendingMarketConfig;
 
     // get logs from borrow operation
     let logs = await this.services.blockchain.getContractLogs({
-      chain: options.config.chain,
-      address: options.config.address,
-      fromBlock: options.fromBlock,
-      toBlock: options.toBlock,
+      chain: liquityConfig.chain,
+      address: liquityConfig.address,
+      fromBlock: fromBlock,
+      toBlock: toBlock,
     });
 
     // get logs from trove managers
-    for (const trove of config.troves) {
+    for (const trove of liquityConfig.troves) {
       logs = logs.concat(
         // get liquidation events
         await this.services.blockchain.getContractLogs({
-          chain: options.config.chain,
+          chain: liquityConfig.chain,
           address: trove.troveManager,
-          fromBlock: options.fromBlock,
-          toBlock: options.toBlock,
+          fromBlock: fromBlock,
+          toBlock: toBlock,
         }),
       );
     }
@@ -232,7 +224,7 @@ export default class LiquityAdapter extends ProtocolAdapter {
           if (amount !== '0') {
             result.activities.push({
               chain: marketConfig.chain,
-              protocol: this.config.protocol,
+              protocol: options.config.protocol,
               address: address,
               transactionHash: log.transactionHash,
               logIndex: `${log.logIndex.toString()}:0`,
@@ -249,7 +241,7 @@ export default class LiquityAdapter extends ProtocolAdapter {
           if (collateralAmount !== '0') {
             result.activities.push({
               chain: marketConfig.chain,
-              protocol: this.config.protocol,
+              protocol: options.config.protocol,
               address: address,
               transactionHash: log.transactionHash,
               logIndex: `${log.logIndex.toString()}:1`,
@@ -277,7 +269,7 @@ export default class LiquityAdapter extends ProtocolAdapter {
           if (amount !== '0') {
             result.activities.push({
               chain: marketConfig.chain,
-              protocol: this.config.protocol,
+              protocol: options.config.protocol,
               address: address,
               transactionHash: log.transactionHash,
               logIndex: `${log.logIndex.toString()}:0`,
@@ -292,7 +284,7 @@ export default class LiquityAdapter extends ProtocolAdapter {
           if (collateralAmount !== '0') {
             result.activities.push({
               chain: marketConfig.chain,
-              protocol: this.config.protocol,
+              protocol: options.config.protocol,
               address: address,
               transactionHash: log.transactionHash,
               logIndex: `${log.logIndex.toString()}:1`,
@@ -317,7 +309,7 @@ export default class LiquityAdapter extends ProtocolAdapter {
         if (collateralAmount !== '0') {
           result.activities.push({
             chain: marketConfig.chain,
-            protocol: this.config.protocol,
+            protocol: options.config.protocol,
             address: address,
             transactionHash: log.transactionHash,
             logIndex: `${log.logIndex.toString()}:1`,
@@ -335,22 +327,18 @@ export default class LiquityAdapter extends ProtocolAdapter {
     return result;
   }
 
-  public async getDataTimeframe(options: GetAdapterDataTimeframeOptions): Promise<GetAdapterDataTimeframeResult> {
-    const states = (
-      await this.getDataState({
-        config: options.config,
-        timestamp: options.fromTime,
-      })
-    ).cdpLending;
-
-    const result: GetAdapterDataTimeframeResult = {
-      crossLending: null,
-      cdpLending: [],
-    };
-
+  public async getDataTimeframe(
+    options: GetAdapterDataTimeframeOptions,
+  ): Promise<Array<CdpLendingAssetDataTimeframe> | null> {
+    const states = await this.getDataState({
+      config: options.config,
+      timestamp: options.fromTime,
+    });
     if (!states) {
-      return result;
+      return null;
     }
+
+    const result: Array<CdpLendingAssetDataTimeframe> = [];
 
     // make sure activities were synced
     const beginBlock = await tryQueryBlockNumberAtTimestamp(
@@ -362,11 +350,7 @@ export default class LiquityAdapter extends ProtocolAdapter {
       options.toTime,
     );
 
-    const logs = await this.getEventLogs({
-      config: options.config,
-      fromBlock: beginBlock,
-      toBlock: endBlock,
-    });
+    const logs = await this.getEventLogs(options.config, beginBlock, endBlock);
 
     const { activities } = await this.transformEventLogs({
       chain: options.config.chain,
@@ -478,9 +462,7 @@ export default class LiquityAdapter extends ProtocolAdapter {
       snapshot.addresses = Object.keys(addresses);
       snapshot.transactions = Object.keys(transactions);
 
-      if (result.cdpLending) {
-        result.cdpLending.push(snapshot);
-      }
+      result.push(snapshot);
     }
 
     return result;

@@ -1,16 +1,9 @@
-import { MetricConfig } from '../configs';
-import { ContextStorages } from '../namespaces';
-import { CdpLendingAssetDataState, CdpLendingAssetDataTimeframe } from './cdpLending';
-import {
-  CrossLendingActivityEvent,
-  CrossLendingReserveDataState,
-  CrossLendingReserveDataTimeframe,
-} from './crossLending';
-import { PerpetualMarketDataState, PerpetualMarketDataTimeframe } from './perpetutal';
+import { DataMetric, MetricConfig } from '../configs';
+import { CrossLendingActivityEvent } from './crossLending';
 
 export interface AdapterAbiConfigs {
-  eventSignatures: any;
   eventAbis: any;
+  eventSignatures: any;
 }
 
 export interface TransformEventLogOptions {
@@ -28,33 +21,14 @@ export interface GetAdapterDataStateOptions {
   timestamp: number;
 }
 
-export interface GetAdapterEventLogsOptions {
-  config: MetricConfig;
-  fromBlock: number;
-  toBlock: number;
-}
-
 export interface GetAdapterDataTimeframeOptions {
   config: MetricConfig;
-  storages?: ContextStorages;
   fromTime: number;
   toTime: number;
 }
 
-export interface GetAdapterDataStateResult {
-  crossLending?: Array<CrossLendingReserveDataState> | null;
-  cdpLending?: Array<CdpLendingAssetDataState> | null;
-  perpetual?: Array<PerpetualMarketDataState> | null;
-}
-
-export interface GetAdapterDataTimeframeResult {
-  crossLending?: Array<CrossLendingReserveDataTimeframe> | null;
-  cdpLending?: Array<CdpLendingAssetDataTimeframe> | null;
-  perpetual?: Array<PerpetualMarketDataTimeframe> | null;
-}
-
 export interface RunCollectorOptions {
-  board?: string; // tokenboard
+  metric?: DataMetric;
 
   // if chain was given, run collector with given chain
   chain?: string;

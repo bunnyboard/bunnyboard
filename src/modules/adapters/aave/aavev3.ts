@@ -7,7 +7,6 @@ import { SolidityUnits, TimeUnits } from '../../../configs/constants';
 import { AaveLendingMarketConfig } from '../../../configs/protocols/aave';
 import { formatBigNumberToString } from '../../../lib/utils';
 import { TokenValueItem } from '../../../types/collectors/base';
-import { ProtocolConfig } from '../../../types/configs';
 import { ContextServices } from '../../../types/namespaces';
 import Aavev2Adapter, { AaveMarketRates } from './aavev2';
 import { Aavev3EventSignatures } from './abis';
@@ -15,8 +14,8 @@ import { Aavev3EventSignatures } from './abis';
 export default class Aavev3Adapter extends Aavev2Adapter {
   public readonly name: string = 'adapter.aavev3';
 
-  constructor(services: ContextServices, config: ProtocolConfig) {
-    super(services, config);
+  constructor(services: ContextServices) {
+    super(services);
 
     this.abiConfigs.eventSignatures = Aavev3EventSignatures;
     this.abiConfigs.eventAbis = {

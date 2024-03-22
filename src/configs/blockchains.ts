@@ -1,7 +1,8 @@
 import dotenv from 'dotenv';
 
 import { Blockchain } from '../types/configs';
-import { AddressZero, BlockSubGraphEndpoints } from './constants';
+import { AddressZero } from './constants';
+import { SubgraphEndpoints } from './data';
 
 // global env and configurations
 dotenv.config();
@@ -12,7 +13,7 @@ export const BlockchainConfigs: { [key: string]: Blockchain } = {
     family: 'evm',
     chainId: 1,
     nodeRpc: String(process.env.BUNNYBOARD_ETHEREUM_NODE),
-    blockSubgraph: BlockSubGraphEndpoints.ethereum,
+    blockSubgraph: SubgraphEndpoints.blocks.ethereum,
     nativeToken: {
       chain: 'ethereum',
       address: AddressZero,
@@ -25,7 +26,7 @@ export const BlockchainConfigs: { [key: string]: Blockchain } = {
     family: 'evm',
     chainId: 42161,
     nodeRpc: String(process.env.BUNNYBOARD_ARBITRUM_NODE),
-    blockSubgraph: BlockSubGraphEndpoints.arbitrum,
+    blockSubgraph: SubgraphEndpoints.blocks.arbitrum,
     nativeToken: {
       chain: 'arbitrum',
       address: AddressZero,
@@ -38,7 +39,7 @@ export const BlockchainConfigs: { [key: string]: Blockchain } = {
     family: 'evm',
     chainId: 8453,
     nodeRpc: String(process.env.BUNNYBOARD_BASE_NODE),
-    blockSubgraph: BlockSubGraphEndpoints.base,
+    blockSubgraph: SubgraphEndpoints.blocks.base,
     nativeToken: {
       chain: 'base',
       address: AddressZero,
@@ -51,7 +52,7 @@ export const BlockchainConfigs: { [key: string]: Blockchain } = {
     family: 'evm',
     chainId: 10,
     nodeRpc: String(process.env.BUNNYBOARD_OPTIMISM_NODE),
-    blockSubgraph: BlockSubGraphEndpoints.optimism,
+    blockSubgraph: SubgraphEndpoints.blocks.optimism,
     nativeToken: {
       chain: 'optimism',
       address: AddressZero,
@@ -64,7 +65,7 @@ export const BlockchainConfigs: { [key: string]: Blockchain } = {
     family: 'evm',
     chainId: 137,
     nodeRpc: String(process.env.BUNNYBOARD_POLYGON_NODE),
-    blockSubgraph: BlockSubGraphEndpoints.polygon,
+    blockSubgraph: SubgraphEndpoints.blocks.polygon,
     nativeToken: {
       chain: 'polygon',
       address: AddressZero,
@@ -77,7 +78,7 @@ export const BlockchainConfigs: { [key: string]: Blockchain } = {
     family: 'evm',
     chainId: 56,
     nodeRpc: String(process.env.BUNNYBOARD_BNBCHAIN_NODE),
-    blockSubgraph: BlockSubGraphEndpoints.bnbchain,
+    blockSubgraph: SubgraphEndpoints.blocks.bnbchain,
     nativeToken: {
       chain: 'bnbchain',
       address: AddressZero,
@@ -90,7 +91,7 @@ export const BlockchainConfigs: { [key: string]: Blockchain } = {
     family: 'evm',
     chainId: 43114,
     nodeRpc: String(process.env.BUNNYBOARD_AVALANCHE_NODE),
-    blockSubgraph: BlockSubGraphEndpoints.avalanche,
+    blockSubgraph: SubgraphEndpoints.blocks.avalanche,
     nativeToken: {
       chain: 'avalanche',
       address: AddressZero,
@@ -103,7 +104,7 @@ export const BlockchainConfigs: { [key: string]: Blockchain } = {
     family: 'evm',
     chainId: 250,
     nodeRpc: String(process.env.BUNNYBOARD_FANTOM_NODE),
-    blockSubgraph: BlockSubGraphEndpoints.fantom,
+    blockSubgraph: SubgraphEndpoints.blocks.fantom,
     nativeToken: {
       chain: 'fantom',
       address: AddressZero,
@@ -116,7 +117,7 @@ export const BlockchainConfigs: { [key: string]: Blockchain } = {
     family: 'evm',
     chainId: 1088,
     nodeRpc: String(process.env.BUNNYBOARD_METIS_NODE),
-    blockSubgraph: BlockSubGraphEndpoints.metis,
+    blockSubgraph: SubgraphEndpoints.blocks.metis,
     nativeToken: {
       chain: 'metis',
       address: AddressZero,
@@ -129,7 +130,7 @@ export const BlockchainConfigs: { [key: string]: Blockchain } = {
     family: 'evm',
     chainId: 100,
     nodeRpc: String(process.env.BUNNYBOARD_GNOSIS_NODE),
-    blockSubgraph: BlockSubGraphEndpoints.gnosis,
+    blockSubgraph: SubgraphEndpoints.blocks.gnosis,
     nativeToken: {
       chain: 'gnosis',
       address: AddressZero,

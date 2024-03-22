@@ -6,5 +6,7 @@
   "MakerDaiJoin": "0x9759a6ac90977b93b58547b4a71c78317f391a28",
   "MakerJug": "0x19c0976f590d67707e62397c87829d896dc0f1f1",
   "MakerSpot": "0x65c79fcb50ca1594b025960e539ed7a9a6d434a3",
-  "MakerVat": "0x35d1b3f3d7966a1dfe207aa4514c12a259a0492b"
+  "MakerVat": "0x35d1b3f3d7966a1dfe207aa4514c12a259a0492b",
+  "SushiFactoryV2": "0xc0aee478e3658e2610c5f7a4a2e1777ce9e4f2ac",
+  "UniswapFactoryV2": "0x5c69bee701ef814a2b6a3edd4b1652cb9cc5aa6f"
 }

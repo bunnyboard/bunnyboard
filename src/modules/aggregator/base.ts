@@ -1,7 +1,7 @@
 import { IDatabaseService } from '../../services/database/domains';
-import { DataAggregator } from '../../types/namespaces';
+import { IDataAggregator } from '../../types/namespaces';
 
-export default class BaseDataAggregator implements DataAggregator {
+export default class BaseDataAggregator implements IDataAggregator {
   public readonly name: string = 'aggregator.baseData';
   public readonly database: IDatabaseService;
 

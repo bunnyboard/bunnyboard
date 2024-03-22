@@ -56,10 +56,10 @@ export const Aavev2Configs: AaveProtocolConfig = {
       version: 'aavev2',
       birthday: 1632182400, // Tue Sep 21 2021 00:00:00 GMT+0000
       metric: DataMetrics.crossLending,
-      address: '0x4f01aed16d97e3ab5ab2b501154dc9bb0f1a5a2c',
-      priceOracle: '0xdC336Cd4769f4cC7E9d726DA53e6d3fC710cEB89',
-      dataProvider: '0x65285E9dfab318f57051ab2b139ccCf232945451',
-      incentiveController: '0x01D83Fe6A10D2f2B7AF17034343746188272cAc9',
+      address: AddressesBook.avalanche.Aavev2LendingPool,
+      priceOracle: AddressesBook.avalanche.Aavev2PriceOracle,
+      dataProvider: AddressesBook.avalanche.Aavev2DataProvider,
+      incentiveController: AddressesBook.avalanche.Aavev2IncentiveController,
     },
   ]),
 };

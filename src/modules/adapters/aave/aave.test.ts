@@ -11,13 +11,10 @@ const blockchain = new BlockchainService();
 const timestamp = 1704240000; // Wed Jan 03 2024 00:00:00 GMT+0000
 
 test('should get data correctly - aavev2 chain ethereum', async function () {
-  const aavev2Adapter = new Aavev2Adapter(
-    {
-      blockchain: blockchain,
-      oracle: oracle,
-    },
-    ProtocolConfigs.aavev2,
-  );
+  const aavev2Adapter = new Aavev2Adapter({
+    blockchain: blockchain,
+    oracle: oracle,
+  });
 
   const configEthereum = ProtocolConfigs.aavev2.configs.filter((item) => item.chain === 'ethereum')[0];
   if (configEthereum) {
@@ -26,12 +23,10 @@ test('should get data correctly - aavev2 chain ethereum', async function () {
       timestamp: timestamp,
     });
 
-    expect(dataState.crossLending).not.equal(undefined);
+    expect(dataState).not.equal(undefined);
 
-    if (dataState.crossLending) {
-      expect(dataState.crossLending.length).equal(37);
+    if (dataState) {
+      expect(dataState.length).equal(37);
     }
-
-    console.log(JSON.stringify(dataState));
   }
 });

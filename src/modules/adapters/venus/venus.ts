@@ -3,7 +3,6 @@ import cErc20Abi from '../../../configs/abi/compound/cErc20.json';
 import VenusComptrollerAbi from '../../../configs/abi/venus/VenusComptoller.json';
 import { CompoundLendingMarketConfig } from '../../../configs/protocols/compound';
 import { formatBigNumberToString } from '../../../lib/utils';
-import { ProtocolConfig } from '../../../types/configs';
 import { ContextServices } from '../../../types/namespaces';
 import CompoundAdapter from '../compound/compound';
 import { VenusEventSignatures } from './abis';
@@ -16,8 +15,8 @@ interface Speeds {
 export default class VenusAdapter extends CompoundAdapter {
   public readonly name: string = 'adapter.venus';
 
-  constructor(services: ContextServices, config: ProtocolConfig) {
-    super(services, config);
+  constructor(services: ContextServices) {
+    super(services);
 
     this.abiConfigs.eventSignatures = VenusEventSignatures;
     this.abiConfigs.eventAbis = {

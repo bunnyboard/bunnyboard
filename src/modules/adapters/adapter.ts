@@ -1,23 +1,18 @@
 import {
   AdapterAbiConfigs,
   GetAdapterDataStateOptions,
-  GetAdapterDataStateResult,
   GetAdapterDataTimeframeOptions,
-  GetAdapterDataTimeframeResult,
-  GetAdapterEventLogsOptions,
 } from '../../types/collectors/options';
-import { ProtocolConfig } from '../../types/configs';
+import { MetricConfig } from '../../types/configs';
 import { ContextServices, IProtocolAdapter } from '../../types/namespaces';
 
 export default class ProtocolAdapter implements IProtocolAdapter {
   public readonly name: string = 'adapter';
   public readonly services: ContextServices;
-  public readonly config: ProtocolConfig;
   public readonly abiConfigs: AdapterAbiConfigs;
 
-  constructor(services: ContextServices, config: ProtocolConfig) {
+  constructor(services: ContextServices) {
     this.services = services;
-    this.config = config;
 
     this.abiConfigs = {
       eventSignatures: {},
@@ -25,21 +20,15 @@ export default class ProtocolAdapter implements IProtocolAdapter {
     };
   }
 
-  public async getDataState(options: GetAdapterDataStateOptions): Promise<GetAdapterDataStateResult> {
-    return {
-      crossLending: null,
-      cdpLending: null,
-    };
+  public async getDataState(options: GetAdapterDataStateOptions): Promise<any> {
+    return null;
   }
 
-  public async getDataTimeframe(options: GetAdapterDataTimeframeOptions): Promise<GetAdapterDataTimeframeResult> {
-    return {
-      crossLending: null,
-      cdpLending: null,
-    };
+  public async getDataTimeframe(options: GetAdapterDataTimeframeOptions): Promise<any> {
+    return null;
   }
 
-  public async getEventLogs(options: GetAdapterEventLogsOptions): Promise<Array<any>> {
+  public async getEventLogs(config: MetricConfig, fromBlock: number, toBlock: number): Promise<Array<any>> {
     return [];
   }
 }

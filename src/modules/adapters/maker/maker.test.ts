@@ -13,13 +13,10 @@ const timestamp = 1704240000; // Wed Jan 03 2024 00:00:00 GMT+0000
 // const startDayTimestamp = 1708041600; // Fri Feb 16 2024 00:00:00 GMT+0000
 // const endDayTimestamp = 1708128000; // Sat Feb 17 2024 00:00:00 GMT+0000
 
-const makerAdapter = new MakerAdapter(
-  {
-    blockchain: blockchain,
-    oracle: oracle,
-  },
-  ProtocolConfigs.maker,
-);
+const makerAdapter = new MakerAdapter({
+  blockchain: blockchain,
+  oracle: oracle,
+});
 const configEthereum = ProtocolConfigs.maker.configs.filter((item) => item.chain === 'ethereum')[0];
 
 test('should get state data correctly - liquity chain ethereum', async function () {
@@ -28,11 +25,11 @@ test('should get state data correctly - liquity chain ethereum', async function 
     timestamp: timestamp,
   });
 
-  expect(dataState.cdpLending).not.equal(undefined);
-  if (dataState.cdpLending) {
-    expect(dataState.cdpLending.length).equal(1);
+  expect(dataState).not.equal(undefined);
+  if (dataState) {
+    expect(dataState.length).equal(1);
 
-    const daiAsset = dataState.cdpLending[0];
+    const daiAsset = dataState[0];
     expect(daiAsset.tokenPrice).equal('0.99987297');
     expect(daiAsset.totalBorrowed).equal('5286041331.8292899703329106007');
     expect(daiAsset.collaterals.length).equal(27);

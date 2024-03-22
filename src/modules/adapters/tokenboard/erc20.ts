@@ -6,28 +6,29 @@ import { AddressZero, Erc20TransferEventSignature } from '../../../configs/const
 import EnvConfig from '../../../configs/envConfig';
 import { tryQueryBlockNumberAtTimestamp } from '../../../lib/subsgraph';
 import { compareAddress, formatBigNumberToString, normalizeAddress } from '../../../lib/utils';
+import { GetAdapterDataStateOptions, GetAdapterDataTimeframeOptions } from '../../../types/collectors/options';
 import {
   TokenBoardErc20AddressBalance,
   TokenBoardErc20DataState,
   TokenBoardErc20DataTimeframe,
 } from '../../../types/collectors/tokenboard';
-import { BoardConfig, MetricConfig, TokenBoardErc20Config } from '../../../types/configs';
+import { TokenBoardErc20Config } from '../../../types/configs';
 import { ContextServices } from '../../../types/namespaces';
-import BoardAdapter from '../board';
+import ProtocolAdapter from '../adapter';
 
-export default class TokenBoardErc20Adapter extends BoardAdapter {
+export default class TokenBoardErc20Adapter extends ProtocolAdapter {
   public readonly name: string = 'board.erc20';
 
-  constructor(services: ContextServices, config: BoardConfig) {
-    super(services, config);
+  constructor(services: ContextServices) {
+    super(services);
   }
 
-  public async getDataState(config: MetricConfig, timestamp: number): Promise<TokenBoardErc20DataState | null> {
-    const erc20Config = config as TokenBoardErc20Config;
+  public async getDataState(options: GetAdapterDataStateOptions): Promise<TokenBoardErc20DataState | null> {
+    const erc20Config = options.config as TokenBoardErc20Config;
 
     const blockNumber = await tryQueryBlockNumberAtTimestamp(
-      EnvConfig.blockchains[config.chain].blockSubgraph,
-      timestamp,
+      EnvConfig.blockchains[options.config.chain].blockSubgraph,
+      options.timestamp,
     );
 
     const dataState: TokenBoardErc20DataState = {
@@ -40,13 +41,13 @@ export default class TokenBoardErc20Adapter extends BoardAdapter {
       stablecoin: erc20Config.stablecoin,
       tokenPrice: '0',
       totalSupply: '0',
-      timestamp: timestamp,
+      timestamp: options.timestamp,
     };
 
     const tokenPrice = await this.services.oracle.getTokenPriceUsd({
       chain: erc20Config.chain,
       address: erc20Config.address,
-      timestamp: timestamp,
+      timestamp: options.timestamp,
     });
 
     if (tokenPrice) {
@@ -67,25 +68,27 @@ export default class TokenBoardErc20Adapter extends BoardAdapter {
     return dataState;
   }
 
-  public async getDataTimeframe(
-    config: MetricConfig,
-    fromTime: number,
-    toTime: number,
-  ): Promise<TokenBoardErc20DataTimeframe | null> {
-    const dataState = await this.getDataState(config, fromTime);
+  public async getDataTimeframe(options: GetAdapterDataTimeframeOptions): Promise<TokenBoardErc20DataTimeframe | null> {
+    const dataState = await this.getDataState({
+      config: options.config,
+      timestamp: options.fromTime,
+    });
     if (!dataState) {
       return null;
     }
 
     const beginBlock = await tryQueryBlockNumberAtTimestamp(
-      EnvConfig.blockchains[config.chain].blockSubgraph,
-      fromTime,
+      EnvConfig.blockchains[options.config.chain].blockSubgraph,
+      options.fromTime,
     );
-    const endBlock = await tryQueryBlockNumberAtTimestamp(EnvConfig.blockchains[config.chain].blockSubgraph, toTime);
+    const endBlock = await tryQueryBlockNumberAtTimestamp(
+      EnvConfig.blockchains[options.config.chain].blockSubgraph,
+      options.toTime,
+    );
 
     const logs = await this.services.blockchain.getContractLogs({
-      chain: config.chain,
-      address: config.address,
+      chain: options.config.chain,
+      address: options.config.address,
       fromBlock: beginBlock,
       toBlock: endBlock,
     });
@@ -123,7 +126,7 @@ export default class TokenBoardErc20Adapter extends BoardAdapter {
                 decimals: dataState.decimals,
                 holder: sender,
                 balance: '0',
-                timestamp: fromTime,
+                timestamp: options.fromTime,
               };
             }
 
@@ -144,7 +147,7 @@ export default class TokenBoardErc20Adapter extends BoardAdapter {
                 decimals: dataState.decimals,
                 holder: sender,
                 balance: '0',
-                timestamp: fromTime,
+                timestamp: options.fromTime,
               };
             }
 
@@ -160,8 +163,8 @@ export default class TokenBoardErc20Adapter extends BoardAdapter {
     return {
       ...dataState,
 
-      timefrom: fromTime,
-      timeto: toTime,
+      timefrom: options.fromTime,
+      timeto: options.toTime,
       volumeTransfer: volumeTransfer.toString(10),
       volumeMint: volumeMint.toString(10),
       volumeBurn: volumeBurn.toString(10),
