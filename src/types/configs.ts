@@ -134,8 +134,3 @@ export interface ProtocolConfig {
   protocol: string;
   configs: Array<MetricConfig>;
 }
-
-export interface BoardConfig {
-  board: string;
-  configs: Array<TokenBoardErc20Config>;
-}

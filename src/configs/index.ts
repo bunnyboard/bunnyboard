@@ -37,7 +37,7 @@ export const ProtocolConfigs: { [key: string]: ProtocolConfig } = {
   tokenboard: {
     protocol: 'tokenboard',
     configs: TokenBoardErc20Configs,
-  }
+  },
 };
 
 export const DexConfigs: { [key: string]: { [key: string]: DexConfig } } = {

@@ -1,7 +1,7 @@
 import { Token } from '../../types/configs';
+import AvalancheAddresses from './addresses/avalanche.json';
 import EthereumAddresses from './addresses/ethereum.json';
 import PolygonAddresses from './addresses/polygon.json';
-import AvalancheAddresses from './addresses/avalanche.json';
 import { BlockSubGraphEndpoints, DataSubGraphEndpoints } from './subgraphs';
 import TokenListArbitrum from './tokenlists/arbitrum.json';
 import TokenListAvalanche from './tokenlists/avalanche.json';

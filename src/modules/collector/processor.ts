@@ -49,7 +49,7 @@ export default class DataProcessor {
   }
 
   private async processCrossLendingDataState(config: MetricConfig, options: ProcessDataStateOptions): Promise<void> {
-    for (const dataState of options.state.crossLending) {
+    for (const dataState of options.state) {
       const stateWithTimeframes: CrossLendingReserveDataStateWithTimeframes = {
         ...dataState,
         timefrom: options.timestamp - TimeUnits.SecondsPerDay,

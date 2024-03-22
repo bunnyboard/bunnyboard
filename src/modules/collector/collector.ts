@@ -174,7 +174,9 @@ export default class DataCollector implements IDataCollector {
             toTime: runTime + TimeUnits.SecondsPerDay - 1,
           });
 
-          await this.processor.processDataSnapshots(config, result);
+          await this.processor.processDataSnapshots(config, {
+            data: result,
+          });
         }
 
         await this.storages.database.update({

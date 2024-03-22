@@ -1,6 +1,6 @@
 {
-  "Aavev2DataProvider": "0x65285E9dfab318f57051ab2b139ccCf232945451",
-  "Aavev2IncentiveController": "0x01D83Fe6A10D2f2B7AF17034343746188272cAc9",
+  "Aavev2DataProvider": "0x65285e9dfab318f57051ab2b139cccf232945451",
+  "Aavev2IncentiveController": "0x01d83fe6a10d2f2b7af17034343746188272cac9",
   "Aavev2LendingPool": "0x4f01aed16d97e3ab5ab2b501154dc9bb0f1a5a2c",
-  "Aavev2PriceOracle": "0xdC336Cd4769f4cC7E9d726DA53e6d3fC710cEB89"
+  "Aavev2PriceOracle": "0xdc336cd4769f4cc7e9d726da53e6d3fc710ceb89"
 }

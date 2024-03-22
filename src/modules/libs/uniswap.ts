@@ -2,12 +2,28 @@ import { Token as UniswapSdkToken } from '@uniswap/sdk-core';
 import { Pool } from '@uniswap/v3-sdk';
 import BigNumber from 'bignumber.js';
 
+import { TokenListBase } from '../../configs';
 import ERC20Abi from '../../configs/abi/ERC20.json';
+import UniswapV2FactoryAbi from '../../configs/abi/uniswap/UniswapV2Factory.json';
 import UniswapV3PoolAbi from '../../configs/abi/uniswap/UniswapV3Pool.json';
-import { normalizeAddress } from '../../lib/utils';
+import { compareAddress, formatBigNumberToString, normalizeAddress } from '../../lib/utils';
 import BlockchainService from '../../services/blockchains/blockchain';
-import { LiquidityPoolConfig } from '../../types/configs';
+import { DexConfig, LiquidityPoolConfig, Token } from '../../types/configs';
 import { OracleSourceUniv2, OracleSourceUniv3 } from '../../types/oracles';
+
+export interface UniswapGetLiquidityPoolBalancesOptions {
+  dexConfig: DexConfig;
+  token: Token;
+  blockNumber?: number;
+}
+
+export interface UniswapLiquidityPoolBalance {
+  protocol: string;
+  chain: string;
+  address: string; // pool address
+  tokens: Array<Token>;
+  balances: Array<string>;
+}
 
 export default class UniswapLibs {
   public static async getPool2Constant(chain: string, address: string): Promise<LiquidityPoolConfig | null> {
@@ -154,5 +170,58 @@ export default class UniswapLibs {
     }
 
     return null;
+  }
+
+  public static async getLiquidityPoolForToken(
+    options: UniswapGetLiquidityPoolBalancesOptions,
+  ): Promise<Array<UniswapLiquidityPoolBalance>> {
+    const blockchain = new BlockchainService();
+
+    const pools: Array<UniswapLiquidityPoolBalance> = [];
+
+    const baseTokens: Array<Token> = Object.values(TokenListBase[options.dexConfig.chain]);
+    for (const baseToken of baseTokens) {
+      if (!compareAddress(baseToken.address, options.token.address)) {
+        const poolAddress = await blockchain.readContract({
+          chain: options.dexConfig.chain,
+          abi: UniswapV2FactoryAbi,
+          target: options.dexConfig.address,
+          method: 'getPair',
+          params: [baseToken.address, options.token.address],
+          blockNumber: options.blockNumber,
+        });
+        if (poolAddress) {
+          const baseBalance = await blockchain.readContract({
+            chain: options.dexConfig.chain,
+            abi: ERC20Abi,
+            target: baseToken.address,
+            method: 'balanceOf',
+            params: [poolAddress],
+            blockNumber: options.blockNumber,
+          });
+          const tokenBalance = await blockchain.readContract({
+            chain: options.dexConfig.chain,
+            abi: ERC20Abi,
+            target: options.token.address,
+            method: 'balanceOf',
+            params: [poolAddress],
+            blockNumber: options.blockNumber,
+          });
+
+          pools.push({
+            protocol: options.dexConfig.protocol,
+            chain: options.dexConfig.chain,
+            address: normalizeAddress(poolAddress),
+            tokens: [options.token, baseToken],
+            balances: [
+              formatBigNumberToString(tokenBalance.toString(), options.token.decimals),
+              formatBigNumberToString(baseBalance.toString(), baseToken.decimals),
+            ],
+          });
+        }
+      }
+    }
+
+    return pools;
   }
 }

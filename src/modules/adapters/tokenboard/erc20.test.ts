@@ -1,9 +1,9 @@
 import { expect, test } from 'vitest';
 
+import { ProtocolConfigs } from '../../../configs';
 import BlockchainService from '../../../services/blockchains/blockchain';
 import OracleService from '../../../services/oracle/oracle';
 import TokenBoardErc20Adapter from './erc20';
-import { ProtocolConfigs } from '../../../configs';
 
 const oracle = new OracleService();
 const blockchain = new BlockchainService();
