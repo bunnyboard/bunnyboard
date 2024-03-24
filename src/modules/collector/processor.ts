@@ -9,6 +9,7 @@ import {
   CrossLendingReserveDataStateWithTimeframes,
   CrossLendingReserveDataTimeframe,
 } from '../../types/collectors/crossLending';
+import { DexDataStateWithTimeframes } from '../../types/collectors/dex';
 import { TokenBoardErc20DataStateWithTimeframes } from '../../types/collectors/tokenBoard';
 import { DataMetrics, MetricConfig } from '../../types/configs';
 import { ContextServices, ContextStorages } from '../../types/namespaces';
@@ -33,6 +34,10 @@ export default class DataCollectorProcessor {
         await this.processCdpLendingDataState(config, options);
         break;
       }
+      case DataMetrics.dex: {
+        await this.processDexDataState(config, options);
+        break;
+      }
       case DataMetrics.tokenBoardErc20: {
         await this.processTokenBoardDataState(config, options);
         break;
@@ -48,6 +53,10 @@ export default class DataCollectorProcessor {
       }
       case DataMetrics.cdpLending: {
         await this.processCdpLendingDataSnapshots(config, options);
+        break;
+      }
+      case DataMetrics.dex: {
+        await this.processDexDataSnapshots(config, options);
         break;
       }
       case DataMetrics.tokenBoardErc20: {
@@ -244,7 +253,7 @@ export default class DataCollectorProcessor {
       volumeTransfer: '0',
       volumeMint: '0',
       volumeBurn: '0',
-      volumeOnDex: '0',
+      dataOnDex: [],
       addressBalances: [],
       last24Hours: null,
     };
@@ -253,7 +262,6 @@ export default class DataCollectorProcessor {
       stateWithTimeframes.volumeTransfer = options.timeframeLast24Hours.volumeTransfer;
       stateWithTimeframes.volumeMint = options.timeframeLast24Hours.volumeMint;
       stateWithTimeframes.volumeBurn = options.timeframeLast24Hours.volumeBurn;
-      stateWithTimeframes.volumeOnDex = options.timeframeLast24Hours.volumeOnDex;
       stateWithTimeframes.addressBalances = options.timeframeLast24Hours.addressBalances;
     }
 
@@ -290,6 +298,65 @@ export default class DataCollectorProcessor {
         metric: snapshot.metric,
         protocol: snapshot.protocol,
         address: snapshot.address,
+        timestamp: snapshot.timestamp,
+      },
+      updates: {
+        ...snapshot,
+      },
+      upsert: true,
+    });
+  }
+
+  private async processDexDataState(config: MetricConfig, options: ProcessDataStateOptions): Promise<void> {
+    const dataState = options.state;
+    const stateWithTimeframes: DexDataStateWithTimeframes = {
+      ...dataState,
+      timefrom: options.timestamp - TimeUnits.SecondsPerDay,
+      timeto: options.timestamp,
+      volumeTrading: '0',
+      volumeTradingCumulative: '0',
+      numberOfTransactions: 0,
+      numberOfTransactionsCumulative: 0,
+      last24Hours: null,
+    };
+
+    if (options.timeframeLast24Hours) {
+      stateWithTimeframes.volumeTrading = options.timeframeLast24Hours.volumeTrading;
+      stateWithTimeframes.volumeTradingCumulative = options.timeframeLast24Hours.volumeTradingCumulative;
+      stateWithTimeframes.numberOfTransactions = options.timeframeLast24Hours.numberOfTransactions;
+      stateWithTimeframes.numberOfTransactionsCumulative = options.timeframeLast24Hours.numberOfTransactionsCumulative;
+    }
+
+    if (options.timeframeLast48Hours) {
+      if (options.timeframeLast48Hours) {
+        stateWithTimeframes.last24Hours = options.timeframeLast48Hours;
+      }
+    }
+
+    await this.storages.database.update({
+      collection: EnvConfig.mongodb.collections.dexDataStates.name,
+      keys: {
+        chain: dataState.chain,
+        metric: dataState.metric,
+        protocol: dataState.protocol,
+      },
+      updates: {
+        ...stateWithTimeframes,
+      },
+      upsert: true,
+    });
+  }
+
+  private async processDexDataSnapshots(config: MetricConfig, options: ProcessDataSnapshotOptions): Promise<void> {
+    const snapshot = options.data;
+
+    // save dex data
+    await this.storages.database.update({
+      collection: EnvConfig.mongodb.collections.dexDataSnapshots.name,
+      keys: {
+        chain: snapshot.chain,
+        metric: snapshot.metric,
+        protocol: snapshot.protocol,
         timestamp: snapshot.timestamp,
       },
       updates: {

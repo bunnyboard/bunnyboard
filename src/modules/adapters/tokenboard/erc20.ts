@@ -93,12 +93,9 @@ export default class TokenBoardErc20Adapter extends ProtocolAdapter {
       toBlock: endBlock,
     });
 
-    const config = options.config as TokenBoardErc20Config;
-
     let volumeTransfer = new BigNumber(0);
     let volumeMint = new BigNumber(0);
     let volumeBurn = new BigNumber(0);
-    let volumeOnDex = new BigNumber(0);
     const addresses: { [key: string]: TokenBoardErc20AddressBalance } = {};
     for (const log of logs) {
       const signature = log.topics[0];
@@ -117,11 +114,6 @@ export default class TokenBoardErc20Adapter extends ProtocolAdapter {
 
         if (amount !== '0') {
           volumeTransfer = volumeTransfer.plus(new BigNumber(amount));
-
-          // we count volume on in/out liquidity pools
-          if (config.liquidityPools.indexOf(sender) !== -1 || config.liquidityPools.indexOf(recipient) !== -1) {
-            volumeOnDex = volumeOnDex.plus(new BigNumber(amount));
-          }
 
           if (compareAddress(sender, AddressZero)) {
             volumeMint = volumeMint.plus(new BigNumber(amount));
@@ -176,7 +168,6 @@ export default class TokenBoardErc20Adapter extends ProtocolAdapter {
       volumeTransfer: volumeTransfer.toString(10),
       volumeMint: volumeMint.toString(10),
       volumeBurn: volumeBurn.toString(10),
-      volumeOnDex: volumeOnDex.toString(10),
       addressBalances: Object.values(addresses),
     };
   }

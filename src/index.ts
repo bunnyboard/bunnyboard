@@ -3,6 +3,7 @@ import yargs from 'yargs/yargs';
 
 import { AdapterCommand } from './cmd/adapter';
 import { CollectorCommand } from './cmd/collector';
+import { DexscanCommand } from './cmd/dexscan';
 import { GetTokenPriceCommand } from './cmd/getTokenPrice';
 import { ServerCommand } from './cmd/server';
 import { WorkerCommand } from './cmd/worker';
@@ -14,6 +15,7 @@ import { WorkerCommand } from './cmd/worker';
   const adapterCommand = new AdapterCommand();
   const workerCommand = new WorkerCommand();
   const serverCommand = new ServerCommand();
+  const dexscanCommand = new DexscanCommand();
   const getTokenPriceCommand = new GetTokenPriceCommand();
 
   yargs(process.argv.slice(2))
@@ -28,5 +30,6 @@ import { WorkerCommand } from './cmd/worker';
     )
     .command(workerCommand.name, workerCommand.describe, workerCommand.setOptions, workerCommand.execute)
     .command(serverCommand.name, serverCommand.describe, serverCommand.setOptions, serverCommand.execute)
+    .command(dexscanCommand.name, dexscanCommand.describe, dexscanCommand.setOptions, dexscanCommand.execute)
     .help().argv;
 })();

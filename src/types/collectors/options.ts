@@ -1,4 +1,4 @@
-import { DataMetric, MetricConfig } from '../configs';
+import { DataMetric, DexConfig, MetricConfig, Token } from '../configs';
 import { CrossLendingActivityEvent } from './crossLending';
 
 export interface AdapterAbiConfigs {
@@ -25,6 +25,14 @@ export interface GetAdapterDataTimeframeOptions {
   config: MetricConfig;
   fromTime: number;
   toTime: number;
+  props?: any;
+}
+
+export interface GetDexLiquidityTokenDataOptions {
+  token: Token;
+  dexConfig: DexConfig;
+  fromBlock: number;
+  toBlock: number;
 }
 
 export interface RunCollectorOptions {

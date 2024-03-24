@@ -49,9 +49,17 @@ export interface DatabaseCollectionConfig {
   cdpLendingAssetStates: MongoCollectionConfig;
   cdpLendingAssetSnapshots: MongoCollectionConfig;
 
+  // used to save dex liquidity data
+  // check dexscan adapter for more details
+  dexLiquidityTokenSnapshots: MongoCollectionConfig;
+  dexLiquidityPoolSnapshots: MongoCollectionConfig;
+
   tokenBoardErc20States: MongoCollectionConfig;
   tokenBoardErc20Snapshots: MongoCollectionConfig;
   tokenBoardErc20Balances: MongoCollectionConfig;
+
+  dexDataStates: MongoCollectionConfig;
+  dexDataSnapshots: MongoCollectionConfig;
 }
 
 export interface EnvConfig {
@@ -117,24 +125,56 @@ export interface CdpLendingMarketConfig extends MetricConfig {
 }
 
 export const DexVersions = {
-  uniswapv2: 'uniswapv2',
-  uniswapv3: 'uniswapv3',
+  univ2: 'univ2',
+  univ3: 'univ3',
 };
 const AllDexVersions = Object.values(DexVersions);
 export type DexVersion = (typeof AllDexVersions)[number];
+
+export interface DexSubgraph {
+  version: 'univ2' | 'univ3';
+  endpoint: string;
+  filters: {
+    bundles: {
+      baseTokenPrice: string;
+    };
+    tokens: {
+      volume: string;
+      liquidity: string;
+      txCount: string;
+      derivedBase: string;
+      fees?: string;
+    };
+    pools: {
+      pool: string;
+      pools: string;
+      volume: string;
+      liquidity: string;
+      txCount: string;
+      derivedBase: string;
+      reserve0: string;
+      reserve1: string;
+      fees?: string;
+      feesTiger?: string;
+    };
+    factory: {
+      factories: string;
+      volume: string;
+      liquidity: string;
+      txCount: string;
+      fees?: string;
+    };
+  };
+  fixedFeePercentage?: number;
+}
+
 export interface DexConfig extends MetricConfig {
   version: DexVersion;
+  subgraph?: DexSubgraph;
 }
 
 export interface TokenBoardErc20Config extends MetricConfig, Token {
   stablecoin: boolean;
-
-  // these addresses will be used for trading volume tracking
-  // for example, when an amount of token were transferred out of liquidity pool
-  // we count it as buy volume
-  // when an amount of token were transferred into liquidity pool
-  // we count it as sell volume
-  liquidityPools: Array<string>;
 }
 
 export interface ProtocolConfig {

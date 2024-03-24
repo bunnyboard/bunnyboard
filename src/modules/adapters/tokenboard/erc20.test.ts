@@ -11,6 +11,8 @@ const blockchain = new BlockchainService();
 const timestamp = 1704240000; // Wed Jan 03 2024 00:00:00 GMT+0000
 const afterTimestamp = 1704326400; // Thu Jan 04 2024 00:00:00 GMT+0000
 
+const daiConfig = ProtocolConfigs.tokenBoard.configs[0];
+
 test('should get data correctly - DAI on ethereum at 1704240000', async function () {
   const erc20Adapter = new TokenBoardErc20Adapter({
     blockchain: blockchain,
@@ -18,7 +20,7 @@ test('should get data correctly - DAI on ethereum at 1704240000', async function
   });
 
   const daiErc20data = await erc20Adapter.getDataTimeframe({
-    config: ProtocolConfigs.tokenboard.configs[0],
+    config: daiConfig,
     fromTime: timestamp,
     toTime: afterTimestamp,
   });
@@ -36,26 +38,5 @@ test('should get data correctly - DAI on ethereum at 1704240000', async function
     expect(daiErc20data.volumeTransfer).equal('6042551819.035898071353784991');
     expect(daiErc20data.volumeMint).equal('1120697073.366964930233022859');
     expect(daiErc20data.volumeBurn).equal('1108138340.995936841009856534');
-    expect(daiErc20data.volumeOnDex).equal('158783809.757688462187798766');
-  }
-});
-
-test('should get data correctly - MKR on ethereum at 1704240000', async function () {
-  const erc20Adapter = new TokenBoardErc20Adapter({
-    blockchain: blockchain,
-    oracle: oracle,
-  });
-
-  const mkrTokenData = await erc20Adapter.getDataTimeframe({
-    config: ProtocolConfigs.tokenboard.configs[1],
-    fromTime: timestamp,
-    toTime: afterTimestamp,
-  });
-
-  expect(mkrTokenData).not.equal(undefined);
-  expect(mkrTokenData).not.equal(null);
-  if (mkrTokenData) {
-    expect(mkrTokenData.tokenPrice).equal('1833.04047550049586185826');
-    expect(mkrTokenData.totalSupply).equal('977631.036950888222010062');
   }
 });

@@ -4,7 +4,7 @@ import { BasicCommand } from './basic';
 
 export class WorkerCommand extends BasicCommand {
   public readonly name: string = 'worker';
-  public readonly describe: string = 'Run data data worker services';
+  public readonly describe: string = 'Run data worker services';
 
   constructor() {
     super();

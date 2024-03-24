@@ -100,4 +100,49 @@ export const DatabaseCollectionConfigs: DatabaseCollectionConfig = {
       },
     ],
   },
+  dexDataStates: {
+    name: `${MongodbPrefix}.dexDataStates`,
+    indies: [
+      {
+        chain: 1,
+        protocol: 1,
+      },
+    ],
+  },
+  dexDataSnapshots: {
+    name: `${MongodbPrefix}.dexDataSnapshots`,
+    indies: [
+      {
+        chain: 1,
+        protocol: 1,
+        timestamp: 1,
+      },
+    ],
+  },
+  dexLiquidityTokenSnapshots: {
+    name: `${MongodbPrefix}.dexLiquidityTokenSnapshots`,
+    indies: [
+      {
+        chain: 1,
+        protocol: 1,
+        address: 1, // token address
+        timestamp: 1,
+      },
+    ],
+  },
+  dexLiquidityPoolSnapshots: {
+    name: `${MongodbPrefix}.dexLiquidityPoolSnapshots`,
+    indies: [
+      {
+        chain: 1,
+        protocol: 1,
+        address: 1, // pool address
+      },
+      {
+        chain: 1,
+        'tokens.address': 1,
+        timestamp: 1,
+      },
+    ],
+  },
 };

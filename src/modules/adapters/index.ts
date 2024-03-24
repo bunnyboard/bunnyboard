@@ -5,6 +5,7 @@ import CompoundAdapter from './compound/compound';
 import LiquityAdapter from './liquity/liquity';
 import MakerAdapter from './maker/maker';
 import RadiantAdapter from './radiant/radiant';
+import Uniswapv2Adapter from './uniswap/uniswapv2';
 import VenusAdapter from './venus/venus';
 
 export function getProtocolAdapters(services: ContextServices): { [key: string]: IProtocolAdapter } {
@@ -19,5 +20,7 @@ export function getProtocolAdapters(services: ContextServices): { [key: string]:
     spark: new Aavev3Adapter(services),
     liquity: new LiquityAdapter(services),
     maker: new MakerAdapter(services),
+    uniswapv2: new Uniswapv2Adapter(services),
+    sushi: new Uniswapv2Adapter(services),
   };
 }

@@ -1,4 +1,4 @@
-import { DexConfig, ProtocolConfig, Token } from '../types/configs';
+import { ProtocolConfig, Token } from '../types/configs';
 import { TokenBoardErc20Configs } from './boards/tokenBoard';
 import { TokensBook, TokensBookBase } from './data';
 import { Aavev2Configs, Aavev3Configs } from './protocols/aave';
@@ -9,7 +9,8 @@ import { MakerConfigs } from './protocols/maker';
 import { RadiantConfigs } from './protocols/radiant';
 import { SonneConfigs } from './protocols/sonne';
 import { SparkConfigs } from './protocols/spark';
-import { Uniswapv2EthereumDexConfig } from './protocols/uniswap';
+import { SushiConfigs } from './protocols/sushi';
+import { Uniswapv2Configs } from './protocols/uniswap';
 import { VenusConfigs } from './protocols/venus';
 
 export const DefaultQueryContractLogsBlockRange = 1000;
@@ -17,7 +18,7 @@ export const DefaultQueryContractLogsBlockRange = 1000;
 export const DefaultMemcacheTime = 300; // 5 minutes
 
 export const TokenList: { [key: string]: { [key: string]: Token } } = TokensBook;
-export const TokenListBase: { [key: string]: { [key: string]: Token } } = TokensBookBase;
+export const TokenListBase = TokensBookBase;
 
 export const ProtocolConfigs: { [key: string]: ProtocolConfig } = {
   aavev2: Aavev2Configs,
@@ -31,17 +32,13 @@ export const ProtocolConfigs: { [key: string]: ProtocolConfig } = {
   liquity: LiquityConfigs,
   maker: MakerConfigs,
   spark: SparkConfigs,
+  sushi: SushiConfigs,
+  uniswapv2: Uniswapv2Configs,
   // gmx: GmxConfigs,
   // gmxv2: Gmxv2Configs,
 
   tokenBoard: {
     protocol: 'tokenBoard',
     configs: TokenBoardErc20Configs,
-  },
-};
-
-export const DexConfigs: { [key: string]: { [key: string]: DexConfig } } = {
-  ethereum: {
-    uniswapv2: Uniswapv2EthereumDexConfig,
   },
 };

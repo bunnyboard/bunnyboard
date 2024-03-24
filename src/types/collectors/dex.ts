@@ -1,10 +1,21 @@
-import { DexVersion, Token } from '../configs';
-import { DataState } from './base';
+import { DexVersion } from '../configs';
+import { DataState, DataTimeframe } from './base';
 
-export interface DexLiquidityPoolDataState extends DataState {
+export interface DexDataState extends DataState {
   version: DexVersion;
-  address: string;
-  tokens: Array<Token>;
-  tokenBalances: Array<string>;
-  tokenPrices: Array<string>;
+  totalLiquidity: string;
+}
+
+export interface DexDataTimeframe extends DexDataState, DataTimeframe {
+  // fees collected from trading
+  feesTrading: string;
+  volumeTrading: string;
+  volumeTradingCumulative: string;
+  numberOfTransactions: number;
+  numberOfTransactionsCumulative: number;
+}
+
+export interface DexDataStateWithTimeframes extends DexDataTimeframe {
+  // previous day data
+  last24Hours: DexDataTimeframe;
 }

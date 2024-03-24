@@ -59,8 +59,11 @@ export default class DataCollector implements IDataCollector {
         adapter = new TokenBoardErc20Adapter(this.services);
         break;
       }
-      default: {
+      case DataMetrics.crossLending:
+      case DataMetrics.cdpLending:
+      case DataMetrics.dex: {
         adapter = this.adapters[config.protocol];
+        break;
       }
     }
 
@@ -138,74 +141,76 @@ export default class DataCollector implements IDataCollector {
 
   public async collectSnapshotData(options: RunCollectorOptions, configs: Array<MetricConfig>): Promise<void> {
     for (const config of configs) {
-      const stateKey = `state-snapshot-${config.protocol}-${config.chain}-${config.metric}-${config.address}`;
-      let runTime = options.fromTime ? options.fromTime : config.birthday;
-      if (!options.force) {
-        const latestState = await this.storages.database.find({
-          collection: EnvConfig.mongodb.collections.cachingStates.name,
-          query: {
-            name: stateKey,
-          },
-        });
-        if (latestState) {
-          runTime = latestState.timestamp > runTime ? latestState.timestamp : runTime;
-        }
-      }
-
-      const today = getTodayUTCTimestamp();
-      logger.info('start to get snapshots data', {
-        service: this.name,
-        chain: config.chain,
-        protocol: config.protocol,
-        metric: config.metric,
-        address: config.address,
-        fromDate: getDateString(runTime),
-        toDate: getDateString(today),
-      });
-
-      while (runTime <= today) {
-        const startExeTime = Math.floor(new Date().getTime() / 1000);
-
-        const adapter = this.getAdapter(config);
-        if (adapter) {
-          const result = await adapter.getDataTimeframe({
-            config: config,
-            fromTime: runTime,
-            toTime: runTime + TimeUnits.SecondsPerDay - 1,
+      const adapter = this.getAdapter(config);
+      if (adapter) {
+        const stateKey = `state-snapshot-${config.protocol}-${config.chain}-${config.metric}-${config.address}`;
+        let runTime = options.fromTime ? options.fromTime : config.birthday;
+        if (!options.force) {
+          const latestState = await this.storages.database.find({
+            collection: EnvConfig.mongodb.collections.cachingStates.name,
+            query: {
+              name: stateKey,
+            },
           });
-
-          await this.processor.processDataSnapshots(config, {
-            data: result,
-          });
+          if (latestState) {
+            runTime = latestState.timestamp > runTime ? latestState.timestamp : runTime;
+          }
         }
 
-        await this.storages.database.update({
-          collection: EnvConfig.mongodb.collections.cachingStates.name,
-          keys: {
-            name: stateKey,
-          },
-          updates: {
-            name: stateKey,
-            timestamp: runTime,
-          },
-          upsert: true,
-        });
-
-        const endExeTime = Math.floor(new Date().getTime() / 1000);
-        const elapsed = endExeTime - startExeTime;
-
-        logger.info('updated snapshot data', {
+        const today = getTodayUTCTimestamp();
+        logger.info('start to get snapshots data', {
           service: this.name,
           chain: config.chain,
           protocol: config.protocol,
           metric: config.metric,
           address: config.address,
-          date: getDateString(runTime),
-          time: runTime,
-          elapses: `${elapsed}s`,
+          fromDate: getDateString(runTime),
+          toDate: getDateString(today),
         });
 
-        runTime += TimeUnits.SecondsPerDay;
+        while (runTime <= today) {
+          const startExeTime = Math.floor(new Date().getTime() / 1000);
+
+          if (adapter) {
+            const result = await adapter.getDataTimeframe({
+              config: config,
+              fromTime: runTime,
+              toTime: runTime + TimeUnits.SecondsPerDay - 1,
+            });
+
+            await this.processor.processDataSnapshots(config, {
+              data: result,
+            });
+          }
+
+          await this.storages.database.update({
+            collection: EnvConfig.mongodb.collections.cachingStates.name,
+            keys: {
+              name: stateKey,
+            },
+            updates: {
+              name: stateKey,
+              timestamp: runTime,
+            },
+            upsert: true,
+          });
+
+          const endExeTime = Math.floor(new Date().getTime() / 1000);
+          const elapsed = endExeTime - startExeTime;
+
+          logger.info('updated snapshot data', {
+            service: this.name,
+            chain: config.chain,
+            protocol: config.protocol,
+            metric: config.metric,
+            address: config.address,
+            date: getDateString(runTime),
+            time: runTime,
+            elapses: `${elapsed}s`,
+          });
+
+          runTime += TimeUnits.SecondsPerDay;
+        }
       }
     }
   }
