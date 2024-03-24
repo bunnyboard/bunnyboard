@@ -2,20 +2,20 @@ import { DataMetrics, TokenBoardErc20Config } from '../../types/configs';
 import { TokensBookBase } from '../data';
 
 export const TokenBoardErc20Configs: Array<TokenBoardErc20Config> = [
-  // {
-  //   ...TokensBookBase.ethereum.DAI,
-  //   protocol: 'maker',
-  //   metric: DataMetrics.tokenBoardErc20,
-  //   stablecoin: true,
-  //   birthday: 1573689600, // Thu Nov 14 2019 00:00:00 GMT+0000
-  // },
-  // {
-  //   ...TokensBookBase.ethereum.USDC,
-  //   protocol: 'maker',
-  //   metric: DataMetrics.tokenBoardErc20,
-  //   stablecoin: true,
-  //   birthday: 1533340800, // Sat Aug 04 2018 00:00:00 GMT+0000
-  // },
+  {
+    ...TokensBookBase.ethereum.DAI,
+    protocol: 'maker',
+    metric: DataMetrics.tokenBoardErc20,
+    stablecoin: true,
+    birthday: 1573689600, // Thu Nov 14 2019 00:00:00 GMT+0000
+  },
+  {
+    ...TokensBookBase.ethereum.USDC,
+    protocol: 'maker',
+    metric: DataMetrics.tokenBoardErc20,
+    stablecoin: true,
+    birthday: 1533340800, // Sat Aug 04 2018 00:00:00 GMT+0000
+  },
   {
     ...TokensBookBase.ethereum.USDT,
     protocol: 'maker',
