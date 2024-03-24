@@ -115,7 +115,6 @@ export const DatabaseCollectionConfigs: DatabaseCollectionConfig = {
         chain: 1,
         protocol: 1,
         address: 1, // token address
-        timestamp: 1,
       },
     ],
   },
@@ -130,7 +129,6 @@ export const DatabaseCollectionConfigs: DatabaseCollectionConfig = {
       {
         chain: 1,
         'tokens.address': 1,
-        timestamp: 1,
       },
     ],
   },
