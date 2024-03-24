@@ -254,7 +254,6 @@ export default class DataCollectorProcessor {
       volumeMint: '0',
       volumeBurn: '0',
       dataOnDex: [],
-      addressBalances: [],
       last24Hours: null,
     };
 
