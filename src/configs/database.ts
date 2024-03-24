@@ -89,17 +89,6 @@ export const DatabaseCollectionConfigs: DatabaseCollectionConfig = {
       },
     ],
   },
-  tokenBoardErc20Balances: {
-    name: `${MongodbPrefix}.tokenBoardErc20Balances`,
-    indies: [
-      {
-        chain: 1,
-        address: 1, // token address
-        holder: 1, // holder address
-        timestamp: 1,
-      },
-    ],
-  },
   dexDataStates: {
     name: `${MongodbPrefix}.dexDataStates`,
     indies: [

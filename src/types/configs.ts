@@ -56,7 +56,6 @@ export interface DatabaseCollectionConfig {
 
   tokenBoardErc20States: MongoCollectionConfig;
   tokenBoardErc20Snapshots: MongoCollectionConfig;
-  tokenBoardErc20Balances: MongoCollectionConfig;
 
   dexDataStates: MongoCollectionConfig;
   dexDataSnapshots: MongoCollectionConfig;

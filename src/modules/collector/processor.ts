@@ -263,7 +263,6 @@ export default class DataCollectorProcessor {
       stateWithTimeframes.volumeMint = options.timeframeLast24Hours.volumeMint;
       stateWithTimeframes.volumeBurn = options.timeframeLast24Hours.volumeBurn;
       stateWithTimeframes.dataOnDex = options.timeframeLast24Hours.dataOnDex;
-      stateWithTimeframes.addressBalances = options.timeframeLast24Hours.addressBalances;
     }
 
     if (options.timeframeLast48Hours) {

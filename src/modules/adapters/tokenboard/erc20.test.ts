@@ -25,10 +25,6 @@ test('should get data correctly - DAI on ethereum at 1704240000', async function
     toTime: afterTimestamp,
   });
 
-  if (daiErc20data) {
-    daiErc20data.addressBalances = [];
-  }
-
   expect(daiErc20data).not.equal(undefined);
   expect(daiErc20data).not.equal(null);
 

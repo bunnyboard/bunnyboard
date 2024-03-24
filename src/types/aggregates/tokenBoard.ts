@@ -18,10 +18,6 @@ export interface AggTokenBoardErc20Snapshot extends Token, DataTimeframe {
   volumeMint: DataValue;
   volumeBurn: DataValue;
   volumeOnDex: DataValue;
-
-  // current number of active holders
-  // addresses have balance changes
-  numberOfActiveHolders: DataValue;
 }
 
 export interface AggTokenBoardErc20DayData {
@@ -33,7 +29,6 @@ export interface AggTokenBoardErc20DayData {
   volumeMint: number;
   volumeBurn: number;
   volumeOnDex: number;
-  numberOfActiveHolders: number;
 }
 
 export interface AggTokenBoardErc20DataOverall extends AggTokenBoardErc20Snapshot {

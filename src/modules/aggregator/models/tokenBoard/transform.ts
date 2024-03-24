@@ -17,21 +17,6 @@ export default class TokenBoardDataTransformer {
       ? convertToNumber(currentLast24Hours.tokenPrice) * convertToNumber(currentLast24Hours.totalSupply)
       : 0;
 
-    const addressBalanceCurrent: any = {};
-    const addressBalancePrevious: any = {};
-    for (const balance of currentLast24Hours.addressBalances) {
-      if (!addressBalanceCurrent[balance.holder]) {
-        addressBalanceCurrent[balance.holder] = true;
-      }
-    }
-    if (previousLast24Hours) {
-      for (const balance of previousLast24Hours.addressBalances) {
-        if (!addressBalancePrevious[balance.holder]) {
-          addressBalancePrevious[balance.holder] = true;
-        }
-      }
-    }
-
     return {
       protocol: currentLast24Hours.protocol,
       chain: currentLast24Hours.chain,
@@ -88,16 +73,6 @@ export default class TokenBoardDataTransformer {
         tokenPriceField: 'tokenPrice',
         tokenValueField: 'volumeOnDex',
       }),
-      numberOfActiveHolders: {
-        value: Object.keys(addressBalanceCurrent).length,
-        changedDay:
-          Object.keys(addressBalancePrevious).length > 0
-            ? calChangesOf_Current_From_Previous(
-                Object.keys(addressBalanceCurrent).length,
-                Object.keys(addressBalancePrevious).length,
-              )
-            : undefined,
-      },
     };
   }
 }

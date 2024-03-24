@@ -9,7 +9,6 @@ import { tryQueryBlockNumberAtTimestamp } from '../../../lib/subsgraph';
 import { compareAddress, formatBigNumberToString, normalizeAddress } from '../../../lib/utils';
 import { GetAdapterDataStateOptions, GetAdapterDataTimeframeOptions } from '../../../types/collectors/options';
 import {
-  TokenBoardErc20AddressBalance,
   TokenBoardErc20DataOnDex,
   TokenBoardErc20DataState,
   TokenBoardErc20DataTimeframe,
@@ -99,7 +98,6 @@ export default class TokenBoardErc20Adapter extends ProtocolAdapter {
     let volumeTransfer = new BigNumber(0);
     let volumeMint = new BigNumber(0);
     let volumeBurn = new BigNumber(0);
-    const addresses: { [key: string]: TokenBoardErc20AddressBalance } = {};
     for (const log of logs) {
       const signature = log.topics[0];
       const address = normalizeAddress(log.address);
@@ -120,44 +118,10 @@ export default class TokenBoardErc20Adapter extends ProtocolAdapter {
 
           if (compareAddress(sender, AddressZero)) {
             volumeMint = volumeMint.plus(new BigNumber(amount));
-          } else {
-            if (!addresses[sender]) {
-              addresses[sender] = {
-                chain: dataState.chain,
-                address: dataState.address,
-                symbol: dataState.symbol,
-                decimals: dataState.decimals,
-                holder: sender,
-                balance: '0',
-                timestamp: options.fromTime,
-              };
-            }
-
-            // outflow
-            addresses[sender].balance = new BigNumber(addresses[sender].balance)
-              .minus(new BigNumber(amount))
-              .toString(10);
           }
 
           if (compareAddress(recipient, AddressZero)) {
             volumeBurn = volumeBurn.plus(new BigNumber(amount));
-          } else {
-            if (!addresses[recipient]) {
-              addresses[recipient] = {
-                chain: dataState.chain,
-                address: dataState.address,
-                symbol: dataState.symbol,
-                decimals: dataState.decimals,
-                holder: sender,
-                balance: '0',
-                timestamp: options.fromTime,
-              };
-            }
-
-            // inflow
-            addresses[recipient].balance = new BigNumber(addresses[recipient].balance)
-              .plus(new BigNumber(amount))
-              .toString(10);
           }
         }
       }
@@ -196,7 +160,6 @@ export default class TokenBoardErc20Adapter extends ProtocolAdapter {
       volumeMint: volumeMint.toString(10),
       volumeBurn: volumeBurn.toString(10),
       dataOnDex: dataOnDex,
-      addressBalances: Object.values(addresses),
     };
   }
 }
