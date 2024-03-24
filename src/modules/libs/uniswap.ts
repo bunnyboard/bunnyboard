@@ -5,6 +5,7 @@ import BigNumber from 'bignumber.js';
 
 import ERC20Abi from '../../configs/abi/ERC20.json';
 import UniswapV3PoolAbi from '../../configs/abi/uniswap/UniswapV3Pool.json';
+import { tryQueryBlockMeta } from '../../lib/subsgraph';
 import { normalizeAddress, sleep } from '../../lib/utils';
 import BlockchainService from '../../services/blockchains/blockchain';
 import {
@@ -174,6 +175,9 @@ export default class UniswapLibs {
       return null;
     }
 
+    const metaBlock = await tryQueryBlockMeta(options.dexConfig.subgraph.endpoint);
+    const toBlock = options.toBlock > metaBlock ? metaBlock : options.toBlock;
+
     // retry 3 times
     let retryTime = 0;
 
@@ -188,7 +192,7 @@ export default class UniswapLibs {
           ${Object.values(filters.tokens)}
         }
         
-        dataTo: tokens(first: 1, where: {id: "${options.token.address}"}, block: {number: ${options.toBlock}}) {
+        dataTo: tokens(first: 1, where: {id: "${options.token.address}"}, block: {number: ${toBlock}}) {
           ${Object.values(filters.tokens)}
         }
       }

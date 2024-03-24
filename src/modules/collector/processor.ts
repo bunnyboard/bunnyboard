@@ -262,6 +262,7 @@ export default class DataCollectorProcessor {
       stateWithTimeframes.volumeTransfer = options.timeframeLast24Hours.volumeTransfer;
       stateWithTimeframes.volumeMint = options.timeframeLast24Hours.volumeMint;
       stateWithTimeframes.volumeBurn = options.timeframeLast24Hours.volumeBurn;
+      stateWithTimeframes.dataOnDex = options.timeframeLast24Hours.dataOnDex;
       stateWithTimeframes.addressBalances = options.timeframeLast24Hours.addressBalances;
     }
 
@@ -275,8 +276,6 @@ export default class DataCollectorProcessor {
       collection: EnvConfig.mongodb.collections.tokenBoardErc20States.name,
       keys: {
         chain: dataState.chain,
-        metric: dataState.metric,
-        protocol: dataState.protocol,
         address: dataState.address,
       },
       updates: {
@@ -295,8 +294,6 @@ export default class DataCollectorProcessor {
       collection: EnvConfig.mongodb.collections.tokenBoardErc20Snapshots.name,
       keys: {
         chain: snapshot.chain,
-        metric: snapshot.metric,
-        protocol: snapshot.protocol,
         address: snapshot.address,
         timestamp: snapshot.timestamp,
       },
