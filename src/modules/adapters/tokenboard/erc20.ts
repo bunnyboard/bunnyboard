@@ -2,6 +2,7 @@ import BigNumber from 'bignumber.js';
 import { decodeEventLog } from 'viem';
 
 import Erc20Abi from '../../../configs/abi/ERC20.json';
+import { DexscanConfigs } from '../../../configs/boards/dexscan';
 import { AddressZero, Erc20TransferEventSignature } from '../../../configs/constants';
 import EnvConfig from '../../../configs/envConfig';
 import { tryQueryBlockNumberAtTimestamp } from '../../../lib/subsgraph';
@@ -9,11 +10,13 @@ import { compareAddress, formatBigNumberToString, normalizeAddress } from '../..
 import { GetAdapterDataStateOptions, GetAdapterDataTimeframeOptions } from '../../../types/collectors/options';
 import {
   TokenBoardErc20AddressBalance,
+  TokenBoardErc20DataOnDex,
   TokenBoardErc20DataState,
   TokenBoardErc20DataTimeframe,
 } from '../../../types/collectors/tokenBoard';
 import { TokenBoardErc20Config } from '../../../types/configs';
 import { ContextServices } from '../../../types/namespaces';
+import UniswapLibs from '../../libs/uniswap';
 import ProtocolAdapter from '../adapter';
 
 export default class TokenBoardErc20Adapter extends ProtocolAdapter {
@@ -160,6 +163,30 @@ export default class TokenBoardErc20Adapter extends ProtocolAdapter {
       }
     }
 
+    const config = options.config as TokenBoardErc20Config;
+    const dataOnDex: Array<TokenBoardErc20DataOnDex> = [];
+    for (const dexConfig of DexscanConfigs) {
+      const tokenData = await UniswapLibs.getLiquidityTokenSnapshot({
+        dexConfig: dexConfig,
+        token: {
+          chain: config.chain,
+          symbol: config.symbol,
+          decimals: config.decimals,
+          address: config.address,
+        },
+        fromBlock: beginBlock,
+        toBlock: endBlock,
+      });
+      if (tokenData) {
+        dataOnDex.push({
+          protocol: tokenData.protocol,
+          version: tokenData.version,
+          totalLiquidity: tokenData.totalLiquidity,
+          volumeTrading: tokenData.volumeTrading,
+        });
+      }
+    }
+
     return {
       ...dataState,
 
@@ -168,6 +195,7 @@ export default class TokenBoardErc20Adapter extends ProtocolAdapter {
       volumeTransfer: volumeTransfer.toString(10),
       volumeMint: volumeMint.toString(10),
       volumeBurn: volumeBurn.toString(10),
+      dataOnDex: dataOnDex,
       addressBalances: Object.values(addresses),
     };
   }
