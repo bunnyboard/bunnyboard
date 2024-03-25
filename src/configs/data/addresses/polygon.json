@@ -2,5 +2,8 @@
   "Aavev2DataProvider": "0x7551b5d2763519d4e37e8b81929d336de671d46d",
   "Aavev2IncentiveController": "0x357d51124f59836ded84c8a1730d72b749d8bc23",
   "Aavev2LendingPool": "0x8dff5e27ea6b7ac08ebfdf9eb090f32ee9a30fcf",
-  "Aavev2PriceOracle": "0x0229f777b0fab107f9591a41d5f02e4e98db6f2d"
+  "Aavev2PriceOracle": "0x0229f777b0fab107f9591a41d5f02e4e98db6f2d",
+  "SushiFactoryV2": "0xc35dadb65012ec5796536bd9864ed8773abc74c4",
+  "SushiFactoryV3": "0x917933899c6a5f8e37f31e19f92cdbff7e8ff0e2",
+  "UniswapFactoryV3": "0x1f98431c8ad98523631ae4a59f267346ea31f984"
 }

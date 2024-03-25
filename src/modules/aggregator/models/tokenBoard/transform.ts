@@ -1,3 +1,5 @@
+import BigNumber from 'bignumber.js';
+
 import { calChangesOf_Current_From_Previous, convertToNumber } from '../../../../lib/math';
 import { AggTokenBoardErc20Snapshot } from '../../../../types/aggregates/tokenBoard';
 import { TokenBoardErc20DataTimeframe } from '../../../../types/collectors/tokenBoard';
@@ -16,6 +18,17 @@ export default class TokenBoardDataTransformer {
     const fullDilutedValuationPrevious = previousLast24Hours
       ? convertToNumber(currentLast24Hours.tokenPrice) * convertToNumber(currentLast24Hours.totalSupply)
       : 0;
+
+    let volumeOnDexCurrent = new BigNumber(0);
+    let volumeOnDexPrevious = new BigNumber(0);
+    for (const tokenDataOnDex of currentLast24Hours.dataOnDex) {
+      volumeOnDexCurrent = volumeOnDexCurrent.plus(new BigNumber(tokenDataOnDex.volumeTrading));
+    }
+    if (previousLast24Hours) {
+      for (const tokenDataOnDex of previousLast24Hours.dataOnDex) {
+        volumeOnDexPrevious = volumeOnDexPrevious.plus(new BigNumber(tokenDataOnDex.volumeTrading));
+      }
+    }
 
     return {
       protocol: currentLast24Hours.protocol,
@@ -67,12 +80,12 @@ export default class TokenBoardDataTransformer {
         tokenPriceField: 'tokenPrice',
         tokenValueField: 'volumeBurn',
       }),
-      volumeOnDex: transformTokenValueToUsd({
-        currentValue: currentLast24Hours,
-        previousValue: previousLast24Hours,
-        tokenPriceField: 'tokenPrice',
-        tokenValueField: 'volumeOnDex',
-      }),
+      volumeOnDex: {
+        value: convertToNumber(volumeOnDexCurrent),
+        changedDay: volumeOnDexPrevious.gt(0)
+          ? calChangesOf_Current_From_Previous(volumeOnDexCurrent, volumeOnDexPrevious)
+          : undefined,
+      },
     };
   }
 }

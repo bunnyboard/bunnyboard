@@ -1,6 +1,17 @@
 import { MongoCollectionConfig } from '../services/database/domains';
 
 export type ChainFamily = 'evm';
+export const ChainNames = {
+  ethereum: 'ethereum',
+  arbitrum: 'arbitrum',
+  optimism: 'optimism',
+  base: 'base',
+  polygon: 'polygon',
+  bnbchain: 'bnbchain',
+  fantom: 'fantom',
+  avalanche: 'avalanche',
+  gnosis: 'gnosis',
+};
 
 export interface Token {
   chain: string;
@@ -131,7 +142,6 @@ const AllDexVersions = Object.values(DexVersions);
 export type DexVersion = (typeof AllDexVersions)[number];
 
 export interface DexSubgraph {
-  version: 'univ2' | 'univ3';
   endpoint: string;
   filters: {
     bundles: {

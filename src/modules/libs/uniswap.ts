@@ -494,10 +494,10 @@ export default class UniswapLibs {
 
             tokenPrices: [tokenPrice0.toString(10), tokenPrice1.toString(10)],
             tokenBalances: [reserve0.toString(10), reserve1.toString(10)],
-            totalLiquidity: liquidity.toString(10),
-            feesTrading: feesTrading,
-            volumeTrading: volumeTo.minus(volumeFrom).toString(10),
-            volumeTradingCumulative: volumeTo.toString(10),
+            totalLiquidityUsd: liquidity.toString(10),
+            feesTradingUsd: feesTrading,
+            volumeTradingUsd: volumeTo.minus(volumeFrom).toString(10),
+            volumeTradingCumulativeUsd: volumeTo.toString(10),
             numberOfTransactions: txCountTo - txCountFrom,
             numberOfTransactionsCumulative: txCountTo,
           };

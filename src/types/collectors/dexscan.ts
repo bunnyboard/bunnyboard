@@ -46,10 +46,10 @@ export interface DexLiquidityPoolMetadata {
 export interface DexLiquidityPoolSnapshot extends DexLiquidityPoolMetadata {
   tokenPrices: Array<string>;
   tokenBalances: Array<string>;
-  totalLiquidity: string;
-  feesTrading: string;
-  volumeTrading: string;
-  volumeTradingCumulative: string;
+  totalLiquidityUsd: string;
+  feesTradingUsd: string;
+  volumeTradingUsd: string;
+  volumeTradingCumulativeUsd: string;
   numberOfTransactions: number;
   numberOfTransactionsCumulative: number;
 }

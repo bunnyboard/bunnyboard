@@ -19,7 +19,7 @@ export interface UniswapSubgraphOptions {
 export default class UniswapSubgraphScanner {
   public static async scanLiquidityTokens(options: UniswapSubgraphOptions): Promise<void> {
     if (options.dexConfig.subgraph) {
-      if (options.dexConfig.subgraph.version === 'univ2' || options.dexConfig.subgraph.version === 'univ3') {
+      if (options.dexConfig.version === 'univ2' || options.dexConfig.version === 'univ3') {
         const timestamp = getTimestamp();
 
         const fromBlock = await tryQueryBlockNumberAtTimestamp(

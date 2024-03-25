@@ -1,6 +1,11 @@
 import ArbitrumAddresses from './addresses/arbitrum.json';
 import AvalancheAddresses from './addresses/avalanche.json';
+import BaseAddresses from './addresses/base.json';
+import BnbchainAddresses from './addresses/bnbchain.json';
 import EthereumAddresses from './addresses/ethereum.json';
+import FantomAddresses from './addresses/fantom.json';
+import GnosisAddresses from './addresses/gnosis.json';
+import OptimismAddresses from './addresses/optimism.json';
 import PolygonAddresses from './addresses/polygon.json';
 import { BlockSubGraphEndpoints, DataSubGraphEndpoints } from './subgraphs';
 import TokenListArbitrum from './tokenlists/arbitrum.json';
@@ -14,10 +19,7 @@ import TokenListMetis from './tokenlists/metis.json';
 import TokenListOptimism from './tokenlists/optimism.json';
 import TokenListPolygon from './tokenlists/polygon.json';
 
-export const SubgraphEndpoints: {
-  blocks: { [key: string]: string };
-  data: { [key: string]: string };
-} = {
+export const SubgraphEndpoints = {
   blocks: BlockSubGraphEndpoints,
   data: DataSubGraphEndpoints,
 };
@@ -25,8 +27,13 @@ export const SubgraphEndpoints: {
 export const AddressesBook = {
   ethereum: EthereumAddresses,
   arbitrum: ArbitrumAddresses,
+  optimism: OptimismAddresses,
+  base: BaseAddresses,
+  bnbchain: BnbchainAddresses,
   polygon: PolygonAddresses,
   avalanche: AvalancheAddresses,
+  fantom: FantomAddresses,
+  gnosis: GnosisAddresses,
 };
 
 export const TokensBook = {
@@ -77,5 +84,29 @@ export const TokensBookBase = {
     ENS: TokenListEthereum['0xc18360217d8f7ab5e7c516566761ea12ce7f9d72'],
     RPL: TokenListEthereum['0xd33526068d116ce69f19a9ee46f0bd304f21a51f'],
     CRV: TokenListEthereum['0xd533a949740bb3306d119cc777fa900ba034cd52'],
+  },
+  arbitrum: {
+    WETH: TokenListArbitrum['0x82af49447d8a07e3bd95bd0d56f35241523fbab1'],
+  },
+  optimism: {
+    WETH: TokenListOptimism['0x4200000000000000000000000000000000000006'],
+  },
+  base: {
+    WETH: TokenListBase['0x4200000000000000000000000000000000000006'],
+  },
+  polygon: {
+    WMATIC: TokenListPolygon['0x0d500b1d8e8ef31e21c99d1db9a6444d3adf1270'],
+  },
+  bnbchain: {
+    WBNB: TokenListBnbchain['0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c'],
+  },
+  fantom: {
+    WFTM: TokenListFantom['0x21be370d5312f44cb42ce377bc9b8a0cef1a4c83'],
+  },
+  avalanche: {
+    WAVAX: TokenListAvalanche['0xb31f66aa3c1e785363f0875a1b74e27b85fd66c7'],
+  },
+  gnosis: {
+    WXDAI: TokenListGnosis['0xe91d153e0b41518a2ce8dd3d7944fa863463a97d'],
   },
 };

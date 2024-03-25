@@ -1,4 +1,4 @@
-export const BlockSubGraphEndpoints: { [key: string]: string } = {
+export const BlockSubGraphEndpoints = {
   ethereum: 'https://api.thegraph.com/subgraphs/name/blocklytics/ethereum-blocks',
   arbitrum: 'https://api.thegraph.com/subgraphs/name/ianlapham/arbitrum-one-blocks',
   base: 'https://api.studio.thegraph.com/query/48211/base-blocks/version/latest',
@@ -11,17 +11,17 @@ export const BlockSubGraphEndpoints: { [key: string]: string } = {
   gnosis: 'https://api.thegraph.com/subgraphs/name/1hive/xdai-blocks',
 };
 
-export const DataSubGraphEndpoints: { [key: string]: string } = {
+export const DataSubGraphEndpoints = {
   uniswapv2Ethereum: 'https://api.thegraph.com/subgraphs/name/ianlapham/uniswap-v2-dev',
 
   uniswapv3Ethereum: 'https://api.thegraph.com/subgraphs/name/uniswap/uniswap-v3',
   uniswapv3Optimism: 'https://api.thegraph.com/subgraphs/name/ianlapham/optimism-post-regenesis',
-  uniswapv3Arbitrum: 'https://api.thegraph.com/subgraphs/name/ianlapham/arbitrum-dev',
+  uniswapv3Arbitrum: 'https://api.thegraph.com/subgraphs/id/QmZ5uwhnwsJXAQGYEF8qKPQ85iVhYAcVZcZAPfrF7ZNb9z',
   uniswapv3Polygon: 'https://api.thegraph.com/subgraphs/name/ianlapham/uniswap-v3-polygon',
   uniswapv3Bnbchain: 'https://api.thegraph.com/subgraphs/name/ianlapham/uniswap-v3-bsc',
-  uniswapv3Avalanche: 'https://api.thegraph.com/subgraphs/name/lynnshaoyu/uniswap-v3-avax',
-  uniswapv3Base: 'https://api.studio.thegraph.com/query/48211/uniswap-v3-base/version/latest',
+  uniswapv3Base: 'https://api.thegraph.com/subgraphs/name/lynnshaoyu/uniswap-v3-base',
   uniswapv3Celo: 'https://api.thegraph.com/subgraphs/name/jesse-sawa/uniswap-celo',
+  uniswapv3Zksyncera: 'https://api.thegraph.com/subgraphs/name/freakyfractal/uniswap-v3-zksync-era',
 
   sushiEthereum: 'https://api.thegraph.com/subgraphs/name/sushiswap/exchange',
   sushiArbitrum: 'https://api.thegraph.com/subgraphs/name/sushiswap/arbitrum-exchange',
@@ -31,7 +31,7 @@ export const DataSubGraphEndpoints: { [key: string]: string } = {
   sushiAvalanche: 'https://api.thegraph.com/subgraphs/name/sushiswap/avalanche-exchange',
   sushiCelo: 'https://api.thegraph.com/subgraphs/name/sushiswap/celo-exchange',
 
-  sushiv3: 'https://api.thegraph.com/subgraphs/name/sushi-v3/v3-ethereum',
+  sushiv3Ethereum: 'https://api.thegraph.com/subgraphs/name/sushi-v3/v3-ethereum',
   sushiv3Arbitrum: 'https://api.thegraph.com/subgraphs/name/sushi-v3/v3-arbitrum',
   sushiv3ArbitrumNova: 'https://subgraphs.sushi.com/subgraphs/name/sushi-v3/v3-arbitrum-nova',
   sushiv3Base: 'https://api.studio.thegraph.com/query/32073/v3-base/v0.0.1',
@@ -42,18 +42,18 @@ export const DataSubGraphEndpoints: { [key: string]: string } = {
   sushiv3Avalanche: 'https://api.thegraph.com/subgraphs/name/sushi-v3/v3-avalanche',
 
   // pancake
-  pancake: 'https://api.thegraph.com/subgraphs/name/pancakeswap/exhange-eth',
+  pancakeEthereum: 'https://api.thegraph.com/subgraphs/name/pancakeswap/exhange-eth',
   pancakeArbitrum: 'https://api.studio.thegraph.com/query/45376/exchange-v2-arbitrum/version/latest',
   pancakeBase: 'https://api.studio.thegraph.com/query/45376/exchange-v2-base/version/latest',
   pancakeBnbchain: 'https://proxy-worker.pancake-swap.workers.dev/bsc-exchange',
 
-  pancakev3: 'https://api.thegraph.com/subgraphs/name/pancakeswap/exchange-v3-eth',
+  pancakev3Ethereum: 'https://api.thegraph.com/subgraphs/name/pancakeswap/exchange-v3-eth',
   pancakev3Arbitrum: 'https://api.studio.thegraph.com/query/45376/exchange-v3-arbitrum/version/latest',
   pancakev3Base: 'https://api.studio.thegraph.com/query/45376/exchange-v3-base/version/latest',
   pancakev3Bnbchain: 'https://api.thegraph.com/subgraphs/name/pancakeswap/exchange-v3-bsc',
 
   // kyberswap
-  kyberswapElastic: 'https://api.thegraph.com/subgraphs/name/kybernetwork/kyberswap-elastic-mainnet',
+  kyberswapElasticEthereum: 'https://api.thegraph.com/subgraphs/name/kybernetwork/kyberswap-elastic-mainnet',
   kyberswapElasticArbitrum: 'https://api.thegraph.com/subgraphs/name/kybernetwork/kyberswap-elastic-arbitrum-one',
   kyberswapElasticBase: 'https://base-graph.kyberengineering.io/subgraphs/name/kybernetwork/kyberswap-elastic-base',
   kyberswapElasticOptimism: 'https://api.thegraph.com/subgraphs/name/kybernetwork/kyberswap-elastic-optimism',
@@ -63,8 +63,8 @@ export const DataSubGraphEndpoints: { [key: string]: string } = {
   kyberswapElasticFantom: 'https://api.thegraph.com/subgraphs/name/kybernetwork/kyberswap-elastic-fantom',
 
   // camelot
-  camelot: 'https://api.thegraph.com/subgraphs/name/camelotlabs/camelot-amm',
-  camelotv3: 'https://api.thegraph.com/subgraphs/name/camelotlabs/camelot-amm-v3',
+  camelotArbitrum: 'https://api.thegraph.com/subgraphs/name/camelotlabs/camelot-amm',
+  camelotv3Arbitrum: 'https://api.thegraph.com/subgraphs/name/camelotlabs/camelot-amm-v3',
 
   // traderjoe
   traderjoeAvalanche: 'https://api.thegraph.com/subgraphs/name/traderjoe-xyz/exchange',
@@ -72,5 +72,5 @@ export const DataSubGraphEndpoints: { [key: string]: string } = {
   traderjoeBnbchain: 'https://api.thegraph.com/subgraphs/name/traderjoe-xyz/joe-v1-bnb',
 
   // shibaswap
-  shibaswap: 'https://api.thegraph.com/subgraphs/name/shibaswaparmy/exchange',
+  shibaswapEthereum: 'https://api.thegraph.com/subgraphs/name/shibaswaparmy/exchange',
 };
