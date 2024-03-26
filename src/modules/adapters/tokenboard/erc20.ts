@@ -2,7 +2,6 @@ import BigNumber from 'bignumber.js';
 import { decodeEventLog } from 'viem';
 
 import Erc20Abi from '../../../configs/abi/ERC20.json';
-import { DexscanConfigs } from '../../../configs/boards/dexscan';
 import { AddressZero, Erc20TransferEventSignature } from '../../../configs/constants';
 import EnvConfig from '../../../configs/envConfig';
 import { tryQueryBlockNumberAtTimestamp } from '../../../lib/subsgraph';
@@ -15,7 +14,7 @@ import {
 } from '../../../types/collectors/tokenBoard';
 import { TokenBoardErc20Config } from '../../../types/configs';
 import { ContextServices } from '../../../types/namespaces';
-import UniswapLibs from '../../libs/uniswap';
+import DexscanLibs from '../../libs/dexscan';
 import ProtocolAdapter from '../adapter';
 
 export default class TokenBoardErc20Adapter extends ProtocolAdapter {
@@ -128,28 +127,24 @@ export default class TokenBoardErc20Adapter extends ProtocolAdapter {
     }
 
     const config = options.config as TokenBoardErc20Config;
-    const dataOnDex: Array<TokenBoardErc20DataOnDex> = [];
-    for (const dexConfig of DexscanConfigs) {
-      const tokenData = await UniswapLibs.getLiquidityTokenSnapshot({
-        dexConfig: dexConfig,
-        token: {
-          chain: config.chain,
-          symbol: config.symbol,
-          decimals: config.decimals,
-          address: config.address,
-        },
-        fromBlock: beginBlock,
-        toBlock: endBlock,
-      });
-      if (tokenData) {
-        dataOnDex.push({
-          protocol: tokenData.protocol,
-          version: tokenData.version,
-          totalLiquidity: tokenData.totalLiquidity,
-          volumeTrading: tokenData.volumeTrading,
-        });
-      }
-    }
+    const tokenLiquidityData = await DexscanLibs.scanLiquidityTokenData(
+      {
+        chain: config.chain,
+        symbol: config.symbol,
+        decimals: config.decimals,
+        address: config.address,
+      },
+      beginBlock,
+      endBlock,
+    );
+    const dataOnDex: Array<TokenBoardErc20DataOnDex> = tokenLiquidityData.map((item) => {
+      return {
+        protocol: item.protocol,
+        version: item.version,
+        totalLiquidity: item.totalLiquidity,
+        volumeTrading: item.volumeTrading,
+      };
+    });
 
     return {
       ...dataState,

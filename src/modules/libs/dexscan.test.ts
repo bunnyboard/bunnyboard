@@ -1,9 +1,9 @@
 import { describe, expect, test } from 'vitest';
 
-import { TokenListBase } from '../../../configs';
-import { DexscanConfigs } from '../../../configs/boards/dexscan';
-import { Token } from '../../../types/configs';
-import UniswapLibs from '../../libs/uniswap';
+import { TokenListBase } from '../../configs';
+import { DexscanConfigs } from '../../configs/boards/dexscan';
+import { Token } from '../../types/configs';
+import UniswapLibs from '../libs/uniswap';
 
 const tokens = {
   ethereum: TokenListBase.ethereum.WETH,

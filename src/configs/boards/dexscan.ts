@@ -10,6 +10,7 @@ import {
   Sushiv3AvalancheDexConfig,
   Sushiv3BaseDexConfig,
   Sushiv3BnbchainDexConfig,
+  Sushiv3EthereumDexConfig,
   Sushiv3FantomDexConfig,
   Sushiv3OptimismDexConfig,
   Sushiv3PolygonDexConfig,
@@ -40,6 +41,7 @@ export const DexscanConfigs: Array<DexConfig> = [
   SushiFantomDexConfig,
   SushiAvalancheDexConfig,
 
+  Sushiv3EthereumDexConfig,
   Sushiv3ArbitrumDexConfig,
   Sushiv3OptimismDexConfig,
   Sushiv3BaseDexConfig,
