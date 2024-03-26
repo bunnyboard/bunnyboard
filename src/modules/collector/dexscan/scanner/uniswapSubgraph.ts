@@ -1,4 +1,7 @@
+import BigNumber from 'bignumber.js';
+
 import { TokenList } from '../../../../configs';
+import { DexscanMinimumLiquidityUsdToConsider } from '../../../../configs/boards/dexscan';
 import { TimeUnits } from '../../../../configs/constants';
 import EnvConfig from '../../../../configs/envConfig';
 import logger from '../../../../lib/logger';
@@ -83,13 +86,13 @@ export default class UniswapSubgraphScanner {
                 fromBlock: fromBlock,
                 toBlock: toBlock,
               });
-              if (poolData) {
+              if (poolData && new BigNumber(poolData.totalLiquidityUsd).gt(DexscanMinimumLiquidityUsdToConsider)) {
                 await options.storages.database.update({
                   collection: EnvConfig.mongodb.collections.dexLiquidityPoolSnapshots.name,
                   keys: {
-                    chain: tokenData.chain,
-                    protocol: tokenData.protocol,
-                    address: tokenData.address,
+                    chain: poolData.chain,
+                    protocol: poolData.protocol,
+                    address: poolData.address,
                   },
                   updates: {
                     ...poolData,

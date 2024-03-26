@@ -24,6 +24,8 @@ import {
   Uniswapv3OptimismDexConfig,
 } from '../protocols/uniswap';
 
+export const DexscanMinimumLiquidityUsdToConsider = 10000;
+
 export const DexscanConfigs: Array<DexConfig> = [
   Uniswapv2EthereumDexConfig,
 
