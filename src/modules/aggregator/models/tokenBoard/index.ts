@@ -50,7 +50,6 @@ export default class TokenBoardDataAggregator extends BaseDataAggregator {
             volumeTransfer: snapshot.volumeTransfer.value,
             volumeMint: snapshot.volumeMint.value,
             volumeBurn: snapshot.volumeBurn.value,
-            volumeOnDex: snapshot.volumeOnDex.value,
           });
         }
       }

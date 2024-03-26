@@ -208,6 +208,7 @@ export default class UniswapLibs {
           {
             headers: {
               'Content-Type': 'application/json',
+              ...options.dexConfig.subgraph.httpRequestOptions,
             },
           },
         );
@@ -338,6 +339,7 @@ export default class UniswapLibs {
           {
             headers: {
               'Content-Type': 'application/json',
+              ...options.dexConfig.subgraph.httpRequestOptions,
             },
           },
         );
@@ -449,6 +451,7 @@ export default class UniswapLibs {
         {
           headers: {
             'Content-Type': 'application/json',
+            ...options.dexConfig.subgraph.httpRequestOptions,
           },
         },
       );

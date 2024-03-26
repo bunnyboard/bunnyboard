@@ -17,7 +17,6 @@ export interface AggTokenBoardErc20Snapshot extends Token, DataTimeframe {
   volumeTransfer: DataValue;
   volumeMint: DataValue;
   volumeBurn: DataValue;
-  volumeOnDex: DataValue;
 }
 
 export interface AggTokenBoardErc20DayData {
@@ -28,7 +27,6 @@ export interface AggTokenBoardErc20DayData {
   volumeTransfer: number;
   volumeMint: number;
   volumeBurn: number;
-  volumeOnDex: number;
 }
 
 export interface AggTokenBoardErc20DataOverall extends AggTokenBoardErc20Snapshot {

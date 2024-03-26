@@ -1,4 +1,7 @@
 {
+  "KyberswapFactory": "0xc7a590291e07b9fe9e64b86c58fd8fc764308c4a",
+  "PancakeFactoryV2": "0x02a84c1b3bbd7401a5f7fa98a384ebc70bb5749e",
+  "PancakeFactoryV3": "0x0bfbcf9fa4f9c56b0f40a671ad40e0805a091865",
   "SushiFactoryV2": "0x71524b4f93c58fcbf659783284e38825f0622859",
   "SushiFactoryV3": "0xc35dadb65012ec5796536bd9864ed8773abc74c4",
   "UniswapFactoryV3": "0x33128a8fc17869897dce68ed026d694621f6fdfd"

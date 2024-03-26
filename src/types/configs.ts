@@ -1,17 +1,6 @@
 import { MongoCollectionConfig } from '../services/database/domains';
 
 export type ChainFamily = 'evm';
-export const ChainNames = {
-  ethereum: 'ethereum',
-  arbitrum: 'arbitrum',
-  optimism: 'optimism',
-  base: 'base',
-  polygon: 'polygon',
-  bnbchain: 'bnbchain',
-  fantom: 'fantom',
-  avalanche: 'avalanche',
-  gnosis: 'gnosis',
-};
 
 export interface Token {
   chain: string;
@@ -175,6 +164,7 @@ export interface DexSubgraph {
     };
   };
   fixedFeePercentage?: number;
+  httpRequestOptions?: any;
 }
 
 export interface DexConfig extends MetricConfig {

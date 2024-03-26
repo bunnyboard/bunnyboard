@@ -7,14 +7,9 @@ import EnvConfig from '../../../configs/envConfig';
 import { tryQueryBlockNumberAtTimestamp } from '../../../lib/subsgraph';
 import { compareAddress, formatBigNumberToString, normalizeAddress } from '../../../lib/utils';
 import { GetAdapterDataStateOptions, GetAdapterDataTimeframeOptions } from '../../../types/collectors/options';
-import {
-  TokenBoardErc20DataOnDex,
-  TokenBoardErc20DataState,
-  TokenBoardErc20DataTimeframe,
-} from '../../../types/collectors/tokenBoard';
+import { TokenBoardErc20DataState, TokenBoardErc20DataTimeframe } from '../../../types/collectors/tokenBoard';
 import { TokenBoardErc20Config } from '../../../types/configs';
 import { ContextServices } from '../../../types/namespaces';
-import DexscanLibs from '../../libs/dexscan';
 import ProtocolAdapter from '../adapter';
 
 export default class TokenBoardErc20Adapter extends ProtocolAdapter {
@@ -126,26 +121,6 @@ export default class TokenBoardErc20Adapter extends ProtocolAdapter {
       }
     }
 
-    const config = options.config as TokenBoardErc20Config;
-    const tokenLiquidityData = await DexscanLibs.scanLiquidityTokenData(
-      {
-        chain: config.chain,
-        symbol: config.symbol,
-        decimals: config.decimals,
-        address: config.address,
-      },
-      beginBlock,
-      endBlock,
-    );
-    const dataOnDex: Array<TokenBoardErc20DataOnDex> = tokenLiquidityData.map((item) => {
-      return {
-        protocol: item.protocol,
-        version: item.version,
-        totalLiquidity: item.totalLiquidity,
-        volumeTrading: item.volumeTrading,
-      };
-    });
-
     return {
       ...dataState,
 
@@ -154,7 +129,6 @@ export default class TokenBoardErc20Adapter extends ProtocolAdapter {
       volumeTransfer: volumeTransfer.toString(10),
       volumeMint: volumeMint.toString(10),
       volumeBurn: volumeBurn.toString(10),
-      dataOnDex: dataOnDex,
     };
   }
 }

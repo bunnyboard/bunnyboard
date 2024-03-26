@@ -1,4 +1,6 @@
 {
+  "KyberswapFactory": "0xc7a590291e07b9fe9e64b86c58fd8fc764308c4a",
+  "SpookyFactory": "0x152ee697f2e276fa89e96742e9bb9ab1f2e61be3",
   "SushiFactoryV2": "0xc35dadb65012ec5796536bd9864ed8773abc74c4",
   "SushiFactoryV3": "0x7770978eed668a3ba661d51a773d3a992fc9ddcb"
 }

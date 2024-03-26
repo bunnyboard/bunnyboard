@@ -73,4 +73,7 @@ export const DataSubGraphEndpoints = {
 
   // shibaswap
   shibaswapEthereum: 'https://api.thegraph.com/subgraphs/name/shibaswaparmy/exchange',
+
+  // spooky
+  spookyFantom: 'https://api.thegraph.com/subgraphs/name/eerieeight/spookyswap',
 };

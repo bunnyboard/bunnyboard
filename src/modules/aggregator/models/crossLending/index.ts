@@ -109,7 +109,7 @@ export default class CrossLendingDataAggregator extends BaseDataAggregator {
   }
 
   // get current overall data across all markets
-  public async getDataOverall(): Promise<AggCrossLendingDataOverall> {
+  public async getDataOverall(): Promise<AggCrossLendingDataOverall | null> {
     const overallData = await this.database.find({
       collection: EnvConfig.mongodb.collections.cachingData.name,
       query: {
@@ -119,7 +119,7 @@ export default class CrossLendingDataAggregator extends BaseDataAggregator {
     if (overallData) {
       return overallData.data as AggCrossLendingDataOverall;
     } else {
-      return await this.getDataOverallInternal();
+      return null;
     }
   }
 

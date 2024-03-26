@@ -1,5 +1,6 @@
-import { ChainNames, DataMetrics, DexConfig, DexVersions, ProtocolConfig } from '../../types/configs';
+import { DataMetrics, DexConfig, DexVersions, ProtocolConfig } from '../../types/configs';
 import { AddressesBook, SubgraphEndpoints } from '../data';
+import { ChainNames } from '../names';
 
 export interface UniswapConfig extends ProtocolConfig {
   configs: Array<DexConfig>;

@@ -1,5 +1,24 @@
 import { DexConfig } from '../../types/configs';
 import {
+  KyberswapArbitrumDexConfig,
+  KyberswapAvalancheDexConfig,
+  KyberswapBaseDexConfig,
+  KyberswapBnbchainDexConfig,
+  KyberswapEthereumDexConfig,
+  KyberswapFantomDexConfig,
+  KyberswapOptimismDexConfig,
+  KyberswapPolygonDexConfig,
+} from '../protocols/kyberswap';
+import {
+  PancakeArbitrumDexConfig,
+  PancakeBaseDexConfig,
+  PancakeEthereumDexConfig,
+  Pancakev3ArbitrumDexConfig,
+  Pancakev3BaseDexConfig,
+  Pancakev3EthereumDexConfig,
+} from '../protocols/pancake';
+import { SpookyEthereumDexConfig } from '../protocols/spooky';
+import {
   SushiArbitrumDexConfig,
   SushiAvalancheDexConfig,
   SushiBnbchainDexConfig,
@@ -51,4 +70,25 @@ export const DexscanConfigs: Array<DexConfig> = [
   Sushiv3BnbchainDexConfig,
   Sushiv3FantomDexConfig,
   Sushiv3AvalancheDexConfig,
+
+  // PancakeBnbchainDexConfig,
+  PancakeEthereumDexConfig,
+  PancakeArbitrumDexConfig,
+  PancakeBaseDexConfig,
+
+  // Pancakev3BnbchainDexConfig,
+  Pancakev3EthereumDexConfig,
+  Pancakev3ArbitrumDexConfig,
+  Pancakev3BaseDexConfig,
+
+  KyberswapEthereumDexConfig,
+  KyberswapArbitrumDexConfig,
+  KyberswapOptimismDexConfig,
+  KyberswapBaseDexConfig,
+  KyberswapPolygonDexConfig,
+  KyberswapBnbchainDexConfig,
+  KyberswapAvalancheDexConfig,
+  KyberswapFantomDexConfig,
+
+  SpookyEthereumDexConfig,
 ];

@@ -110,7 +110,7 @@ export default class CdpLendingDataAggregator extends BaseDataAggregator {
   }
 
   // get current overall data across all markets
-  public async getDataOverall(): Promise<AggCdpLendingDataOverall> {
+  public async getDataOverall(): Promise<AggCdpLendingDataOverall | null> {
     const overallData = await this.database.find({
       collection: EnvConfig.mongodb.collections.cachingData.name,
       query: {
@@ -120,7 +120,7 @@ export default class CdpLendingDataAggregator extends BaseDataAggregator {
     if (overallData) {
       return overallData.data as AggCdpLendingDataOverall;
     } else {
-      return await this.getDataOverallInternal();
+      return null;
     }
   }
 
