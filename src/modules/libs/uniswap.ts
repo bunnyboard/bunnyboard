@@ -359,6 +359,7 @@ export default class UniswapLibs {
             poolMetadata.push({
               protocol: options.dexConfig.protocol,
               version: options.dexConfig.version,
+              chain: options.dexConfig.chain,
               address: normalizeAddress(rawPool.id),
               tokens: [
                 {

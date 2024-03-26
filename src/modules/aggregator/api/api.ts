@@ -4,6 +4,7 @@ import { ContextStorages } from '../../../types/namespaces';
 import { middleware } from './middleware';
 import * as cdpLendingDataRouter from './routes/cdpLending';
 import * as crossLendingDataRouter from './routes/crossLending';
+import * as dexscanDataRouter from './routes/dexscan';
 import * as tokenBoardDataRouter from './routes/tokenBoard';
 
 export function getRouter(storages: ContextStorages): Router {
@@ -15,6 +16,7 @@ export function getRouter(storages: ContextStorages): Router {
   router.use('/crossLending', crossLendingDataRouter.getRouter(storages));
   router.use('/cdpLending', cdpLendingDataRouter.getRouter(storages));
   router.use('/tokenBoard', tokenBoardDataRouter.getRouter(storages));
+  router.use('/dexscan', dexscanDataRouter.getRouter(storages));
 
   return router;
 }

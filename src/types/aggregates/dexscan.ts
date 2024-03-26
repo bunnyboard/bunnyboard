@@ -1,6 +1,6 @@
 import { DexVersion, Token } from '../configs';
 
-export interface DexLiquidityTokenSnapshot extends Token {
+export interface AggDexLiquidityTokenSnapshot extends Token {
   // dex name
   protocol: string;
 
@@ -9,21 +9,21 @@ export interface DexLiquidityTokenSnapshot extends Token {
 
   // token price in USD at the time of fetching data
   // calculated exactly at timefrom timestamp
-  tokenPrice: string;
+  tokenPrice: number;
 
   // total tokens were provided as liquidity
   // collected exactly at timefrom timestamp
-  totalLiquidity: string;
+  totalLiquidity: number;
 
   // fees collected from trading
-  feesTrading: string;
+  feesTrading: number;
 
   // total token amount was traded
   // collected in the period from timefrom to timeto timestamps
-  volumeTrading: string;
+  volumeTrading: number;
 
   // total token amount was traded of all time
-  volumeTradingCumulative: string;
+  volumeTradingCumulative: number;
 
   // collected in the period from timefrom to timeto timestamps
   numberOfTransactions: number;
@@ -32,7 +32,7 @@ export interface DexLiquidityTokenSnapshot extends Token {
   numberOfTransactionsCumulative: number;
 }
 
-export interface DexLiquidityPoolMetadata {
+export interface AggDexLiquidityPoolSnapshot {
   protocol: string;
   version: string;
   chain: string;
@@ -41,15 +41,13 @@ export interface DexLiquidityPoolMetadata {
   tokens: Array<Token>;
 
   feesPercentage: number;
-}
 
-export interface DexLiquidityPoolSnapshot extends DexLiquidityPoolMetadata {
-  tokenPrices: Array<string>;
-  tokenBalances: Array<string>;
-  totalLiquidityUsd: string;
-  feesTradingUsd: string;
-  volumeTradingUsd: string;
-  volumeTradingCumulativeUsd: string;
+  tokenPrices: Array<number>;
+  tokenBalances: Array<number>;
+  totalLiquidityUsd: number;
+  feesTradingUsd: number;
+  volumeTradingUsd: number;
+  volumeTradingCumulativeUsd: number;
   numberOfTransactions: number;
   numberOfTransactionsCumulative: number;
 }
