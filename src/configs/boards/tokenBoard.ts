@@ -11,14 +11,14 @@ export const TokenBoardErc20Configs: Array<TokenBoardErc20Config> = [
   },
   {
     ...TokensBookBase.ethereum.USDC,
-    protocol: 'maker',
+    protocol: 'circle',
     metric: DataMetrics.tokenBoardErc20,
     stablecoin: true,
     birthday: 1533340800, // Sat Aug 04 2018 00:00:00 GMT+0000
   },
   {
     ...TokensBookBase.ethereum.USDT,
-    protocol: 'maker',
+    protocol: 'tether',
     metric: DataMetrics.tokenBoardErc20,
     stablecoin: true,
     birthday: 1511913600, // Wed Nov 29 2017 00:00:00 GMT+0000
@@ -39,7 +39,7 @@ export const TokenBoardErc20Configs: Array<TokenBoardErc20Config> = [
   },
   {
     ...TokensBookBase.ethereum.UNI,
-    protocol: 'sushi',
+    protocol: 'uniswap',
     metric: DataMetrics.tokenBoardErc20,
     stablecoin: false,
     birthday: 1600128000, // Tue Sep 15 2020 00:00:00 GMT+0000
