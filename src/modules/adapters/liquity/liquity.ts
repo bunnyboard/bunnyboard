@@ -3,9 +3,7 @@ import { decodeEventLog } from 'viem';
 
 import BorrowOperationsAbi from '../../../configs/abi/liquity/BorrowOperations.json';
 import TroveManagerAbi from '../../../configs/abi/liquity/TroveManager.json';
-import EnvConfig from '../../../configs/envConfig';
 import { LiquityLendingMarketConfig, LiquityTrove } from '../../../configs/protocols/liquity';
-import { tryQueryBlockNumberAtTimestamp } from '../../../lib/subsgraph';
 import { compareAddress, formatBigNumberToString, normalizeAddress } from '../../../lib/utils';
 import { ActivityAction, ActivityActions } from '../../../types/collectors/base';
 import {
@@ -85,8 +83,8 @@ export default class LiquityAdapter extends ProtocolAdapter {
   public async getDataState(options: GetAdapterDataStateOptions): Promise<Array<CdpLendingAssetDataState> | null> {
     const result: Array<CdpLendingAssetDataState> = [];
 
-    const blockNumber = await tryQueryBlockNumberAtTimestamp(
-      EnvConfig.blockchains[options.config.chain].blockSubgraph,
+    const blockNumber = await this.services.blockchain.tryGetBlockNumberAtTimestamp(
+      options.config.chain,
       options.timestamp,
     );
 
@@ -336,14 +334,11 @@ export default class LiquityAdapter extends ProtocolAdapter {
     const result: Array<CdpLendingAssetDataTimeframe> = [];
 
     // make sure activities were synced
-    const beginBlock = await tryQueryBlockNumberAtTimestamp(
-      EnvConfig.blockchains[options.config.chain].blockSubgraph,
+    const beginBlock = await this.services.blockchain.tryGetBlockNumberAtTimestamp(
+      options.config.chain,
       options.fromTime,
     );
-    const endBlock = await tryQueryBlockNumberAtTimestamp(
-      EnvConfig.blockchains[options.config.chain].blockSubgraph,
-      options.toTime,
-    );
+    const endBlock = await this.services.blockchain.tryGetBlockNumberAtTimestamp(options.config.chain, options.toTime);
 
     const logs = await this.getEventLogs(options.config, beginBlock, endBlock);
 

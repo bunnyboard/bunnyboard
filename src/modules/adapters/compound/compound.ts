@@ -6,9 +6,7 @@ import CompoundComptrollerV1Abi from '../../../configs/abi/compound/ComptrollerV
 import cErc20Abi from '../../../configs/abi/compound/cErc20.json';
 import IronbankComptrollerOldAbi from '../../../configs/abi/ironbank/FirstComptroller.json';
 import { ChainBlockPeriods, TimeUnits } from '../../../configs/constants';
-import EnvConfig from '../../../configs/envConfig';
 import { CompoundLendingMarketConfig } from '../../../configs/protocols/compound';
-import { tryQueryBlockNumberAtTimestamp } from '../../../lib/subsgraph';
 import { compareAddress, formatBigNumberToString, normalizeAddress } from '../../../lib/utils';
 import { ActivityActions, TokenValueItem } from '../../../types/collectors/base';
 import { CrossLendingReserveDataState, CrossLendingReserveDataTimeframe } from '../../../types/collectors/crossLending';
@@ -210,8 +208,8 @@ export default class CompoundAdapter extends ProtocolAdapter {
     const result: Array<CrossLendingReserveDataState> = [];
 
     const marketConfig = options.config as CompoundLendingMarketConfig;
-    const blockNumber = await tryQueryBlockNumberAtTimestamp(
-      EnvConfig.blockchains[marketConfig.chain].blockSubgraph,
+    const blockNumber = await this.services.blockchain.tryGetBlockNumberAtTimestamp(
+      marketConfig.chain,
       options.timestamp,
     );
 
@@ -552,14 +550,11 @@ export default class CompoundAdapter extends ProtocolAdapter {
     const result: Array<CrossLendingReserveDataTimeframe> = [];
 
     // make sure activities were synced
-    const beginBlock = await tryQueryBlockNumberAtTimestamp(
-      EnvConfig.blockchains[options.config.chain].blockSubgraph,
+    const beginBlock = await this.services.blockchain.tryGetBlockNumberAtTimestamp(
+      options.config.chain,
       options.fromTime,
     );
-    const endBlock = await tryQueryBlockNumberAtTimestamp(
-      EnvConfig.blockchains[options.config.chain].blockSubgraph,
-      options.toTime,
-    );
+    const endBlock = await this.services.blockchain.tryGetBlockNumberAtTimestamp(options.config.chain, options.toTime);
 
     const logs = await this.getEventLogs(options.config, beginBlock, endBlock);
 

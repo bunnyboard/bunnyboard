@@ -44,6 +44,7 @@ export const PancakeEthereumDexConfig: DexConfig = {
   subgraph: {
     endpoint: SubgraphEndpoints.data.pancakeEthereum,
     filters: PancakeSubgraphFilters,
+    fixedFeePercentage: 0.25,
   },
 };
 
@@ -61,6 +62,7 @@ export const PancakeBnbchainDexConfig: DexConfig = {
       referer: 'https://pancakeswap.finance/',
       origin: 'https://pancakeswap.finance',
     },
+    fixedFeePercentage: 0.25,
   },
 };
 
@@ -74,6 +76,7 @@ export const PancakeArbitrumDexConfig: DexConfig = {
   subgraph: {
     endpoint: SubgraphEndpoints.data.pancakeArbitrum,
     filters: PancakeSubgraphFilters,
+    fixedFeePercentage: 0.25,
   },
 };
 
@@ -87,6 +90,7 @@ export const PancakeBaseDexConfig: DexConfig = {
   subgraph: {
     endpoint: SubgraphEndpoints.data.pancakeBase,
     filters: PancakeSubgraphFilters,
+    fixedFeePercentage: 0.25,
   },
 };
 

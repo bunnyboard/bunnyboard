@@ -53,4 +53,10 @@ export interface IBlockchainService {
 
   // multicall3
   multicall3: (chain: string, calls: Array<Multicall3Call>) => Promise<any>;
+
+  // help to query block number at given timestamp
+  getBlockNumberAtTimestamp: (chain: string, timestamp: number) => Promise<number | null>;
+
+  // loop until get block number success
+  tryGetBlockNumberAtTimestamp: (chain: string, timestamp: number) => Promise<number>;
 }

@@ -1,3 +1,5 @@
+import retry from 'async-retry';
+import axios from 'axios';
 import BigNumber from 'bignumber.js';
 import { Address, PublicClient, createPublicClient, http } from 'viem';
 
@@ -5,7 +7,7 @@ import { DefaultQueryContractLogsBlockRange, TokenList } from '../../configs';
 import ERC20Abi from '../../configs/abi/ERC20.json';
 import { AddressE, AddressF, AddressMulticall3, AddressZero } from '../../configs/constants';
 import EnvConfig from '../../configs/envConfig';
-import { compareAddress, normalizeAddress } from '../../lib/utils';
+import { compareAddress, normalizeAddress, sleep } from '../../lib/utils';
 import { Token } from '../../types/configs';
 import { CachingService } from '../caching/caching';
 import {
@@ -178,5 +180,86 @@ export default class BlockchainService extends CachingService implements IBlockc
       contracts: contracts,
       allowFailure: false,
     });
+  }
+
+  public async getBlockNumberAtTimestamp(chain: string, timestamp: number): Promise<number | null> {
+    const chainConfig = EnvConfig.blockchains[chain];
+
+    let blockNumber = null;
+
+    // get from subgraph
+    if (chainConfig && chainConfig.blockSubgraph !== '') {
+      const query = `
+        {
+          blocks(first: 1, where: {timestamp_lte: ${timestamp}}, orderBy: timestamp, orderDirection: desc) {
+            number
+          }
+        }
+      `;
+
+      const response = await retry(
+        async function () {
+          const response = await axios.post(
+            chainConfig.blockSubgraph,
+            {
+              query: query,
+            },
+            {
+              headers: {
+                'Content-Type': 'application/json',
+              },
+            },
+          );
+
+          return response.data.data;
+        },
+        {
+          retries: 5,
+        },
+      );
+
+      if (response && response.blocks && response.blocks[0] && response.blocks[0].number) {
+        blockNumber = Number(response.blocks[0].number);
+      }
+    }
+
+    // get from explorer api
+    if (chainConfig && chainConfig.explorerApiEndpoint) {
+      const url = `${chainConfig.explorerApiEndpoint}?module=block&action=getblocknobytime&timestamp=${timestamp}&closest=before`;
+      const response = await retry(
+        async function () {
+          const response = await axios.get(url, {
+            headers: {
+              'Content-Type': 'application/json',
+            },
+          });
+
+          return response.data;
+        },
+        {
+          retries: 5,
+        },
+      );
+
+      if (response && response.status === '1' && response.message === 'OK' && response.result) {
+        blockNumber = Number(response.result);
+      }
+    }
+
+    return blockNumber;
+  }
+
+  public async tryGetBlockNumberAtTimestamp(chain: string, timestamp: number): Promise<number> {
+    let blockNumber = null;
+
+    do {
+      blockNumber = await this.getBlockNumberAtTimestamp(chain, timestamp);
+
+      if (!blockNumber) {
+        await sleep(5);
+      }
+    } while (blockNumber === null);
+
+    return 0;
   }
 }

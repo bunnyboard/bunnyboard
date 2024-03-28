@@ -3,8 +3,6 @@ import { decodeEventLog } from 'viem';
 
 import Erc20Abi from '../../../configs/abi/ERC20.json';
 import { AddressZero, Erc20TransferEventSignature } from '../../../configs/constants';
-import EnvConfig from '../../../configs/envConfig';
-import { tryQueryBlockNumberAtTimestamp } from '../../../lib/subsgraph';
 import { compareAddress, formatBigNumberToString, normalizeAddress } from '../../../lib/utils';
 import { GetAdapterDataStateOptions, GetAdapterDataTimeframeOptions } from '../../../types/collectors/options';
 import { TokenBoardErc20DataState, TokenBoardErc20DataTimeframe } from '../../../types/collectors/tokenBoard';
@@ -22,8 +20,8 @@ export default class TokenBoardErc20Adapter extends ProtocolAdapter {
   public async getDataState(options: GetAdapterDataStateOptions): Promise<TokenBoardErc20DataState | null> {
     const erc20Config = options.config as TokenBoardErc20Config;
 
-    const blockNumber = await tryQueryBlockNumberAtTimestamp(
-      EnvConfig.blockchains[options.config.chain].blockSubgraph,
+    const blockNumber = await this.services.blockchain.tryGetBlockNumberAtTimestamp(
+      options.config.chain,
       options.timestamp,
     );
 
@@ -73,14 +71,11 @@ export default class TokenBoardErc20Adapter extends ProtocolAdapter {
       return null;
     }
 
-    const beginBlock = await tryQueryBlockNumberAtTimestamp(
-      EnvConfig.blockchains[options.config.chain].blockSubgraph,
+    const beginBlock = await this.services.blockchain.tryGetBlockNumberAtTimestamp(
+      options.config.chain,
       options.fromTime,
     );
-    const endBlock = await tryQueryBlockNumberAtTimestamp(
-      EnvConfig.blockchains[options.config.chain].blockSubgraph,
-      options.toTime,
-    );
+    const endBlock = await this.services.blockchain.tryGetBlockNumberAtTimestamp(options.config.chain, options.toTime);
 
     const logs = await this.services.blockchain.getContractLogs({
       chain: options.config.chain,

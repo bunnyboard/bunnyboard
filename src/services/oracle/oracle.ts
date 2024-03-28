@@ -1,11 +1,9 @@
 import BigNumber from 'bignumber.js';
 
 import Erc20Abi from '../../configs/abi/ERC20.json';
-import EnvConfig from '../../configs/envConfig';
 import { OracleConfigs } from '../../configs/oracles/configs';
 import { OracleCurrencyBaseConfigs } from '../../configs/oracles/currency';
 import logger from '../../lib/logger';
-import { tryQueryBlockNumberAtTimestamp } from '../../lib/subsgraph';
 import { normalizeAddress } from '../../lib/utils';
 import ChainlinkLibs from '../../modules/libs/chainlink';
 import CoingeckoLibs from '../../modules/libs/coingecko';
@@ -47,10 +45,8 @@ export default class OracleService extends CachingService implements IOracleServ
       return cachingPrice;
     }
 
-    const blockNumber = await tryQueryBlockNumberAtTimestamp(
-      EnvConfig.blockchains[source.chain].blockSubgraph,
-      timestamp,
-    );
+    const blockchain = new BlockchainService();
+    const blockNumber = await blockchain.tryGetBlockNumberAtTimestamp(source.chain, timestamp);
 
     switch (source.type) {
       case 'chainlink': {
@@ -193,10 +189,7 @@ export default class OracleService extends CachingService implements IOracleServ
 
     const blockchain = new BlockchainService();
 
-    const blockNumber = await tryQueryBlockNumberAtTimestamp(
-      EnvConfig.blockchains[options.pool2.chain].blockSubgraph,
-      options.timestamp,
-    );
+    const blockNumber = await blockchain.tryGetBlockNumberAtTimestamp(options.pool2.chain, options.timestamp);
     const lpSupply = await blockchain.readContract({
       chain: options.pool2.chain,
       abi: Erc20Abi,

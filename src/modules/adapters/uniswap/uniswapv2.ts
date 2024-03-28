@@ -4,7 +4,7 @@ import BigNumber from 'bignumber.js';
 
 import { TimeUnits } from '../../../configs/constants';
 import EnvConfig from '../../../configs/envConfig';
-import { tryQueryBlockMeta, tryQueryBlockNumberAtTimestamp } from '../../../lib/subsgraph';
+import { tryQueryBlockMeta } from '../../../lib/subgraph';
 import { DexDataState, DexDataTimeframe } from '../../../types/collectors/dex';
 import { GetAdapterDataStateOptions, GetAdapterDataTimeframeOptions } from '../../../types/collectors/options';
 import { DexConfig, DexSubgraph } from '../../../types/configs';
@@ -97,12 +97,12 @@ export default class Uniswapv2Adapter extends ProtocolAdapter {
     const dexConfig = options.config as DexConfig;
     if (dexConfig.subgraph) {
       const metaBlock = await tryQueryBlockMeta(EnvConfig.blockchains[options.config.chain].blockSubgraph);
-      const beginBlock = await tryQueryBlockNumberAtTimestamp(
-        EnvConfig.blockchains[options.config.chain].blockSubgraph,
+      const beginBlock = await this.services.blockchain.tryGetBlockNumberAtTimestamp(
+        options.config.chain,
         options.timestamp - TimeUnits.SecondsPerDay,
       );
-      const endBlock = await tryQueryBlockNumberAtTimestamp(
-        EnvConfig.blockchains[options.config.chain].blockSubgraph,
+      const endBlock = await this.services.blockchain.tryGetBlockNumberAtTimestamp(
+        options.config.chain,
         options.timestamp,
       );
 
@@ -131,12 +131,12 @@ export default class Uniswapv2Adapter extends ProtocolAdapter {
 
     if (dexConfig.subgraph) {
       const metaBlock = await tryQueryBlockMeta(EnvConfig.blockchains[options.config.chain].blockSubgraph);
-      const beginBlock = await tryQueryBlockNumberAtTimestamp(
-        EnvConfig.blockchains[options.config.chain].blockSubgraph,
+      const beginBlock = await this.services.blockchain.tryGetBlockNumberAtTimestamp(
+        options.config.chain,
         options.fromTime,
       );
-      const endBlock = await tryQueryBlockNumberAtTimestamp(
-        EnvConfig.blockchains[options.config.chain].blockSubgraph,
+      const endBlock = await this.services.blockchain.tryGetBlockNumberAtTimestamp(
+        options.config.chain,
         options.toTime,
       );
 

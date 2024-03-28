@@ -37,6 +37,9 @@ export interface Blockchain {
   // some time we need to get multiple block timestamp
   // subgraph helps us query them in a single API call
   blockSubgraph: string;
+
+  // explorer api endpoint
+  explorerApiEndpoint?: string;
 }
 
 export interface DatabaseCollectionConfig {

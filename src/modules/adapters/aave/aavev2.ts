@@ -5,9 +5,7 @@ import AaveDataProviderV2Abi from '../../../configs/abi/aave/DataProviderV2.json
 import AaveIncentiveControllerV2Abi from '../../../configs/abi/aave/IncentiveControllerV2.json';
 import AaveLendingPoolV2Abi from '../../../configs/abi/aave/LendingPoolV2.json';
 import { SolidityUnits, TimeUnits } from '../../../configs/constants';
-import EnvConfig from '../../../configs/envConfig';
 import { AaveLendingMarketConfig } from '../../../configs/protocols/aave';
-import { tryQueryBlockNumberAtTimestamp } from '../../../lib/subsgraph';
 import { compareAddress, formatBigNumberToString, normalizeAddress } from '../../../lib/utils';
 import { ActivityAction, ActivityActions, TokenValueItem } from '../../../types/collectors/base';
 import { CrossLendingReserveDataState, CrossLendingReserveDataTimeframe } from '../../../types/collectors/crossLending';
@@ -178,8 +176,8 @@ export default class Aavev2Adapter extends ProtocolAdapter {
   public async getDataState(options: GetAdapterDataStateOptions): Promise<Array<CrossLendingReserveDataState> | null> {
     const result: Array<CrossLendingReserveDataState> = [];
 
-    const blockNumber = await tryQueryBlockNumberAtTimestamp(
-      EnvConfig.blockchains[options.config.chain].blockSubgraph,
+    const blockNumber = await this.services.blockchain.tryGetBlockNumberAtTimestamp(
+      options.config.chain,
       options.timestamp,
     );
 
@@ -327,14 +325,11 @@ export default class Aavev2Adapter extends ProtocolAdapter {
 
     const result: Array<CrossLendingReserveDataTimeframe> = [];
 
-    const beginBlock = await tryQueryBlockNumberAtTimestamp(
-      EnvConfig.blockchains[options.config.chain].blockSubgraph,
+    const beginBlock = await this.services.blockchain.tryGetBlockNumberAtTimestamp(
+      options.config.chain,
       options.fromTime,
     );
-    const endBlock = await tryQueryBlockNumberAtTimestamp(
-      EnvConfig.blockchains[options.config.chain].blockSubgraph,
-      options.toTime,
-    );
+    const endBlock = await this.services.blockchain.tryGetBlockNumberAtTimestamp(options.config.chain, options.toTime);
 
     const logs = await this.getEventLogs(options.config, beginBlock, endBlock);
 

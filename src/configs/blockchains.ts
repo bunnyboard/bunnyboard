@@ -117,7 +117,8 @@ export const BlockchainConfigs: { [key: string]: Blockchain } = {
     family: 'evm',
     chainId: 1088,
     nodeRpc: String(process.env.BUNNYBOARD_METIS_NODE),
-    blockSubgraph: SubgraphEndpoints.blocks.metis,
+    blockSubgraph: '', // don't use or not available
+    explorerApiEndpoint: 'https://api.routescan.io/v2/network/mainnet/evm/1088/etherscan/api',
     nativeToken: {
       chain: 'metis',
       address: AddressZero,

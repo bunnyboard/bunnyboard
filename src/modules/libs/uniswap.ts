@@ -5,7 +5,7 @@ import BigNumber from 'bignumber.js';
 
 import ERC20Abi from '../../configs/abi/ERC20.json';
 import UniswapV3PoolAbi from '../../configs/abi/uniswap/UniswapV3Pool.json';
-import { tryQueryBlockMeta } from '../../lib/subsgraph';
+import { tryQueryBlockMeta } from '../../lib/subgraph';
 import { normalizeAddress, sleep } from '../../lib/utils';
 import BlockchainService from '../../services/blockchains/blockchain';
 import {

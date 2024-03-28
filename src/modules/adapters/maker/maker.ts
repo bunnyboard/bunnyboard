@@ -8,9 +8,7 @@ import JugAbi from '../../../configs/abi/maker/Jug.json';
 import SpotAbi from '../../../configs/abi/maker/Spot.json';
 import VatAbi from '../../../configs/abi/maker/Vat.json';
 import { SolidityUnits, TimeUnits } from '../../../configs/constants';
-import EnvConfig from '../../../configs/envConfig';
 import { MakerLendingMarketConfig } from '../../../configs/protocols/maker';
-import { tryQueryBlockNumberAtTimestamp } from '../../../lib/subsgraph';
 import { compareAddress, formatBigNumberToString, normalizeAddress } from '../../../lib/utils';
 import { ActivityActions } from '../../../types/collectors/base';
 import {
@@ -48,8 +46,8 @@ export default class MakerAdapter extends ProtocolAdapter {
   public async getDataState(options: GetAdapterDataStateOptions): Promise<Array<CdpLendingAssetDataState> | null> {
     const result: Array<CdpLendingAssetDataState> = [];
 
-    const blockNumber = await tryQueryBlockNumberAtTimestamp(
-      EnvConfig.blockchains[options.config.chain].blockSubgraph,
+    const blockNumber = await this.services.blockchain.tryGetBlockNumberAtTimestamp(
+      options.config.chain,
       options.timestamp,
     );
 
@@ -320,14 +318,11 @@ export default class MakerAdapter extends ProtocolAdapter {
     const result: Array<CdpLendingAssetDataTimeframe> = [];
 
     // make sure activities were synced
-    const beginBlock = await tryQueryBlockNumberAtTimestamp(
-      EnvConfig.blockchains[options.config.chain].blockSubgraph,
+    const beginBlock = await this.services.blockchain.tryGetBlockNumberAtTimestamp(
+      options.config.chain,
       options.fromTime,
     );
-    const endBlock = await tryQueryBlockNumberAtTimestamp(
-      EnvConfig.blockchains[options.config.chain].blockSubgraph,
-      options.toTime,
-    );
+    const endBlock = await this.services.blockchain.tryGetBlockNumberAtTimestamp(options.config.chain, options.toTime);
 
     const logs = await this.getEventLogs(options.config, beginBlock, endBlock);
 
