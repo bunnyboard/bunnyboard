@@ -21,6 +21,8 @@ test('should get data liquidity token from subgraph correctly: uniswapv2 - DAI -
     expect(tokenData.protocol).equal('uniswapv2');
     expect(tokenData.tokenPrice).equal('0.99966786171174172036');
     expect(tokenData.totalLiquidity).equal('76791804.074180520621259701');
+    expect(tokenData.feesTrading).equal('23596.34008159013667732626');
+    expect(tokenData.feesTradingCumulative).equal('63948435.32931789797739757172');
     expect(tokenData.volumeTrading).equal('7865446.693863378892442087');
     expect(tokenData.volumeTradingCumulative).equal('21316145109.772632659132523907');
     expect(tokenData.numberOfTransactions).equal(694);
@@ -42,6 +44,7 @@ test('should get data liquidity token from subgraph correctly: uniswapv3 - DAI -
     expect(tokenData.tokenPrice).equal('1');
     expect(tokenData.totalLiquidity).equal('111852484.708043171702511368');
     expect(tokenData.feesTrading).equal('76014.34064550035435957778');
+    expect(tokenData.feesTradingCumulative).equal('69757604.78866343384124828318');
     expect(tokenData.volumeTrading).equal('69750115.345387046830603655');
     expect(tokenData.volumeTradingCumulative).equal('79859685992.747087351234184508');
     expect(tokenData.numberOfTransactions).equal(1749);
@@ -125,7 +128,8 @@ test('should get data liquidity pool from subgraph correctly: uniswapv2 - UNI - 
     expect(poolData.tokenBalances[1]).equal('979.963077147435008203');
     expect(poolData.totalLiquidityUsd).equal('6523573.41637701767915957177');
     expect(poolData.feesTradingUsd).equal('266.30123231554726327876');
-    expect(poolData.volumeTradingUsd).equal('88767.0774385157544262538');
+    expect(poolData.feesTradingUsd).equal('266.30123231554726327876');
+    expect(poolData.feesTradingCumulativeUsd).equal('24277311.43694794530859604812');
     expect(poolData.volumeTradingCumulativeUsd).equal('8092437145.64931510286534937486');
     expect(poolData.numberOfTransactions).equal(48);
     expect(poolData.numberOfTransactionsCumulative).equal(754919);

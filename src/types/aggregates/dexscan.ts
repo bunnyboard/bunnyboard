@@ -18,6 +18,9 @@ export interface AggDexLiquidityTokenSnapshot extends Token {
   // fees collected from trading
   feesTrading: number;
 
+  // all time fees were collected
+  feesTradingCumulative: number;
+
   // total token amount was traded
   // collected in the period from timefrom to timeto timestamps
   volumeTrading: number;
@@ -46,6 +49,7 @@ export interface AggDexLiquidityPoolSnapshot {
   tokenBalances: Array<number>;
   totalLiquidityUsd: number;
   feesTradingUsd: number;
+  feesTradingCumulativeUsd: number;
   volumeTradingUsd: number;
   volumeTradingCumulativeUsd: number;
   numberOfTransactions: number;

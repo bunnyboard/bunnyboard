@@ -18,6 +18,9 @@ export interface DexLiquidityTokenSnapshot extends Token {
   // fees collected from trading
   feesTrading: string;
 
+  // all time fees were collected
+  feesTradingCumulative: string;
+
   // total token amount was traded
   // collected in the period from timefrom to timeto timestamps
   volumeTrading: string;
@@ -48,6 +51,7 @@ export interface DexLiquidityPoolSnapshot extends DexLiquidityPoolMetadata {
   tokenBalances: Array<string>;
   totalLiquidityUsd: string;
   feesTradingUsd: string;
+  feesTradingCumulativeUsd: string;
   volumeTradingUsd: string;
   volumeTradingCumulativeUsd: string;
   numberOfTransactions: number;

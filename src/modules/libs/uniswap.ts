@@ -235,8 +235,17 @@ export default class UniswapLibs {
           const numberOfTransactionsCumulative = Number(dataTo[filters.tokens.txCount]);
 
           let feesTrading = '0';
+          let feesTradingCumulative = '0';
           if (options.dexConfig.version === DexVersions.univ2) {
             feesTrading = new BigNumber(volumeTrading)
+              .multipliedBy(
+                new BigNumber(
+                  options.dexConfig.subgraph.fixedFeePercentage ? options.dexConfig.subgraph.fixedFeePercentage : 0.3,
+                ),
+              )
+              .dividedBy(100)
+              .toString(10);
+            feesTradingCumulative = new BigNumber(volumeTradingCumulative)
               .multipliedBy(
                 new BigNumber(
                   options.dexConfig.subgraph.fixedFeePercentage ? options.dexConfig.subgraph.fixedFeePercentage : 0.3,
@@ -249,7 +258,10 @@ export default class UniswapLibs {
               const feesUsdFrom = new BigNumber(dataFrom[filters.tokens.fees.toString()].toString());
               const feesUsdTo = new BigNumber(dataTo[filters.tokens.fees].toString());
               const feesUsd = feesUsdTo.minus(feesUsdFrom);
+
               feesTrading = tokenPrice === '0' ? '0' : feesUsd.dividedBy(new BigNumber(tokenPrice)).toString(10);
+              feesTradingCumulative =
+                tokenPrice === '0' ? '0' : feesUsdTo.dividedBy(new BigNumber(tokenPrice)).toString(10);
             }
           }
 
@@ -261,6 +273,7 @@ export default class UniswapLibs {
             tokenPrice: tokenPrice,
             totalLiquidity: totalLiquidity,
             feesTrading: feesTrading,
+            feesTradingCumulative: feesTradingCumulative,
             volumeTrading: volumeTrading,
             volumeTradingCumulative: volumeTradingCumulative,
             numberOfTransactions: numberOfTransactions,
@@ -475,9 +488,18 @@ export default class UniswapLibs {
           const reserve1 = new BigNumber(dataTo[filters.pools.reserve1].toString());
 
           let feesTrading = '0';
+          let feesTradingCumulative = '0';
           if (options.dexConfig.version === DexVersions.univ2) {
             feesTrading = volumeTo
               .minus(volumeFrom)
+              .multipliedBy(
+                new BigNumber(
+                  options.dexConfig.subgraph.fixedFeePercentage ? options.dexConfig.subgraph.fixedFeePercentage : 0.3,
+                ),
+              )
+              .dividedBy(100)
+              .toString(10);
+            feesTradingCumulative = volumeTo
               .multipliedBy(
                 new BigNumber(
                   options.dexConfig.subgraph.fixedFeePercentage ? options.dexConfig.subgraph.fixedFeePercentage : 0.3,
@@ -490,6 +512,7 @@ export default class UniswapLibs {
               const feesUsdFrom = new BigNumber(dataFrom[filters.pools.fees.toString()].toString());
               const feesUsdTo = new BigNumber(dataTo[filters.pools.fees].toString());
               feesTrading = feesUsdTo.minus(feesUsdFrom).toString(10);
+              feesTradingCumulative = feesUsdTo.toString(10);
             }
           }
 
@@ -500,6 +523,7 @@ export default class UniswapLibs {
             tokenBalances: [reserve0.toString(10), reserve1.toString(10)],
             totalLiquidityUsd: liquidity.toString(10),
             feesTradingUsd: feesTrading,
+            feesTradingCumulativeUsd: feesTradingCumulative,
             volumeTradingUsd: volumeTo.minus(volumeFrom).toString(10),
             volumeTradingCumulativeUsd: volumeTo.toString(10),
             numberOfTransactions: txCountTo - txCountFrom,
