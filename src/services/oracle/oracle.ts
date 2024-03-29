@@ -6,7 +6,6 @@ import { OracleCurrencyBaseConfigs } from '../../configs/oracles/currency';
 import logger from '../../lib/logger';
 import { normalizeAddress } from '../../lib/utils';
 import ChainlinkLibs from '../../modules/libs/chainlink';
-import CoingeckoLibs from '../../modules/libs/coingecko';
 import OracleLibs from '../../modules/libs/custom';
 import UniswapLibs from '../../modules/libs/uniswap';
 import {
@@ -122,7 +121,7 @@ export default class OracleService extends CachingService implements IOracleServ
       const cachingKey = `${options.chain}:${options.address}:${options.timestamp}`;
       const cachingPriceUsd = await this.getCachingData(cachingKey);
       if (cachingPriceUsd) {
-        returnPrice = cachingPriceUsd;
+        return cachingPriceUsd;
       }
 
       for (const source of config.sources) {
@@ -147,14 +146,14 @@ export default class OracleService extends CachingService implements IOracleServ
         }
       }
 
-      if (!returnPrice && config.coingeckoId) {
-        const priceUsd = await CoingeckoLibs.getTokenPriceUsd(config.coingeckoId, options.timestamp);
-        if (priceUsd) {
-          await this.setCachingData(cachingKey, priceUsd);
-
-          returnPrice = priceUsd;
-        }
-      }
+      // if (!returnPrice && config.coingeckoId) {
+      //   const priceUsd = await CoingeckoLibs.getTokenPriceUsd(config.coingeckoId, options.timestamp);
+      //   if (priceUsd) {
+      //     await this.setCachingData(cachingKey, priceUsd);
+      //
+      //     returnPrice = priceUsd;
+      //   }
+      // }
 
       if ((returnPrice === null || returnPrice === '0') && OracleConfigs[options.chain][options.address].stablecoin) {
         return '1';

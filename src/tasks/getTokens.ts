@@ -50,7 +50,7 @@ function loadExistedTokens(chain: string) {
         if (lendingConfig.version === 'aavev2' || lendingConfig.version === 'aavev3') {
           const marketInfo = await AaveLibs.getMarketInfo(lendingConfig as AaveLendingMarketConfig);
           if (marketInfo) {
-            tokens = marketInfo.reserves.concat(marketInfo.rewardTokens);
+            tokens = marketInfo.reserves;
           }
         } else if (lendingConfig.version === 'compound') {
           const cTokens = await CompoundLibs.getComptrollerInfo(lendingConfig as CompoundLendingMarketConfig);

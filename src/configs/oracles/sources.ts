@@ -191,8 +191,8 @@ export const OracleSourceConfigs: { [key: string]: OracleConfig } = {
     sources: [OracleSourceUniswapv2List['1INCH_WETH']],
   },
   LUSD: {
-    currency: 'usd',
-    sources: [OracleSourceUniswapv3List.LUSD_USDC],
+    currency: 'eth',
+    sources: [OracleSourceUniswapv2List.LUSD_WETH],
     coingeckoId: 'liquity-usd',
   },
   SUSHI: {

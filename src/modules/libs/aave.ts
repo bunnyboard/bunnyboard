@@ -1,5 +1,3 @@
-import AaveIncentiveControllerAbiV2 from '../../configs/abi/aave/IncentiveControllerV2.json';
-import AaveIncentiveControllerAbiV3 from '../../configs/abi/aave/IncentiveControllerV3.json';
 import AaveLendingPoolAbiV2 from '../../configs/abi/aave/LendingPoolV2.json';
 import AaveLendingPoolAbiV3 from '../../configs/abi/aave/LendingPoolV3.json';
 import { AaveLendingMarketConfig } from '../../configs/protocols/aave';
@@ -14,9 +12,6 @@ export interface AaveMarketInfo {
 
   // a list of reserves tokens
   reserves: Array<Token>;
-
-  // a list of incentive tokens
-  rewardTokens: Array<Token>;
 }
 
 export default class AaveLibs {
@@ -59,6 +54,9 @@ export default class AaveLibs {
       method: 'getReservesList',
       params: [],
     });
+
+    console.log(aaveLendingMarketConfig, reserveList);
+
     for (const reserve of reserveList) {
       const token = await blockchain.getTokenInfo({
         chain: aaveLendingMarketConfig.chain,
@@ -70,52 +68,12 @@ export default class AaveLibs {
       }
     }
 
-    const rewardTokens: Array<Token> = [];
-    if (aaveLendingMarketConfig.version === LendingMarketVersions.cross.aavev2) {
-      const rewardTokenAddress = await blockchain.readContract({
-        chain: aaveLendingMarketConfig.chain,
-        abi: AaveIncentiveControllerAbiV2,
-        target: aaveLendingMarketConfig.incentiveController,
-        method: 'REWARD_TOKEN',
-        params: [],
-      });
-      if (rewardTokenAddress) {
-        const token = await blockchain.getTokenInfo({
-          chain: aaveLendingMarketConfig.chain,
-          address: rewardTokenAddress,
-        });
-        if (token) {
-          rewardTokens.push(token);
-        }
-      }
-    } else if (aaveLendingMarketConfig.version === LendingMarketVersions.cross.aavev3) {
-      const rewardsList = await blockchain.readContract({
-        chain: aaveLendingMarketConfig.chain,
-        abi: AaveIncentiveControllerAbiV3,
-        target: aaveLendingMarketConfig.incentiveController,
-        method: 'getRewardsList',
-        params: [],
-      });
-      if (rewardsList) {
-        for (const rewardTokenAddress of rewardsList) {
-          const rewardToken = await blockchain.getTokenInfo({
-            chain: aaveLendingMarketConfig.chain,
-            address: rewardTokenAddress,
-          });
-          if (rewardToken) {
-            rewardTokens.push(rewardToken);
-          }
-        }
-      }
-    }
-
     return {
       chain: aaveLendingMarketConfig.chain,
       lendingPool: aaveLendingMarketConfig.address,
       dataProvider: aaveLendingMarketConfig.dataProvider,
       incentiveController: aaveLendingMarketConfig.incentiveController,
       reserves: reserves,
-      rewardTokens: rewardTokens,
     };
   }
 }

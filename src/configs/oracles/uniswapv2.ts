@@ -341,4 +341,11 @@ export const OracleSourceUniswapv2List: { [key: string]: OracleSourceUniv2 } = {
     baseToken: TokensBook.ethereum['0x6810e776880c02933d47db1b9fc05908e5386b96'],
     quotaToken: TokensBook.ethereum['0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'],
   },
+  LUSD_WETH: {
+    type: 'univ2',
+    chain: 'ethereum',
+    address: '0xF20EF17b889b437C151eB5bA15A47bFc62bfF469',
+    baseToken: TokensBook.ethereum['0x5f98805a4e8be255a32880fdec7f6728c6568ba0'],
+    quotaToken: TokensBook.ethereum['0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'],
+  },
 };
