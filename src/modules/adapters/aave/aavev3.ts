@@ -3,19 +3,18 @@ import BigNumber from 'bignumber.js';
 import AaveDataProviderV3Abi from '../../../configs/abi/aave/DataProviderV3.json';
 import AaveIncentiveControllerV3Abi from '../../../configs/abi/aave/IncentiveControllerV3.json';
 import AaveLendingPoolV3Abi from '../../../configs/abi/aave/LendingPoolV3.json';
-import { SolidityUnits, TimeUnits } from '../../../configs/constants';
-import { AaveLendingMarketConfig } from '../../../configs/protocols/aave';
+import { SolidityUnits } from '../../../configs/constants';
 import { formatBigNumberToString } from '../../../lib/utils';
-import { TokenValueItem } from '../../../types/collectors/base';
-import { ContextServices } from '../../../types/namespaces';
+import { ProtocolConfig } from '../../../types/configs';
+import { ContextServices, ContextStorages } from '../../../types/namespaces';
 import Aavev2Adapter, { AaveMarketRates } from './aavev2';
 import { Aavev3EventSignatures } from './abis';
 
 export default class Aavev3Adapter extends Aavev2Adapter {
   public readonly name: string = 'adapter.aavev3';
 
-  constructor(services: ContextServices) {
-    super(services);
+  constructor(services: ContextServices, storages: ContextStorages, protocolConfig: ProtocolConfig) {
+    super(services, storages, protocolConfig);
 
     this.abiConfigs.eventSignatures = Aavev3EventSignatures;
     this.abiConfigs.eventAbis = {
@@ -47,113 +46,5 @@ export default class Aavev3Adapter extends Aavev2Adapter {
       borrow: formatBigNumberToString(reserveData[6].toString(), SolidityUnits.RayDecimals),
       borrowStable: formatBigNumberToString(reserveData[7].toString(), SolidityUnits.RayDecimals),
     };
-  }
-
-  protected async getIncentiveRewards(
-    config: AaveLendingMarketConfig,
-    reserve: string,
-    blockNumber: number,
-  ): Promise<{
-    forSupply: Array<TokenValueItem>;
-    forBorrow: Array<TokenValueItem>;
-    forBorrowStable: Array<TokenValueItem>;
-  } | null> {
-    const rewards: any = {
-      forSupply: [],
-      forBorrow: [],
-      forBorrowStable: [],
-    };
-
-    // get reward token list
-    const rewardsList = await this.services.blockchain.readContract({
-      chain: config.chain,
-      abi: this.abiConfigs.eventAbis.incentiveController,
-      target: config.incentiveController,
-      method: 'getRewardsList',
-      params: [],
-      blockNumber: blockNumber,
-    });
-    if (!rewardsList || rewardsList.length === 0) {
-      return null;
-    }
-
-    let rewardForSupply = new BigNumber(0);
-    let rewardForBorrow = new BigNumber(0);
-    let rewardForBorrowStable = new BigNumber(0);
-
-    for (const rewardTokenAddress of rewardsList) {
-      const rewardToken = await this.services.blockchain.getTokenInfo({
-        chain: config.chain,
-        address: rewardTokenAddress,
-      });
-      if (rewardToken) {
-        const reserveTokensAddresses = await this.services.blockchain.readContract({
-          chain: config.chain,
-          target: config.dataProvider,
-          abi: AaveDataProviderV3Abi,
-          method: 'getReserveTokensAddresses',
-          params: [reserve],
-        });
-        if (reserveTokensAddresses) {
-          const aTokenAssetInfo = await this.services.blockchain.readContract({
-            chain: config.chain,
-            abi: AaveIncentiveControllerV3Abi,
-            target: config.incentiveController,
-            method: 'getRewardsData',
-            params: [reserveTokensAddresses[0], rewardTokenAddress],
-            blockNumber: blockNumber,
-          });
-          const stableDebtAssetInfo = await this.services.blockchain.readContract({
-            chain: config.chain,
-            abi: AaveIncentiveControllerV3Abi,
-            target: config.incentiveController,
-            method: 'getRewardsData',
-            params: [reserveTokensAddresses[1]],
-            blockNumber: blockNumber,
-          });
-          const variableDebtAssetInfo = await this.services.blockchain.readContract({
-            chain: config.chain,
-            abi: AaveIncentiveControllerV3Abi,
-            target: config.incentiveController,
-            method: 'getRewardsData',
-            params: [reserveTokensAddresses[2]],
-            blockNumber: blockNumber,
-          });
-
-          if (aTokenAssetInfo) {
-            rewardForSupply = rewardForSupply
-              .plus(new BigNumber(aTokenAssetInfo[0].toString()))
-              .multipliedBy(TimeUnits.SecondsPerYear);
-          }
-          if (variableDebtAssetInfo) {
-            rewardForBorrow = rewardForBorrow
-              .plus(new BigNumber(variableDebtAssetInfo[0].toString()))
-              .multipliedBy(TimeUnits.SecondsPerYear);
-          }
-          if (stableDebtAssetInfo) {
-            rewardForBorrowStable = rewardForBorrowStable
-              .plus(new BigNumber(stableDebtAssetInfo[0].toString()))
-              .multipliedBy(TimeUnits.SecondsPerYear);
-          }
-
-          rewards.forSupply.push({
-            token: rewardToken,
-            amount: formatBigNumberToString(rewardForSupply.toString(10), rewardToken.decimals),
-          } as TokenValueItem);
-
-          rewards.forBorrow.push({
-            token: rewardToken,
-            amount: formatBigNumberToString(rewardForBorrow.toString(10), rewardToken.decimals),
-          } as TokenValueItem);
-
-          rewards.forBorrowStable.push({
-            token: rewardToken,
-            amount: formatBigNumberToString(rewardForBorrowStable.toString(10), rewardToken.decimals),
-          } as TokenValueItem);
-        }
-      }
-    }
-
-    return rewards;
   }
 }

@@ -57,8 +57,8 @@ export interface DatabaseCollectionConfig {
   dexLiquidityTokenSnapshots: MongoCollectionConfig;
   dexLiquidityPoolSnapshots: MongoCollectionConfig;
 
-  tokenBoardErc20States: MongoCollectionConfig;
-  tokenBoardErc20Snapshots: MongoCollectionConfig;
+  tokenBoardStates: MongoCollectionConfig;
+  tokenBoardSnapshots: MongoCollectionConfig;
 
   dexDataStates: MongoCollectionConfig;
   dexDataSnapshots: MongoCollectionConfig;
@@ -83,7 +83,7 @@ export const DataMetrics = {
   cdpLending: 'cdpLending',
   staking: 'staking',
   perpetual: 'perpetual',
-  tokenBoardErc20: 'tokenBoardErc20',
+  tokenBoard: 'tokenBoard',
 };
 const Metrics = Object.values(DataMetrics);
 export type DataMetric = (typeof Metrics)[number];
@@ -175,7 +175,7 @@ export interface DexConfig extends MetricConfig {
   subgraph?: DexSubgraph;
 }
 
-export interface TokenBoardErc20Config extends MetricConfig, Token {
+export interface TokenBoardConfig extends MetricConfig, Token {
   stablecoin: boolean;
 }
 

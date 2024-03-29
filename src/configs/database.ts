@@ -69,8 +69,8 @@ export const DatabaseCollectionConfigs: DatabaseCollectionConfig = {
       },
     ],
   },
-  tokenBoardErc20States: {
-    name: `${MongodbPrefix}.tokenBoardErc20States`,
+  tokenBoardStates: {
+    name: `${MongodbPrefix}.tokenBoardStates`,
     indies: [
       // write new documents
       {
@@ -79,8 +79,8 @@ export const DatabaseCollectionConfigs: DatabaseCollectionConfig = {
       },
     ],
   },
-  tokenBoardErc20Snapshots: {
-    name: `${MongodbPrefix}.tokenBoardErc20Snapshots`,
+  tokenBoardSnapshots: {
+    name: `${MongodbPrefix}.tokenBoardSnapshots`,
     indies: [
       {
         chain: 1,

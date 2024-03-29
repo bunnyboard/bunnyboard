@@ -1,10 +1,15 @@
 import { expect, test } from 'vitest';
 
-import { ProtocolConfigs } from '../../../configs';
+import { DefaultMemcacheTime, ProtocolConfigs } from '../../../configs';
+import { LiquityConfigs } from '../../../configs/protocols/liquity';
 import BlockchainService from '../../../services/blockchains/blockchain';
+import { MemcacheService } from '../../../services/caching/memcache';
+import DatabaseService from '../../../services/database/database';
 import OracleService from '../../../services/oracle/oracle';
 import LiquityAdapter from './liquity';
 
+const database = new DatabaseService();
+const memcache = new MemcacheService(DefaultMemcacheTime);
 const oracle = new OracleService();
 const blockchain = new BlockchainService();
 
@@ -13,29 +18,33 @@ const timestamp = 1704240000; // Wed Jan 03 2024 00:00:00 GMT+0000
 const startDayTimestamp = 1708041600; // Fri Feb 16 2024 00:00:00 GMT+0000
 const endDayTimestamp = 1708128000; // Sat Feb 17 2024 00:00:00 GMT+0000
 
-const liquityAdapter = new LiquityAdapter({
-  blockchain: blockchain,
-  oracle: oracle,
-});
+const liquityAdapter = new LiquityAdapter(
+  {
+    blockchain: blockchain,
+    oracle: oracle,
+  },
+  {
+    database: database,
+    memcache: memcache,
+  },
+  LiquityConfigs,
+);
 const configEthereum = ProtocolConfigs.liquity.configs.filter((item) => item.chain === 'ethereum')[0];
 
 test('should get state data correctly - liquity chain ethereum', async function () {
-  const dataState = await liquityAdapter.getDataState({
+  const dataState = await liquityAdapter.getLendingAssetDataState({
     config: configEthereum,
     timestamp: timestamp,
   });
 
-  expect(dataState).not.equal(undefined);
+  expect(dataState).not.equal(null);
 
   if (dataState) {
-    expect(dataState.length).equal(1);
+    expect(dataState.tokenPrice).equal('0.99439893273');
+    expect(dataState.totalBorrowed).equal('174892809.938681132585837145');
+    expect(dataState.collaterals.length).equal(1);
 
-    const lusdAsset = dataState[0];
-    expect(lusdAsset.tokenPrice).equal('0.99439893273');
-    expect(lusdAsset.totalBorrowed).equal('174892809.938681132585837145');
-    expect(lusdAsset.collaterals.length).equal(1);
-
-    const ethCollateral = dataState[0].collaterals[0];
+    const ethCollateral = dataState.collaterals[0];
     expect(ethCollateral.tokenPrice).equal('2358.45');
     expect(ethCollateral.totalDeposited).equal('316094.699304118193290095');
     expect(ethCollateral.rateBorrow).equal('0');
@@ -45,23 +54,20 @@ test('should get state data correctly - liquity chain ethereum', async function 
 });
 
 test('should get timeframe data correctly - liquity chain ethereum', async function () {
-  const dataTimeframe = await liquityAdapter.getDataTimeframe({
+  const dataTimeframe = await liquityAdapter.getLendingAssetDataTimeframe({
     config: configEthereum,
     fromTime: startDayTimestamp,
     toTime: endDayTimestamp,
   });
 
-  expect(dataTimeframe).not.equal(undefined);
+  expect(dataTimeframe).not.equal(null);
   if (dataTimeframe) {
-    expect(dataTimeframe[0]).not.equal(undefined);
+    expect(dataTimeframe.tokenPrice).equal('0.99686470095');
+    expect(dataTimeframe.totalBorrowed).equal('153195539.082185262742860794');
+    expect(dataTimeframe.volumeBorrowed).equal('296948.444550847122605949');
+    expect(dataTimeframe.volumeRepaid).equal('166675.316445822536652491');
 
-    const lusdAsset = dataTimeframe[0];
-    expect(lusdAsset.tokenPrice).equal('0.99686470095');
-    expect(lusdAsset.totalBorrowed).equal('153195539.082185262742860794');
-    expect(lusdAsset.volumeBorrowed).equal('296948.444550847122605949');
-    expect(lusdAsset.volumeRepaid).equal('166675.316445822536652491');
-
-    const ethCollateral = lusdAsset.collaterals[0];
+    const ethCollateral = dataTimeframe.collaterals[0];
     expect(ethCollateral).not.equal(undefined);
     expect(ethCollateral.tokenPrice).equal('2823.43011038');
     expect(ethCollateral.totalDeposited).equal('263802.267428494003463684');

@@ -4,10 +4,10 @@ import { decodeEventLog } from 'viem';
 import AaveDataProviderV2Abi from '../../../configs/abi/aave/DataProviderV2.json';
 import AaveIncentiveControllerV2Abi from '../../../configs/abi/aave/IncentiveControllerV2.json';
 import AaveLendingPoolV2Abi from '../../../configs/abi/aave/LendingPoolV2.json';
-import { SolidityUnits, TimeUnits } from '../../../configs/constants';
+import { SolidityUnits } from '../../../configs/constants';
 import { AaveLendingMarketConfig } from '../../../configs/protocols/aave';
 import { compareAddress, formatBigNumberToString, normalizeAddress } from '../../../lib/utils';
-import { ActivityAction, ActivityActions, TokenValueItem } from '../../../types/collectors/base';
+import { ActivityAction, ActivityActions } from '../../../types/collectors/base';
 import { CrossLendingReserveDataState, CrossLendingReserveDataTimeframe } from '../../../types/collectors/crossLending';
 import {
   GetAdapterDataStateOptions,
@@ -15,9 +15,10 @@ import {
   TransformEventLogOptions,
   TransformEventLogResult,
 } from '../../../types/collectors/options';
-import { DataMetrics, MetricConfig } from '../../../types/configs';
-import { ContextServices } from '../../../types/namespaces';
-import ProtocolAdapter from '../adapter';
+import { DataMetrics, ProtocolConfig } from '../../../types/configs';
+import { ContextServices, ContextStorages } from '../../../types/namespaces';
+import { AdapterGetEventLogsOptions } from '../adapter';
+import CrossLendingProtocolAdapter from '../crossLending';
 import { countCrossLendingDataFromActivities } from '../helpers';
 import { AaveEventInterfaces, Aavev2EventSignatures } from './abis';
 
@@ -27,11 +28,11 @@ export interface AaveMarketRates {
   borrowStable: string;
 }
 
-export default class Aavev2Adapter extends ProtocolAdapter {
+export default class Aavev2Adapter extends CrossLendingProtocolAdapter {
   public readonly name: string = 'adapter.aavev2';
 
-  constructor(services: ContextServices) {
-    super(services);
+  constructor(services: ContextServices, storages: ContextStorages, protocolConfig: ProtocolConfig) {
+    super(services, storages, protocolConfig);
 
     this.abiConfigs.eventSignatures = Aavev2EventSignatures;
     this.abiConfigs.eventAbis = {
@@ -41,16 +42,17 @@ export default class Aavev2Adapter extends ProtocolAdapter {
     };
   }
 
-  public async getEventLogs(config: MetricConfig, fromBlock: number, toBlock: number): Promise<Array<any>> {
+  protected async getEventLogs(options: AdapterGetEventLogsOptions): Promise<Array<any>> {
+    // aave need logs from Lending Pool contract only
     return await this.services.blockchain.getContractLogs({
-      chain: config.chain,
-      address: config.address,
-      fromBlock: fromBlock,
-      toBlock: toBlock,
+      chain: options.metricConfig.chain,
+      address: options.metricConfig.address,
+      fromBlock: options.fromBlock,
+      toBlock: options.toBlock,
     });
   }
 
-  public async transformEventLogs(options: TransformEventLogOptions): Promise<TransformEventLogResult> {
+  protected async transformEventLogs(options: TransformEventLogOptions): Promise<TransformEventLogResult> {
     const result: TransformEventLogResult = {
       activities: [],
     };
@@ -173,7 +175,9 @@ export default class Aavev2Adapter extends ProtocolAdapter {
     return result;
   }
 
-  public async getDataState(options: GetAdapterDataStateOptions): Promise<Array<CrossLendingReserveDataState> | null> {
+  public async getLendingReservesDataState(
+    options: GetAdapterDataStateOptions,
+  ): Promise<Array<CrossLendingReserveDataState> | null> {
     const result: Array<CrossLendingReserveDataState> = [];
 
     const blockNumber =
@@ -207,80 +211,6 @@ export default class Aavev2Adapter extends ProtocolAdapter {
       const totalDeposited = this.getTotalDeposited(reserveData);
       const rates = this.getMarketRates(reserveData);
 
-      let rewardRateForSupply = '0';
-      let rewardRateForBorrow = '0';
-      let rewardRateForBorrowStable = '0';
-
-      const incentiveRewards = await this.getIncentiveRewards(marketConfig, reserve, blockNumber);
-      if (incentiveRewards) {
-        let totalRewardUsdPerYearForSupply = new BigNumber(0);
-        let totalRewardUsdPerYearForBorrow = new BigNumber(0);
-        let totalRewardUsdPerYearForBorrowStable = new BigNumber(0);
-        for (const reward of incentiveRewards.forSupply) {
-          if (reward.amount !== '0') {
-            const rewardTokenPrice = await this.services.oracle.getTokenPriceUsd({
-              chain: marketConfig.chain,
-              address: reward.token.address,
-              timestamp: options.timestamp,
-            });
-            if (rewardTokenPrice) {
-              totalRewardUsdPerYearForSupply = totalRewardUsdPerYearForSupply.plus(
-                new BigNumber(reward.amount).multipliedBy(rewardTokenPrice),
-              );
-            }
-          }
-        }
-        for (const reward of incentiveRewards.forBorrow) {
-          if (reward.amount !== '0') {
-            const rewardTokenPrice = await this.services.oracle.getTokenPriceUsd({
-              chain: marketConfig.chain,
-              address: reward.token.address,
-              timestamp: options.timestamp,
-            });
-            if (rewardTokenPrice) {
-              totalRewardUsdPerYearForBorrow = totalRewardUsdPerYearForBorrow.plus(
-                new BigNumber(reward.amount).multipliedBy(rewardTokenPrice),
-              );
-            }
-          }
-        }
-        for (const reward of incentiveRewards.forBorrowStable) {
-          if (reward.amount !== '0') {
-            const rewardTokenPrice = await this.services.oracle.getTokenPriceUsd({
-              chain: marketConfig.chain,
-              address: reward.token.address,
-              timestamp: options.timestamp,
-            });
-            if (rewardTokenPrice) {
-              totalRewardUsdPerYearForBorrowStable = totalRewardUsdPerYearForBorrowStable.plus(
-                new BigNumber(reward.amount).multipliedBy(rewardTokenPrice),
-              );
-            }
-          }
-        }
-
-        const totalDepositedUsd = new BigNumber(formatBigNumberToString(totalDeposited, token.decimals)).multipliedBy(
-          tokenPrice ? tokenPrice : 0,
-        );
-        const totalBorrowedUsd = new BigNumber(
-          formatBigNumberToString(totalBorrowed.variable, token.decimals),
-        ).multipliedBy(tokenPrice ? tokenPrice : 0);
-        const totalBorrowedStableUsd = new BigNumber(
-          formatBigNumberToString(totalBorrowed.stable, token.decimals),
-        ).multipliedBy(tokenPrice ? tokenPrice : 0);
-        if (totalDepositedUsd.gt(0)) {
-          rewardRateForSupply = totalRewardUsdPerYearForSupply.dividedBy(totalDepositedUsd).toString(10);
-        }
-        if (totalBorrowedUsd.gt(0)) {
-          rewardRateForBorrow = totalRewardUsdPerYearForBorrow.dividedBy(totalBorrowedUsd).toString(10);
-        }
-        if (totalBorrowedStableUsd.gt(0)) {
-          rewardRateForBorrowStable = totalRewardUsdPerYearForBorrowStable
-            .dividedBy(totalBorrowedStableUsd)
-            .toString(10);
-        }
-      }
-
       const dataState: CrossLendingReserveDataState = {
         metric: DataMetrics.crossLending,
         chain: marketConfig.chain,
@@ -299,10 +229,6 @@ export default class Aavev2Adapter extends ProtocolAdapter {
         rateBorrow: rates.borrow,
         rateBorrowStable: rates.borrowStable,
         rateLoanToValue: this.getLoanToValueRate(reserveConfigData),
-
-        rateRewardSupply: rewardRateForSupply,
-        rateRewardBorrow: rewardRateForBorrow,
-        rateRewardBorrowStable: rewardRateForBorrowStable,
       };
 
       result.push(dataState);
@@ -311,10 +237,10 @@ export default class Aavev2Adapter extends ProtocolAdapter {
     return result;
   }
 
-  public async getDataTimeframe(
+  public async getLendingReservesDataTimeframe(
     options: GetAdapterDataTimeframeOptions,
   ): Promise<Array<CrossLendingReserveDataTimeframe> | null> {
-    const states = await this.getDataState({
+    const states = await this.getLendingReservesDataState({
       config: options.config,
       timestamp: options.fromTime,
     });
@@ -331,7 +257,11 @@ export default class Aavev2Adapter extends ProtocolAdapter {
     );
     const endBlock = await this.services.blockchain.tryGetBlockNumberAtTimestamp(options.config.chain, options.toTime);
 
-    const logs = await this.getEventLogs(options.config, beginBlock, endBlock);
+    const logs = await this.getEventLogs({
+      metricConfig: options.config,
+      fromBlock: beginBlock,
+      toBlock: endBlock,
+    });
 
     const { activities } = await this.transformEventLogs({
       chain: options.config.chain,
@@ -391,115 +321,6 @@ export default class Aavev2Adapter extends ProtocolAdapter {
 
   protected getLoanToValueRate(configData: any): string {
     return formatBigNumberToString(configData[1].toString(), 4);
-  }
-
-  // return amount of token rewards in one year
-  // based on current emission
-  protected async getIncentiveRewards(
-    config: AaveLendingMarketConfig,
-    reserve: string,
-    blockNumber: number,
-  ): Promise<{
-    forSupply: Array<TokenValueItem>;
-    forBorrow: Array<TokenValueItem>;
-    forBorrowStable: Array<TokenValueItem>;
-  } | null> {
-    const rewards: any = {
-      forSupply: [],
-      forBorrow: [],
-      forBorrowStable: [],
-    };
-
-    const rewardTokenAddress = await this.services.blockchain.readContract({
-      chain: config.chain,
-      abi: this.abiConfigs.eventAbis.incentiveController,
-      target: config.incentiveController,
-      method: 'REWARD_TOKEN',
-      params: [],
-      blockNumber,
-    });
-    if (!rewardTokenAddress) {
-      return null;
-    }
-
-    const rewardToken = await this.services.blockchain.getTokenInfo({
-      chain: config.chain,
-      address: rewardTokenAddress,
-    });
-    if (!rewardToken) {
-      return null;
-    }
-
-    // first, we need to get aToken address and debtTokenAddress for the given reserve
-    const reserveTokensAddresses = await this.services.blockchain.readContract({
-      chain: config.chain,
-      abi: this.abiConfigs.eventAbis.dataProvider,
-      target: config.dataProvider,
-      method: 'getReserveTokensAddresses',
-      params: [reserve],
-      blockNumber: blockNumber,
-    });
-    const aTokenAssetInfo = await this.services.blockchain.readContract({
-      chain: config.chain,
-      abi: this.abiConfigs.eventAbis.incentiveController,
-      target: config.incentiveController,
-      method: 'assets',
-      params: [reserveTokensAddresses[0]],
-      blockNumber: blockNumber,
-    });
-    const stableDebtAssetInfo = await this.services.blockchain.readContract({
-      chain: config.chain,
-      abi: this.abiConfigs.eventAbis.incentiveController,
-      target: config.incentiveController,
-      method: 'assets',
-      params: [reserveTokensAddresses[1]],
-      blockNumber: blockNumber,
-    });
-    const variableDebtAssetInfo = await this.services.blockchain.readContract({
-      chain: config.chain,
-      abi: this.abiConfigs.eventAbis.incentiveController,
-      target: config.incentiveController,
-      method: 'assets',
-      params: [reserveTokensAddresses[2]],
-      blockNumber: blockNumber,
-    });
-
-    let rewardForSupply = new BigNumber(0);
-    let rewardForBorrow = new BigNumber(0);
-    let rewardForBorrowStable = new BigNumber(0);
-
-    if (aTokenAssetInfo) {
-      rewardForSupply = rewardForSupply
-        .plus(new BigNumber(aTokenAssetInfo[0].toString()))
-        .multipliedBy(TimeUnits.SecondsPerYear);
-    }
-    if (variableDebtAssetInfo) {
-      rewardForBorrow = rewardForBorrow
-        .plus(new BigNumber(variableDebtAssetInfo[0].toString()))
-        .multipliedBy(TimeUnits.SecondsPerYear);
-    }
-    if (stableDebtAssetInfo) {
-      rewardForBorrowStable = rewardForBorrowStable
-        .plus(new BigNumber(stableDebtAssetInfo[0].toString()))
-        .multipliedBy(TimeUnits.SecondsPerYear);
-    }
-
-    rewards.forSupply.push({
-      token: rewardToken,
-      amount: formatBigNumberToString(rewardForSupply.toString(10), rewardToken.decimals),
-    } as TokenValueItem);
-
-    rewards.forBorrow.push({
-      token: rewardToken,
-      amount: formatBigNumberToString(rewardForBorrow.toString(10), rewardToken.decimals),
-    } as TokenValueItem);
-
-    rewards.forBorrowStable.push({
-      token: rewardToken,
-      amount: formatBigNumberToString(rewardForBorrowStable.toString(10), rewardToken.decimals),
-    } as TokenValueItem);
-
-    return rewards;
   }
 
   protected async getReservesList(config: AaveLendingMarketConfig, blockNumber: number): Promise<any> {

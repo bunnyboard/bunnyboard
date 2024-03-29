@@ -1,5 +1,5 @@
-import { ProtocolConfig, Token } from '../types/configs';
-import { TokenBoardErc20Configs } from './boards/tokenBoard';
+import { Token } from '../types/configs';
+import { TokenBoardConfigs } from './boards/tokenBoard';
 import { TokensBook, TokensBookBase } from './data';
 import { Aavev2Configs, Aavev3Configs } from './protocols/aave';
 import { CompoundConfigs, Compoundv3Configs } from './protocols/compound';
@@ -20,7 +20,7 @@ export const DefaultMemcacheTime = 300; // 5 minutes
 export const TokenList: { [key: string]: { [key: string]: Token } } = TokensBook;
 export const TokenListBase = TokensBookBase;
 
-export const ProtocolConfigs: { [key: string]: ProtocolConfig } = {
+export const ProtocolConfigs = {
   aavev2: Aavev2Configs,
   aavev3: Aavev3Configs,
   compound: CompoundConfigs,
@@ -39,6 +39,6 @@ export const ProtocolConfigs: { [key: string]: ProtocolConfig } = {
 
   tokenBoard: {
     protocol: 'tokenBoard',
-    configs: TokenBoardErc20Configs,
+    configs: TokenBoardConfigs,
   },
 };

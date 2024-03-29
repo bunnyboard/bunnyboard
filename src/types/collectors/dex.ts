@@ -18,5 +18,5 @@ export interface DexDataTimeframe extends DexDataState, DataTimeframe {
 
 export interface DexDataStateWithTimeframes extends DexDataTimeframe {
   // previous day data
-  last24Hours: DexDataTimeframe;
+  last24Hours: DexDataTimeframe | null;
 }

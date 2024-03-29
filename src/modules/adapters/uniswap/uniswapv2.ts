@@ -7,9 +7,9 @@ import EnvConfig from '../../../configs/envConfig';
 import { tryQueryBlockMeta } from '../../../lib/subgraph';
 import { DexDataState, DexDataTimeframe } from '../../../types/collectors/dex';
 import { GetAdapterDataStateOptions, GetAdapterDataTimeframeOptions } from '../../../types/collectors/options';
-import { DexConfig, DexSubgraph } from '../../../types/configs';
-import { ContextServices } from '../../../types/namespaces';
-import ProtocolAdapter from '../adapter';
+import { DexConfig, DexSubgraph, ProtocolConfig } from '../../../types/configs';
+import { ContextServices, ContextStorages } from '../../../types/namespaces';
+import DexProtocolAdapter from '../dex';
 
 interface FactoryData {
   totalLiquidity: string;
@@ -21,11 +21,11 @@ interface FactoryData {
   numberOfTransactionsCumulative: number;
 }
 
-export default class Uniswapv2Adapter extends ProtocolAdapter {
+export default class Uniswapv2Adapter extends DexProtocolAdapter {
   public readonly name: string = 'adapter.uniswapv2';
 
-  constructor(services: ContextServices) {
-    super(services);
+  constructor(services: ContextServices, storages: ContextStorages, protocolConfig: ProtocolConfig) {
+    super(services, storages, protocolConfig);
   }
 
   protected async getFactoryData(
@@ -98,7 +98,7 @@ export default class Uniswapv2Adapter extends ProtocolAdapter {
     return null;
   }
 
-  public async getDataState(options: GetAdapterDataStateOptions): Promise<DexDataState | null> {
+  public async getDexDataState(options: GetAdapterDataStateOptions): Promise<DexDataState | null> {
     const dexConfig = options.config as DexConfig;
     if (dexConfig.subgraph) {
       const metaBlock = await tryQueryBlockMeta(EnvConfig.blockchains[options.config.chain].blockSubgraph);
@@ -131,7 +131,7 @@ export default class Uniswapv2Adapter extends ProtocolAdapter {
     return null;
   }
 
-  public async getDataTimeframe(options: GetAdapterDataTimeframeOptions): Promise<DexDataTimeframe | null> {
+  public async getDexDataTimeframe(options: GetAdapterDataTimeframeOptions): Promise<DexDataTimeframe | null> {
     const dexConfig = options.config as DexConfig;
 
     if (dexConfig.subgraph) {

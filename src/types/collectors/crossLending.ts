@@ -33,13 +33,6 @@ export interface CrossLendingReserveDataState extends DataState {
 
   // borrow rate stable if any
   rateBorrowStable?: string;
-
-  // incentive reward rate for suppliers
-  rateRewardSupply?: string;
-
-  // incentive reward rate for borrowers
-  rateRewardBorrow?: string;
-  rateRewardBorrowStable?: string;
 }
 
 export interface CrossLendingReserveDataTimeframe extends CrossLendingReserveDataState, DataTimeframe {

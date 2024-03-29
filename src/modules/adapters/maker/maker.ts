@@ -22,16 +22,17 @@ import {
   TransformEventLogOptions,
   TransformEventLogResult,
 } from '../../../types/collectors/options';
-import { MetricConfig, Token } from '../../../types/configs';
-import { ContextServices } from '../../../types/namespaces';
-import ProtocolAdapter from '../adapter';
+import { ProtocolConfig, Token } from '../../../types/configs';
+import { ContextServices, ContextStorages } from '../../../types/namespaces';
+import { AdapterGetEventLogsOptions } from '../adapter';
+import CdpLendingProtocolAdapter from '../cdpLending';
 import { MakerEventInterfaces, MakerEventSignatures } from './abis';
 
-export default class MakerAdapter extends ProtocolAdapter {
+export default class MakerAdapter extends CdpLendingProtocolAdapter {
   public readonly name: string = 'adapter.maker';
 
-  constructor(services: ContextServices) {
-    super(services);
+  constructor(services: ContextServices, storages: ContextStorages, protocolConfig: ProtocolConfig) {
+    super(services, storages, protocolConfig);
 
     this.abiConfigs.eventSignatures = MakerEventSignatures;
     this.abiConfigs.eventAbis = {
@@ -43,9 +44,7 @@ export default class MakerAdapter extends ProtocolAdapter {
     };
   }
 
-  public async getDataState(options: GetAdapterDataStateOptions): Promise<Array<CdpLendingAssetDataState> | null> {
-    const result: Array<CdpLendingAssetDataState> = [];
-
+  public async getLendingAssetDataState(options: GetAdapterDataStateOptions): Promise<CdpLendingAssetDataState | null> {
     const blockNumber = await this.services.blockchain.tryGetBlockNumberAtTimestamp(
       options.config.chain,
       options.timestamp,
@@ -180,20 +179,18 @@ export default class MakerAdapter extends ProtocolAdapter {
       }
     }
 
-    result.push(stateData);
-
-    return result;
+    return stateData;
   }
 
-  public async getEventLogs(config: MetricConfig, fromBlock: number, toBlock: number): Promise<Array<any>> {
-    const makerConfig = config as MakerLendingMarketConfig;
+  public async getEventLogs(options: AdapterGetEventLogsOptions): Promise<Array<any>> {
+    const makerConfig = options.metricConfig as MakerLendingMarketConfig;
 
     // get events from dai join
     let logs = await this.services.blockchain.getContractLogs({
       chain: makerConfig.chain,
       address: makerConfig.daiJoin,
-      fromBlock: fromBlock,
-      toBlock: toBlock,
+      fromBlock: options.fromBlock,
+      toBlock: options.toBlock,
     });
 
     // get events from gem joins
@@ -202,8 +199,8 @@ export default class MakerAdapter extends ProtocolAdapter {
         await this.services.blockchain.getContractLogs({
           chain: makerConfig.chain,
           address: gemConfig.address,
-          fromBlock: fromBlock,
-          toBlock: toBlock,
+          fromBlock: options.fromBlock,
+          toBlock: options.toBlock,
         }),
       );
     }
@@ -304,18 +301,16 @@ export default class MakerAdapter extends ProtocolAdapter {
     return result;
   }
 
-  public async getDataTimeframe(
+  public async getLendingAssetDataTimeframe(
     options: GetAdapterDataTimeframeOptions,
-  ): Promise<Array<CdpLendingAssetDataTimeframe> | null> {
-    const states = await this.getDataState({
+  ): Promise<CdpLendingAssetDataTimeframe | null> {
+    const stateData = await this.getLendingAssetDataState({
       config: options.config,
       timestamp: options.fromTime,
     });
-    if (!states) {
+    if (!stateData) {
       return null;
     }
-
-    const result: Array<CdpLendingAssetDataTimeframe> = [];
 
     // make sure activities were synced
     const beginBlock = await this.services.blockchain.tryGetBlockNumberAtTimestamp(
@@ -324,7 +319,11 @@ export default class MakerAdapter extends ProtocolAdapter {
     );
     const endBlock = await this.services.blockchain.tryGetBlockNumberAtTimestamp(options.config.chain, options.toTime);
 
-    const logs = await this.getEventLogs(options.config, beginBlock, endBlock);
+    const logs = await this.getEventLogs({
+      metricConfig: options.config,
+      fromBlock: beginBlock,
+      toBlock: endBlock,
+    });
 
     const { activities } = await this.transformEventLogs({
       chain: options.config.chain,
@@ -333,33 +332,72 @@ export default class MakerAdapter extends ProtocolAdapter {
     });
 
     const marketConfig = options.config as MakerLendingMarketConfig;
-    for (const stateData of states) {
-      const snapshot: CdpLendingAssetDataTimeframe = {
-        ...stateData,
-        timefrom: options.fromTime,
-        timeto: options.toTime,
+    const snapshot: CdpLendingAssetDataTimeframe = {
+      ...stateData,
+      timefrom: options.fromTime,
+      timeto: options.toTime,
 
-        volumeBorrowed: '0',
-        volumeRepaid: '0',
+      volumeBorrowed: '0',
+      volumeRepaid: '0',
 
-        addresses: [],
-        transactions: [],
-        collaterals: [],
-      };
+      addresses: [],
+      transactions: [],
+      collaterals: [],
+    };
 
-      const countUsers: { [key: string]: boolean } = {};
-      const transactions: { [key: string]: boolean } = {};
+    const countUsers: { [key: string]: boolean } = {};
+    const transactions: { [key: string]: boolean } = {};
 
-      const daiEvents = activities.filter(
+    const daiEvents = activities.filter(
+      (activity) =>
+        activity.chain === stateData.chain &&
+        activity.protocol === stateData.protocol &&
+        activity.address === marketConfig.daiJoin &&
+        activity.token.address === marketConfig.debtToken.address,
+    );
+
+    for (const event of daiEvents) {
+      const activityEvent = event as CdpLendingActivityEvent;
+      if (!transactions[activityEvent.transactionHash]) {
+        transactions[activityEvent.transactionHash] = true;
+      }
+
+      if (!countUsers[activityEvent.user]) {
+        countUsers[activityEvent.user] = true;
+      }
+
+      switch (activityEvent.action) {
+        case ActivityActions.borrow: {
+          snapshot.volumeBorrowed = new BigNumber(snapshot.volumeBorrowed)
+            .plus(new BigNumber(activityEvent.tokenAmount))
+            .toString(10);
+          break;
+        }
+        case ActivityActions.repay: {
+          snapshot.volumeRepaid = new BigNumber(snapshot.volumeRepaid)
+            .plus(new BigNumber(activityEvent.tokenAmount))
+            .toString(10);
+          break;
+        }
+      }
+    }
+
+    for (const collateral of stateData.collaterals) {
+      let volumeDeposited = new BigNumber(0);
+      let volumeWithdrawn = new BigNumber(0);
+      let volumeLiquidated = new BigNumber(0);
+
+      const collateralEvents = activities.filter(
         (activity) =>
           activity.chain === stateData.chain &&
           activity.protocol === stateData.protocol &&
-          activity.address === marketConfig.daiJoin &&
-          activity.token.address === marketConfig.debtToken.address,
+          activity.address === collateral.address &&
+          activity.token.address === collateral.token.address,
       );
 
-      for (const event of daiEvents) {
+      for (const event of collateralEvents) {
         const activityEvent = event as CdpLendingActivityEvent;
+
         if (!transactions[activityEvent.transactionHash]) {
           transactions[activityEvent.transactionHash] = true;
         }
@@ -369,77 +407,34 @@ export default class MakerAdapter extends ProtocolAdapter {
         }
 
         switch (activityEvent.action) {
-          case ActivityActions.borrow: {
-            snapshot.volumeBorrowed = new BigNumber(snapshot.volumeBorrowed)
-              .plus(new BigNumber(activityEvent.tokenAmount))
-              .toString(10);
+          case ActivityActions.deposit: {
+            volumeDeposited = volumeDeposited.plus(new BigNumber(activityEvent.tokenAmount));
             break;
           }
-          case ActivityActions.repay: {
-            snapshot.volumeRepaid = new BigNumber(snapshot.volumeRepaid)
-              .plus(new BigNumber(activityEvent.tokenAmount))
-              .toString(10);
+          case ActivityActions.withdraw: {
+            volumeWithdrawn = volumeWithdrawn.plus(new BigNumber(activityEvent.tokenAmount));
+            break;
+          }
+          case ActivityActions.liquidate: {
+            volumeLiquidated = volumeLiquidated.plus(new BigNumber(activityEvent.tokenAmount));
             break;
           }
         }
       }
 
-      for (const collateral of stateData.collaterals) {
-        let volumeDeposited = new BigNumber(0);
-        let volumeWithdrawn = new BigNumber(0);
-        let volumeLiquidated = new BigNumber(0);
-
-        const collateralEvents = activities.filter(
-          (activity) =>
-            activity.chain === stateData.chain &&
-            activity.protocol === stateData.protocol &&
-            activity.address === collateral.address &&
-            activity.token.address === collateral.token.address,
-        );
-
-        for (const event of collateralEvents) {
-          const activityEvent = event as CdpLendingActivityEvent;
-
-          if (!transactions[activityEvent.transactionHash]) {
-            transactions[activityEvent.transactionHash] = true;
-          }
-
-          if (!countUsers[activityEvent.user]) {
-            countUsers[activityEvent.user] = true;
-          }
-
-          switch (activityEvent.action) {
-            case ActivityActions.deposit: {
-              volumeDeposited = volumeDeposited.plus(new BigNumber(activityEvent.tokenAmount));
-              break;
-            }
-            case ActivityActions.withdraw: {
-              volumeWithdrawn = volumeWithdrawn.plus(new BigNumber(activityEvent.tokenAmount));
-              break;
-            }
-            case ActivityActions.liquidate: {
-              volumeLiquidated = volumeLiquidated.plus(new BigNumber(activityEvent.tokenAmount));
-              break;
-            }
-          }
-        }
-
-        snapshot.collaterals.push({
-          ...collateral,
-          timefrom: options.fromTime,
-          timeto: options.toTime,
-          volumeDeposited: volumeDeposited.toString(10),
-          volumeWithdrawn: volumeWithdrawn.toString(10),
-          volumeLiquidated: volumeLiquidated.toString(10),
-        });
-      }
-
-      snapshot.addresses = Object.keys(countUsers);
-      snapshot.transactions = Object.keys(transactions);
-
-      result.push(snapshot);
+      snapshot.collaterals.push({
+        ...collateral,
+        timefrom: options.fromTime,
+        timeto: options.toTime,
+        volumeDeposited: volumeDeposited.toString(10),
+        volumeWithdrawn: volumeWithdrawn.toString(10),
+        volumeLiquidated: volumeLiquidated.toString(10),
+      });
     }
 
-    return result;
+    snapshot.addresses = Object.keys(countUsers);
+    snapshot.transactions = Object.keys(transactions);
+
+    return snapshot;
   }
 }

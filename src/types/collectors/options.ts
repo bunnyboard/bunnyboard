@@ -1,4 +1,4 @@
-import { DataMetric, DexConfig, MetricConfig, Token } from '../configs';
+import { DexConfig, MetricConfig, Token } from '../configs';
 import { CrossLendingActivityEvent } from './crossLending';
 
 export interface AdapterAbiConfigs {
@@ -35,19 +35,14 @@ export interface GetDexLiquidityTokenDataOptions {
   toBlock: number;
 }
 
-export interface RunCollectorOptions {
-  metric?: DataMetric;
+export interface RunAdapterOptions {
+  metricConfig: MetricConfig;
 
-  // if chain was given, run collector with given chain
-  chain?: string;
-
-  // if the protocol was given, run collector with given protocol
-  // and the chain option is just use for filter configs
-  protocol?: string;
-
-  // force sync from given from timestamp
+  // give a timestamp where adapter will start to collect snapshots from
+  // if fromTime was given, adapter will use this value instead of config birthday
   fromTime?: number;
-  force?: boolean;
 
-  service?: 'state' | 'snapshot';
+  // force to sync snapshots from given fromTime or config birthday
+  // do not save state
+  force?: boolean;
 }

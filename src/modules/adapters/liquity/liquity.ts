@@ -17,9 +17,10 @@ import {
   TransformEventLogOptions,
   TransformEventLogResult,
 } from '../../../types/collectors/options';
-import { MetricConfig, Token } from '../../../types/configs';
-import { ContextServices } from '../../../types/namespaces';
-import ProtocolAdapter from '../adapter';
+import { ProtocolConfig, Token } from '../../../types/configs';
+import { ContextServices, ContextStorages } from '../../../types/namespaces';
+import { AdapterGetEventLogsOptions } from '../adapter';
+import CdpLendingProtocolAdapter from '../cdpLending';
 import { LiquityEventInterfaces, LiquityEventSignatures } from './abis';
 
 interface GetTroveStateInfo {
@@ -28,11 +29,11 @@ interface GetTroveStateInfo {
   isBorrow: boolean;
 }
 
-export default class LiquityAdapter extends ProtocolAdapter {
+export default class LiquityAdapter extends CdpLendingProtocolAdapter {
   public readonly name: string = 'adapter.liquity';
 
-  constructor(services: ContextServices) {
-    super(services);
+  constructor(services: ContextServices, storages: ContextStorages, protocolConfig: ProtocolConfig) {
+    super(services, storages, protocolConfig);
 
     this.abiConfigs.eventSignatures = LiquityEventSignatures;
     this.abiConfigs.eventAbis = {
@@ -80,9 +81,7 @@ export default class LiquityAdapter extends ProtocolAdapter {
     return borrowingFee.toString();
   }
 
-  public async getDataState(options: GetAdapterDataStateOptions): Promise<Array<CdpLendingAssetDataState> | null> {
-    const result: Array<CdpLendingAssetDataState> = [];
-
+  public async getLendingAssetDataState(options: GetAdapterDataStateOptions): Promise<CdpLendingAssetDataState | null> {
     const blockNumber = await this.services.blockchain.tryGetBlockNumberAtTimestamp(
       options.config.chain,
       options.timestamp,
@@ -157,20 +156,18 @@ export default class LiquityAdapter extends ProtocolAdapter {
       });
     }
 
-    result.push(assetState);
-
-    return result;
+    return assetState;
   }
 
-  public async getEventLogs(config: MetricConfig, fromBlock: number, toBlock: number): Promise<Array<any>> {
-    const liquityConfig = config as LiquityLendingMarketConfig;
+  public async getEventLogs(options: AdapterGetEventLogsOptions): Promise<Array<any>> {
+    const liquityConfig = options.metricConfig as LiquityLendingMarketConfig;
 
     // get logs from borrow operation
     let logs = await this.services.blockchain.getContractLogs({
       chain: liquityConfig.chain,
       address: liquityConfig.address,
-      fromBlock: fromBlock,
-      toBlock: toBlock,
+      fromBlock: options.fromBlock,
+      toBlock: options.toBlock,
     });
 
     // get logs from trove managers
@@ -180,8 +177,8 @@ export default class LiquityAdapter extends ProtocolAdapter {
         await this.services.blockchain.getContractLogs({
           chain: liquityConfig.chain,
           address: trove.troveManager,
-          fromBlock: fromBlock,
-          toBlock: toBlock,
+          fromBlock: options.fromBlock,
+          toBlock: options.toBlock,
         }),
       );
     }
@@ -320,18 +317,16 @@ export default class LiquityAdapter extends ProtocolAdapter {
     return result;
   }
 
-  public async getDataTimeframe(
+  public async getLendingAssetDataTimeframe(
     options: GetAdapterDataTimeframeOptions,
-  ): Promise<Array<CdpLendingAssetDataTimeframe> | null> {
-    const states = await this.getDataState({
+  ): Promise<CdpLendingAssetDataTimeframe | null> {
+    const stateData = await this.getLendingAssetDataState({
       config: options.config,
       timestamp: options.fromTime,
     });
-    if (!states) {
+    if (!stateData) {
       return null;
     }
-
-    const result: Array<CdpLendingAssetDataTimeframe> = [];
 
     // make sure activities were synced
     const beginBlock = await this.services.blockchain.tryGetBlockNumberAtTimestamp(
@@ -340,7 +335,11 @@ export default class LiquityAdapter extends ProtocolAdapter {
     );
     const endBlock = await this.services.blockchain.tryGetBlockNumberAtTimestamp(options.config.chain, options.toTime);
 
-    const logs = await this.getEventLogs(options.config, beginBlock, endBlock);
+    const logs = await this.getEventLogs({
+      metricConfig: options.config,
+      fromBlock: beginBlock,
+      toBlock: endBlock,
+    });
 
     const { activities } = await this.transformEventLogs({
       chain: options.config.chain,
@@ -348,35 +347,72 @@ export default class LiquityAdapter extends ProtocolAdapter {
       logs: logs,
     });
 
-    for (const stateData of states) {
-      let volumeBorrowed = new BigNumber(0);
-      let volumeRepaid = new BigNumber(0);
+    let volumeBorrowed = new BigNumber(0);
+    let volumeRepaid = new BigNumber(0);
 
-      const addresses: { [key: string]: boolean } = {};
-      const transactions: { [key: string]: boolean } = {};
+    const addresses: { [key: string]: boolean } = {};
+    const transactions: { [key: string]: boolean } = {};
 
-      const snapshot: CdpLendingAssetDataTimeframe = {
-        ...stateData,
-        timefrom: options.fromTime,
-        timeto: options.toTime,
-        volumeBorrowed: '0',
-        volumeRepaid: '0',
-        addresses: [],
-        transactions: [],
-        collaterals: [],
-      };
+    const snapshot: CdpLendingAssetDataTimeframe = {
+      ...stateData,
+      timefrom: options.fromTime,
+      timeto: options.toTime,
+      volumeBorrowed: '0',
+      volumeRepaid: '0',
+      addresses: [],
+      transactions: [],
+      collaterals: [],
+    };
 
-      // count borrow/repay events
-      const lusdEvents = activities.filter(
+    // count borrow/repay events
+    const lusdEvents = activities.filter(
+      (activity) =>
+        activity.chain === stateData.chain &&
+        activity.protocol === stateData.protocol &&
+        activity.address === options.config.address &&
+        activity.token.address === stateData.token.address,
+    );
+
+    for (const event of lusdEvents) {
+      const activityEvent = event as CdpLendingActivityEvent;
+      if (!transactions[activityEvent.transactionHash]) {
+        transactions[activityEvent.transactionHash] = true;
+      }
+
+      if (!addresses[activityEvent.user]) {
+        addresses[activityEvent.user] = true;
+      }
+
+      switch (activityEvent.action) {
+        case ActivityActions.borrow: {
+          volumeBorrowed = volumeBorrowed.plus(new BigNumber(activityEvent.tokenAmount));
+          break;
+        }
+        case ActivityActions.repay: {
+          volumeRepaid = volumeRepaid.plus(new BigNumber(activityEvent.tokenAmount));
+          break;
+        }
+      }
+    }
+
+    snapshot.volumeBorrowed = volumeBorrowed.toString(10);
+    snapshot.volumeRepaid = volumeRepaid.toString(10);
+
+    for (const collateral of stateData.collaterals) {
+      let volumeDeposited = new BigNumber(0);
+      let volumeWithdrawn = new BigNumber(0);
+      let volumeLiquidated = new BigNumber(0);
+
+      // count deposit/withdraw/liquidate events
+      const collateralEvents = activities.filter(
         (activity) =>
           activity.chain === stateData.chain &&
           activity.protocol === stateData.protocol &&
-          activity.address === options.config.address &&
-          activity.token.address === stateData.token.address,
+          activity.token.address === collateral.token.address,
       );
-
-      for (const event of lusdEvents) {
+      for (const event of collateralEvents) {
         const activityEvent = event as CdpLendingActivityEvent;
+
         if (!transactions[activityEvent.transactionHash]) {
           transactions[activityEvent.transactionHash] = true;
         }
@@ -386,75 +422,34 @@ export default class LiquityAdapter extends ProtocolAdapter {
         }
 
         switch (activityEvent.action) {
-          case ActivityActions.borrow: {
-            volumeBorrowed = volumeBorrowed.plus(new BigNumber(activityEvent.tokenAmount));
+          case ActivityActions.deposit: {
+            volumeDeposited = volumeDeposited.plus(new BigNumber(activityEvent.tokenAmount));
             break;
           }
-          case ActivityActions.repay: {
-            volumeRepaid = volumeRepaid.plus(new BigNumber(activityEvent.tokenAmount));
+          case ActivityActions.withdraw: {
+            volumeWithdrawn = volumeWithdrawn.plus(new BigNumber(activityEvent.tokenAmount));
+            break;
+          }
+          case ActivityActions.liquidate: {
+            volumeLiquidated = volumeLiquidated.plus(new BigNumber(activityEvent.tokenAmount));
             break;
           }
         }
       }
 
-      snapshot.volumeBorrowed = volumeBorrowed.toString(10);
-      snapshot.volumeRepaid = volumeRepaid.toString(10);
-
-      for (const collateral of stateData.collaterals) {
-        let volumeDeposited = new BigNumber(0);
-        let volumeWithdrawn = new BigNumber(0);
-        let volumeLiquidated = new BigNumber(0);
-
-        // count deposit/withdraw/liquidate events
-        const collateralEvents = activities.filter(
-          (activity) =>
-            activity.chain === stateData.chain &&
-            activity.protocol === stateData.protocol &&
-            activity.token.address === collateral.token.address,
-        );
-        for (const event of collateralEvents) {
-          const activityEvent = event as CdpLendingActivityEvent;
-
-          if (!transactions[activityEvent.transactionHash]) {
-            transactions[activityEvent.transactionHash] = true;
-          }
-
-          if (!addresses[activityEvent.user]) {
-            addresses[activityEvent.user] = true;
-          }
-
-          switch (activityEvent.action) {
-            case ActivityActions.deposit: {
-              volumeDeposited = volumeDeposited.plus(new BigNumber(activityEvent.tokenAmount));
-              break;
-            }
-            case ActivityActions.withdraw: {
-              volumeWithdrawn = volumeWithdrawn.plus(new BigNumber(activityEvent.tokenAmount));
-              break;
-            }
-            case ActivityActions.liquidate: {
-              volumeLiquidated = volumeLiquidated.plus(new BigNumber(activityEvent.tokenAmount));
-              break;
-            }
-          }
-        }
-
-        snapshot.collaterals.push({
-          ...collateral,
-          timefrom: options.fromTime,
-          timeto: options.toTime,
-          volumeDeposited: volumeDeposited.toString(10),
-          volumeWithdrawn: volumeWithdrawn.toString(10),
-          volumeLiquidated: volumeLiquidated.toString(10),
-        });
-      }
-
-      snapshot.addresses = Object.keys(addresses);
-      snapshot.transactions = Object.keys(transactions);
-
-      result.push(snapshot);
+      snapshot.collaterals.push({
+        ...collateral,
+        timefrom: options.fromTime,
+        timeto: options.toTime,
+        volumeDeposited: volumeDeposited.toString(10),
+        volumeWithdrawn: volumeWithdrawn.toString(10),
+        volumeLiquidated: volumeLiquidated.toString(10),
+      });
     }
 
-    return result;
+    snapshot.addresses = Object.keys(addresses);
+    snapshot.transactions = Object.keys(transactions);
+
+    return snapshot;
   }
 }

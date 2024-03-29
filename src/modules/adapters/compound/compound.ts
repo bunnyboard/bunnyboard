@@ -8,7 +8,7 @@ import IronbankComptrollerOldAbi from '../../../configs/abi/ironbank/FirstComptr
 import { ChainBlockPeriods, TimeUnits } from '../../../configs/constants';
 import { CompoundLendingMarketConfig } from '../../../configs/protocols/compound';
 import { compareAddress, formatBigNumberToString, normalizeAddress } from '../../../lib/utils';
-import { ActivityActions, TokenValueItem } from '../../../types/collectors/base';
+import { ActivityActions } from '../../../types/collectors/base';
 import { CrossLendingReserveDataState, CrossLendingReserveDataTimeframe } from '../../../types/collectors/crossLending';
 import {
   GetAdapterDataStateOptions,
@@ -16,10 +16,11 @@ import {
   TransformEventLogOptions,
   TransformEventLogResult,
 } from '../../../types/collectors/options';
-import { MetricConfig, Token } from '../../../types/configs';
-import { ContextServices } from '../../../types/namespaces';
+import { ProtocolConfig, Token } from '../../../types/configs';
+import { ContextServices, ContextStorages } from '../../../types/namespaces';
 import CompoundLibs from '../../libs/compound';
-import ProtocolAdapter from '../adapter';
+import { AdapterGetEventLogsOptions } from '../adapter';
+import CrossLendingProtocolAdapter from '../crossLending';
 import { countCrossLendingDataFromActivities } from '../helpers';
 import { CompoundEventInterfaces, CompoundEventSignatures } from './abis';
 
@@ -28,21 +29,11 @@ interface Rates {
   borrowRate: string;
 }
 
-interface Speeds {
-  supplySpeed: string;
-  borrowSpeed: string;
-}
-
-interface Rewards {
-  forLenders: Array<TokenValueItem>;
-  forBorrowers: Array<TokenValueItem>;
-}
-
-export default class CompoundAdapter extends ProtocolAdapter {
+export default class CompoundAdapter extends CrossLendingProtocolAdapter {
   public readonly name: string = 'adapter.compound';
 
-  constructor(services: ContextServices) {
-    super(services);
+  constructor(services: ContextServices, storages: ContextStorages, protocolConfig: ProtocolConfig) {
+    super(services, storages, protocolConfig);
 
     this.abiConfigs.eventSignatures = CompoundEventSignatures;
     this.abiConfigs.eventAbis = {
@@ -106,73 +97,6 @@ export default class CompoundAdapter extends ProtocolAdapter {
     return config.preDefinedMarkets ? config.preDefinedMarkets : null;
   }
 
-  protected async getMarketCompSpeeds(
-    config: CompoundLendingMarketConfig,
-    cTokenContract: string,
-    blockNumber: number,
-  ): Promise<Speeds | null> {
-    const compSupplySpeeds = await this.services.blockchain.readContract({
-      chain: config.chain,
-      abi: this.abiConfigs.eventAbis.comptroller,
-      target: config.address,
-      method: 'compSupplySpeeds',
-      params: [cTokenContract],
-      blockNumber,
-    });
-    const compBorrowSpeeds = await this.services.blockchain.readContract({
-      chain: config.chain,
-      abi: this.abiConfigs.eventAbis.comptroller,
-      target: config.address,
-      method: 'compBorrowSpeeds',
-      params: [cTokenContract],
-      blockNumber,
-    });
-
-    if (compSupplySpeeds && compBorrowSpeeds) {
-      return {
-        supplySpeed: formatBigNumberToString(compSupplySpeeds.toString(), 18),
-        borrowSpeed: formatBigNumberToString(compBorrowSpeeds.toString(), 18),
-      };
-    } else {
-      return null;
-    }
-  }
-
-  protected async getMarketRewards(
-    config: CompoundLendingMarketConfig,
-    cTokenContract: string,
-    blockNumber: number,
-  ): Promise<Rewards | null> {
-    if (!config.governanceToken) {
-      return null;
-    }
-
-    const speeds = await this.getMarketCompSpeeds(config, cTokenContract, blockNumber);
-
-    if (speeds) {
-      const blockPerYear = TimeUnits.SecondsPerYear / ChainBlockPeriods[config.chain];
-      const compPerYearForSuppliers = new BigNumber(speeds.supplySpeed).multipliedBy(blockPerYear).toString(10);
-      const compPerYearForBorrowers = new BigNumber(speeds.supplySpeed).multipliedBy(blockPerYear).toString(10);
-
-      return {
-        forLenders: [
-          {
-            token: config.governanceToken,
-            amount: compPerYearForSuppliers,
-          },
-        ],
-        forBorrowers: [
-          {
-            token: config.governanceToken,
-            amount: compPerYearForBorrowers,
-          },
-        ],
-      };
-    }
-
-    return null;
-  }
-
   protected async getMarketRates(chain: string, cTokenContract: string, blockNumber: number): Promise<Rates> {
     const supplyRatePerBlock = await this.services.blockchain.readContract({
       chain: chain,
@@ -204,7 +128,9 @@ export default class CompoundAdapter extends ProtocolAdapter {
     };
   }
 
-  public async getDataState(options: GetAdapterDataStateOptions): Promise<Array<CrossLendingReserveDataState> | null> {
+  public async getLendingReservesDataState(
+    options: GetAdapterDataStateOptions,
+  ): Promise<Array<CrossLendingReserveDataState> | null> {
     const result: Array<CrossLendingReserveDataState> = [];
 
     const marketConfig = options.config as CompoundLendingMarketConfig;
@@ -283,38 +209,6 @@ export default class CompoundAdapter extends ProtocolAdapter {
             timestamp: options.timestamp,
           });
 
-          let rewardSupplyRate = '0';
-          let rewardBorrowRate = '0';
-
-          if (marketConfig.governanceToken) {
-            const compPerYear = await this.getMarketRewards(marketConfig, cTokenContract, blockNumber);
-            if (compPerYear) {
-              const governanceTokenPrice = await this.services.oracle.getTokenPriceUsd({
-                chain: marketConfig.governanceToken.chain,
-                address: marketConfig.governanceToken.address,
-                timestamp: options.timestamp,
-              });
-              if (governanceTokenPrice && tokenPrice) {
-                rewardSupplyRate = new BigNumber(compPerYear.forLenders[0].amount)
-                  .multipliedBy(governanceTokenPrice)
-                  .dividedBy(
-                    new BigNumber(formatBigNumberToString(totalDeposited.toString(10), token.decimals)).multipliedBy(
-                      tokenPrice,
-                    ),
-                  )
-                  .toString(10);
-                rewardBorrowRate = new BigNumber(compPerYear.forBorrowers[0].amount)
-                  .multipliedBy(governanceTokenPrice)
-                  .dividedBy(
-                    new BigNumber(formatBigNumberToString(totalBorrowed.toString(10), token.decimals)).multipliedBy(
-                      tokenPrice,
-                    ),
-                  )
-                  .toString(10);
-              }
-            }
-          }
-
           const dataState: CrossLendingReserveDataState = {
             metric: marketConfig.metric,
             chain: marketConfig.chain,
@@ -331,9 +225,6 @@ export default class CompoundAdapter extends ProtocolAdapter {
             rateSupply: supplyRate,
             rateBorrow: borrowRate,
             rateLoanToValue: ltv,
-
-            rateRewardSupply: rewardSupplyRate,
-            rateRewardBorrow: rewardBorrowRate,
           };
 
           result.push(dataState);
@@ -344,26 +235,26 @@ export default class CompoundAdapter extends ProtocolAdapter {
     return result;
   }
 
-  public async getEventLogs(config: MetricConfig, fromBlock: number, toBlock: number): Promise<Array<any>> {
+  public async getEventLogs(options: AdapterGetEventLogsOptions): Promise<Array<any>> {
     let logs: Array<any> = [];
 
     // get comptroller logs
     logs = await this.services.blockchain.getContractLogs({
-      chain: config.chain,
-      address: config.address,
-      fromBlock: fromBlock,
-      toBlock: toBlock,
+      chain: options.metricConfig.chain,
+      address: options.metricConfig.address,
+      fromBlock: options.fromBlock,
+      toBlock: options.toBlock,
     });
 
-    const allMarkets = await this.getAllMarkets(config as CompoundLendingMarketConfig, fromBlock);
+    const allMarkets = await this.getAllMarkets(options.metricConfig as CompoundLendingMarketConfig, options.fromBlock);
     if (allMarkets) {
       for (const cToken of allMarkets) {
         logs = logs.concat(
           await this.services.blockchain.getContractLogs({
-            chain: config.chain,
+            chain: options.metricConfig.chain,
             address: cToken.toString(),
-            fromBlock: fromBlock,
-            toBlock: toBlock,
+            fromBlock: options.fromBlock,
+            toBlock: options.toBlock,
           }),
         );
       }
@@ -536,10 +427,10 @@ export default class CompoundAdapter extends ProtocolAdapter {
     return result;
   }
 
-  public async getDataTimeframe(
+  public async getLendingReservesDataTimeframe(
     options: GetAdapterDataTimeframeOptions,
   ): Promise<Array<CrossLendingReserveDataTimeframe> | null> {
-    const states = await this.getDataState({
+    const states = await this.getLendingReservesDataState({
       config: options.config,
       timestamp: options.fromTime,
     });
@@ -556,7 +447,11 @@ export default class CompoundAdapter extends ProtocolAdapter {
     );
     const endBlock = await this.services.blockchain.tryGetBlockNumberAtTimestamp(options.config.chain, options.toTime);
 
-    const logs = await this.getEventLogs(options.config, beginBlock, endBlock);
+    const logs = await this.getEventLogs({
+      metricConfig: options.config,
+      fromBlock: beginBlock,
+      toBlock: endBlock,
+    });
 
     const { activities } = await this.transformEventLogs({
       chain: options.config.chain,

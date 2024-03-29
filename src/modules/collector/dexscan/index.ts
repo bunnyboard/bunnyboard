@@ -1,12 +1,12 @@
 import { DexscanConfigs } from '../../../configs/boards/dexscan';
 import logger from '../../../lib/logger';
-import { RunCollectorOptions } from '../../../types/collectors/options';
 import { DexConfig, DexVersions } from '../../../types/configs';
-import { ContextServices, ContextStorages, IDataCollector } from '../../../types/namespaces';
+import { ContextServices, ContextStorages } from '../../../types/namespaces';
+import { RunProtocolCollectorOptions } from '../protocol';
 import UniswapSubgraphScanner from './scanner/uniswapSubgraph';
 
-export default class DexscanCollector implements IDataCollector {
-  public readonly name: string = 'dexscan';
+export default class DexscanCollector {
+  public readonly name: string = 'collector.dexscan';
   public readonly services: ContextServices;
   public readonly storages: ContextStorages;
 
@@ -15,7 +15,7 @@ export default class DexscanCollector implements IDataCollector {
     this.storages = storages;
   }
 
-  public async run(options: RunCollectorOptions): Promise<void> {
+  public async run(options: RunProtocolCollectorOptions): Promise<void> {
     const configs: Array<DexConfig> = DexscanConfigs.filter(
       (config) => options.chain === undefined || options.chain === config.chain,
     ).filter((config) => options.protocol === undefined || options.protocol === config.protocol);

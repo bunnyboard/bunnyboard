@@ -1,15 +1,15 @@
 import { calChangesOf_Current_From_Previous, convertToNumber } from '../../../../lib/math';
 import { AggTokenBoardErc20Snapshot } from '../../../../types/aggregates/tokenBoard';
-import { TokenBoardErc20DataTimeframe } from '../../../../types/collectors/tokenBoard';
+import { TokenBoardDataTimeframe } from '../../../../types/collectors/tokenBoard';
 import { transformTokenValueToUsd } from '../../helper';
 
 export default class TokenBoardDataTransformer {
   // TokenBoardErc20DataTimeframe -> AggTokenBoardErc20Snapshot
   public static transformTokenBoardErc20Snapshot(
     // from CurrentTime - DAY -> CurrentTime
-    currentLast24Hours: TokenBoardErc20DataTimeframe,
+    currentLast24Hours: TokenBoardDataTimeframe,
     // from CurrentTime - 2 * DAY -> CurrentTime - DAY
-    previousLast24Hours: TokenBoardErc20DataTimeframe | null,
+    previousLast24Hours: TokenBoardDataTimeframe | null,
   ): AggTokenBoardErc20Snapshot {
     const fullDilutedValuationCurrent =
       convertToNumber(currentLast24Hours.tokenPrice) * convertToNumber(currentLast24Hours.totalSupply);

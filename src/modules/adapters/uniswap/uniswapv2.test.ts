@@ -1,10 +1,15 @@
 import { expect, test } from 'vitest';
 
-import { Uniswapv2EthereumDexConfig } from '../../../configs/protocols/uniswap';
+import { DefaultMemcacheTime } from '../../../configs';
+import { Uniswapv2Configs, Uniswapv2EthereumDexConfig } from '../../../configs/protocols/uniswap';
 import BlockchainService from '../../../services/blockchains/blockchain';
+import { MemcacheService } from '../../../services/caching/memcache';
+import DatabaseService from '../../../services/database/database';
 import OracleService from '../../../services/oracle/oracle';
 import Uniswapv2Adapter from './uniswapv2';
 
+const database = new DatabaseService();
+const memcache = new MemcacheService(DefaultMemcacheTime);
 const oracle = new OracleService();
 const blockchain = new BlockchainService();
 
@@ -12,17 +17,24 @@ const fromTime = 1590969600; // Mon Jun 01 2020 00:00:00 GMT+0000
 const toTime = 1591056000; // Tue Jun 02 2020 00:00:00 GMT+0000
 
 test('should get dex correctly - uniswapv2 - ethereum', async function () {
-  const adapter = new Uniswapv2Adapter({
-    oracle,
-    blockchain,
-  });
+  const adapter = new Uniswapv2Adapter(
+    {
+      oracle,
+      blockchain,
+    },
+    {
+      database: database,
+      memcache: memcache,
+    },
+    Uniswapv2Configs,
+  );
 
-  const dexDataState = await adapter.getDataState({
+  const dexDataState = await adapter.getDexDataState({
     config: Uniswapv2EthereumDexConfig,
     timestamp: fromTime,
   });
 
-  const dexDataTimeframe = await adapter.getDataTimeframe({
+  const dexDataTimeframe = await adapter.getDexDataTimeframe({
     config: Uniswapv2EthereumDexConfig,
     fromTime: fromTime,
     toTime: toTime,
