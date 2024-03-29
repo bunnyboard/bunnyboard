@@ -303,6 +303,8 @@ export default class DataCollectorProcessor {
       ...dataState,
       timefrom: options.timestamp - TimeUnits.SecondsPerDay,
       timeto: options.timestamp,
+      feesTradingUsd: '0',
+      feesTradingCumulativeUsd: '0',
       volumeTrading: '0',
       volumeTradingCumulative: '0',
       numberOfTransactions: 0,
@@ -311,8 +313,10 @@ export default class DataCollectorProcessor {
     };
 
     if (options.timeframeLast24Hours) {
-      stateWithTimeframes.volumeTrading = options.timeframeLast24Hours.volumeTrading;
-      stateWithTimeframes.volumeTradingCumulative = options.timeframeLast24Hours.volumeTradingCumulative;
+      stateWithTimeframes.feesTradingUsd = options.timeframeLast24Hours.feesTradingUsd;
+      stateWithTimeframes.feesTradingCumulativeUsd = options.timeframeLast24Hours.feesTradingCumulativeUsd;
+      stateWithTimeframes.volumeTradingUsd = options.timeframeLast24Hours.volumeTrading;
+      stateWithTimeframes.volumeTradingCumulativeUsd = options.timeframeLast24Hours.volumeTradingCumulative;
       stateWithTimeframes.numberOfTransactions = options.timeframeLast24Hours.numberOfTransactions;
       stateWithTimeframes.numberOfTransactionsCumulative = options.timeframeLast24Hours.numberOfTransactionsCumulative;
     }

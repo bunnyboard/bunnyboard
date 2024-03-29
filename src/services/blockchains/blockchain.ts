@@ -228,13 +228,17 @@ export default class BlockchainService extends CachingService implements IBlockc
       const url = `${chainConfig.explorerApiEndpoint}?module=block&action=getblocknobytime&timestamp=${timestamp}&closest=before`;
       const response = await retry(
         async function () {
-          const response = await axios.get(url, {
-            headers: {
-              'Content-Type': 'application/json',
-            },
-          });
+          try {
+            const response = await axios.get(url, {
+              headers: {
+                'Content-Type': 'application/json',
+              },
+            });
 
-          return response.data;
+            return response.data;
+          } catch (e: any) {
+            console.log(e.message);
+          }
         },
         {
           retries: 5,
@@ -250,6 +254,12 @@ export default class BlockchainService extends CachingService implements IBlockc
   }
 
   public async tryGetBlockNumberAtTimestamp(chain: string, timestamp: number): Promise<number> {
+    const cachingKey = `getBlockAtTimestamp-${chain}-${timestamp}`;
+    const cache = await this.getCachingData(cachingKey);
+    if (cache) {
+      return Number(cache);
+    }
+
     let blockNumber = null;
 
     do {
@@ -259,6 +269,8 @@ export default class BlockchainService extends CachingService implements IBlockc
         await sleep(5);
       }
     } while (blockNumber === null);
+
+    await this.setCachingData(cachingKey, blockNumber);
 
     return blockNumber;
   }
