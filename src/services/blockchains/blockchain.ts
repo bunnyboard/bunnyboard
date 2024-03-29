@@ -129,7 +129,7 @@ export default class BlockchainService extends CachingService implements IBlockc
     const client = this.getPublicClient(options.chain);
 
     try {
-      if (options.blockNumber) {
+      if (options.blockNumber && options.blockNumber > 0) {
         return await client.readContract({
           address: options.target as Address,
           abi: options.abi,
@@ -218,6 +218,8 @@ export default class BlockchainService extends CachingService implements IBlockc
         },
       );
 
+      console.log(response);
+
       if (response && response.blocks && response.blocks[0] && response.blocks[0].number) {
         blockNumber = Number(response.blocks[0].number);
       }
@@ -260,6 +262,6 @@ export default class BlockchainService extends CachingService implements IBlockc
       }
     } while (blockNumber === null);
 
-    return 0;
+    return blockNumber;
   }
 }

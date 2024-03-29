@@ -176,10 +176,10 @@ export default class Aavev2Adapter extends ProtocolAdapter {
   public async getDataState(options: GetAdapterDataStateOptions): Promise<Array<CrossLendingReserveDataState> | null> {
     const result: Array<CrossLendingReserveDataState> = [];
 
-    const blockNumber = await this.services.blockchain.tryGetBlockNumberAtTimestamp(
-      options.config.chain,
-      options.timestamp,
-    );
+    const blockNumber =
+      options.timestamp > 0
+        ? await this.services.blockchain.tryGetBlockNumberAtTimestamp(options.config.chain, options.timestamp)
+        : 0;
 
     const marketConfig: AaveLendingMarketConfig = options.config as AaveLendingMarketConfig;
 
