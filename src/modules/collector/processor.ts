@@ -118,7 +118,6 @@ export default class DataCollectorProcessor {
         collection: EnvConfig.mongodb.collections.crossLendingReserveStates.name,
         keys: {
           chain: dataState.chain,
-          metric: dataState.metric,
           protocol: dataState.protocol,
           address: dataState.address,
           'token.address': dataState.token.address,
@@ -140,7 +139,6 @@ export default class DataCollectorProcessor {
         collection: EnvConfig.mongodb.collections.crossLendingReserveSnapshots.name,
         keys: {
           chain: snapshot.chain,
-          metric: snapshot.metric,
           protocol: snapshot.protocol,
           address: snapshot.address,
           'token.address': snapshot.token.address,
@@ -172,7 +170,7 @@ export default class DataCollectorProcessor {
       };
 
       if (options.timeframeLast24Hours) {
-        const dataLast24Hours = options.timeframeLast24Hours.cdpLending.filter(
+        const dataLast24Hours = options.timeframeLast24Hours.filter(
           (item: CdpLendingAssetDataState) =>
             item.chain === dataState.chain &&
             item.protocol === dataState.protocol &&
@@ -195,7 +193,7 @@ export default class DataCollectorProcessor {
       }
 
       if (options.timeframeLast48Hours) {
-        const dataLast48Hours = options.timeframeLast48Hours.cdpLending.filter(
+        const dataLast48Hours = options.timeframeLast48Hours.filter(
           (item: CdpLendingAssetDataTimeframe) =>
             item.chain === dataState.chain &&
             item.protocol === dataState.protocol &&
@@ -210,7 +208,6 @@ export default class DataCollectorProcessor {
         collection: EnvConfig.mongodb.collections.cdpLendingAssetStates.name,
         keys: {
           chain: dataState.chain,
-          metric: dataState.metric,
           protocol: dataState.protocol,
           'token.address': dataState.token.address,
         },
@@ -231,7 +228,6 @@ export default class DataCollectorProcessor {
         collection: EnvConfig.mongodb.collections.cdpLendingAssetSnapshots.name,
         keys: {
           chain: snapshot.chain,
-          metric: snapshot.metric,
           protocol: snapshot.protocol,
           'token.address': snapshot.token.address,
           timestamp: snapshot.timestamp,
