@@ -13,7 +13,7 @@ export const Uniswapv2EthereumDexConfig: DexConfig = {
   metric: DataMetrics.dex,
   version: DexVersions.univ2,
   address: AddressesBook.ethereum.UniswapFactoryV2,
-  birthday: 1588636800, // Tue May 05 2020 00:00:00 GMT+0000
+  birthday: 1590969600, // Mon Jun 01 2020 00:00:00 GMT+0000
   subgraph: {
     endpoint: SubgraphEndpoints.data.uniswapv2Ethereum,
     filters: {

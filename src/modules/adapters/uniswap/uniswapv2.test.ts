@@ -8,8 +8,8 @@ import Uniswapv2Adapter from './uniswapv2';
 const oracle = new OracleService();
 const blockchain = new BlockchainService();
 
-const fromTime = 1640995200; // Sat Jan 01 2022 00:00:00 GMT+0000
-const toTime = 1641081600; // Sun Jan 02 2022 00:00:00 GMT+0000
+const fromTime = 1590969600; // Mon Jun 01 2020 00:00:00 GMT+0000
+const toTime = 1591056000; // Tue Jun 02 2020 00:00:00 GMT+0000
 
 test('should get dex correctly - uniswapv2 - ethereum', async function () {
   const adapter = new Uniswapv2Adapter({
@@ -32,14 +32,15 @@ test('should get dex correctly - uniswapv2 - ethereum', async function () {
   expect(dexDataTimeframe).not.equal(null);
 
   if (dexDataState && dexDataTimeframe) {
-    expect(dexDataState.totalLiquidity).equal('4608788258.400094230081435324129104');
+    expect(dexDataState.totalLiquidityUsd).equal('21965164.51289245023160291925431319');
 
     expect(dexDataTimeframe.protocol).equal('uniswapv2');
-    expect(dexDataTimeframe.totalLiquidity).equal('4692280090.774402495362390068393937');
-    expect(dexDataTimeframe.feesTrading).equal('1132712.22559683331681223456');
-    expect(dexDataTimeframe.volumeTrading).equal('377570741.86561110560407818738');
-    expect(dexDataTimeframe.volumeTradingCumulative).equal('408440234025.31514429904276570087');
-    expect(dexDataTimeframe.numberOfTransactions).equal(68006);
-    expect(dexDataTimeframe.numberOfTransactionsCumulative).equal(71069420);
+    expect(dexDataTimeframe.totalLiquidityUsd).equal('23890083.5096110076151830692203312');
+    expect(dexDataTimeframe.feesTradingUsd).equal('6309.47233542288049176908');
+    expect(dexDataTimeframe.feesTradingCumulativeUsd).equal('59479.87023918131197768254');
+    expect(dexDataTimeframe.volumeTradingUsd).equal('2103157.44514096016392302546');
+    expect(dexDataTimeframe.volumeTradingCumulativeUsd).equal('19826623.41306043732589418148');
+    expect(dexDataTimeframe.numberOfTransactions).equal(7998);
+    expect(dexDataTimeframe.numberOfTransactionsCumulative).equal(82151);
   }
 });

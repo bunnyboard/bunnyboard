@@ -14,6 +14,7 @@ import ProtocolAdapter from '../adapter';
 interface FactoryData {
   totalLiquidity: string;
   feesTrading: string;
+  feesTradingCumulative: string;
   volumeTrading: string;
   volumeTradingCumulative: string;
   numberOfTransactions: number;
@@ -77,10 +78,14 @@ export default class Uniswapv2Adapter extends ProtocolAdapter {
           const feesTrading = volumeTrading
             .multipliedBy(subgraphConfig.fixedFeePercentage ? subgraphConfig.fixedFeePercentage : 0.3)
             .dividedBy(100);
+          const feesTradingCumulative = totalVolumeTo
+            .multipliedBy(subgraphConfig.fixedFeePercentage ? subgraphConfig.fixedFeePercentage : 0.3)
+            .dividedBy(100);
 
           return {
             totalLiquidity: data.dataTo[0][filters.liquidity].toString(),
             feesTrading: feesTrading.toString(10),
+            feesTradingCumulative: feesTradingCumulative.toString(10),
             volumeTrading: volumeTrading.toString(10),
             volumeTradingCumulative: totalVolumeTo.toString(10),
             numberOfTransactions: Number(data.dataTo[0][filters.txCount]) - Number(data.dataFrom[0][filters.txCount]),
@@ -118,7 +123,7 @@ export default class Uniswapv2Adapter extends ProtocolAdapter {
           metric: dexConfig.metric,
           version: dexConfig.version,
           timestamp: options.timestamp,
-          totalLiquidity: factoryData.totalLiquidity,
+          totalLiquidityUsd: factoryData.totalLiquidity,
         };
       }
     }
@@ -149,10 +154,11 @@ export default class Uniswapv2Adapter extends ProtocolAdapter {
         timefrom: options.fromTime,
         timeto: options.toTime,
 
-        totalLiquidity: '0',
-        feesTrading: '0',
-        volumeTrading: '0',
-        volumeTradingCumulative: '0',
+        totalLiquidityUsd: '0',
+        feesTradingUsd: '0',
+        feesTradingCumulativeUsd: '0',
+        volumeTradingUsd: '0',
+        volumeTradingCumulativeUsd: '0',
         numberOfTransactions: 0,
         numberOfTransactionsCumulative: 0,
       };
@@ -162,10 +168,11 @@ export default class Uniswapv2Adapter extends ProtocolAdapter {
         endBlock > metaBlock ? metaBlock : endBlock,
       );
       if (factoryData) {
-        dexData.totalLiquidity = factoryData.totalLiquidity;
-        dexData.feesTrading = factoryData.feesTrading;
-        dexData.volumeTrading = factoryData.volumeTrading;
-        dexData.volumeTradingCumulative = factoryData.volumeTradingCumulative;
+        dexData.totalLiquidityUsd = factoryData.totalLiquidity;
+        dexData.feesTradingUsd = factoryData.feesTrading;
+        dexData.feesTradingCumulativeUsd = factoryData.feesTradingCumulative;
+        dexData.volumeTradingUsd = factoryData.volumeTrading;
+        dexData.volumeTradingCumulativeUsd = factoryData.volumeTradingCumulative;
         dexData.numberOfTransactions = factoryData.numberOfTransactions;
         dexData.numberOfTransactionsCumulative = factoryData.numberOfTransactionsCumulative;
       }

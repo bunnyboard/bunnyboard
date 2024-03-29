@@ -3,14 +3,15 @@ import { DataState, DataTimeframe } from './base';
 
 export interface DexDataState extends DataState {
   version: DexVersion;
-  totalLiquidity: string;
+  totalLiquidityUsd: string;
 }
 
 export interface DexDataTimeframe extends DexDataState, DataTimeframe {
   // fees collected from trading
-  feesTrading: string;
-  volumeTrading: string;
-  volumeTradingCumulative: string;
+  feesTradingUsd: string;
+  feesTradingCumulativeUsd: string;
+  volumeTradingUsd: string;
+  volumeTradingCumulativeUsd: string;
   numberOfTransactions: number;
   numberOfTransactionsCumulative: number;
 }
