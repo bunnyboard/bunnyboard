@@ -218,8 +218,6 @@ export default class BlockchainService extends CachingService implements IBlockc
         },
       );
 
-      console.log(response);
-
       if (response && response.blocks && response.blocks[0] && response.blocks[0].number) {
         blockNumber = Number(response.blocks[0].number);
       }
