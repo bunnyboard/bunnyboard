@@ -44,5 +44,6 @@ export const SpookyEthereumDexConfig: DexConfig = {
   subgraph: {
     endpoint: SubgraphEndpoints.data.spookyFantom,
     filters: SpookySubgraphFilters,
+    fixedFeePercentage: 0.2,
   },
 };

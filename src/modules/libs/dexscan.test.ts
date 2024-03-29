@@ -2,7 +2,8 @@ import { describe, expect, test } from 'vitest';
 
 import { TokenListBase } from '../../configs';
 import { DexscanConfigs } from '../../configs/boards/dexscan';
-import { Token } from '../../types/configs';
+import { ProtocolNames } from '../../configs/names';
+import { DexVersions, Token } from '../../types/configs';
 import UniswapLibs from '../libs/uniswap';
 
 const tokens = {
@@ -67,6 +68,25 @@ describe('should get dex data correctly', async function () {
       });
 
       expect(tokenData).not.equal(null);
+
+      const pools = await UniswapLibs.getTopLiquidityPoolForToken({
+        dexConfig: dexConfig,
+        token: (tokens as any)[dexConfig.chain] as Token,
+        fromBlock: (blocks as any)[dexConfig.chain].blockNumber,
+        toBlock: (blocks as any)[dexConfig.chain].blockNumberAfter,
+      });
+
+      if (pools[0]) {
+        if (dexConfig.version === DexVersions.univ2) {
+          if (dexConfig.protocol === ProtocolNames.uniswapv2 || dexConfig.protocol === ProtocolNames.sushi) {
+            expect(pools[0].feesPercentage).equal(0.3);
+          } else if (dexConfig.protocol === ProtocolNames.pancake) {
+            expect(pools[0].feesPercentage).equal(0.25);
+          } else if (dexConfig.protocol === ProtocolNames.spooky) {
+            expect(pools[0].feesPercentage).equal(0.2);
+          }
+        }
+      }
     }),
   );
 });

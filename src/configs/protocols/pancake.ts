@@ -118,6 +118,7 @@ const Pancakev3SubgraphFilters = {
     txCount: 'txCount',
     derivedBase: 'derivedETH',
     fees: 'feesUSD',
+    feesTiger: 'feeTier',
     reserve0: 'totalValueLockedToken0',
     reserve1: 'totalValueLockedToken1',
   },
