@@ -1,7 +1,17 @@
 {
+  "Aavev3DataProvider": "0x41585c50524fb8c3899b43d7d797d9486aac94db",
+  "Aavev3IncentiveController": "0xc206c2764a9dbf27d599613b8f9a63acd1160ab4",
+  "Aavev3LendingPool": "0x6807dc923806fe8fd134338eabca509979a7e0cb",
+  "ChainlinkFeed_BCH_USD": "0x43d80f616daf0b0b42a928eed32147dc59027d41",
+  "ChainlinkFeed_BNB_USD": "0x0567f2323251f0aab15c8dfb1967e4e8a7d42aee",
+  "ChainlinkFeed_TRX_USD": "0xf4c5e535756d11994fcbb12ba8add0192d9b88be",
+  "ChainlinkFeed_USDD_USD": "0x51c78c299c42b058bf11d47fbb74ac437c6a0c8c",
   "KyberswapFactory": "0xc7a590291e07b9fe9e64b86c58fd8fc764308c4a",
   "PancakeFactoryV2": "0xca143ce32fe78f1f7019d7d551a6402fc5350c73",
   "PancakeFactoryV3": "0x0bfbcf9fa4f9c56b0f40a671ad40e0805a091865",
+  "RadiantDataProvider": "0x2f9d57e97c3dfed8676e605bc504a48e0c5917e9",
+  "RadiantIncentiveController": "0x7c16abb090d3fb266e9d17f60174b632f4229933",
+  "RadiantLendingPool": "0xd50cf00b6e600dd036ba8ef475677d816d6c4281",
   "SushiFactoryV2": "0xc35dadb65012ec5796536bd9864ed8773abc74c4",
   "SushiFactoryV3": "0x126555dd55a39328f69400d6ae4f782bd4c34abb",
   "UniswapFactoryV3": "0xdb1d10011ad0ff90774d0c6bb92e5c5c8b4461f7"

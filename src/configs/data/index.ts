@@ -5,6 +5,7 @@ import BnbchainAddresses from './addresses/bnbchain.json';
 import EthereumAddresses from './addresses/ethereum.json';
 import FantomAddresses from './addresses/fantom.json';
 import GnosisAddresses from './addresses/gnosis.json';
+import MetisAddresses from './addresses/metis.json';
 import OptimismAddresses from './addresses/optimism.json';
 import PolygonAddresses from './addresses/polygon.json';
 import { BlockSubGraphEndpoints, DataSubGraphEndpoints } from './subgraphs';
@@ -34,6 +35,7 @@ export const AddressesBook = {
   avalanche: AvalancheAddresses,
   fantom: FantomAddresses,
   gnosis: GnosisAddresses,
+  metis: MetisAddresses,
 };
 
 export const TokensBook = {

@@ -1,4 +1,8 @@
 {
+  "Aavev3DataProvider": "0x69fa688f1dc47d4b5d8029d5a35fb7a548310654",
+  "Aavev3IncentiveController": "0x929ec64c34a17401f460460d4b9390518e5b473e",
+  "Aavev3LendingPool": "0x794a61358d6845594f94dc1db02a252b5b4814ad",
+  "ChainlinkFeed_FTM_USD": "0xf4766552d15ae4d256ad41b6cf2933482b0680dc",
   "KyberswapFactory": "0xc7a590291e07b9fe9e64b86c58fd8fc764308c4a",
   "SpookyFactory": "0x152ee697f2e276fa89e96742e9bb9ab1f2e61be3",
   "SushiFactoryV2": "0xc35dadb65012ec5796536bd9864ed8773abc74c4",

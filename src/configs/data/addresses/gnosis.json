@@ -1,4 +1,10 @@
 {
+  "Aavev3DataProvider": "0x501b4c19dd9c2e06e94da7b6d5ed4dda013ec741",
+  "Aavev3IncentiveController": "0xad4f91d26254b6b0c6346b390dda2991fde2f20d",
+  "Aavev3LendingPool": "0xb50201558b00496a145fe76f7424749556e326d8",
+  "SparkDataProvider": "0x2a002054a06546bb5a264d57a81347e23af91d18",
+  "SparkIncentiveController": "0x98e6bcba7d5dafbfa4a92daf08d3d7512820c30c",
+  "SparkLendingPool": "0x2dae5307c5e3fd1cf5a72cb6f698f915860607e0",
   "SushiFactoryV2": "0xc35dadb65012ec5796536bd9864ed8773abc74c4",
   "SushiFactoryV3": "0xf78031cbca409f2fb6876bdfdbc1b2df24cf9bef"
 }

@@ -1,9 +1,8 @@
-import { normalizeAddress } from '../../lib/utils';
-import { CrossLendingMarketConfig, DataMetrics, ProtocolConfig } from '../../types/configs';
+import { CrossLendingMarketConfig, DataMetrics, LendingMarketVersions, ProtocolConfig } from '../../types/configs';
 import { AddressesBook } from '../data';
+import { ChainNames, ProtocolNames } from '../names';
 
 export interface AaveLendingMarketConfig extends CrossLendingMarketConfig {
-  priceOracle: string;
   dataProvider: string;
   incentiveController: string;
 }
@@ -12,170 +11,144 @@ export interface AaveProtocolConfig extends ProtocolConfig {
   configs: Array<AaveLendingMarketConfig>;
 }
 
-export function formatAaveLendingMarketConfig(configs: Array<AaveLendingMarketConfig>): Array<AaveLendingMarketConfig> {
-  return configs.map((config) => {
-    return {
-      ...config,
-
-      address: normalizeAddress(config.address),
-      priceOracle: normalizeAddress(config.priceOracle),
-      dataProvider: normalizeAddress(config.dataProvider),
-      incentiveController: normalizeAddress(config.incentiveController),
-    };
-  });
-}
-
 export const Aavev2Configs: AaveProtocolConfig = {
-  protocol: 'aavev2',
-  configs: formatAaveLendingMarketConfig([
+  protocol: ProtocolNames.aavev2,
+  configs: [
     {
-      chain: 'ethereum',
-      protocol: 'aavev2',
-      version: 'aavev2',
+      chain: ChainNames.ethereum,
+      protocol: ProtocolNames.aavev2,
+      version: LendingMarketVersions.cross.aavev2,
       birthday: 1606780800, // Tue Dec 01 2020 00:00:00 GMT+0000
       metric: DataMetrics.crossLending,
       address: AddressesBook.ethereum.Aavev2LendingPool,
-      priceOracle: AddressesBook.ethereum.Aavev2PriceOracle,
       dataProvider: AddressesBook.ethereum.Aavev2DataProvider,
       incentiveController: AddressesBook.ethereum.Aavev2IncentiveController,
     },
     {
-      chain: 'polygon',
-      protocol: 'aavev2',
-      version: 'aavev2',
+      chain: ChainNames.polygon,
+      protocol: ProtocolNames.aavev2,
+      version: LendingMarketVersions.cross.aavev2,
       birthday: 1617235200, // Thu Apr 01 2021 00:00:00 GMT+0000
       metric: DataMetrics.crossLending,
       address: AddressesBook.polygon.Aavev2LendingPool,
-      priceOracle: AddressesBook.polygon.Aavev2PriceOracle,
       dataProvider: AddressesBook.polygon.Aavev2DataProvider,
       incentiveController: AddressesBook.polygon.Aavev2IncentiveController,
     },
     {
-      chain: 'avalanche',
-      protocol: 'aavev2',
-      version: 'aavev2',
+      chain: ChainNames.avalanche,
+      protocol: ProtocolNames.aavev2,
+      version: LendingMarketVersions.cross.aavev2,
       birthday: 1632182400, // Tue Sep 21 2021 00:00:00 GMT+0000
       metric: DataMetrics.crossLending,
       address: AddressesBook.avalanche.Aavev2LendingPool,
-      priceOracle: AddressesBook.avalanche.Aavev2PriceOracle,
       dataProvider: AddressesBook.avalanche.Aavev2DataProvider,
       incentiveController: AddressesBook.avalanche.Aavev2IncentiveController,
     },
-  ]),
+  ],
 };
 
 export const Aavev3Configs: AaveProtocolConfig = {
-  protocol: 'aavev3',
-  configs: formatAaveLendingMarketConfig([
+  protocol: ProtocolNames.aavev3,
+  configs: [
     {
-      chain: 'ethereum',
-      protocol: 'aavev3',
-      version: 'aavev3',
+      chain: ChainNames.ethereum,
+      protocol: ProtocolNames.aavev3,
+      version: LendingMarketVersions.cross.aavev3,
       birthday: 1674864000, // Sat Jan 28 2023 00:00:00 GMT+0000
       metric: DataMetrics.crossLending,
-      address: '0x87870bca3f3fd6335c3f4ce8392d69350b4fa4e2',
-      priceOracle: '0x54586bE62E3c3580375aE3723C145253060Ca0C2',
-      dataProvider: '0x7B4EB56E7CD4b454BA8ff71E4518426369a138a3',
-      incentiveController: '0x8164Cc65827dcFe994AB23944CBC90e0aa80bFcb',
+      address: AddressesBook.ethereum.Aavev3LendingPool,
+      dataProvider: AddressesBook.ethereum.Aavev3DataProvider,
+      incentiveController: AddressesBook.ethereum.Aavev3IncentiveController,
     },
     {
-      chain: 'optimism',
-      protocol: 'aavev3',
-      version: 'aavev3',
+      chain: ChainNames.optimism,
+      protocol: ProtocolNames.aavev3,
+      version: LendingMarketVersions.cross.aavev3,
       birthday: 1647043200, // Sat Mar 12 2022 00:00:00 GMT+0000
       metric: DataMetrics.crossLending,
-      address: '0x794a61358d6845594f94dc1db02a252b5b4814ad',
-      priceOracle: '0xD81eb3728a631871a7eBBaD631b5f424909f0c77',
-      dataProvider: '0x69FA688f1Dc47d4B5d8029D5a35FB7a548310654',
-      incentiveController: '0x929EC64c34a17401F460460D4B9390518E5B473e',
+      address: AddressesBook.optimism.Aavev3LendingPool,
+      dataProvider: AddressesBook.optimism.Aavev3DataProvider,
+      incentiveController: AddressesBook.optimism.Aavev3IncentiveController,
     },
     {
-      chain: 'arbitrum',
-      protocol: 'aavev3',
-      version: 'aavev3',
+      chain: ChainNames.arbitrum,
+      protocol: ProtocolNames.aavev3,
+      version: LendingMarketVersions.cross.aavev3,
       birthday: 1647043200, // Sat Mar 12 2022 00:00:00 GMT+0000
       metric: DataMetrics.crossLending,
-      address: '0x794a61358d6845594f94dc1db02a252b5b4814ad',
-      priceOracle: '0xb56c2F0B653B2e0b10C9b928C8580Ac5Df02C7C7',
-      dataProvider: '0x69FA688f1Dc47d4B5d8029D5a35FB7a548310654',
-      incentiveController: '0x929EC64c34a17401F460460D4B9390518E5B473e',
+      address: AddressesBook.arbitrum.Aavev3LendingPool,
+      dataProvider: AddressesBook.arbitrum.Aavev3DataProvider,
+      incentiveController: AddressesBook.arbitrum.Aavev3IncentiveController,
     },
     {
-      chain: 'polygon',
-      protocol: 'aavev3',
-      version: 'aavev3',
+      chain: ChainNames.polygon,
+      protocol: ProtocolNames.aavev3,
+      version: LendingMarketVersions.cross.aavev3,
       birthday: 1647043200, // Sat Mar 12 2022 00:00:00 GMT+0000
       metric: DataMetrics.crossLending,
-      address: '0x794a61358d6845594f94dc1db02a252b5b4814ad',
-      priceOracle: '0xb023e699F5a33916Ea823A16485e259257cA8Bd1',
-      dataProvider: '0x69FA688f1Dc47d4B5d8029D5a35FB7a548310654',
-      incentiveController: '0x929EC64c34a17401F460460D4B9390518E5B473e',
+      address: AddressesBook.polygon.Aavev3LendingPool,
+      dataProvider: AddressesBook.polygon.Aavev3DataProvider,
+      incentiveController: AddressesBook.polygon.Aavev3IncentiveController,
     },
     {
-      chain: 'avalanche',
-      protocol: 'aavev3',
-      version: 'aavev3',
+      chain: ChainNames.avalanche,
+      protocol: ProtocolNames.aavev3,
+      version: LendingMarketVersions.cross.aavev3,
       birthday: 1647043200, // Sat Mar 12 2022 00:00:00 GMT+0000
       metric: DataMetrics.crossLending,
-      address: '0x794a61358d6845594f94dc1db02a252b5b4814ad',
-      priceOracle: '0xEBd36016B3eD09D4693Ed4251c67Bd858c3c7C9C',
-      dataProvider: '0x69FA688f1Dc47d4B5d8029D5a35FB7a548310654',
-      incentiveController: '0x929EC64c34a17401F460460D4B9390518E5B473e',
+      address: AddressesBook.avalanche.Aavev3LendingPool,
+      dataProvider: AddressesBook.avalanche.Aavev3DataProvider,
+      incentiveController: AddressesBook.avalanche.Aavev3IncentiveController,
     },
     {
-      chain: 'fantom',
-      protocol: 'aavev3',
-      version: 'aavev3',
+      chain: ChainNames.fantom,
+      protocol: ProtocolNames.aavev3,
+      version: LendingMarketVersions.cross.aavev3,
       birthday: 1692748800, // Wed Aug 23 2023 00:00:00 GMT+0000
       metric: DataMetrics.crossLending,
-      address: '0x794a61358d6845594f94dc1db02a252b5b4814ad',
-      priceOracle: '0xfd6f3c1845604C8AE6c6E402ad17fb9885160754',
-      dataProvider: '0x69FA688f1Dc47d4B5d8029D5a35FB7a548310654',
-      incentiveController: '0x929EC64c34a17401F460460D4B9390518E5B473e',
+      address: AddressesBook.fantom.Aavev3LendingPool,
+      dataProvider: AddressesBook.fantom.Aavev3DataProvider,
+      incentiveController: AddressesBook.fantom.Aavev3IncentiveController,
     },
     {
-      chain: 'base',
-      protocol: 'aavev3',
-      version: 'aavev3',
+      chain: ChainNames.base,
+      protocol: ProtocolNames.aavev3,
+      version: LendingMarketVersions.cross.aavev3,
       birthday: 1692662400, // Tue Aug 22 2023 00:00:00 GMT+0000
       metric: DataMetrics.crossLending,
-      address: '0xa238dd80c259a72e81d7e4664a9801593f98d1c5',
-      priceOracle: '0x2Cc0Fc26eD4563A5ce5e8bdcfe1A2878676Ae156',
-      dataProvider: '0x2d8A3C5677189723C4cB8873CfC9C8976FDF38Ac',
-      incentiveController: '0xf9cc4F0D883F1a1eb2c253bdb46c254Ca51E1F44',
+      address: AddressesBook.base.Aavev3LendingPool,
+      dataProvider: AddressesBook.base.Aavev3DataProvider,
+      incentiveController: AddressesBook.base.Aavev3IncentiveController,
     },
     {
-      chain: 'metis',
-      protocol: 'aavev3',
-      version: 'aavev3',
+      chain: ChainNames.metis,
+      protocol: ProtocolNames.aavev3,
+      version: LendingMarketVersions.cross.aavev3,
       birthday: 1682294400, // Mon Apr 24 2023 00:00:00 GMT+0000
       metric: DataMetrics.crossLending,
-      address: '0x90df02551bB792286e8D4f13E0e357b4Bf1D6a57',
-      priceOracle: '0x38D36e85E47eA6ff0d18B0adF12E5fC8984A6f8e',
-      dataProvider: '0x99411FC17Ad1B56f49719E3850B2CDcc0f9bBFd8',
-      incentiveController: '0x30C1b8F0490fa0908863d6Cbd2E36400b4310A6B',
+      address: AddressesBook.metis.Aavev3LendingPool,
+      dataProvider: AddressesBook.metis.Aavev3DataProvider,
+      incentiveController: AddressesBook.metis.Aavev3IncentiveController,
     },
     {
-      chain: 'gnosis',
-      protocol: 'aavev3',
-      version: 'aavev3',
+      chain: ChainNames.gnosis,
+      protocol: ProtocolNames.aavev3,
+      version: LendingMarketVersions.cross.aavev3,
       birthday: 1696464000, // Thu Oct 05 2023 00:00:00 GMT+0000
       metric: DataMetrics.crossLending,
-      address: '0xb50201558B00496A145fE76f7424749556E326D8',
-      priceOracle: '0xeb0a051be10228213BAEb449db63719d6742F7c4',
-      dataProvider: '0x501B4c19dd9C2e06E94dA7b6D5Ed4ddA013EC741',
-      incentiveController: '0xaD4F91D26254B6B0C6346b390dDA2991FDE2F20d',
+      address: AddressesBook.gnosis.Aavev3LendingPool,
+      dataProvider: AddressesBook.gnosis.Aavev3DataProvider,
+      incentiveController: AddressesBook.gnosis.Aavev3IncentiveController,
     },
     {
-      chain: 'bnbchain',
-      protocol: 'aavev3',
-      version: 'aavev3',
+      chain: ChainNames.bnbchain,
+      protocol: ProtocolNames.aavev3,
+      version: LendingMarketVersions.cross.aavev3,
       birthday: 1706054400, // Wed Jan 24 2024 00:00:00 GMT+0000
       metric: DataMetrics.crossLending,
-      address: '0x6807dc923806fE8Fd134338EABCA509979a7e0cB',
-      priceOracle: '0x39bc1bfDa2130d6Bb6DBEfd366939b4c7aa7C697',
-      dataProvider: '0x41585C50524fb8c3899B43D7D797d9486AAc94DB',
-      incentiveController: '0xC206C2764A9dBF27d599613b8F9A63ACd1160ab4',
+      address: AddressesBook.bnbchain.Aavev3LendingPool,
+      dataProvider: AddressesBook.bnbchain.Aavev3DataProvider,
+      incentiveController: AddressesBook.bnbchain.Aavev3IncentiveController,
     },
-  ]),
+  ],
 };
