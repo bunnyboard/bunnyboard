@@ -1,7 +1,7 @@
 import BigNumber from 'bignumber.js';
 
 import { TokenList } from '../../../../configs';
-import { DexscanMinimumLiquidityUsdToConsider } from '../../../../configs/boards/dexscan';
+import { DexscanMinimumVolumeCumulativeUsdToConsider } from '../../../../configs/boards/dexscan';
 import { TimeUnits } from '../../../../configs/constants';
 import EnvConfig from '../../../../configs/envConfig';
 import logger from '../../../../lib/logger';
@@ -51,76 +51,74 @@ export default class UniswapSubgraphScanner {
             toBlock: toBlock,
           });
           if (tokenData) {
-            const totalLiquidityUsd = new BigNumber(tokenData.tokenPrice)
-              .multipliedBy(new BigNumber(tokenData.totalLiquidity))
-              .toNumber();
-            if (totalLiquidityUsd >= DexscanMinimumLiquidityUsdToConsider) {
-              await options.storages.database.update({
-                collection: EnvConfig.mongodb.collections.dexLiquidityTokenSnapshots.name,
-                keys: {
-                  chain: tokenData.chain,
-                  protocol: tokenData.protocol,
-                  address: tokenData.address,
-                },
-                updates: {
-                  ...tokenData,
-                },
-                upsert: true,
-              });
+            await options.storages.database.update({
+              collection: EnvConfig.mongodb.collections.dexLiquidityTokenSnapshots.name,
+              keys: {
+                chain: tokenData.chain,
+                protocol: tokenData.protocol,
+                address: tokenData.address,
+              },
+              updates: {
+                ...tokenData,
+              },
+              upsert: true,
+            });
 
-              const pools = await UniswapLibs.getTopLiquidityPoolForToken({
+            const pools = await UniswapLibs.getTopLiquidityPoolForToken({
+              dexConfig: options.dexConfig,
+              token: token,
+              fromBlock: fromBlock,
+              toBlock: toBlock,
+            });
+            for (const pool of pools) {
+              // update only if all tokens in pools are whitelisted
+              let shouldGetPoolData = true;
+              for (const poolToken of pool.tokens) {
+                if (!TokenList[poolToken.chain][poolToken.address]) {
+                  shouldGetPoolData = false;
+                }
+              }
+
+              if (!shouldGetPoolData) {
+                continue;
+              }
+
+              const poolData = await UniswapLibs.getLiquidityPoolSnapshot(pool, {
                 dexConfig: options.dexConfig,
                 token: token,
                 fromBlock: fromBlock,
                 toBlock: toBlock,
               });
-              for (const pool of pools) {
-                // update only if all tokens in pools are whitelisted
-                let shouldGetPoolData = true;
-                for (const poolToken of pool.tokens) {
-                  if (!TokenList[poolToken.chain][poolToken.address]) {
-                    shouldGetPoolData = false;
-                  }
-                }
-
-                if (!shouldGetPoolData) {
-                  continue;
-                }
-
-                const poolData = await UniswapLibs.getLiquidityPoolSnapshot(pool, {
-                  dexConfig: options.dexConfig,
-                  token: token,
-                  fromBlock: fromBlock,
-                  toBlock: toBlock,
+              if (
+                poolData &&
+                new BigNumber(poolData.volumeTradingCumulativeUsd).gt(DexscanMinimumVolumeCumulativeUsdToConsider)
+              ) {
+                await options.storages.database.update({
+                  collection: EnvConfig.mongodb.collections.dexLiquidityPoolSnapshots.name,
+                  keys: {
+                    chain: poolData.chain,
+                    protocol: poolData.protocol,
+                    address: poolData.address,
+                  },
+                  updates: {
+                    ...poolData,
+                  },
+                  upsert: true,
                 });
-                if (poolData && new BigNumber(poolData.totalLiquidityUsd).gt(DexscanMinimumLiquidityUsdToConsider)) {
-                  await options.storages.database.update({
-                    collection: EnvConfig.mongodb.collections.dexLiquidityPoolSnapshots.name,
-                    keys: {
-                      chain: poolData.chain,
-                      protocol: poolData.protocol,
-                      address: poolData.address,
-                    },
-                    updates: {
-                      ...poolData,
-                    },
-                    upsert: true,
-                  });
-                  logger.debug('update dex liquidity pool data', {
-                    service: 'UniswapSubgraphScanner',
-                    chain: options.dexConfig.chain,
-                    protocol: options.dexConfig.protocol,
-                    pool: `${poolData.tokens[0].symbol}:${poolData.tokens[1].symbol}`,
-                  });
-                }
+                logger.debug('update dex liquidity pool data', {
+                  service: 'UniswapSubgraphScanner',
+                  chain: options.dexConfig.chain,
+                  protocol: options.dexConfig.protocol,
+                  pool: `${poolData.tokens[0].symbol}:${poolData.tokens[1].symbol}`,
+                });
               }
-              logger.info('update dex liquidity token data', {
-                service: 'UniswapSubgraphScanner',
-                chain: options.dexConfig.chain,
-                protocol: options.dexConfig.protocol,
-                token: `${token.symbol}:${token.address}`,
-              });
             }
+            logger.info('update dex liquidity token data', {
+              service: 'UniswapSubgraphScanner',
+              chain: options.dexConfig.chain,
+              protocol: options.dexConfig.protocol,
+              token: `${token.symbol}:${token.address}`,
+            });
           } else {
             logger.warn('ignored to update dex liquidity token data', {
               service: 'UniswapSubgraphScanner',
