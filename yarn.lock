@@ -729,14 +729,14 @@ __metadata:
     "@sentry/node": "npm:^7.28.1"
     "@sentry/tracing": "npm:^7.28.1"
     "@trivago/prettier-plugin-sort-imports": "npm:^4.2.0"
-    "@types/async-retry": "npm:^1"
+    "@types/async-retry": "npm:^1.4.8"
     "@types/cors": "npm:^2.8.17"
     "@types/express": "npm:^4.17.21"
     "@types/express-openapi": "npm:^1.9.0"
     "@types/node": "npm:^20.11.8"
     "@types/swagger-ui-express": "npm:^4.1.6"
     "@types/winston": "npm:^2.4.4"
-    "@types/yamljs": "npm:^0"
+    "@types/yamljs": "npm:^0.2.34"
     "@types/yargs": "npm:^17.0.10"
     "@uniswap/sdk-core": "npm:^4.0.9"
     "@uniswap/v3-sdk": "npm:^3.10.0"
@@ -1964,7 +1964,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/async-retry@npm:^1":
+"@types/async-retry@npm:^1.4.8":
   version: 1.4.8
   resolution: "@types/async-retry@npm:1.4.8"
   dependencies:
@@ -2165,7 +2165,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/yamljs@npm:^0":
+"@types/yamljs@npm:^0.2.34":
   version: 0.2.34
   resolution: "@types/yamljs@npm:0.2.34"
   checksum: 10e43fdfa1cc36dfd59a068152556ac26665b46a492265e98c4397a18216a74f9e35a961f8b2bb0aa4c264d7c66f3bd0edda87e397a32766ca8fc921d5aafd70
