@@ -1,7 +1,7 @@
 import { OracleSourceChainlink } from '../../types/oracles';
 import { AddressesBook } from '../data';
 
-// chain => tokenAddress => config
+// name => OracleSourceChainlink
 export const OracleSourceChainlinkList: { [key: string]: OracleSourceChainlink } = {
   ETH_USD: {
     type: 'chainlink',

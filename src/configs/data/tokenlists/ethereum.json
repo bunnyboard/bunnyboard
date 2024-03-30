@@ -89,6 +89,12 @@
     "symbol": "UNI",
     "decimals": 18
   },
+  "0x221657776846890989a759ba2973e427dff5c9bb": {
+    "chain": "ethereum",
+    "address": "0x221657776846890989a759ba2973e427dff5c9bb",
+    "symbol": "REPv2",
+    "decimals": 18
+  },
   "0x2260fac5e5542a773aa44fbcfedf7c193bc2c599": {
     "chain": "ethereum",
     "address": "0x2260fac5e5542a773aa44fbcfedf7c193bc2c599",

@@ -5,11 +5,11 @@ import SavingDaiAbi from '../../configs/abi/spark/SavingDai.json';
 import { SolidityUnits } from '../../configs/constants';
 import { formatBigNumberToString } from '../../lib/utils';
 import BlockchainService from '../../services/blockchains/blockchain';
-import { OracleSourceBearingToken, OracleSourceMakerRwaPip } from '../../types/oracles';
+import { OracleSourceMakerRwaPip, OracleSourceSavingDai } from '../../types/oracles';
 
 export default class OracleLibs {
   public static async getTokenPrice(
-    config: OracleSourceBearingToken | OracleSourceMakerRwaPip,
+    config: OracleSourceSavingDai | OracleSourceMakerRwaPip,
     blockNumber: number,
   ): Promise<string | null> {
     switch (config.type) {

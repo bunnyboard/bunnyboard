@@ -1,7 +1,7 @@
-import { OracleSourceUniv3 } from '../../types/oracles';
+import { OracleSourcePool2 } from '../../types/oracles';
 import { TokensBook } from '../data';
 
-export const OracleSourceUniswapv3List: { [key: string]: OracleSourceUniv3 } = {
+export const OracleSourceUniswapv3List: { [key: string]: OracleSourcePool2 } = {
   RAI_DAI: {
     type: 'univ3',
     chain: 'ethereum',

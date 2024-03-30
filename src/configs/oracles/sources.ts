@@ -16,17 +16,17 @@ export const OracleSourceConfigs: { [key: string]: OracleConfig } = {
   DAI: {
     currency: 'usd',
     sources: [OracleSourceChainlinkList.DAI_USD],
-    coingeckoId: 'dai',
+    stablecoin: true,
   },
   USDC: {
     currency: 'usd',
     sources: [OracleSourceChainlinkList.USDC_USD],
-    coingeckoId: 'usd-coin',
+    stablecoin: true,
   },
   USDT: {
     currency: 'usd',
     sources: [OracleSourceChainlinkList.USDT_USD],
-    coingeckoId: 'tether',
+    stablecoin: true,
   },
   EUR: {
     currency: 'usd',
@@ -35,88 +35,71 @@ export const OracleSourceConfigs: { [key: string]: OracleConfig } = {
   sUSD: {
     currency: 'usd',
     sources: [OracleSourceChainlinkList.USDT_USD],
-    coingeckoId: 'nusd',
     stablecoin: true,
   },
   TUSD: {
     currency: 'eth',
     sources: [OracleSourceUniswapv2List.TUSD_WETH],
-    coingeckoId: 'true-usd',
   },
   LEND: {
     currency: 'eth',
     sources: [OracleSourceUniswapv2List.LEND_WETH],
-    coingeckoId: 'ethlend',
   },
   BAT: {
     currency: 'eth',
     sources: [OracleSourceChainlinkList.BAT_ETH],
-    coingeckoId: 'basic-attention-token',
   },
   LINK: {
     currency: 'usd',
     sources: [OracleSourceChainlinkList.LINK_USD],
-    coingeckoId: 'chainlink',
   },
   KNC: {
     currency: 'usd',
     sources: [OracleSourceChainlinkList.KNC_USD],
-    coingeckoId: 'kyber-network',
   },
   REP: {
     currency: 'eth',
     sources: [OracleSourceUniswapv2List.REP_WETH],
-    coingeckoId: 'augur',
   },
   MKR: {
     currency: 'usd',
     sources: [OracleSourceUniswapv2List.MKR_DAI],
-    coingeckoId: 'maker',
   },
   MANA: {
     currency: 'eth',
     sources: [OracleSourceUniswapv2List.MANA_WETH],
-    coingeckoId: 'decentraland',
   },
   ZRX: {
     currency: 'eth',
     sources: [OracleSourceUniswapv2List.ZRX_WETH],
-    coingeckoId: '0x',
   },
   SNX: {
     currency: 'eth',
     sources: [OracleSourceUniswapv2List.SNX_WETH],
-    coingeckoId: 'havven',
   },
   WBTC: {
     currency: 'btc',
     sources: [OracleSourceChainlinkList.WBTC_BTC],
-    coingeckoId: 'wrapped-bitcoin',
   },
   BUSD: {
     currency: 'usd',
     sources: [OracleSourceChainlinkList.BUSD_USD],
-    coingeckoId: 'binance-usd',
   },
   ENJ: {
     currency: 'eth',
     sources: [OracleSourceUniswapv2List.ENJ_WETH],
-    coingeckoId: 'enjincoin',
   },
   REN: {
     currency: 'eth',
     sources: [OracleSourceUniswapv2List.REN_WETH],
-    coingeckoId: 'republic-protocol',
   },
   YFI: {
     currency: 'eth',
     sources: [OracleSourceUniswapv2List.YFI_WETH],
-    coingeckoId: 'yearn-finance',
   },
   AAVE: {
     currency: 'eth',
     sources: [OracleSourceUniswapv2List.AAVE_WETH],
-    coingeckoId: 'aave',
   },
   UNI: {
     currency: 'eth',
@@ -137,7 +120,6 @@ export const OracleSourceConfigs: { [key: string]: OracleConfig } = {
   GUSD: {
     currency: 'usd',
     sources: [OracleSourceChainlinkList.GUSD_USD],
-    coingeckoId: 'gemini-dollar',
   },
   FIL: {
     // renFIL
@@ -151,7 +133,6 @@ export const OracleSourceConfigs: { [key: string]: OracleConfig } = {
   USDP: {
     currency: 'usd',
     sources: [OracleSourceChainlinkList.USDP_USD],
-    coingeckoId: 'paxos-standard',
   },
   AMPL: {
     currency: 'eth',
@@ -180,7 +161,6 @@ export const OracleSourceConfigs: { [key: string]: OracleConfig } = {
   UST: {
     currency: 'eth',
     sources: [OracleSourceUniswapv2List.UST_WETH],
-    coingeckoId: 'terrausd',
   },
   CVX: {
     currency: 'eth',
@@ -193,17 +173,14 @@ export const OracleSourceConfigs: { [key: string]: OracleConfig } = {
   LUSD: {
     currency: 'eth',
     sources: [OracleSourceUniswapv2List.LUSD_WETH],
-    coingeckoId: 'liquity-usd',
   },
   SUSHI: {
     currency: 'eth',
     sources: [OracleSourceUniswapv2List.SUSHI_WETH],
-    coingeckoId: 'sushi',
   },
   wstETH: {
     currency: 'eth',
     sources: [OracleSourceUniswapv3List.wstETH_WETH],
-    coingeckoId: 'wrapped-steth',
   },
   cbETH: {
     currency: 'eth',
@@ -236,17 +213,14 @@ export const OracleSourceConfigs: { [key: string]: OracleConfig } = {
   COMP: {
     currency: 'eth',
     sources: [OracleSourceUniswapv2List.COMP_WETH],
-    coingeckoId: 'compound-governance-token',
   },
   SAI: {
     currency: 'eth',
     sources: [OracleSourceUniswapv3List.SAI_WETH],
-    coingeckoId: 'sai',
   },
   EURS: {
     currency: 'usd',
     sources: [OracleSourceUniswapv3List.EURS_USDC],
-    coingeckoId: 'stasis-eurs',
   },
   sEUR: {
     currency: 'usd',
@@ -255,7 +229,6 @@ export const OracleSourceConfigs: { [key: string]: OracleConfig } = {
   MIM: {
     currency: 'usd',
     sources: [OracleSourceUniswapv3List.MIM_USDC],
-    coingeckoId: 'magic-internet-money',
   },
   FXS: {
     currency: 'usd',
@@ -268,7 +241,6 @@ export const OracleSourceConfigs: { [key: string]: OracleConfig } = {
   OP: {
     currency: 'eth',
     sources: [OracleSourceUniswapv3List.OP_WETH],
-    coingeckoId: 'optimism',
   },
   GHST: {
     currency: 'usd',
@@ -277,12 +249,10 @@ export const OracleSourceConfigs: { [key: string]: OracleConfig } = {
   jEUR: {
     currency: 'eth',
     sources: [OracleSourceUniswapv2List.jEUR_WETH],
-    coingeckoId: 'jarvis-synthetic-euro',
   },
   agEUR: {
     currency: 'usd',
     sources: [OracleSourceUniswapv3List.agEUR_USDC],
-    coingeckoId: 'ageur',
   },
   miMATIC: {
     currency: 'usd',
@@ -291,12 +261,10 @@ export const OracleSourceConfigs: { [key: string]: OracleConfig } = {
   stMATIC: {
     currency: 'matic',
     sources: [OracleSourceUniswapv3List.stMATIC_WMATIC],
-    coingeckoId: 'lido-staked-matic',
   },
   MaticX: {
     currency: 'matic',
     sources: [OracleSourceUniswapv2List.MaticX_WMATIC],
-    coingeckoId: 'stader-maticx',
   },
   ALPHA: {
     currency: 'eth',
@@ -309,12 +277,10 @@ export const OracleSourceConfigs: { [key: string]: OracleConfig } = {
   ADA: {
     currency: 'bnb',
     sources: [OracleSourceUniswapv2List.ADA_WBNB],
-    coingeckoId: 'cardano',
   },
   BCH: {
     currency: 'usd',
     sources: [OracleSourceChainlinkList.BCH_USD],
-    coingeckoId: 'bitcoin-cash',
   },
   BETH: {
     currency: 'eth',
@@ -343,7 +309,6 @@ export const OracleSourceConfigs: { [key: string]: OracleConfig } = {
   SXP: {
     currency: 'bnb',
     sources: [OracleSourceUniswapv2List.SXP_WBNB],
-    coingeckoId: 'swipe',
   },
   wBETH: {
     currency: 'eth',
@@ -388,7 +353,6 @@ export const OracleSourceConfigs: { [key: string]: OracleConfig } = {
   XVS: {
     currency: 'bnb',
     sources: [OracleSourceUniswapv2List.XVS_WBNB],
-    coingeckoId: 'venus',
   },
   HAY: {
     currency: 'usd',

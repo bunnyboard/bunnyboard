@@ -59,6 +59,7 @@ export const OracleConfigs: { [key: string]: { [key: string]: OracleConfig } } =
     '0x3432b6a60d23ca0dfca7761b7ab56459d9c964d0': OracleSourceConfigs.FXS,
     '0xf939e0a03fb07f59a73314e73794be0e57ac1b4e': OracleSourceConfigs.crvUSD,
     '0x1985365e9f78359a9b6ad760e32412f4a445e862': OracleSourceConfigs.REP,
+    '0x221657776846890989a759ba2973e427dff5c9bb': OracleSourceConfigs.REP,
     '0x89d24a6b4ccb1b6faa2625fe562bdd9a23260359': OracleSourceConfigs.SAI,
     '0xc00e94cb662c3520282e6f5717214004a7f26888': OracleSourceConfigs.COMP,
     '0x6b3595068778dd592e39a122f4f5a5cf09c90fe2': OracleSourceConfigs.SUSHI,

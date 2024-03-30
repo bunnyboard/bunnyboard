@@ -1,8 +1,8 @@
-import { OracleSourceBearingToken, OracleSourceCompoundOracle, OracleSourceMakerRwaPip } from '../../types/oracles';
+import { OracleSourceMakerRwaPip, OracleSourceSavingDai } from '../../types/oracles';
 import { TokensBook } from '../data';
 
 export const OracleSourceCustomList: {
-  [key: string]: OracleSourceBearingToken | OracleSourceCompoundOracle | OracleSourceMakerRwaPip;
+  [key: string]: OracleSourceSavingDai | OracleSourceMakerRwaPip;
 } = {
   SAVING_DAI: {
     type: 'savingDai',

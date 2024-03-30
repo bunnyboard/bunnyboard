@@ -1,7 +1,7 @@
-import { OracleSourceUniv2 } from '../../types/oracles';
+import { OracleSourcePool2 } from '../../types/oracles';
 import { TokensBook } from '../data';
 
-export const OracleSourceUniswapv2List: { [key: string]: OracleSourceUniv2 } = {
+export const OracleSourceUniswapv2List: { [key: string]: OracleSourcePool2 } = {
   '1INCH_WETH': {
     type: 'univ2',
     chain: 'ethereum',
@@ -20,7 +20,7 @@ export const OracleSourceUniswapv2List: { [key: string]: OracleSourceUniv2 } = {
     type: 'univ2',
     chain: 'ethereum',
     address: '0x8979a3ef9d540480342ac0f56e9d4c88807b1cba',
-    baseToken: TokensBook.ethereum['0x1985365e9f78359a9b6ad760e32412f4a445e862'],
+    baseToken: TokensBook.ethereum['0x221657776846890989a759ba2973e427dff5c9bb'],
     quotaToken: TokensBook.ethereum['0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'],
   },
   MKR_DAI: {

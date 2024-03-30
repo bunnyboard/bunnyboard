@@ -55,8 +55,6 @@ export default class AaveLibs {
       params: [],
     });
 
-    console.log(aaveLendingMarketConfig, reserveList);
-
     for (const reserve of reserveList) {
       const token = await blockchain.getTokenInfo({
         chain: aaveLendingMarketConfig.chain,

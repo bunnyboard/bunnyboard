@@ -15,7 +15,7 @@ import {
 } from '../../types/collectors/dexscan';
 import { GetDexLiquidityTokenDataOptions } from '../../types/collectors/options';
 import { DexVersions, LiquidityPoolConfig } from '../../types/configs';
-import { OracleSourceUniv2, OracleSourceUniv3 } from '../../types/oracles';
+import { OracleSourcePool2 } from '../../types/oracles';
 
 export default class UniswapLibs {
   public static async getPool2Constant(chain: string, address: string): Promise<LiquidityPoolConfig | null> {
@@ -80,10 +80,7 @@ export default class UniswapLibs {
     return null;
   }
 
-  public static async getPricePool2(
-    source: OracleSourceUniv2 | OracleSourceUniv3,
-    blockNumber: number,
-  ): Promise<string | null> {
+  public static async getPricePool2(source: OracleSourcePool2, blockNumber: number): Promise<string | null> {
     const blockchain = new BlockchainService();
 
     if (source.type === 'univ2') {

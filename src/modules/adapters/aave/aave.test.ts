@@ -24,9 +24,39 @@ test('should have oracle configs for reserves correctly', async function () {
     expect(marketInfo).not.equal(null);
     if (marketInfo) {
       for (const token of marketInfo.reserves) {
-        expect(OracleConfigs[token.chain][token.address]).not.equal(null);
-        expect(OracleConfigs[token.chain][token.address]).not.equal(undefined);
+        const oracleSource = (OracleConfigs as any)[token.chain][token.address];
+        expect(oracleSource).not.equal(null);
+        expect(oracleSource).not.equal(undefined);
       }
+    }
+  }
+});
+
+test('should get data correctly at birthday - aavev2 chain ethereum', async function () {
+  const aavev2Adapter = new Aavev2Adapter(
+    {
+      blockchain: blockchain,
+      oracle: oracle,
+    },
+    {
+      database: database,
+      memcache: memcache,
+    },
+    Aavev2Configs,
+  );
+
+  const configEthereum = ProtocolConfigs.aavev2.configs.filter((item) => item.chain === 'ethereum')[0];
+  if (configEthereum) {
+    const dataState = await aavev2Adapter.getLendingReservesDataState({
+      config: configEthereum,
+      timestamp: configEthereum.birthday,
+    });
+
+    expect(dataState).not.equal(null);
+
+    if (dataState) {
+      console.log(dataState);
+      expect(dataState.length).equal(37);
     }
   }
 });

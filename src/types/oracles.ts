@@ -3,16 +3,18 @@ import { Token } from './configs';
 export type OracleCurrencyBase = 'usd' | 'eth' | 'btc' | 'bnb' | 'avax' | 'matic' | 'ftm';
 
 export const OracleTypes = {
+  // ChainLink price feed
+  // https://docs.chain.link/data-feeds
   chainlink: 'chainlink',
+
+  // uniswap pool2 version 2
   uniswapv2: 'univ2',
+
+  // uniswap pool2 version 3
   uniswapv3: 'univ3',
 
   // https://etherscan.io/token/0x83F20F44975D03b1b09e64809B757c47f942BEeA
   savingDai: 'savingDai',
-
-  // https://etherscan.io/address/0x3d9819210a31b4961b30ef54be2aed79b9c9cd3b
-  // get oracle address from comptroller
-  compoundOracle: 'compoundOracle',
 
   // https://etherscan.io/address/0x76A9f30B45F4ebFD60Ce8a1c6e963b1605f7cB6d
   // https://docs.makerdao.com/smart-contract-modules/core-module/spot-detailed-documentation
@@ -32,22 +34,15 @@ export interface OracleSourceChainlink extends OracleSourceBase {
   decimals: number;
 }
 
-export interface OracleSourceUniv2 extends OracleSourceBase {
+export interface OracleSourcePool2 extends OracleSourceBase {
   baseToken: Token;
   quotaToken: Token;
 }
 
-export interface OracleSourceUniv3 extends OracleSourceUniv2 {}
-
 // this oracle present a bearing staking pool
 // the price will be calculated by amount of underlying (staked) token
-export interface OracleSourceBearingToken extends OracleSourceBase {
+export interface OracleSourceSavingDai extends OracleSourceBase {
   token: Token;
-}
-
-// this oracle present a compound.finance oracle source
-export interface OracleSourceCompoundOracle extends OracleSourceBase {
-  cTokenAddress: string;
 }
 
 // this oracle using pip contract from Maker Dao
@@ -64,19 +59,7 @@ export interface OracleConfig {
   currency: OracleCurrencyBase;
 
   // a list of on-chain sources where we can get the token price
-  sources: Array<
-    | OracleSourceChainlink
-    | OracleSourceUniv2
-    | OracleSourceUniv3
-    | OracleSourceBearingToken
-    | OracleSourceCompoundOracle
-    | OracleSourceMakerRwaPip
-  >;
-
-  // if the coingecko id was given
-  // we will get price from coingecko API
-  // in case we failed to get price from on-chain source
-  coingeckoId?: string;
+  sources: Array<OracleSourceChainlink | OracleSourcePool2 | OracleSourceSavingDai | OracleSourceMakerRwaPip>;
 
   // if is stablecoin, return 1 when we can not fetch the price from any source
   stablecoin?: boolean;
