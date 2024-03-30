@@ -221,7 +221,7 @@ export const OracleSourceConfigs: { [key: string]: OracleConfig } = {
   },
   EURS: {
     currency: 'usd',
-    sources: [OracleSourceUniswapv3List.EURS_USDC],
+    sources: [OracleSourceUniswapv3List.EURS_USDC, OracleSourceChainlinkList.EUR_USD],
   },
   sEUR: {
     currency: 'usd',
@@ -249,11 +249,11 @@ export const OracleSourceConfigs: { [key: string]: OracleConfig } = {
   },
   jEUR: {
     currency: 'eth',
-    sources: [OracleSourceUniswapv2List.jEUR_WETH],
+    sources: [OracleSourceUniswapv2List.jEUR_WETH, OracleSourceChainlinkList.EUR_USD],
   },
   agEUR: {
     currency: 'usd',
-    sources: [OracleSourceUniswapv3List.agEUR_USDC],
+    sources: [OracleSourceUniswapv3List.agEUR_USDC, OracleSourceChainlinkList.EUR_USD],
   },
   miMATIC: {
     currency: 'usd',

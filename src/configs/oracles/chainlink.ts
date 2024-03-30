@@ -18,6 +18,7 @@ export const OracleSourceChainlinkList: { [key: string]: OracleSourceChainlink }
   WBTC_BTC: {
     type: 'chainlink',
     chain: 'ethereum',
+    currency: 'usd',
     address: AddressesBook.ethereum.ChainlinkFeed_WBTC_USD,
     decimals: 8,
   },
