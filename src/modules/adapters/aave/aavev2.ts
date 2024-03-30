@@ -180,10 +180,10 @@ export default class Aavev2Adapter extends CrossLendingProtocolAdapter {
   ): Promise<Array<CrossLendingReserveDataState> | null> {
     const result: Array<CrossLendingReserveDataState> = [];
 
-    const blockNumber =
-      options.timestamp > 0
-        ? await this.services.blockchain.tryGetBlockNumberAtTimestamp(options.config.chain, options.timestamp)
-        : 0;
+    const blockNumber = await this.services.blockchain.tryGetBlockNumberAtTimestamp(
+      options.config.chain,
+      options.timestamp,
+    );
 
     const marketConfig: AaveLendingMarketConfig = options.config as AaveLendingMarketConfig;
 
@@ -204,8 +204,7 @@ export default class Aavev2Adapter extends CrossLendingProtocolAdapter {
         timestamp: options.timestamp,
       });
 
-      const reserveData: any = await this.getReserveData(marketConfig, reserve, blockNumber);
-      const reserveConfigData: any = await this.getReserveConfigData(marketConfig, reserve, blockNumber);
+      const [reserveData, reserveConfigData] = await this.getReserveData(marketConfig, reserve, blockNumber);
 
       const totalBorrowed = this.getTotalBorrowed(reserveData);
       const totalDeposited = this.getTotalDeposited(reserveData);
@@ -335,28 +334,23 @@ export default class Aavev2Adapter extends CrossLendingProtocolAdapter {
   }
 
   protected async getReserveData(config: AaveLendingMarketConfig, reserve: string, blockNumber: number): Promise<any> {
-    return await this.services.blockchain.readContract({
+    return await this.services.blockchain.multicall({
       chain: config.chain,
-      abi: this.abiConfigs.eventAbis.dataProvider,
-      target: config.dataProvider,
-      method: 'getReserveData',
-      params: [reserve],
-      blockNumber,
-    });
-  }
-
-  protected async getReserveConfigData(
-    config: AaveLendingMarketConfig,
-    reserve: string,
-    blockNumber: number,
-  ): Promise<any> {
-    return await this.services.blockchain.readContract({
-      chain: config.chain,
-      abi: this.abiConfigs.eventAbis.dataProvider,
-      target: config.dataProvider,
-      method: 'getReserveConfigurationData',
-      params: [reserve],
-      blockNumber,
+      blockNumber: blockNumber,
+      calls: [
+        {
+          abi: this.abiConfigs.eventAbis.dataProvider,
+          target: config.dataProvider,
+          method: 'getReserveData',
+          params: [reserve],
+        },
+        {
+          abi: this.abiConfigs.eventAbis.dataProvider,
+          target: config.dataProvider,
+          method: 'getReserveConfigurationData',
+          params: [reserve],
+        },
+      ],
     });
   }
 }

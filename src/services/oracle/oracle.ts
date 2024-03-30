@@ -118,7 +118,7 @@ export default class OracleService extends CachingService implements IOracleServ
         if (priceFirst) {
           let priceUsd: string | null = null;
 
-          if (OracleConfigs[options.chain][options.address].currency === 'usd') {
+          if (source.currency === 'usd' || OracleConfigs[options.chain][options.address].currency === 'usd') {
             priceUsd = priceFirst;
           } else {
             const currencyBasePriceUsd = await this.getTokenCurrencyBasePriceUsd(

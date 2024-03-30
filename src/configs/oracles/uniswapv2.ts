@@ -348,4 +348,12 @@ export const OracleSourceUniswapv2List: { [key: string]: OracleSourcePool2 } = {
     baseToken: TokensBook.ethereum['0x5f98805a4e8be255a32880fdec7f6728c6568ba0'],
     quotaToken: TokensBook.ethereum['0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'],
   },
+  WBTC_USDT: {
+    type: 'univ2',
+    chain: 'ethereum',
+    currency: 'usd',
+    address: '0x0DE0Fa91b6DbaB8c8503aAA2D1DFa91a192cB149',
+    baseToken: TokensBook.ethereum['0x2260fac5e5542a773aa44fbcfedf7c193bc2c599'],
+    quotaToken: TokensBook.ethereum['0xdac17f958d2ee523a2206206994597c13d831ec7'],
+  },
 };

@@ -6,7 +6,7 @@ import BlockchainService from './blockchain';
 
 const blockchain = new BlockchainService();
 
-describe('multicall3', function () {
+describe('multicall', function () {
   test('should be able to get token metadata', async function () {
     const tokens = [
       {
@@ -14,6 +14,7 @@ describe('multicall3', function () {
         address: '0xdac17f958d2ee523a2206206994597c13d831ec7',
         symbol: 'USDT',
         decimals: 6,
+        blockNumber: 10634748,
       },
       {
         chain: 'bnbchain',
@@ -21,26 +22,64 @@ describe('multicall3', function () {
         symbol: 'USDT',
         decimals: 18,
       },
+      {
+        chain: 'arbitrum',
+        address: '0x912ce59144191c1204e64559fe8253a0e49e6548',
+        symbol: 'ARB',
+        decimals: 18,
+      },
+      {
+        chain: 'optimism',
+        address: '0x4200000000000000000000000000000000000042',
+        symbol: 'OP',
+        decimals: 18,
+      },
     ];
 
     for (const token of tokens) {
-      const results = await blockchain.multicall3(token.chain, [
-        {
-          target: token.address,
-          abi: ERC20Abi,
-          method: 'symbol',
-          params: [],
-        },
-        {
-          target: token.address,
-          abi: ERC20Abi,
-          method: 'decimals',
-          params: [],
-        },
-      ]);
+      const multicall3Results = await blockchain.multicall3({
+        chain: token.chain,
+        calls: [
+          {
+            target: token.address,
+            abi: ERC20Abi,
+            method: 'symbol',
+            params: [],
+          },
+          {
+            target: token.address,
+            abi: ERC20Abi,
+            method: 'decimals',
+            params: [],
+          },
+        ],
+      });
 
-      expect(results[0]).equal(token.symbol);
-      expect(results[1]).equal(token.decimals);
+      const readContractMultipleResults = await blockchain.multicall({
+        chain: token.chain,
+        blockNumber: token.blockNumber,
+        calls: [
+          {
+            target: token.address,
+            abi: ERC20Abi,
+            method: 'symbol',
+            params: [],
+          },
+          {
+            target: token.address,
+            abi: ERC20Abi,
+            method: 'decimals',
+            params: [],
+          },
+        ],
+      });
+
+      expect(JSON.stringify(multicall3Results)).equal(JSON.stringify(readContractMultipleResults));
+
+      expect(multicall3Results[0]).equal(token.symbol);
+      expect(multicall3Results[1]).equal(token.decimals);
+      expect(readContractMultipleResults[0]).equal(token.symbol);
+      expect(readContractMultipleResults[1]).equal(token.decimals);
     }
   });
 });

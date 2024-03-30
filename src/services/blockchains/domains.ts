@@ -29,11 +29,17 @@ export interface GetContractLogsOptions {
   toBlock: number;
 }
 
-export interface Multicall3Call {
+export interface ContractCall {
   target: string; // target/contract address
   abi: any; // target ABI
   method: string;
   params: Array<any>;
+}
+
+export interface MulticallOptions {
+  chain: string;
+  blockNumber?: number;
+  calls: Array<ContractCall>;
 }
 
 export interface IBlockchainService {
@@ -52,7 +58,12 @@ export interface IBlockchainService {
   readContract: (call: ReadContractOptions) => Promise<any>;
 
   // multicall3
-  multicall3: (chain: string, calls: Array<Multicall3Call>) => Promise<any>;
+  multicall3: (options: MulticallOptions) => Promise<any>;
+
+  // this is a custom multicall
+  // first, we try query data with multicall3
+  // if it failed, we do read contract one by one
+  multicall: (options: MulticallOptions) => Promise<any>;
 
   // help to query block number at given timestamp
   getBlockNumberAtTimestamp: (chain: string, timestamp: number) => Promise<number | null>;

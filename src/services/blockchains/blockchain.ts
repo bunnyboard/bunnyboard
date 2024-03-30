@@ -14,7 +14,7 @@ import {
   GetContractLogsOptions,
   GetTokenOptions,
   IBlockchainService,
-  Multicall3Call,
+  MulticallOptions,
   ReadContractOptions,
 } from './domains';
 
@@ -68,19 +68,22 @@ export default class BlockchainService extends CachingService implements IBlockc
 
     // query on-chain data
     try {
-      const symbol = await this.readContract({
+      const [symbol, decimals] = await this.multicall({
         chain: chain,
-        target: address,
-        abi: ERC20Abi,
-        method: 'symbol',
-        params: [],
-      });
-      const decimals = await this.readContract({
-        chain: chain,
-        target: address,
-        abi: ERC20Abi,
-        method: 'decimals',
-        params: [],
+        calls: [
+          {
+            target: address,
+            abi: ERC20Abi,
+            method: 'symbol',
+            params: [],
+          },
+          {
+            target: address,
+            abi: ERC20Abi,
+            method: 'decimals',
+            params: [],
+          },
+        ],
       });
 
       if (symbol && decimals) {
@@ -163,7 +166,35 @@ export default class BlockchainService extends CachingService implements IBlockc
     return null;
   }
 
-  public async multicall3(chain: string, calls: Array<Multicall3Call>): Promise<any> {
+  public async multicall(options: MulticallOptions): Promise<any> {
+    // first try with multicall3
+    try {
+      const multicall3Response: any = await this.multicall3(options);
+      if (multicall3Response) {
+        return multicall3Response;
+      }
+    } catch (e: any) {}
+
+    try {
+      const responses: Array<any> = [];
+      for (const call of options.calls) {
+        const response = await this.readContract({
+          chain: options.chain,
+          blockNumber: options.blockNumber,
+
+          ...call,
+        });
+        responses.push(response);
+      }
+      return responses;
+    } catch (e: any) {}
+
+    return null;
+  }
+
+  public async multicall3(options: MulticallOptions): Promise<any> {
+    const { chain, blockNumber, calls } = options;
+
     const client = this.getPublicClient(chain);
 
     const contracts = calls.map((call) => {
@@ -178,6 +209,7 @@ export default class BlockchainService extends CachingService implements IBlockc
     return await client.multicall({
       multicallAddress: AddressMulticall3,
       contracts: contracts,
+      blockNumber: blockNumber ? BigInt(blockNumber) : undefined,
       allowFailure: false,
     });
   }

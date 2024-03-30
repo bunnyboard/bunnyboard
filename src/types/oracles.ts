@@ -27,6 +27,10 @@ interface OracleSourceBase {
   type: OracleType;
   chain: string;
   address: string;
+
+  // if the currency is not usd
+  // we need to get currency base token price too
+  currency?: OracleCurrencyBase;
 }
 
 export interface OracleSourceChainlink extends OracleSourceBase {
