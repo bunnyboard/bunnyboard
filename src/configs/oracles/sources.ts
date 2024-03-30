@@ -84,6 +84,7 @@ export const OracleSourceConfigs: { [key: string]: OracleConfig } = {
   BUSD: {
     currency: 'usd',
     sources: [OracleSourceChainlinkList.BUSD_USD],
+    stablecoin: true,
   },
   ENJ: {
     currency: 'eth',
@@ -122,9 +123,9 @@ export const OracleSourceConfigs: { [key: string]: OracleConfig } = {
     sources: [OracleSourceChainlinkList.GUSD_USD],
   },
   FIL: {
-    // renFIL
-    currency: 'eth',
-    sources: [OracleSourceChainlinkList.FIL_ETH],
+    // FIl on bnbchain and renFIL on ethereum
+    currency: 'usd',
+    sources: [OracleSourceChainlinkList.FIL_USD],
   },
   RAI: {
     currency: 'usd',
@@ -275,8 +276,8 @@ export const OracleSourceConfigs: { [key: string]: OracleConfig } = {
     sources: [OracleSourceUniswapv2List.sAVAX_WAVAX],
   },
   ADA: {
-    currency: 'bnb',
-    sources: [OracleSourceUniswapv2List.ADA_WBNB],
+    currency: 'usd',
+    sources: [OracleSourceChainlinkList.ADA_USD],
   },
   BCH: {
     currency: 'usd',
@@ -295,20 +296,20 @@ export const OracleSourceConfigs: { [key: string]: OracleConfig } = {
     sources: [OracleSourceChainlinkList.DOGE_USD],
   },
   DOT: {
-    currency: 'bnb',
-    sources: [OracleSourceUniswapv2List.DOT_WBNB],
+    currency: 'usd',
+    sources: [OracleSourceChainlinkList.DOT_USD],
   },
   LTC: {
-    currency: 'bnb',
-    sources: [OracleSourceUniswapv2List.LTC_WBNB],
+    currency: 'usd',
+    sources: [OracleSourceChainlinkList.LTC_USD],
   },
   LUNA: {
     currency: 'bnb',
     sources: [OracleSourceUniswapv2List.LUNA_WBNB],
   },
   SXP: {
-    currency: 'bnb',
-    sources: [OracleSourceUniswapv2List.SXP_WBNB],
+    currency: 'usd',
+    sources: [OracleSourceChainlinkList.SXP_USD],
   },
   wBETH: {
     currency: 'eth',
@@ -347,12 +348,12 @@ export const OracleSourceConfigs: { [key: string]: OracleConfig } = {
     sources: [OracleSourceChainlinkList.USDD_USD],
   },
   XRP: {
-    currency: 'bnb',
-    sources: [OracleSourceUniswapv2List.XRP_WBNB],
+    currency: 'usd',
+    sources: [OracleSourceChainlinkList.XRP_USD],
   },
   XVS: {
-    currency: 'bnb',
-    sources: [OracleSourceUniswapv2List.XVS_WBNB],
+    currency: 'usd',
+    sources: [OracleSourceChainlinkList.XVS_USD],
   },
   HAY: {
     currency: 'usd',
