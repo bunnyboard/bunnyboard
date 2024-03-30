@@ -19,7 +19,7 @@ const blockchain = new BlockchainService();
 
 const timestamp = 1704240000; // Wed Jan 03 2024 00:00:00 GMT+0000
 
-test('should have oracle configs for reserves correctly - venus chain bnbchain', async function () {
+test('should have oracle configs for reserves correctly - venus', async function () {
   for (const marketConfig of VenusConfigs.configs) {
     const cTokens = await CompoundLibs.getComptrollerInfo(marketConfig as CompoundLendingMarketConfig);
 
