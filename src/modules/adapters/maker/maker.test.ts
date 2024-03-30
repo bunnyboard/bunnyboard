@@ -2,6 +2,7 @@ import { expect, test } from 'vitest';
 
 import { DefaultMemcacheTime, ProtocolConfigs } from '../../../configs';
 import { MakerConfigs } from '../../../configs/protocols/maker';
+import { getDateString } from '../../../lib/utils';
 import BlockchainService from '../../../services/blockchains/blockchain';
 import { MemcacheService } from '../../../services/caching/memcache';
 import DatabaseService from '../../../services/database/database';
@@ -29,7 +30,18 @@ const makerAdapter = new MakerAdapter(
 
 const configEthereum = ProtocolConfigs.maker.configs.filter((item) => item.chain === 'ethereum')[0];
 
-test('should get state data correctly - liquity chain ethereum', async function () {
+test('should get state data correctly at birthday - maker chain ethereum', async function () {
+  const dataState = await makerAdapter.getLendingAssetDataState({
+    config: configEthereum,
+    timestamp: configEthereum.birthday,
+  });
+
+  // because there is no collateral is available
+  // we got null state
+  expect(dataState).equal(null);
+});
+
+test(`should get state data correctly at ${getDateString(timestamp)} - maker chain ethereum`, async function () {
   const dataState = await makerAdapter.getLendingAssetDataState({
     config: configEthereum,
     timestamp: timestamp,

@@ -106,18 +106,18 @@ export default class OracleService extends CachingService implements IOracleServ
     let returnPrice = null;
     options.address = normalizeAddress(options.address);
 
-    if (OracleConfigs[options.chain] && OracleConfigs[options.chain][options.address]) {
-      const cachingKey = `${options.chain}:${options.address}:${options.timestamp}`;
-      const cachingPriceUsd = await this.getCachingData(cachingKey);
-      if (cachingPriceUsd) {
-        return cachingPriceUsd;
-      }
+    const cachingKey = `${options.chain}:${options.address}:${options.timestamp}`;
+    const cachingPriceUsd = await this.getCachingData(cachingKey);
+    if (cachingPriceUsd) {
+      return cachingPriceUsd;
+    }
 
+    let priceUsd: string | null = null;
+
+    if (OracleConfigs[options.chain] && OracleConfigs[options.chain][options.address]) {
       for (const source of OracleConfigs[options.chain][options.address].sources) {
         const priceFirst = await this.getTokenPriceSource(source, options.timestamp);
         if (priceFirst) {
-          let priceUsd: string | null = null;
-
           if (source.currency === 'usd' || OracleConfigs[options.chain][options.address].currency === 'usd') {
             priceUsd = priceFirst;
           } else {
@@ -151,6 +151,8 @@ export default class OracleService extends CachingService implements IOracleServ
         time: options.timestamp,
       });
     }
+
+    await this.setCachingData(cachingKey, priceUsd);
 
     return returnPrice;
   }

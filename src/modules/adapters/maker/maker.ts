@@ -89,97 +89,99 @@ export default class MakerAdapter extends CdpLendingProtocolAdapter {
     };
 
     for (const gemConfig of marketConfig.gems) {
-      const collateralTokenPrice = await this.services.oracle.getTokenPriceUsd({
-        chain: marketConfig.chain,
-        address: gemConfig.collateralToken.address,
-        timestamp: options.timestamp,
-      });
-
-      const gemBalance = await this.services.blockchain.readContract({
-        chain: marketConfig.chain,
-        abi: Erc20Abi,
-        target: gemConfig.collateralToken.address,
-        method: 'balanceOf',
-        params: [gemConfig.address],
-        blockNumber: blockNumber,
-      });
-
-      if (collateralTokenPrice && gemBalance) {
-        const vatInfo = await this.services.blockchain.readContract({
+      if (gemConfig.birthday <= options.timestamp) {
+        const collateralTokenPrice = await this.services.oracle.getTokenPriceUsd({
           chain: marketConfig.chain,
-          abi: this.abiConfigs.eventAbis.vat,
-          target: marketConfig.vat,
-          method: 'ilks',
-          params: [gemConfig.ilk],
-          blockNumber: blockNumber,
-        });
-        const spotInfo = await this.services.blockchain.readContract({
-          chain: marketConfig.chain,
-          abi: this.abiConfigs.eventAbis.spot,
-          target: marketConfig.spot,
-          method: 'ilks',
-          params: [gemConfig.ilk],
-          blockNumber: blockNumber,
-        });
-        const jugInfo = await this.services.blockchain.readContract({
-          chain: marketConfig.chain,
-          abi: this.abiConfigs.eventAbis.jug,
-          target: marketConfig.jug,
-          method: 'ilks',
-          params: [gemConfig.ilk],
-          blockNumber: blockNumber,
-        });
-
-        const art = new BigNumber(vatInfo[0].toString());
-        const rate = new BigNumber(vatInfo[1].toString());
-        const spot = new BigNumber(spotInfo[1].toString());
-
-        // spot is the collateral ratio borrowers must maintain to avoid liquidation
-        // for example 145%
-        // so, the loan to value = 100 % / 145% = 68.96%
-        const loanToValue = new BigNumber(100)
-          .multipliedBy(SolidityUnits.OneRay)
-          .dividedBy(new BigNumber(spot))
-          .dividedBy(100);
-        const totalBorrowed = formatBigNumberToString(
-          art.multipliedBy(rate).toString(10),
-          SolidityUnits.RayDecimals + debtToken.decimals,
-        );
-        const totalDeposited = formatBigNumberToString(gemBalance.toString(), gemConfig.collateralToken.decimals);
-
-        // https://docs.makerdao.com/smart-contract-modules/rates-module/jug-detailed-documentation
-        const duty = new BigNumber(jugInfo[0].toString()).dividedBy(SolidityUnits.OneRay);
-        const base = new BigNumber(jugBase.toString()).dividedBy(SolidityUnits.OneRay);
-        const elapsed = 3600;
-
-        const deltaRate = duty
-          .plus(base)
-          .pow(elapsed)
-          .multipliedBy(rate.dividedBy(SolidityUnits.OneRay))
-          .minus(rate.dividedBy(SolidityUnits.OneRay));
-
-        const interestAmount = art.multipliedBy(deltaRate.multipliedBy(TimeUnits.SecondsPerYear).dividedBy(elapsed));
-
-        const borrowRate = art.eq(0) ? new BigNumber(0) : interestAmount.dividedBy(art);
-
-        stateData.collaterals.push({
-          protocol: options.config.protocol,
-          chain: options.config.chain,
-          metric: options.config.metric,
+          address: gemConfig.collateralToken.address,
           timestamp: options.timestamp,
-          token: gemConfig.collateralToken,
-          tokenPrice: collateralTokenPrice ? collateralTokenPrice : '',
-          address: gemConfig.address,
-          totalDeposited: totalDeposited,
-          totalBorrowed: totalBorrowed,
-          rateBorrow: borrowRate.toString(10),
-          feeBorrow: '0',
-          rateLoanToValue: loanToValue.toString(10),
         });
+
+        const gemBalance = await this.services.blockchain.readContract({
+          chain: marketConfig.chain,
+          abi: Erc20Abi,
+          target: gemConfig.collateralToken.address,
+          method: 'balanceOf',
+          params: [gemConfig.address],
+          blockNumber: blockNumber,
+        });
+
+        if (collateralTokenPrice && gemBalance) {
+          const vatInfo = await this.services.blockchain.readContract({
+            chain: marketConfig.chain,
+            abi: this.abiConfigs.eventAbis.vat,
+            target: marketConfig.vat,
+            method: 'ilks',
+            params: [gemConfig.ilk],
+            blockNumber: blockNumber,
+          });
+          const spotInfo = await this.services.blockchain.readContract({
+            chain: marketConfig.chain,
+            abi: this.abiConfigs.eventAbis.spot,
+            target: marketConfig.spot,
+            method: 'ilks',
+            params: [gemConfig.ilk],
+            blockNumber: blockNumber,
+          });
+          const jugInfo = await this.services.blockchain.readContract({
+            chain: marketConfig.chain,
+            abi: this.abiConfigs.eventAbis.jug,
+            target: marketConfig.jug,
+            method: 'ilks',
+            params: [gemConfig.ilk],
+            blockNumber: blockNumber,
+          });
+
+          const art = new BigNumber(vatInfo[0].toString());
+          const rate = new BigNumber(vatInfo[1].toString());
+          const spot = new BigNumber(spotInfo[1].toString());
+
+          // spot is the collateral ratio borrowers must maintain to avoid liquidation
+          // for example 145%
+          // so, the loan to value = 100 % / 145% = 68.96%
+          const loanToValue = new BigNumber(100)
+            .multipliedBy(SolidityUnits.OneRay)
+            .dividedBy(new BigNumber(spot))
+            .dividedBy(100);
+          const totalBorrowed = formatBigNumberToString(
+            art.multipliedBy(rate).toString(10),
+            SolidityUnits.RayDecimals + debtToken.decimals,
+          );
+          const totalDeposited = formatBigNumberToString(gemBalance.toString(), gemConfig.collateralToken.decimals);
+
+          // https://docs.makerdao.com/smart-contract-modules/rates-module/jug-detailed-documentation
+          const duty = new BigNumber(jugInfo[0].toString()).dividedBy(SolidityUnits.OneRay);
+          const base = new BigNumber(jugBase.toString()).dividedBy(SolidityUnits.OneRay);
+          const elapsed = 3600;
+
+          const deltaRate = duty
+            .plus(base)
+            .pow(elapsed)
+            .multipliedBy(rate.dividedBy(SolidityUnits.OneRay))
+            .minus(rate.dividedBy(SolidityUnits.OneRay));
+
+          const interestAmount = art.multipliedBy(deltaRate.multipliedBy(TimeUnits.SecondsPerYear).dividedBy(elapsed));
+
+          const borrowRate = art.eq(0) ? new BigNumber(0) : interestAmount.dividedBy(art);
+
+          stateData.collaterals.push({
+            protocol: options.config.protocol,
+            chain: options.config.chain,
+            metric: options.config.metric,
+            timestamp: options.timestamp,
+            token: gemConfig.collateralToken,
+            tokenPrice: collateralTokenPrice ? collateralTokenPrice : '',
+            address: gemConfig.address,
+            totalDeposited: totalDeposited,
+            totalBorrowed: totalBorrowed,
+            rateBorrow: borrowRate.toString(10),
+            feeBorrow: '0',
+            rateLoanToValue: loanToValue.toString(10),
+          });
+        }
       }
     }
 
-    return stateData;
+    return stateData.collaterals.length === 0 ? null : stateData;
   }
 
   public async getEventLogs(options: AdapterGetEventLogsOptions): Promise<Array<any>> {
