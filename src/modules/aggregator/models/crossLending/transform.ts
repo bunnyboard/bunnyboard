@@ -366,13 +366,19 @@ export default class CrossLendingDataTransformer {
     };
 
     // we do calculate utilization rate value and day changed
-    const uRateCurrent = convertRateToPercentage(
-      new BigNumber(currentLast24Hours.totalBorrowed).dividedBy(new BigNumber(currentLast24Hours.totalDeposited)),
-    );
-    const uRatePrevious = previousLast24Hours
+    const uRateCurrent = new BigNumber(currentLast24Hours.totalDeposited).gt(0)
       ? convertRateToPercentage(
-          new BigNumber(previousLast24Hours.totalBorrowed).dividedBy(new BigNumber(previousLast24Hours.totalDeposited)),
+          new BigNumber(currentLast24Hours.totalBorrowed).dividedBy(new BigNumber(currentLast24Hours.totalDeposited)),
         )
+      : 0;
+    const uRatePrevious = previousLast24Hours
+      ? new BigNumber(previousLast24Hours.totalDeposited).gt(0)
+        ? convertRateToPercentage(
+            new BigNumber(previousLast24Hours.totalBorrowed).dividedBy(
+              new BigNumber(previousLast24Hours.totalDeposited),
+            ),
+          )
+        : 0
       : 0;
 
     return {

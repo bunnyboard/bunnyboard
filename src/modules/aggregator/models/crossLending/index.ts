@@ -117,8 +117,11 @@ export default class CrossLendingDataAggregator extends BaseDataAggregator {
       dataState.totalBorrowed.value,
       dataState.totalBorrowed.changedDay ? dataState.totalBorrowed.changedDay : 0,
     );
-    const uRatePrevious = convertRateToPercentage(totalBorrowedPrevious / totalDepositedPrevious);
-    const uRateCurrent = convertRateToPercentage(dataState.totalBorrowed.value / dataState.totalDeposited.value);
+    const uRatePrevious =
+      totalDepositedPrevious > 0 ? convertRateToPercentage(totalBorrowedPrevious / totalDepositedPrevious) : 0;
+    const uRateCurrent = dataState.totalDeposited.value
+      ? convertRateToPercentage(dataState.totalBorrowed.value / dataState.totalDeposited.value)
+      : 0;
 
     dataState.rateUtilization = {
       value: uRateCurrent,
