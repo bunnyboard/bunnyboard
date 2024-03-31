@@ -331,7 +331,10 @@ export default class CrossLendingDataAggregator extends BaseDataAggregator {
             feesPaidTheoretically: snapshot.feesPaidTheoretically.value,
             rateSupply: snapshot.rateSupply.value,
             rateBorrow: snapshot.rateBorrow.value,
-            rateUtilization: (snapshot.totalBorrowed.value / snapshot.totalDeposited.value) * 100,
+            rateUtilization:
+              snapshot.totalDeposited.value > 0
+                ? (snapshot.totalBorrowed.value / snapshot.totalDeposited.value) * 100
+                : 0,
             rateBorrowStable: snapshot.rateBorrowStable ? snapshot.rateBorrowStable.value : undefined,
           };
         }),

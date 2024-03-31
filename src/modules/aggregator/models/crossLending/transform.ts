@@ -234,10 +234,12 @@ export default class CrossLendingDataTransformer {
         markets[marketKey].totalBorrowed.value,
         totalBorrowedChanged ? totalBorrowedChanged : 0,
       );
-      const previousUtilization = convertRateToPercentage(totalBorrowedPrevious / totalDepositedPrevious);
-      const currentUtilization = convertRateToPercentage(
-        markets[marketKey].totalDeposited.value / markets[marketKey].totalBorrowed.value,
-      );
+      const previousUtilization =
+        totalDepositedPrevious > 0 ? convertRateToPercentage(totalBorrowedPrevious / totalDepositedPrevious) : 0;
+      const currentUtilization =
+        markets[marketKey].totalDeposited.value > 0
+          ? convertRateToPercentage(markets[marketKey].totalBorrowed.value / markets[marketKey].totalDeposited.value)
+          : 0;
 
       markets[marketKey].rateUtilization = {
         value: currentUtilization,
