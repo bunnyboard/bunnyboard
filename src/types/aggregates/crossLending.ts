@@ -20,7 +20,8 @@ export interface AggCrossLendingReserveSnapshot extends DataTimeframe {
   rateBorrowStable?: DataValue;
 
   rateLoanToValue: number;
-  rateUtilization: number;
+
+  rateUtilization: DataValue;
 
   // last 24h volumes
   volumeDeposited: DataValue;
@@ -51,7 +52,8 @@ export interface AggCrossLendingMarketSnapshot extends DataState {
   volumeTotal: DataValue;
 
   feesPaidTheoretically: DataValue;
-  rateUtilization: number;
+
+  rateUtilization: DataValue;
 
   reserves: Array<AggCrossLendingReserveSnapshot>;
 }
@@ -90,7 +92,14 @@ export interface AggCrossLendingDataOverall {
 
   feesPaidTheoretically: DataValue;
 
-  rateUtilization: number;
+  // totalBorrowed / totalDeposited
+  rateUtilization: DataValue;
+
+  // we count unique addresses
+  numberOfUsers: DataValue;
+
+  // we count unique transaction hash
+  numberOfTransactions: DataValue;
 
   // last 24h snapshots
   markets: Array<AggCrossLendingMarketSnapshot>;

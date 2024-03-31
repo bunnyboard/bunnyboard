@@ -5,8 +5,12 @@ import swaggerUi from 'swagger-ui-express';
 import YAML from 'yamljs';
 
 import logger from '../lib/logger';
+import { sleep } from '../lib/utils';
 import getRouter from '../modules/aggregator/api/api';
+import DataAggregatorWorker from '../modules/aggregator/worker';
 import { BasicCommand } from './basic';
+
+const WorkerInterval = 600; // 10 minutes
 
 export class ServerCommand extends BasicCommand {
   public readonly name: string = 'server';
@@ -41,6 +45,15 @@ export class ServerCommand extends BasicCommand {
         address: `0.0.0.0:${port}`,
       });
     });
+
+    // run data worker
+    const worker = new DataAggregatorWorker(storages.database);
+
+    while (true) {
+      await worker.runUpdate();
+
+      await sleep(Number(WorkerInterval));
+    }
   }
 
   public setOptions(yargs: any) {

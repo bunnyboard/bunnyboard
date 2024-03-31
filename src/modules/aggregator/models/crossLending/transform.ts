@@ -1,9 +1,12 @@
+import BigNumber from 'bignumber.js';
+
 import { TimeUnits } from '../../../../configs/constants';
 import { groupAndSumObjectList } from '../../../../lib/helper';
 import {
   calChangesOf_Current_From_Previous,
   calChangesOf_Total_From_Items,
   calChangesOf_Two_Number_Diff,
+  calPreviousOf_Current_And_Change,
   convertRateToPercentage,
   convertToNumber,
 } from '../../../../lib/math';
@@ -51,7 +54,15 @@ export default class CrossLendingDataTransformer {
       feesPaidTheoretically: {
         value: 0,
       },
-      rateUtilization: 0,
+      rateUtilization: {
+        value: 0,
+      },
+      numberOfUsers: {
+        value: 0,
+      },
+      numberOfTransactions: {
+        value: 0,
+      },
       markets: [],
       dayData: [],
     };
@@ -105,7 +116,9 @@ export default class CrossLendingDataTransformer {
           feesPaidTheoretically: {
             value: 0,
           },
-          rateUtilization: 0,
+          rateUtilization: {
+            value: 0,
+          },
           reserves: [],
         };
       }
@@ -205,8 +218,31 @@ export default class CrossLendingDataTransformer {
           };
         }),
       );
-      markets[marketKey].rateUtilization =
-        (markets[marketKey].totalBorrowed.value / markets[marketKey].totalBorrowed.value) * 100;
+
+      // we do calculate utilization rate value and day changed
+      const totalDepositedChanged = markets[marketKey].totalDeposited.changedDay
+        ? markets[marketKey].totalDeposited.changedDay
+        : 0;
+      const totalBorrowedChanged = markets[marketKey].totalBorrowed.changedDay
+        ? markets[marketKey].totalBorrowed.changedDay
+        : 0;
+      const totalDepositedPrevious = calPreviousOf_Current_And_Change(
+        markets[marketKey].totalDeposited.value,
+        totalDepositedChanged ? totalDepositedChanged : 0,
+      );
+      const totalBorrowedPrevious = calPreviousOf_Current_And_Change(
+        markets[marketKey].totalBorrowed.value,
+        totalBorrowedChanged ? totalBorrowedChanged : 0,
+      );
+      const previousUtilization = convertRateToPercentage(totalBorrowedPrevious / totalDepositedPrevious);
+      const currentUtilization = convertRateToPercentage(
+        markets[marketKey].totalDeposited.value / markets[marketKey].totalBorrowed.value,
+      );
+
+      markets[marketKey].rateUtilization = {
+        value: currentUtilization,
+        changedDay: calChangesOf_Current_From_Previous(currentUtilization, previousUtilization),
+      };
     }
 
     return Object.values(markets);
@@ -329,6 +365,16 @@ export default class CrossLendingDataTransformer {
       ]),
     };
 
+    // we do calculate utilization rate value and day changed
+    const uRateCurrent = convertRateToPercentage(
+      new BigNumber(currentLast24Hours.totalBorrowed).dividedBy(new BigNumber(currentLast24Hours.totalDeposited)),
+    );
+    const uRatePrevious = previousLast24Hours
+      ? convertRateToPercentage(
+          new BigNumber(previousLast24Hours.totalBorrowed).dividedBy(new BigNumber(previousLast24Hours.totalDeposited)),
+        )
+      : 0;
+
     return {
       metric: currentLast24Hours.metric,
       timestamp: currentLast24Hours.timestamp,
@@ -383,7 +429,11 @@ export default class CrossLendingDataTransformer {
         : undefined,
 
       rateLoanToValue: convertRateToPercentage(currentLast24Hours.rateLoanToValue),
-      rateUtilization: (totalBorrowed.value / totalDeposited.value) * 100,
+
+      rateUtilization: {
+        value: uRateCurrent,
+        changedDay: uRatePrevious ? calChangesOf_Current_From_Previous(uRateCurrent, uRatePrevious) : undefined,
+      },
 
       numberOfUsers: {
         value: currentLast24Hours.addresses.length,

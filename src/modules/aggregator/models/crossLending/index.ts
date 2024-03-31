@@ -1,7 +1,12 @@
 import { TimeUnits } from '../../../../configs/constants';
 import EnvConfig from '../../../../configs/envConfig';
 import logger from '../../../../lib/logger';
-import { calChangesOf_Total_From_Items } from '../../../../lib/math';
+import {
+  calChangesOf_Current_From_Previous,
+  calChangesOf_Total_From_Items,
+  calPreviousOf_Current_And_Change,
+  convertRateToPercentage,
+} from '../../../../lib/math';
 import { normalizeAddress } from '../../../../lib/utils';
 import { IDatabaseService } from '../../../../services/database/domains';
 import { DataValue } from '../../../../types/aggregates/common';
@@ -103,7 +108,22 @@ export default class CrossLendingDataAggregator extends BaseDataAggregator {
       snapshots.map((snapshot) => CrossLendingDataTransformer.transformCrossLendingReserveSnapshot(snapshot, null)),
     );
 
-    dataState.rateUtilization = (dataState.totalBorrowed.value / dataState.totalDeposited.value) * 100;
+    // we do calculate utilization rate value and change
+    const totalDepositedPrevious = calPreviousOf_Current_And_Change(
+      dataState.totalDeposited.value,
+      dataState.totalDeposited.changedDay ? dataState.totalDeposited.changedDay : 0,
+    );
+    const totalBorrowedPrevious = calPreviousOf_Current_And_Change(
+      dataState.totalBorrowed.value,
+      dataState.totalBorrowed.changedDay ? dataState.totalBorrowed.changedDay : 0,
+    );
+    const uRatePrevious = convertRateToPercentage(totalBorrowedPrevious / totalDepositedPrevious);
+    const uRateCurrent = convertRateToPercentage(dataState.totalBorrowed.value / dataState.totalDeposited.value);
+
+    dataState.rateUtilization = {
+      value: uRateCurrent,
+      changedDay: uRatePrevious ? calChangesOf_Current_From_Previous(uRateCurrent, uRatePrevious) : undefined,
+    };
 
     return dataState;
   }
