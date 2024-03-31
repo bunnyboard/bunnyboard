@@ -1,6 +1,7 @@
 import { IDatabaseService } from '../../services/database/domains';
 import CdpLendingDataAggregator from './models/cdpLending';
 import CrossLendingDataAggregator from './models/crossLending';
+
 // import TokenBoardDataAggregator from './models/tokenBoard';
 
 export default class DataAggregatorWorker {

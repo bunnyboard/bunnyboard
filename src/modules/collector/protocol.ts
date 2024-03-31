@@ -12,7 +12,7 @@ export interface RunProtocolCollectorOptions {
 
   // if the protocol was given, run collector with given protocol
   // and the chain option is just use for filter configs
-  protocol?: string;
+  protocols?: Array<string>;
 
   // force sync from given from timestamp
   fromTime?: number;
@@ -35,7 +35,7 @@ export default class ProtocolCollector {
   }
 
   private getAllConfigs(options: RunProtocolCollectorOptions): Array<MetricConfig> {
-    const { metric, chain, protocol } = options;
+    const { metric, chain, protocols } = options;
 
     let configs: Array<MetricConfig> = [];
     for (const [, protocolConfig] of Object.entries(ProtocolConfigs)) {
@@ -44,7 +44,7 @@ export default class ProtocolCollector {
 
     return configs
       .filter((config) => metric === undefined || metric === config.metric)
-      .filter((config) => protocol === undefined || protocol === config.protocol)
+      .filter((config) => protocols === undefined || protocols.indexOf(config.protocol) !== -1)
       .filter((config) => chain === undefined || chain === config.chain);
   }
 
@@ -68,7 +68,7 @@ export default class ProtocolCollector {
     logger.info('start to run collector', {
       service: this.name,
       chain: options.chain ? options.chain : 'none',
-      protocol: options.protocol ? options.protocol : 'none',
+      protocols: options.protocols ? options.protocols.toString() : 'none',
       metric: options.metric ? options.metric : 'none',
       configs: configs.length,
     });

@@ -16,10 +16,10 @@ export default class TokenBoardCollector {
   }
 
   private getAllConfigs(options: RunProtocolCollectorOptions): Array<MetricConfig> {
-    const { chain, protocol } = options;
+    const { chain, protocols } = options;
 
     return ProtocolConfigs.tokenBoard.configs
-      .filter((config) => protocol === undefined || protocol === config.protocol)
+      .filter((config) => protocols === undefined || protocols.indexOf(config.protocol) !== -1)
       .filter((config) => chain === undefined || chain === config.chain);
   }
 

@@ -24,7 +24,7 @@ export class RunCommand extends BasicCommand {
           await collector.run({
             metric: argv.metric !== '' ? argv.metric : undefined,
             chain: argv.chain !== '' ? argv.chain : undefined,
-            protocol: argv.protocol !== '' ? argv.protocol : undefined,
+            protocols: argv.protocol !== '' ? argv.protocol.split(',') : undefined,
             fromTime: argv.fromTime ? argv.fromTime : undefined,
             force: argv.force,
           });
@@ -44,7 +44,7 @@ export class RunCommand extends BasicCommand {
           await tokenBoardCollector.run({
             metric: argv.metric !== '' ? argv.metric : undefined,
             chain: argv.chain !== '' ? argv.chain : undefined,
-            protocol: argv.protocol !== '' ? argv.protocol : undefined,
+            protocols: argv.protocol !== '' ? argv.protocol.split(',') : undefined,
             fromTime: argv.fromTime ? argv.fromTime : undefined,
             force: argv.force,
           });
@@ -64,7 +64,7 @@ export class RunCommand extends BasicCommand {
         do {
           await dexscan.run({
             chain: argv.chain !== '' ? argv.chain : undefined,
-            protocol: argv.protocol !== '' ? argv.protocol : undefined,
+            protocols: argv.protocol !== '' ? argv.protocol.split(',') : undefined,
           });
 
           if (argv.exit) {
@@ -101,7 +101,8 @@ export class RunCommand extends BasicCommand {
       protocol: {
         type: 'string',
         default: '',
-        describe: 'Collect data of given protocol.',
+        describe:
+          'Collect data of given protocol. You can pass a list of protocol seperated by comma, ex: --protocol "aavev3,uniswapv2".',
       },
       fromTime: {
         type: 'number',
