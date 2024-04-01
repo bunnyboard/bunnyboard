@@ -43,6 +43,9 @@ export interface IDatabaseService {
   // do connect to the database server
   connect: (mongoUri: string, databaseName: string) => Promise<void>;
 
+  // get current connected database
+  getDatabase: () => Promise<any>;
+
   // get raw collection
   getCollection: (name: string) => Promise<Collection>;
 

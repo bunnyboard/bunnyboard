@@ -7,6 +7,7 @@ import YAML from 'yamljs';
 import logger from '../lib/logger';
 import { sleep } from '../lib/utils';
 import getRouter from '../modules/aggregator/api/api';
+import * as statusRouter from '../modules/aggregator/api/status';
 import DataAggregatorWorker from '../modules/aggregator/worker';
 import { BasicCommand } from './basic';
 
@@ -25,43 +26,67 @@ export class ServerCommand extends BasicCommand {
 
     const router = getRouter(storages);
 
-    const port = argv.port || process.env.PORT || '8080';
+    const service = argv.service;
+    if (service === 'api') {
+      const port = argv.port || process.env.PORT || '8080';
 
-    const app = express();
+      const app = express();
 
-    app.use(cors());
-    app.use(express.json());
+      app.use(cors());
+      app.use(express.json());
 
-    app.use('/board', router);
+      // data endpoints
+      app.use('/board', router);
 
-    app.use('/', express.static(path.join('.', 'public')));
+      // system status endpoints
+      app.use('/status', statusRouter.getRouter(storages));
 
-    const swaggerDocument = YAML.load('./docs/api/api-data-board.yml');
-    app.use('/apiDocs/dataBoard', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+      app.use('/', express.static(path.join('.', 'public')));
 
-    app.listen(port, () => {
-      logger.info('started the restful api server', {
-        service: 'api',
-        address: `0.0.0.0:${port}`,
+      const swaggerDocument = YAML.load('./docs/api/api-data-board.yml');
+      app.use('/apiDocs/dataBoard', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+
+      app.listen(port, () => {
+        logger.info('started the restful api server', {
+          service: 'api',
+          address: `0.0.0.0:${port}`,
+        });
       });
-    });
+    } else if (service === 'worker') {
+      // run data worker
+      const worker = new DataAggregatorWorker(storages.database);
 
-    // run data worker
-    const worker = new DataAggregatorWorker(storages.database);
+      do {
+        await worker.runUpdate();
 
-    while (true) {
-      await worker.runUpdate();
+        if (!argv.exit) {
+          await sleep(Number(WorkerInterval));
+        }
+      } while (!argv.exit);
 
-      await sleep(Number(WorkerInterval));
+      process.exit(0);
+    } else {
+      console.log(`service '${service}' is not supported`);
     }
   }
 
   public setOptions(yargs: any) {
     return yargs.option({
+      service: {
+        type: 'string',
+        default: 'api',
+        describe:
+          'Select a service to run api or worker. Run data api server with `api` options. Run data worker with `worker` options.',
+      },
       port: {
         type: 'number',
         default: 0,
         describe: 'The port number to listen',
+      },
+      exit: {
+        type: 'boolean',
+        default: false,
+        describe: 'Using this option to run service worker one time only, do not loop.',
       },
     });
   }
