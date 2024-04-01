@@ -83,15 +83,19 @@ export default class CdpLendingDataAggregator extends BaseDataAggregator {
     }
 
     // process snapshots and build up day data list
-    const snapshots = await this.database.query({
-      collection: EnvConfig.mongodb.collections.cdpLendingAssetSnapshots.name,
-      query: {
-        timestamp: { $gt: 0 },
-      },
-    });
-    dataOverall.dayData = CdpLendingDataTransformer.transformCdpLendingDayData(
-      snapshots.map((snapshot) => CdpLendingDataTransformer.transformCdpLendingMarketSnapshot(snapshot, null)),
-    );
+    // process snapshots and build up day data list
+    const collection = await this.database.getCollection(EnvConfig.mongodb.collections.cdpLendingAssetSnapshots.name);
+    const queryCursor = collection.find({ timestamp: { $gt: 0 } });
+
+    const snapshots: Array<AggCdpLendingMarketSnapshot> = [];
+    while (await queryCursor.hasNext()) {
+      const document: any = await queryCursor.next();
+      if (document) {
+        snapshots.push(CdpLendingDataTransformer.transformCdpLendingMarketSnapshot(document, null));
+      }
+    }
+
+    dataOverall.dayData = CdpLendingDataTransformer.transformCdpLendingDayData(snapshots);
 
     const previousTotalCollateralDeposited = calPreviousOf_Current_And_Change(
       dataOverall.totalCollateralDeposited.value,
@@ -280,6 +284,10 @@ export default class CdpLendingDataAggregator extends BaseDataAggregator {
   }
 
   public async runUpdate(): Promise<void> {
+    logger.info('start to update aggregator data', {
+      service: this.name,
+      name: OverallDataCachingKey,
+    });
     const overallData = await this.getDataOverallInternal();
     await this.database.update({
       collection: EnvConfig.mongodb.collections.cachingData.name,
@@ -293,7 +301,7 @@ export default class CdpLendingDataAggregator extends BaseDataAggregator {
       upsert: true,
     });
 
-    logger.info('updated caching data', {
+    logger.info('updated aggregator data', {
       service: this.name,
       name: OverallDataCachingKey,
     });

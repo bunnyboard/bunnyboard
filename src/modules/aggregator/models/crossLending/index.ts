@@ -98,15 +98,20 @@ export default class CrossLendingDataAggregator extends BaseDataAggregator {
     }
 
     // process snapshots and build up day data list
-    const snapshots = await this.database.query({
-      collection: EnvConfig.mongodb.collections.crossLendingReserveSnapshots.name,
-      query: {
-        timestamp: { $gt: 0 },
-      },
-    });
-    dataState.dayData = CrossLendingDataTransformer.transformCrossReservesToDayData(
-      snapshots.map((snapshot) => CrossLendingDataTransformer.transformCrossLendingReserveSnapshot(snapshot, null)),
+    const collection = await this.database.getCollection(
+      EnvConfig.mongodb.collections.crossLendingReserveSnapshots.name,
     );
+    const queryCursor = collection.find({ timestamp: { $gt: 0 } });
+
+    const snapshots: Array<AggCrossLendingReserveSnapshot> = [];
+    while (await queryCursor.hasNext()) {
+      const document: any = await queryCursor.next();
+      if (document) {
+        snapshots.push(CrossLendingDataTransformer.transformCrossLendingReserveSnapshot(document, null));
+      }
+    }
+
+    dataState.dayData = CrossLendingDataTransformer.transformCrossReservesToDayData(snapshots);
 
     // we do calculate utilization rate value and change
     const totalDepositedPrevious = calPreviousOf_Current_And_Change(
@@ -346,6 +351,10 @@ export default class CrossLendingDataAggregator extends BaseDataAggregator {
   }
 
   public async runUpdate(): Promise<void> {
+    logger.info('start to update aggregator data', {
+      service: this.name,
+      name: OverallDataCachingKey,
+    });
     const overallData = await this.getDataOverallInternal();
     await this.database.update({
       collection: EnvConfig.mongodb.collections.cachingData.name,
@@ -359,7 +368,7 @@ export default class CrossLendingDataAggregator extends BaseDataAggregator {
       upsert: true,
     });
 
-    logger.info('updated caching data', {
+    logger.info('updated aggregator data', {
       service: this.name,
       name: OverallDataCachingKey,
     });
