@@ -42,7 +42,7 @@ export const IronbankConfigs: CompoundProtocolConfig = {
       protocol: 'ironbank',
       version: 'compound',
       metric: DataMetrics.crossLending,
-      birthday: 1655942400, // Thu Jun 23 2022 00:00:00 GMT+0000
+      birthday: 1660521600, // Mon Aug 15 2022 00:00:00 GMT+0000
       address: '0xE0B57FEEd45e7D908f2d0DaCd26F113Cf26715BF',
       governanceToken: null,
       underlying: {}, // no native markets
