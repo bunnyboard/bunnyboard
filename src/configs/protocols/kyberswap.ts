@@ -30,9 +30,9 @@ const KyberswapSubgraphFilters = {
     reserve1: 'totalValueLockedToken1',
   },
   factory: {
-    factories: 'uniswapFactories',
+    factories: 'factories',
     volume: 'totalVolumeUSD',
-    liquidity: 'totalLiquidityUSD',
+    liquidity: 'totalValueLockedUSD',
     txCount: 'txCount',
     fees: 'totalFeesUSD',
   },
@@ -44,7 +44,7 @@ export const KyberswapEthereumDexConfig: DexConfig = {
   metric: DataMetrics.dex,
   version: DexVersions.univ3,
   address: AddressesBook.ethereum.KyberswapFactory,
-  birthday: 1684540800, // Sat May 20 2023 00:00:00 GMT+0000
+  birthday: 1686355200, // Sat Jun 10 2023 00:00:00 GMT+0000
   subgraph: {
     endpoint: SubgraphEndpoints.data.kyberswapElasticEthereum,
     filters: KyberswapSubgraphFilters,
@@ -57,7 +57,7 @@ export const KyberswapArbitrumDexConfig: DexConfig = {
   metric: DataMetrics.dex,
   version: DexVersions.univ3,
   address: AddressesBook.arbitrum.KyberswapFactory,
-  birthday: 1684540800, // Sat May 20 2023 00:00:00 GMT+0000
+  birthday: 1686355200, // Sat Jun 10 2023 00:00:00 GMT+0000
   subgraph: {
     endpoint: SubgraphEndpoints.data.kyberswapElasticArbitrum,
     filters: KyberswapSubgraphFilters,
@@ -70,7 +70,7 @@ export const KyberswapOptimismDexConfig: DexConfig = {
   metric: DataMetrics.dex,
   version: DexVersions.univ3,
   address: AddressesBook.optimism.KyberswapFactory,
-  birthday: 1684540800, // Sat May 20 2023 00:00:00 GMT+0000
+  birthday: 1686355200, // Sat Jun 10 2023 00:00:00 GMT+0000
   subgraph: {
     endpoint: SubgraphEndpoints.data.kyberswapElasticOptimism,
     filters: KyberswapSubgraphFilters,
@@ -83,7 +83,7 @@ export const KyberswapBaseDexConfig: DexConfig = {
   metric: DataMetrics.dex,
   version: DexVersions.univ3,
   address: AddressesBook.base.KyberswapFactory,
-  birthday: 1692748800, // Wed Aug 23 2023 00:00:00 GMT+0000
+  birthday: 1693526400, // Fri Sep 01 2023 00:00:00 GMT+0000
   subgraph: {
     endpoint: SubgraphEndpoints.data.kyberswapElasticBase,
     filters: KyberswapSubgraphFilters,
@@ -96,7 +96,7 @@ export const KyberswapBnbchainDexConfig: DexConfig = {
   metric: DataMetrics.dex,
   version: DexVersions.univ3,
   address: AddressesBook.bnbchain.KyberswapFactory,
-  birthday: 1684540800, // Sat May 20 2023 00:00:00 GMT+0000
+  birthday: 1686355200, // Sat Jun 10 2023 00:00:00 GMT+0000
   subgraph: {
     endpoint: SubgraphEndpoints.data.kyberswapElasticBnbchain,
     filters: KyberswapSubgraphFilters,
@@ -109,7 +109,7 @@ export const KyberswapPolygonDexConfig: DexConfig = {
   metric: DataMetrics.dex,
   version: DexVersions.univ3,
   address: AddressesBook.polygon.KyberswapFactory,
-  birthday: 1684540800, // Sat May 20 2023 00:00:00 GMT+0000
+  birthday: 1686355200, // Sat Jun 10 2023 00:00:00 GMT+0000
   subgraph: {
     endpoint: SubgraphEndpoints.data.kyberswapElasticPolygon,
     filters: KyberswapSubgraphFilters,
@@ -122,7 +122,7 @@ export const KyberswapAvalancheDexConfig: DexConfig = {
   metric: DataMetrics.dex,
   version: DexVersions.univ3,
   address: AddressesBook.avalanche.KyberswapFactory,
-  birthday: 1684540800, // Sat May 20 2023 00:00:00 GMT+0000
+  birthday: 1686355200, // Sat Jun 10 2023 00:00:00 GMT+0000
   subgraph: {
     endpoint: SubgraphEndpoints.data.kyberswapElasticAvalanche,
     filters: KyberswapSubgraphFilters,
@@ -135,9 +135,37 @@ export const KyberswapFantomDexConfig: DexConfig = {
   metric: DataMetrics.dex,
   version: DexVersions.univ3,
   address: AddressesBook.fantom.KyberswapFactory,
-  birthday: 1684540800, // Sat May 20 2023 00:00:00 GMT+0000
+  birthday: 1686355200, // Sat Jun 10 2023 00:00:00 GMT+0000
   subgraph: {
     endpoint: SubgraphEndpoints.data.kyberswapElasticFantom,
     filters: KyberswapSubgraphFilters,
   },
+};
+
+export const KyberswapScrollDexConfig: DexConfig = {
+  protocol: ProtocolNames.kyberswap,
+  chain: ChainNames.scroll,
+  metric: DataMetrics.dex,
+  version: DexVersions.univ3,
+  address: AddressesBook.scroll.KyberswapFactory,
+  birthday: 1698796800, // Wed Nov 01 2023 00:00:00 GMT+0000
+  subgraph: {
+    endpoint: SubgraphEndpoints.data.kyberswapElasticScroll,
+    filters: KyberswapSubgraphFilters,
+  },
+};
+
+export const KyberswapConfigs: KyberswapConfig = {
+  protocol: ProtocolNames.kyberswap,
+  configs: [
+    KyberswapEthereumDexConfig,
+    KyberswapArbitrumDexConfig,
+    KyberswapOptimismDexConfig,
+    KyberswapBaseDexConfig,
+    KyberswapBnbchainDexConfig,
+    KyberswapPolygonDexConfig,
+    KyberswapAvalancheDexConfig,
+    KyberswapFantomDexConfig,
+    KyberswapScrollDexConfig,
+  ],
 };

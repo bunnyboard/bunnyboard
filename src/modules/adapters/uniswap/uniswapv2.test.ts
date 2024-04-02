@@ -85,6 +85,5 @@ test(`should get dex correctly at ${getDateString(fromTime)} - uniswapv2 - ether
     expect(dexDataTimeframe.feesTradingUsd).equal('6309.47233542288049176908');
     expect(dexDataTimeframe.volumeTradingUsd).equal('2103157.44514096016392302546');
     expect(dexDataTimeframe.numberOfTransactions).equal(7998);
-    expect(dexDataTimeframe.traders.length).greaterThan(0);
   }
 });

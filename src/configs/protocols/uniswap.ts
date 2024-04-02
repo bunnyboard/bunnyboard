@@ -115,7 +115,7 @@ export const Uniswapv3ArbitrumDexConfig: DexConfig = {
   metric: DataMetrics.dex,
   version: DexVersions.univ3,
   address: AddressesBook.arbitrum.UniswapFactoryV3,
-  birthday: 1622592000, // Wed Jun 02 2021 00:00:00 GMT+0000
+  birthday: 1630454400, // Wed Jun 02 2021 00:00:00 GMT+0000
   subgraph: {
     endpoint: SubgraphEndpoints.data.uniswapv3Arbitrum,
     filters: Uniswapv3SubgraphFilters,
@@ -141,7 +141,7 @@ export const Uniswapv3PolygonDexConfig: DexConfig = {
   metric: DataMetrics.dex,
   version: DexVersions.univ3,
   address: AddressesBook.polygon.UniswapFactoryV3,
-  birthday: 1640044800, // Tue Dec 21 2021 00:00:00 GMT+0000
+  birthday: 1640995200, // Tue Dec 21 2021 00:00:00 GMT+0000
   subgraph: {
     endpoint: SubgraphEndpoints.data.uniswapv3Polygon,
     filters: Uniswapv3SubgraphFilters,
@@ -154,7 +154,7 @@ export const Uniswapv3BaseDexConfig: DexConfig = {
   metric: DataMetrics.dex,
   version: DexVersions.univ3,
   address: AddressesBook.base.UniswapFactoryV3,
-  birthday: 1689552000, // Mon Jul 17 2023 00:00:00 GMT+0000
+  birthday: 1691193600, // Mon Jul 17 2023 00:00:00 GMT+0000
   subgraph: {
     endpoint: SubgraphEndpoints.data.uniswapv3Base,
     filters: Uniswapv3SubgraphFilters,
@@ -167,7 +167,7 @@ export const Uniswapv3BnbchainDexConfig: DexConfig = {
   metric: DataMetrics.dex,
   version: DexVersions.univ3,
   address: AddressesBook.bnbchain.UniswapFactoryV3,
-  birthday: 1678406400, // Fri Mar 10 2023 00:00:00 GMT+0000
+  birthday: 1678492800, // Fri Mar 10 2023 00:00:00 GMT+0000
   subgraph: {
     endpoint: SubgraphEndpoints.data.uniswapv3Bnbchain,
     filters: Uniswapv3SubgraphFilters,

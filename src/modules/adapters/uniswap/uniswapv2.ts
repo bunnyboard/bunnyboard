@@ -260,7 +260,7 @@ export default class Uniswapv2Adapter extends DexProtocolAdapter {
     const dexConfig = options.config as DexConfig;
 
     if (dexConfig.subgraph) {
-      const metaBlock = await tryQueryBlockMeta(EnvConfig.blockchains[options.config.chain].blockSubgraph);
+      const metaBlock = await tryQueryBlockMeta(dexConfig.subgraph.endpoint);
       const beginBlock = await this.services.blockchain.tryGetBlockNumberAtTimestamp(
         options.config.chain,
         options.fromTime,

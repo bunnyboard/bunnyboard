@@ -61,6 +61,8 @@ export const DataSubGraphEndpoints = {
   kyberswapElasticBnbchain: 'https://api.thegraph.com/subgraphs/name/kybernetwork/kyberswap-elastic-bsc',
   kyberswapElasticAvalanche: 'https://api.thegraph.com/subgraphs/name/kybernetwork/kyberswap-elastic-avalanche',
   kyberswapElasticFantom: 'https://api.thegraph.com/subgraphs/name/kybernetwork/kyberswap-elastic-fantom',
+  kyberswapElasticScroll:
+    'https://scroll-graph.kyberengineering.io/subgraphs/name/kybernetwork/kyberswap-elastic-scroll',
 
   // camelot
   camelotArbitrum: 'https://api.thegraph.com/subgraphs/name/camelotlabs/camelot-amm',

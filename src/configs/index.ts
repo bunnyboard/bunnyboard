@@ -4,6 +4,7 @@ import { TokensBook, TokensBookBase } from './data';
 import { Aavev2Configs, Aavev3Configs } from './protocols/aave';
 import { CompoundConfigs, Compoundv3Configs } from './protocols/compound';
 import { IronbankConfigs } from './protocols/ironbank';
+import { KyberswapConfigs } from './protocols/kyberswap';
 import { LiquityConfigs } from './protocols/liquity';
 import { MakerConfigs } from './protocols/maker';
 import { RadiantConfigs } from './protocols/radiant';
@@ -27,19 +28,18 @@ export const ProtocolConfigs = {
   compound: CompoundConfigs,
   compoundv3: Compoundv3Configs,
   ironbank: IronbankConfigs,
-  venus: VenusConfigs,
-  radiant: RadiantConfigs,
-  sonne: SonneConfigs,
+  kyberswap: KyberswapConfigs,
   liquity: LiquityConfigs,
   maker: MakerConfigs,
+  radiant: RadiantConfigs,
+  sonne: SonneConfigs,
   spark: SparkConfigs,
   spooky: SpookyConfigs,
   sushi: SushiConfigs,
   sushiv3: Sushiv3Configs,
   uniswapv2: Uniswapv2Configs,
   uniswapv3: Uniswapv3Configs,
-  // gmx: GmxConfigs,
-  // gmxv2: Gmxv2Configs,
+  venus: VenusConfigs,
 
   tokenBoard: {
     protocol: 'tokenBoard',

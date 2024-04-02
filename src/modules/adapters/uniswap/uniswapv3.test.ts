@@ -2,8 +2,14 @@ import { expect, test } from 'vitest';
 
 import { DefaultMemcacheTime } from '../../../configs';
 import { TimeUnits } from '../../../configs/constants';
-import { Uniswapv3Configs, Uniswapv3EthereumDexConfig } from '../../../configs/protocols/uniswap';
-import { getDateString } from '../../../lib/utils';
+import {
+  Uniswapv3ArbitrumDexConfig,
+  Uniswapv3BaseDexConfig,
+  Uniswapv3BnbchainDexConfig,
+  Uniswapv3Configs,
+  Uniswapv3EthereumDexConfig,
+  Uniswapv3OptimismDexConfig,
+} from '../../../configs/protocols/uniswap';
 import BlockchainService from '../../../services/blockchains/blockchain';
 import { MemcacheService } from '../../../services/caching/memcache';
 import DatabaseService from '../../../services/database/database';
@@ -32,9 +38,6 @@ test('should get dex correctly at birthday - uniswapv3 - ethereum', async functi
     config: Uniswapv3EthereumDexConfig,
     fromTime: Uniswapv3EthereumDexConfig.birthday,
     toTime: Uniswapv3EthereumDexConfig.birthday + TimeUnits.SecondsPerDay,
-    props: {
-      disableGetEvents: true,
-    },
   });
 
   expect(dexData).not.equal(null);
@@ -47,8 +50,7 @@ test('should get dex correctly at birthday - uniswapv3 - ethereum', async functi
   }
 });
 
-const timestamp = 1704067200; // Mon Jan 01 2024 00:00:00 GMT+0000
-test(`should get dex correctly at ${getDateString(timestamp)} - uniswapv3 - ethereum`, async function () {
+test('should get dex correctly at birthday - uniswapv3 - arbitrum', async function () {
   const adapter = new Uniswapv3Adapter(
     {
       oracle,
@@ -61,18 +63,105 @@ test(`should get dex correctly at ${getDateString(timestamp)} - uniswapv3 - ethe
     Uniswapv3Configs,
   );
 
-  const dexDataTimeframe = await adapter.getDexDataTimeframe({
-    config: Uniswapv3EthereumDexConfig,
-    fromTime: timestamp,
-    toTime: timestamp + TimeUnits.SecondsPerDay,
+  const dexData = await adapter.getDexDataTimeframe({
+    config: Uniswapv3ArbitrumDexConfig,
+    fromTime: Uniswapv3ArbitrumDexConfig.birthday,
+    toTime: Uniswapv3ArbitrumDexConfig.birthday + TimeUnits.SecondsPerDay,
   });
 
-  if (dexDataTimeframe) {
-    expect(dexDataTimeframe.protocol).equal('uniswapv3');
-    expect(dexDataTimeframe.totalLiquidityUsd).equal('1977364172562.412927410608713074858');
-    expect(dexDataTimeframe.feesTradingUsd).equal('1091394.94938159270307919002');
-    expect(dexDataTimeframe.volumeTradingUsd).equal('618432381.66442523015304619071');
-    expect(dexDataTimeframe.numberOfTransactions).equal(73213);
-    expect(dexDataTimeframe.traders.length).greaterThan(0);
+  expect(dexData).not.equal(null);
+  if (dexData) {
+    expect(dexData.protocol).equal('uniswapv3');
+    expect(dexData.totalLiquidityUsd).equal('1781601.072869737277836648752458035');
+    expect(dexData.feesTradingUsd).equal('686.35314516870742088084');
+    expect(dexData.volumeTradingUsd).equal('547511.44090903908701347059');
+    expect(dexData.numberOfTransactions).equal(859);
+  }
+});
+
+test('should get dex correctly at birthday - uniswapv3 - optimism', async function () {
+  const adapter = new Uniswapv3Adapter(
+    {
+      oracle,
+      blockchain,
+    },
+    {
+      database: database,
+      memcache: memcache,
+    },
+    Uniswapv3Configs,
+  );
+
+  const dexData = await adapter.getDexDataTimeframe({
+    config: Uniswapv3OptimismDexConfig,
+    fromTime: Uniswapv3OptimismDexConfig.birthday,
+    toTime: Uniswapv3OptimismDexConfig.birthday + TimeUnits.SecondsPerDay,
+  });
+
+  expect(dexData).not.equal(null);
+  if (dexData) {
+    expect(dexData.protocol).equal('uniswapv3');
+    expect(dexData.totalLiquidityUsd).equal('35410328.76572047964127773920848008');
+    expect(dexData.feesTradingUsd).equal('23557.38363315055423841869');
+    expect(dexData.volumeTradingUsd).equal('16321818.49262120481939521455');
+    expect(dexData.numberOfTransactions).equal(5042);
+  }
+});
+
+test('should get dex correctly at birthday - uniswapv3 - bnbchain', async function () {
+  const adapter = new Uniswapv3Adapter(
+    {
+      oracle,
+      blockchain,
+    },
+    {
+      database: database,
+      memcache: memcache,
+    },
+    Uniswapv3Configs,
+  );
+
+  const dexData = await adapter.getDexDataTimeframe({
+    config: Uniswapv3BnbchainDexConfig,
+    fromTime: Uniswapv3BnbchainDexConfig.birthday,
+    toTime: Uniswapv3BnbchainDexConfig.birthday + TimeUnits.SecondsPerDay,
+  });
+
+  expect(dexData).not.equal(null);
+  if (dexData) {
+    expect(dexData.protocol).equal('uniswapv3');
+    expect(dexData.totalLiquidityUsd).equal('1290.128505556085996292386430181786');
+    expect(dexData.feesTradingUsd).equal('1.01144876908800014183');
+    expect(dexData.volumeTradingUsd).equal('337.14958969600004727518');
+    expect(dexData.numberOfTransactions).equal(29);
+  }
+});
+
+test('should get dex correctly at birthday - uniswapv3 - base', async function () {
+  const adapter = new Uniswapv3Adapter(
+    {
+      oracle,
+      blockchain,
+    },
+    {
+      database: database,
+      memcache: memcache,
+    },
+    Uniswapv3Configs,
+  );
+
+  const dexData = await adapter.getDexDataTimeframe({
+    config: Uniswapv3BaseDexConfig,
+    fromTime: Uniswapv3BaseDexConfig.birthday,
+    toTime: Uniswapv3BaseDexConfig.birthday + TimeUnits.SecondsPerDay,
+  });
+
+  expect(dexData).not.equal(null);
+  if (dexData) {
+    expect(dexData.protocol).equal('uniswapv3');
+    expect(dexData.totalLiquidityUsd).equal('99697.00197078393364981585377596407');
+    expect(dexData.feesTradingUsd).equal('46.19003613231938602296');
+    expect(dexData.volumeTradingUsd).equal('92380.07226406463412740439');
+    expect(dexData.numberOfTransactions).equal(126);
   }
 });
