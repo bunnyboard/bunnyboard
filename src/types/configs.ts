@@ -165,6 +165,12 @@ export interface DexSubgraph {
       txCount: string;
       fees?: string;
     };
+    eventSwaps?: {
+      event: string;
+      volumeUsd: string;
+      trader: string;
+      timestamp: string;
+    };
   };
   fixedFeePercentage?: number;
   httpRequestOptions?: any;

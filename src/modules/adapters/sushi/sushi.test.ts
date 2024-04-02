@@ -47,5 +47,6 @@ test('should get dex correctly at birthday - sushi - ethereum', async function (
     expect(dexData.volumeTradingCumulativeUsd).equal('36290586.24287358159156302179');
     expect(dexData.numberOfTransactions).equal(3792);
     expect(dexData.numberOfTransactionsCumulative).equal(3812);
+    expect(dexData.traders.length).greaterThan(0);
   }
 });

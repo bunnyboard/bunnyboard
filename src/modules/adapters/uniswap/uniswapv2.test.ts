@@ -8,6 +8,7 @@ import { MemcacheService } from '../../../services/caching/memcache';
 import DatabaseService from '../../../services/database/database';
 import OracleService from '../../../services/oracle/oracle';
 import Uniswapv2Adapter from './uniswapv2';
+import { getDateString } from '../../../lib/utils';
 
 const database = new DatabaseService();
 const memcache = new MemcacheService(DefaultMemcacheTime);
@@ -34,6 +35,9 @@ test('should get dex correctly at birthday - uniswapv2 - ethereum', async functi
     config: Uniswapv2EthereumDexConfig,
     fromTime: Uniswapv2EthereumDexConfig.birthday,
     toTime: Uniswapv2EthereumDexConfig.birthday + TimeUnits.SecondsPerDay,
+    props: {
+      disableGetEvents: true,
+    },
   });
 
   expect(dexData).not.equal(null);
@@ -49,7 +53,7 @@ test('should get dex correctly at birthday - uniswapv2 - ethereum', async functi
   }
 });
 
-test('should get dex correctly - uniswapv2 - ethereum', async function () {
+test(`should get dex correctly at ${getDateString(fromTime)} - uniswapv2 - ethereum`, async function () {
   const adapter = new Uniswapv2Adapter(
     {
       oracle,
@@ -87,5 +91,6 @@ test('should get dex correctly - uniswapv2 - ethereum', async function () {
     expect(dexDataTimeframe.volumeTradingCumulativeUsd).equal('19826623.41306043732589418148');
     expect(dexDataTimeframe.numberOfTransactions).equal(7998);
     expect(dexDataTimeframe.numberOfTransactionsCumulative).equal(82151);
+    expect(dexDataTimeframe.traders.length).greaterThan(0);
   }
 });

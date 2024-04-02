@@ -31,6 +31,12 @@ const SushiSubgraphFilters = {
     liquidity: 'liquidityUSD',
     txCount: 'txCount',
   },
+  eventSwaps: {
+    event: 'swaps',
+    trader: 'to',
+    volumeUsd: 'amountUSD',
+    timestamp: 'timestamp',
+  },
 };
 
 // export to easy to use in other configs

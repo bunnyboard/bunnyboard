@@ -1,6 +1,11 @@
 import { DexVersion } from '../configs';
 import { DataState, DataTimeframe } from './base';
 
+export interface DexDataTrader {
+  address: string;
+  volumeUsd: string;
+}
+
 export interface DexDataState extends DataState {
   version: DexVersion;
   totalLiquidityUsd: string;
@@ -14,6 +19,7 @@ export interface DexDataTimeframe extends DexDataState, DataTimeframe {
   volumeTradingCumulativeUsd: string;
   numberOfTransactions: number;
   numberOfTransactionsCumulative: number;
+  traders: Array<DexDataTrader>;
 }
 
 export interface DexDataStateWithTimeframes extends DexDataTimeframe {

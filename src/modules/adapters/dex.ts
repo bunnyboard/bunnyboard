@@ -59,6 +59,8 @@ export default class DexProtocolAdapter extends ProtocolAdapter implements IDexP
           volumeTradingCumulativeUsd: '0',
           numberOfTransactions: 0,
           numberOfTransactionsCumulative: 0,
+          traders: [],
+          liquidityProviders: [],
           last24Hours: null,
         };
 

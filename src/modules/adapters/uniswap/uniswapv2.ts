@@ -5,7 +5,8 @@ import BigNumber from 'bignumber.js';
 import { TimeUnits } from '../../../configs/constants';
 import EnvConfig from '../../../configs/envConfig';
 import { tryQueryBlockMeta } from '../../../lib/subgraph';
-import { DexDataState, DexDataTimeframe } from '../../../types/collectors/dex';
+import { normalizeAddress } from '../../../lib/utils';
+import { DexDataState, DexDataTimeframe, DexDataTrader } from '../../../types/collectors/dex';
 import { GetAdapterDataStateOptions, GetAdapterDataTimeframeOptions } from '../../../types/collectors/options';
 import { DexConfig, DexSubgraph, ProtocolConfig } from '../../../types/configs';
 import { ContextServices, ContextStorages } from '../../../types/namespaces';
@@ -19,6 +20,12 @@ interface FactoryData {
   volumeTradingCumulative: string;
   numberOfTransactions: number;
   numberOfTransactionsCumulative: number;
+}
+
+interface EventData {
+  // list of addressed as traders
+  // map address with trade volume in USD
+  traders: Array<DexDataTrader>;
 }
 
 export default class Uniswapv2Adapter extends DexProtocolAdapter {
@@ -98,6 +105,81 @@ export default class Uniswapv2Adapter extends DexProtocolAdapter {
     return null;
   }
 
+  protected async getEventData(
+    subgraphConfig: DexSubgraph,
+    fromTime: number,
+    toTime: number,
+  ): Promise<EventData | null> {
+    if (subgraphConfig && subgraphConfig.filters.eventSwaps) {
+      const filters = subgraphConfig.filters.eventSwaps;
+
+      let timestamp = fromTime;
+      const transactionIds: { [key: string]: boolean } = {};
+      const traders: { [key: string]: DexDataTrader } = {};
+      do {
+        const eventSwapsQuery = `
+          {
+            swaps: ${filters.event}(first: 1000, where: { timestamp_gte: ${timestamp}, timestamp_lte: ${toTime} }, orderBy: timestamp, orderDirection: asc) {
+              id
+              ${filters.trader}
+              ${filters.volumeUsd}
+              ${filters.timestamp}
+            }
+          }
+        `;
+
+        const data = await retry(
+          async function () {
+            const response = await axios.post(
+              subgraphConfig.endpoint,
+              {
+                query: eventSwapsQuery,
+              },
+              {
+                headers: {
+                  'Content-Type': 'application/json',
+                },
+              },
+            );
+
+            return response.data.data;
+          },
+          {
+            retries: 5,
+          },
+        );
+
+        const swapEvents = data.swaps ? (data.swaps as Array<any>) : [];
+        for (const swapEvent of swapEvents) {
+          if (!transactionIds[swapEvent.id]) {
+            transactionIds[swapEvent.id] = true;
+
+            const trader = normalizeAddress(swapEvent[filters.trader]);
+            if (!traders[trader]) {
+              traders[trader] = {
+                address: trader,
+                volumeUsd: '0',
+              };
+            }
+
+            traders[trader].volumeUsd = new BigNumber(traders[trader].volumeUsd)
+              .plus(new BigNumber(swapEvent[filters.volumeUsd].toString()))
+              .toString(10);
+          }
+        }
+
+        timestamp =
+          swapEvents.length > 0 ? Number(swapEvents[swapEvents.length - 1][filters.timestamp]) + 1 : toTime + 1;
+      } while (timestamp <= toTime);
+
+      return {
+        traders: Object.values(traders),
+      };
+    }
+
+    return null;
+  }
+
   public async getDexDataState(options: GetAdapterDataStateOptions): Promise<DexDataState | null> {
     const dexConfig = options.config as DexConfig;
     if (dexConfig.subgraph) {
@@ -161,6 +243,8 @@ export default class Uniswapv2Adapter extends DexProtocolAdapter {
         volumeTradingCumulativeUsd: '0',
         numberOfTransactions: 0,
         numberOfTransactionsCumulative: 0,
+
+        traders: [],
       };
       const factoryData = await this.getFactoryData(
         dexConfig.subgraph,
@@ -175,6 +259,15 @@ export default class Uniswapv2Adapter extends DexProtocolAdapter {
         dexData.volumeTradingCumulativeUsd = factoryData.volumeTradingCumulative;
         dexData.numberOfTransactions = factoryData.numberOfTransactions;
         dexData.numberOfTransactionsCumulative = factoryData.numberOfTransactionsCumulative;
+      }
+
+      if (options.props && options.props.disableGetEvents) {
+        return dexData;
+      }
+
+      const eventData = await this.getEventData(dexConfig.subgraph, options.fromTime, options.toTime);
+      if (eventData) {
+        dexData.traders = eventData.traders;
       }
 
       return dexData;

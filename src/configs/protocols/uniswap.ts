@@ -42,6 +42,12 @@ export const Uniswapv2EthereumDexConfig: DexConfig = {
         liquidity: 'totalLiquidityUSD',
         txCount: 'txCount',
       },
+      eventSwaps: {
+        event: 'swaps',
+        trader: 'to',
+        volumeUsd: 'amountUSD',
+        timestamp: 'timestamp',
+      },
     },
   },
 };
