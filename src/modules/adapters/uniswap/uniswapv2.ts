@@ -4,6 +4,7 @@ import BigNumber from 'bignumber.js';
 
 import { TimeUnits } from '../../../configs/constants';
 import EnvConfig from '../../../configs/envConfig';
+import logger from '../../../lib/logger';
 import { tryQueryBlockMeta } from '../../../lib/subgraph';
 import { normalizeAddress } from '../../../lib/utils';
 import { DexDataState, DexDataTimeframe, DexDataTrader } from '../../../types/collectors/dex';
@@ -105,12 +106,19 @@ export default class Uniswapv2Adapter extends DexProtocolAdapter {
     return null;
   }
 
-  protected async getEventData(
-    subgraphConfig: DexSubgraph,
-    fromTime: number,
-    toTime: number,
-  ): Promise<EventData | null> {
+  protected async getEventData(dexConfig: DexConfig, fromTime: number, toTime: number): Promise<EventData | null> {
+    const subgraphConfig = dexConfig.subgraph;
+
     if (subgraphConfig && subgraphConfig.filters.eventSwaps) {
+      logger.debug('start to query swap events', {
+        service: this.name,
+        protocol: dexConfig.protocol,
+        chain: dexConfig.chain,
+        version: dexConfig.version,
+        fromTime: fromTime,
+        toTime: toTime,
+      });
+
       const filters = subgraphConfig.filters.eventSwaps;
 
       let timestamp = fromTime;
@@ -265,7 +273,7 @@ export default class Uniswapv2Adapter extends DexProtocolAdapter {
         return dexData;
       }
 
-      const eventData = await this.getEventData(dexConfig.subgraph, options.fromTime, options.toTime);
+      const eventData = await this.getEventData(dexConfig, options.fromTime, options.toTime);
       if (eventData) {
         dexData.traders = eventData.traders;
       }

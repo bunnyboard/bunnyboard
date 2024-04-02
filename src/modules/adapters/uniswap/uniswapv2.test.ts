@@ -3,12 +3,12 @@ import { expect, test } from 'vitest';
 import { DefaultMemcacheTime } from '../../../configs';
 import { TimeUnits } from '../../../configs/constants';
 import { Uniswapv2Configs, Uniswapv2EthereumDexConfig } from '../../../configs/protocols/uniswap';
+import { getDateString } from '../../../lib/utils';
 import BlockchainService from '../../../services/blockchains/blockchain';
 import { MemcacheService } from '../../../services/caching/memcache';
 import DatabaseService from '../../../services/database/database';
 import OracleService from '../../../services/oracle/oracle';
 import Uniswapv2Adapter from './uniswapv2';
-import { getDateString } from '../../../lib/utils';
 
 const database = new DatabaseService();
 const memcache = new MemcacheService(DefaultMemcacheTime);

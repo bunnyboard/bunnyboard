@@ -110,6 +110,8 @@ export default class CdpLendingDataAggregator extends BaseDataAggregator {
       changedDay: (previousTotalCollateralDeposited / previousTotalBorrowed) * 100,
     };
 
+    await queryCursor.close();
+
     return dataOverall;
   }
 

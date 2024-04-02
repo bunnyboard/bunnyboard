@@ -133,6 +133,8 @@ export default class CrossLendingDataAggregator extends BaseDataAggregator {
       changedDay: uRatePrevious ? calChangesOf_Current_From_Previous(uRateCurrent, uRatePrevious) : undefined,
     };
 
+    await queryCursor.close();
+
     return dataState;
   }
 

@@ -60,7 +60,6 @@ export default class DexProtocolAdapter extends ProtocolAdapter implements IDexP
           numberOfTransactions: 0,
           numberOfTransactionsCumulative: 0,
           traders: [],
-          liquidityProviders: [],
           last24Hours: null,
         };
 
@@ -71,6 +70,7 @@ export default class DexProtocolAdapter extends ProtocolAdapter implements IDexP
           stateWithTimeframes.volumeTradingCumulativeUsd = timeframeLast24Hours.volumeTradingCumulativeUsd;
           stateWithTimeframes.numberOfTransactions = timeframeLast24Hours.numberOfTransactions;
           stateWithTimeframes.numberOfTransactionsCumulative = timeframeLast24Hours.numberOfTransactionsCumulative;
+          stateWithTimeframes.traders = timeframeLast24Hours.traders;
         }
 
         if (timeframeLast48Hours) {
