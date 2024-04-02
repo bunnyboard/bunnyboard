@@ -311,10 +311,10 @@ export default class Uniswapv2Adapter extends DexProtocolAdapter {
         return dexData;
       }
 
-      const eventData = await this.getEventData(dexConfig, options.fromTime, options.toTime);
-      if (eventData) {
-        dexData.traders = eventData.traders;
-      }
+      // const eventData = await this.getEventData(dexConfig, options.fromTime, options.toTime);
+      // if (eventData) {
+      //   dexData.traders = eventData.traders;
+      // }
 
       return dexData;
     }
