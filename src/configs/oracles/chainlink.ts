@@ -40,10 +40,10 @@ export const OracleSourceChainlinkList: { [key: string]: OracleSourceChainlink }
     address: AddressesBook.avalanche.ChainlinkFeed_AVAX_USD,
     decimals: 8,
   },
-  FTM_USD: {
+  FTM_ETH: {
     type: 'chainlink',
-    chain: 'fantom',
-    address: AddressesBook.fantom.ChainlinkFeed_FTM_USD,
+    chain: 'ethereum',
+    address: AddressesBook.ethereum.ChainlinkFeed_FTM_ETH,
     decimals: 8,
   },
   DAI_USD: {

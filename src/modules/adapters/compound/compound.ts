@@ -169,6 +169,10 @@ export default class CompoundAdapter extends CrossLendingProtocolAdapter {
         }
 
         if (token) {
+          if (marketConfig.blacklists && marketConfig.blacklists[token.address]) {
+            continue;
+          }
+
           const totalCash = await this.services.blockchain.readContract({
             chain: marketConfig.chain,
             abi: this.abiConfigs.eventAbis.cErc20,

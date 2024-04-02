@@ -23,7 +23,7 @@ export const OracleCurrencyBaseConfigs: { [key: string]: OracleConfig } = {
     sources: [OracleSourceChainlinkList.AVAX_USD],
   },
   ftm: {
-    currency: 'usd',
-    sources: [OracleSourceChainlinkList.FTM_USD],
+    currency: 'eth',
+    sources: [OracleSourceChainlinkList.FTM_ETH],
   },
 };

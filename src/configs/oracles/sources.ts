@@ -228,8 +228,8 @@ export const OracleSourceConfigs: { [key: string]: OracleConfig } = {
     sources: [OracleSourceUniswapv3List.EURS_USDC],
   },
   MIM: {
-    currency: 'usd',
-    sources: [OracleSourceUniswapv3List.MIM_USDC],
+    currency: 'eth',
+    sources: [OracleSourceUniswapv2List.MIM_WETH],
   },
   FXS: {
     currency: 'usd',
