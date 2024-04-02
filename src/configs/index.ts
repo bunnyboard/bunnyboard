@@ -9,8 +9,9 @@ import { MakerConfigs } from './protocols/maker';
 import { RadiantConfigs } from './protocols/radiant';
 import { SonneConfigs } from './protocols/sonne';
 import { SparkConfigs } from './protocols/spark';
-import { SushiConfigs } from './protocols/sushi';
-import { Uniswapv2Configs } from './protocols/uniswap';
+import { SpookyConfigs } from './protocols/spooky';
+import { SushiConfigs, Sushiv3Configs } from './protocols/sushi';
+import { Uniswapv2Configs, Uniswapv3Configs } from './protocols/uniswap';
 import { VenusConfigs } from './protocols/venus';
 
 export const DefaultQueryContractLogsBlockRange = 1000;
@@ -32,8 +33,11 @@ export const ProtocolConfigs = {
   liquity: LiquityConfigs,
   maker: MakerConfigs,
   spark: SparkConfigs,
+  spooky: SpookyConfigs,
   sushi: SushiConfigs,
+  sushiv3: Sushiv3Configs,
   uniswapv2: Uniswapv2Configs,
+  uniswapv3: Uniswapv3Configs,
   // gmx: GmxConfigs,
   // gmxv2: Gmxv2Configs,
 

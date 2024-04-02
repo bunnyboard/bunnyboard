@@ -54,22 +54,16 @@ export default class DexProtocolAdapter extends ProtocolAdapter implements IDexP
           timefrom: timestamp - TimeUnits.SecondsPerDay,
           timeto: timestamp,
           feesTradingUsd: '0',
-          feesTradingCumulativeUsd: '0',
           volumeTradingUsd: '0',
-          volumeTradingCumulativeUsd: '0',
           numberOfTransactions: 0,
-          numberOfTransactionsCumulative: 0,
           traders: [],
           last24Hours: null,
         };
 
         if (timeframeLast24Hours) {
           stateWithTimeframes.feesTradingUsd = timeframeLast24Hours.feesTradingUsd;
-          stateWithTimeframes.feesTradingCumulativeUsd = timeframeLast24Hours.feesTradingCumulativeUsd;
           stateWithTimeframes.volumeTradingUsd = timeframeLast24Hours.volumeTradingUsd;
-          stateWithTimeframes.volumeTradingCumulativeUsd = timeframeLast24Hours.volumeTradingCumulativeUsd;
           stateWithTimeframes.numberOfTransactions = timeframeLast24Hours.numberOfTransactions;
-          stateWithTimeframes.numberOfTransactionsCumulative = timeframeLast24Hours.numberOfTransactionsCumulative;
           stateWithTimeframes.traders = timeframeLast24Hours.traders;
         }
 

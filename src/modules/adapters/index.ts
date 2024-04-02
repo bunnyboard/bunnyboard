@@ -7,8 +7,11 @@ import IronbankAdapter from './ironbank/ironbank';
 import LiquityAdapter from './liquity/liquity';
 import MakerAdapter from './maker/maker';
 import RadiantAdapter from './radiant/radiant';
+import SpookyAdapter from './spooky/spooky';
 import SushiAdapter from './sushi/sushi';
+import Sushiv3Adapter from './sushi/sushiv3';
 import Uniswapv2Adapter from './uniswap/uniswapv2';
+import Uniswapv3Adapter from './uniswap/uniswapv3';
 import VenusAdapter from './venus/venus';
 
 export function getProtocolAdapters(
@@ -26,7 +29,10 @@ export function getProtocolAdapters(
     spark: new Aavev3Adapter(services, storages, ProtocolConfigs.spark),
     liquity: new LiquityAdapter(services, storages, ProtocolConfigs.liquity),
     maker: new MakerAdapter(services, storages, ProtocolConfigs.maker),
-    uniswapv2: new Uniswapv2Adapter(services, storages, ProtocolConfigs.uniswapv2),
+    spooky: new SpookyAdapter(services, storages, ProtocolConfigs.spooky),
     sushi: new SushiAdapter(services, storages, ProtocolConfigs.sushi),
+    sushiv3: new Sushiv3Adapter(services, storages, ProtocolConfigs.sushiv3),
+    uniswapv2: new Uniswapv2Adapter(services, storages, ProtocolConfigs.uniswapv2),
+    uniswapv3: new Uniswapv3Adapter(services, storages, ProtocolConfigs.uniswapv3),
   };
 }

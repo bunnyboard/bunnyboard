@@ -32,9 +32,21 @@ const SpookySubgraphFilters = {
     liquidity: 'totalLiquidityUSD',
     txCount: 'txCount',
   },
+  eventSwaps: {
+    event: 'swaps',
+    trader: 'to',
+    volumeUsd: 'amountUSD',
+    timestamp: 'timestamp',
+  },
+  factoryDayData: {
+    factories: 'uniswapDayDatas',
+    volume: 'dailyVolumeUSD',
+    liquidity: 'totalLiquidityUSD',
+    txCount: 'txCount',
+  },
 };
 
-export const SpookyEthereumDexConfig: DexConfig = {
+export const SpookyFantomDexConfig: DexConfig = {
   protocol: ProtocolNames.spooky,
   chain: ChainNames.fantom,
   metric: DataMetrics.dex,
@@ -46,4 +58,9 @@ export const SpookyEthereumDexConfig: DexConfig = {
     filters: SpookySubgraphFilters,
     fixedFeePercentage: 0.2,
   },
+};
+
+export const SpookyConfigs: SpookyConfig = {
+  protocol: ProtocolNames.spooky,
+  configs: [SpookyFantomDexConfig],
 };

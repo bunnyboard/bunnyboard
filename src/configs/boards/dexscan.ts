@@ -17,7 +17,7 @@ import {
   Pancakev3BaseDexConfig,
   Pancakev3EthereumDexConfig,
 } from '../protocols/pancake';
-import { SpookyEthereumDexConfig } from '../protocols/spooky';
+import { SpookyFantomDexConfig } from '../protocols/spooky';
 import {
   SushiArbitrumDexConfig,
   SushiAvalancheDexConfig,
@@ -90,5 +90,5 @@ export const DexscanConfigs: Array<DexConfig> = [
   KyberswapAvalancheDexConfig,
   KyberswapFantomDexConfig,
 
-  SpookyEthereumDexConfig,
+  SpookyFantomDexConfig,
 ];

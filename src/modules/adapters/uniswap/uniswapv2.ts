@@ -4,7 +4,6 @@ import BigNumber from 'bignumber.js';
 
 import { TimeUnits } from '../../../configs/constants';
 import EnvConfig from '../../../configs/envConfig';
-import logger from '../../../lib/logger';
 import { tryQueryBlockMeta } from '../../../lib/subgraph';
 import { normalizeAddress } from '../../../lib/utils';
 import { DexDataState, DexDataTimeframe, DexDataTrader } from '../../../types/collectors/dex';
@@ -13,17 +12,14 @@ import { DexConfig, DexSubgraph, ProtocolConfig } from '../../../types/configs';
 import { ContextServices, ContextStorages } from '../../../types/namespaces';
 import DexProtocolAdapter from '../dex';
 
-interface FactoryData {
+export interface FactoryData {
   totalLiquidity: string;
   feesTrading: string;
-  feesTradingCumulative: string;
   volumeTrading: string;
-  volumeTradingCumulative: string;
   numberOfTransactions: number;
-  numberOfTransactionsCumulative: number;
 }
 
-interface EventData {
+export interface EventData {
   // list of addressed as traders
   // map address with trade volume in USD
   traders: Array<DexDataTrader>;
@@ -86,18 +82,66 @@ export default class Uniswapv2Adapter extends DexProtocolAdapter {
           const feesTrading = volumeTrading
             .multipliedBy(subgraphConfig.fixedFeePercentage ? subgraphConfig.fixedFeePercentage : 0.3)
             .dividedBy(100);
-          const feesTradingCumulative = totalVolumeTo
-            .multipliedBy(subgraphConfig.fixedFeePercentage ? subgraphConfig.fixedFeePercentage : 0.3)
-            .dividedBy(100);
 
           return {
             totalLiquidity: data.dataTo[0][filters.liquidity].toString(),
             feesTrading: feesTrading.toString(10),
-            feesTradingCumulative: feesTradingCumulative.toString(10),
             volumeTrading: volumeTrading.toString(10),
-            volumeTradingCumulative: totalVolumeTo.toString(10),
             numberOfTransactions: Number(data.dataTo[0][filters.txCount]) - Number(data.dataFrom[0][filters.txCount]),
-            numberOfTransactionsCumulative: Number(data.dataTo[0][filters.txCount]),
+          };
+        } catch (e: any) {}
+      }
+    }
+
+    return null;
+  }
+
+  protected async getFactoryDayData(subgraphConfig: DexSubgraph, date: number): Promise<FactoryData | null> {
+    if (subgraphConfig && subgraphConfig.filters.factoryDayData) {
+      const filters = subgraphConfig.filters.factoryDayData;
+      const factoryQuery = `
+        {
+          dayData: ${filters.factories}(first: 1, where: {date: ${date}}) {
+            ${filters.volume}
+            ${filters.liquidity}
+            ${filters.txCount}
+          }
+        }
+      `;
+
+      const data = await retry(
+        async function () {
+          const response = await axios.post(
+            subgraphConfig.endpoint,
+            {
+              query: factoryQuery,
+            },
+            {
+              headers: {
+                'Content-Type': 'application/json',
+              },
+            },
+          );
+
+          return response.data.data;
+        },
+        {
+          retries: 5,
+        },
+      );
+      if (data) {
+        try {
+          const totalLiquidityUsd = new BigNumber(data.dayData[0][filters.liquidity].toString());
+          const totalVolumeUsd = new BigNumber(data.dayData[0][filters.volume].toString());
+          const feesTrading = totalVolumeUsd
+            .multipliedBy(subgraphConfig.fixedFeePercentage ? subgraphConfig.fixedFeePercentage : 0.3)
+            .dividedBy(100);
+
+          return {
+            totalLiquidity: totalLiquidityUsd.toString(),
+            feesTrading: feesTrading.toString(10),
+            volumeTrading: totalVolumeUsd.toString(10),
+            numberOfTransactions: Number(data.dayData[0][filters.txCount]),
           };
         } catch (e: any) {}
       }
@@ -110,15 +154,6 @@ export default class Uniswapv2Adapter extends DexProtocolAdapter {
     const subgraphConfig = dexConfig.subgraph;
 
     if (subgraphConfig && subgraphConfig.filters.eventSwaps) {
-      logger.debug('start to query swap events', {
-        service: this.name,
-        protocol: dexConfig.protocol,
-        chain: dexConfig.chain,
-        version: dexConfig.version,
-        fromTime: fromTime,
-        toTime: toTime,
-      });
-
       const filters = subgraphConfig.filters.eventSwaps;
 
       let timestamp = fromTime;
@@ -246,11 +281,8 @@ export default class Uniswapv2Adapter extends DexProtocolAdapter {
 
         totalLiquidityUsd: '0',
         feesTradingUsd: '0',
-        feesTradingCumulativeUsd: '0',
         volumeTradingUsd: '0',
-        volumeTradingCumulativeUsd: '0',
         numberOfTransactions: 0,
-        numberOfTransactionsCumulative: 0,
 
         traders: [],
       };
@@ -262,11 +294,17 @@ export default class Uniswapv2Adapter extends DexProtocolAdapter {
       if (factoryData) {
         dexData.totalLiquidityUsd = factoryData.totalLiquidity;
         dexData.feesTradingUsd = factoryData.feesTrading;
-        dexData.feesTradingCumulativeUsd = factoryData.feesTradingCumulative;
         dexData.volumeTradingUsd = factoryData.volumeTrading;
-        dexData.volumeTradingCumulativeUsd = factoryData.volumeTradingCumulative;
         dexData.numberOfTransactions = factoryData.numberOfTransactions;
-        dexData.numberOfTransactionsCumulative = factoryData.numberOfTransactionsCumulative;
+      } else {
+        // try query date data
+        const factoryDayData = await this.getFactoryDayData(dexConfig.subgraph, options.fromTime);
+        if (factoryDayData) {
+          dexData.totalLiquidityUsd = factoryDayData.totalLiquidity;
+          dexData.feesTradingUsd = factoryDayData.feesTrading;
+          dexData.volumeTradingUsd = factoryDayData.volumeTrading;
+          dexData.numberOfTransactions = factoryDayData.numberOfTransactions;
+        }
       }
 
       if (options.props && options.props.disableGetEvents) {

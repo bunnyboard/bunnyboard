@@ -1,5 +1,6 @@
 import { DataMetrics, DexConfig, DexVersions, ProtocolConfig } from '../../types/configs';
 import { AddressesBook, SubgraphEndpoints } from '../data';
+import { ProtocolNames } from '../names';
 
 export interface SushiConfig extends ProtocolConfig {
   configs: Array<DexConfig>;
@@ -154,11 +155,17 @@ const Sushiv3SubgraphFilters = {
     reserve1: 'totalValueLockedToken1',
   },
   factory: {
-    factories: 'uniswapFactories',
+    factories: 'factories',
     volume: 'totalVolumeUSD',
-    liquidity: 'totalLiquidityUSD',
+    liquidity: 'totalValueLockedUSD',
     txCount: 'txCount',
     fees: 'totalFeesUSD',
+  },
+  eventSwaps: {
+    event: 'swaps',
+    volumeUsd: 'amountUSD',
+    trader: 'recipient',
+    timestamp: 'timestamp',
   },
 };
 
@@ -168,7 +175,7 @@ export const Sushiv3EthereumDexConfig: DexConfig = {
   metric: DataMetrics.dex,
   version: DexVersions.univ3,
   address: AddressesBook.ethereum.SushiFactoryV3,
-  birthday: 1680393600, // Sun Apr 02 2023 00:00:00 GMT+0000
+  birthday: 1680739200, // Thu Apr 06 2023 00:00:00 GMT+0000
   subgraph: {
     endpoint: SubgraphEndpoints.data.sushiv3Ethereum,
     filters: Sushiv3SubgraphFilters,
@@ -264,4 +271,18 @@ export const Sushiv3AvalancheDexConfig: DexConfig = {
     endpoint: SubgraphEndpoints.data.sushiv3Avalanche,
     filters: Sushiv3SubgraphFilters,
   },
+};
+
+export const Sushiv3Configs: SushiConfig = {
+  protocol: ProtocolNames.sushiv3,
+  configs: [
+    Sushiv3EthereumDexConfig,
+    Sushiv3ArbitrumDexConfig,
+    Sushiv3OptimismDexConfig,
+    Sushiv3BaseDexConfig,
+    Sushiv3PolygonDexConfig,
+    Sushiv3BnbchainDexConfig,
+    Sushiv3AvalancheDexConfig,
+    Sushiv3FantomDexConfig,
+  ],
 };

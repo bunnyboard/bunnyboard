@@ -165,6 +165,12 @@ export interface DexSubgraph {
       txCount: string;
       fees?: string;
     };
+    factoryDayData?: {
+      factories: string;
+      volume: string;
+      liquidity: string;
+      txCount: string;
+    };
     eventSwaps?: {
       event: string;
       volumeUsd: string;

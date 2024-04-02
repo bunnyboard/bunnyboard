@@ -14,11 +14,8 @@ export interface DexDataState extends DataState {
 export interface DexDataTimeframe extends DexDataState, DataTimeframe {
   // fees collected from trading
   feesTradingUsd: string;
-  feesTradingCumulativeUsd: string;
   volumeTradingUsd: string;
-  volumeTradingCumulativeUsd: string;
   numberOfTransactions: number;
-  numberOfTransactionsCumulative: number;
   traders: Array<DexDataTrader>;
 }
 

@@ -31,9 +31,7 @@ export default class DexDataAggregator extends BaseDataAggregator {
 
       dataOverall.totalLiquidityUsd.value += snapshot.totalLiquidityUsd.value;
       dataOverall.feesTradingUsd.value += snapshot.feesTradingUsd.value;
-      dataOverall.feesTradingCumulativeUsd.value += snapshot.feesTradingCumulativeUsd.value;
       dataOverall.volumeTradingUsd.value += snapshot.volumeTradingUsd.value;
-      dataOverall.volumeTradingCumulativeUsd.value += snapshot.volumeTradingCumulativeUsd.value;
       dataOverall.numberOfTraders.value += snapshot.traders.length;
       dataOverall.numberOfTransactions.value += snapshot.numberOfTransactions.value;
 
@@ -44,14 +42,7 @@ export default class DexDataAggregator extends BaseDataAggregator {
       });
     }
 
-    const DataFields = [
-      'totalLiquidityUsd',
-      'feesTradingUsd',
-      'feesTradingCumulativeUsd',
-      'volumeTradingUsd',
-      'volumeTradingCumulativeUsd',
-      'numberOfTransactions',
-    ];
+    const DataFields = ['totalLiquidityUsd', 'feesTradingUsd', 'volumeTradingUsd', 'numberOfTransactions'];
     for (const field of DataFields) {
       ((dataOverall as any)[field] as DataValue).changedDay = calChangesOf_Total_From_Items(
         dataOverall.exchanges.map((item) => {

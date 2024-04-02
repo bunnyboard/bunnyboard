@@ -1,6 +1,6 @@
 import { DataMetrics, DexConfig, DexVersions, ProtocolConfig } from '../../types/configs';
 import { AddressesBook, SubgraphEndpoints } from '../data';
-import { ChainNames } from '../names';
+import { ChainNames, ProtocolNames } from '../names';
 
 export interface UniswapConfig extends ProtocolConfig {
   configs: Array<DexConfig>;
@@ -81,11 +81,17 @@ const Uniswapv3SubgraphFilters = {
     reserve1: 'totalValueLockedToken1',
   },
   factory: {
-    factories: 'uniswapFactories',
+    factories: 'factories',
     volume: 'totalVolumeUSD',
-    liquidity: 'totalLiquidityUSD',
+    liquidity: 'totalValueLockedUSD',
     txCount: 'txCount',
     fees: 'totalFeesUSD',
+  },
+  eventSwaps: {
+    event: 'swaps',
+    volumeUsd: 'amountUSD',
+    trader: 'recipient',
+    timestamp: 'timestamp',
   },
 };
 
@@ -166,4 +172,16 @@ export const Uniswapv3BnbchainDexConfig: DexConfig = {
     endpoint: SubgraphEndpoints.data.uniswapv3Bnbchain,
     filters: Uniswapv3SubgraphFilters,
   },
+};
+
+export const Uniswapv3Configs: UniswapConfig = {
+  protocol: ProtocolNames.uniswapv3,
+  configs: [
+    Uniswapv3EthereumDexConfig,
+    Uniswapv3ArbitrumDexConfig,
+    Uniswapv3OptimismDexConfig,
+    Uniswapv3BaseDexConfig,
+    Uniswapv3PolygonDexConfig,
+    Uniswapv3BnbchainDexConfig,
+  ],
 };

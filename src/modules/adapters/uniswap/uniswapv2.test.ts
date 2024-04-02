@@ -45,11 +45,8 @@ test('should get dex correctly at birthday - uniswapv2 - ethereum', async functi
     expect(dexData.protocol).equal('uniswapv2');
     expect(dexData.totalLiquidityUsd).equal('23890083.5096110076151830692203312');
     expect(dexData.feesTradingUsd).equal('6309.47233542288049176908');
-    expect(dexData.feesTradingCumulativeUsd).equal('59479.87023918131197768254');
     expect(dexData.volumeTradingUsd).equal('2103157.44514096016392302546');
-    expect(dexData.volumeTradingCumulativeUsd).equal('19826623.41306043732589418148');
     expect(dexData.numberOfTransactions).equal(7998);
-    expect(dexData.numberOfTransactionsCumulative).equal(82151);
   }
 });
 
@@ -86,11 +83,8 @@ test(`should get dex correctly at ${getDateString(fromTime)} - uniswapv2 - ether
     expect(dexDataTimeframe.protocol).equal('uniswapv2');
     expect(dexDataTimeframe.totalLiquidityUsd).equal('23890083.5096110076151830692203312');
     expect(dexDataTimeframe.feesTradingUsd).equal('6309.47233542288049176908');
-    expect(dexDataTimeframe.feesTradingCumulativeUsd).equal('59479.87023918131197768254');
     expect(dexDataTimeframe.volumeTradingUsd).equal('2103157.44514096016392302546');
-    expect(dexDataTimeframe.volumeTradingCumulativeUsd).equal('19826623.41306043732589418148');
     expect(dexDataTimeframe.numberOfTransactions).equal(7998);
-    expect(dexDataTimeframe.numberOfTransactionsCumulative).equal(82151);
     expect(dexDataTimeframe.traders.length).greaterThan(0);
   }
 });

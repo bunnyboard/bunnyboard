@@ -12,13 +12,7 @@ export default class DexDataTransformer {
       feesTradingUsd: {
         value: 0,
       },
-      feesTradingCumulativeUsd: {
-        value: 0,
-      },
       volumeTradingUsd: {
-        value: 0,
-      },
-      volumeTradingCumulativeUsd: {
         value: 0,
       },
       numberOfTraders: {
@@ -64,15 +58,6 @@ export default class DexDataTransformer {
           ? calChangesOf_Current_From_Previous(currentLast24Hours.feesTradingUsd, previousLast24Hours.feesTradingUsd)
           : undefined,
       },
-      feesTradingCumulativeUsd: {
-        value: convertToNumber(currentLast24Hours.feesTradingCumulativeUsd),
-        changedDay: previousLast24Hours
-          ? calChangesOf_Current_From_Previous(
-              currentLast24Hours.feesTradingCumulativeUsd,
-              previousLast24Hours.feesTradingCumulativeUsd,
-            )
-          : undefined,
-      },
       volumeTradingUsd: {
         value: convertToNumber(currentLast24Hours.volumeTradingUsd),
         changedDay: previousLast24Hours
@@ -82,30 +67,12 @@ export default class DexDataTransformer {
             )
           : undefined,
       },
-      volumeTradingCumulativeUsd: {
-        value: convertToNumber(currentLast24Hours.volumeTradingCumulativeUsd),
-        changedDay: previousLast24Hours
-          ? calChangesOf_Current_From_Previous(
-              currentLast24Hours.volumeTradingCumulativeUsd,
-              previousLast24Hours.volumeTradingCumulativeUsd,
-            )
-          : undefined,
-      },
       numberOfTransactions: {
         value: convertToNumber(currentLast24Hours.numberOfTransactions),
         changedDay: previousLast24Hours
           ? calChangesOf_Current_From_Previous(
               currentLast24Hours.numberOfTransactions,
               previousLast24Hours.numberOfTransactions,
-            )
-          : undefined,
-      },
-      numberOfTransactionsCumulative: {
-        value: convertToNumber(currentLast24Hours.numberOfTransactionsCumulative),
-        changedDay: previousLast24Hours
-          ? calChangesOf_Current_From_Previous(
-              currentLast24Hours.numberOfTransactionsCumulative,
-              previousLast24Hours.numberOfTransactionsCumulative,
             )
           : undefined,
       },
@@ -126,9 +93,7 @@ export default class DexDataTransformer {
           timestamp: dexSnapshots.timestamp,
           totalLiquidityUsd: dexSnapshots.totalLiquidityUsd.value,
           feesTradingUsd: dexSnapshots.feesTradingUsd.value,
-          feesTradingCumulativeUsd: dexSnapshots.feesTradingCumulativeUsd.value,
           volumeTradingUsd: dexSnapshots.volumeTradingUsd.value,
-          volumeTradingCumulativeUsd: dexSnapshots.volumeTradingCumulativeUsd.value,
           numberOfTraders: dexSnapshots.traders.length,
           numberOfTransactions: dexSnapshots.numberOfTransactions.value,
         };
@@ -140,9 +105,7 @@ export default class DexDataTransformer {
           timestamp: item.timestamp,
           totalLiquidityUsd: item.totalLiquidityUsd,
           feesTradingUsd: item.feesTradingUsd,
-          feesTradingCumulativeUsd: item.feesTradingCumulativeUsd,
           volumeTradingUsd: item.volumeTradingUsd,
-          volumeTradingCumulativeUsd: item.volumeTradingCumulativeUsd,
           numberOfTraders: item.numberOfTraders,
           numberOfTransactions: item.numberOfTransactions,
         };

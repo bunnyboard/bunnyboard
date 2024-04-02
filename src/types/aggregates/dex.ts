@@ -15,11 +15,8 @@ export interface AggDexDataState extends DataState {
 export interface AggDexDataSnapshot extends AggDexDataState, DataTimeframe {
   // fees collected from trading
   feesTradingUsd: DataValue;
-  feesTradingCumulativeUsd: DataValue;
   volumeTradingUsd: DataValue;
-  volumeTradingCumulativeUsd: DataValue;
   numberOfTransactions: DataValue;
-  numberOfTransactionsCumulative: DataValue;
   traders: Array<AggDexDataTrader>;
 }
 
@@ -36,9 +33,7 @@ export interface AggDexDayData {
 export interface AggDexDataOverall {
   totalLiquidityUsd: DataValue;
   feesTradingUsd: DataValue;
-  feesTradingCumulativeUsd: DataValue;
   volumeTradingUsd: DataValue;
-  volumeTradingCumulativeUsd: DataValue;
   numberOfTraders: DataValue;
   numberOfTransactions: DataValue;
 
