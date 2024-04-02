@@ -3,139 +3,154 @@ import dotenv from 'dotenv';
 import { Blockchain } from '../types/configs';
 import { AddressZero } from './constants';
 import { SubgraphEndpoints } from './data';
+import { ChainNames } from './names';
 
 // global env and configurations
 dotenv.config();
 
 export const BlockchainConfigs: { [key: string]: Blockchain } = {
-  ethereum: {
-    name: 'ethereum',
+  [ChainNames.ethereum]: {
+    name: ChainNames.ethereum,
     family: 'evm',
     chainId: 1,
     nodeRpc: String(process.env.BUNNYBOARD_ETHEREUM_NODE),
     blockSubgraph: SubgraphEndpoints.blocks.ethereum,
     nativeToken: {
-      chain: 'ethereum',
+      chain: ChainNames.ethereum,
       address: AddressZero,
       symbol: 'ETH',
       decimals: 18,
     },
   },
-  arbitrum: {
-    name: 'arbitrum',
+  [ChainNames.arbitrum]: {
+    name: ChainNames.arbitrum,
     family: 'evm',
     chainId: 42161,
     nodeRpc: String(process.env.BUNNYBOARD_ARBITRUM_NODE),
     blockSubgraph: SubgraphEndpoints.blocks.arbitrum,
     nativeToken: {
-      chain: 'arbitrum',
+      chain: ChainNames.arbitrum,
       address: AddressZero,
       symbol: 'ETH',
       decimals: 18,
     },
   },
-  base: {
-    name: 'base',
+  [ChainNames.base]: {
+    name: ChainNames.base,
     family: 'evm',
     chainId: 8453,
     nodeRpc: String(process.env.BUNNYBOARD_BASE_NODE),
     blockSubgraph: SubgraphEndpoints.blocks.base,
     nativeToken: {
-      chain: 'base',
+      chain: ChainNames.base,
       address: AddressZero,
       symbol: 'ETH',
       decimals: 18,
     },
   },
-  optimism: {
-    name: 'optimism',
+  [ChainNames.optimism]: {
+    name: ChainNames.optimism,
     family: 'evm',
     chainId: 10,
     nodeRpc: String(process.env.BUNNYBOARD_OPTIMISM_NODE),
     blockSubgraph: SubgraphEndpoints.blocks.optimism,
     nativeToken: {
-      chain: 'optimism',
+      chain: ChainNames.optimism,
       address: AddressZero,
       symbol: 'ETH',
       decimals: 18,
     },
   },
-  polygon: {
-    name: 'polygon',
+  [ChainNames.polygon]: {
+    name: ChainNames.polygon,
     family: 'evm',
     chainId: 137,
     nodeRpc: String(process.env.BUNNYBOARD_POLYGON_NODE),
     blockSubgraph: SubgraphEndpoints.blocks.polygon,
     nativeToken: {
-      chain: 'polygon',
+      chain: ChainNames.polygon,
       address: AddressZero,
       symbol: 'MATIC',
       decimals: 18,
     },
   },
-  bnbchain: {
-    name: 'bnbchain',
+  [ChainNames.bnbchain]: {
+    name: ChainNames.bnbchain,
     family: 'evm',
     chainId: 56,
     nodeRpc: String(process.env.BUNNYBOARD_BNBCHAIN_NODE),
     blockSubgraph: SubgraphEndpoints.blocks.bnbchain,
     nativeToken: {
-      chain: 'bnbchain',
+      chain: ChainNames.bnbchain,
       address: AddressZero,
       symbol: 'BNB',
       decimals: 18,
     },
   },
-  avalanche: {
-    name: 'avalanche',
+  [ChainNames.avalanche]: {
+    name: ChainNames.avalanche,
     family: 'evm',
     chainId: 43114,
     nodeRpc: String(process.env.BUNNYBOARD_AVALANCHE_NODE),
     blockSubgraph: SubgraphEndpoints.blocks.avalanche,
     nativeToken: {
-      chain: 'avalanche',
+      chain: ChainNames.avalanche,
       address: AddressZero,
       symbol: 'AVAX',
       decimals: 18,
     },
   },
-  fantom: {
-    name: 'fantom',
+  [ChainNames.fantom]: {
+    name: ChainNames.fantom,
     family: 'evm',
     chainId: 250,
     nodeRpc: String(process.env.BUNNYBOARD_FANTOM_NODE),
     blockSubgraph: SubgraphEndpoints.blocks.fantom,
     nativeToken: {
-      chain: 'fantom',
+      chain: ChainNames.fantom,
       address: AddressZero,
       symbol: 'FTM',
       decimals: 18,
     },
   },
-  metis: {
-    name: 'metis',
+  [ChainNames.metis]: {
+    name: ChainNames.metis,
     family: 'evm',
     chainId: 1088,
     nodeRpc: String(process.env.BUNNYBOARD_METIS_NODE),
     blockSubgraph: '', // don't use or not available
     explorerApiEndpoint: 'https://api.routescan.io/v2/network/mainnet/evm/1088/etherscan/api',
     nativeToken: {
-      chain: 'metis',
+      chain: ChainNames.metis,
       address: AddressZero,
       symbol: 'METIS',
       decimals: 18,
     },
   },
-  gnosis: {
-    name: 'gnosis',
+  [ChainNames.gnosis]: {
+    name: ChainNames.gnosis,
     family: 'evm',
     chainId: 100,
     nodeRpc: String(process.env.BUNNYBOARD_GNOSIS_NODE),
     blockSubgraph: SubgraphEndpoints.blocks.gnosis,
     nativeToken: {
-      chain: 'gnosis',
+      chain: ChainNames.gnosis,
       address: AddressZero,
       symbol: 'xDAI',
+      decimals: 18,
+    },
+  },
+  [ChainNames.scroll]: {
+    name: ChainNames.scroll,
+    family: 'evm',
+    chainId: 534352,
+    nodeRpc: String(process.env.BUNNYBOARD_SCROLL_NODE),
+    blockSubgraph: '', // don't use or not available
+    explorerApiEndpoint: 'https://api.scrollscan.com/api',
+    nativeToken: {
+      chain: ChainNames.scroll,
+      address: AddressZero,
+      symbol: 'ETH',
       decimals: 18,
     },
   },

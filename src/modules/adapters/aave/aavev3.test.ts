@@ -16,7 +16,7 @@ const memcache = new MemcacheService(DefaultMemcacheTime);
 const oracle = new OracleService();
 const blockchain = new BlockchainService();
 
-const timestamp = 1704240000; // Wed Jan 03 2024 00:00:00 GMT+0000
+const timestamp = 1706745600; // Thu Feb 01 2024 00:00:00 GMT+0000
 
 test('should have oracle configs for reserves correctly', async function () {
   for (const marketConfig of Aavev3Configs.configs) {

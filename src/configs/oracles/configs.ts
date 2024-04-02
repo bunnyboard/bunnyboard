@@ -303,4 +303,11 @@ export const OracleConfigs: { [key: string]: { [key: string]: OracleConfig } } =
     '0xcb444e90d8198415266c6a2724b7900fb12fc56e': OracleSourceConfigs.EURS,
     '0xaf204776c7245bf4147c2612bf6e5972ee483701': OracleSourceConfigs.sXDAI,
   },
+
+  // tokens on scroll
+  scroll: {
+    '0x5300000000000000000000000000000000000004': OracleSourceConfigs.ETH,
+    '0xf610a9dfb7c89644979b4a0f27063e9e7d7cda32': OracleSourceConfigs.wstETH,
+    '0x06efdbff2a14a7c8e15944d1f4a48f9f95f663a4': OracleSourceConfigs.USDC,
+  },
 };

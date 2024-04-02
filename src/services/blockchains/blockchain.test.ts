@@ -135,6 +135,11 @@ const testcases = [
     timestamp: 1672531200, // Sun Jan 01 2023 00:00:00 GMT+0000
     expectedBlockNumber: 4253470,
   },
+  {
+    ...EnvConfig.blockchains.scroll,
+    timestamp: 1704067200, // Sun Jan 01 2023 00:00:00 GMT+0000
+    expectedBlockNumber: 2067750,
+  },
 ];
 
 describe('getBlockNumberAtTimestamp', function () {

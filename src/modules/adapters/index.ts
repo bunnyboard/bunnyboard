@@ -7,6 +7,7 @@ import IronbankAdapter from './ironbank/ironbank';
 import LiquityAdapter from './liquity/liquity';
 import MakerAdapter from './maker/maker';
 import RadiantAdapter from './radiant/radiant';
+import SushiAdapter from './sushi/sushi';
 import Uniswapv2Adapter from './uniswap/uniswapv2';
 import VenusAdapter from './venus/venus';
 
@@ -26,6 +27,6 @@ export function getProtocolAdapters(
     liquity: new LiquityAdapter(services, storages, ProtocolConfigs.liquity),
     maker: new MakerAdapter(services, storages, ProtocolConfigs.maker),
     uniswapv2: new Uniswapv2Adapter(services, storages, ProtocolConfigs.uniswapv2),
-    sushi: new Uniswapv2Adapter(services, storages, ProtocolConfigs.sushi),
+    sushi: new SushiAdapter(services, storages, ProtocolConfigs.sushi),
   };
 }

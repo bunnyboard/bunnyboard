@@ -9,6 +9,7 @@ export const ChainNames = {
   avalanche: 'avalanche',
   gnosis: 'gnosis',
   metis: 'metis',
+  scroll: 'scroll',
 };
 
 export const ProtocolNames = {

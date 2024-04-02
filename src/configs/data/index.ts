@@ -8,6 +8,7 @@ import GnosisAddresses from './addresses/gnosis.json';
 import MetisAddresses from './addresses/metis.json';
 import OptimismAddresses from './addresses/optimism.json';
 import PolygonAddresses from './addresses/polygon.json';
+import ScrollAddresses from './addresses/scroll.json';
 import { BlockSubGraphEndpoints, DataSubGraphEndpoints } from './subgraphs';
 import TokenListArbitrum from './tokenlists/arbitrum.json';
 import TokenListAvalanche from './tokenlists/avalanche.json';
@@ -19,6 +20,7 @@ import TokenListGnosis from './tokenlists/gnosis.json';
 import TokenListMetis from './tokenlists/metis.json';
 import TokenListOptimism from './tokenlists/optimism.json';
 import TokenListPolygon from './tokenlists/polygon.json';
+import TokenListScroll from './tokenlists/scroll.json';
 
 export const SubgraphEndpoints = {
   blocks: BlockSubGraphEndpoints,
@@ -36,6 +38,7 @@ export const AddressesBook = {
   fantom: FantomAddresses,
   gnosis: GnosisAddresses,
   metis: MetisAddresses,
+  scroll: ScrollAddresses,
 };
 
 export const TokensBook = {
@@ -49,6 +52,7 @@ export const TokensBook = {
   fantom: TokenListFantom,
   metis: TokenListMetis,
   gnosis: TokenListGnosis,
+  scroll: TokenListScroll,
 };
 
 // these tokens will be used for general purpose

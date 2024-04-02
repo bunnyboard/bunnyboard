@@ -40,7 +40,7 @@ export const SushiEthereumDexConfig: DexConfig = {
   metric: DataMetrics.dex,
   version: DexVersions.univ2,
   address: AddressesBook.ethereum.SushiFactoryV2,
-  birthday: 1599264000, /// Sat Sep 05 2020 00:00:00 GMT+0000
+  birthday: 1599609600, // Wed Sep 09 2020 00:00:00 GMT+0000
   subgraph: {
     endpoint: SubgraphEndpoints.data.sushiEthereum,
     filters: SushiSubgraphFilters,

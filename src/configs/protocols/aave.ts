@@ -150,5 +150,15 @@ export const Aavev3Configs: AaveProtocolConfig = {
       dataProvider: AddressesBook.bnbchain.Aavev3DataProvider,
       incentiveController: AddressesBook.bnbchain.Aavev3IncentiveController,
     },
+    {
+      chain: ChainNames.scroll,
+      protocol: ProtocolNames.aavev3,
+      version: LendingMarketVersions.cross.aavev3,
+      birthday: 1705795200, // Sun Jan 21 2024 00:00:00 GMT+0000
+      metric: DataMetrics.crossLending,
+      address: AddressesBook.scroll.Aavev3LendingPool,
+      dataProvider: AddressesBook.scroll.Aavev3DataProvider,
+      incentiveController: AddressesBook.scroll.Aavev3IncentiveController,
+    },
   ],
 };
