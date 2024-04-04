@@ -3,8 +3,8 @@ import axios from 'axios';
 import BigNumber from 'bignumber.js';
 
 import { normalizeAddress } from '../../../lib/utils';
-import { DexDataTrader } from '../../../types/collectors/dex';
 import { DexConfig, DexSubgraph, ProtocolConfig } from '../../../types/configs';
+import { DexDataTrader } from '../../../types/dex';
 import { ContextServices, ContextStorages } from '../../../types/namespaces';
 import Uniswapv2Adapter, { EventData, FactoryData } from './uniswapv2';
 

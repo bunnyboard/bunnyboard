@@ -1,6 +1,6 @@
-import { DexVersion, Token } from '../configs';
+import { DexVersion, Token } from './configs';
 
-export interface AggDexLiquidityTokenSnapshot extends Token {
+export interface DexLiquidityTokenSnapshot extends Token {
   // dex name
   protocol: string;
 
@@ -9,24 +9,24 @@ export interface AggDexLiquidityTokenSnapshot extends Token {
 
   // token price in USD at the time of fetching data
   // calculated exactly at timefrom timestamp
-  tokenPrice: number;
+  tokenPrice: string;
 
   // total tokens were provided as liquidity
   // collected exactly at timefrom timestamp
-  totalLiquidity: number;
+  totalLiquidity: string;
 
   // fees collected from trading
-  feesTrading: number;
+  feesTrading: string;
 
   // all time fees were collected
-  feesTradingCumulative: number;
+  feesTradingCumulative: string;
 
   // total token amount was traded
   // collected in the period from timefrom to timeto timestamps
-  volumeTrading: number;
+  volumeTrading: string;
 
   // total token amount was traded of all time
-  volumeTradingCumulative: number;
+  volumeTradingCumulative: string;
 
   // collected in the period from timefrom to timeto timestamps
   numberOfTransactions: number;
@@ -35,7 +35,7 @@ export interface AggDexLiquidityTokenSnapshot extends Token {
   numberOfTransactionsCumulative: number;
 }
 
-export interface AggDexLiquidityPoolSnapshot {
+export interface DexLiquidityPoolMetadata {
   protocol: string;
   version: string;
   chain: string;
@@ -44,14 +44,16 @@ export interface AggDexLiquidityPoolSnapshot {
   tokens: Array<Token>;
 
   feesPercentage: number;
+}
 
-  tokenPrices: Array<number>;
-  tokenBalances: Array<number>;
-  totalLiquidityUsd: number;
-  feesTradingUsd: number;
-  feesTradingCumulativeUsd: number;
-  volumeTradingUsd: number;
-  volumeTradingCumulativeUsd: number;
+export interface DexLiquidityPoolSnapshot extends DexLiquidityPoolMetadata {
+  tokenPrices: Array<string>;
+  tokenBalances: Array<string>;
+  totalLiquidityUsd: string;
+  feesTradingUsd: string;
+  feesTradingCumulativeUsd: string;
+  volumeTradingUsd: string;
+  volumeTradingCumulativeUsd: string;
   numberOfTransactions: number;
   numberOfTransactionsCumulative: number;
 }

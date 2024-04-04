@@ -7,16 +7,16 @@ import AaveLendingPoolV2Abi from '../../../configs/abi/aave/LendingPoolV2.json';
 import { SolidityUnits } from '../../../configs/constants';
 import { AaveLendingMarketConfig } from '../../../configs/protocols/aave';
 import { compareAddress, formatBigNumberToString, normalizeAddress } from '../../../lib/utils';
-import { ActivityAction, ActivityActions } from '../../../types/collectors/base';
-import { CrossLendingReserveDataState, CrossLendingReserveDataTimeframe } from '../../../types/collectors/crossLending';
+import { ActivityAction, ActivityActions } from '../../../types/base';
+import { DataMetrics, ProtocolConfig } from '../../../types/configs';
+import { CrossLendingReserveDataState, CrossLendingReserveDataTimeframe } from '../../../types/crossLending';
+import { ContextServices, ContextStorages } from '../../../types/namespaces';
 import {
   GetAdapterDataStateOptions,
   GetAdapterDataTimeframeOptions,
   TransformEventLogOptions,
   TransformEventLogResult,
-} from '../../../types/collectors/options';
-import { DataMetrics, ProtocolConfig } from '../../../types/configs';
-import { ContextServices, ContextStorages } from '../../../types/namespaces';
+} from '../../../types/options';
 import { AdapterGetEventLogsOptions } from '../adapter';
 import CrossLendingProtocolAdapter from '../crossLending';
 import { countCrossLendingDataFromActivities } from '../helpers';

@@ -8,16 +8,16 @@ import IronbankComptrollerOldAbi from '../../../configs/abi/ironbank/FirstComptr
 import { ChainBlockPeriods, TimeUnits } from '../../../configs/constants';
 import { CompoundLendingMarketConfig } from '../../../configs/protocols/compound';
 import { compareAddress, formatBigNumberToString, normalizeAddress } from '../../../lib/utils';
-import { ActivityActions } from '../../../types/collectors/base';
-import { CrossLendingReserveDataState, CrossLendingReserveDataTimeframe } from '../../../types/collectors/crossLending';
+import { ActivityActions } from '../../../types/base';
+import { ProtocolConfig, Token } from '../../../types/configs';
+import { CrossLendingReserveDataState, CrossLendingReserveDataTimeframe } from '../../../types/crossLending';
+import { ContextServices, ContextStorages } from '../../../types/namespaces';
 import {
   GetAdapterDataStateOptions,
   GetAdapterDataTimeframeOptions,
   TransformEventLogOptions,
   TransformEventLogResult,
-} from '../../../types/collectors/options';
-import { ProtocolConfig, Token } from '../../../types/configs';
-import { ContextServices, ContextStorages } from '../../../types/namespaces';
+} from '../../../types/options';
 import CompoundLibs from '../../libs/compound';
 import { AdapterGetEventLogsOptions } from '../adapter';
 import CrossLendingProtocolAdapter from '../crossLending';

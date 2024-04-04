@@ -10,20 +10,20 @@ import VatAbi from '../../../configs/abi/maker/Vat.json';
 import { SolidityUnits, TimeUnits } from '../../../configs/constants';
 import { MakerLendingMarketConfig } from '../../../configs/protocols/maker';
 import { compareAddress, formatBigNumberToString, normalizeAddress } from '../../../lib/utils';
-import { ActivityActions } from '../../../types/collectors/base';
+import { ActivityActions } from '../../../types/base';
 import {
   CdpLendingActivityEvent,
   CdpLendingAssetDataState,
   CdpLendingAssetDataTimeframe,
-} from '../../../types/collectors/cdpLending';
+} from '../../../types/cdpLending';
+import { ProtocolConfig, Token } from '../../../types/configs';
+import { ContextServices, ContextStorages } from '../../../types/namespaces';
 import {
   GetAdapterDataStateOptions,
   GetAdapterDataTimeframeOptions,
   TransformEventLogOptions,
   TransformEventLogResult,
-} from '../../../types/collectors/options';
-import { ProtocolConfig, Token } from '../../../types/configs';
-import { ContextServices, ContextStorages } from '../../../types/namespaces';
+} from '../../../types/options';
 import { AdapterGetEventLogsOptions } from '../adapter';
 import CdpLendingProtocolAdapter from '../cdpLending';
 import { MakerEventInterfaces, MakerEventSignatures } from './abis';

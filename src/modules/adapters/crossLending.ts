@@ -1,18 +1,14 @@
 import { TimeUnits } from '../../configs/constants';
 import EnvConfig from '../../configs/envConfig';
 import { getTimestamp } from '../../lib/utils';
+import { DataMetrics, MetricConfig, ProtocolConfig } from '../../types/configs';
 import {
   CrossLendingReserveDataState,
   CrossLendingReserveDataStateWithTimeframes,
   CrossLendingReserveDataTimeframe,
-} from '../../types/collectors/crossLending';
-import {
-  GetAdapterDataStateOptions,
-  GetAdapterDataTimeframeOptions,
-  RunAdapterOptions,
-} from '../../types/collectors/options';
-import { DataMetrics, MetricConfig, ProtocolConfig } from '../../types/configs';
+} from '../../types/crossLending';
 import { ContextServices, ContextStorages, ICrossLendingProtocolAdapter } from '../../types/namespaces';
+import { GetAdapterDataStateOptions, GetAdapterDataTimeframeOptions, RunAdapterOptions } from '../../types/options';
 import ProtocolAdapter from './adapter';
 
 export default class CrossLendingProtocolAdapter extends ProtocolAdapter implements ICrossLendingProtocolAdapter {

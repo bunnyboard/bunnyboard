@@ -2,9 +2,9 @@ import { TimeUnits } from '../../configs/constants';
 import EnvConfig from '../../configs/envConfig';
 import logger from '../../lib/logger';
 import { getDateString, getTodayUTCTimestamp } from '../../lib/utils';
-import { AdapterAbiConfigs, RunAdapterOptions } from '../../types/collectors/options';
 import { MetricConfig, ProtocolConfig } from '../../types/configs';
 import { ContextServices, ContextStorages, IProtocolAdapter } from '../../types/namespaces';
+import { AdapterAbiConfigs, RunAdapterOptions } from '../../types/options';
 
 export interface AdapterGetEventLogsOptions {
   metricConfig: MetricConfig;

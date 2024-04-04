@@ -6,10 +6,10 @@ import { TimeUnits } from '../../../configs/constants';
 import EnvConfig from '../../../configs/envConfig';
 import { tryQueryBlockMeta } from '../../../lib/subgraph';
 import { normalizeAddress } from '../../../lib/utils';
-import { DexDataState, DexDataTimeframe, DexDataTrader } from '../../../types/collectors/dex';
-import { GetAdapterDataStateOptions, GetAdapterDataTimeframeOptions } from '../../../types/collectors/options';
 import { DexConfig, DexSubgraph, ProtocolConfig } from '../../../types/configs';
+import { DexDataState, DexDataTimeframe, DexDataTrader } from '../../../types/dex';
 import { ContextServices, ContextStorages } from '../../../types/namespaces';
+import { GetAdapterDataStateOptions, GetAdapterDataTimeframeOptions } from '../../../types/options';
 import DexProtocolAdapter from '../dex';
 
 export interface FactoryData {

@@ -2,17 +2,17 @@ import { IBlockchainService } from '../services/blockchains/domains';
 import { IMemcacheService } from '../services/caching/domains';
 import { IDatabaseService } from '../services/database/domains';
 import { IOracleService } from '../services/oracle/domains';
-import { CdpLendingAssetDataState, CdpLendingAssetDataTimeframe } from './collectors/cdpLending';
-import { CrossLendingReserveDataState, CrossLendingReserveDataTimeframe } from './collectors/crossLending';
-import { DexDataState, DexDataTimeframe } from './collectors/dex';
+import { CdpLendingAssetDataState, CdpLendingAssetDataTimeframe } from './cdpLending';
+import { ProtocolConfig } from './configs';
+import { CrossLendingReserveDataState, CrossLendingReserveDataTimeframe } from './crossLending';
+import { DexDataState, DexDataTimeframe } from './dex';
 import {
   AdapterAbiConfigs,
   GetAdapterDataStateOptions,
   GetAdapterDataTimeframeOptions,
   RunAdapterOptions,
-} from './collectors/options';
-import { TokenBoardDataState, TokenBoardDataTimeframe } from './collectors/tokenBoard';
-import { ProtocolConfig } from './configs';
+} from './options';
+import { TokenBoardDataState, TokenBoardDataTimeframe } from './tokenBoard';
 
 export interface ContextStorages {
   database: IDatabaseService;
@@ -64,12 +64,4 @@ export interface IDexProtocolAdapter extends IProtocolAdapter {
 export interface ITokenBoardAdapter extends IProtocolAdapter {
   getTokenDataState: (options: GetAdapterDataStateOptions) => Promise<TokenBoardDataState | null>;
   getTokenDataTimeframe: (options: GetAdapterDataTimeframeOptions) => Promise<TokenBoardDataTimeframe | null>;
-}
-
-export interface IDataAggregator {
-  name: string;
-  database: IDatabaseService;
-
-  // expect to aggregate data and update to database
-  runUpdate: () => Promise<void>;
 }

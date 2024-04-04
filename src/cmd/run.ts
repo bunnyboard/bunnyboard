@@ -86,7 +86,7 @@ export class RunCommand extends BasicCommand {
       service: {
         type: 'string',
         default: 'adapter',
-        describe: 'Run collector with given service: adapter, dexscan, tokenboard',
+        describe: 'Run collector with given service: adapter, dexscan, tokenBoard',
       },
       metric: {
         type: 'string',

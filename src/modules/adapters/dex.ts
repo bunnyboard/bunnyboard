@@ -1,14 +1,10 @@
 import { TimeUnits } from '../../configs/constants';
 import EnvConfig from '../../configs/envConfig';
 import { getTimestamp } from '../../lib/utils';
-import { DexDataState, DexDataStateWithTimeframes, DexDataTimeframe } from '../../types/collectors/dex';
-import {
-  GetAdapterDataStateOptions,
-  GetAdapterDataTimeframeOptions,
-  RunAdapterOptions,
-} from '../../types/collectors/options';
 import { DataMetrics, MetricConfig, ProtocolConfig } from '../../types/configs';
+import { DexDataState, DexDataStateWithTimeframes, DexDataTimeframe } from '../../types/dex';
 import { ContextServices, ContextStorages, IDexProtocolAdapter } from '../../types/namespaces';
+import { GetAdapterDataStateOptions, GetAdapterDataTimeframeOptions, RunAdapterOptions } from '../../types/options';
 import ProtocolAdapter from './adapter';
 
 export default class DexProtocolAdapter extends ProtocolAdapter implements IDexProtocolAdapter {

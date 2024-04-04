@@ -5,18 +5,14 @@ import Erc20Abi from '../../../configs/abi/ERC20.json';
 import { AddressZero, Erc20TransferEventSignature, TimeUnits } from '../../../configs/constants';
 import EnvConfig from '../../../configs/envConfig';
 import { compareAddress, formatBigNumberToString, getTimestamp, normalizeAddress } from '../../../lib/utils';
-import {
-  GetAdapterDataStateOptions,
-  GetAdapterDataTimeframeOptions,
-  RunAdapterOptions,
-} from '../../../types/collectors/options';
+import { DataMetrics, MetricConfig, ProtocolConfig, TokenBoardConfig } from '../../../types/configs';
+import { ContextServices, ContextStorages, ITokenBoardAdapter } from '../../../types/namespaces';
+import { GetAdapterDataStateOptions, GetAdapterDataTimeframeOptions, RunAdapterOptions } from '../../../types/options';
 import {
   TokenBoardDataState,
   TokenBoardDataStateWithTimeframes,
   TokenBoardDataTimeframe,
-} from '../../../types/collectors/tokenBoard';
-import { DataMetrics, MetricConfig, ProtocolConfig, TokenBoardConfig } from '../../../types/configs';
-import { ContextServices, ContextStorages, ITokenBoardAdapter } from '../../../types/namespaces';
+} from '../../../types/tokenBoard';
 import ProtocolAdapter from '../adapter';
 
 export default class TokenBoardAdapter extends ProtocolAdapter implements ITokenBoardAdapter {

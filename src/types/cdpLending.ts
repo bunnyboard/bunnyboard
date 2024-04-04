@@ -1,5 +1,5 @@
-import { Token } from '../configs';
 import { BaseActivityEvent, DataState, DataTimeframe } from './base';
+import { Token } from './configs';
 
 export interface CdpLendingActivityEvent extends BaseActivityEvent {}
 

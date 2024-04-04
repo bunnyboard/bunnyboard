@@ -5,14 +5,10 @@ import {
   CdpLendingAssetDataState,
   CdpLendingAssetDataStateWithTimeframes,
   CdpLendingAssetDataTimeframe,
-} from '../../types/collectors/cdpLending';
-import {
-  GetAdapterDataStateOptions,
-  GetAdapterDataTimeframeOptions,
-  RunAdapterOptions,
-} from '../../types/collectors/options';
+} from '../../types/cdpLending';
 import { DataMetrics, MetricConfig, ProtocolConfig } from '../../types/configs';
 import { ContextServices, ContextStorages, ICdpLendingProtocolAdapter } from '../../types/namespaces';
+import { GetAdapterDataStateOptions, GetAdapterDataTimeframeOptions, RunAdapterOptions } from '../../types/options';
 import ProtocolAdapter from './adapter';
 
 export default class CdpLendingProtocolAdapter extends ProtocolAdapter implements ICdpLendingProtocolAdapter {

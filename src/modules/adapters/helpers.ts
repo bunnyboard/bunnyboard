@@ -1,7 +1,7 @@
 import BigNumber from 'bignumber.js';
 
-import { ActivityActions, BaseActivityEvent } from '../../types/collectors/base';
-import { CrossLendingActivityEvent } from '../../types/collectors/crossLending';
+import { ActivityActions, BaseActivityEvent } from '../../types/base';
+import { CrossLendingActivityEvent } from '../../types/crossLending';
 
 interface LendingDataActivity {
   volumeDeposited: string;

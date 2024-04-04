@@ -8,13 +8,9 @@ import UniswapV3PoolAbi from '../../configs/abi/uniswap/UniswapV3Pool.json';
 import { tryQueryBlockMeta } from '../../lib/subgraph';
 import { normalizeAddress, sleep } from '../../lib/utils';
 import BlockchainService from '../../services/blockchains/blockchain';
-import {
-  DexLiquidityPoolMetadata,
-  DexLiquidityPoolSnapshot,
-  DexLiquidityTokenSnapshot,
-} from '../../types/collectors/dexscan';
-import { GetDexLiquidityTokenDataOptions } from '../../types/collectors/options';
 import { DexVersions, LiquidityPoolConfig } from '../../types/configs';
+import { DexLiquidityPoolMetadata, DexLiquidityPoolSnapshot, DexLiquidityTokenSnapshot } from '../../types/dexscan';
+import { GetDexLiquidityTokenDataOptions } from '../../types/options';
 import { OracleSourcePool2 } from '../../types/oracles';
 
 export default class UniswapLibs {

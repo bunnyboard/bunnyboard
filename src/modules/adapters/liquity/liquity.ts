@@ -5,20 +5,20 @@ import BorrowOperationsAbi from '../../../configs/abi/liquity/BorrowOperations.j
 import TroveManagerAbi from '../../../configs/abi/liquity/TroveManager.json';
 import { LiquityLendingMarketConfig, LiquityTrove } from '../../../configs/protocols/liquity';
 import { compareAddress, formatBigNumberToString, normalizeAddress } from '../../../lib/utils';
-import { ActivityAction, ActivityActions } from '../../../types/collectors/base';
+import { ActivityAction, ActivityActions } from '../../../types/base';
 import {
   CdpLendingActivityEvent,
   CdpLendingAssetDataState,
   CdpLendingAssetDataTimeframe,
-} from '../../../types/collectors/cdpLending';
+} from '../../../types/cdpLending';
+import { ProtocolConfig, Token } from '../../../types/configs';
+import { ContextServices, ContextStorages } from '../../../types/namespaces';
 import {
   GetAdapterDataStateOptions,
   GetAdapterDataTimeframeOptions,
   TransformEventLogOptions,
   TransformEventLogResult,
-} from '../../../types/collectors/options';
-import { ProtocolConfig, Token } from '../../../types/configs';
-import { ContextServices, ContextStorages } from '../../../types/namespaces';
+} from '../../../types/options';
 import { AdapterGetEventLogsOptions } from '../adapter';
 import CdpLendingProtocolAdapter from '../cdpLending';
 import { LiquityEventInterfaces, LiquityEventSignatures } from './abis';

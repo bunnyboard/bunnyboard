@@ -1,10 +1,4 @@
-import { DataMetric, Token } from '../configs';
-
-export interface TokenValueItem {
-  token: Token;
-  amount: string;
-  tokenPrice?: string;
-}
+import { DataMetric, Token } from './configs';
 
 export interface DataState {
   // the protocol id
