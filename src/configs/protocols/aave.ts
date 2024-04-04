@@ -4,7 +4,6 @@ import { ChainNames, ProtocolNames } from '../names';
 
 export interface AaveLendingMarketConfig extends CrossLendingMarketConfig {
   dataProvider: string;
-  incentiveController: string;
 }
 
 export interface AaveProtocolConfig extends ProtocolConfig {
@@ -22,7 +21,6 @@ export const Aavev2Configs: AaveProtocolConfig = {
       metric: DataMetrics.crossLending,
       address: AddressesBook.ethereum.Aavev2LendingPool,
       dataProvider: AddressesBook.ethereum.Aavev2DataProvider,
-      incentiveController: AddressesBook.ethereum.Aavev2IncentiveController,
     },
     {
       chain: ChainNames.polygon,
@@ -32,7 +30,6 @@ export const Aavev2Configs: AaveProtocolConfig = {
       metric: DataMetrics.crossLending,
       address: AddressesBook.polygon.Aavev2LendingPool,
       dataProvider: AddressesBook.polygon.Aavev2DataProvider,
-      incentiveController: AddressesBook.polygon.Aavev2IncentiveController,
     },
     {
       chain: ChainNames.avalanche,
@@ -42,7 +39,6 @@ export const Aavev2Configs: AaveProtocolConfig = {
       metric: DataMetrics.crossLending,
       address: AddressesBook.avalanche.Aavev2LendingPool,
       dataProvider: AddressesBook.avalanche.Aavev2DataProvider,
-      incentiveController: AddressesBook.avalanche.Aavev2IncentiveController,
     },
   ],
 };
@@ -58,7 +54,6 @@ export const Aavev3Configs: AaveProtocolConfig = {
       metric: DataMetrics.crossLending,
       address: AddressesBook.ethereum.Aavev3LendingPool,
       dataProvider: AddressesBook.ethereum.Aavev3DataProvider,
-      incentiveController: AddressesBook.ethereum.Aavev3IncentiveController,
     },
     {
       chain: ChainNames.optimism,
@@ -68,7 +63,6 @@ export const Aavev3Configs: AaveProtocolConfig = {
       metric: DataMetrics.crossLending,
       address: AddressesBook.optimism.Aavev3LendingPool,
       dataProvider: AddressesBook.optimism.Aavev3DataProvider,
-      incentiveController: AddressesBook.optimism.Aavev3IncentiveController,
     },
     {
       chain: ChainNames.arbitrum,
@@ -78,7 +72,6 @@ export const Aavev3Configs: AaveProtocolConfig = {
       metric: DataMetrics.crossLending,
       address: AddressesBook.arbitrum.Aavev3LendingPool,
       dataProvider: AddressesBook.arbitrum.Aavev3DataProvider,
-      incentiveController: AddressesBook.arbitrum.Aavev3IncentiveController,
     },
     {
       chain: ChainNames.polygon,
@@ -88,7 +81,6 @@ export const Aavev3Configs: AaveProtocolConfig = {
       metric: DataMetrics.crossLending,
       address: AddressesBook.polygon.Aavev3LendingPool,
       dataProvider: AddressesBook.polygon.Aavev3DataProvider,
-      incentiveController: AddressesBook.polygon.Aavev3IncentiveController,
     },
     {
       chain: ChainNames.avalanche,
@@ -98,7 +90,6 @@ export const Aavev3Configs: AaveProtocolConfig = {
       metric: DataMetrics.crossLending,
       address: AddressesBook.avalanche.Aavev3LendingPool,
       dataProvider: AddressesBook.avalanche.Aavev3DataProvider,
-      incentiveController: AddressesBook.avalanche.Aavev3IncentiveController,
     },
     {
       chain: ChainNames.fantom,
@@ -108,7 +99,6 @@ export const Aavev3Configs: AaveProtocolConfig = {
       metric: DataMetrics.crossLending,
       address: AddressesBook.fantom.Aavev3LendingPool,
       dataProvider: AddressesBook.fantom.Aavev3DataProvider,
-      incentiveController: AddressesBook.fantom.Aavev3IncentiveController,
     },
     {
       chain: ChainNames.base,
@@ -118,7 +108,6 @@ export const Aavev3Configs: AaveProtocolConfig = {
       metric: DataMetrics.crossLending,
       address: AddressesBook.base.Aavev3LendingPool,
       dataProvider: AddressesBook.base.Aavev3DataProvider,
-      incentiveController: AddressesBook.base.Aavev3IncentiveController,
     },
     {
       chain: ChainNames.metis,
@@ -128,7 +117,6 @@ export const Aavev3Configs: AaveProtocolConfig = {
       metric: DataMetrics.crossLending,
       address: AddressesBook.metis.Aavev3LendingPool,
       dataProvider: AddressesBook.metis.Aavev3DataProvider,
-      incentiveController: AddressesBook.metis.Aavev3IncentiveController,
     },
     {
       chain: ChainNames.gnosis,
@@ -138,7 +126,6 @@ export const Aavev3Configs: AaveProtocolConfig = {
       metric: DataMetrics.crossLending,
       address: AddressesBook.gnosis.Aavev3LendingPool,
       dataProvider: AddressesBook.gnosis.Aavev3DataProvider,
-      incentiveController: AddressesBook.gnosis.Aavev3IncentiveController,
     },
     {
       chain: ChainNames.bnbchain,
@@ -148,7 +135,6 @@ export const Aavev3Configs: AaveProtocolConfig = {
       metric: DataMetrics.crossLending,
       address: AddressesBook.bnbchain.Aavev3LendingPool,
       dataProvider: AddressesBook.bnbchain.Aavev3DataProvider,
-      incentiveController: AddressesBook.bnbchain.Aavev3IncentiveController,
     },
     {
       chain: ChainNames.scroll,
@@ -158,7 +144,6 @@ export const Aavev3Configs: AaveProtocolConfig = {
       metric: DataMetrics.crossLending,
       address: AddressesBook.scroll.Aavev3LendingPool,
       dataProvider: AddressesBook.scroll.Aavev3DataProvider,
-      incentiveController: AddressesBook.scroll.Aavev3IncentiveController,
     },
   ],
 };

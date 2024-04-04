@@ -82,6 +82,7 @@ export const DataMetrics = {
   crossLending: 'crossLending',
   cdpLending: 'cdpLending',
   staking: 'staking',
+  flashloan: 'flashloan',
   perpetual: 'perpetual',
   tokenBoard: 'tokenBoard',
 };
@@ -185,6 +186,10 @@ export interface DexSubgraph {
 export interface DexConfig extends MetricConfig {
   version: DexVersion;
   subgraph?: DexSubgraph;
+}
+
+export interface FlashloanConfig extends MetricConfig {
+  rateFeesFixed?: number; // fee percentage, 10 = 10%
 }
 
 export interface TokenBoardConfig extends MetricConfig, Token {
