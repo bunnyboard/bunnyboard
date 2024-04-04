@@ -19,19 +19,19 @@ const blockchain = new BlockchainService();
 
 const timestamp = 1706745600; // Thu Feb 01 2024 00:00:00 GMT+0000
 
-// test('should have oracle configs for reserves correctly', async function () {
-//   for (const marketConfig of Aavev3Configs.configs) {
-//     const marketInfo = await AaveLibs.getMarketInfo(marketConfig as AaveLendingMarketConfig);
-//     expect(marketInfo).not.equal(null);
-//     if (marketInfo) {
-//       for (const token of marketInfo.reserves) {
-//         const oracleSource = (OracleConfigs as any)[token.chain][token.address];
-//         expect(oracleSource).not.equal(null);
-//         expect(oracleSource).not.equal(undefined);
-//       }
-//     }
-//   }
-// });
+test('should have oracle configs for reserves correctly', async function () {
+  for (const marketConfig of Aavev3Configs.configs) {
+    const marketInfo = await AaveLibs.getMarketInfo(marketConfig as AaveLendingMarketConfig);
+    expect(marketInfo).not.equal(null);
+    if (marketInfo) {
+      for (const token of marketInfo.reserves) {
+        const oracleSource = (OracleConfigs as any)[token.chain][token.address];
+        expect(oracleSource).not.equal(null);
+        expect(oracleSource).not.equal(undefined);
+      }
+    }
+  }
+});
 
 describe('should get data correctly at birthday', async function () {
   Aavev3Configs.configs.map((config) =>
