@@ -1,5 +1,5 @@
-import { BaseActivityEvent, DataState, DataTimeframe } from './base';
-import { Token } from './configs';
+import { BaseActivityEvent, DataState, DataTimeframe } from '../base';
+import { Token } from '../configs';
 
 export interface CrossLendingActivityEvent extends BaseActivityEvent {}
 
@@ -30,6 +30,9 @@ export interface CrossLendingReserveDataState extends DataState {
 
   // the token collateral factor
   rateLoanToValue: string;
+
+  // reserve factor
+  rateReserveFactor?: string;
 
   // borrow rate stable if any
   rateBorrowStable?: string;

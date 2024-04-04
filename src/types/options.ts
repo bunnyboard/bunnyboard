@@ -1,5 +1,5 @@
 import { DexConfig, MetricConfig, Token } from './configs';
-import { CrossLendingActivityEvent } from './crossLending';
+import { CrossLendingActivityEvent } from './domains/crossLending';
 
 export interface AdapterAbiConfigs {
   eventAbis: any;

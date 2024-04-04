@@ -1,4 +1,4 @@
-import { DexVersion, Token } from './configs';
+import { DexVersion, Token } from '../configs';
 
 export interface DexLiquidityTokenSnapshot extends Token {
   // dex name

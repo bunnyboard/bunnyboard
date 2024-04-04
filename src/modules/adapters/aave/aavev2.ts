@@ -9,7 +9,7 @@ import { AaveLendingMarketConfig } from '../../../configs/protocols/aave';
 import { compareAddress, formatBigNumberToString, normalizeAddress } from '../../../lib/utils';
 import { ActivityAction, ActivityActions } from '../../../types/base';
 import { DataMetrics, ProtocolConfig } from '../../../types/configs';
-import { CrossLendingReserveDataState, CrossLendingReserveDataTimeframe } from '../../../types/crossLending';
+import { CrossLendingReserveDataState, CrossLendingReserveDataTimeframe } from '../../../types/domains/crossLending';
 import { ContextServices, ContextStorages } from '../../../types/namespaces';
 import {
   GetAdapterDataStateOptions,
@@ -228,6 +228,7 @@ export default class Aavev2Adapter extends CrossLendingProtocolAdapter {
         rateBorrow: rates.borrow,
         rateBorrowStable: rates.borrowStable,
         rateLoanToValue: this.getLoanToValueRate(reserveConfigData),
+        rateReserveFactor: this.getReserveFactor(reserveConfigData),
       };
 
       result.push(dataState);
@@ -331,6 +332,10 @@ export default class Aavev2Adapter extends CrossLendingProtocolAdapter {
       params: [],
       blockNumber,
     });
+  }
+
+  protected getReserveFactor(configData: any): string {
+    return formatBigNumberToString(configData[4].toString(), 4);
   }
 
   protected async getReserveData(config: AaveLendingMarketConfig, reserve: string, blockNumber: number): Promise<any> {

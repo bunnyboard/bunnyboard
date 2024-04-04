@@ -9,7 +9,11 @@ import { tryQueryBlockMeta } from '../../lib/subgraph';
 import { normalizeAddress, sleep } from '../../lib/utils';
 import BlockchainService from '../../services/blockchains/blockchain';
 import { DexVersions, LiquidityPoolConfig } from '../../types/configs';
-import { DexLiquidityPoolMetadata, DexLiquidityPoolSnapshot, DexLiquidityTokenSnapshot } from '../../types/dexscan';
+import {
+  DexLiquidityPoolMetadata,
+  DexLiquidityPoolSnapshot,
+  DexLiquidityTokenSnapshot,
+} from '../../types/domains/dexscan';
 import { GetDexLiquidityTokenDataOptions } from '../../types/options';
 import { OracleSourcePool2 } from '../../types/oracles';
 

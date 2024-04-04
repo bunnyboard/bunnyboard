@@ -10,7 +10,7 @@ import { CompoundLendingMarketConfig } from '../../../configs/protocols/compound
 import { compareAddress, formatBigNumberToString, normalizeAddress } from '../../../lib/utils';
 import { ActivityActions } from '../../../types/base';
 import { ProtocolConfig, Token } from '../../../types/configs';
-import { CrossLendingReserveDataState, CrossLendingReserveDataTimeframe } from '../../../types/crossLending';
+import { CrossLendingReserveDataState, CrossLendingReserveDataTimeframe } from '../../../types/domains/crossLending';
 import { ContextServices, ContextStorages } from '../../../types/namespaces';
 import {
   GetAdapterDataStateOptions,

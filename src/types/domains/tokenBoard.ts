@@ -1,5 +1,5 @@
-import { DataState, DataTimeframe } from './base';
-import { Token } from './configs';
+import { DataState, DataTimeframe } from '../base';
+import { Token } from '../configs';
 
 export interface TokenBoardDataState extends DataState, Token {
   stablecoin: boolean;

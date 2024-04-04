@@ -6,7 +6,7 @@ import {
   CrossLendingReserveDataState,
   CrossLendingReserveDataStateWithTimeframes,
   CrossLendingReserveDataTimeframe,
-} from '../../types/crossLending';
+} from '../../types/domains/crossLending';
 import { ContextServices, ContextStorages, ICrossLendingProtocolAdapter } from '../../types/namespaces';
 import { GetAdapterDataStateOptions, GetAdapterDataTimeframeOptions, RunAdapterOptions } from '../../types/options';
 import ProtocolAdapter from './adapter';

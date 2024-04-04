@@ -11,12 +11,12 @@ import { SolidityUnits, TimeUnits } from '../../../configs/constants';
 import { MakerLendingMarketConfig } from '../../../configs/protocols/maker';
 import { compareAddress, formatBigNumberToString, normalizeAddress } from '../../../lib/utils';
 import { ActivityActions } from '../../../types/base';
+import { ProtocolConfig, Token } from '../../../types/configs';
 import {
   CdpLendingActivityEvent,
   CdpLendingAssetDataState,
   CdpLendingAssetDataTimeframe,
-} from '../../../types/cdpLending';
-import { ProtocolConfig, Token } from '../../../types/configs';
+} from '../../../types/domains/cdpLending';
 import { ContextServices, ContextStorages } from '../../../types/namespaces';
 import {
   GetAdapterDataStateOptions,

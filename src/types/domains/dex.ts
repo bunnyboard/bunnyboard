@@ -1,5 +1,5 @@
-import { DataState, DataTimeframe } from './base';
-import { DexVersion } from './configs';
+import { DataState, DataTimeframe } from '../base';
+import { DexVersion } from '../configs';
 
 export interface DexDataTrader {
   address: string;

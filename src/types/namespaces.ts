@@ -2,17 +2,17 @@ import { IBlockchainService } from '../services/blockchains/domains';
 import { IMemcacheService } from '../services/caching/domains';
 import { IDatabaseService } from '../services/database/domains';
 import { IOracleService } from '../services/oracle/domains';
-import { CdpLendingAssetDataState, CdpLendingAssetDataTimeframe } from './cdpLending';
 import { ProtocolConfig } from './configs';
-import { CrossLendingReserveDataState, CrossLendingReserveDataTimeframe } from './crossLending';
-import { DexDataState, DexDataTimeframe } from './dex';
+import { CdpLendingAssetDataState, CdpLendingAssetDataTimeframe } from './domains/cdpLending';
+import { CrossLendingReserveDataState, CrossLendingReserveDataTimeframe } from './domains/crossLending';
+import { DexDataState, DexDataTimeframe } from './domains/dex';
+import { TokenBoardDataState, TokenBoardDataTimeframe } from './domains/tokenBoard';
 import {
   AdapterAbiConfigs,
   GetAdapterDataStateOptions,
   GetAdapterDataTimeframeOptions,
   RunAdapterOptions,
 } from './options';
-import { TokenBoardDataState, TokenBoardDataTimeframe } from './tokenBoard';
 
 export interface ContextStorages {
   database: IDatabaseService;

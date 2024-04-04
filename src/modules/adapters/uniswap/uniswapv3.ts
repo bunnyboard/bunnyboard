@@ -4,7 +4,7 @@ import BigNumber from 'bignumber.js';
 
 import { normalizeAddress } from '../../../lib/utils';
 import { DexConfig, DexSubgraph, ProtocolConfig } from '../../../types/configs';
-import { DexDataTrader } from '../../../types/dex';
+import { DexDataTrader } from '../../../types/domains/dex';
 import { ContextServices, ContextStorages } from '../../../types/namespaces';
 import Uniswapv2Adapter, { EventData, FactoryData } from './uniswapv2';
 

@@ -6,12 +6,12 @@ import TroveManagerAbi from '../../../configs/abi/liquity/TroveManager.json';
 import { LiquityLendingMarketConfig, LiquityTrove } from '../../../configs/protocols/liquity';
 import { compareAddress, formatBigNumberToString, normalizeAddress } from '../../../lib/utils';
 import { ActivityAction, ActivityActions } from '../../../types/base';
+import { ProtocolConfig, Token } from '../../../types/configs';
 import {
   CdpLendingActivityEvent,
   CdpLendingAssetDataState,
   CdpLendingAssetDataTimeframe,
-} from '../../../types/cdpLending';
-import { ProtocolConfig, Token } from '../../../types/configs';
+} from '../../../types/domains/cdpLending';
 import { ContextServices, ContextStorages } from '../../../types/namespaces';
 import {
   GetAdapterDataStateOptions,

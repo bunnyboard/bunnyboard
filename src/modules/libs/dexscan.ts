@@ -1,6 +1,6 @@
 import { DexscanConfigs } from '../../configs/boards/dexscan';
 import { Token } from '../../types/configs';
-import { DexLiquidityTokenSnapshot } from '../../types/dexscan';
+import { DexLiquidityTokenSnapshot } from '../../types/domains/dexscan';
 import UniswapLibs from './uniswap';
 
 export default class DexscanLibs {

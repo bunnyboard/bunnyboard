@@ -76,6 +76,7 @@ test('should get data correctly at birthday - aavev2 chain ethereum', async func
       expect(dataState[0].rateBorrow).equal('0');
       expect(dataState[0].rateBorrowStable).equal('0');
       expect(dataState[0].rateLoanToValue).equal('0.8');
+      expect(dataState[0].rateReserveFactor).equal('0.1');
 
       // the second reserve should be WBTC
       expect(dataState[1].token.address).equal(TokenListBase.ethereum.WBTC.address);
@@ -87,6 +88,7 @@ test('should get data correctly at birthday - aavev2 chain ethereum', async func
       expect(dataState[1].rateBorrow).equal('0');
       expect(dataState[1].rateBorrowStable).equal('0');
       expect(dataState[1].rateLoanToValue).equal('0.7');
+      expect(dataState[1].rateReserveFactor).equal('0.2');
 
       // the second reserve should be WETH
       expect(dataState[2].token.address).equal(TokenListBase.ethereum.WETH.address);
@@ -98,6 +100,7 @@ test('should get data correctly at birthday - aavev2 chain ethereum', async func
       expect(dataState[2].rateBorrow).equal('0');
       expect(dataState[2].rateBorrowStable).equal('0.03');
       expect(dataState[2].rateLoanToValue).equal('0.8');
+      expect(dataState[2].rateReserveFactor).equal('0.1');
 
       // the fourth reserve should be YFI
       expect(dataState[3].token.address).equal('0x0bc529c00c6401aef6d220be8c6ea1667f6ad93e');
@@ -109,6 +112,7 @@ test('should get data correctly at birthday - aavev2 chain ethereum', async func
       expect(dataState[3].rateBorrow).equal('0');
       expect(dataState[3].rateBorrowStable).equal('0');
       expect(dataState[3].rateLoanToValue).equal('0.4');
+      expect(dataState[3].rateReserveFactor).equal('0.2');
 
       // ZRX
       expect(dataState[4].token.address).equal('0xe41d2489571d322189246dafa5ebde1f4699f498');
@@ -120,6 +124,7 @@ test('should get data correctly at birthday - aavev2 chain ethereum', async func
       expect(dataState[4].rateBorrow).equal('0');
       expect(dataState[4].rateBorrowStable).equal('0');
       expect(dataState[4].rateLoanToValue).equal('0.6');
+      expect(dataState[3].rateReserveFactor).equal('0.2');
 
       // UNI
       expect(dataState[5].token.address).equal('0x1f9840a85d5af5bf1d1762f925bdaddc4201f984');
@@ -131,6 +136,7 @@ test('should get data correctly at birthday - aavev2 chain ethereum', async func
       expect(dataState[5].rateBorrow).equal('0');
       expect(dataState[5].rateBorrowStable).equal('0');
       expect(dataState[5].rateLoanToValue).equal('0.6');
+      expect(dataState[3].rateReserveFactor).equal('0.2');
     }
   }
 });

@@ -2,7 +2,7 @@ import { TimeUnits } from '../../configs/constants';
 import EnvConfig from '../../configs/envConfig';
 import { getTimestamp } from '../../lib/utils';
 import { DataMetrics, MetricConfig, ProtocolConfig } from '../../types/configs';
-import { DexDataState, DexDataStateWithTimeframes, DexDataTimeframe } from '../../types/dex';
+import { DexDataState, DexDataStateWithTimeframes, DexDataTimeframe } from '../../types/domains/dex';
 import { ContextServices, ContextStorages, IDexProtocolAdapter } from '../../types/namespaces';
 import { GetAdapterDataStateOptions, GetAdapterDataTimeframeOptions, RunAdapterOptions } from '../../types/options';
 import ProtocolAdapter from './adapter';

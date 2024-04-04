@@ -1,12 +1,12 @@
 import { TimeUnits } from '../../configs/constants';
 import EnvConfig from '../../configs/envConfig';
 import { getTimestamp } from '../../lib/utils';
+import { DataMetrics, MetricConfig, ProtocolConfig } from '../../types/configs';
 import {
   CdpLendingAssetDataState,
   CdpLendingAssetDataStateWithTimeframes,
   CdpLendingAssetDataTimeframe,
-} from '../../types/cdpLending';
-import { DataMetrics, MetricConfig, ProtocolConfig } from '../../types/configs';
+} from '../../types/domains/cdpLending';
 import { ContextServices, ContextStorages, ICdpLendingProtocolAdapter } from '../../types/namespaces';
 import { GetAdapterDataStateOptions, GetAdapterDataTimeframeOptions, RunAdapterOptions } from '../../types/options';
 import ProtocolAdapter from './adapter';

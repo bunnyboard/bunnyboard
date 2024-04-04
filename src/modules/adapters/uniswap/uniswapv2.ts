@@ -7,7 +7,7 @@ import EnvConfig from '../../../configs/envConfig';
 import { tryQueryBlockMeta } from '../../../lib/subgraph';
 import { normalizeAddress } from '../../../lib/utils';
 import { DexConfig, DexSubgraph, ProtocolConfig } from '../../../types/configs';
-import { DexDataState, DexDataTimeframe, DexDataTrader } from '../../../types/dex';
+import { DexDataState, DexDataTimeframe, DexDataTrader } from '../../../types/domains/dex';
 import { ContextServices, ContextStorages } from '../../../types/namespaces';
 import { GetAdapterDataStateOptions, GetAdapterDataTimeframeOptions } from '../../../types/options';
 import DexProtocolAdapter from '../dex';

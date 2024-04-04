@@ -6,13 +6,13 @@ import { AddressZero, Erc20TransferEventSignature, TimeUnits } from '../../../co
 import EnvConfig from '../../../configs/envConfig';
 import { compareAddress, formatBigNumberToString, getTimestamp, normalizeAddress } from '../../../lib/utils';
 import { DataMetrics, MetricConfig, ProtocolConfig, TokenBoardConfig } from '../../../types/configs';
-import { ContextServices, ContextStorages, ITokenBoardAdapter } from '../../../types/namespaces';
-import { GetAdapterDataStateOptions, GetAdapterDataTimeframeOptions, RunAdapterOptions } from '../../../types/options';
 import {
   TokenBoardDataState,
   TokenBoardDataStateWithTimeframes,
   TokenBoardDataTimeframe,
-} from '../../../types/tokenBoard';
+} from '../../../types/domains/tokenBoard';
+import { ContextServices, ContextStorages, ITokenBoardAdapter } from '../../../types/namespaces';
+import { GetAdapterDataStateOptions, GetAdapterDataTimeframeOptions, RunAdapterOptions } from '../../../types/options';
 import ProtocolAdapter from '../adapter';
 
 export default class TokenBoardAdapter extends ProtocolAdapter implements ITokenBoardAdapter {
