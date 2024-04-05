@@ -70,6 +70,26 @@ export default class CompoundAdapter extends CrossLendingProtocolAdapter {
     return '0';
   }
 
+  protected async getMarketReserveFactorRate(
+    config: CompoundLendingMarketConfig,
+    cTokenContract: string,
+    blockNumber: number,
+  ): Promise<any> {
+    const reserveFactorMantissa = await this.services.blockchain.readContract({
+      chain: config.chain,
+      abi: this.abiConfigs.eventAbis.cErc20,
+      target: cTokenContract,
+      method: 'reserveFactorMantissa',
+      params: [],
+      blockNumber,
+    });
+    if (reserveFactorMantissa) {
+      return formatBigNumberToString(reserveFactorMantissa.toString(), 18);
+    }
+
+    return '0';
+  }
+
   protected async getAllMarkets(
     config: CompoundLendingMarketConfig,
     blockNumber: number,
@@ -198,6 +218,7 @@ export default class CompoundAdapter extends CrossLendingProtocolAdapter {
             blockNumber,
           });
           const ltv = await this.getMarketLoanToValueRate(marketConfig, cTokenContract, blockNumber);
+          const reservFactor = await this.getMarketReserveFactorRate(marketConfig, cTokenContract, blockNumber);
 
           const totalDeposited = new BigNumber(totalCash.toString())
             .plus(new BigNumber(totalBorrows.toString()))
@@ -229,6 +250,7 @@ export default class CompoundAdapter extends CrossLendingProtocolAdapter {
             rateSupply: supplyRate,
             rateBorrow: borrowRate,
             rateLoanToValue: ltv,
+            rateReserveFactor: reservFactor,
           };
 
           result.push(dataState);

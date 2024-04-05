@@ -14,7 +14,6 @@ export const SparkConfigs: AaveProtocolConfig = {
       metric: DataMetrics.crossLending,
       address: AddressesBook.ethereum.SparkLendingPool,
       dataProvider: AddressesBook.ethereum.SparkDataProvider,
-      incentiveController: AddressesBook.ethereum.SparkIncentiveController,
     },
     {
       chain: ChainNames.gnosis,
@@ -24,7 +23,6 @@ export const SparkConfigs: AaveProtocolConfig = {
       metric: DataMetrics.crossLending,
       address: AddressesBook.gnosis.SparkLendingPool,
       dataProvider: AddressesBook.gnosis.SparkDataProvider,
-      incentiveController: AddressesBook.gnosis.SparkIncentiveController,
     },
   ],
 };

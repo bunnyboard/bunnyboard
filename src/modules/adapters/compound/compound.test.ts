@@ -62,6 +62,7 @@ test('should get data correctly at birthday - compound chain ethereum', async fu
       expect(dataState[0].rateSupply).equal('0.001520542415922288');
       expect(dataState[0].rateBorrow).equal('0.038333236203101646');
       expect(dataState[0].rateLoanToValue).equal('0.6');
+      expect(dataState[0].rateReserveFactor).equal('0.1');
 
       // ETH
       expect(dataState[1].token.address).equal('0x0000000000000000000000000000000000000000');
@@ -71,6 +72,7 @@ test('should get data correctly at birthday - compound chain ethereum', async fu
       expect(dataState[1].rateSupply).equal('0.000782197799235184');
       expect(dataState[1].rateBorrow).equal('0.014162043203821978');
       expect(dataState[1].rateLoanToValue).equal('0.75');
+      expect(dataState[1].rateReserveFactor).equal('0.1');
 
       // REP
       expect(dataState[2].token.address).equal('0x1985365e9f78359a9b6ad760e32412f4a445e862');
@@ -80,6 +82,7 @@ test('should get data correctly at birthday - compound chain ethereum', async fu
       expect(dataState[2].rateSupply).equal('0.002660343341289506');
       expect(dataState[2].rateBorrow).equal('0.045543533815273696');
       expect(dataState[2].rateLoanToValue).equal('0.5');
+      expect(dataState[2].rateReserveFactor).equal('0.1');
 
       // USDC
       expect(dataState[3].token.address).equal('0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48');

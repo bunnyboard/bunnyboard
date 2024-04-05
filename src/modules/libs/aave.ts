@@ -70,7 +70,7 @@ export default class AaveLibs {
       chain: aaveLendingMarketConfig.chain,
       lendingPool: aaveLendingMarketConfig.address,
       dataProvider: aaveLendingMarketConfig.dataProvider,
-      incentiveController: aaveLendingMarketConfig.incentiveController,
+      incentiveController: '',
       reserves: reserves,
     };
   }
