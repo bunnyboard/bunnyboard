@@ -13,6 +13,7 @@ import {
   OracleSourceMakerRwaPip,
   OracleSourcePool2,
   OracleSourceSavingDai,
+  OracleTypes,
 } from '../../types/oracles';
 import BlockchainService from '../blockchains/blockchain';
 import { CachingService } from '../caching/caching';
@@ -29,7 +30,9 @@ export default class OracleService extends CachingService implements IOracleServ
     source: OracleSourceChainlink | OracleSourcePool2 | OracleSourceSavingDai | OracleSourceMakerRwaPip,
     timestamp: number,
   ): Promise<string | null> {
-    const sourceCachingKey = `source:${source.type}:${source.chain}:${source.address}:${timestamp}`;
+    const sourceCachingKey = `source:${source.type}:${source.chain}:${source.address}:${
+      source.type === OracleTypes.makerRwaPip ? (source as OracleSourceMakerRwaPip).ilk : 'any'
+    }:${timestamp}`;
     const cachingPrice = await this.getCachingData(sourceCachingKey);
     if (cachingPrice) {
       return cachingPrice;
