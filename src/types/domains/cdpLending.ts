@@ -22,7 +22,7 @@ export interface CdpLendingCollateralDataState extends DataState {
   // borrow interest
   rateBorrow: string;
   // one-time paid borrow fee
-  feeBorrow: string;
+  rateBorrowFee: string;
   // LTV
   rateLoanToValue: string;
 }

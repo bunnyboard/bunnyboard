@@ -48,7 +48,7 @@ test('should get state data correctly at birthday - liquity chain ethereum', asy
     expect(ethCollateral.tokenPrice).equal('2101.36069975');
     expect(ethCollateral.totalDeposited).equal('96112.941441063868722705');
     expect(ethCollateral.rateBorrow).equal('0');
-    expect(ethCollateral.feeBorrow).equal('0.005');
+    expect(ethCollateral.rateBorrowFee).equal('0.005');
     expect(ethCollateral.rateLoanToValue).equal('0.9');
   }
 });
@@ -70,7 +70,7 @@ test('should get state data correctly - liquity chain ethereum', async function 
     expect(ethCollateral.tokenPrice).equal('2358.45');
     expect(ethCollateral.totalDeposited).equal('316094.699304118193290095');
     expect(ethCollateral.rateBorrow).equal('0');
-    expect(ethCollateral.feeBorrow).equal('0.008052092360099089');
+    expect(ethCollateral.rateBorrowFee).equal('0.008052092360099089');
     expect(ethCollateral.rateLoanToValue).equal('0.9');
   }
 });

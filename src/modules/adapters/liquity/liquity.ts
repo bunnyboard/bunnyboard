@@ -148,7 +148,7 @@ export default class LiquityAdapter extends CdpLendingProtocolAdapter {
         rateBorrow: '0',
 
         // liquity charged on-time paid fee
-        feeBorrow: formatBigNumberToString(borrowingFee, 18),
+        rateBorrowFee: formatBigNumberToString(borrowingFee, 18),
 
         // liquity must maintain 110% collateral value on debts
         // so, the loan to value is always 100 / 110 -> 0.9 -> 90%

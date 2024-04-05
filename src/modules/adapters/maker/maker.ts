@@ -174,7 +174,7 @@ export default class MakerAdapter extends CdpLendingProtocolAdapter {
             totalDeposited: totalDeposited,
             totalBorrowed: totalBorrowed,
             rateBorrow: borrowRate.toString(10),
-            feeBorrow: '0',
+            rateBorrowFee: '0',
             rateLoanToValue: loanToValue.toString(10),
           });
         }
