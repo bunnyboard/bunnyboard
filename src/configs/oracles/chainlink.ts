@@ -44,7 +44,7 @@ export const OracleSourceChainlinkList: { [key: string]: OracleSourceChainlink }
     type: 'chainlink',
     chain: 'ethereum',
     address: AddressesBook.ethereum.ChainlinkFeed_FTM_ETH,
-    decimals: 8,
+    decimals: 18,
   },
   DAI_USD: {
     type: 'chainlink',
