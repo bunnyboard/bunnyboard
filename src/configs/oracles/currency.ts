@@ -1,10 +1,12 @@
 import { OracleConfig } from '../../types/oracles';
+import { OffchainOracleSourcesFromBinance } from './binance';
 import { OracleSourceChainlinkList } from './chainlink';
 
 export const OracleCurrencyBaseConfigs: { [key: string]: OracleConfig } = {
   eth: {
     currency: 'usd',
     sources: [OracleSourceChainlinkList.ETH_USD],
+    offchainSources: [OffchainOracleSourcesFromBinance.ETH],
   },
   btc: {
     currency: 'usd',

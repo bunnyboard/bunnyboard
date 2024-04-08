@@ -6,6 +6,7 @@ const MakerDaiJoinContract = AddressesBook.ethereum.MakerDaiJoin;
 const MakerVatContract = AddressesBook.ethereum.MakerVat;
 const MakerSpotContract = AddressesBook.ethereum.MakerSpot;
 const MakerJugContract = AddressesBook.ethereum.MakerJug;
+const MakerDogContract = AddressesBook.ethereum.MakerDog;
 
 const MakerGemJoins: Array<string> = [
   // birthday:address:collateral:ilk
@@ -53,6 +54,7 @@ export interface MakerLendingMarketConfig extends CdpLendingMarketConfig {
   vat: string;
   spot: string;
   jug: string;
+  dog: string;
   gems: Array<MakerGem>;
 }
 
@@ -69,6 +71,7 @@ function formatMakerConfigs(configs: Array<MakerLendingMarketConfig>): Array<Mak
       vat: normalizeAddress(item.vat),
       spot: normalizeAddress(item.spot),
       jug: normalizeAddress(item.jug),
+      dog: normalizeAddress(item.dog),
       gems: item.gems.map((item) => {
         return {
           birthday: item.birthday,
@@ -89,12 +92,13 @@ const MakerMarket: MakerLendingMarketConfig = {
   protocol: 'maker',
   metric: DataMetrics.cdpLending,
   version: LendingMarketVersions.cdp.maker,
-  birthday: 1573689600, // Thu Nov 14 2019 00:00:00 GMT+0000
+  birthday: 1574208000, // Wed Nov 20 2019 00:00:00 GMT+0000
   address: '0x6b175474e89094c44da98b954eedeac495271d0f', // DAI address
   daiJoin: MakerDaiJoinContract,
   vat: MakerVatContract,
   spot: MakerSpotContract,
   jug: MakerJugContract,
+  dog: MakerDogContract,
   debtToken: {
     chain: 'ethereum',
     symbol: 'DAI',

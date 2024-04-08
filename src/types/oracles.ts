@@ -57,6 +57,11 @@ export interface OracleSourceMakerRwaPip extends OracleSourceBase {
   ilk: string; //
 }
 
+export interface OracleOffchainSource {
+  source: string; // binance
+  ticker: string; // ETHUSDT
+}
+
 export interface OracleConfig {
   // if the currency is not usd
   // we need to get currency base token price too
@@ -67,4 +72,7 @@ export interface OracleConfig {
 
   // if is stablecoin, return 1 when we can not fetch the price from any source
   stablecoin?: boolean;
+
+  // support to get token price when it was not available onchain yet
+  offchainSources?: Array<OracleOffchainSource>;
 }

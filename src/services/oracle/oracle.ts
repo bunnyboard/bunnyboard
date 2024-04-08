@@ -9,6 +9,7 @@ import OracleLibs from '../../modules/libs/custom';
 import UniswapLibs from '../../modules/libs/uniswap';
 import {
   OracleCurrencyBase,
+  OracleOffchainSource,
   OracleSourceChainlink,
   OracleSourceMakerRwaPip,
   OracleSourcePool2,
@@ -17,6 +18,7 @@ import {
 } from '../../types/oracles';
 import BlockchainService from '../blockchains/blockchain';
 import { CachingService } from '../caching/caching';
+import { getTokenPriceFromBinance } from './binance';
 import { GetTokenPriceOptions, IOracleService } from './domains';
 
 export default class OracleService extends CachingService implements IOracleService {
@@ -143,6 +145,18 @@ export default class OracleService extends CachingService implements IOracleServ
 
       if ((returnPrice === null || returnPrice === '0') && OracleConfigs[options.chain][options.address].stablecoin) {
         return '1';
+      }
+
+      if (
+        (returnPrice === null || returnPrice === '0') &&
+        OracleConfigs[options.chain][options.address].offchainSources
+      ) {
+        const sources = OracleConfigs[options.chain][options.address].offchainSources as Array<OracleOffchainSource>;
+        for (const offchainSource of sources) {
+          if (offchainSource.source === 'binance') {
+            returnPrice = await getTokenPriceFromBinance(offchainSource, options.timestamp);
+          }
+        }
       }
     }
 
