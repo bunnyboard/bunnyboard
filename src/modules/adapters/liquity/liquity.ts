@@ -1,6 +1,7 @@
 import BigNumber from 'bignumber.js';
 import { decodeEventLog } from 'viem';
 
+import Erc20Abi from '../../../configs/abi/ERC20.json';
 import BorrowOperationsAbi from '../../../configs/abi/liquity/BorrowOperations.json';
 import TroveManagerAbi from '../../../configs/abi/liquity/TroveManager.json';
 import { LiquityLendingMarketConfig, LiquityTrove } from '../../../configs/protocols/liquity';
@@ -78,7 +79,7 @@ export default class LiquityAdapter extends CdpLendingProtocolAdapter {
       params: [],
       blockNumber: blockNumber,
     });
-    return borrowingFee.toString();
+    return formatBigNumberToString(borrowingFee.toString(), 18);
   }
 
   public async getLendingAssetDataState(options: GetAdapterDataStateOptions): Promise<CdpLendingAssetDataState | null> {
@@ -95,6 +96,15 @@ export default class LiquityAdapter extends CdpLendingProtocolAdapter {
       timestamp: options.timestamp,
     });
 
+    const totalSupply = await this.services.blockchain.readContract({
+      chain: marketConfig.chain,
+      abi: Erc20Abi,
+      target: marketConfig.debtToken.address,
+      method: 'totalSupply',
+      params: [],
+      blockNumber: blockNumber,
+    });
+
     const assetState: CdpLendingAssetDataState = {
       chain: options.config.chain,
       protocol: options.config.protocol,
@@ -103,6 +113,7 @@ export default class LiquityAdapter extends CdpLendingProtocolAdapter {
       token: debtToken,
       tokenPrice: debtTokenPrice ? debtTokenPrice : '0',
       totalBorrowed: '0',
+      totalSupply: formatBigNumberToString(totalSupply.toString(), debtToken.decimals),
       collaterals: [],
     };
 
@@ -113,26 +124,27 @@ export default class LiquityAdapter extends CdpLendingProtocolAdapter {
         timestamp: options.timestamp,
       });
 
-      const totalDebt = await this.services.blockchain.readContract({
+      const [totalDebt, totalColl] = await this.services.blockchain.multicall({
         chain: marketConfig.chain,
-        abi: this.abiConfigs.eventAbis.troveManager,
-        target: marketConfig.address,
-        method: 'getEntireSystemDebt',
-        params: [],
         blockNumber: blockNumber,
+        calls: [
+          {
+            abi: this.abiConfigs.eventAbis.borrowOperation,
+            target: trove.borrowOperation,
+            method: 'getEntireSystemDebt',
+            params: [],
+          },
+          {
+            abi: this.abiConfigs.eventAbis.borrowOperation,
+            target: trove.borrowOperation,
+            method: 'getEntireSystemColl',
+            params: [],
+          },
+        ],
       });
       assetState.totalBorrowed = new BigNumber(assetState.totalBorrowed)
         .plus(formatBigNumberToString(totalDebt.toString(), debtToken.decimals))
         .toString(10);
-
-      const totalColl = await this.services.blockchain.readContract({
-        chain: marketConfig.chain,
-        abi: this.abiConfigs.eventAbis.troveManager,
-        target: marketConfig.address,
-        method: 'getEntireSystemColl',
-        params: [],
-        blockNumber: blockNumber,
-      });
 
       const borrowingFee = await this.getBorrowingFee(marketConfig.chain, trove.troveManager, blockNumber);
 
@@ -144,11 +156,15 @@ export default class LiquityAdapter extends CdpLendingProtocolAdapter {
         address: trove.troveManager,
         token: trove.collateralToken,
         tokenPrice: collateralTokenPrice ? collateralTokenPrice : '0',
+
+        totalBorrowed: formatBigNumberToString(totalDebt.toString(), debtToken.decimals),
         totalDeposited: formatBigNumberToString(totalColl.toString(), trove.collateralToken.decimals),
+
+        // zero-interest borrowing on liquity
         rateBorrow: '0',
 
         // liquity charged on-time paid fee
-        rateBorrowFee: formatBigNumberToString(borrowingFee, 18),
+        rateBorrowFee: borrowingFee,
 
         // liquity must maintain 110% collateral value on debts
         // so, the loan to value is always 100 / 110 -> 0.9 -> 90%
@@ -162,18 +178,22 @@ export default class LiquityAdapter extends CdpLendingProtocolAdapter {
   public async getEventLogs(options: AdapterGetEventLogsOptions): Promise<Array<any>> {
     const liquityConfig = options.metricConfig as LiquityLendingMarketConfig;
 
-    // get logs from borrow operation
-    let logs = await this.services.blockchain.getContractLogs({
-      chain: liquityConfig.chain,
-      address: liquityConfig.address,
-      fromBlock: options.fromBlock,
-      toBlock: options.toBlock,
-    });
+    let logs: Array<any> = [];
 
     // get logs from trove managers
     for (const trove of liquityConfig.troves) {
+      // get logs from borrow operation
       logs = logs.concat(
-        // get liquidation events
+        await this.services.blockchain.getContractLogs({
+          chain: liquityConfig.chain,
+          address: trove.borrowOperation,
+          fromBlock: options.fromBlock,
+          toBlock: options.toBlock,
+        }),
+      );
+
+      // get liquidation events
+      logs = logs.concat(
         await this.services.blockchain.getContractLogs({
           chain: liquityConfig.chain,
           address: trove.troveManager,
@@ -201,7 +221,7 @@ export default class LiquityAdapter extends CdpLendingProtocolAdapter {
       // todo: find the correct trove manager contract
       const trove: LiquityTrove = marketConfig.troves[0];
 
-      if (signature === eventSignatures.TroveUpdated && compareAddress(address, marketConfig.address)) {
+      if (signature === eventSignatures.TroveUpdated && compareAddress(address, trove.borrowOperation)) {
         // borrow/repay
         const event: any = decodeEventLog({
           abi: this.abiConfigs.eventAbis.borrowOperation,
@@ -220,7 +240,7 @@ export default class LiquityAdapter extends CdpLendingProtocolAdapter {
             result.activities.push({
               chain: marketConfig.chain,
               protocol: options.config.protocol,
-              address: address,
+              address: trove.troveManager, // inject trove manager address
               transactionHash: log.transactionHash,
               logIndex: `${log.logIndex.toString()}:0`,
               blockNumber: Number(log.blockNumber),
@@ -236,7 +256,7 @@ export default class LiquityAdapter extends CdpLendingProtocolAdapter {
             result.activities.push({
               chain: marketConfig.chain,
               protocol: options.config.protocol,
-              address: address,
+              address: trove.troveManager, // inject trove manager address
               transactionHash: log.transactionHash,
               logIndex: `${log.logIndex.toString()}:1`,
               blockNumber: Number(log.blockNumber),
@@ -263,7 +283,7 @@ export default class LiquityAdapter extends CdpLendingProtocolAdapter {
             result.activities.push({
               chain: marketConfig.chain,
               protocol: options.config.protocol,
-              address: address,
+              address: trove.troveManager, // inject trove manager address
               transactionHash: log.transactionHash,
               logIndex: `${log.logIndex.toString()}:0`,
               blockNumber: Number(log.blockNumber),
@@ -277,7 +297,7 @@ export default class LiquityAdapter extends CdpLendingProtocolAdapter {
             result.activities.push({
               chain: marketConfig.chain,
               protocol: options.config.protocol,
-              address: address,
+              address: trove.troveManager, // inject trove manager address
               transactionHash: log.transactionHash,
               logIndex: `${log.logIndex.toString()}:1`,
               blockNumber: Number(log.blockNumber),
@@ -301,7 +321,7 @@ export default class LiquityAdapter extends CdpLendingProtocolAdapter {
           result.activities.push({
             chain: marketConfig.chain,
             protocol: options.config.protocol,
-            address: address,
+            address: trove.troveManager, // inject trove manager address
             transactionHash: log.transactionHash,
             logIndex: `${log.logIndex.toString()}:1`,
             blockNumber: Number(log.blockNumber),
@@ -365,12 +385,14 @@ export default class LiquityAdapter extends CdpLendingProtocolAdapter {
     };
 
     // count borrow/repay events
+    const marketConfig = options.config as LiquityLendingMarketConfig;
+    const trove = (options.config as LiquityLendingMarketConfig).troves[0];
     const lusdEvents = activities.filter(
       (activity) =>
-        activity.chain === stateData.chain &&
-        activity.protocol === stateData.protocol &&
-        activity.address === options.config.address &&
-        activity.token.address === stateData.token.address,
+        activity.chain === marketConfig.chain &&
+        activity.protocol === marketConfig.protocol &&
+        activity.address === trove.troveManager &&
+        activity.token.address === marketConfig.debtToken.address,
     );
 
     for (const event of lusdEvents) {
@@ -406,8 +428,9 @@ export default class LiquityAdapter extends CdpLendingProtocolAdapter {
       // count deposit/withdraw/liquidate events
       const collateralEvents = activities.filter(
         (activity) =>
-          activity.chain === stateData.chain &&
-          activity.protocol === stateData.protocol &&
+          activity.chain === collateral.chain &&
+          activity.protocol === collateral.protocol &&
+          activity.address === collateral.address &&
           activity.token.address === collateral.token.address,
       );
       for (const event of collateralEvents) {

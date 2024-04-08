@@ -17,7 +17,7 @@ export interface CdpLendingCollateralDataState extends DataState {
   totalDeposited: string;
 
   // total debts were issued by this collateral
-  totalBorrowed?: string;
+  totalBorrowed: string;
 
   // borrow interest
   rateBorrow: string;
@@ -37,9 +37,9 @@ export interface CdpLendingAssetDataState extends DataState {
   // total debt were borrowed
   totalBorrowed: string;
 
-  // some protocol allow to supply debt asset
-  totalDeposited?: string;
-  rateSupply?: string;
+  // total debt token supply
+  // ERC20 totalSupply call DebtToken contract
+  totalSupply: string;
 
   // a list of collaterals
   collaterals: Array<CdpLendingCollateralDataState>;
@@ -52,9 +52,6 @@ export interface CdpLendingCollateralDataTimeframe extends CdpLendingCollateralD
 }
 
 export interface CdpLendingAssetDataTimeframe extends CdpLendingAssetDataState, DataTimeframe {
-  volumeDeposited?: string;
-  volumeWithdrawn?: string;
-
   volumeBorrowed: string;
   volumeRepaid: string;
 

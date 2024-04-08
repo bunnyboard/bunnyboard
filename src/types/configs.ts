@@ -99,11 +99,13 @@ export const LendingMarketVersions = {
     aavev2: 'aavev2',
     aavev3: 'aavev3',
     compound: 'compound',
+    undefined,
   },
   cdp: {
     maker: 'maker',
     liquity: 'liquity',
     compoundv3: 'compoundv3',
+    abracadabra: 'abracadabra',
   },
 };
 

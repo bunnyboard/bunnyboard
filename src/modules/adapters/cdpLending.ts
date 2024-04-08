@@ -55,8 +55,6 @@ export default class CdpLendingProtocolAdapter extends ProtocolAdapter implement
           ...dataState,
           timefrom: timestamp - TimeUnits.SecondsPerDay,
           timeto: timestamp,
-          volumeDeposited: '0',
-          volumeWithdrawn: '0',
           volumeBorrowed: '0',
           volumeRepaid: '0',
           addresses: [],
@@ -67,17 +65,13 @@ export default class CdpLendingProtocolAdapter extends ProtocolAdapter implement
 
         if (timeframeLast24Hours) {
           stateWithTimeframes.totalBorrowed = timeframeLast24Hours.totalBorrowed;
+          stateWithTimeframes.totalSupply = timeframeLast24Hours.totalSupply;
           stateWithTimeframes.volumeBorrowed = timeframeLast24Hours.volumeBorrowed;
           stateWithTimeframes.volumeRepaid = timeframeLast24Hours.volumeRepaid;
 
           stateWithTimeframes.addresses = timeframeLast24Hours.addresses;
           stateWithTimeframes.transactions = timeframeLast24Hours.transactions;
           stateWithTimeframes.collaterals = timeframeLast24Hours.collaterals;
-
-          // can be undefined
-          stateWithTimeframes.totalDeposited = timeframeLast24Hours.totalDeposited;
-          stateWithTimeframes.volumeDeposited = timeframeLast24Hours.volumeDeposited;
-          stateWithTimeframes.volumeWithdrawn = timeframeLast24Hours.volumeWithdrawn;
         }
 
         if (timeframeLast48Hours) {
@@ -89,7 +83,7 @@ export default class CdpLendingProtocolAdapter extends ProtocolAdapter implement
           keys: {
             chain: dataState.chain,
             protocol: dataState.protocol,
-            'token.address': dataState.token.address,
+            address: dataState.token.address, // debt token address
           },
           updates: {
             ...stateWithTimeframes,
@@ -114,7 +108,7 @@ export default class CdpLendingProtocolAdapter extends ProtocolAdapter implement
       keys: {
         chain: snapshot.chain,
         protocol: snapshot.protocol,
-        'token.address': snapshot.token.address,
+        address: snapshot.token.address, // debt token address
         timestamp: snapshot.timestamp,
       },
       updates: {

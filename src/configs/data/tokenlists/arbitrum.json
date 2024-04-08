@@ -5,6 +5,12 @@
     "symbol": "ETH",
     "decimals": 18
   },
+  "0x09400d9db990d5ed3f35d7be61dfaeb900af03c9": {
+    "chain": "arbitrum",
+    "address": "0x09400d9db990d5ed3f35d7be61dfaeb900af03c9",
+    "symbol": "GM",
+    "decimals": 18
+  },
   "0x17fc002b466eec40dae837fc4be5c67993ddbd6f": {
     "chain": "arbitrum",
     "address": "0x17fc002b466eec40dae837fc4be5c67993ddbd6f",
@@ -47,6 +53,12 @@
     "decimals": 18,
     "address": "0x47904963fc8b2340414262125af798b9655e58cd"
   },
+  "0x47c031236e19d024b42f8ae6780e44a573170703": {
+    "chain": "arbitrum",
+    "address": "0x47c031236e19d024b42f8ae6780e44a573170703",
+    "symbol": "GM",
+    "decimals": 18
+  },
   "0x565609faf65b92f7be02468acf86f8979423e514": {
     "chain": "arbitrum",
     "address": "0x565609faf65b92f7be02468acf86f8979423e514",
@@ -59,10 +71,28 @@
     "symbol": "wstETH",
     "decimals": 18
   },
+  "0x70d95587d40a2caf56bd97485ab3eec10bee6336": {
+    "chain": "arbitrum",
+    "address": "0x70d95587d40a2caf56bd97485ab3eec10bee6336",
+    "symbol": "GM",
+    "decimals": 18
+  },
+  "0x7f1fa204bb700853d36994da19f830b6ad18455c": {
+    "chain": "arbitrum",
+    "address": "0x7f1fa204bb700853d36994da19f830b6ad18455c",
+    "symbol": "GM",
+    "decimals": 18
+  },
   "0x82af49447d8a07e3bd95bd0d56f35241523fbab1": {
     "chain": "arbitrum",
     "address": "0x82af49447d8a07e3bd95bd0d56f35241523fbab1",
     "symbol": "WETH",
+    "decimals": 18
+  },
+  "0x85667409a723684fe1e57dd1abde8d88c2f54214": {
+    "chain": "arbitrum",
+    "address": "0x85667409a723684fe1e57dd1abde8d88c2f54214",
+    "symbol": "mGLP",
     "decimals": 18
   },
   "0x912ce59144191c1204e64559fe8253a0e49e6548": {
@@ -106,6 +136,12 @@
     "symbol": "XRP",
     "decimals": 18,
     "address": "0xc14e065b0067de91534e032868f5ac6ecf2c6868"
+  },
+  "0xc25cef6061cf5de5eb761b50e4743c1f5d7e5407": {
+    "chain": "arbitrum",
+    "address": "0xc25cef6061cf5de5eb761b50e4743c1f5d7e5407",
+    "symbol": "GM",
+    "decimals": 18
   },
   "0xc4da4c24fd591125c3f47b340b6f4f76111883d8": {
     "chain": "arbitrum",

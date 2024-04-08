@@ -54,7 +54,7 @@ export const DatabaseCollectionConfigs: DatabaseCollectionConfig = {
       {
         chain: 1,
         protocol: 1,
-        'token.address': 1,
+        address: 1, // debt token address
       },
     ],
   },
@@ -64,7 +64,7 @@ export const DatabaseCollectionConfigs: DatabaseCollectionConfig = {
       {
         chain: 1,
         protocol: 1,
-        'token.address': 1,
+        address: 1, // debt token address
         timestamp: 1,
       },
     ],

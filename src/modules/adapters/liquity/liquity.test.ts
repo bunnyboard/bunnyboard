@@ -42,11 +42,14 @@ test('should get state data correctly at birthday - liquity chain ethereum', asy
   if (dataState) {
     expect(dataState.tokenPrice).equal('1.0711946834743807403');
     expect(dataState.totalBorrowed).equal('114200523.539');
+    expect(dataState.totalSupply).equal('114200523.539');
     expect(dataState.collaterals.length).equal(1);
 
     const ethCollateral = dataState.collaterals[0];
+    expect(ethCollateral.address).equal(LiquityConfigs.configs[0].troves[0].troveManager); // trove manager
     expect(ethCollateral.tokenPrice).equal('2101.36069975');
     expect(ethCollateral.totalDeposited).equal('96112.941441063868722705');
+    expect(ethCollateral.totalBorrowed).equal('114200523.539');
     expect(ethCollateral.rateBorrow).equal('0');
     expect(ethCollateral.rateBorrowFee).equal('0.005');
     expect(ethCollateral.rateLoanToValue).equal('0.9');
@@ -64,11 +67,14 @@ test('should get state data correctly - liquity chain ethereum', async function 
   if (dataState) {
     expect(dataState.tokenPrice).equal('0.98319929447070801584');
     expect(dataState.totalBorrowed).equal('174892809.938681132585837145');
+    expect(dataState.totalSupply).equal('174892809.938681132585837145');
     expect(dataState.collaterals.length).equal(1);
 
     const ethCollateral = dataState.collaterals[0];
+    expect(ethCollateral.address).equal(LiquityConfigs.configs[0].troves[0].troveManager); // trove manager
     expect(ethCollateral.tokenPrice).equal('2358.45');
     expect(ethCollateral.totalDeposited).equal('316094.699304118193290095');
+    expect(ethCollateral.totalBorrowed).equal('174892809.938681132585837145');
     expect(ethCollateral.rateBorrow).equal('0');
     expect(ethCollateral.rateBorrowFee).equal('0.008052092360099089');
     expect(ethCollateral.rateLoanToValue).equal('0.9');
@@ -86,12 +92,15 @@ test('should get timeframe data correctly - liquity chain ethereum', async funct
   if (dataTimeframe) {
     expect(dataTimeframe.tokenPrice).equal('0.99171302850382854518');
     expect(dataTimeframe.totalBorrowed).equal('153195539.082185262742860794');
+    expect(dataTimeframe.totalSupply).equal('153195539.082185262742860794');
     expect(dataTimeframe.volumeBorrowed).equal('296948.444550847122605949');
     expect(dataTimeframe.volumeRepaid).equal('166675.316445822536652491');
 
     const ethCollateral = dataTimeframe.collaterals[0];
     expect(ethCollateral).not.equal(undefined);
+    expect(ethCollateral.address).equal(LiquityConfigs.configs[0].troves[0].troveManager); // trove manager
     expect(ethCollateral.tokenPrice).equal('2823.43011038');
+    expect(ethCollateral.totalBorrowed).equal('153195539.082185262742860794');
     expect(ethCollateral.totalDeposited).equal('263802.267428494003463684');
     expect(ethCollateral.volumeDeposited).equal('1034.250583049392519259');
     expect(ethCollateral.volumeWithdrawn).equal('271.695408744045811863');
