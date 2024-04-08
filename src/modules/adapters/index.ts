@@ -5,6 +5,7 @@ import Aavev3Adapter from './aave/aavev3';
 import CompoundAdapter from './compound/compound';
 import IronbankAdapter from './ironbank/ironbank';
 import LiquityAdapter from './liquity/liquity';
+import MakerAdapter from './maker/maker';
 import RadiantAdapter from './radiant/radiant';
 import SpookyAdapter from './spooky/spooky';
 import SushiAdapter from './sushi/sushi';
@@ -27,6 +28,7 @@ export function getProtocolAdapters(
     sonne: new CompoundAdapter(services, storages, ProtocolConfigs.sonne),
     spark: new Aavev3Adapter(services, storages, ProtocolConfigs.spark),
     liquity: new LiquityAdapter(services, storages, ProtocolConfigs.liquity),
+    maker: new MakerAdapter(services, storages, ProtocolConfigs.maker),
     spooky: new SpookyAdapter(services, storages, ProtocolConfigs.spooky),
     sushi: new SushiAdapter(services, storages, ProtocolConfigs.sushi),
     sushiv3: new Sushiv3Adapter(services, storages, ProtocolConfigs.sushiv3),
