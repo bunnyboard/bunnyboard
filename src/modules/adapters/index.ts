@@ -2,6 +2,7 @@ import { ProtocolConfigs } from '../../configs';
 import { ContextServices, ContextStorages, IProtocolAdapter } from '../../types/namespaces';
 import Aavev2Adapter from './aave/aavev2';
 import Aavev3Adapter from './aave/aavev3';
+import AbracadabraAdapter from './abracadabra/abracadabra';
 import CompoundAdapter from './compound/compound';
 import IronbankAdapter from './ironbank/ironbank';
 import LiquityAdapter from './liquity/liquity';
@@ -21,6 +22,7 @@ export function getProtocolAdapters(
   return {
     aavev2: new Aavev2Adapter(services, storages, ProtocolConfigs.aavev2),
     aavev3: new Aavev3Adapter(services, storages, ProtocolConfigs.aavev3),
+    abracadabra: new AbracadabraAdapter(services, storages, ProtocolConfigs.abracadabra),
     compound: new CompoundAdapter(services, storages, ProtocolConfigs.compound),
     ironbank: new IronbankAdapter(services, storages, ProtocolConfigs.ironbank),
     venus: new VenusAdapter(services, storages, ProtocolConfigs.venus),

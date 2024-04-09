@@ -1,9 +1,9 @@
 import axios from 'axios';
 
-import { OracleOffchainSource } from '../../types/oracles';
+import { OracleSourceOffchain } from '../../types/oracles';
 
 // https://github.com/binance/binance-spot-api-docs/blob/master/rest-api.md#klinecandlestick-data
-export async function getTokenPriceFromBinance(source: OracleOffchainSource, timestamp: number): Promise<string> {
+export async function getTokenPriceFromBinance(source: OracleSourceOffchain, timestamp: number): Promise<string> {
   try {
     const response = await axios.get(
       `https://api.binance.com/api/v3/klines?symbol=${source.ticker}&interval=1d&startTime=${

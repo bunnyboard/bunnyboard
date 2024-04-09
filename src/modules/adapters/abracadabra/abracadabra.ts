@@ -130,7 +130,7 @@ export default class AbracadabraAdapter extends CdpLendingProtocolAdapter {
           ],
         });
         if (oracle && oracleData) {
-          const [, peekRate] = await this.services.blockchain.readContract({
+          const peekData = await this.services.blockchain.readContract({
             chain: marketConfig.chain,
             target: oracle.toString(),
             abi: PeekOracleAbi,
@@ -138,9 +138,13 @@ export default class AbracadabraAdapter extends CdpLendingProtocolAdapter {
             params: [oracleData],
             blockNumber: blockNumber,
           });
-          const collateralTokenPrice = new BigNumber(debtTokenPrice)
-            .dividedBy(new BigNumber(formatBigNumberToString(peekRate.toString(), cauldron.collateralToken.decimals)))
-            .toString(10);
+          const collateralTokenPrice = peekData
+            ? new BigNumber(debtTokenPrice)
+                .dividedBy(
+                  new BigNumber(formatBigNumberToString(peekData[1].toString(), cauldron.collateralToken.decimals)),
+                )
+                .toString(10)
+            : '0';
 
           assetState.totalBorrowed = new BigNumber(assetState.totalBorrowed)
             .plus(new BigNumber(formatBigNumberToString(base.toString(), debtToken.decimals)))
@@ -230,7 +234,7 @@ export default class AbracadabraAdapter extends CdpLendingProtocolAdapter {
           ],
         });
         if (oracle && oracleData) {
-          const [, peekRate] = await this.services.blockchain.readContract({
+          const peekData = await this.services.blockchain.readContract({
             chain: marketConfig.chain,
             target: oracle.toString(),
             abi: PeekOracleAbi,
@@ -238,9 +242,13 @@ export default class AbracadabraAdapter extends CdpLendingProtocolAdapter {
             params: [oracleData],
             blockNumber: blockNumber,
           });
-          const collateralTokenPrice = new BigNumber(debtTokenPrice)
-            .dividedBy(new BigNumber(formatBigNumberToString(peekRate.toString(), cauldron.collateralToken.decimals)))
-            .toString(10);
+          const collateralTokenPrice = peekData
+            ? new BigNumber(debtTokenPrice)
+                .dividedBy(
+                  new BigNumber(formatBigNumberToString(peekData[1].toString(), cauldron.collateralToken.decimals)),
+                )
+                .toString(10)
+            : '0';
 
           assetState.totalBorrowed = new BigNumber(assetState.totalBorrowed)
             .plus(new BigNumber(formatBigNumberToString(base.toString(), debtToken.decimals)))

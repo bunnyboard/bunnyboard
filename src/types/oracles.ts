@@ -19,6 +19,9 @@ export const OracleTypes = {
   // https://etherscan.io/address/0x76A9f30B45F4ebFD60Ce8a1c6e963b1605f7cB6d
   // https://docs.makerdao.com/smart-contract-modules/core-module/spot-detailed-documentation
   makerRwaPip: 'makerRwaPip',
+
+  // https://etherscan.io/address/0x5a6a4d54456819380173272a5e8e9b9904bdf41b
+  curveMetaPool: 'curveMetaPool',
 };
 const AllOracleTypes = Object.values(OracleTypes);
 export type OracleType = (typeof AllOracleTypes)[number];
@@ -57,9 +60,13 @@ export interface OracleSourceMakerRwaPip extends OracleSourceBase {
   ilk: string; //
 }
 
-export interface OracleOffchainSource {
+export interface OracleSourceOffchain {
   source: string; // binance
   ticker: string; // ETHUSDT
+}
+
+export interface OracleSourceCurveMetaPool extends OracleSourceBase {
+  baseToken: Token;
 }
 
 export interface OracleConfig {
@@ -68,11 +75,17 @@ export interface OracleConfig {
   currency: OracleCurrencyBase;
 
   // a list of on-chain sources where we can get the token price
-  sources: Array<OracleSourceChainlink | OracleSourcePool2 | OracleSourceSavingDai | OracleSourceMakerRwaPip>;
+  sources: Array<
+    | OracleSourceChainlink
+    | OracleSourcePool2
+    | OracleSourceSavingDai
+    | OracleSourceMakerRwaPip
+    | OracleSourceCurveMetaPool
+  >;
 
   // if is stablecoin, return 1 when we can not fetch the price from any source
   stablecoin?: boolean;
 
   // support to get token price when it was not available onchain yet
-  offchainSources?: Array<OracleOffchainSource>;
+  offchainSources?: Array<OracleSourceOffchain>;
 }

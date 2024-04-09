@@ -64,11 +64,8 @@ export default class CdpLendingProtocolAdapter extends ProtocolAdapter implement
         };
 
         if (timeframeLast24Hours) {
-          stateWithTimeframes.totalBorrowed = timeframeLast24Hours.totalBorrowed;
-          stateWithTimeframes.totalSupply = timeframeLast24Hours.totalSupply;
           stateWithTimeframes.volumeBorrowed = timeframeLast24Hours.volumeBorrowed;
           stateWithTimeframes.volumeRepaid = timeframeLast24Hours.volumeRepaid;
-
           stateWithTimeframes.addresses = timeframeLast24Hours.addresses;
           stateWithTimeframes.transactions = timeframeLast24Hours.transactions;
           stateWithTimeframes.collaterals = timeframeLast24Hours.collaterals;

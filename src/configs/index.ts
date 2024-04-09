@@ -2,6 +2,7 @@ import { Token } from '../types/configs';
 import { TokenBoardConfigs } from './boards/tokenBoard';
 import { TokensBook, TokensBookBase } from './data';
 import { Aavev2Configs, Aavev3Configs } from './protocols/aave';
+import { AbracadabraConfigs } from './protocols/abracadabra';
 import { CompoundConfigs, Compoundv3Configs } from './protocols/compound';
 import { IronbankConfigs } from './protocols/ironbank';
 import { KyberswapConfigs } from './protocols/kyberswap';
@@ -25,6 +26,7 @@ export const TokenListBase = TokensBookBase;
 export const ProtocolConfigs = {
   aavev2: Aavev2Configs,
   aavev3: Aavev3Configs,
+  abracadabra: AbracadabraConfigs,
   compound: CompoundConfigs,
   compoundv3: Compoundv3Configs,
   ironbank: IronbankConfigs,

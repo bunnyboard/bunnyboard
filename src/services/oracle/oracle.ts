@@ -5,13 +5,15 @@ import { OracleCurrencyBaseConfigs } from '../../configs/oracles/currency';
 import logger from '../../lib/logger';
 import { normalizeAddress } from '../../lib/utils';
 import ChainlinkLibs from '../../modules/libs/chainlink';
+import CurveLibs from '../../modules/libs/curve';
 import OracleLibs from '../../modules/libs/custom';
 import UniswapLibs from '../../modules/libs/uniswap';
 import {
   OracleCurrencyBase,
-  OracleOffchainSource,
   OracleSourceChainlink,
+  OracleSourceCurveMetaPool,
   OracleSourceMakerRwaPip,
+  OracleSourceOffchain,
   OracleSourcePool2,
   OracleSourceSavingDai,
   OracleTypes,
@@ -29,7 +31,12 @@ export default class OracleService extends CachingService implements IOracleServ
   }
 
   public async getTokenPriceSource(
-    source: OracleSourceChainlink | OracleSourcePool2 | OracleSourceSavingDai | OracleSourceMakerRwaPip,
+    source:
+      | OracleSourceChainlink
+      | OracleSourcePool2
+      | OracleSourceSavingDai
+      | OracleSourceMakerRwaPip
+      | OracleSourceCurveMetaPool,
     timestamp: number,
   ): Promise<string | null> {
     const sourceCachingKey = `source:${source.type}:${source.chain}:${source.address}:${
@@ -89,6 +96,18 @@ export default class OracleService extends CachingService implements IOracleServ
 
         break;
       }
+      case 'curveMetaPool': {
+        const answer = await CurveLibs.getMetaPoolPrice({
+          config: source as OracleSourceCurveMetaPool,
+          blockNumber: blockNumber,
+        });
+        if (answer) {
+          await this.setCachingData(sourceCachingKey, answer);
+          return answer;
+        }
+
+        break;
+      }
     }
 
     return null;
@@ -139,6 +158,8 @@ export default class OracleService extends CachingService implements IOracleServ
             await this.setCachingData(cachingKey, priceUsd);
 
             returnPrice = priceUsd;
+
+            break;
           }
         }
       }
@@ -151,7 +172,7 @@ export default class OracleService extends CachingService implements IOracleServ
         (returnPrice === null || returnPrice === '0') &&
         OracleConfigs[options.chain][options.address].offchainSources
       ) {
-        const sources = OracleConfigs[options.chain][options.address].offchainSources as Array<OracleOffchainSource>;
+        const sources = OracleConfigs[options.chain][options.address].offchainSources as Array<OracleSourceOffchain>;
         for (const offchainSource of sources) {
           if (offchainSource.source === 'binance') {
             returnPrice = await getTokenPriceFromBinance(offchainSource, options.timestamp);
