@@ -5,7 +5,7 @@ import ERC20Abi from '../../../configs/abi/ERC20.json';
 import CauldronV4Abi from '../../../configs/abi/abracadabra/CauldronV4.json';
 import PeekOracleAbi from '../../../configs/abi/abracadabra/PeekOracle.json';
 import { SolidityUnits, TimeUnits } from '../../../configs/constants';
-import { AbracadabraMarketConfig } from '../../../configs/protocols/abracadabra';
+import { AbracadabraCauldronConfig, AbracadabraMarketConfig } from '../../../configs/protocols/abracadabra';
 import { formatBigNumberToString, normalizeAddress } from '../../../lib/utils';
 import { ProtocolConfig, Token } from '../../../types/configs';
 import {
@@ -54,6 +54,44 @@ export default class AbracadabraAdapter extends CdpLendingProtocolAdapter {
     super(services, storages, protocolConfig);
   }
 
+  private async getCollateralOracleRate(
+    cauldron: AbracadabraCauldronConfig,
+    blockNumber: number,
+  ): Promise<string | null> {
+    const [oracle, oracleData] = await this.services.blockchain.multicall({
+      chain: cauldron.chain,
+      blockNumber: blockNumber,
+      calls: [
+        {
+          target: cauldron.address,
+          abi: CauldronV4Abi,
+          method: 'oracle',
+          params: [],
+        },
+        {
+          target: cauldron.address,
+          abi: CauldronV4Abi,
+          method: 'oracleData',
+          params: [],
+        },
+      ],
+    });
+    if (oracle && oracleData) {
+      const peekData = await this.services.blockchain.readContract({
+        chain: cauldron.chain,
+        target: oracle.toString(),
+        abi: PeekOracleAbi,
+        method: 'peek',
+        params: [oracleData],
+        blockNumber: blockNumber,
+      });
+      if (peekData) {
+        return peekData[1].toString();
+      }
+    }
+    return null;
+  }
+
   public async getLendingAssetDataState(options: GetAdapterDataStateOptions): Promise<CdpLendingAssetDataState | null> {
     const blockNumber = await this.services.blockchain.tryGetBlockNumberAtTimestamp(
       options.config.chain,
@@ -93,28 +131,23 @@ export default class AbracadabraAdapter extends CdpLendingProtocolAdapter {
       collaterals: [],
     };
 
-    for (const cauldron of marketConfig.caldrons) {
+    for (const cauldron of marketConfig.cauldrons) {
       if (cauldron.birthday > options.timestamp) {
         continue;
       }
 
+      const oracleRate = await this.getCollateralOracleRate(cauldron, blockNumber);
+      const collateralTokenPrice = oracleRate
+        ? new BigNumber(debtTokenPrice)
+            .dividedBy(new BigNumber(formatBigNumberToString(oracleRate, cauldron.collateralToken.decimals)))
+            .toString(10)
+        : ' 0';
+
       if (cauldron.cauldronVersion === 1) {
-        const [oracle, oracleData, [, base], totalCollateralShare] = await this.services.blockchain.multicall({
+        const [[, base], totalCollateralShare] = await this.services.blockchain.multicall({
           chain: marketConfig.chain,
           blockNumber: blockNumber,
           calls: [
-            {
-              target: cauldron.address,
-              abi: CauldronV4Abi,
-              method: 'oracle',
-              params: [],
-            },
-            {
-              target: cauldron.address,
-              abi: CauldronV4Abi,
-              method: 'oracleData',
-              params: [],
-            },
             {
               target: cauldron.address,
               abi: CauldronV4Abi,
@@ -129,153 +162,95 @@ export default class AbracadabraAdapter extends CdpLendingProtocolAdapter {
             },
           ],
         });
-        if (oracle && oracleData) {
-          const peekData = await this.services.blockchain.readContract({
-            chain: marketConfig.chain,
-            target: oracle.toString(),
-            abi: PeekOracleAbi,
-            method: 'peek',
-            params: [oracleData],
-            blockNumber: blockNumber,
-          });
-          const collateralTokenPrice = peekData
-            ? new BigNumber(debtTokenPrice)
-                .dividedBy(
-                  new BigNumber(formatBigNumberToString(peekData[1].toString(), cauldron.collateralToken.decimals)),
-                )
-                .toString(10)
-            : '0';
 
-          assetState.totalBorrowed = new BigNumber(assetState.totalBorrowed)
-            .plus(new BigNumber(formatBigNumberToString(base.toString(), debtToken.decimals)))
-            .toString(10);
+        assetState.totalBorrowed = new BigNumber(assetState.totalBorrowed)
+          .plus(new BigNumber(formatBigNumberToString(base.toString(), debtToken.decimals)))
+          .toString(10);
 
-          const rateBorrow = new BigNumber(Constants[cauldron.address].INTEREST_PER_SECOND.toString())
-            .multipliedBy(TimeUnits.SecondsPerYear)
-            .dividedBy(SolidityUnits.OneWad)
-            .toString(10);
-          const rateBorrowFee = formatBigNumberToString(Constants[cauldron.address].BORROW_OPENING_FEE.toString(), 5);
-          const rateLoanToValue = formatBigNumberToString(
-            Constants[cauldron.address].COLLATERIZATION_RATE.toString(),
-            5,
-          );
+        const rateBorrow = new BigNumber(Constants[cauldron.address].INTEREST_PER_SECOND.toString())
+          .multipliedBy(TimeUnits.SecondsPerYear)
+          .dividedBy(SolidityUnits.OneWad)
+          .toString(10);
+        const rateBorrowFee = formatBigNumberToString(Constants[cauldron.address].BORROW_OPENING_FEE.toString(), 5);
+        const rateLoanToValue = formatBigNumberToString(Constants[cauldron.address].COLLATERIZATION_RATE.toString(), 5);
 
-          assetState.collaterals.push({
-            chain: marketConfig.chain,
-            protocol: marketConfig.protocol,
-            metric: options.config.metric,
-            timestamp: options.timestamp,
-            address: cauldron.address,
-            token: cauldron.collateralToken,
-            tokenPrice: collateralTokenPrice,
-            totalBorrowed: formatBigNumberToString(base.toString(), debtToken.decimals),
-            totalDeposited: formatBigNumberToString(totalCollateralShare.toString(), cauldron.collateralToken.decimals),
-            rateBorrow: rateBorrow,
-            rateBorrowFee: rateBorrowFee,
-            rateLoanToValue: rateLoanToValue,
-          });
-        }
+        assetState.collaterals.push({
+          chain: marketConfig.chain,
+          protocol: marketConfig.protocol,
+          metric: options.config.metric,
+          timestamp: options.timestamp,
+          address: cauldron.address,
+          token: cauldron.collateralToken,
+          tokenPrice: collateralTokenPrice,
+          totalBorrowed: formatBigNumberToString(base.toString(), debtToken.decimals),
+          totalDeposited: formatBigNumberToString(totalCollateralShare.toString(), cauldron.collateralToken.decimals),
+          rateBorrow: rateBorrow,
+          rateBorrowFee: rateBorrowFee,
+          rateLoanToValue: rateLoanToValue,
+        });
       } else {
-        // we do get collateral token price here
-        const [
-          oracle,
-          oracleData,
-          [, base],
-          totalCollateralShare,
-          [, , INTEREST_PER_SECOND],
-          BORROW_OPENING_FEE,
-          COLLATERIZATION_RATE,
-        ] = await this.services.blockchain.multicall({
-          chain: marketConfig.chain,
-          blockNumber: blockNumber,
-          calls: [
-            {
-              target: cauldron.address,
-              abi: CauldronV4Abi,
-              method: 'oracle',
-              params: [],
-            },
-            {
-              target: cauldron.address,
-              abi: CauldronV4Abi,
-              method: 'oracleData',
-              params: [],
-            },
-            {
-              target: cauldron.address,
-              abi: CauldronV4Abi,
-              method: 'totalBorrow',
-              params: [],
-            },
-            {
-              target: cauldron.address,
-              abi: CauldronV4Abi,
-              method: 'totalCollateralShare',
-              params: [],
-            },
-            {
-              target: cauldron.address,
-              abi: CauldronV4Abi,
-              method: 'accrueInfo',
-              params: [],
-            },
-            {
-              target: cauldron.address,
-              abi: CauldronV4Abi,
-              method: 'BORROW_OPENING_FEE',
-              params: [],
-            },
-            {
-              target: cauldron.address,
-              abi: CauldronV4Abi,
-              method: 'COLLATERIZATION_RATE',
-              params: [],
-            },
-          ],
-        });
-        if (oracle && oracleData) {
-          const peekData = await this.services.blockchain.readContract({
+        const [[, base], totalCollateralShare, [, , INTEREST_PER_SECOND], BORROW_OPENING_FEE, COLLATERIZATION_RATE] =
+          await this.services.blockchain.multicall({
             chain: marketConfig.chain,
-            target: oracle.toString(),
-            abi: PeekOracleAbi,
-            method: 'peek',
-            params: [oracleData],
             blockNumber: blockNumber,
+            calls: [
+              {
+                target: cauldron.address,
+                abi: CauldronV4Abi,
+                method: 'totalBorrow',
+                params: [],
+              },
+              {
+                target: cauldron.address,
+                abi: CauldronV4Abi,
+                method: 'totalCollateralShare',
+                params: [],
+              },
+              {
+                target: cauldron.address,
+                abi: CauldronV4Abi,
+                method: 'accrueInfo',
+                params: [],
+              },
+              {
+                target: cauldron.address,
+                abi: CauldronV4Abi,
+                method: 'BORROW_OPENING_FEE',
+                params: [],
+              },
+              {
+                target: cauldron.address,
+                abi: CauldronV4Abi,
+                method: 'COLLATERIZATION_RATE',
+                params: [],
+              },
+            ],
           });
-          const collateralTokenPrice = peekData
-            ? new BigNumber(debtTokenPrice)
-                .dividedBy(
-                  new BigNumber(formatBigNumberToString(peekData[1].toString(), cauldron.collateralToken.decimals)),
-                )
-                .toString(10)
-            : '0';
+        assetState.totalBorrowed = new BigNumber(assetState.totalBorrowed)
+          .plus(new BigNumber(formatBigNumberToString(base.toString(), debtToken.decimals)))
+          .toString(10);
 
-          assetState.totalBorrowed = new BigNumber(assetState.totalBorrowed)
-            .plus(new BigNumber(formatBigNumberToString(base.toString(), debtToken.decimals)))
-            .toString(10);
+        const rateBorrow = new BigNumber(INTEREST_PER_SECOND.toString())
+          .multipliedBy(TimeUnits.SecondsPerYear)
+          .dividedBy(SolidityUnits.OneWad)
+          .toString(10);
+        const rateBorrowFee = formatBigNumberToString(BORROW_OPENING_FEE.toString(), 5);
+        const rateLoanToValue = formatBigNumberToString(COLLATERIZATION_RATE.toString(), 5);
 
-          const rateBorrow = new BigNumber(INTEREST_PER_SECOND.toString())
-            .multipliedBy(TimeUnits.SecondsPerYear)
-            .dividedBy(SolidityUnits.OneWad)
-            .toString(10);
-          const rateBorrowFee = formatBigNumberToString(BORROW_OPENING_FEE.toString(), 5);
-          const rateLoanToValue = formatBigNumberToString(COLLATERIZATION_RATE.toString(), 5);
-
-          assetState.collaterals.push({
-            chain: marketConfig.chain,
-            protocol: marketConfig.protocol,
-            metric: options.config.metric,
-            timestamp: options.timestamp,
-            address: cauldron.address,
-            token: cauldron.collateralToken,
-            tokenPrice: collateralTokenPrice,
-            totalBorrowed: formatBigNumberToString(base.toString(), debtToken.decimals),
-            totalDeposited: formatBigNumberToString(totalCollateralShare.toString(), cauldron.collateralToken.decimals),
-            rateBorrow: rateBorrow,
-            rateBorrowFee: rateBorrowFee,
-            rateLoanToValue: rateLoanToValue,
-          });
-        }
+        assetState.collaterals.push({
+          chain: marketConfig.chain,
+          protocol: marketConfig.protocol,
+          metric: options.config.metric,
+          timestamp: options.timestamp,
+          address: cauldron.address,
+          token: cauldron.collateralToken,
+          tokenPrice: collateralTokenPrice,
+          totalBorrowed: formatBigNumberToString(base.toString(), debtToken.decimals),
+          totalDeposited: formatBigNumberToString(totalCollateralShare.toString(), cauldron.collateralToken.decimals),
+          rateBorrow: rateBorrow,
+          rateBorrowFee: rateBorrowFee,
+          rateLoanToValue: rateLoanToValue,
+        });
       }
     }
 
@@ -287,7 +262,7 @@ export default class AbracadabraAdapter extends CdpLendingProtocolAdapter {
 
     const logs: Array<any> = [];
 
-    for (const cauldron of marketConfig.caldrons) {
+    for (const cauldron of marketConfig.cauldrons) {
       const rawlogs = await this.services.blockchain.getContractLogs({
         chain: cauldron.chain,
         address: cauldron.address,
@@ -344,19 +319,22 @@ export default class AbracadabraAdapter extends CdpLendingProtocolAdapter {
     const addresses: { [key: string]: boolean } = {};
     const transactions: { [key: string]: boolean } = {};
     const collaterals: { [key: string]: CdpLendingCollateralDataTimeframe } = {};
+
+    // initial collaterals
+    for (const collateral of stateData.collaterals) {
+      collaterals[collateral.address] = {
+        ...collateral,
+
+        timefrom: options.fromTime,
+        timeto: options.toTime,
+        volumeDeposited: '0',
+        volumeWithdrawn: '0',
+        volumeLiquidated: '0',
+      };
+    }
+
     for (const log of logs) {
       const address = normalizeAddress(log.address);
-      if (!collaterals[address]) {
-        collaterals[address] = {
-          timefrom: options.fromTime,
-          timeto: options.toTime,
-          ...stateData.collaterals.filter((item) => item.address === address)[0],
-          volumeDeposited: '0',
-          volumeWithdrawn: '0',
-          volumeLiquidated: '0',
-        };
-      }
-
       try {
         const transactionHash = log.transactionHash;
         if (!transactions[transactionHash]) {

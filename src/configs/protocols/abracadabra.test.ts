@@ -16,7 +16,7 @@ test('should have configs correctly', async () => {
       `token ${config.debtToken.chain}:${config.debtToken.address}`,
     ).not.equal(null);
 
-    for (const cauldron of config.caldrons) {
+    for (const cauldron of config.cauldrons) {
       expect(cauldron.collateralToken, `cauldron ${cauldron.chain}:${cauldron.address}`).not.equal(undefined);
       expect(cauldron.collateralToken, `cauldron ${cauldron.chain}:${cauldron.address}`).not.equal(null);
     }

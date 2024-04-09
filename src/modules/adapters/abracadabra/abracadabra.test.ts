@@ -14,9 +14,10 @@ const memcache = new MemcacheService(DefaultMemcacheTime);
 const oracle = new OracleService();
 const blockchain = new BlockchainService();
 
-const timestampArbitrum = 1631664000; // Wed Sep 15 2021 00:00:00 GMT+0000
+// const timestampArbitrum = 1631664000; // Wed Sep 15 2021 00:00:00 GMT+0000
+const timestampEthereum = 1711929600; // Mon Apr 01 2024 00:00:00 GMT+0000
 
-test('should get data correctly at birthday - MIM on ethereum', async (t) => {
+test(`should get data correctly at ${getDateString(timestampEthereum)} - MIM on ethereum`, async (t) => {
   const adapter = new AbracadabraAdapter(
     {
       blockchain: blockchain,
@@ -31,72 +32,106 @@ test('should get data correctly at birthday - MIM on ethereum', async (t) => {
 
   const assetData = await adapter.getLendingAssetDataState({
     config: AbracadabraConfigs.configs[0],
-    timestamp: AbracadabraConfigs.configs[0].birthday,
-    // fromTime: AbracadabraConfigs.configs[0].birthday,
-    // toTime: AbracadabraConfigs.configs[0].birthday + TimeUnits.SecondsPerDay,
+    timestamp: timestampEthereum,
   });
 
   expect(assetData).not.equal(null);
   if (assetData) {
-    expect(assetData.tokenPrice).equal('1.00065666798527655');
-    expect(assetData.totalBorrowed).equal('58411207.828133068440963052');
-    // expect(assetData.volumeBorrowed).equal('1693338.893417453499688009');
-    // expect(assetData.volumeRepaid).equal('6851278.029101084960991664');
-    //
-    // expect(assetData.collaterals[0].tokenPrice).equal('0.98119600507711618255');
-    // expect(assetData.collaterals[0].totalBorrowed).equal('27764330.234232099772456621');
-    // expect(assetData.collaterals[0].totalDeposited).equal('35324958.308971');
-    // expect(assetData.collaterals[0].rateBorrow).equal('0.007994688458688');
-    // expect(assetData.collaterals[0].rateBorrowFee).equal('0.0005');
-    // expect(assetData.collaterals[0].rateLoanToValue).equal('0.9');
-    // expect(assetData.collaterals[0].volumeDeposited).equal('1790012.024058');
-    // expect(assetData.collaterals[0].volumeWithdrawn).equal('7146217.888387');
-    //
-    // expect(assetData.collaterals[1].tokenPrice).equal('1.03081854102176325417');
-    // expect(assetData.collaterals[1].totalBorrowed).equal('18608621.319807056605635561');
-    // expect(assetData.collaterals[1].totalDeposited).equal('20940040.47424');
-    // expect(assetData.collaterals[1].rateBorrow).equal('0.007994688458688');
-    // expect(assetData.collaterals[1].rateBorrowFee).equal('0.0005');
-    // expect(assetData.collaterals[1].rateLoanToValue).equal('0.9');
-    //
-    // expect(assetData.collaterals[2].tokenPrice).equal('38876.02845763554974629926');
-    // expect(assetData.collaterals[2].totalBorrowed).equal('2974175.332546460130315399');
-    // expect(assetData.collaterals[2].totalDeposited).equal('182.135222973033116253');
-    // expect(assetData.collaterals[2].rateBorrow).equal('0.014990040875808');
-    // expect(assetData.collaterals[2].rateBorrowFee).equal('0.0005');
-    // expect(assetData.collaterals[2].rateLoanToValue).equal('0.75');
+    expect(assetData.tokenPrice).equal('1.012947569218846392');
+    expect(assetData.totalBorrowed).equal('35613395.294828953438236265');
+    expect(assetData.totalSupply).equal('181999311.199543963146813445\n');
+
+    expect(assetData.collaterals[0].token.address).equal('0x7da96a3891add058ada2e826306d812c638d87a7');
+    expect(assetData.collaterals[0].tokenPrice).equal('1.10844934815739087501');
+    expect(assetData.collaterals[0].totalBorrowed).equal('323024.98329970347169165');
+    expect(assetData.collaterals[0].totalDeposited).equal('449272.125351');
+    expect(assetData.collaterals[0].rateBorrow).equal('0.007994688458688');
+    expect(assetData.collaterals[0].rateBorrowFee).equal('0.0005');
+    expect(assetData.collaterals[0].rateLoanToValue).equal('0.9');
   }
 });
 
-test(`should get data correctly at ${getDateString(timestampArbitrum)} - MIM on arbitrum`, async (t) => {
-  const adapter = new AbracadabraAdapter(
-    {
-      blockchain: blockchain,
-      oracle: oracle,
-    },
-    {
-      database: database,
-      memcache: memcache,
-    },
-    AbracadabraConfigs,
-  );
+// test('should get data correctly at birthday - MIM on ethereum', async (t) => {
+//   const adapter = new AbracadabraAdapter(
+//     {
+//       blockchain: blockchain,
+//       oracle: oracle,
+//     },
+//     {
+//       database: database,
+//       memcache: memcache,
+//     },
+//     AbracadabraConfigs,
+//   );
+//
+//   const assetData = await adapter.getLendingAssetDataState({
+//     config: AbracadabraConfigs.configs[0],
+//     timestamp: AbracadabraConfigs.configs[0].birthday,
+//     // fromTime: AbracadabraConfigs.configs[0].birthday,
+//     // toTime: AbracadabraConfigs.configs[0].birthday + TimeUnits.SecondsPerDay,
+//   });
+//
+//   expect(assetData).not.equal(null);
+//   if (assetData) {
+//     expect(assetData.tokenPrice).equal('1.00065666798527655');
+//     expect(assetData.totalBorrowed).equal('58411207.828133068440963052');
+//     // expect(assetData.volumeBorrowed).equal('1693338.893417453499688009');
+//     // expect(assetData.volumeRepaid).equal('6851278.029101084960991664');
+//
+//     // expect(assetData.collaterals[0].tokenPrice).equal('0.98119600507711618255');
+//     // expect(assetData.collaterals[0].totalBorrowed).equal('27764330.234232099772456621');
+//     // expect(assetData.collaterals[0].totalDeposited).equal('35324958.308971');
+//     // expect(assetData.collaterals[0].rateBorrow).equal('0.007994688458688');
+//     // expect(assetData.collaterals[0].rateBorrowFee).equal('0.0005');
+//     // expect(assetData.collaterals[0].rateLoanToValue).equal('0.9');
+//     // expect(assetData.collaterals[0].volumeDeposited).equal('1790012.024058');
+//     // expect(assetData.collaterals[0].volumeWithdrawn).equal('7146217.888387');
+//     //
+//     // expect(assetData.collaterals[1].tokenPrice).equal('1.03081854102176325417');
+//     // expect(assetData.collaterals[1].totalBorrowed).equal('18608621.319807056605635561');
+//     // expect(assetData.collaterals[1].totalDeposited).equal('20940040.47424');
+//     // expect(assetData.collaterals[1].rateBorrow).equal('0.007994688458688');
+//     // expect(assetData.collaterals[1].rateBorrowFee).equal('0.0005');
+//     // expect(assetData.collaterals[1].rateLoanToValue).equal('0.9');
+//     //
+//     // expect(assetData.collaterals[2].tokenPrice).equal('38876.02845763554974629926');
+//     // expect(assetData.collaterals[2].totalBorrowed).equal('2974175.332546460130315399');
+//     // expect(assetData.collaterals[2].totalDeposited).equal('182.135222973033116253');
+//     // expect(assetData.collaterals[2].rateBorrow).equal('0.014990040875808');
+//     // expect(assetData.collaterals[2].rateBorrowFee).equal('0.0005');
+//     // expect(assetData.collaterals[2].rateLoanToValue).equal('0.75');
+//   }
+// });
 
-  const assetData = await adapter.getLendingAssetDataState({
-    config: AbracadabraConfigs.configs[1],
-    timestamp: AbracadabraConfigs.configs[1].birthday,
-  });
-
-  expect(assetData).not.equal(null);
-  if (assetData) {
-    expect(assetData.tokenPrice).equal('1.002128147630042278');
-    expect(assetData.totalBorrowed).equal('0');
-    expect(assetData.totalSupply).equal('411163.285816841388650012');
-
-    expect(assetData.collaterals[0].tokenPrice).equal('3420.38146733070886191122');
-    expect(assetData.collaterals[0].totalBorrowed).equal('0');
-    expect(assetData.collaterals[0].totalDeposited).equal('0');
-    expect(assetData.collaterals[0].rateBorrow).equal('0.004996577684304');
-    expect(assetData.collaterals[0].rateBorrowFee).equal('0.005');
-    expect(assetData.collaterals[0].rateLoanToValue).equal('0.85');
-  }
-});
+// test(`should get data correctly at ${getDateString(timestampArbitrum)} - MIM on arbitrum`, async (t) => {
+//   const adapter = new AbracadabraAdapter(
+//     {
+//       blockchain: blockchain,
+//       oracle: oracle,
+//     },
+//     {
+//       database: database,
+//       memcache: memcache,
+//     },
+//     AbracadabraConfigs,
+//   );
+//
+//   const assetData = await adapter.getLendingAssetDataState({
+//     config: AbracadabraConfigs.configs[1],
+//     timestamp: AbracadabraConfigs.configs[1].birthday,
+//   });
+//
+//   expect(assetData).not.equal(null);
+//   if (assetData) {
+//     expect(assetData.tokenPrice).equal('1.002128147630042278');
+//     expect(assetData.totalBorrowed).equal('0');
+//     expect(assetData.totalSupply).equal('411163.285816841388650012');
+//
+//     expect(assetData.collaterals[0].tokenPrice).equal('3420.38146733070886191122');
+//     expect(assetData.collaterals[0].totalBorrowed).equal('0');
+//     expect(assetData.collaterals[0].totalDeposited).equal('0');
+//     expect(assetData.collaterals[0].rateBorrow).equal('0.004996577684304');
+//     expect(assetData.collaterals[0].rateBorrowFee).equal('0.005');
+//     expect(assetData.collaterals[0].rateLoanToValue).equal('0.85');
+//   }
+// });

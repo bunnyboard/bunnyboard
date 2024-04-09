@@ -12,7 +12,7 @@ export interface AbracadabraCauldronConfig {
 }
 
 export interface AbracadabraMarketConfig extends CdpLendingMarketConfig {
-  caldrons: Array<AbracadabraCauldronConfig>;
+  cauldrons: Array<AbracadabraCauldronConfig>;
 }
 
 export interface AbracadabraProtocolConfig extends ProtocolConfig {
@@ -65,8 +65,8 @@ const Markets: Array<string> = [
 
   'ethereum:4:1670716800:0x207763511da879a900973A5E092382117C3c1588:0xD533a949740bb3306d119CC777fa900bA034cd52', // CRV
   'ethereum:4:1682899200:0x7d8dF3E4D06B0e19960c19Ee673c0823BEB90815:0xD533a949740bb3306d119CC777fa900bA034cd52', // CRV
-  'ethereum:4:1675641600:0x7259e152103756e1616A77Ae982353c3751A6a90:0x8078198Fc424986ae89Ce4a910Fc109587b6aBF3', // yvCrv3Crypto
-  'ethereum:4:1676851200:0x692887E8877C6Dd31593cda44c382DB5b289B684:0xf35b31B941D94B249EaDED041DB1b05b7097fEb6', // magicAPE
+  // 'ethereum:4:1675641600:0x7259e152103756e1616A77Ae982353c3751A6a90:0x8078198Fc424986ae89Ce4a910Fc109587b6aBF3', // yvCrv3Crypto
+  // 'ethereum:4:1676851200:0x692887E8877C6Dd31593cda44c382DB5b289B684:0xf35b31B941D94B249EaDED041DB1b05b7097fEb6', // magicAPE
   'ethereum:4:1671840000:0x406b89138782851d3a8c04c743b010ceb0374352:0xdCD90C7f6324cfa40d7169ef80b12031770B4325', // yvSTETH
   'ethereum:4:1672099200:0x85f60D3ea4E86Af43c9D4E9CC9095281fC25c405:0x2260FAC5E5542a773Aa44fBCfeDf7C193bc2C599', // WBTC
   'ethereum:4:1712188800:0xed510639E1b07c9145CD570F8Dd0CA885F760E09:0xa258C4606Ca8206D8aA700cE2143D7db854D168c', // yvWETH
@@ -97,13 +97,13 @@ function formatMarket(chain: string, birthday: number): AbracadabraMarketConfig 
     birthday: birthday,
     address: normalizeAddress(DebtTokens[chain].address),
     debtToken: DebtTokens[chain],
-    caldrons: [],
+    cauldrons: [],
   };
 
   for (const config of Markets) {
     const [cauldronChain, version, cauldronBirthday, address, collateralAddress] = config.split(':');
     if (chain === cauldronChain) {
-      market.caldrons.push({
+      market.cauldrons.push({
         chain: chain,
         cauldronVersion: Number(version),
         birthday: Number(cauldronBirthday),
