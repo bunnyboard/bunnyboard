@@ -35,6 +35,12 @@
     "symbol": "RDNT",
     "decimals": 18
   },
+  "0x3477df28ce70cecf61fffa7a95be4bec3b3c7e75": {
+    "chain": "arbitrum",
+    "symbol": "abra-wsGlp",
+    "decimals": 18,
+    "address": "0x3477df28ce70cecf61fffa7a95be4bec3b3c7e75"
+  },
   "0x354a6da3fcde098f8389cad84b0182725c6c91de": {
     "chain": "arbitrum",
     "address": "0x354a6da3fcde098f8389cad84b0182725c6c91de",

@@ -1,153 +1,451 @@
-// import BigNumber from 'bignumber.js';
-// import { decodeEventLog } from 'viem';
-//
-// import BorrowOperationsAbi from '../../../configs/abi/liquity/BorrowOperations.json';
-// import TroveManagerAbi from '../../../configs/abi/liquity/TroveManager.json';
-// import { LiquityLendingMarketConfig, LiquityTrove } from '../../../configs/protocols/liquity';
-// import { compareAddress, formatBigNumberToString, normalizeAddress } from '../../../lib/utils';
-// import { ActivityAction, ActivityActions } from '../../../types/base';
-// import { ProtocolConfig, Token } from '../../../types/configs';
-// import {
-//   CdpLendingActivityEvent,
-//   CdpLendingAssetDataState,
-//   CdpLendingAssetDataTimeframe,
-// } from '../../../types/domains/cdpLending';
-// import { ContextServices, ContextStorages } from '../../../types/namespaces';
-// import {
-//   GetAdapterDataStateOptions,
-//   GetAdapterDataTimeframeOptions,
-//   TransformEventLogOptions,
-//   TransformEventLogResult,
-// } from '../../../types/options';
-// import { AdapterGetEventLogsOptions } from '../adapter';
-// import CdpLendingProtocolAdapter from '../cdpLending';
-// import { LiquityEventInterfaces, LiquityEventSignatures } from './abis';
-// import { AbracadabraMarketConfig } from '../../../configs/protocols/abracadabra';
-// import CauldronV4Abi from '../../../configs/abi/abracadabra/CauldronV4.json';
-// import PeekOracleAbi from '../../../configs/abi/abracadabra/PeekOracle.json';
-//
-// export default class AbracadabraAdapter extends CdpLendingProtocolAdapter {
-//   public readonly name: string = 'adapter.abracadabra';
-//
-//   constructor(services: ContextServices, storages: ContextStorages, protocolConfig: ProtocolConfig) {
-//     super(services, storages, protocolConfig);
-//   }
-//
-//   public async getLendingAssetDataState(options: GetAdapterDataStateOptions): Promise<CdpLendingAssetDataState | null> {
-//     const blockNumber = await this.services.blockchain.tryGetBlockNumberAtTimestamp(
-//       options.config.chain,
-//       options.timestamp,
-//     );
-//
-//     const marketConfig: AbracadabraMarketConfig = options.config as AbracadabraMarketConfig;
-//     const debtToken = marketConfig.debtToken as Token;
-//     const debtTokenPrice = await this.services.oracle.getTokenPriceUsd({
-//       chain: debtToken.chain,
-//       address: debtToken.address,
-//       timestamp: options.timestamp,
-//     });
-//
-//     if (!debtTokenPrice) {
-//       return null;
-//     }
-//
-//     const assetState: CdpLendingAssetDataState = {
-//       chain: options.config.chain,
-//       protocol: options.config.protocol,
-//       metric: options.config.metric,
-//       timestamp: options.timestamp,
-//       token: debtToken,
-//       tokenPrice: debtTokenPrice ? debtTokenPrice : '0',
-//       totalBorrowed: '0',
-//       collaterals: [],
-//     };
-//
-//     // we do get collateral token price here
-//     const [oracle, oracleData] = await this.services.blockchain.multicall({
-//       chain: marketConfig.chain,
-//       blockNumber: blockNumber,
-//       calls: [
-//         {
-//           target: marketConfig.address,
-//           abi: CauldronV4Abi,
-//           method: 'oracle',
-//           params: [],
-//         },
-//         {
-//           target: marketConfig.address,
-//           abi: CauldronV4Abi,
-//           method: 'oracleData',
-//           params: [],
-//         },
-//       ],
-//     })
-//     if (oracle && oracleData) {
-//       const peekRate = await this.services.blockchain.readContract({
-//         chain: marketConfig.chain,
-//         target: oracle.toString(),
-//         abi: PeekOracleAbi,
-//         method: 'peek',
-//         params: [oracleData],
-//         blockNumber: blockNumber,
-//       });
-//       const collateralTokenPrice = new BigNumber(debtTokenPrice)
-//         .dividedBy(new BigNumber(formatBigNumberToString(peekRate.toString(), marketConfig.collateralToken.decimals)))
-//         .toString(10);
-//
-//
-//     }
-//
-//     for (const trove of marketConfig.troves) {
-//       const collateralTokenPrice = await this.services.oracle.getTokenPriceUsd({
-//         chain: trove.collateralToken.chain,
-//         address: trove.collateralToken.address,
-//         timestamp: options.timestamp,
-//       });
-//
-//       const totalDebt = await this.services.blockchain.readContract({
-//         chain: marketConfig.chain,
-//         abi: this.abiConfigs.eventAbis.troveManager,
-//         target: marketConfig.address,
-//         method: 'getEntireSystemDebt',
-//         params: [],
-//         blockNumber: blockNumber,
-//       });
-//       assetState.totalBorrowed = new BigNumber(assetState.totalBorrowed)
-//         .plus(formatBigNumberToString(totalDebt.toString(), debtToken.decimals))
-//         .toString(10);
-//
-//       const totalColl = await this.services.blockchain.readContract({
-//         chain: marketConfig.chain,
-//         abi: this.abiConfigs.eventAbis.troveManager,
-//         target: marketConfig.address,
-//         method: 'getEntireSystemColl',
-//         params: [],
-//         blockNumber: blockNumber,
-//       });
-//
-//       const borrowingFee = await this.getBorrowingFee(marketConfig.chain, trove.troveManager, blockNumber);
-//
-//       assetState.collaterals.push({
-//         chain: options.config.chain,
-//         protocol: options.config.protocol,
-//         metric: options.config.metric,
-//         timestamp: options.timestamp,
-//         address: trove.troveManager,
-//         token: trove.collateralToken,
-//         tokenPrice: collateralTokenPrice ? collateralTokenPrice : '0',
-//         totalBorrowed: formatBigNumberToString(totalDebt.toString(), debtToken.decimals),
-//         totalDeposited: formatBigNumberToString(totalColl.toString(), trove.collateralToken.decimals),
-//         rateBorrow: '0',
-//
-//         // liquity charged on-time paid fee
-//         rateBorrowFee: formatBigNumberToString(borrowingFee, 18),
-//
-//         // liquity must maintain 110% collateral value on debts
-//         // so, the loan to value is always 100 / 110 -> 0.9 -> 90%
-//         rateLoanToValue: '0.9',
-//       });
-//     }
-//
-//     return assetState;
-//   }
-// }
+import BigNumber from 'bignumber.js';
+import { decodeEventLog } from 'viem';
+
+import ERC20Abi from '../../../configs/abi/ERC20.json';
+import CauldronV4Abi from '../../../configs/abi/abracadabra/CauldronV4.json';
+import PeekOracleAbi from '../../../configs/abi/abracadabra/PeekOracle.json';
+import { SolidityUnits, TimeUnits } from '../../../configs/constants';
+import { AbracadabraMarketConfig } from '../../../configs/protocols/abracadabra';
+import { formatBigNumberToString, normalizeAddress } from '../../../lib/utils';
+import { ProtocolConfig, Token } from '../../../types/configs';
+import {
+  CdpLendingAssetDataState,
+  CdpLendingAssetDataTimeframe,
+  CdpLendingCollateralDataTimeframe,
+} from '../../../types/domains/cdpLending';
+import { ContextServices, ContextStorages } from '../../../types/namespaces';
+import { GetAdapterDataStateOptions, GetAdapterDataTimeframeOptions } from '../../../types/options';
+import { AdapterGetEventLogsOptions } from '../adapter';
+import CdpLendingProtocolAdapter from '../cdpLending';
+import { CauldronEventSignatures } from './abis';
+
+const Constants: any = {
+  '0x551a7cff4de931f32893c928bbc3d25bf1fc5147': {
+    INTEREST_PER_SECOND: '253509908',
+    COLLATERIZATION_RATE: '90000',
+    BORROW_OPENING_FEE: '50',
+  },
+  '0x6cbafee1fab76ca5b5e144c43b3b50d42b7c8c8f': {
+    INTEREST_PER_SECOND: '253509908',
+    COLLATERIZATION_RATE: '90000',
+    BORROW_OPENING_FEE: '50',
+  },
+  '0xffbf4892822e0d552cff317f65e1ee7b5d3d9ae6': {
+    INTEREST_PER_SECOND: '475331078',
+    COLLATERIZATION_RATE: '75000',
+    BORROW_OPENING_FEE: '50',
+  },
+  '0x6ff9061bb8f97d948942cef376d98b51fa38b91f': {
+    INTEREST_PER_SECOND: '475331078',
+    COLLATERIZATION_RATE: '75000',
+    BORROW_OPENING_FEE: '50',
+  },
+  '0xbb02a884621fb8f5bfd263a67f58b65df5b090f3': {
+    INTEREST_PER_SECOND: '475331078',
+    COLLATERIZATION_RATE: '75000',
+    BORROW_OPENING_FEE: '50',
+  },
+};
+
+export default class AbracadabraAdapter extends CdpLendingProtocolAdapter {
+  public readonly name: string = 'adapter.abracadabra';
+
+  constructor(services: ContextServices, storages: ContextStorages, protocolConfig: ProtocolConfig) {
+    super(services, storages, protocolConfig);
+  }
+
+  public async getLendingAssetDataState(options: GetAdapterDataStateOptions): Promise<CdpLendingAssetDataState | null> {
+    const blockNumber = await this.services.blockchain.tryGetBlockNumberAtTimestamp(
+      options.config.chain,
+      options.timestamp,
+    );
+
+    const marketConfig: AbracadabraMarketConfig = options.config as AbracadabraMarketConfig;
+    const debtToken = marketConfig.debtToken as Token;
+    const debtTokenPrice = await this.services.oracle.getTokenPriceUsd({
+      chain: debtToken.chain,
+      address: debtToken.address,
+      timestamp: options.timestamp,
+    });
+
+    if (!debtTokenPrice) {
+      return null;
+    }
+
+    const totalSupply = await this.services.blockchain.readContract({
+      chain: marketConfig.chain,
+      abi: ERC20Abi,
+      target: marketConfig.address,
+      method: 'totalSupply',
+      params: [],
+      blockNumber: blockNumber,
+    });
+
+    const assetState: CdpLendingAssetDataState = {
+      chain: options.config.chain,
+      protocol: options.config.protocol,
+      metric: options.config.metric,
+      timestamp: options.timestamp,
+      token: debtToken,
+      tokenPrice: debtTokenPrice ? debtTokenPrice : '0',
+      totalBorrowed: '0',
+      totalSupply: formatBigNumberToString(totalSupply.toString(), debtToken.decimals),
+      collaterals: [],
+    };
+
+    for (const cauldron of marketConfig.caldrons) {
+      if (cauldron.birthday > options.timestamp) {
+        continue;
+      }
+
+      if (cauldron.cauldronVersion === 1) {
+        const [oracle, oracleData, [, base], totalCollateralShare] = await this.services.blockchain.multicall({
+          chain: marketConfig.chain,
+          blockNumber: blockNumber,
+          calls: [
+            {
+              target: cauldron.address,
+              abi: CauldronV4Abi,
+              method: 'oracle',
+              params: [],
+            },
+            {
+              target: cauldron.address,
+              abi: CauldronV4Abi,
+              method: 'oracleData',
+              params: [],
+            },
+            {
+              target: cauldron.address,
+              abi: CauldronV4Abi,
+              method: 'totalBorrow',
+              params: [],
+            },
+            {
+              target: cauldron.address,
+              abi: CauldronV4Abi,
+              method: 'totalCollateralShare',
+              params: [],
+            },
+          ],
+        });
+        if (oracle && oracleData) {
+          const [, peekRate] = await this.services.blockchain.readContract({
+            chain: marketConfig.chain,
+            target: oracle.toString(),
+            abi: PeekOracleAbi,
+            method: 'peek',
+            params: [oracleData],
+            blockNumber: blockNumber,
+          });
+          const collateralTokenPrice = new BigNumber(debtTokenPrice)
+            .dividedBy(new BigNumber(formatBigNumberToString(peekRate.toString(), cauldron.collateralToken.decimals)))
+            .toString(10);
+
+          assetState.totalBorrowed = new BigNumber(assetState.totalBorrowed)
+            .plus(new BigNumber(formatBigNumberToString(base.toString(), debtToken.decimals)))
+            .toString(10);
+
+          const rateBorrow = new BigNumber(Constants[cauldron.address].INTEREST_PER_SECOND.toString())
+            .multipliedBy(TimeUnits.SecondsPerYear)
+            .dividedBy(SolidityUnits.OneWad)
+            .toString(10);
+          const rateBorrowFee = formatBigNumberToString(Constants[cauldron.address].BORROW_OPENING_FEE.toString(), 5);
+          const rateLoanToValue = formatBigNumberToString(
+            Constants[cauldron.address].COLLATERIZATION_RATE.toString(),
+            5,
+          );
+
+          assetState.collaterals.push({
+            chain: marketConfig.chain,
+            protocol: marketConfig.protocol,
+            metric: options.config.metric,
+            timestamp: options.timestamp,
+            address: cauldron.address,
+            token: cauldron.collateralToken,
+            tokenPrice: collateralTokenPrice,
+            totalBorrowed: formatBigNumberToString(base.toString(), debtToken.decimals),
+            totalDeposited: formatBigNumberToString(totalCollateralShare.toString(), cauldron.collateralToken.decimals),
+            rateBorrow: rateBorrow,
+            rateBorrowFee: rateBorrowFee,
+            rateLoanToValue: rateLoanToValue,
+          });
+        }
+      } else {
+        // we do get collateral token price here
+        const [
+          oracle,
+          oracleData,
+          [, base],
+          totalCollateralShare,
+          [, , INTEREST_PER_SECOND],
+          BORROW_OPENING_FEE,
+          COLLATERIZATION_RATE,
+        ] = await this.services.blockchain.multicall({
+          chain: marketConfig.chain,
+          blockNumber: blockNumber,
+          calls: [
+            {
+              target: cauldron.address,
+              abi: CauldronV4Abi,
+              method: 'oracle',
+              params: [],
+            },
+            {
+              target: cauldron.address,
+              abi: CauldronV4Abi,
+              method: 'oracleData',
+              params: [],
+            },
+            {
+              target: cauldron.address,
+              abi: CauldronV4Abi,
+              method: 'totalBorrow',
+              params: [],
+            },
+            {
+              target: cauldron.address,
+              abi: CauldronV4Abi,
+              method: 'totalCollateralShare',
+              params: [],
+            },
+            {
+              target: cauldron.address,
+              abi: CauldronV4Abi,
+              method: 'accrueInfo',
+              params: [],
+            },
+            {
+              target: cauldron.address,
+              abi: CauldronV4Abi,
+              method: 'BORROW_OPENING_FEE',
+              params: [],
+            },
+            {
+              target: cauldron.address,
+              abi: CauldronV4Abi,
+              method: 'COLLATERIZATION_RATE',
+              params: [],
+            },
+          ],
+        });
+        if (oracle && oracleData) {
+          const [, peekRate] = await this.services.blockchain.readContract({
+            chain: marketConfig.chain,
+            target: oracle.toString(),
+            abi: PeekOracleAbi,
+            method: 'peek',
+            params: [oracleData],
+            blockNumber: blockNumber,
+          });
+          const collateralTokenPrice = new BigNumber(debtTokenPrice)
+            .dividedBy(new BigNumber(formatBigNumberToString(peekRate.toString(), cauldron.collateralToken.decimals)))
+            .toString(10);
+
+          assetState.totalBorrowed = new BigNumber(assetState.totalBorrowed)
+            .plus(new BigNumber(formatBigNumberToString(base.toString(), debtToken.decimals)))
+            .toString(10);
+
+          const rateBorrow = new BigNumber(INTEREST_PER_SECOND.toString())
+            .multipliedBy(TimeUnits.SecondsPerYear)
+            .dividedBy(SolidityUnits.OneWad)
+            .toString(10);
+          const rateBorrowFee = formatBigNumberToString(BORROW_OPENING_FEE.toString(), 5);
+          const rateLoanToValue = formatBigNumberToString(COLLATERIZATION_RATE.toString(), 5);
+
+          assetState.collaterals.push({
+            chain: marketConfig.chain,
+            protocol: marketConfig.protocol,
+            metric: options.config.metric,
+            timestamp: options.timestamp,
+            address: cauldron.address,
+            token: cauldron.collateralToken,
+            tokenPrice: collateralTokenPrice,
+            totalBorrowed: formatBigNumberToString(base.toString(), debtToken.decimals),
+            totalDeposited: formatBigNumberToString(totalCollateralShare.toString(), cauldron.collateralToken.decimals),
+            rateBorrow: rateBorrow,
+            rateBorrowFee: rateBorrowFee,
+            rateLoanToValue: rateLoanToValue,
+          });
+        }
+      }
+    }
+
+    return assetState;
+  }
+
+  public async getEventLogs(options: AdapterGetEventLogsOptions): Promise<Array<any>> {
+    const marketConfig = options.metricConfig as AbracadabraMarketConfig;
+
+    const logs: Array<any> = [];
+
+    for (const cauldron of marketConfig.caldrons) {
+      const rawlogs = await this.services.blockchain.getContractLogs({
+        chain: cauldron.chain,
+        address: cauldron.address,
+        fromBlock: options.fromBlock,
+        toBlock: options.toBlock,
+      });
+      for (const rawlog of rawlogs) {
+        if (Object.values(CauldronEventSignatures).indexOf(rawlog.topics[0]) !== -1) {
+          logs.push(rawlog);
+        }
+      }
+    }
+
+    return logs;
+  }
+
+  public async getLendingAssetDataTimeframe(
+    options: GetAdapterDataTimeframeOptions,
+  ): Promise<CdpLendingAssetDataTimeframe | null> {
+    const stateData = await this.getLendingAssetDataState({
+      config: options.config,
+      timestamp: options.fromTime,
+    });
+    if (!stateData) {
+      return null;
+    }
+
+    const snapshot: CdpLendingAssetDataTimeframe = {
+      ...stateData,
+      timefrom: options.fromTime,
+      timeto: options.toTime,
+      volumeBorrowed: '0',
+      volumeRepaid: '0',
+      addresses: [],
+      transactions: [],
+      collaterals: [],
+    };
+
+    // make sure activities were synced
+    const beginBlock = await this.services.blockchain.tryGetBlockNumberAtTimestamp(
+      options.config.chain,
+      options.fromTime,
+    );
+    const endBlock = await this.services.blockchain.tryGetBlockNumberAtTimestamp(options.config.chain, options.toTime);
+
+    const logs = await this.getEventLogs({
+      metricConfig: options.config,
+      fromBlock: beginBlock,
+      toBlock: endBlock,
+    });
+
+    const marketConfig = options.config as AbracadabraMarketConfig;
+
+    const addresses: { [key: string]: boolean } = {};
+    const transactions: { [key: string]: boolean } = {};
+    const collaterals: { [key: string]: CdpLendingCollateralDataTimeframe } = {};
+    for (const log of logs) {
+      const address = normalizeAddress(log.address);
+      if (!collaterals[address]) {
+        collaterals[address] = {
+          timefrom: options.fromTime,
+          timeto: options.toTime,
+          ...stateData.collaterals.filter((item) => item.address === address)[0],
+          volumeDeposited: '0',
+          volumeWithdrawn: '0',
+          volumeLiquidated: '0',
+        };
+      }
+
+      try {
+        const transactionHash = log.transactionHash;
+        if (!transactions[transactionHash]) {
+          transactions[transactionHash] = true;
+        }
+
+        const event: any = decodeEventLog({
+          abi: CauldronV4Abi,
+          data: log.data,
+          topics: log.topics,
+        });
+        const signature = log.topics[0];
+        switch (signature) {
+          case CauldronEventSignatures.LogBorrow:
+          case CauldronEventSignatures.LogRepay: {
+            const fromAddress = normalizeAddress(event.args.from);
+            const toAddress = normalizeAddress(event.args.to);
+            if (!addresses[fromAddress]) {
+              addresses[fromAddress] = true;
+            }
+            if (!addresses[toAddress]) {
+              addresses[toAddress] = true;
+            }
+
+            const amount = formatBigNumberToString(event.args.amount.toString(), marketConfig.debtToken.decimals);
+
+            if (signature === CauldronEventSignatures.LogBorrow) {
+              snapshot.volumeBorrowed = new BigNumber(snapshot.volumeBorrowed).plus(new BigNumber(amount)).toString(10);
+            } else {
+              snapshot.volumeRepaid = new BigNumber(snapshot.volumeRepaid).plus(new BigNumber(amount)).toString(10);
+            }
+
+            break;
+          }
+          case CauldronEventSignatures.LogAddCollateral:
+          case CauldronEventSignatures.LogRemoveCollateral: {
+            const fromAddress = normalizeAddress(event.args.from);
+            const toAddress = normalizeAddress(event.args.to);
+            if (!addresses[fromAddress]) {
+              addresses[fromAddress] = true;
+            }
+            if (!addresses[toAddress]) {
+              addresses[toAddress] = true;
+            }
+
+            const amount = formatBigNumberToString(event.args.share.toString(), collaterals[address].token.decimals);
+
+            if (signature === CauldronEventSignatures.LogAddCollateral) {
+              collaterals[address].volumeDeposited = new BigNumber(collaterals[address].volumeDeposited)
+                .plus(new BigNumber(amount))
+                .toString(10);
+            } else {
+              collaterals[address].volumeWithdrawn = new BigNumber(collaterals[address].volumeWithdrawn)
+                .plus(new BigNumber(amount))
+                .toString(10);
+            }
+
+            break;
+          }
+          case CauldronEventSignatures.LogLiquidation: {
+            const fromAddress = normalizeAddress(event.args.from);
+            const toAddress = normalizeAddress(event.args.to);
+            const userAddress = normalizeAddress(event.args.user);
+            if (!addresses[fromAddress]) {
+              addresses[fromAddress] = true;
+            }
+            if (!addresses[toAddress]) {
+              addresses[toAddress] = true;
+            }
+            if (!addresses[userAddress]) {
+              addresses[userAddress] = true;
+            }
+
+            const borrowAmount = formatBigNumberToString(
+              event.args.borrowAmount.toString(),
+              marketConfig.debtToken.decimals,
+            );
+            const collateralAmount = formatBigNumberToString(
+              event.args.collateralShare.toString(),
+              collaterals[address].token.decimals,
+            );
+
+            snapshot.volumeRepaid = new BigNumber(snapshot.volumeRepaid).plus(new BigNumber(borrowAmount)).toString(10);
+            collaterals[address].volumeLiquidated = new BigNumber(collaterals[address].volumeLiquidated)
+              .plus(new BigNumber(collateralAmount))
+              .toString(10);
+
+            break;
+          }
+        }
+      } catch (e: any) {}
+    }
+
+    snapshot.collaterals = Object.values(collaterals);
+    snapshot.addresses = Object.keys(addresses);
+    snapshot.transactions = Object.keys(transactions);
+
+    return snapshot;
+  }
+}
