@@ -1,4 +1,5 @@
 import CurveMetaPoolAbi from '../../configs/abi/curve/MetaPool.json';
+import { SolidityUnits } from '../../configs/constants';
 import { formatBigNumberToString } from '../../lib/utils';
 import BlockchainService from '../../services/blockchains/blockchain';
 import { OracleSourceCurveMetaPool } from '../../types/oracles';
@@ -20,7 +21,7 @@ export default class CurveLibs {
       blockNumber: options.blockNumber,
     });
     if (price) {
-      return formatBigNumberToString(price.toString(), options.config.baseToken.decimals);
+      return formatBigNumberToString(price.toString(), SolidityUnits.WadDecimals);
     } else {
       return null;
     }
