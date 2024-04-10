@@ -340,7 +340,7 @@ export default class MakerAdapter extends CdpLendingProtocolAdapter {
               action: ActivityActions.liquidate,
               user: normalizeAddress(event.args.urn),
               token: gemConfig.collateralToken,
-              tokenAmount: formatBigNumberToString(event.args.ink.toString(), gemConfig.collateralToken.decimals),
+              tokenAmount: formatBigNumberToString(event.args.ink.toString(), 18),
             });
           }
         }

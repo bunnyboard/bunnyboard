@@ -114,4 +114,11 @@ export const OracleSourceCustomList: {
     address: '0x5a6a4d54456819380173272a5e8e9b9904bdf41b',
     baseToken: TokensBook.ethereum['0x99d8a9c45b2eca8864373a26d1459e3dff1e17f3'],
   },
+  GUSD_METAPOOL: {
+    type: 'curveMetaPool',
+    chain: 'ethereum',
+    currency: 'usd',
+    address: '0x4f062658eaaf2c1ccf8c8e36d6824cdf41167956',
+    baseToken: TokensBook.ethereum['0x056fd409e1d7a124bd7017459dfea2f387b6d5cd'],
+  },
 };

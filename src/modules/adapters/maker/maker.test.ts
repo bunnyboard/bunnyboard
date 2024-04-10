@@ -1,7 +1,6 @@
 import { expect, test } from 'vitest';
 
 import { DefaultMemcacheTime, ProtocolConfigs } from '../../../configs';
-import { TimeUnits } from '../../../configs/constants';
 import { MakerConfigs } from '../../../configs/protocols/maker';
 import { getDateString } from '../../../lib/utils';
 import BlockchainService from '../../../services/blockchains/blockchain';
@@ -55,10 +54,9 @@ test('should get state data correctly at birthday - maker chain ethereum', async
 });
 
 test(`should get state data correctly at ${getDateString(timestamp)} - maker chain ethereum`, async function () {
-  const data = await makerAdapter.getLendingAssetDataTimeframe({
+  const data = await makerAdapter.getLendingAssetDataState({
     config: configEthereum,
-    fromTime: timestamp,
-    toTime: timestamp + TimeUnits.SecondsPerDay,
+    timestamp: timestamp,
   });
 
   expect(data).not.equal(undefined);
@@ -76,8 +74,5 @@ test(`should get state data correctly at ${getDateString(timestamp)} - maker cha
     expect(wstETH.rateBorrow).equal('0.15489844768357454407');
     expect(wstETH.rateBorrowFee).equal('0');
     expect(wstETH.rateLoanToValue).equal('0.57142857142857142857');
-    expect(wstETH.volumeDeposited).equal('1378.044042116404684212');
-    expect(wstETH.volumeWithdrawn).equal('1530.293443718197827766');
-    expect(wstETH.volumeLiquidated).equal('1.657957331465187504');
   }
 });

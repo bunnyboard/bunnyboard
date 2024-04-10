@@ -120,7 +120,7 @@ export const OracleSourceConfigs: { [key: string]: OracleConfig } = {
   },
   GUSD: {
     currency: 'usd',
-    sources: [OracleSourceChainlinkList.GUSD_USD],
+    sources: [OracleSourceChainlinkList.GUSD_USD, OracleSourceCustomList.GUSD_METAPOOL],
   },
   FIL: {
     // FIl on bnbchain and renFIL on ethereum
