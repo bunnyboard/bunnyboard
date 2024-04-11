@@ -196,5 +196,11 @@
     "address": "0xfb6115445bff7b52feb98650c87f44907e58f802",
     "symbol": "AAVE",
     "decimals": 18
+  },
+  "0xfe19f0b51438fd612f6fd59c1dbb3ea319f433ba": {
+    "chain": "bnbchain",
+    "address": "0xfe19f0b51438fd612f6fd59c1dbb3ea319f433ba",
+    "symbol": "MIM",
+    "decimals": 18
   }
 }

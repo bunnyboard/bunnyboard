@@ -41,6 +41,12 @@
     "symbol": "WBTC",
     "decimals": 8
   },
+  "0x6eb1709e0b562097bf1cc48bc6a378446c297c04": {
+    "chain": "optimism",
+    "address": "0x6eb1709e0b562097bf1cc48bc6a378446c297c04",
+    "symbol": "VolatileV1 AMM - OP/USDC",
+    "decimals": 18
+  },
   "0x76fb31fb4af56892a25e32cfc43de717950c9278": {
     "chain": "optimism",
     "address": "0x76fb31fb4af56892a25e32cfc43de717950c9278",
@@ -75,6 +81,12 @@
     "chain": "optimism",
     "address": "0x9bcef72be871e61ed4fbbc7630889bee758eb81d",
     "symbol": "rETH",
+    "decimals": 18
+  },
+  "0xb153fb3d196a8eb25522705560ac152eeec57901": {
+    "chain": "optimism",
+    "address": "0xb153fb3d196a8eb25522705560ac152eeec57901",
+    "symbol": "MIM",
     "decimals": 18
   },
   "0xc40f949f8a4e094d1b49a23ea9241d289b7b2819": {

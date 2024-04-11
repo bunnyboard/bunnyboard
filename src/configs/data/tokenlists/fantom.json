@@ -11,6 +11,12 @@
     "symbol": "fUSDT",
     "decimals": 6
   },
+  "0x0dec85e74a92c52b7f708c4b10207d9560cefaf0": {
+    "chain": "fantom",
+    "address": "0x0dec85e74a92c52b7f708c4b10207d9560cefaf0",
+    "symbol": "yvWFTM",
+    "decimals": 18
+  },
   "0x1e4f97b9f9f913c46f1632781732927b9019c68b": {
     "chain": "fantom",
     "address": "0x1e4f97b9f9f913c46f1632781732927b9019c68b",
@@ -47,6 +53,12 @@
     "symbol": "AAVE",
     "decimals": 18
   },
+  "0x6f86e65b255c9111109d2d2325ca2dfc82456efc": {
+    "chain": "fantom",
+    "address": "0x6f86e65b255c9111109d2d2325ca2dfc82456efc",
+    "symbol": "spLP",
+    "decimals": 18
+  },
   "0x74b23882a30290451a17c44f4f05243b6b58c76d": {
     "chain": "fantom",
     "address": "0x74b23882a30290451a17c44f4f05243b6b58c76d",
@@ -65,10 +77,22 @@
     "symbol": "DAI",
     "decimals": 18
   },
+  "0xa48d959ae2e88f1daa7d5f611e01908106de7598": {
+    "chain": "fantom",
+    "address": "0xa48d959ae2e88f1daa7d5f611e01908106de7598",
+    "symbol": "xBOO",
+    "decimals": 18
+  },
   "0xae75a438b2e0cb8bb01ec1e1e376de11d44477cc": {
     "chain": "fantom",
     "address": "0xae75a438b2e0cb8bb01ec1e1e376de11d44477cc",
     "symbol": "SUSHI",
+    "decimals": 18
+  },
+  "0xb32b31dfafbd53e310390f641c7119b5b9ea0488": {
+    "chain": "fantom",
+    "address": "0xb32b31dfafbd53e310390f641c7119b5b9ea0488",
+    "symbol": "SPIRIT-LP",
     "decimals": 18
   },
   "0xb3654dc3d10ea7645f8319668e8f54d2574fbdc8": {
@@ -81,6 +105,12 @@
     "chain": "fantom",
     "address": "0xdc301622e621166bd8e82f2ca0a26c13ad0be355",
     "symbol": "FRAX",
+    "decimals": 18
+  },
+  "0xf16e81dce15b08f326220742020379b855b87df9": {
+    "chain": "fantom",
+    "address": "0xf16e81dce15b08f326220742020379b855b87df9",
+    "symbol": "ICE",
     "decimals": 18
   }
 }

@@ -151,6 +151,7 @@ export const OracleConfigs: { [key: string]: { [key: string]: OracleConfig } } =
     '0x0b2c639c533813f4aa9d7837caf62653d097ff85': OracleSourceConfigs.USDC,
     '0x8700daec35af8ff88c16bdf0418774cb3d7599b4': OracleSourceConfigs.SNX,
     '0x1db2466d9f5e10d7090e7152b68d62703a2245f0': OracleSourceConfigs.SONNE,
+    '0xb153fb3d196a8eb25522705560ac152eeec57901': OracleSourceConfigs.MIM,
   },
 
   // tokens on Base
@@ -234,6 +235,7 @@ export const OracleConfigs: { [key: string]: { [key: string]: OracleConfig } } =
     '0xbf5140a22578168fd562dccf235e5d43a02ce9b1': OracleSourceConfigs.UNI,
     '0xc5f0f7b66764f6ec8c8dff7ba683102295e16409': OracleSourceConfigs.FDUSD,
     '0xf7de7e8a6bd59ed41a4b5fe50278b3b7f31384df': OracleSourceConfigs.RDNT,
+    '0xfe19f0b51438fd612f6fd59c1dbb3ea319f433ba': OracleSourceConfigs.MIM,
   },
 
   // tokens on Avalanche C-Chain
