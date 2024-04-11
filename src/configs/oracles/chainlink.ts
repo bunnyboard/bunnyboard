@@ -162,8 +162,8 @@ export const OracleSourceChainlinkList: { [key: string]: OracleSourceChainlink }
   },
   DOGE_USD: {
     type: 'chainlink',
-    chain: 'ethereum',
-    address: AddressesBook.ethereum.ChainlinkFeed_DOGE_USD,
+    chain: 'bnbchain',
+    address: AddressesBook.bnbchain.ChainlinkFeed_DOGE_USD,
     decimals: 8,
   },
   SOL_USD: {

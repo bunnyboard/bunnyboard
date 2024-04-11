@@ -5,6 +5,7 @@
   "ChainlinkFeed_ADA_USD": "0xa767f745331d267c7751297d982b050c93985627",
   "ChainlinkFeed_BCH_USD": "0x43d80f616daf0b0b42a928eed32147dc59027d41",
   "ChainlinkFeed_BNB_USD": "0x0567f2323251f0aab15c8dfb1967e4e8a7d42aee",
+  "ChainlinkFeed_DOGE_USD": "0x3ab0a0d137d4f946fbb19eecc6e92e64660231c8",
   "ChainlinkFeed_DOT_USD": "0xc333eb0086309a16aa7c8308dfd32c8bba0a2592",
   "ChainlinkFeed_FIL_USD": "0xe5dbfd9003bff9df5feb2f4f445ca00fb121fb83",
   "ChainlinkFeed_LTC_USD": "0x74e72f37a8c415c8f1a98ed42e78ff997435791d",
