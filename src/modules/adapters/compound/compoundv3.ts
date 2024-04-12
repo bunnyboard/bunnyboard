@@ -298,6 +298,16 @@ export default class Compoundv3Adapter extends IsolatedLendingProtocolAdapter {
               }
               break;
             }
+            case Compoundv3EventSignatures.AbsorbDebt: {
+              dataTimeframe.volumeRepaid = new BigNumber(dataTimeframe.volumeRepaid)
+                .plus(
+                  new BigNumber(
+                    formatBigNumberToString(event.args.basePaidOut.toString(), marketConfig.debtToken.decimals),
+                  ),
+                )
+                .toString(10);
+              break;
+            }
             case Compoundv3EventSignatures.AbsorbCollateral: {
               const asset = normalizeAddress(event.args.asset);
               collaterals[asset].volumeLiquidated = new BigNumber(collaterals[asset].volumeLiquidated)

@@ -23,6 +23,7 @@ export interface Compoundv3EventInterfaces {
   Withdraw: string;
   SupplyCollateral: string;
   WithdrawCollateral: string;
+  AbsorbDebt: string;
   AbsorbCollateral: string;
   RewardClaimed: string;
 }
@@ -32,6 +33,7 @@ export const Compoundv3EventSignatures: Compoundv3EventInterfaces = {
   Withdraw: '0x9b1bfa7fa9ee420a16e124f794c35ac9f90472acc99140eb2f6447c714cad8eb',
   SupplyCollateral: '0xfa56f7b24f17183d81894d3ac2ee654e3c26388d17a28dbd9549b8114304e1f4',
   WithdrawCollateral: '0xd6d480d5b3068db003533b170d67561494d72e3bf9fa40a266471351ebba9e16',
+  AbsorbDebt: '0x1547a878dc89ad3c367b6338b4be6a65a5dd74fb77ae044da1e8747ef1f4f62f',
   AbsorbCollateral: '0x9850ab1af75177e4a9201c65a2cf7976d5d28e40ef63494b44366f86b2f9412e',
   RewardClaimed: '0x2422cac5e23c46c890fdcf42d0c64757409df6832174df639337558f09d99c68',
 };
