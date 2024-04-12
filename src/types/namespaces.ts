@@ -6,6 +6,7 @@ import { ProtocolConfig } from './configs';
 import { CdpLendingAssetDataState, CdpLendingAssetDataTimeframe } from './domains/cdpLending';
 import { CrossLendingReserveDataState, CrossLendingReserveDataTimeframe } from './domains/crossLending';
 import { DexDataState, DexDataTimeframe } from './domains/dex';
+import { IsolatedLendingAssetDataState, IsolatedLendingAssetDataTimeframe } from './domains/isolatedLending';
 import { TokenBoardDataState, TokenBoardDataTimeframe } from './domains/tokenBoard';
 import {
   AdapterAbiConfigs,
@@ -54,6 +55,13 @@ export interface ICdpLendingProtocolAdapter extends IProtocolAdapter {
   getLendingAssetDataTimeframe: (
     options: GetAdapterDataTimeframeOptions,
   ) => Promise<CdpLendingAssetDataTimeframe | null>;
+}
+
+export interface IIsolatedLendingProtocolAdapter extends IProtocolAdapter {
+  getLendingAssetDataState: (options: GetAdapterDataStateOptions) => Promise<IsolatedLendingAssetDataState | null>;
+  getLendingAssetDataTimeframe: (
+    options: GetAdapterDataTimeframeOptions,
+  ) => Promise<IsolatedLendingAssetDataTimeframe | null>;
 }
 
 export interface IDexProtocolAdapter extends IProtocolAdapter {

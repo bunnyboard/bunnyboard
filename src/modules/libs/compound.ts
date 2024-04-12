@@ -2,10 +2,11 @@ import CometAbi from '../../configs/abi/compound/Comet.json';
 import ComptrollerAbi from '../../configs/abi/compound/Comptroller.json';
 import cErc20Abi from '../../configs/abi/compound/cErc20.json';
 import EnvConfig from '../../configs/envConfig';
-import { CompoundLendingMarketConfig } from '../../configs/protocols/compound';
+import { CompoundLendingMarketConfig, Compoundv3LendingMarketConfig } from '../../configs/protocols/compound';
 import { normalizeAddress } from '../../lib/utils';
 import BlockchainService from '../../services/blockchains/blockchain';
-import { CdpLendingMarketConfig, Token } from '../../types/configs';
+import { ContractCall } from '../../services/blockchains/domains';
+import { Token } from '../../types/configs';
 
 interface CTokenInfo {
   chain: string;
@@ -69,7 +70,7 @@ export default class CompoundLibs {
   }
 
   public static async getCometInfo(
-    lendingMarketConfig: CdpLendingMarketConfig,
+    lendingMarketConfig: Compoundv3LendingMarketConfig,
     blockNumber: number,
   ): Promise<CometInfo> {
     const cometInfo: CometInfo = {
@@ -88,15 +89,22 @@ export default class CompoundLibs {
       params: [],
       blockNumber: blockNumber === 0 ? undefined : blockNumber,
     });
+    const calls: Array<ContractCall> = [];
     for (let i = 0; i < Number(numAssets); i++) {
-      const assetInfo = await blockchain.readContract({
-        chain: lendingMarketConfig.chain,
+      calls.push({
         abi: CometAbi,
         target: lendingMarketConfig.address,
         method: 'getAssetInfo',
         params: [i],
-        blockNumber: blockNumber === 0 ? undefined : blockNumber,
       });
+    }
+
+    const assetInfos = await blockchain.multicall({
+      chain: lendingMarketConfig.chain,
+      calls: calls,
+      blockNumber: blockNumber,
+    });
+    for (const assetInfo of assetInfos) {
       const token = await blockchain.getTokenInfo({
         chain: lendingMarketConfig.chain,
         address: assetInfo.asset.toString(),

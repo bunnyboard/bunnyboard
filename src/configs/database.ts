@@ -69,6 +69,27 @@ export const DatabaseCollectionConfigs: DatabaseCollectionConfig = {
       },
     ],
   },
+  isolatedLendingAssetStates: {
+    name: `${MongodbPrefix}.isolatedLendingAssetStates`,
+    indies: [
+      {
+        chain: 1,
+        protocol: 1,
+        address: 1, // market contract address
+      },
+    ],
+  },
+  isolatedLendingAssetSnapshots: {
+    name: `${MongodbPrefix}.isolatedLendingAssetSnapshots`,
+    indies: [
+      {
+        chain: 1,
+        protocol: 1,
+        address: 1, // market contract address
+        timestamp: 1,
+      },
+    ],
+  },
   tokenBoardStates: {
     name: `${MongodbPrefix}.tokenBoardStates`,
     indies: [

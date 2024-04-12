@@ -52,6 +52,9 @@ export interface DatabaseCollectionConfig {
   cdpLendingAssetStates: MongoCollectionConfig;
   cdpLendingAssetSnapshots: MongoCollectionConfig;
 
+  isolatedLendingAssetStates: MongoCollectionConfig;
+  isolatedLendingAssetSnapshots: MongoCollectionConfig;
+
   // used to save dex liquidity data
   // check dexscan adapter for more details
   dexLiquidityTokenSnapshots: MongoCollectionConfig;
@@ -81,6 +84,7 @@ export const DataMetrics = {
   dex: 'dex',
   crossLending: 'crossLending',
   cdpLending: 'cdpLending',
+  isolatedLending: 'isolatedLending',
   staking: 'staking',
   flashloan: 'flashloan',
   perpetual: 'perpetual',
@@ -104,8 +108,10 @@ export const LendingMarketVersions = {
   cdp: {
     maker: 'maker',
     liquity: 'liquity',
-    compoundv3: 'compoundv3',
     abracadabra: 'abracadabra',
+  },
+  isolated: {
+    compoundv3: 'compoundv3',
   },
 };
 
@@ -114,6 +120,9 @@ export type LendingCrossVersion = (typeof CrossVersions)[number];
 
 const CdpVersions = Object.values(LendingMarketVersions.cdp);
 export type LendingCdpVersion = (typeof CdpVersions)[number];
+
+const IsolatedVersions = Object.values(LendingMarketVersions.isolated);
+export type LendingIsolatedVersion = (typeof IsolatedVersions)[number];
 
 export interface CrossLendingMarketConfig extends MetricConfig {
   version: LendingCrossVersion;
@@ -127,6 +136,10 @@ export interface CrossLendingMarketConfig extends MetricConfig {
 export interface CdpLendingMarketConfig extends MetricConfig {
   version: LendingCdpVersion;
   debtToken: Token;
+}
+
+export interface IsolatedLendingMarketConfig extends CdpLendingMarketConfig {
+  version: LendingIsolatedVersion;
 }
 
 export const DexVersions = {

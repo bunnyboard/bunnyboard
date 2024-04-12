@@ -4,6 +4,7 @@ import Aavev2Adapter from './aave/aavev2';
 import Aavev3Adapter from './aave/aavev3';
 import AbracadabraAdapter from './abracadabra/abracadabra';
 import CompoundAdapter from './compound/compound';
+import Compoundv3Adapter from './compound/compoundv3';
 import IronbankAdapter from './ironbank/ironbank';
 import LiquityAdapter from './liquity/liquity';
 import MakerAdapter from './maker/maker';
@@ -24,6 +25,7 @@ export function getProtocolAdapters(
     aavev3: new Aavev3Adapter(services, storages, ProtocolConfigs.aavev3),
     abracadabra: new AbracadabraAdapter(services, storages, ProtocolConfigs.abracadabra),
     compound: new CompoundAdapter(services, storages, ProtocolConfigs.compound),
+    compoundv3: new Compoundv3Adapter(services, storages, ProtocolConfigs.compoundv3),
     ironbank: new IronbankAdapter(services, storages, ProtocolConfigs.ironbank),
     venus: new VenusAdapter(services, storages, ProtocolConfigs.venus),
     radiant: new RadiantAdapter(services, storages, ProtocolConfigs.radiant),
