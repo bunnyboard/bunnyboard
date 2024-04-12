@@ -181,7 +181,7 @@ export const OracleSourceConfigs: { [key: string]: OracleConfig } = {
   },
   wstETH: {
     currency: 'eth',
-    sources: [OracleSourceUniswapv3List.wstETH_WETH],
+    sources: [OracleSourceUniswapv3List.wstETH_WETH, OracleSourceUniswapv3List.wstETH_WETH_2],
   },
   cbETH: {
     currency: 'eth',

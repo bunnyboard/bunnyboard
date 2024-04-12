@@ -32,7 +32,7 @@ export default class IsolatedLendingProtocolAdapter extends ProtocolAdapter impl
 
   public async collectDataState(options: RunAdapterOptions): Promise<void> {
     const config = options.metricConfig;
-    if (config.metric === DataMetrics.cdpLending) {
+    if (config.metric === DataMetrics.isolatedLending) {
       const timestamp = getTimestamp();
 
       const dataState = await this.getLendingAssetDataState({
