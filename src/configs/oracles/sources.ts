@@ -78,8 +78,8 @@ export const OracleSourceConfigs: { [key: string]: OracleConfig } = {
     sources: [OracleSourceUniswapv2List.SNX_WETH],
   },
   WBTC: {
-    currency: 'btc',
-    sources: [OracleSourceChainlinkList.WBTC_BTC, OracleSourceUniswapv2List.WBTC_USDT],
+    currency: 'usd',
+    sources: [OracleSourceUniswapv2List.WBTC_USDT],
   },
   BUSD: {
     currency: 'usd',
