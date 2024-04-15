@@ -5,6 +5,7 @@ import { AddressesBook, TokensBook } from '../data';
 const MakerDaiJoinContract = AddressesBook.ethereum.MakerDaiJoin;
 const MakerVatContract = AddressesBook.ethereum.MakerVat;
 const MakerSpotContract = AddressesBook.ethereum.MakerSpot;
+const MakerPotContract = AddressesBook.ethereum.MakerPot;
 const MakerJugContract = AddressesBook.ethereum.MakerJug;
 const MakerDogContract = AddressesBook.ethereum.MakerDog;
 
@@ -53,9 +54,14 @@ export interface MakerLendingMarketConfig extends CdpLendingMarketConfig {
   daiJoin: string;
   vat: string;
   spot: string;
+  pot: string;
   jug: string;
   dog: string;
   gems: Array<MakerGem>;
+}
+
+export interface MakerDataExtended {
+  daiSavingRate: string;
 }
 
 export interface MakerProtocolConfig extends ProtocolConfig {
@@ -97,6 +103,7 @@ const MakerMarket: MakerLendingMarketConfig = {
   daiJoin: MakerDaiJoinContract,
   vat: MakerVatContract,
   spot: MakerSpotContract,
+  pot: MakerPotContract,
   jug: MakerJugContract,
   dog: MakerDogContract,
   debtToken: {
@@ -115,6 +122,8 @@ const MakerMarket: MakerLendingMarketConfig = {
     };
   }),
 };
+
+export const MakerDaiSavingRateDataKey = 'MakerDaiSavingRate';
 
 export const MakerConfigs: MakerProtocolConfig = {
   protocol: 'maker',

@@ -12,6 +12,9 @@ export interface DataState {
 
   // every data piece was collected from `fromTime` to `toTime`
   timestamp: number;
+
+  // save data for additional calculation purpose
+  extended?: any;
 }
 
 export interface DataTimeframe extends DataState {

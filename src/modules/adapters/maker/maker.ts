@@ -6,10 +6,11 @@ import AuthGemJoinAbi from '../../../configs/abi/maker/AuthGemJoin.json';
 import DogAbi from '../../../configs/abi/maker/Dog.json';
 import GemJoinAbi from '../../../configs/abi/maker/GemJoin.json';
 import JugAbi from '../../../configs/abi/maker/Jug.json';
+import PotAbi from '../../../configs/abi/maker/Pot.json';
 import SpotAbi from '../../../configs/abi/maker/Spot.json';
 import VatAbi from '../../../configs/abi/maker/Vat.json';
 import { SolidityUnits, TimeUnits } from '../../../configs/constants';
-import { MakerLendingMarketConfig } from '../../../configs/protocols/maker';
+import { MakerDataExtended, MakerLendingMarketConfig } from '../../../configs/protocols/maker';
 import { compareAddress, formatBigNumberToString, normalizeAddress } from '../../../lib/utils';
 import { ActivityActions } from '../../../types/base';
 import { ProtocolConfig, Token } from '../../../types/configs';
@@ -41,6 +42,7 @@ export default class MakerAdapter extends CdpLendingProtocolAdapter {
       authGemJoin: AuthGemJoinAbi,
       vat: VatAbi,
       spot: SpotAbi,
+      pot: PotAbi,
       jug: JugAbi,
       dog: DogAbi,
     };
@@ -56,20 +58,28 @@ export default class MakerAdapter extends CdpLendingProtocolAdapter {
     const debtToken = marketConfig.debtToken as Token;
 
     // get total debt
-    const debt = await this.services.blockchain.readContract({
+    const [debt, jugBase, dsr] = await this.services.blockchain.multicall({
       chain: marketConfig.chain,
-      abi: this.abiConfigs.eventAbis.vat,
-      target: marketConfig.vat,
-      method: 'debt',
-      params: [],
-      blockNumber: blockNumber,
-    });
-    const jugBase = await this.services.blockchain.readContract({
-      chain: marketConfig.chain,
-      abi: this.abiConfigs.eventAbis.jug,
-      target: marketConfig.jug,
-      method: 'base',
-      params: [],
+      calls: [
+        {
+          abi: this.abiConfigs.eventAbis.vat,
+          target: marketConfig.vat,
+          method: 'debt',
+          params: [],
+        },
+        {
+          abi: this.abiConfigs.eventAbis.jug,
+          target: marketConfig.jug,
+          method: 'base',
+          params: [],
+        },
+        {
+          abi: this.abiConfigs.eventAbis.pot,
+          target: marketConfig.pot,
+          method: 'dsr',
+          params: [],
+        },
+      ],
       blockNumber: blockNumber,
     });
 
@@ -98,6 +108,9 @@ export default class MakerAdapter extends CdpLendingProtocolAdapter {
       totalBorrowed: formatBigNumberToString(debt.toString(), SolidityUnits.RadDecimals),
       totalSupply: formatBigNumberToString(totalSupply.toString(), debtToken.decimals),
       collaterals: [],
+      extended: {
+        daiSavingRate: formatBigNumberToString(dsr.toString(), SolidityUnits.RayDecimals),
+      } as MakerDataExtended,
     };
 
     for (const gemConfig of marketConfig.gems) {
@@ -118,29 +131,29 @@ export default class MakerAdapter extends CdpLendingProtocolAdapter {
         });
 
         if (collateralTokenPrice && gemBalance) {
-          const vatInfo = await this.services.blockchain.readContract({
+          const [vatInfo, spotInfo, jugInfo] = await this.services.blockchain.multicall({
             chain: marketConfig.chain,
-            abi: this.abiConfigs.eventAbis.vat,
-            target: marketConfig.vat,
-            method: 'ilks',
-            params: [gemConfig.ilk],
             blockNumber: blockNumber,
-          });
-          const spotInfo = await this.services.blockchain.readContract({
-            chain: marketConfig.chain,
-            abi: this.abiConfigs.eventAbis.spot,
-            target: marketConfig.spot,
-            method: 'ilks',
-            params: [gemConfig.ilk],
-            blockNumber: blockNumber,
-          });
-          const jugInfo = await this.services.blockchain.readContract({
-            chain: marketConfig.chain,
-            abi: this.abiConfigs.eventAbis.jug,
-            target: marketConfig.jug,
-            method: 'ilks',
-            params: [gemConfig.ilk],
-            blockNumber: blockNumber,
+            calls: [
+              {
+                abi: this.abiConfigs.eventAbis.vat,
+                target: marketConfig.vat,
+                method: 'ilks',
+                params: [gemConfig.ilk],
+              },
+              {
+                abi: this.abiConfigs.eventAbis.spot,
+                target: marketConfig.spot,
+                method: 'ilks',
+                params: [gemConfig.ilk],
+              },
+              {
+                abi: this.abiConfigs.eventAbis.jug,
+                target: marketConfig.jug,
+                method: 'ilks',
+                params: [gemConfig.ilk],
+              },
+            ],
           });
 
           const art = new BigNumber(vatInfo[0].toString());

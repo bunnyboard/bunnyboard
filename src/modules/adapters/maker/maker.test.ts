@@ -1,7 +1,7 @@
 import { expect, test } from 'vitest';
 
 import { DefaultMemcacheTime, ProtocolConfigs } from '../../../configs';
-import { MakerConfigs } from '../../../configs/protocols/maker';
+import { MakerConfigs, MakerDataExtended } from '../../../configs/protocols/maker';
 import { getDateString } from '../../../lib/utils';
 import BlockchainService from '../../../services/blockchains/blockchain';
 import { MemcacheService } from '../../../services/caching/memcache';
@@ -41,6 +41,8 @@ test('should get state data correctly at birthday - maker chain ethereum', async
     expect(dataState.tokenPrice).equal('1');
     expect(dataState.totalBorrowed).equal('7459320.98114267007245429982');
     expect(dataState.totalSupply).equal('6941473.363900581694527354');
+    expect(dataState.extended).not.equal(undefined);
+    expect((dataState.extended as MakerDataExtended).daiSavingRate).equal('1.00000000062793719249');
 
     const ethCollateral = dataState.collaterals[0];
     expect(ethCollateral).not.equal(undefined);
@@ -65,6 +67,8 @@ test(`should get state data correctly at ${getDateString(timestamp)} - maker cha
     expect(data.totalBorrowed).equal('4713932090.15900915820984210398');
     expect(data.totalSupply).equal('3233851351.083077469361461939');
     expect(data.collaterals.length).equal(27);
+    expect(data.extended).not.equal(undefined);
+    expect((data.extended as MakerDataExtended).daiSavingRate).equal('1.00000000443182212978');
 
     const wstETH = data.collaterals[4];
     expect(wstETH).not.equal(undefined);

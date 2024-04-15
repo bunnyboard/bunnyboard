@@ -22,6 +22,15 @@ export const DatabaseCollectionConfigs: DatabaseCollectionConfig = {
       },
     ],
   },
+  historicalData: {
+    name: `${MongodbPrefix}.historicalData`,
+    indies: [
+      {
+        name: 1,
+      },
+    ],
+  },
+
   crossLendingReserveStates: {
     name: `${MongodbPrefix}.crossLendingReserveStates`,
     indies: [

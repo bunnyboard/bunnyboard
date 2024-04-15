@@ -46,6 +46,11 @@ export interface DatabaseCollectionConfig {
   cachingStates: MongoCollectionConfig;
   cachingData: MongoCollectionConfig;
 
+  // we support to save special data in this collection
+  // we example, we can save historical DAI saving rate here
+  // document should be unique by name
+  historicalData: MongoCollectionConfig;
+
   crossLendingReserveStates: MongoCollectionConfig;
   crossLendingReserveSnapshots: MongoCollectionConfig;
 
