@@ -533,6 +533,12 @@
     "symbol": "wsOHM",
     "decimals": 18
   },
+  "0xcd5fe23c85820f7b72d0926fc9b05b43e359b7ee": {
+    "chain": "ethereum",
+    "address": "0xcd5fe23c85820f7b72d0926fc9b05b43e359b7ee",
+    "symbol": "weETH",
+    "decimals": 18
+  },
   "0xd33526068d116ce69f19a9ee46f0bd304f21a51f": {
     "chain": "ethereum",
     "address": "0xd33526068d116ce69f19a9ee46f0bd304f21a51f",
