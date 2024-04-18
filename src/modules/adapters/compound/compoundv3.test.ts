@@ -64,8 +64,6 @@ test(`should get data correctly at ${getDateString(timestamp)} - compoundv3 come
     toTime: timestamp + TimeUnits.SecondsPerDay,
   });
 
-  console.log(dataState);
-
   expect(dataState).not.equal(null);
   if (dataState) {
     expect(dataState.tokenPrice).equal('1.0003');

@@ -118,21 +118,23 @@ export default class CompoundAdapter extends CrossLendingProtocolAdapter {
   }
 
   protected async getMarketRates(chain: string, cTokenContract: string, blockNumber: number): Promise<Rates> {
-    const supplyRatePerBlock = await this.services.blockchain.readContract({
+    const [supplyRatePerBlock, borrowRatePerBlock] = await this.services.blockchain.multicall({
       chain: chain,
-      abi: this.abiConfigs.eventAbis.cErc20,
-      target: cTokenContract,
-      method: 'supplyRatePerBlock',
-      params: [],
-      blockNumber,
-    });
-    const borrowRatePerBlock = await this.services.blockchain.readContract({
-      chain: chain,
-      abi: this.abiConfigs.eventAbis.cErc20,
-      target: cTokenContract,
-      method: 'borrowRatePerBlock',
-      params: [],
-      blockNumber,
+      blockNumber: blockNumber,
+      calls: [
+        {
+          abi: this.abiConfigs.eventAbis.cErc20,
+          target: cTokenContract,
+          method: 'supplyRatePerBlock',
+          params: [],
+        },
+        {
+          abi: this.abiConfigs.eventAbis.cErc20,
+          target: cTokenContract,
+          method: 'borrowRatePerBlock',
+          params: [],
+        },
+      ],
     });
 
     const supplyRate = new BigNumber(supplyRatePerBlock ? supplyRatePerBlock : '0').multipliedBy(
@@ -193,32 +195,33 @@ export default class CompoundAdapter extends CrossLendingProtocolAdapter {
             continue;
           }
 
-          const totalCash = await this.services.blockchain.readContract({
+          const [totalCash, totalBorrows, totalReserves] = await this.services.blockchain.multicall({
             chain: marketConfig.chain,
-            abi: this.abiConfigs.eventAbis.cErc20,
-            target: cTokenContract,
-            method: 'getCash',
-            params: [],
-            blockNumber,
+            blockNumber: blockNumber,
+            calls: [
+              {
+                abi: this.abiConfigs.eventAbis.cErc20,
+                target: cTokenContract,
+                method: 'getCash',
+                params: [],
+              },
+              {
+                abi: this.abiConfigs.eventAbis.cErc20,
+                target: cTokenContract,
+                method: 'totalBorrows',
+                params: [],
+              },
+              {
+                abi: this.abiConfigs.eventAbis.cErc20,
+                target: cTokenContract,
+                method: 'totalReserves',
+                params: [],
+              },
+            ],
           });
-          const totalBorrows = await this.services.blockchain.readContract({
-            chain: marketConfig.chain,
-            abi: this.abiConfigs.eventAbis.cErc20,
-            target: cTokenContract,
-            method: 'totalBorrows',
-            params: [],
-            blockNumber,
-          });
-          const totalReserves = await this.services.blockchain.readContract({
-            chain: marketConfig.chain,
-            abi: this.abiConfigs.eventAbis.cErc20,
-            target: cTokenContract,
-            method: 'totalReserves',
-            params: [],
-            blockNumber,
-          });
+
           const ltv = await this.getMarketLoanToValueRate(marketConfig, cTokenContract, blockNumber);
-          const reservFactor = await this.getMarketReserveFactorRate(marketConfig, cTokenContract, blockNumber);
+          const reserveFactor = await this.getMarketReserveFactorRate(marketConfig, cTokenContract, blockNumber);
 
           const totalDeposited = new BigNumber(totalCash.toString())
             .plus(new BigNumber(totalBorrows.toString()))
@@ -250,7 +253,7 @@ export default class CompoundAdapter extends CrossLendingProtocolAdapter {
             rateSupply: supplyRate,
             rateBorrow: borrowRate,
             rateLoanToValue: ltv,
-            rateReserveFactor: reservFactor,
+            rateReserveFactor: reserveFactor,
           };
 
           result.push(dataState);

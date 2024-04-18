@@ -112,17 +112,19 @@ export default class ProtocolAdapter implements IProtocolAdapter {
         await this.processSnapshot(config, snapshot);
       }
 
-      await this.storages.database.update({
-        collection: EnvConfig.mongodb.collections.cachingStates.name,
-        keys: {
-          name: stateKey,
-        },
-        updates: {
-          name: stateKey,
-          timestamp: runTime,
-        },
-        upsert: true,
-      });
+      if (!options.force) {
+        await this.storages.database.update({
+          collection: EnvConfig.mongodb.collections.cachingStates.name,
+          keys: {
+            name: stateKey,
+          },
+          updates: {
+            name: stateKey,
+            timestamp: runTime,
+          },
+          upsert: true,
+        });
+      }
 
       const endExeTime = Math.floor(new Date().getTime() / 1000);
       const elapsed = endExeTime - startExeTime;

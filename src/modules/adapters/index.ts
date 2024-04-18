@@ -9,6 +9,7 @@ import IronbankAdapter from './ironbank/ironbank';
 import LiquityAdapter from './liquity/liquity';
 import MakerAdapter from './maker/maker';
 import RadiantAdapter from './radiant/radiant';
+import SonneAdapter from './sonne/sonne';
 import SpookyAdapter from './spooky/spooky';
 import SushiAdapter from './sushi/sushi';
 import Sushiv3Adapter from './sushi/sushiv3';
@@ -29,7 +30,7 @@ export function getProtocolAdapters(
     ironbank: new IronbankAdapter(services, storages, ProtocolConfigs.ironbank),
     venus: new VenusAdapter(services, storages, ProtocolConfigs.venus),
     radiant: new RadiantAdapter(services, storages, ProtocolConfigs.radiant),
-    sonne: new CompoundAdapter(services, storages, ProtocolConfigs.sonne),
+    sonne: new SonneAdapter(services, storages, ProtocolConfigs.sonne),
     spark: new Aavev3Adapter(services, storages, ProtocolConfigs.spark),
     liquity: new LiquityAdapter(services, storages, ProtocolConfigs.liquity),
     maker: new MakerAdapter(services, storages, ProtocolConfigs.maker),

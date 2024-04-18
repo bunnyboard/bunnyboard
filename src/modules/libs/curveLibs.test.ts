@@ -11,7 +11,5 @@ test('should get token price from curve meta pool correctly', async function () 
     blockNumber: blockNumber,
   });
 
-  console.log(mimPrice);
-
   expect(mimPrice).equal('1.012242867637683961');
 });
