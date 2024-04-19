@@ -5,11 +5,15 @@ import { Aavev2Configs, Aavev3Configs } from './protocols/aave';
 import { AbracadabraConfigs } from './protocols/abracadabra';
 import { CompoundConfigs, Compoundv3Configs } from './protocols/compound';
 import { IronbankConfigs } from './protocols/ironbank';
+import { KinzaConfigs } from './protocols/kinza';
 import { KyberswapConfigs } from './protocols/kyberswap';
 import { LiquityConfigs } from './protocols/liquity';
 import { MakerConfigs } from './protocols/maker';
+import { MendiConfigs } from './protocols/mendi';
+import { OrbitConfigs } from './protocols/orbit';
 import { PacConfigs } from './protocols/pac';
 import { RadiantConfigs } from './protocols/radiant';
+import { SeamlessConfigs } from './protocols/seamless';
 import { SonneConfigs } from './protocols/sonne';
 import { SparkConfigs } from './protocols/spark';
 import { SpookyConfigs } from './protocols/spooky';
@@ -32,11 +36,15 @@ export const ProtocolConfigs = {
   compound: CompoundConfigs,
   compoundv3: Compoundv3Configs,
   ironbank: IronbankConfigs,
+  kinza: KinzaConfigs,
   kyberswap: KyberswapConfigs,
   liquity: LiquityConfigs,
   maker: MakerConfigs,
+  mendi: MendiConfigs,
+  orbit: OrbitConfigs,
   pac: PacConfigs,
   radiant: RadiantConfigs,
+  seamless: SeamlessConfigs,
   sonne: SonneConfigs,
   spark: SparkConfigs,
   spooky: SpookyConfigs,

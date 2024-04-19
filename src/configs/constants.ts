@@ -33,4 +33,6 @@ export const ChainBlockPeriods: { [key: string]: number } = {
   optimism: 2, // 2 seconds
   avalanche: 2, // 2 seconds
   fantom: 2, // 2 seconds
+  linea: 1, // 1 seconds
+  bast: 2, // 2 seconds
 };

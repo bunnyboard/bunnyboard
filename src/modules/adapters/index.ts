@@ -6,10 +6,14 @@ import AbracadabraAdapter from './abracadabra/abracadabra';
 import CompoundAdapter from './compound/compound';
 import Compoundv3Adapter from './compound/compoundv3';
 import IronbankAdapter from './ironbank/ironbank';
+import KinzaAdapter from './kinza/kinza';
 import LiquityAdapter from './liquity/liquity';
 import MakerAdapter from './maker/maker';
+import MendiAdapter from './mendi/mendi';
+import OrbitAdapter from './orbit/orbit';
 import PacAdapter from './pac/pac';
 import RadiantAdapter from './radiant/radiant';
+import SeamlessAdapter from './seamless/seamless';
 import SonneAdapter from './sonne/sonne';
 import SparkAdapter from './spark/spark';
 import SpookyAdapter from './spooky/spooky';
@@ -31,12 +35,16 @@ export function getProtocolAdapters(
     compound: new CompoundAdapter(services, storages, ProtocolConfigs.compound),
     compoundv3: new Compoundv3Adapter(services, storages, ProtocolConfigs.compoundv3),
     ironbank: new IronbankAdapter(services, storages, ProtocolConfigs.ironbank),
+    kinza: new KinzaAdapter(services, storages, ProtocolConfigs.kinza),
     venus: new VenusAdapter(services, storages, ProtocolConfigs.venus),
     radiant: new RadiantAdapter(services, storages, ProtocolConfigs.radiant),
     sonne: new SonneAdapter(services, storages, ProtocolConfigs.sonne),
     spark: new SparkAdapter(services, storages, ProtocolConfigs.spark),
     liquity: new LiquityAdapter(services, storages, ProtocolConfigs.liquity),
     maker: new MakerAdapter(services, storages, ProtocolConfigs.maker),
+    mendi: new MendiAdapter(services, storages, ProtocolConfigs.mendi),
+    orbit: new OrbitAdapter(services, storages, ProtocolConfigs.orbit),
+    seamless: new SeamlessAdapter(services, storages, ProtocolConfigs.seamless),
     spooky: new SpookyAdapter(services, storages, ProtocolConfigs.spooky),
     sushi: new SushiAdapter(services, storages, ProtocolConfigs.sushi),
     sushiv3: new Sushiv3Adapter(services, storages, ProtocolConfigs.sushiv3),

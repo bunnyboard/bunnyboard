@@ -3,6 +3,7 @@ import { decodeEventLog } from 'viem';
 
 import CompoundComptrollerAbi from '../../../configs/abi/compound/Comptroller.json';
 import CompoundComptrollerV1Abi from '../../../configs/abi/compound/ComptrollerV1.json';
+import CompoundOracleAbi from '../../../configs/abi/compound/Oracle.json';
 import cErc20Abi from '../../../configs/abi/compound/cErc20.json';
 import IronbankComptrollerOldAbi from '../../../configs/abi/ironbank/FirstComptroller.json';
 import { ChainBlockPeriods, TimeUnits } from '../../../configs/constants';
@@ -29,6 +30,12 @@ interface Rates {
   borrowRate: string;
 }
 
+interface MarketAndPrice {
+  cToken: string;
+  underlying: Token;
+  underlyingPrice: string | null;
+}
+
 export default class CompoundAdapter extends CrossLendingProtocolAdapter {
   public readonly name: string = 'adapter.compound';
 
@@ -39,6 +46,7 @@ export default class CompoundAdapter extends CrossLendingProtocolAdapter {
     this.abiConfigs.eventAbis = {
       cErc20: cErc20Abi,
       comptroller: CompoundComptrollerAbi,
+      oracle: CompoundOracleAbi,
     };
   }
 
@@ -117,6 +125,56 @@ export default class CompoundAdapter extends CrossLendingProtocolAdapter {
     return config.preDefinedMarkets ? config.preDefinedMarkets : null;
   }
 
+  protected async getAllMarketsAndPrices(
+    config: CompoundLendingMarketConfig,
+    blockNumber: number,
+    timestamp: number,
+  ): Promise<Array<MarketAndPrice>> {
+    const markets: Array<MarketAndPrice> = [];
+
+    const allMarkets = await this.getAllMarkets(config, blockNumber);
+    if (allMarkets) {
+      for (const cTokenAddress of allMarkets) {
+        let underlying = null;
+        if (config.underlying[normalizeAddress(cTokenAddress)]) {
+          underlying = config.underlying[normalizeAddress(cTokenAddress)];
+        } else {
+          const underlyingAddress = await this.services.blockchain.readContract({
+            chain: config.chain,
+            abi: this.abiConfigs.eventAbis.cErc20,
+            target: cTokenAddress,
+            method: 'underlying',
+            params: [],
+            blockNumber,
+          });
+
+          if (underlyingAddress) {
+            underlying = await this.services.blockchain.getTokenInfo({
+              chain: config.chain,
+              address: underlyingAddress.toString(),
+            });
+          }
+        }
+
+        if (underlying) {
+          const underlyingPrice = await this.services.oracle.getTokenPriceUsd({
+            chain: underlying.chain,
+            address: underlying.address,
+            timestamp: timestamp,
+          });
+
+          markets.push({
+            cToken: normalizeAddress(cTokenAddress),
+            underlying: underlying,
+            underlyingPrice: underlyingPrice,
+          });
+        }
+      }
+    }
+
+    return markets;
+  }
+
   protected async getMarketRates(chain: string, cTokenContract: string, blockNumber: number): Promise<Rates> {
     const [supplyRatePerBlock, borrowRatePerBlock] = await this.services.blockchain.multicall({
       chain: chain,
@@ -161,104 +219,77 @@ export default class CompoundAdapter extends CrossLendingProtocolAdapter {
       options.timestamp,
     );
 
-    const allMarket = await this.getAllMarkets(marketConfig, blockNumber);
-    if (allMarket) {
-      for (let cTokenContract of allMarket) {
-        cTokenContract = normalizeAddress(cTokenContract);
-
-        if (marketConfig.blacklists && marketConfig.blacklists[cTokenContract]) {
-          continue;
-        }
-
-        let token: Token | null = null;
-        if (marketConfig.underlying[cTokenContract]) {
-          token = marketConfig.underlying[cTokenContract];
-        } else {
-          const underlying = await this.services.blockchain.readContract({
-            chain: marketConfig.chain,
-            abi: this.abiConfigs.eventAbis.cErc20,
-            target: cTokenContract,
-            method: 'underlying',
-            params: [],
-            blockNumber,
-          });
-          if (underlying) {
-            token = await this.services.blockchain.getTokenInfo({
-              chain: marketConfig.chain,
-              address: underlying.toString(),
-            });
-          }
-        }
-
-        if (token) {
-          if (marketConfig.blacklists && marketConfig.blacklists[token.address]) {
-            continue;
-          }
-
-          const [totalCash, totalBorrows, totalReserves] = await this.services.blockchain.multicall({
-            chain: marketConfig.chain,
-            blockNumber: blockNumber,
-            calls: [
-              {
-                abi: this.abiConfigs.eventAbis.cErc20,
-                target: cTokenContract,
-                method: 'getCash',
-                params: [],
-              },
-              {
-                abi: this.abiConfigs.eventAbis.cErc20,
-                target: cTokenContract,
-                method: 'totalBorrows',
-                params: [],
-              },
-              {
-                abi: this.abiConfigs.eventAbis.cErc20,
-                target: cTokenContract,
-                method: 'totalReserves',
-                params: [],
-              },
-            ],
-          });
-
-          const ltv = await this.getMarketLoanToValueRate(marketConfig, cTokenContract, blockNumber);
-          const reserveFactor = await this.getMarketReserveFactorRate(marketConfig, cTokenContract, blockNumber);
-
-          const totalDeposited = new BigNumber(totalCash.toString())
-            .plus(new BigNumber(totalBorrows.toString()))
-            .minus(new BigNumber(totalReserves.toString()));
-          const totalBorrowed = new BigNumber(totalBorrows.toString());
-
-          // get market rates
-          const { supplyRate, borrowRate } = await this.getMarketRates(marketConfig.chain, cTokenContract, blockNumber);
-
-          const tokenPrice = await this.services.oracle.getTokenPriceUsd({
-            chain: token.chain,
-            address: token.address,
-            timestamp: options.timestamp,
-          });
-
-          const dataState: CrossLendingReserveDataState = {
-            metric: marketConfig.metric,
-            chain: marketConfig.chain,
-            protocol: marketConfig.protocol,
-            address: cTokenContract,
-            timestamp: options.timestamp,
-
-            token: token,
-            tokenPrice: tokenPrice ? tokenPrice : '0',
-
-            totalDeposited: formatBigNumberToString(totalDeposited.toString(10), token.decimals),
-            totalBorrowed: formatBigNumberToString(totalBorrowed.toString(10), token.decimals),
-
-            rateSupply: supplyRate,
-            rateBorrow: borrowRate,
-            rateLoanToValue: ltv,
-            rateReserveFactor: reserveFactor,
-          };
-
-          result.push(dataState);
-        }
+    const allMarketsAndPrices = await this.getAllMarketsAndPrices(marketConfig, blockNumber, options.timestamp);
+    for (const marketAndPrice of allMarketsAndPrices) {
+      if (
+        marketConfig.blacklists &&
+        (marketConfig.blacklists[marketAndPrice.cToken] || marketConfig.blacklists[marketAndPrice.underlying.address])
+      ) {
+        continue;
       }
+
+      const tokenPrice = marketAndPrice.underlyingPrice;
+
+      const [totalCash, totalBorrows, totalReserves] = await this.services.blockchain.multicall({
+        chain: marketConfig.chain,
+        blockNumber: blockNumber,
+        calls: [
+          {
+            abi: this.abiConfigs.eventAbis.cErc20,
+            target: marketAndPrice.cToken,
+            method: 'getCash',
+            params: [],
+          },
+          {
+            abi: this.abiConfigs.eventAbis.cErc20,
+            target: marketAndPrice.cToken,
+            method: 'totalBorrows',
+            params: [],
+          },
+          {
+            abi: this.abiConfigs.eventAbis.cErc20,
+            target: marketAndPrice.cToken,
+            method: 'totalReserves',
+            params: [],
+          },
+        ],
+      });
+
+      const ltv = await this.getMarketLoanToValueRate(marketConfig, marketAndPrice.cToken, blockNumber);
+      const reserveFactor = await this.getMarketReserveFactorRate(marketConfig, marketAndPrice.cToken, blockNumber);
+
+      const totalDeposited = new BigNumber(totalCash.toString())
+        .plus(new BigNumber(totalBorrows.toString()))
+        .minus(new BigNumber(totalReserves.toString()));
+      const totalBorrowed = new BigNumber(totalBorrows.toString());
+
+      // get market rates
+      const { supplyRate, borrowRate } = await this.getMarketRates(
+        marketConfig.chain,
+        marketAndPrice.cToken,
+        blockNumber,
+      );
+
+      const dataState: CrossLendingReserveDataState = {
+        metric: marketConfig.metric,
+        chain: marketConfig.chain,
+        protocol: marketConfig.protocol,
+        address: marketAndPrice.cToken,
+        timestamp: options.timestamp,
+
+        token: marketAndPrice.underlying,
+        tokenPrice: tokenPrice ? tokenPrice : '0',
+
+        totalDeposited: formatBigNumberToString(totalDeposited.toString(10), marketAndPrice.underlying.decimals),
+        totalBorrowed: formatBigNumberToString(totalBorrowed.toString(10), marketAndPrice.underlying.decimals),
+
+        rateSupply: supplyRate,
+        rateBorrow: borrowRate,
+        rateLoanToValue: ltv,
+        rateReserveFactor: reserveFactor,
+      };
+
+      result.push(dataState);
     }
 
     return result;

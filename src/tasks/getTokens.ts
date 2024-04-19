@@ -1,8 +1,8 @@
 import * as fs from 'fs';
 
 import { AaveLendingMarketConfig } from '../configs/protocols/aave';
-import { PacConfigs } from '../configs/protocols/pac';
-import { ZerolendConfigs } from '../configs/protocols/zerolend';
+import { KinzaConfigs } from '../configs/protocols/kinza';
+import { SeamlessConfigs } from '../configs/protocols/seamless';
 import AaveLibs from '../modules/libs/aave';
 import { CrossLendingMarketConfig, DataMetrics, Token } from '../types/configs';
 
@@ -34,7 +34,7 @@ function loadExistedTokens(chain: string) {
     zksync: loadExistedTokens('zksync'),
   };
 
-  for (const protocolConfig of [ZerolendConfigs, PacConfigs]) {
+  for (const protocolConfig of [SeamlessConfigs, KinzaConfigs]) {
     for (const config of protocolConfig.configs) {
       if (config.metric === DataMetrics.crossLending) {
         const lendingConfig = config as CrossLendingMarketConfig;
