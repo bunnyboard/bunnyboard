@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios, { RawAxiosRequestHeaders } from 'axios';
 
 export async function tryQueryBlockMeta(endpoint: string): Promise<number> {
   let blockNumber = 0;
@@ -21,7 +21,7 @@ export async function tryQueryBlockMeta(endpoint: string): Promise<number> {
         {
           headers: {
             'Content-Type': 'application/json',
-          },
+          } as RawAxiosRequestHeaders,
         },
       );
       if (response.data.data) {

@@ -3,6 +3,7 @@ import BigNumber from 'bignumber.js';
 import AaveDataProviderV3Abi from '../../../configs/abi/aave/DataProviderV3.json';
 import AaveIncentiveControllerV3Abi from '../../../configs/abi/aave/IncentiveControllerV3.json';
 import AaveLendingPoolV3Abi from '../../../configs/abi/aave/LendingPoolV3.json';
+import AaveOracleV3Abi from '../../../configs/abi/aave/OracleV3.json';
 import { SolidityUnits } from '../../../configs/constants';
 import { formatBigNumberToString } from '../../../lib/utils';
 import { ProtocolConfig } from '../../../types/configs';
@@ -19,6 +20,7 @@ export default class Aavev3Adapter extends Aavev2Adapter {
     this.abiConfigs.eventSignatures = Aavev3EventSignatures;
     this.abiConfigs.eventAbis = {
       lendingPool: AaveLendingPoolV3Abi,
+      oracle: AaveOracleV3Abi,
       dataProvider: AaveDataProviderV3Abi,
       incentiveController: AaveIncentiveControllerV3Abi,
     };

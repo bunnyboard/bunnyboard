@@ -1,6 +1,6 @@
 import { Token as UniswapSdkToken } from '@uniswap/sdk-core';
 import { Pool } from '@uniswap/v3-sdk';
-import axios from 'axios';
+import axios, { RawAxiosRequestHeaders } from 'axios';
 import BigNumber from 'bignumber.js';
 
 import ERC20Abi from '../../configs/abi/ERC20.json';
@@ -206,7 +206,7 @@ export default class UniswapLibs {
             headers: {
               'Content-Type': 'application/json',
               ...options.dexConfig.subgraph.httpRequestOptions,
-            },
+            } as RawAxiosRequestHeaders,
           },
         );
 
@@ -350,7 +350,7 @@ export default class UniswapLibs {
             headers: {
               'Content-Type': 'application/json',
               ...options.dexConfig.subgraph.httpRequestOptions,
-            },
+            } as RawAxiosRequestHeaders,
           },
         );
         if (metadataResponse.data.data) {
@@ -462,7 +462,7 @@ export default class UniswapLibs {
           headers: {
             'Content-Type': 'application/json',
             ...options.dexConfig.subgraph.httpRequestOptions,
-          },
+          } as RawAxiosRequestHeaders,
         },
       );
 

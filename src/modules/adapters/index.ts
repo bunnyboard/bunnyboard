@@ -8,14 +8,17 @@ import Compoundv3Adapter from './compound/compoundv3';
 import IronbankAdapter from './ironbank/ironbank';
 import LiquityAdapter from './liquity/liquity';
 import MakerAdapter from './maker/maker';
+import PacAdapter from './pac/pac';
 import RadiantAdapter from './radiant/radiant';
 import SonneAdapter from './sonne/sonne';
+import SparkAdapter from './spark/spark';
 import SpookyAdapter from './spooky/spooky';
 import SushiAdapter from './sushi/sushi';
 import Sushiv3Adapter from './sushi/sushiv3';
 import Uniswapv2Adapter from './uniswap/uniswapv2';
 import Uniswapv3Adapter from './uniswap/uniswapv3';
 import VenusAdapter from './venus/venus';
+import ZerolendAdapter from './zerolend/zerolend';
 
 export function getProtocolAdapters(
   services: ContextServices,
@@ -31,7 +34,7 @@ export function getProtocolAdapters(
     venus: new VenusAdapter(services, storages, ProtocolConfigs.venus),
     radiant: new RadiantAdapter(services, storages, ProtocolConfigs.radiant),
     sonne: new SonneAdapter(services, storages, ProtocolConfigs.sonne),
-    spark: new Aavev3Adapter(services, storages, ProtocolConfigs.spark),
+    spark: new SparkAdapter(services, storages, ProtocolConfigs.spark),
     liquity: new LiquityAdapter(services, storages, ProtocolConfigs.liquity),
     maker: new MakerAdapter(services, storages, ProtocolConfigs.maker),
     spooky: new SpookyAdapter(services, storages, ProtocolConfigs.spooky),
@@ -39,5 +42,7 @@ export function getProtocolAdapters(
     sushiv3: new Sushiv3Adapter(services, storages, ProtocolConfigs.sushiv3),
     uniswapv2: new Uniswapv2Adapter(services, storages, ProtocolConfigs.uniswapv2),
     uniswapv3: new Uniswapv3Adapter(services, storages, ProtocolConfigs.uniswapv3),
+    pac: new PacAdapter(services, storages, ProtocolConfigs.pac),
+    zerolend: new ZerolendAdapter(services, storages, ProtocolConfigs.zerolend),
   };
 }

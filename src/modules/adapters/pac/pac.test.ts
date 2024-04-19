@@ -1,23 +1,23 @@
 import { expect, test } from 'vitest';
 
-import { DefaultMemcacheTime } from '../../../configs';
-import { RadiantConfigs } from '../../../configs/protocols/radiant';
+import { DefaultMemcacheTime, ProtocolConfigs } from '../../../configs';
+import { PacConfigs } from '../../../configs/protocols/pac';
 import { getDateString } from '../../../lib/utils';
 import BlockchainService from '../../../services/blockchains/blockchain';
 import { MemcacheService } from '../../../services/caching/memcache';
 import DatabaseService from '../../../services/database/database';
 import OracleService from '../../../services/oracle/oracle';
-import RadiantAdapter from './radiant';
+import PacAdapter from './pac';
 
 const database = new DatabaseService();
 const memcache = new MemcacheService(DefaultMemcacheTime);
 const oracle = new OracleService();
 const blockchain = new BlockchainService();
 
-const timestamp = 1704240000; // Wed Jan 03 2024 00:00:00 GMT+0000
+const timestamp = 1713139200; // Mon Apr 15 2024 00:00:00 GMT+0000
 
-test(`should get data correctly at birthday - radiant`, async function () {
-  const radiantAdapter = new RadiantAdapter(
+test('should get data correctly at birthday - pac chain blast', async function () {
+  const adapter = new PacAdapter(
     {
       blockchain: blockchain,
       oracle: oracle,
@@ -26,13 +26,14 @@ test(`should get data correctly at birthday - radiant`, async function () {
       database: database,
       memcache: memcache,
     },
-    RadiantConfigs,
+    PacConfigs,
   );
 
-  for (const config of RadiantConfigs.configs) {
-    const dataState = await radiantAdapter.getLendingReservesDataState({
-      config: config,
-      timestamp: config.birthday,
+  const configBlast = ProtocolConfigs.pac.configs.filter((item) => item.chain === 'blast')[0];
+  if (configBlast) {
+    const dataState = await adapter.getLendingReservesDataState({
+      config: configBlast,
+      timestamp: configBlast.birthday,
     });
 
     expect(dataState).not.equal(undefined);
@@ -46,8 +47,8 @@ test(`should get data correctly at birthday - radiant`, async function () {
   }
 });
 
-test(`should get data correctly at ${getDateString(1704240000)} - radiant`, async function () {
-  const radiantAdapter = new RadiantAdapter(
+test(`should get data correctly at ${getDateString(timestamp)} - pac chain blast`, async function () {
+  const adapter = new PacAdapter(
     {
       blockchain: blockchain,
       oracle: oracle,
@@ -56,12 +57,13 @@ test(`should get data correctly at ${getDateString(1704240000)} - radiant`, asyn
       database: database,
       memcache: memcache,
     },
-    RadiantConfigs,
+    PacConfigs,
   );
 
-  for (const config of RadiantConfigs.configs) {
-    const dataState = await radiantAdapter.getLendingReservesDataState({
-      config: config,
+  const configBlast = ProtocolConfigs.pac.configs.filter((item) => item.chain === 'blast')[0];
+  if (configBlast) {
+    const dataState = await adapter.getLendingReservesDataState({
+      config: configBlast,
       timestamp: timestamp,
     });
 

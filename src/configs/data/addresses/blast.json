@@ -1,0 +1,8 @@
+{
+  "PacDataProvider": "0x742316f430002d067dc273469236d0f3670be446",
+  "PacLendingPool": "0xd2499b3c8611e36ca89a70fda2a72c49ee19eaa8",
+  "PacOracle": "0xaf77325317f109ee21459afeede51b16c231e6b1",
+  "ZerolendDataProvider": "0xc6df4dddbfacb866e78dcc01b813a41c15a08c10",
+  "ZerolendLendingPool": "0xa70b0f3c2470abbe104bdb3f3aaa9c7c54bea7a8",
+  "ZerolendOracle": "0xbe0ab675a478a759eca580f0d6c9d399085547d8"
+}

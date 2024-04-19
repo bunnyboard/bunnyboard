@@ -1,10 +1,12 @@
 import ArbitrumAddresses from './addresses/arbitrum.json';
 import AvalancheAddresses from './addresses/avalanche.json';
 import BaseAddresses from './addresses/base.json';
+import BlastAddresses from './addresses/blast.json';
 import BnbchainAddresses from './addresses/bnbchain.json';
 import EthereumAddresses from './addresses/ethereum.json';
 import FantomAddresses from './addresses/fantom.json';
 import GnosisAddresses from './addresses/gnosis.json';
+import LineaAddresses from './addresses/linea.json';
 import MetisAddresses from './addresses/metis.json';
 import OptimismAddresses from './addresses/optimism.json';
 import PolygonAddresses from './addresses/polygon.json';
@@ -13,10 +15,12 @@ import { BlockSubGraphEndpoints, DataSubGraphEndpoints } from './subgraphs';
 import TokenListArbitrum from './tokenlists/arbitrum.json';
 import TokenListAvalanche from './tokenlists/avalanche.json';
 import TokenListBase from './tokenlists/base.json';
+import TokenListBlast from './tokenlists/blast.json';
 import TokenListBnbchain from './tokenlists/bnbchain.json';
 import TokenListEthereum from './tokenlists/ethereum.json';
 import TokenListFantom from './tokenlists/fantom.json';
 import TokenListGnosis from './tokenlists/gnosis.json';
+import TokenListLinea from './tokenlists/linea.json';
 import TokenListMetis from './tokenlists/metis.json';
 import TokenListOptimism from './tokenlists/optimism.json';
 import TokenListPolygon from './tokenlists/polygon.json';
@@ -39,6 +43,8 @@ export const AddressesBook = {
   gnosis: GnosisAddresses,
   metis: MetisAddresses,
   scroll: ScrollAddresses,
+  blast: BlastAddresses,
+  linea: LineaAddresses,
 };
 
 export const TokensBook = {
@@ -53,6 +59,8 @@ export const TokensBook = {
   metis: TokenListMetis,
   gnosis: TokenListGnosis,
   scroll: TokenListScroll,
+  blast: TokenListBlast,
+  linea: TokenListLinea,
 };
 
 // these tokens will be used for general purpose

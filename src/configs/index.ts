@@ -8,6 +8,7 @@ import { IronbankConfigs } from './protocols/ironbank';
 import { KyberswapConfigs } from './protocols/kyberswap';
 import { LiquityConfigs } from './protocols/liquity';
 import { MakerConfigs } from './protocols/maker';
+import { PacConfigs } from './protocols/pac';
 import { RadiantConfigs } from './protocols/radiant';
 import { SonneConfigs } from './protocols/sonne';
 import { SparkConfigs } from './protocols/spark';
@@ -15,6 +16,7 @@ import { SpookyConfigs } from './protocols/spooky';
 import { SushiConfigs, Sushiv3Configs } from './protocols/sushi';
 import { Uniswapv2Configs, Uniswapv3Configs } from './protocols/uniswap';
 import { VenusConfigs } from './protocols/venus';
+import { ZerolendConfigs } from './protocols/zerolend';
 
 export const DefaultQueryContractLogsBlockRange = 1000;
 
@@ -33,6 +35,7 @@ export const ProtocolConfigs = {
   kyberswap: KyberswapConfigs,
   liquity: LiquityConfigs,
   maker: MakerConfigs,
+  pac: PacConfigs,
   radiant: RadiantConfigs,
   sonne: SonneConfigs,
   spark: SparkConfigs,
@@ -42,6 +45,7 @@ export const ProtocolConfigs = {
   uniswapv2: Uniswapv2Configs,
   uniswapv3: Uniswapv3Configs,
   venus: VenusConfigs,
+  zerolend: ZerolendConfigs,
 
   tokenBoard: {
     protocol: 'tokenBoard',

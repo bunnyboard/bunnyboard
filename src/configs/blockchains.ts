@@ -154,4 +154,32 @@ export const BlockchainConfigs: { [key: string]: Blockchain } = {
       decimals: 18,
     },
   },
+  [ChainNames.blast]: {
+    name: ChainNames.blast,
+    family: 'evm',
+    chainId: 81457,
+    nodeRpc: String(process.env.BUNNYBOARD_BLAST_NODE),
+    blockSubgraph: '', // don't use or not available
+    explorerApiEndpoint: 'https://api.blastscan.io/api',
+    nativeToken: {
+      chain: ChainNames.blast,
+      address: AddressZero,
+      symbol: 'ETH',
+      decimals: 18,
+    },
+  },
+  [ChainNames.linea]: {
+    name: ChainNames.linea,
+    family: 'evm',
+    chainId: 59144,
+    nodeRpc: String(process.env.BUNNYBOARD_LINEA_NODE),
+    blockSubgraph: '', // don't use or not available
+    explorerApiEndpoint: 'https://api.lineascan.build/api',
+    nativeToken: {
+      chain: ChainNames.linea,
+      address: AddressZero,
+      symbol: 'ETH',
+      decimals: 18,
+    },
+  },
 };

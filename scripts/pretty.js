@@ -12,6 +12,8 @@ const chains = [
   'avalanche',
   'metis',
   'gnosis',
+  'blast',
+  'linea',
 ];
 
 for (const chain of chains) {

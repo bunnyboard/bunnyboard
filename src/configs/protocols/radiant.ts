@@ -14,6 +14,10 @@ export const RadiantConfigs: AaveProtocolConfig = {
       birthday: 1698710400, // Tue Oct 31 2023 00:00:00 GMT+0000
       address: AddressesBook.ethereum.RadiantLendingPool,
       dataProvider: AddressesBook.ethereum.RadiantDataProvider,
+      oracle: {
+        currency: 'usd',
+        address: AddressesBook.ethereum.RadiantOracle,
+      },
     },
     {
       chain: ChainNames.arbitrum,
@@ -23,6 +27,10 @@ export const RadiantConfigs: AaveProtocolConfig = {
       metric: DataMetrics.crossLending,
       address: AddressesBook.arbitrum.RadiantLendingPool,
       dataProvider: AddressesBook.arbitrum.RadiantDataProvider,
+      oracle: {
+        currency: 'usd',
+        address: AddressesBook.arbitrum.RadiantOracle,
+      },
     },
     {
       chain: ChainNames.bnbchain,
@@ -32,6 +40,10 @@ export const RadiantConfigs: AaveProtocolConfig = {
       metric: DataMetrics.crossLending,
       address: AddressesBook.bnbchain.RadiantLendingPool,
       dataProvider: AddressesBook.bnbchain.RadiantDataProvider,
+      oracle: {
+        currency: 'usd',
+        address: AddressesBook.bnbchain.RadiantOracle,
+      },
     },
   ],
 };

@@ -2,14 +2,12 @@ import { describe, expect, test } from 'vitest';
 
 import { DefaultMemcacheTime } from '../../../configs';
 import { ChainNames } from '../../../configs/names';
-import { OracleConfigs } from '../../../configs/oracles/configs';
-import { AaveLendingMarketConfig, Aavev3Configs } from '../../../configs/protocols/aave';
+import { Aavev3Configs } from '../../../configs/protocols/aave';
 import { getDateString } from '../../../lib/utils';
 import BlockchainService from '../../../services/blockchains/blockchain';
 import { MemcacheService } from '../../../services/caching/memcache';
 import DatabaseService from '../../../services/database/database';
 import OracleService from '../../../services/oracle/oracle';
-import AaveLibs from '../../libs/aave';
 import Aavev2Adapter from './aavev2';
 
 const database = new DatabaseService();
@@ -18,20 +16,6 @@ const oracle = new OracleService();
 const blockchain = new BlockchainService();
 
 const timestamp = 1706745600; // Thu Feb 01 2024 00:00:00 GMT+0000
-
-test('should have oracle configs for reserves correctly', async function () {
-  for (const marketConfig of Aavev3Configs.configs) {
-    const marketInfo = await AaveLibs.getMarketInfo(marketConfig as AaveLendingMarketConfig);
-    expect(marketInfo).not.equal(null);
-    if (marketInfo) {
-      for (const token of marketInfo.reserves) {
-        const oracleSource = (OracleConfigs as any)[token.chain][token.address];
-        expect(oracleSource).not.equal(null);
-        expect(oracleSource).not.equal(undefined);
-      }
-    }
-  }
-});
 
 describe('should get data correctly at birthday', async function () {
   Aavev3Configs.configs.map((config) =>

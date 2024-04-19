@@ -4,7 +4,8 @@ import { decodeEventLog } from 'viem';
 import AaveDataProviderV2Abi from '../../../configs/abi/aave/DataProviderV2.json';
 import AaveIncentiveControllerV2Abi from '../../../configs/abi/aave/IncentiveControllerV2.json';
 import AaveLendingPoolV2Abi from '../../../configs/abi/aave/LendingPoolV2.json';
-import { SolidityUnits } from '../../../configs/constants';
+import AaveOracleV2Abi from '../../../configs/abi/aave/OracleV2.json';
+import { AddressZero, SolidityUnits } from '../../../configs/constants';
 import { AaveLendingMarketConfig } from '../../../configs/protocols/aave';
 import { compareAddress, formatBigNumberToString, normalizeAddress } from '../../../lib/utils';
 import { ActivityAction, ActivityActions } from '../../../types/base';
@@ -28,6 +29,11 @@ export interface AaveMarketRates {
   borrowStable: string;
 }
 
+export interface ReserveAndPrice {
+  reserve: string;
+  price: string | null;
+}
+
 export default class Aavev2Adapter extends CrossLendingProtocolAdapter {
   public readonly name: string = 'adapter.aavev2';
 
@@ -37,6 +43,7 @@ export default class Aavev2Adapter extends CrossLendingProtocolAdapter {
     this.abiConfigs.eventSignatures = Aavev2EventSignatures;
     this.abiConfigs.eventAbis = {
       lendingPool: AaveLendingPoolV2Abi,
+      oracle: AaveOracleV2Abi,
       dataProvider: AaveDataProviderV2Abi,
       incentiveController: AaveIncentiveControllerV2Abi,
     };
@@ -187,24 +194,24 @@ export default class Aavev2Adapter extends CrossLendingProtocolAdapter {
 
     const marketConfig: AaveLendingMarketConfig = options.config as AaveLendingMarketConfig;
 
-    const reservesList: Array<any> = await this.getReservesList(marketConfig, blockNumber);
+    const reservesAndPrices = await this.getReservesAndPrices(marketConfig, blockNumber, options.timestamp);
 
-    for (const reserve of reservesList) {
+    for (const reserveAndPrice of reservesAndPrices) {
       const token = await this.services.blockchain.getTokenInfo({
         chain: marketConfig.chain,
-        address: reserve,
+        address: reserveAndPrice.reserve,
       });
       if (!token) {
         continue;
       }
 
-      const tokenPrice = await this.services.oracle.getTokenPriceUsd({
-        chain: token.chain,
-        address: token.address,
-        timestamp: options.timestamp,
-      });
+      const tokenPrice = reserveAndPrice.price;
 
-      const [reserveData, reserveConfigData] = await this.getReserveData(marketConfig, reserve, blockNumber);
+      const [reserveData, reserveConfigData] = await this.getReserveData(
+        marketConfig,
+        reserveAndPrice.reserve,
+        blockNumber,
+      );
 
       const totalBorrowed = this.getTotalBorrowed(reserveData);
       const totalDeposited = this.getTotalDeposited(reserveData);
@@ -332,6 +339,54 @@ export default class Aavev2Adapter extends CrossLendingProtocolAdapter {
       params: [],
       blockNumber,
     });
+  }
+
+  protected async getReservesAndPrices(
+    config: AaveLendingMarketConfig,
+    blockNumber: number,
+    timestamp: number,
+  ): Promise<Array<ReserveAndPrice>> {
+    const reservesAndPrices: Array<ReserveAndPrice> = [];
+
+    const reserveList = await this.getReservesList(config, blockNumber);
+    if (reserveList && config.oracle) {
+      const reservePrices = await this.services.blockchain.readContract({
+        chain: config.chain,
+        abi: this.abiConfigs.eventAbis.oracle,
+        target: config.oracle.address,
+        method: 'getAssetsPrices',
+        params: [reserveList],
+        blockNumber,
+      });
+
+      for (let i = 0; i < reserveList.length; i++) {
+        let price = null;
+        if (reservePrices[i]) {
+          if (config.oracle.currency === 'eth') {
+            const ethPrice = await this.services.oracle.getTokenPriceUsd({
+              chain: 'ethereum',
+              address: AddressZero,
+              timestamp: timestamp,
+            });
+            if (ethPrice) {
+              price = new BigNumber(reservePrices[i].toString())
+                .multipliedBy(new BigNumber(ethPrice))
+                .dividedBy(1e18)
+                .toString(10);
+            }
+          } else {
+            price = formatBigNumberToString(reservePrices[i].toString(), 8);
+          }
+        }
+
+        reservesAndPrices.push({
+          reserve: reserveList[i],
+          price: price,
+        });
+      }
+    }
+
+    return reservesAndPrices;
   }
 
   protected getReserveFactor(configData: any): string {

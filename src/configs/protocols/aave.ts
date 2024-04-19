@@ -2,8 +2,22 @@ import { CrossLendingMarketConfig, DataMetrics, LendingMarketVersions, ProtocolC
 import { AddressesBook } from '../data';
 import { ChainNames, ProtocolNames } from '../names';
 
+export interface AaveOracleConfig {
+  address: string; // oracle contract address
+
+  // The Aave V2 Ethereum market uses ETH based oracles which return values in wei units.
+  // All other V2 markets use USD based oracles which return values with 8 decimals.
+  // https://docs.aave.com/developers/v/2.0/the-core-protocol/price-oracle
+
+  // Returns the price of the supported asset in BASE_CURRENCY of the Aave Market.
+  // All V3 markets use USD based oracles which return values with 8 decimals.
+  // https://docs.aave.com/developers/core-contracts/aaveoracle
+  currency: 'eth' | 'usd';
+}
+
 export interface AaveLendingMarketConfig extends CrossLendingMarketConfig {
   dataProvider: string;
+  oracle?: AaveOracleConfig;
 }
 
 export interface AaveProtocolConfig extends ProtocolConfig {
@@ -21,6 +35,10 @@ export const Aavev2Configs: AaveProtocolConfig = {
       metric: DataMetrics.crossLending,
       address: AddressesBook.ethereum.Aavev2LendingPool,
       dataProvider: AddressesBook.ethereum.Aavev2DataProvider,
+      oracle: {
+        currency: 'eth',
+        address: AddressesBook.ethereum.Aavev2Oracle,
+      },
     },
     {
       chain: ChainNames.polygon,
@@ -30,6 +48,10 @@ export const Aavev2Configs: AaveProtocolConfig = {
       metric: DataMetrics.crossLending,
       address: AddressesBook.polygon.Aavev2LendingPool,
       dataProvider: AddressesBook.polygon.Aavev2DataProvider,
+      oracle: {
+        currency: 'eth',
+        address: AddressesBook.polygon.Aavev2Oracle,
+      },
     },
     {
       chain: ChainNames.avalanche,
@@ -39,6 +61,10 @@ export const Aavev2Configs: AaveProtocolConfig = {
       metric: DataMetrics.crossLending,
       address: AddressesBook.avalanche.Aavev2LendingPool,
       dataProvider: AddressesBook.avalanche.Aavev2DataProvider,
+      oracle: {
+        currency: 'usd',
+        address: AddressesBook.avalanche.Aavev2Oracle,
+      },
     },
   ],
 };
@@ -54,6 +80,10 @@ export const Aavev3Configs: AaveProtocolConfig = {
       metric: DataMetrics.crossLending,
       address: AddressesBook.ethereum.Aavev3LendingPool,
       dataProvider: AddressesBook.ethereum.Aavev3DataProvider,
+      oracle: {
+        currency: 'usd',
+        address: AddressesBook.ethereum.Aavev3Oracle,
+      },
     },
     {
       chain: ChainNames.optimism,
@@ -63,6 +93,10 @@ export const Aavev3Configs: AaveProtocolConfig = {
       metric: DataMetrics.crossLending,
       address: AddressesBook.optimism.Aavev3LendingPool,
       dataProvider: AddressesBook.optimism.Aavev3DataProvider,
+      oracle: {
+        currency: 'usd',
+        address: AddressesBook.optimism.Aavev3Oracle,
+      },
     },
     {
       chain: ChainNames.arbitrum,
@@ -72,6 +106,10 @@ export const Aavev3Configs: AaveProtocolConfig = {
       metric: DataMetrics.crossLending,
       address: AddressesBook.arbitrum.Aavev3LendingPool,
       dataProvider: AddressesBook.arbitrum.Aavev3DataProvider,
+      oracle: {
+        currency: 'usd',
+        address: AddressesBook.arbitrum.Aavev3Oracle,
+      },
     },
     {
       chain: ChainNames.polygon,
@@ -81,6 +119,10 @@ export const Aavev3Configs: AaveProtocolConfig = {
       metric: DataMetrics.crossLending,
       address: AddressesBook.polygon.Aavev3LendingPool,
       dataProvider: AddressesBook.polygon.Aavev3DataProvider,
+      oracle: {
+        currency: 'usd',
+        address: AddressesBook.polygon.Aavev3Oracle,
+      },
     },
     {
       chain: ChainNames.avalanche,
@@ -90,6 +132,10 @@ export const Aavev3Configs: AaveProtocolConfig = {
       metric: DataMetrics.crossLending,
       address: AddressesBook.avalanche.Aavev3LendingPool,
       dataProvider: AddressesBook.avalanche.Aavev3DataProvider,
+      oracle: {
+        currency: 'usd',
+        address: AddressesBook.avalanche.Aavev3Oracle,
+      },
     },
     {
       chain: ChainNames.fantom,
@@ -99,6 +145,10 @@ export const Aavev3Configs: AaveProtocolConfig = {
       metric: DataMetrics.crossLending,
       address: AddressesBook.fantom.Aavev3LendingPool,
       dataProvider: AddressesBook.fantom.Aavev3DataProvider,
+      oracle: {
+        currency: 'usd',
+        address: AddressesBook.fantom.Aavev3Oracle,
+      },
     },
     {
       chain: ChainNames.base,
@@ -108,6 +158,10 @@ export const Aavev3Configs: AaveProtocolConfig = {
       metric: DataMetrics.crossLending,
       address: AddressesBook.base.Aavev3LendingPool,
       dataProvider: AddressesBook.base.Aavev3DataProvider,
+      oracle: {
+        currency: 'usd',
+        address: AddressesBook.base.Aavev3Oracle,
+      },
     },
     {
       chain: ChainNames.metis,
@@ -117,6 +171,10 @@ export const Aavev3Configs: AaveProtocolConfig = {
       metric: DataMetrics.crossLending,
       address: AddressesBook.metis.Aavev3LendingPool,
       dataProvider: AddressesBook.metis.Aavev3DataProvider,
+      oracle: {
+        currency: 'usd',
+        address: AddressesBook.metis.Aavev3Oracle,
+      },
     },
     {
       chain: ChainNames.gnosis,
@@ -126,6 +184,10 @@ export const Aavev3Configs: AaveProtocolConfig = {
       metric: DataMetrics.crossLending,
       address: AddressesBook.gnosis.Aavev3LendingPool,
       dataProvider: AddressesBook.gnosis.Aavev3DataProvider,
+      oracle: {
+        currency: 'usd',
+        address: AddressesBook.gnosis.Aavev3Oracle,
+      },
     },
     {
       chain: ChainNames.bnbchain,
@@ -135,6 +197,10 @@ export const Aavev3Configs: AaveProtocolConfig = {
       metric: DataMetrics.crossLending,
       address: AddressesBook.bnbchain.Aavev3LendingPool,
       dataProvider: AddressesBook.bnbchain.Aavev3DataProvider,
+      oracle: {
+        currency: 'usd',
+        address: AddressesBook.bnbchain.Aavev3Oracle,
+      },
     },
     {
       chain: ChainNames.scroll,
@@ -144,6 +210,10 @@ export const Aavev3Configs: AaveProtocolConfig = {
       metric: DataMetrics.crossLending,
       address: AddressesBook.scroll.Aavev3LendingPool,
       dataProvider: AddressesBook.scroll.Aavev3DataProvider,
+      oracle: {
+        currency: 'usd',
+        address: AddressesBook.scroll.Aavev3Oracle,
+      },
     },
   ],
 };

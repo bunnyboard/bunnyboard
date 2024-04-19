@@ -313,4 +313,6 @@ export const OracleConfigs: { [key: string]: { [key: string]: OracleConfig } } =
     '0xf610a9dfb7c89644979b4a0f27063e9e7d7cda32': OracleSourceConfigs.wstETH,
     '0x06efdbff2a14a7c8e15944d1f4a48f9f95f663a4': OracleSourceConfigs.USDC,
   },
+
+  // tokens on blast
 };

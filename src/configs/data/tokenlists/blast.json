@@ -1,0 +1,74 @@
+{
+  "0x0872b71efc37cb8dde22b2118de3d800427fdba0": {
+    "chain": "blast",
+    "address": "0x0872b71efc37cb8dde22b2118de3d800427fdba0",
+    "symbol": "oETH",
+    "decimals": 18
+  },
+  "0x12c69bfa3fb3cba75a1defa6e976b87e233fc7df": {
+    "chain": "blast",
+    "address": "0x12c69bfa3fb3cba75a1defa6e976b87e233fc7df",
+    "symbol": "T-LP",
+    "decimals": 18
+  },
+  "0x2416092f143378750bb29b79ed961ab195cceea5": {
+    "chain": "blast",
+    "address": "0x2416092f143378750bb29b79ed961ab195cceea5",
+    "symbol": "ezETH",
+    "decimals": 18
+  },
+  "0x3d4621fa5ff784dfb2fcdfd5b293224167f239db": {
+    "chain": "blast",
+    "address": "0x3d4621fa5ff784dfb2fcdfd5b293224167f239db",
+    "symbol": "SLP-WETH",
+    "decimals": 18
+  },
+  "0x4300000000000000000000000000000000000003": {
+    "chain": "blast",
+    "address": "0x4300000000000000000000000000000000000003",
+    "symbol": "USDB",
+    "decimals": 18
+  },
+  "0x4300000000000000000000000000000000000004": {
+    "chain": "blast",
+    "address": "0x4300000000000000000000000000000000000004",
+    "symbol": "WETH",
+    "decimals": 18
+  },
+  "0x56e0f6df03883611c9762e78d4091e39ad9c420e": {
+    "chain": "blast",
+    "address": "0x56e0f6df03883611c9762e78d4091e39ad9c420e",
+    "symbol": "SLP-USDB",
+    "decimals": 18
+  },
+  "0x66714db8f3397c767d0a602458b5b4e3c0fe7dd1": {
+    "chain": "blast",
+    "address": "0x66714db8f3397c767d0a602458b5b4e3c0fe7dd1",
+    "symbol": "fwWETH",
+    "decimals": 18
+  },
+  "0x866f2c06b83df2ed7ca9c2d044940e7cd55a06d6": {
+    "chain": "blast",
+    "address": "0x866f2c06b83df2ed7ca9c2d044940e7cd55a06d6",
+    "symbol": "fwUSDB",
+    "decimals": 18
+  },
+  "0x9aecedcd6a82d26f2f86d331b17a1c1676442a87": {
+    "chain": "blast",
+    "address": "0x9aecedcd6a82d26f2f86d331b17a1c1676442a87",
+    "symbol": "oUSDB",
+    "decimals": 18
+  },
+  "0x9be8a40c9cf00fe33fd84eaedaa5c4fe3f04cbc3": {
+    "chain": "blast",
+    "address": "0x9be8a40c9cf00fe33fd84eaedaa5c4fe3f04cbc3",
+    "symbol": "RING-V2",
+    "decimals": 18
+  },
+  "0xf7bc58b8d8f97adc129cfc4c9f45ce3c0e1d2692": {
+    "chain": "blast",
+    "address": "0xf7bc58b8d8f97adc129cfc4c9f45ce3c0e1d2692",
+    "symbol": "WBTC",
+    "decimals": 8
+  }
+}

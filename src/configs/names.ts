@@ -10,6 +10,8 @@ export const ChainNames = {
   gnosis: 'gnosis',
   metis: 'metis',
   scroll: 'scroll',
+  blast: 'blast',
+  linea: 'linea',
 };
 
 export const ProtocolNames = {
@@ -23,6 +25,7 @@ export const ProtocolNames = {
   kyberswap: 'kyberswap',
   liquity: 'liquity',
   maker: 'maker',
+  pac: 'pac',
   pancake: 'pancake',
   pancakev3: 'pancakev3',
   radiant: 'radiant',
@@ -35,4 +38,5 @@ export const ProtocolNames = {
   uniswapv2: 'uniswapv2',
   uniswapv3: 'uniswapv3',
   venus: 'venus',
+  zerolend: 'zerolend',
 };

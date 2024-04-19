@@ -1,7 +1,8 @@
 import * as fs from 'fs';
 
-import { ProtocolConfigs } from '../configs';
 import { AaveLendingMarketConfig } from '../configs/protocols/aave';
+import { PacConfigs } from '../configs/protocols/pac';
+import { ZerolendConfigs } from '../configs/protocols/zerolend';
 import AaveLibs from '../modules/libs/aave';
 import { CrossLendingMarketConfig, DataMetrics, Token } from '../types/configs';
 
@@ -17,20 +18,22 @@ function loadExistedTokens(chain: string) {
 
 (async function () {
   const tokenByChains: any = {
-    // ethereum: loadExistedTokens('ethereum'),
-    // arbitrum: loadExistedTokens('arbitrum'),
-    // polygon: loadExistedTokens('polygon'),
-    // optimism: loadExistedTokens('optimism'),
-    // bnbchain: loadExistedTokens('bnbchain'),
-    // base: loadExistedTokens('base'),
-    // fantom: loadExistedTokens('fantom'),
-    // avalanche: loadExistedTokens('avalanche'),
-    // metis: loadExistedTokens('metis'),
-    // gnosis: loadExistedTokens('gnosis'),
+    ethereum: loadExistedTokens('ethereum'),
+    arbitrum: loadExistedTokens('arbitrum'),
+    polygon: loadExistedTokens('polygon'),
+    optimism: loadExistedTokens('optimism'),
+    bnbchain: loadExistedTokens('bnbchain'),
+    base: loadExistedTokens('base'),
+    fantom: loadExistedTokens('fantom'),
+    avalanche: loadExistedTokens('avalanche'),
+    metis: loadExistedTokens('metis'),
+    gnosis: loadExistedTokens('gnosis'),
     scroll: loadExistedTokens('scroll'),
+    blast: loadExistedTokens('blast'),
+    linea: loadExistedTokens('linea'),
   };
 
-  for (const protocolConfig of Object.values(ProtocolConfigs)) {
+  for (const protocolConfig of [ZerolendConfigs, PacConfigs]) {
     for (const config of protocolConfig.configs) {
       if (config.metric === DataMetrics.crossLending) {
         const lendingConfig = config as CrossLendingMarketConfig;
@@ -40,7 +43,7 @@ function loadExistedTokens(chain: string) {
 
         let tokens: Array<Token> = [];
 
-        if (lendingConfig.version === 'aavev3' && lendingConfig.chain === 'scroll') {
+        if (lendingConfig.version === 'aavev3') {
           const marketInfo = await AaveLibs.getMarketInfo(lendingConfig as AaveLendingMarketConfig);
           if (marketInfo) {
             tokens = marketInfo.reserves;

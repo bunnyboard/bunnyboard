@@ -1,5 +1,5 @@
 import retry from 'async-retry';
-import axios from 'axios';
+import axios, { RawAxiosRequestHeaders } from 'axios';
 import BigNumber from 'bignumber.js';
 
 import { normalizeAddress } from '../../../lib/utils';
@@ -49,7 +49,7 @@ export default class Uniswapv3Adapter extends Uniswapv2Adapter {
             {
               headers: {
                 'Content-Type': 'application/json',
-              },
+              } as RawAxiosRequestHeaders,
             },
           );
 
@@ -117,7 +117,7 @@ export default class Uniswapv3Adapter extends Uniswapv2Adapter {
               {
                 headers: {
                   'Content-Type': 'application/json',
-                },
+                } as RawAxiosRequestHeaders,
               },
             );
 

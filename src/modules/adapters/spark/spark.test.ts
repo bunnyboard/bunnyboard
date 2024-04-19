@@ -1,13 +1,13 @@
 import { expect, test } from 'vitest';
 
 import { DefaultMemcacheTime } from '../../../configs';
-import { RadiantConfigs } from '../../../configs/protocols/radiant';
+import { SparkConfigs } from '../../../configs/protocols/spark';
 import { getDateString } from '../../../lib/utils';
 import BlockchainService from '../../../services/blockchains/blockchain';
 import { MemcacheService } from '../../../services/caching/memcache';
 import DatabaseService from '../../../services/database/database';
 import OracleService from '../../../services/oracle/oracle';
-import RadiantAdapter from './radiant';
+import SparkAdapter from './spark';
 
 const database = new DatabaseService();
 const memcache = new MemcacheService(DefaultMemcacheTime);
@@ -16,21 +16,21 @@ const blockchain = new BlockchainService();
 
 const timestamp = 1704240000; // Wed Jan 03 2024 00:00:00 GMT+0000
 
-test(`should get data correctly at birthday - radiant`, async function () {
-  const radiantAdapter = new RadiantAdapter(
-    {
-      blockchain: blockchain,
-      oracle: oracle,
-    },
-    {
-      database: database,
-      memcache: memcache,
-    },
-    RadiantConfigs,
-  );
+const adapter = new SparkAdapter(
+  {
+    blockchain: blockchain,
+    oracle: oracle,
+  },
+  {
+    database: database,
+    memcache: memcache,
+  },
+  SparkConfigs,
+);
 
-  for (const config of RadiantConfigs.configs) {
-    const dataState = await radiantAdapter.getLendingReservesDataState({
+test(`should get data correctly at birthday - spark`, async function () {
+  for (const config of SparkConfigs.configs) {
+    const dataState = await adapter.getLendingReservesDataState({
       config: config,
       timestamp: config.birthday,
     });
@@ -46,21 +46,9 @@ test(`should get data correctly at birthday - radiant`, async function () {
   }
 });
 
-test(`should get data correctly at ${getDateString(1704240000)} - radiant`, async function () {
-  const radiantAdapter = new RadiantAdapter(
-    {
-      blockchain: blockchain,
-      oracle: oracle,
-    },
-    {
-      database: database,
-      memcache: memcache,
-    },
-    RadiantConfigs,
-  );
-
-  for (const config of RadiantConfigs.configs) {
-    const dataState = await radiantAdapter.getLendingReservesDataState({
+test(`should get data correctly at ${getDateString(1704240000)} - spark`, async function () {
+  for (const config of SparkConfigs.configs) {
+    const dataState = await adapter.getLendingReservesDataState({
       config: config,
       timestamp: timestamp,
     });

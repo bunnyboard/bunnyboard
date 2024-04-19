@@ -1,5 +1,5 @@
 import retry from 'async-retry';
-import axios from 'axios';
+import axios, { RawAxiosRequestHeaders } from 'axios';
 import BigNumber from 'bignumber.js';
 
 import { TimeUnits } from '../../../configs/constants';
@@ -64,7 +64,7 @@ export default class Uniswapv2Adapter extends DexProtocolAdapter {
             {
               headers: {
                 'Content-Type': 'application/json',
-              },
+              } as RawAxiosRequestHeaders,
             },
           );
 
@@ -119,7 +119,7 @@ export default class Uniswapv2Adapter extends DexProtocolAdapter {
             {
               headers: {
                 'Content-Type': 'application/json',
-              },
+              } as RawAxiosRequestHeaders,
             },
           );
 
@@ -181,7 +181,7 @@ export default class Uniswapv2Adapter extends DexProtocolAdapter {
               {
                 headers: {
                   'Content-Type': 'application/json',
-                },
+                } as RawAxiosRequestHeaders,
               },
             );
 

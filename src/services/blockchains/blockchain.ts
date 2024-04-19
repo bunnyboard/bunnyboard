@@ -1,5 +1,5 @@
 import retry from 'async-retry';
-import axios from 'axios';
+import axios, { RawAxiosRequestHeaders } from 'axios';
 import BigNumber from 'bignumber.js';
 import { Address, PublicClient, createPublicClient, http } from 'viem';
 
@@ -239,7 +239,7 @@ export default class BlockchainService extends CachingService implements IBlockc
             {
               headers: {
                 'Content-Type': 'application/json',
-              },
+              } as RawAxiosRequestHeaders,
             },
           );
 
@@ -264,7 +264,7 @@ export default class BlockchainService extends CachingService implements IBlockc
             const response = await axios.get(url, {
               headers: {
                 'Content-Type': 'application/json',
-              },
+              } as RawAxiosRequestHeaders,
             });
 
             return response.data;
@@ -277,7 +277,7 @@ export default class BlockchainService extends CachingService implements IBlockc
         },
       );
 
-      if (response && response.status === '1' && response.message === 'OK' && response.result) {
+      if (response && response.status === '1' && response.result) {
         blockNumber = Number(response.result);
       }
     }

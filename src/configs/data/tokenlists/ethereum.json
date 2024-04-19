@@ -413,6 +413,12 @@
     "symbol": "USDC",
     "decimals": 6
   },
+  "0xa1290d69c65a6fe4df752f95823fae25cb99e5a7": {
+    "chain": "ethereum",
+    "address": "0xa1290d69c65a6fe4df752f95823fae25cb99e5a7",
+    "symbol": "rsETH",
+    "decimals": 18
+  },
   "0xa1faa113cbe53436df28ff0aee54275c13b40975": {
     "chain": "ethereum",
     "address": "0xa1faa113cbe53436df28ff0aee54275c13b40975",
@@ -497,6 +503,12 @@
     "symbol": "cbETH",
     "decimals": 18
   },
+  "0xbf5495efe5db9ce00f80364c8b423567e58d2110": {
+    "chain": "ethereum",
+    "address": "0xbf5495efe5db9ce00f80364c8b423567e58d2110",
+    "symbol": "ezETH",
+    "decimals": 18
+  },
   "0xc00e94cb662c3520282e6f5717214004a7f26888": {
     "chain": "ethereum",
     "address": "0xc00e94cb662c3520282e6f5717214004a7f26888",
@@ -573,6 +585,12 @@
     "chain": "ethereum",
     "address": "0xd92494cb921e5c0d3a39ea88d0147bbd82e51008",
     "symbol": "stkcvx3Crv-abra",
+    "decimals": 18
+  },
+  "0xd9a442856c234a39a81a089c06451ebaa4306a72": {
+    "chain": "ethereum",
+    "address": "0xd9a442856c234a39a81a089c06451ebaa4306a72",
+    "symbol": "pufETH",
     "decimals": 18
   },
   "0xda816459f1ab5631232fe5e97a05bbbb94970c95": {
@@ -657,6 +675,12 @@
     "chain": "ethereum",
     "address": "0xf939e0a03fb07f59a73314e73794be0e57ac1b4e",
     "symbol": "crvUSD",
+    "decimals": 18
+  },
+  "0xf951e335afb289353dc249e82926178eac7ded78": {
+    "chain": "ethereum",
+    "address": "0xf951e335afb289353dc249e82926178eac7ded78",
+    "symbol": "swETH",
     "decimals": 18
   },
   "0xfafdf0c4c1cb09d430bf88c75d88bb46dae09967": {

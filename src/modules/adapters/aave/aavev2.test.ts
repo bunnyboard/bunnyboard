@@ -1,14 +1,12 @@
 import { expect, test } from 'vitest';
 
 import { DefaultMemcacheTime, ProtocolConfigs, TokenListBase } from '../../../configs';
-import { OracleConfigs } from '../../../configs/oracles/configs';
-import { AaveLendingMarketConfig, Aavev2Configs } from '../../../configs/protocols/aave';
+import { Aavev2Configs } from '../../../configs/protocols/aave';
 import { getDateString } from '../../../lib/utils';
 import BlockchainService from '../../../services/blockchains/blockchain';
 import { MemcacheService } from '../../../services/caching/memcache';
 import DatabaseService from '../../../services/database/database';
 import OracleService from '../../../services/oracle/oracle';
-import AaveLibs from '../../libs/aave';
 import Aavev2Adapter from './aavev2';
 
 const database = new DatabaseService();
@@ -17,20 +15,6 @@ const oracle = new OracleService();
 const blockchain = new BlockchainService();
 
 const timestamp = 1704240000; // Wed Jan 03 2024 00:00:00 GMT+0000
-
-test('should have oracle configs for reserves correctly', async function () {
-  for (const marketConfig of Aavev2Configs.configs) {
-    const marketInfo = await AaveLibs.getMarketInfo(marketConfig as AaveLendingMarketConfig);
-    expect(marketInfo).not.equal(null);
-    if (marketInfo) {
-      for (const token of marketInfo.reserves) {
-        const oracleSource = (OracleConfigs as any)[token.chain][token.address];
-        expect(oracleSource).not.equal(null);
-        expect(oracleSource).not.equal(undefined);
-      }
-    }
-  }
-});
 
 test('should get data correctly at birthday - aavev2 chain ethereum', async function () {
   const aavev2Adapter = new Aavev2Adapter(
@@ -68,7 +52,7 @@ test('should get data correctly at birthday - aavev2 chain ethereum', async func
 
       // the first reserve should be USDT
       expect(dataState[0].token.address).equal(TokenListBase.ethereum.USDT.address);
-      expect(dataState[0].tokenPrice).equal('1');
+      expect(dataState[0].tokenPrice).equal('1.00089600916404');
       expect(dataState[0].totalDeposited).equal('0');
       expect(dataState[0].totalBorrowed).equal('0');
       expect(dataState[0].totalBorrowedStable).equal('0');
@@ -80,7 +64,7 @@ test('should get data correctly at birthday - aavev2 chain ethereum', async func
 
       // the second reserve should be WBTC
       expect(dataState[1].token.address).equal(TokenListBase.ethereum.WBTC.address);
-      expect(dataState[1].tokenPrice).equal('18809.26040504115024899001');
+      expect(dataState[1].tokenPrice).equal('19538.3754123054');
       expect(dataState[1].totalDeposited).equal('0');
       expect(dataState[1].totalBorrowed).equal('0');
       expect(dataState[1].totalBorrowedStable).equal('0');
@@ -104,7 +88,7 @@ test('should get data correctly at birthday - aavev2 chain ethereum', async func
 
       // the fourth reserve should be YFI
       expect(dataState[3].token.address).equal('0x0bc529c00c6401aef6d220be8c6ea1667f6ad93e');
-      expect(dataState[3].tokenPrice).equal('26487.4789430978229865781');
+      expect(dataState[3].tokenPrice).equal('26416.3739288532824523');
       expect(dataState[3].totalDeposited).equal('0');
       expect(dataState[3].totalBorrowed).equal('0');
       expect(dataState[3].totalBorrowedStable).equal('0');
@@ -116,7 +100,7 @@ test('should get data correctly at birthday - aavev2 chain ethereum', async func
 
       // ZRX
       expect(dataState[4].token.address).equal('0xe41d2489571d322189246dafa5ebde1f4699f498');
-      expect(dataState[4].tokenPrice).equal('0.42803537240473324399');
+      expect(dataState[4].tokenPrice).equal('0.4252639917069153');
       expect(dataState[4].totalDeposited).equal('0');
       expect(dataState[4].totalBorrowed).equal('0');
       expect(dataState[4].totalBorrowedStable).equal('0');
@@ -128,7 +112,7 @@ test('should get data correctly at birthday - aavev2 chain ethereum', async func
 
       // UNI
       expect(dataState[5].token.address).equal('0x1f9840a85d5af5bf1d1762f925bdaddc4201f984');
-      expect(dataState[5].tokenPrice).equal('3.77104413332215857272');
+      expect(dataState[5].tokenPrice).equal('3.7905800862047022');
       expect(dataState[5].totalDeposited).equal('0');
       expect(dataState[5].totalBorrowed).equal('0');
       expect(dataState[5].totalBorrowedStable).equal('0');
@@ -177,7 +161,7 @@ test('should get data correctly at birthday - aavev2 chain polygon', async funct
 
       // DAI
       expect(dataState[0].token.address).equal('0x8f3cf7ad23cd3cadbd9735aff958023239c6a063');
-      expect(dataState[0].tokenPrice).equal('1.00098297');
+      expect(dataState[0].tokenPrice).equal('0.998636333');
       expect(dataState[0].totalDeposited).equal('101332.107924560982045932');
       expect(dataState[0].totalBorrowed).equal('48062.49239215150484135');
       expect(dataState[0].totalBorrowedStable).equal('0');
@@ -188,7 +172,7 @@ test('should get data correctly at birthday - aavev2 chain polygon', async funct
 
       // USDC
       expect(dataState[1].token.address).equal('0x2791bca1f2de4661ed88a30c99a7a9449aa84174');
-      expect(dataState[1].tokenPrice).equal('1.0008051');
+      expect(dataState[1].tokenPrice).equal('1.00063513585');
       expect(dataState[1].totalDeposited).equal('137335.638894');
       expect(dataState[1].totalBorrowed).equal('39697.691309');
       expect(dataState[1].totalBorrowedStable).equal('0');
@@ -199,7 +183,7 @@ test('should get data correctly at birthday - aavev2 chain polygon', async funct
 
       // USDT
       expect(dataState[2].token.address).equal('0xc2132d05d31c914a87c6611c10748aeb04b58e8f');
-      expect(dataState[2].tokenPrice).equal('1.001');
+      expect(dataState[2].tokenPrice).equal('1.000740336');
       expect(dataState[2].totalDeposited).equal('100005.000601');
       expect(dataState[2].totalBorrowed).equal('2212.017328');
       expect(dataState[2].totalBorrowedStable).equal('0');
@@ -210,7 +194,7 @@ test('should get data correctly at birthday - aavev2 chain polygon', async funct
 
       // WBTC
       expect(dataState[3].token.address).equal('0x1bfd67037b42cf73acf2047067bd4f2c47d9bfd6');
-      expect(dataState[3].tokenPrice).equal('58584.66863046122934817084');
+      expect(dataState[3].tokenPrice).equal('58854.7021');
       expect(dataState[3].totalDeposited).equal('0.8016695');
       expect(dataState[3].totalBorrowed).equal('0.000005');
       expect(dataState[3].totalBorrowedStable).equal('0');
@@ -232,7 +216,7 @@ test('should get data correctly at birthday - aavev2 chain polygon', async funct
 
       // WMATIC
       expect(dataState[5].token.address).equal('0x0d500b1d8e8ef31e21c99d1db9a6444d3adf1270');
-      expect(dataState[5].tokenPrice).equal('0.35980789');
+      expect(dataState[5].tokenPrice).equal('0.358636875');
       expect(dataState[5].totalDeposited).equal('903247.537711746305793554');
       expect(dataState[5].totalBorrowed).equal('811.578351360703817082');
       expect(dataState[5].totalBorrowedStable).equal('0');
@@ -243,7 +227,7 @@ test('should get data correctly at birthday - aavev2 chain polygon', async funct
 
       // AAVE
       expect(dataState[6].token.address).equal('0xd6df932a45c0f255f85145f286ea0b292b21c90b');
-      expect(dataState[6].tokenPrice).equal('381.86828985087333861424');
+      expect(dataState[6].tokenPrice).equal('381.5393321110013376366');
       expect(dataState[6].totalDeposited).equal('139.9739583265055626');
       expect(dataState[6].totalBorrowed).equal('0');
       expect(dataState[6].totalBorrowedStable).equal('0');
@@ -291,7 +275,7 @@ test('should get data correctly at birthday - aavev2 chain avalanche', async fun
 
       // WETH.e
       expect(dataState[0].token.address).equal('0x49d5c2bdffac6ce2bfdb6640f4f80f226bc10bab');
-      expect(dataState[0].tokenPrice).equal('2975.30784881');
+      expect(dataState[0].tokenPrice).equal('2973.48054557');
       expect(dataState[0].totalDeposited).equal('0');
       expect(dataState[0].totalBorrowed).equal('0');
       expect(dataState[0].totalBorrowedStable).equal('0');
@@ -302,7 +286,7 @@ test('should get data correctly at birthday - aavev2 chain avalanche', async fun
 
       // DAI.e
       expect(dataState[1].token.address).equal('0xd586e7f844cea2f87f50152665bcbc2c279d8d70');
-      expect(dataState[1].tokenPrice).equal('1.00004238');
+      expect(dataState[1].tokenPrice).equal('1.0001085');
       expect(dataState[1].totalDeposited).equal('0');
       expect(dataState[1].totalBorrowed).equal('0');
       expect(dataState[1].totalBorrowedStable).equal('0');
