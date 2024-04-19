@@ -31,6 +31,7 @@ function loadExistedTokens(chain: string) {
     scroll: loadExistedTokens('scroll'),
     blast: loadExistedTokens('blast'),
     linea: loadExistedTokens('linea'),
+    zksync: loadExistedTokens('zksync'),
   };
 
   for (const protocolConfig of [ZerolendConfigs, PacConfigs]) {

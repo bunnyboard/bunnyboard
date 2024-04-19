@@ -14,6 +14,7 @@ const chains = [
   'gnosis',
   'blast',
   'linea',
+  'zksync',
 ];
 
 for (const chain of chains) {

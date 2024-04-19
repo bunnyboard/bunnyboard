@@ -12,6 +12,7 @@ export const ChainNames = {
   scroll: 'scroll',
   blast: 'blast',
   linea: 'linea',
+  zksync: 'zksync',
 };
 
 export const ProtocolNames = {

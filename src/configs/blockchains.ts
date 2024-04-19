@@ -182,4 +182,18 @@ export const BlockchainConfigs: { [key: string]: Blockchain } = {
       decimals: 18,
     },
   },
+  [ChainNames.zksync]: {
+    name: ChainNames.zksync,
+    family: 'evm',
+    chainId: 324,
+    nodeRpc: String(process.env.BUNNYBOARD_ZKSYNC_NODE),
+    blockSubgraph: '', // don't use or not available
+    explorerApiEndpoint: 'https://block-explorer-api.mainnet.zksync.io/api',
+    nativeToken: {
+      chain: ChainNames.zksync,
+      address: AddressZero,
+      symbol: 'ETH',
+      decimals: 18,
+    },
+  },
 };

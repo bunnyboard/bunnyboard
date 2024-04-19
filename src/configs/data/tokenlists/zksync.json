@@ -1,0 +1,92 @@
+{
+  "0x0e97c7a0f8b2c9885c8ac9fc6136e829cbc21d42": {
+    "chain": "zksync",
+    "address": "0x0e97c7a0f8b2c9885c8ac9fc6136e829cbc21d42",
+    "symbol": "MUTE",
+    "decimals": 18
+  },
+  "0x2039bb4116b4efc145ec4f0e2ea75012d6c0f181": {
+    "chain": "zksync",
+    "address": "0x2039bb4116b4efc145ec4f0e2ea75012d6c0f181",
+    "symbol": "BUSD",
+    "decimals": 18
+  },
+  "0x240f765af2273b0cab6caff2880d6d8f8b285fa4": {
+    "chain": "zksync",
+    "address": "0x240f765af2273b0cab6caff2880d6d8f8b285fa4",
+    "symbol": "SWORD",
+    "decimals": 18
+  },
+  "0x3355df6d4c9c3035724fd0e3914de96a5a83aaf4": {
+    "chain": "zksync",
+    "address": "0x3355df6d4c9c3035724fd0e3914de96a5a83aaf4",
+    "symbol": "USDC.e",
+    "decimals": 6
+  },
+  "0x3a287a06c66f9e95a56327185ca2bdf5f031cecd": {
+    "chain": "zksync",
+    "address": "0x3a287a06c66f9e95a56327185ca2bdf5f031cecd",
+    "symbol": "Cake",
+    "decimals": 18
+  },
+  "0x493257fd37edb34451f62edf8d2a0c418852ba4c": {
+    "chain": "zksync",
+    "address": "0x493257fd37edb34451f62edf8d2a0c418852ba4c",
+    "symbol": "USDT",
+    "decimals": 6
+  },
+  "0x4b9eb6c0b6ea15176bbf62841c6b2a8a398cb656": {
+    "chain": "zksync",
+    "address": "0x4b9eb6c0b6ea15176bbf62841c6b2a8a398cb656",
+    "symbol": "DAI",
+    "decimals": 18
+  },
+  "0x4d321cd88c5680ce4f85bb58c578dfe9c2cc1ef6": {
+    "chain": "zksync",
+    "address": "0x4d321cd88c5680ce4f85bb58c578dfe9c2cc1ef6",
+    "symbol": "KS-LP USDC.e-USDT",
+    "decimals": 18
+  },
+  "0x503234f203fc7eb888eec8513210612a43cf6115": {
+    "chain": "zksync",
+    "address": "0x503234f203fc7eb888eec8513210612a43cf6115",
+    "symbol": "LUSD",
+    "decimals": 18
+  },
+  "0x5aea5775959fbc2557cc8789bc1bf90a239d9a91": {
+    "chain": "zksync",
+    "address": "0x5aea5775959fbc2557cc8789bc1bf90a239d9a91",
+    "symbol": "WETH",
+    "decimals": 18
+  },
+  "0x703b52f2b28febcb60e1372858af5b18849fe867": {
+    "chain": "zksync",
+    "address": "0x703b52f2b28febcb60e1372858af5b18849fe867",
+    "symbol": "wstETH",
+    "decimals": 18
+  },
+  "0x90059c32eeeb1a2aa1351a58860d98855f3655ad": {
+    "chain": "zksync",
+    "address": "0x90059c32eeeb1a2aa1351a58860d98855f3655ad",
+    "symbol": "ONEZ",
+    "decimals": 18
+  },
+  "0x99bbe51be7cce6c8b84883148fd3d12ace5787f2": {
+    "chain": "zksync",
+    "address": "0x99bbe51be7cce6c8b84883148fd3d12ace5787f2",
+    "symbol": "VC",
+    "decimals": 18
+  },
+  "0xbbeb516fb02a01611cbbe0453fe3c580d7281011": {
+    "chain": "zksync",
+    "address": "0xbbeb516fb02a01611cbbe0453fe3c580d7281011",
+    "symbol": "WBTC",
+    "decimals": 8
+  },
+  "0xfd282f16a64c6d304ac05d1a58da15bed0467c71": {
+    "chain": "zksync",
+    "address": "0xfd282f16a64c6d304ac05d1a58da15bed0467c71",
+    "symbol": "PEPE",
+    "decimals": 18
+  }
+}
