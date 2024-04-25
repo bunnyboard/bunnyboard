@@ -196,4 +196,32 @@ export const BlockchainConfigs: { [key: string]: Blockchain } = {
       decimals: 18,
     },
   },
+  [ChainNames.mode]: {
+    name: ChainNames.mode,
+    family: 'evm',
+    chainId: 34443,
+    nodeRpc: String(process.env.BUNNYBOARD_MODE_NODE),
+    blockSubgraph: '', // don't use or not available
+    explorerApiEndpoint: 'https://explorer.mode.network/api',
+    nativeToken: {
+      chain: ChainNames.mode,
+      address: AddressZero,
+      symbol: 'ETH',
+      decimals: 18,
+    },
+  },
+  [ChainNames.manta]: {
+    name: ChainNames.manta,
+    family: 'evm',
+    chainId: 169,
+    nodeRpc: String(process.env.BUNNYBOARD_MANTA_NODE),
+    blockSubgraph: '', // don't use or not available
+    explorerApiEndpoint: 'https://pacific-explorer.manta.network/api',
+    nativeToken: {
+      chain: ChainNames.manta,
+      address: AddressZero,
+      symbol: 'ETH',
+      decimals: 18,
+    },
+  },
 };

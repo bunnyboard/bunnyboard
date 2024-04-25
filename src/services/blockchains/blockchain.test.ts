@@ -6,6 +6,98 @@ import BlockchainService from './blockchain';
 
 const blockchain = new BlockchainService();
 
+const testcases = [
+  {
+    ...EnvConfig.blockchains.ethereum,
+    timestamp: 1672531200, // Sun Jan 01 2023 00:00:00 GMT+0000
+    expectedBlockNumber: 16308189,
+  },
+  {
+    ...EnvConfig.blockchains.arbitrum,
+    timestamp: 1672531200, // Sun Jan 01 2023 00:00:00 GMT+0000
+    expectedBlockNumber: 50084143,
+  },
+  {
+    ...EnvConfig.blockchains.optimism,
+    timestamp: 1672531200, // Sun Jan 01 2023 00:00:00 GMT+0000
+    expectedBlockNumber: 58462085,
+  },
+  {
+    ...EnvConfig.blockchains.polygon,
+    timestamp: 1672531200, // Sun Jan 01 2023 00:00:00 GMT+0000
+    expectedBlockNumber: 37520355,
+  },
+  {
+    ...EnvConfig.blockchains.base,
+    timestamp: 1704067200, // Mon Jan 01 2024 00:00:00 GMT+0000
+    expectedBlockNumber: 8638926,
+  },
+  {
+    ...EnvConfig.blockchains.bnbchain,
+    timestamp: 1672531200, // Sun Jan 01 2023 00:00:00 GMT+0000
+    expectedBlockNumber: 24393651,
+  },
+  {
+    ...EnvConfig.blockchains.fantom,
+    timestamp: 1672531200, // Sun Jan 01 2023 00:00:00 GMT+0000
+    expectedBlockNumber: 53063148,
+  },
+  {
+    ...EnvConfig.blockchains.avalanche,
+    timestamp: 1672531200, // Sun Jan 01 2023 00:00:00 GMT+0000
+    expectedBlockNumber: 24360268,
+  },
+  {
+    ...EnvConfig.blockchains.gnosis,
+    timestamp: 1672531200, // Sun Jan 01 2023 00:00:00 GMT+0000
+    expectedBlockNumber: 25736050,
+  },
+  {
+    ...EnvConfig.blockchains.metis,
+    timestamp: 1672531200, // Sun Jan 01 2023 00:00:00 GMT+0000
+    expectedBlockNumber: 4253470,
+  },
+  {
+    ...EnvConfig.blockchains.scroll,
+    timestamp: 1704067200, // Mon Jan 01 2024 00:00:00 GMT+0000
+    expectedBlockNumber: 2067750,
+  },
+  {
+    ...EnvConfig.blockchains.blast,
+    timestamp: 1708819200, // Sun Feb 25 2024 00:00:00 GMT+0000
+    expectedBlockNumber: 4692,
+  },
+  {
+    ...EnvConfig.blockchains.linea,
+    timestamp: 1704067200, // Mon Jan 01 2024 00:00:00 GMT+0000
+    expectedBlockNumber: 1459540,
+  },
+  {
+    ...EnvConfig.blockchains.zksync,
+    timestamp: 1704067200, // Mon Jan 01 2024 00:00:00 GMT+0000
+    expectedBlockNumber: 22909716,
+  },
+  {
+    ...EnvConfig.blockchains.mode,
+    timestamp: 1704067200, // Mon Jan 01 2024 00:00:00 GMT+0000
+    expectedBlockNumber: 1949808,
+  },
+  {
+    ...EnvConfig.blockchains.manta,
+    timestamp: 1704067200, // Mon Jan 01 2024 00:00:00 GMT+0000
+    expectedBlockNumber: 984324,
+  },
+];
+
+describe('getBlockNumberAtTimestamp', function () {
+  testcases.map((item) =>
+    test(`should get block number correctly - ${item.name} - ${item.timestamp} - ${item.expectedBlockNumber}`, async function () {
+      const blockNumber = await blockchain.getBlockNumberAtTimestamp(item.name, item.timestamp);
+      expect(blockNumber).equal(item.expectedBlockNumber);
+    }),
+  );
+});
+
 describe('multicall', function () {
   test('should be able to get token metadata', async function () {
     const tokens = [
@@ -82,86 +174,4 @@ describe('multicall', function () {
       expect(readContractMultipleResults[1]).equal(token.decimals);
     }
   });
-});
-
-const testcases = [
-  {
-    ...EnvConfig.blockchains.ethereum,
-    timestamp: 1672531200, // Sun Jan 01 2023 00:00:00 GMT+0000
-    expectedBlockNumber: 16308189,
-  },
-  {
-    ...EnvConfig.blockchains.arbitrum,
-    timestamp: 1672531200, // Sun Jan 01 2023 00:00:00 GMT+0000
-    expectedBlockNumber: 50084143,
-  },
-  {
-    ...EnvConfig.blockchains.optimism,
-    timestamp: 1672531200, // Sun Jan 01 2023 00:00:00 GMT+0000
-    expectedBlockNumber: 58462085,
-  },
-  {
-    ...EnvConfig.blockchains.polygon,
-    timestamp: 1672531200, // Sun Jan 01 2023 00:00:00 GMT+0000
-    expectedBlockNumber: 37520355,
-  },
-  {
-    ...EnvConfig.blockchains.base,
-    timestamp: 1704067200, // Mon Jan 01 2024 00:00:00 GMT+0000
-    expectedBlockNumber: 8638926,
-  },
-  {
-    ...EnvConfig.blockchains.bnbchain,
-    timestamp: 1672531200, // Sun Jan 01 2023 00:00:00 GMT+0000
-    expectedBlockNumber: 24393651,
-  },
-  {
-    ...EnvConfig.blockchains.fantom,
-    timestamp: 1672531200, // Sun Jan 01 2023 00:00:00 GMT+0000
-    expectedBlockNumber: 53063148,
-  },
-  {
-    ...EnvConfig.blockchains.avalanche,
-    timestamp: 1672531200, // Sun Jan 01 2023 00:00:00 GMT+0000
-    expectedBlockNumber: 24360268,
-  },
-  {
-    ...EnvConfig.blockchains.gnosis,
-    timestamp: 1672531200, // Sun Jan 01 2023 00:00:00 GMT+0000
-    expectedBlockNumber: 25736050,
-  },
-  {
-    ...EnvConfig.blockchains.metis,
-    timestamp: 1672531200, // Sun Jan 01 2023 00:00:00 GMT+0000
-    expectedBlockNumber: 4253470,
-  },
-  {
-    ...EnvConfig.blockchains.scroll,
-    timestamp: 1704067200, // Sun Jan 01 2023 00:00:00 GMT+0000
-    expectedBlockNumber: 2067750,
-  },
-  {
-    ...EnvConfig.blockchains.blast,
-    timestamp: 1708819200, // Sun Feb 25 2024 00:00:00 GMT+0000
-    expectedBlockNumber: 4692,
-  },
-  {
-    ...EnvConfig.blockchains.linea,
-    timestamp: 1704067200, // Sun Jan 01 2023 00:00:00 GMT+0000
-    expectedBlockNumber: 1459540,
-  },
-  {
-    ...EnvConfig.blockchains.zksync,
-    timestamp: 1704067200, // Sun Jan 01 2023 00:00:00 GMT+0000
-    expectedBlockNumber: 22909716,
-  },
-];
-
-describe('getBlockNumberAtTimestamp', function () {
-  testcases.map((item) =>
-    test(`should get block number correctly - ${item.name} - ${item.timestamp} - ${item.expectedBlockNumber}`, async function () {
-      const blockNumber = await blockchain.getBlockNumberAtTimestamp(item.name, item.timestamp);
-      expect(blockNumber).equal(item.expectedBlockNumber);
-    }),
-  );
 });

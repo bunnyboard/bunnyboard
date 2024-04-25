@@ -13,6 +13,9 @@ export const ChainNames = {
   blast: 'blast',
   linea: 'linea',
   zksync: 'zksync',
+  mode: 'mode',
+  manta: 'manta',
+  harmony: 'harmony',
 };
 
 export const ProtocolNames = {
