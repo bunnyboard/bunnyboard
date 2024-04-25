@@ -1,0 +1,56 @@
+{
+  "0x0dc808adce2099a9f62aa87d9670745aba741746": {
+    "chain": "manta",
+    "address": "0x0dc808adce2099a9f62aa87d9670745aba741746",
+    "symbol": "WETH",
+    "decimals": 18
+  },
+  "0x2fe3ad97a60eb7c79a976fc18bb5ffd07dd94ba5": {
+    "chain": "manta",
+    "address": "0x2fe3ad97a60eb7c79a976fc18bb5ffd07dd94ba5",
+    "symbol": "wstETH",
+    "decimals": 18
+  },
+  "0x305e88d809c9dc03179554bfbf85ac05ce8f18d6": {
+    "chain": "manta",
+    "address": "0x305e88d809c9dc03179554bfbf85ac05ce8f18d6",
+    "symbol": "WBTC",
+    "decimals": 8
+  },
+  "0x6fae4d9935e2fcb11fc79a64e917fb2bf14dafaa": {
+    "chain": "manta",
+    "address": "0x6fae4d9935e2fcb11fc79a64e917fb2bf14dafaa",
+    "symbol": "TIA",
+    "decimals": 6
+  },
+  "0x95cef13441be50d20ca4558cc0a27b601ac544e5": {
+    "chain": "manta",
+    "address": "0x95cef13441be50d20ca4558cc0a27b601ac544e5",
+    "symbol": "MANTA",
+    "decimals": 18
+  },
+  "0xb73603c5d87fa094b7314c74ace2e64d165016fb": {
+    "chain": "manta",
+    "address": "0xb73603c5d87fa094b7314c74ace2e64d165016fb",
+    "symbol": "USDC",
+    "decimals": 6
+  },
+  "0xbdad407f77f44f7da6684b416b1951eca461fb07": {
+    "chain": "manta",
+    "address": "0xbdad407f77f44f7da6684b416b1951eca461fb07",
+    "symbol": "wUSDM",
+    "decimals": 18
+  },
+  "0xec901da9c68e90798bbbb74c11406a32a70652c3": {
+    "chain": "manta",
+    "address": "0xec901da9c68e90798bbbb74c11406a32a70652c3",
+    "symbol": "STONE",
+    "decimals": 18
+  },
+  "0xf417f5a458ec102b90352f697d6e2ac3a3d2851f": {
+    "chain": "manta",
+    "address": "0xf417f5a458ec102b90352f697d6e2ac3a3d2851f",
+    "symbol": "USDT",
+    "decimals": 6
+  }
+}

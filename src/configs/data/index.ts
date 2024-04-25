@@ -7,6 +7,7 @@ import EthereumAddresses from './addresses/ethereum.json';
 import FantomAddresses from './addresses/fantom.json';
 import GnosisAddresses from './addresses/gnosis.json';
 import LineaAddresses from './addresses/linea.json';
+import MantaAddresses from './addresses/manta.json';
 import MetisAddresses from './addresses/metis.json';
 import OptimismAddresses from './addresses/optimism.json';
 import PolygonAddresses from './addresses/polygon.json';
@@ -22,6 +23,7 @@ import TokenListEthereum from './tokenlists/ethereum.json';
 import TokenListFantom from './tokenlists/fantom.json';
 import TokenListGnosis from './tokenlists/gnosis.json';
 import TokenListLinea from './tokenlists/linea.json';
+import TokenListManta from './tokenlists/manta.json';
 import TokenListMetis from './tokenlists/metis.json';
 import TokenListOptimism from './tokenlists/optimism.json';
 import TokenListPolygon from './tokenlists/polygon.json';
@@ -48,6 +50,7 @@ export const AddressesBook = {
   blast: BlastAddresses,
   linea: LineaAddresses,
   zksync: ZksyncAddresses,
+  manta: MantaAddresses,
 };
 
 export const TokensBook = {
@@ -65,6 +68,7 @@ export const TokensBook = {
   blast: TokenListBlast,
   linea: TokenListLinea,
   zksync: TokenListZksync,
+  manta: TokenListManta,
 };
 
 // these tokens will be used for general purpose

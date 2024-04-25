@@ -58,5 +58,18 @@ export const ZerolendConfigs: AaveProtocolConfig = {
         address: AddressesBook.zksync.ZerolendOracle,
       },
     },
+    {
+      chain: ChainNames.manta,
+      protocol: ProtocolNames.zerolend,
+      version: LendingMarketVersions.cross.aavev3,
+      birthday: 1705276800, // Mon Jan 15 2024 00:00:00 GMT+0000
+      metric: DataMetrics.crossLending,
+      address: AddressesBook.manta.ZerolendLendingPool,
+      dataProvider: AddressesBook.manta.ZerolendDataProvider,
+      oracle: {
+        currency: 'usd',
+        address: AddressesBook.manta.ZerolendOracle,
+      },
+    },
   ],
 };
