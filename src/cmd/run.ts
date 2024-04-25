@@ -5,6 +5,8 @@ import TokenBoardCollector from '../modules/collector/tokenBoard';
 import { ContextServices, ContextStorages } from '../types/namespaces';
 import { BasicCommand } from './basic';
 
+const DefaultServiceSleepSeconds = 3600;
+
 export class RunCommand extends BasicCommand {
   public readonly name: string = 'run';
   public readonly describe: string = 'Run collector services';
@@ -32,7 +34,7 @@ export class RunCommand extends BasicCommand {
           if (argv.exit) {
             process.exit(0);
           } else {
-            await sleep(argv.sleep ? Number(argv.sleep) : 300);
+            await sleep(argv.sleep ? Number(argv.sleep) : DefaultServiceSleepSeconds);
           }
         } while (!argv.exit);
         break;
@@ -52,7 +54,7 @@ export class RunCommand extends BasicCommand {
           if (argv.exit) {
             process.exit(0);
           } else {
-            await sleep(argv.sleep ? Number(argv.sleep) : 300);
+            await sleep(argv.sleep ? Number(argv.sleep) : DefaultServiceSleepSeconds);
           }
         } while (!argv.exit);
 
@@ -70,7 +72,7 @@ export class RunCommand extends BasicCommand {
           if (argv.exit) {
             process.exit(0);
           } else {
-            await sleep(argv.sleep ? Number(argv.sleep) : 300);
+            await sleep(argv.sleep ? Number(argv.sleep) : DefaultServiceSleepSeconds);
           }
         } while (!argv.exit);
 
@@ -122,8 +124,8 @@ export class RunCommand extends BasicCommand {
       },
       sleep: {
         type: 'number',
-        default: 300, // 5 minutes
-        describe: 'Given amount of seconds to sleep after every sync round. Default is 5 minutes.',
+        default: DefaultServiceSleepSeconds, // 60 minutes
+        describe: 'Given amount of seconds to sleep after every sync round. Default is 60 minutes.',
       },
     });
   }

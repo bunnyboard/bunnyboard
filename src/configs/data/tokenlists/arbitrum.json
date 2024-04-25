@@ -47,6 +47,12 @@
     "symbol": "COMP",
     "decimals": 18
   },
+  "0x35751007a407ca6feffe80b3cb397736d2cf4dbe": {
+    "chain": "arbitrum",
+    "address": "0x35751007a407ca6feffe80b3cb397736d2cf4dbe",
+    "symbol": "weETH",
+    "decimals": 18
+  },
   "0x3f56e0c36d275367b8c502090edf38289b3dea0d": {
     "chain": "arbitrum",
     "address": "0x3f56e0c36d275367b8c502090edf38289b3dea0d",

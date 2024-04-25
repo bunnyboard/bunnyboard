@@ -258,7 +258,7 @@ export default class CompoundAdapter extends CrossLendingProtocolAdapter {
       const ltv = await this.getMarketLoanToValueRate(marketConfig, marketAndPrice.cToken, blockNumber);
       const reserveFactor = await this.getMarketReserveFactorRate(marketConfig, marketAndPrice.cToken, blockNumber);
 
-      const totalDeposited = new BigNumber(totalCash.toString())
+      const totalDeposited = new BigNumber(totalCash ? totalCash.toString() : '0')
         .plus(new BigNumber(totalBorrows.toString()))
         .minus(new BigNumber(totalReserves.toString()));
       const totalBorrowed = new BigNumber(totalBorrows.toString());
