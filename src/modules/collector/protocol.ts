@@ -1,5 +1,6 @@
 import { ProtocolConfigs } from '../../configs';
 import logger from '../../lib/logger';
+import { sleep } from '../../lib/utils';
 import { DataMetric, DataMetrics, MetricConfig } from '../../types/configs';
 import { ContextServices, ContextStorages, IProtocolAdapter } from '../../types/namespaces';
 import { getProtocolAdapters } from '../adapters';
@@ -82,6 +83,9 @@ export default class ProtocolCollector {
           fromTime: options.fromTime,
           force: options.force,
         });
+
+        // sleep 60 seconds before run the next config
+        await sleep(60);
       }
     }
   }

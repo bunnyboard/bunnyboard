@@ -1,7 +1,7 @@
 import { TimeUnits } from '../../configs/constants';
 import EnvConfig from '../../configs/envConfig';
 import logger from '../../lib/logger';
-import { getDateString, getTodayUTCTimestamp } from '../../lib/utils';
+import { getDateString, getTodayUTCTimestamp, sleep } from '../../lib/utils';
 import { MetricConfig, ProtocolConfig } from '../../types/configs';
 import { ContextServices, ContextStorages, IProtocolAdapter } from '../../types/namespaces';
 import { AdapterAbiConfigs, RunAdapterOptions } from '../../types/options';
@@ -141,6 +141,9 @@ export default class ProtocolAdapter implements IProtocolAdapter {
       });
 
       runTime += TimeUnits.SecondsPerDay;
+
+      // sleep 10 seconds before process next snapshot
+      await sleep(10);
     }
   }
 }
