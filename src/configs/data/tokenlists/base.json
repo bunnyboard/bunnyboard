@@ -41,6 +41,12 @@
     "symbol": "USDC",
     "decimals": 6
   },
+  "0x940181a94a35a4569e4529a3cdfb74e38fd98631": {
+    "chain": "base",
+    "address": "0x940181a94a35a4569e4529a3cdfb74e38fd98631",
+    "symbol": "AERO",
+    "decimals": 18
+  },
   "0x9e1028f5f1d5ede59748ffcee5532509976840e0": {
     "chain": "base",
     "address": "0x9e1028f5f1d5ede59748ffcee5532509976840e0",

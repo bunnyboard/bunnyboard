@@ -3,7 +3,7 @@ import axios, { RawAxiosRequestHeaders } from 'axios';
 import BigNumber from 'bignumber.js';
 import { Address, PublicClient, createPublicClient, http } from 'viem';
 
-import { DefaultQueryContractLogsBlockRange, TokenList } from '../../configs';
+import { CustomQueryContractLogsBlockRange, DefaultQueryContractLogsBlockRange, TokenList } from '../../configs';
 import ERC20Abi from '../../configs/abi/ERC20.json';
 import { AddressE, AddressF, AddressMulticall3, AddressZero } from '../../configs/constants';
 import EnvConfig from '../../configs/envConfig';
@@ -115,12 +115,13 @@ export default class BlockchainService extends CachingService implements IBlockc
 
     const client = this.getPublicClient(options.chain);
 
+    const blockRange = CustomQueryContractLogsBlockRange[options.chain]
+      ? CustomQueryContractLogsBlockRange[options.chain]
+      : DefaultQueryContractLogsBlockRange;
+
     let startBlock = options.fromBlock;
     while (startBlock <= options.toBlock) {
-      const toBlock =
-        startBlock + DefaultQueryContractLogsBlockRange > options.toBlock
-          ? options.toBlock
-          : startBlock + DefaultQueryContractLogsBlockRange;
+      const toBlock = startBlock + blockRange > options.toBlock ? options.toBlock : startBlock + blockRange;
       logs = logs.concat(
         await client.getLogs({
           address: options.address as Address,

@@ -167,6 +167,7 @@ export const OracleConfigs: { [key: string]: { [key: string]: OracleConfig } } =
     '0x833589fcd6edb6e08f4c7c32d4f71b54bda02913': OracleSourceConfigs.USDC,
     '0x50c5725949a6f0c72e6c4a641f24049a917db0cb': OracleSourceConfigs.DAI,
     '0x9e1028f5f1d5ede59748ffcee5532509976840e0': OracleSourceConfigs.COMP,
+    '0x940181a94a35a4569e4529a3cdfb74e38fd98631': OracleSourceConfigs.AERO,
   },
 
   // tokens on Polygon

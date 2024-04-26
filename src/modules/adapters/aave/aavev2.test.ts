@@ -221,22 +221,11 @@ test('should get data correctly at birthday - aavev2 chain ethereum', async func
   }
 });
 
-test(`should get data correctly at ${getDateString(timestamp)} - aavev2 chain polygon`, async function () {
-  const aavev2Adapter = new Aavev2Adapter(
-    {
-      blockchain: blockchain,
-      oracle: oracle,
-    },
-    {
-      database: database,
-      memcache: memcache,
-    },
-    Aavev2Configs,
-  );
-
+const timestampPolygon = 1630281600; // Mon Aug 30 2021 00:00:00 GMT+0000
+test(`should get data correctly at ${getDateString(timestampPolygon)} - aavev2 chain polygon`, async function () {
   const configPolygon = ProtocolConfigs.aavev2.configs.filter((item) => item.chain === 'polygon')[0];
   if (configPolygon) {
-    const dataState = await aavev2Adapter.getLendingReservesDataState({
+    const dataState = await adapter.getLendingReservesDataState({
       config: configPolygon,
       timestamp: timestamp,
     });
@@ -256,21 +245,9 @@ test(`should get data correctly at ${getDateString(timestamp)} - aavev2 chain po
 });
 
 test(`should get data correctly at ${getDateString(timestamp)} - aavev2 chain avalanche`, async function () {
-  const aavev2Adapter = new Aavev2Adapter(
-    {
-      blockchain: blockchain,
-      oracle: oracle,
-    },
-    {
-      database: database,
-      memcache: memcache,
-    },
-    Aavev2Configs,
-  );
-
   const configAvalanche = ProtocolConfigs.aavev2.configs.filter((item) => item.chain === 'avalanche')[0];
   if (configAvalanche) {
-    const dataState = await aavev2Adapter.getLendingReservesDataState({
+    const dataState = await adapter.getLendingReservesDataState({
       config: configAvalanche,
       timestamp: timestamp,
     });
