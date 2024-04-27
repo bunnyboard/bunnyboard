@@ -1,6 +1,7 @@
 import CometAbi from '../../configs/abi/compound/Comet.json';
 import ComptrollerAbi from '../../configs/abi/compound/Comptroller.json';
 import cErc20Abi from '../../configs/abi/compound/cErc20.json';
+import CTokensMappings from '../../configs/data/statics/cTokenMappings.json';
 import EnvConfig from '../../configs/envConfig';
 import { CompoundLendingMarketConfig, Compoundv3LendingMarketConfig } from '../../configs/protocols/compound';
 import { normalizeAddress } from '../../lib/utils';
@@ -35,34 +36,44 @@ export default class CompoundLibs {
       params: [],
     });
     for (const cToken of allMarkets) {
-      const underlying = await blockchain.readContract({
-        chain: lendingMarketConfig.chain,
-        abi: cErc20Abi,
-        target: cToken,
-        method: 'underlying',
-        params: [],
-      });
-      if (underlying) {
-        const token = await blockchain.getTokenInfo({
+      const cTokenAddress = normalizeAddress(cToken);
+      if ((CTokensMappings as any)[cTokenAddress]) {
+        cTokens.push({
           chain: lendingMarketConfig.chain,
-          address: underlying,
-          onchain: true,
+          comptroller: lendingMarketConfig.address,
+          cToken: cTokenAddress,
+          underlying: (CTokensMappings as any)[cTokenAddress],
         });
-        if (token) {
+      } else {
+        const underlying = await blockchain.readContract({
+          chain: lendingMarketConfig.chain,
+          abi: cErc20Abi,
+          target: cToken,
+          method: 'underlying',
+          params: [],
+        });
+        if (underlying) {
+          const token = await blockchain.getTokenInfo({
+            chain: lendingMarketConfig.chain,
+            address: underlying,
+            onchain: true,
+          });
+          if (token) {
+            cTokens.push({
+              chain: lendingMarketConfig.chain,
+              comptroller: lendingMarketConfig.address,
+              cToken: normalizeAddress(cToken.toString()),
+              underlying: token,
+            });
+          }
+        } else {
           cTokens.push({
             chain: lendingMarketConfig.chain,
             comptroller: lendingMarketConfig.address,
             cToken: normalizeAddress(cToken.toString()),
-            underlying: token,
+            underlying: EnvConfig.blockchains[lendingMarketConfig.chain].nativeToken,
           });
         }
-      } else {
-        cTokens.push({
-          chain: lendingMarketConfig.chain,
-          comptroller: lendingMarketConfig.address,
-          cToken: normalizeAddress(cToken.toString()),
-          underlying: EnvConfig.blockchains[lendingMarketConfig.chain].nativeToken,
-        });
       }
     }
 
