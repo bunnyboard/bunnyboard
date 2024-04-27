@@ -1,4 +1,5 @@
 import { DataMetrics } from '../../types/configs';
+import cTokenMappings from '../data/statics/cTokenMappings.json';
 import { CompoundProtocolConfig, formatCompoundLendingMarketConfig } from './compound';
 
 export const IronbankConfigs: CompoundProtocolConfig = {
@@ -12,7 +13,7 @@ export const IronbankConfigs: CompoundProtocolConfig = {
       birthday: 1607126400, // Sat Dec 05 2020 00:00:00 GMT+0000
       address: '0xAB1c342C7bf5Ec5F02ADEA1c2270670bCa144CbB',
       governanceToken: null,
-      underlying: {}, // no native markets
+      underlying: cTokenMappings,
       blacklists: {
         '0x7589c9e17bcfce1ccaa1f921196fda177f0207fc': true, // cy3CRV
       },
@@ -35,7 +36,7 @@ export const IronbankConfigs: CompoundProtocolConfig = {
       birthday: 1633737600, // Sat Oct 09 2021 00:00:00 GMT+0000
       address: '0x2eE80614Ccbc5e28654324a66A396458Fa5cD7Cc',
       governanceToken: null,
-      underlying: {}, // no native markets
+      underlying: cTokenMappings,
     },
     {
       chain: 'optimism',
@@ -45,7 +46,7 @@ export const IronbankConfigs: CompoundProtocolConfig = {
       birthday: 1660521600, // Mon Aug 15 2022 00:00:00 GMT+0000
       address: '0xE0B57FEEd45e7D908f2d0DaCd26F113Cf26715BF',
       governanceToken: null,
-      underlying: {}, // no native markets
+      underlying: cTokenMappings,
     },
   ]),
 };

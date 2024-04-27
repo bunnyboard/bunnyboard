@@ -1,4 +1,5 @@
 import { DataMetrics } from '../../types/configs';
+import cTokenMappings from '../data/statics/cTokenMappings.json';
 import { CompoundProtocolConfig, formatCompoundLendingMarketConfig } from './compound';
 
 export const SonneConfigs: CompoundProtocolConfig = {
@@ -17,7 +18,7 @@ export const SonneConfigs: CompoundProtocolConfig = {
         decimals: 18,
         address: '0x1db2466d9f5e10d7090e7152b68d62703a2245f0',
       },
-      underlying: {},
+      underlying: cTokenMappings,
     },
     {
       chain: 'base',
@@ -27,7 +28,7 @@ export const SonneConfigs: CompoundProtocolConfig = {
       metric: DataMetrics.crossLending,
       address: '0x1DB2466d9F5e10D7090E7152B68d62703a2245F0',
       governanceToken: null,
-      underlying: {},
+      underlying: cTokenMappings,
     },
   ]),
 };

@@ -1,5 +1,5 @@
 import { DataMetrics } from '../../types/configs';
-import { AddressZero } from '../constants';
+import cTokenMappings from '../data/statics/cTokenMappings.json';
 import { CompoundProtocolConfig, formatCompoundLendingMarketConfig } from './compound';
 
 export const VenusConfigs: CompoundProtocolConfig = {
@@ -18,14 +18,7 @@ export const VenusConfigs: CompoundProtocolConfig = {
         decimals: 18,
         address: '0xcf6bb5389c92bdda8a3747ddb454cb7a64626c63',
       },
-      underlying: {
-        '0xa07c5b74c9b40447a954e1466938b865b6bbea36': {
-          chain: 'bnbchain',
-          symbol: 'BNB',
-          decimals: 18,
-          address: AddressZero,
-        },
-      },
+      underlying: cTokenMappings,
       blacklists: {
         '0xebd0070237a0713e8d94fef1b728d3d993d290ef': true, // vCAN
         '0x20bff4bbeda07536ff00e073bd8359e5d80d733d': true, // CAN

@@ -1,4 +1,5 @@
 import { DataMetrics, LendingMarketVersions } from '../../types/configs';
+import cTokenMappings from '../data/statics/cTokenMappings.json';
 import { ChainNames, ProtocolNames } from '../names';
 import { CompoundProtocolConfig, formatCompoundLendingMarketConfig } from './compound';
 
@@ -13,7 +14,7 @@ export const MendiConfigs: CompoundProtocolConfig = {
       metric: DataMetrics.crossLending,
       address: '0x1b4d3b0421dDc1eB216D230Bc01527422Fb93103',
       governanceToken: null,
-      underlying: {},
+      underlying: cTokenMappings,
     },
   ]),
 };

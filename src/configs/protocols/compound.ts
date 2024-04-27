@@ -8,6 +8,7 @@ import {
   Token,
 } from '../../types/configs';
 import { TokensBook } from '../data';
+import cTokenMappings from '../data/statics/cTokenMappings.json';
 import { ChainNames, ProtocolNames } from '../names';
 
 export interface CompoundLendingMarketConfig extends CrossLendingMarketConfig {
@@ -55,14 +56,7 @@ export const CompoundConfigs: CompoundProtocolConfig = {
         decimals: 18,
         address: '0xc00e94cb662c3520282e6f5717214004a7f26888',
       },
-      underlying: {
-        '0x4ddc2d193948926d02f9b1fe9e1daa0718270ed5': {
-          chain: 'ethereum',
-          symbol: 'ETH',
-          decimals: 18,
-          address: '0x0000000000000000000000000000000000000000',
-        },
-      },
+      underlying: cTokenMappings,
       preDefinedMarkets: [
         '0x6C8c6b02E7b2BE14d4fA6022Dfd6d75921D90E4E',
         '0x5d3a536E4D6DbD6114cc1Ead35777bAB948E3643',
