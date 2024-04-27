@@ -17,7 +17,7 @@ export default class DexscanCollector {
 
   public async run(options: RunProtocolCollectorOptions): Promise<void> {
     const configs: Array<DexConfig> = DexscanConfigs.filter(
-      (config) => options.chain === undefined || options.chain === config.chain,
+      (config) => options.chains === undefined || options.chains.indexOf(config.chain) !== -1,
     ).filter((config) => options.protocols === undefined || options.protocols.indexOf(config.protocol) !== -1);
 
     logger.info('start to scan dex data', {

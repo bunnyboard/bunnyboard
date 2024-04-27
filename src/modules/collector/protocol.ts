@@ -9,7 +9,7 @@ export interface RunProtocolCollectorOptions {
   metric?: DataMetric;
 
   // if chain was given, run collector with given chain
-  chain?: string;
+  chains?: Array<string>;
 
   // if the protocol was given, run collector with given protocol
   // and the chain option is just use for filter configs
@@ -36,7 +36,7 @@ export default class ProtocolCollector {
   }
 
   private getAllConfigs(options: RunProtocolCollectorOptions): Array<MetricConfig> {
-    const { metric, chain, protocols } = options;
+    const { metric, chains, protocols } = options;
 
     let configs: Array<MetricConfig> = [];
     for (const [, protocolConfig] of Object.entries(ProtocolConfigs)) {
@@ -46,7 +46,7 @@ export default class ProtocolCollector {
     return configs
       .filter((config) => metric === undefined || metric === config.metric)
       .filter((config) => protocols === undefined || protocols.indexOf(config.protocol) !== -1)
-      .filter((config) => chain === undefined || chain === config.chain);
+      .filter((config) => chains === undefined || chains.indexOf(config.chain) !== -1);
   }
 
   private getAdapter(config: MetricConfig): IProtocolAdapter | null {
@@ -69,7 +69,7 @@ export default class ProtocolCollector {
 
     logger.info('start to run collector', {
       service: this.name,
-      chain: options.chain ? options.chain : 'none',
+      chain: options.chains ? options.chains.toString() : 'none',
       protocols: options.protocols ? options.protocols.toString() : 'none',
       metric: options.metric ? options.metric : 'none',
       configs: configs.length,

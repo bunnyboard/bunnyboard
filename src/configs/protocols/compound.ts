@@ -177,5 +177,14 @@ export const Compoundv3Configs: Compoundv3ProtocolConfig = {
       address: '0xB2f97c1Bd3bf02f5e74d13f02E3e26F93D77CE44', // cUSDCv3
       debtToken: TokensBook.scroll['0x06efdbff2a14a7c8e15944d1f4a48f9f95f663a4'],
     },
+    {
+      chain: ChainNames.optimism,
+      protocol: ProtocolNames.compoundv3,
+      version: LendingMarketVersions.isolated.compoundv3,
+      birthday: 1712448000, // Sun Apr 07 2024 00:00:00 GMT+0000
+      metric: DataMetrics.isolatedLending,
+      address: '0x2e44e174f7D53F0212823acC11C01A11d58c5bCB', // cUSDCv3
+      debtToken: TokensBook.optimism['0x0b2c639c533813f4aa9d7837caf62653d097ff85'],
+    },
   ]),
 };

@@ -1,7 +1,5 @@
 import { sleep } from '../lib/utils';
-import DexscanCollector from '../modules/collector/dexscan';
 import ProtocolCollector from '../modules/collector/protocol';
-import TokenBoardCollector from '../modules/collector/tokenBoard';
 import { ContextServices, ContextStorages } from '../types/namespaces';
 import { BasicCommand } from './basic';
 
@@ -25,7 +23,7 @@ export class RunCommand extends BasicCommand {
         do {
           await collector.run({
             metric: argv.metric !== '' ? argv.metric : undefined,
-            chain: argv.chain !== '' ? argv.chain : undefined,
+            chains: argv.chain !== '' ? argv.chain.split(',') : undefined,
             protocols: argv.protocol !== '' ? argv.protocol.split(',') : undefined,
             fromTime: argv.fromTime ? argv.fromTime : undefined,
             force: argv.force,
@@ -37,45 +35,6 @@ export class RunCommand extends BasicCommand {
             await sleep(argv.sleep ? Number(argv.sleep) : DefaultServiceSleepSeconds);
           }
         } while (!argv.exit);
-        break;
-      }
-      case 'tokenBoard': {
-        const tokenBoardCollector = new TokenBoardCollector(storages, services);
-
-        do {
-          await tokenBoardCollector.run({
-            metric: argv.metric !== '' ? argv.metric : undefined,
-            chain: argv.chain !== '' ? argv.chain : undefined,
-            protocols: argv.protocol !== '' ? argv.protocol.split(',') : undefined,
-            fromTime: argv.fromTime ? argv.fromTime : undefined,
-            force: argv.force,
-          });
-
-          if (argv.exit) {
-            process.exit(0);
-          } else {
-            await sleep(argv.sleep ? Number(argv.sleep) : DefaultServiceSleepSeconds);
-          }
-        } while (!argv.exit);
-
-        break;
-      }
-      case 'dexscan': {
-        const dexscan = new DexscanCollector(storages, services);
-
-        do {
-          await dexscan.run({
-            chain: argv.chain !== '' ? argv.chain : undefined,
-            protocols: argv.protocol !== '' ? argv.protocol.split(',') : undefined,
-          });
-
-          if (argv.exit) {
-            process.exit(0);
-          } else {
-            await sleep(argv.sleep ? Number(argv.sleep) : DefaultServiceSleepSeconds);
-          }
-        } while (!argv.exit);
-
         break;
       }
     }
@@ -98,7 +57,8 @@ export class RunCommand extends BasicCommand {
       chain: {
         type: 'string',
         default: '',
-        describe: 'Collect all protocols data on given chain.',
+        describe:
+          'Collect all protocols data on given a list of chain seperated by comma, ex: --chain "ethereum,arbitrum".',
       },
       protocol: {
         type: 'string',
