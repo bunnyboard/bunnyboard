@@ -98,7 +98,8 @@ const MakerMarket: MakerLendingMarketConfig = {
   protocol: 'maker',
   metric: DataMetrics.cdpLending,
   version: LendingMarketVersions.cdp.maker,
-  birthday: 1574208000, // Wed Nov 20 2019 00:00:00 GMT+0000
+  // birthday: 1574208000, // Wed Nov 20 2019 00:00:00 GMT+0000
+  birthday: 1640995200, // Sat Jan 01 2022 00:00:00 GMT+0000
   address: '0x6b175474e89094c44da98b954eedeac495271d0f', // DAI address
   daiJoin: MakerDaiJoinContract,
   vat: MakerVatContract,
@@ -122,8 +123,6 @@ const MakerMarket: MakerLendingMarketConfig = {
     };
   }),
 };
-
-export const MakerDaiSavingRateDataKey = 'MakerDaiSavingRate';
 
 export const MakerConfigs: MakerProtocolConfig = {
   protocol: 'maker',

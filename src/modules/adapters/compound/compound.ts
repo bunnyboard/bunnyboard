@@ -198,7 +198,7 @@ export default class CompoundAdapter extends CrossLendingProtocolAdapter {
     const supplyRate = new BigNumber(supplyRatePerBlock ? supplyRatePerBlock : '0').multipliedBy(
       Math.floor(TimeUnits.SecondsPerYear / ChainBlockPeriods[chain]),
     );
-    const borrowRate = new BigNumber(borrowRatePerBlock).multipliedBy(
+    const borrowRate = new BigNumber(borrowRatePerBlock ? borrowRatePerBlock : '0').multipliedBy(
       Math.floor(TimeUnits.SecondsPerYear / ChainBlockPeriods[chain]),
     );
 

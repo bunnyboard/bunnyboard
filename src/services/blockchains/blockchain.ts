@@ -266,31 +266,22 @@ export default class BlockchainService extends CachingService implements IBlockc
     // get from explorer api
     if (chainConfig && chainConfig.explorerApiEndpoint) {
       const url = `${chainConfig.explorerApiEndpoint}?module=block&action=getblocknobytime&timestamp=${timestamp}&closest=before`;
-      const response = await retry(
-        async function () {
-          try {
-            const response = await axios.get(url, {
-              headers: {
-                'Content-Type': 'application/json',
-              } as RawAxiosRequestHeaders,
-            });
 
-            return response.data;
-          } catch (e: any) {
-            console.log(e.message);
+      try {
+        const response = await axios.get(url, {
+          headers: {
+            'Content-Type': 'application/json',
+          } as RawAxiosRequestHeaders,
+        });
+        if (response && response.data && response.data.status === '1' && response.data.result) {
+          if (response.data.result.blockNumber) {
+            blockNumber = Number(response.data.result.blockNumber);
+          } else {
+            blockNumber = Number(response.data.result);
           }
-        },
-        {
-          retries: 5,
-        },
-      );
-
-      if (response && response.status === '1' && response.result) {
-        if (response.result.blockNumber) {
-          blockNumber = Number(response.result.blockNumber);
-        } else {
-          blockNumber = Number(response.result);
         }
+      } catch (e: any) {
+        console.log(e);
       }
     }
 
@@ -310,7 +301,12 @@ export default class BlockchainService extends CachingService implements IBlockc
       blockNumber = await this.getBlockNumberAtTimestamp(chain, timestamp);
 
       if (!blockNumber) {
-        await sleep(5);
+        logger.warn('retrying to query block number at timestamp', {
+          service: this.name,
+          chain,
+          time: timestamp,
+        });
+        await sleep(10);
       }
     } while (blockNumber === null);
 

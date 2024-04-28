@@ -10,6 +10,7 @@ export interface AdapterGetEventLogsOptions {
   metricConfig: MetricConfig;
   fromBlock: number;
   toBlock: number;
+  timestamp?: number;
 }
 
 export default class ProtocolAdapter implements IProtocolAdapter {
@@ -100,10 +101,10 @@ export default class ProtocolAdapter implements IProtocolAdapter {
       metric: config.metric,
       address: config.address,
       fromDate: getDateString(runTime),
-      toDate: getDateString(today),
+      toDate: getDateString(today - TimeUnits.SecondsPerDay),
     });
 
-    while (runTime <= today) {
+    while (runTime < today) {
       const startExeTime = Math.floor(new Date().getTime() / 1000);
 
       const snapshot = await this.getSnapshot(config, runTime, runTime + TimeUnits.SecondsPerDay - 1);

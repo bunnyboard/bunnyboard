@@ -199,8 +199,10 @@ export default class MakerAdapter extends CdpLendingProtocolAdapter {
             totalDeposited: totalDeposited,
             totalBorrowed: totalBorrowed,
             rateBorrow: borrowRate.toString(10),
-            rateBorrowFee: '0',
             rateLoanToValue: loanToValue.toString(10),
+
+            // maker don't charge borrow fees
+            rateBorrowFee: '0',
           });
         }
       }
@@ -222,16 +224,19 @@ export default class MakerAdapter extends CdpLendingProtocolAdapter {
 
     // get events from gem joins
     for (const gemConfig of makerConfig.gems) {
-      logs = logs.concat(
-        await this.services.blockchain.getContractLogs({
-          chain: makerConfig.chain,
-          address: gemConfig.address,
-          fromBlock: options.fromBlock,
-          toBlock: options.toBlock,
-        }),
-      );
+      if (!options.timestamp || options.timestamp >= gemConfig.birthday) {
+        logs = logs.concat(
+          await this.services.blockchain.getContractLogs({
+            chain: makerConfig.chain,
+            address: gemConfig.address,
+            fromBlock: options.fromBlock,
+            toBlock: options.toBlock,
+          }),
+        );
+      }
     }
 
+    // liquidation events
     logs = logs.concat(
       await this.services.blockchain.getContractLogs({
         chain: makerConfig.chain,
