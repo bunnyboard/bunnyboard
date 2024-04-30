@@ -1,4 +1,10 @@
 {
+  "0x0000000000000000000000000000000000000000": {
+    "chain": "blast",
+    "address": "0x0000000000000000000000000000000000000000",
+    "symbol": "ETH",
+    "decimals": 18
+  },
   "0x0872b71efc37cb8dde22b2118de3d800427fdba0": {
     "chain": "blast",
     "address": "0x0872b71efc37cb8dde22b2118de3d800427fdba0",

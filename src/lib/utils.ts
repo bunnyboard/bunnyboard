@@ -1,5 +1,4 @@
 import BigNumber from 'bignumber.js';
-import dayjs from 'dayjs';
 
 export async function sleep(seconds: number) {
   return new Promise((resolve) => setTimeout(resolve, seconds * 1000));
@@ -15,18 +14,8 @@ export function getTodayUTCTimestamp() {
   return Math.floor(new Date(today).getTime() / 1000);
 }
 
-// get start day timestamp of a timestamp
-export function getStartDayTimestamp(timestamp: number) {
-  const theDay = new Date(timestamp * 1000).toISOString().split('T')[0];
-  return Math.floor(new Date(theDay).getTime() / 1000);
-}
-
 export function getDateString(timestamp: number): string {
   return new Date(timestamp * 1000).toISOString().split('T')[0];
-}
-
-export function stringReplaceAll(str: string, search: string, replacement: string) {
-  return str.replace(new RegExp(search, 'g'), replacement);
 }
 
 export function normalizeAddress(address: string | undefined): string {
@@ -35,26 +24,6 @@ export function normalizeAddress(address: string | undefined): string {
 
 export function compareAddress(address1: string, address2: string): boolean {
   return normalizeAddress(address1) === normalizeAddress(address2);
-}
-
-export function formatTime(unix: number): string {
-  const now = dayjs();
-  const timestamp = dayjs.unix(unix);
-
-  const inSeconds = now.diff(timestamp, 'second');
-  const inMinutes = now.diff(timestamp, 'minute');
-  const inHours = now.diff(timestamp, 'hour');
-  const inDays = now.diff(timestamp, 'day');
-
-  if (inHours >= 24) {
-    return `${inDays} ${inDays === 1 ? 'day' : 'days'} ago`;
-  } else if (inMinutes >= 60) {
-    return `${inHours} ${inHours === 1 ? 'hour' : 'hours'} ago`;
-  } else if (inSeconds >= 60) {
-    return `${inMinutes} ${inMinutes === 1 ? 'min' : 'mins'} ago`;
-  } else {
-    return `${inSeconds} ${inSeconds === 1 ? 'sec' : 'secs'} ago`;
-  }
 }
 
 export function formatBigNumberToString(value: string, decimals: number): string {
@@ -66,7 +35,7 @@ export function hexStringToDecimal(hexString: string): number {
 }
 
 // https://etherscan.io/address/0x00000000219ab540356cbb839cbe05303d7705fa#code#L169
-export function fromLittleEndian64(bytes8: string): string {
+export function formatLittleEndian64ToString(bytes8: string): string {
   // remove 0x
   const bytes8Value = bytes8.split('0x')[1];
   let swapBytes8 = '0x';
@@ -80,9 +49,4 @@ export function fromLittleEndian64(bytes8: string): string {
   swapBytes8 += bytes8Value[0] + bytes8Value[1];
 
   return new BigNumber(hexStringToDecimal(swapBytes8).toString()).dividedBy(1e9).toString(10);
-}
-
-export function countNumberOfUniqueValue(listObjects: Array<any>, countField: string): number {
-  const valueSet = new Set(listObjects.map((item) => item[countField]));
-  return Array.from(valueSet).length;
 }

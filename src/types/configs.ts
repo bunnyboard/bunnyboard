@@ -65,6 +65,9 @@ export interface DatabaseCollectionConfig {
   dexLiquidityTokenSnapshots: MongoCollectionConfig;
   dexLiquidityPoolSnapshots: MongoCollectionConfig;
 
+  chainBoardStates: MongoCollectionConfig;
+  chainBoardSnapshots: MongoCollectionConfig;
+
   tokenBoardStates: MongoCollectionConfig;
   tokenBoardSnapshots: MongoCollectionConfig;
 
@@ -93,6 +96,7 @@ export const DataMetrics = {
   staking: 'staking',
   flashloan: 'flashloan',
   perpetual: 'perpetual',
+  chainBoard: 'chainBoard',
   tokenBoard: 'tokenBoard',
 };
 const Metrics = Object.values(DataMetrics);
@@ -208,12 +212,14 @@ export interface DexConfig extends MetricConfig {
   subgraph?: DexSubgraph;
 }
 
-export interface FlashloanConfig extends MetricConfig {
-  rateFeesFixed?: number; // fee percentage, 10 = 10%
-}
-
 export interface TokenBoardConfig extends MetricConfig, Token {
   stablecoin: boolean;
+}
+
+export interface ChainBoardConfig {
+  chain: string;
+  metric: DataMetric;
+  birthday: number;
 }
 
 export interface ProtocolConfig {

@@ -1,8 +1,8 @@
 import { Token } from '../types/configs';
-import { TokenBoardConfigs } from './boards/tokenBoard';
 import { TokensBook, TokensBookBase } from './data';
 import { Aavev2Configs, Aavev3Configs } from './protocols/aave';
 import { AbracadabraConfigs } from './protocols/abracadabra';
+import { BenqiConfigs } from './protocols/benqi';
 import { CompoundConfigs, Compoundv3Configs } from './protocols/compound';
 import { IronbankConfigs } from './protocols/ironbank';
 import { KinzaConfigs } from './protocols/kinza';
@@ -22,6 +22,8 @@ import { Uniswapv2Configs, Uniswapv3Configs } from './protocols/uniswap';
 import { VenusConfigs } from './protocols/venus';
 import { ZerolendConfigs } from './protocols/zerolend';
 
+export { ChainBoardConfigs } from './boards/chainBoard';
+
 export const DefaultQueryContractLogsBlockRange = 1000;
 export const CustomQueryContractLogsBlockRange: { [key: string]: number } = {
   polygon: 200,
@@ -36,6 +38,7 @@ export const ProtocolConfigs = {
   aavev2: Aavev2Configs,
   aavev3: Aavev3Configs,
   abracadabra: AbracadabraConfigs,
+  benqi: BenqiConfigs,
   compound: CompoundConfigs,
   compoundv3: Compoundv3Configs,
   ironbank: IronbankConfigs,
@@ -57,9 +60,4 @@ export const ProtocolConfigs = {
   uniswapv3: Uniswapv3Configs,
   venus: VenusConfigs,
   zerolend: ZerolendConfigs,
-
-  tokenBoard: {
-    protocol: 'tokenBoard',
-    configs: TokenBoardConfigs,
-  },
 };

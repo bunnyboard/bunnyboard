@@ -1,4 +1,4 @@
-import { DexConfig, MetricConfig, Token } from './configs';
+import { ChainBoardConfig, DexConfig, MetricConfig, Token } from './configs';
 import { CrossLendingActivityEvent } from './domains/crossLending';
 
 export interface AdapterAbiConfigs {
@@ -35,9 +35,7 @@ export interface GetDexLiquidityTokenDataOptions {
   toBlock: number;
 }
 
-export interface RunAdapterOptions {
-  metricConfig: MetricConfig;
-
+export interface RunAdapterBaseOptions {
   // give a timestamp where adapter will start to collect snapshots from
   // if fromTime was given, adapter will use this value instead of config birthday
   fromTime?: number;
@@ -45,4 +43,12 @@ export interface RunAdapterOptions {
   // force to sync snapshots from given fromTime or config birthday
   // do not save state
   force?: boolean;
+}
+
+export interface RunAdapterOptions extends RunAdapterBaseOptions {
+  metricConfig: MetricConfig;
+}
+
+export interface RunChainBoardAdapterOptions extends RunAdapterBaseOptions {
+  chainConfig: ChainBoardConfig;
 }

@@ -13,6 +13,7 @@ import {
   GetAdapterDataStateOptions,
   GetAdapterDataTimeframeOptions,
   RunAdapterOptions,
+  RunChainBoardAdapterOptions,
 } from './options';
 
 export interface ContextStorages {
@@ -72,4 +73,13 @@ export interface IDexProtocolAdapter extends IProtocolAdapter {
 export interface ITokenBoardAdapter extends IProtocolAdapter {
   getTokenDataState: (options: GetAdapterDataStateOptions) => Promise<TokenBoardDataState | null>;
   getTokenDataTimeframe: (options: GetAdapterDataTimeframeOptions) => Promise<TokenBoardDataTimeframe | null>;
+}
+
+export interface IChainBoardAdapter {
+  name: string;
+
+  services: ContextServices;
+  storages: ContextStorages;
+
+  run: (options: RunChainBoardAdapterOptions) => Promise<void>;
 }

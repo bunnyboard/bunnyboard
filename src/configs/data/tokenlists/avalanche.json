@@ -83,6 +83,12 @@
     "symbol": "JLP",
     "decimals": 18
   },
+  "0x8729438eb15e2c8b576fcc6aecda6a148776c0f5": {
+    "chain": "avalanche",
+    "address": "0x8729438eb15e2c8b576fcc6aecda6a148776c0f5",
+    "symbol": "QI",
+    "decimals": 18
+  },
   "0x8e9c35235c38c44b5a53b56a41eaf6db9a430cd6": {
     "chain": "avalanche",
     "symbol": "LTC",
@@ -94,6 +100,12 @@
     "address": "0x9702230a8ea53601f5cd2dc00fdbc13d4df4a8c7",
     "symbol": "USDt",
     "decimals": 6
+  },
+  "0x9c9e5fd8bbc25984b178fdce6117defa39d2db39": {
+    "chain": "avalanche",
+    "address": "0x9c9e5fd8bbc25984b178fdce6117defa39d2db39",
+    "symbol": "BUSD",
+    "decimals": 18
   },
   "0xa389f9430876455c36478deea9769b7ca4e3ddb1": {
     "chain": "avalanche",

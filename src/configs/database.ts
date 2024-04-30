@@ -99,6 +99,24 @@ export const DatabaseCollectionConfigs: DatabaseCollectionConfig = {
       },
     ],
   },
+  chainBoardStates: {
+    name: `${MongodbPrefix}.chainBoardStates`,
+    indies: [
+      // write new documents
+      {
+        chain: 1,
+      },
+    ],
+  },
+  chainBoardSnapshots: {
+    name: `${MongodbPrefix}.chainBoardSnapshots`,
+    indies: [
+      {
+        chain: 1,
+        timestamp: 1,
+      },
+    ],
+  },
   tokenBoardStates: {
     name: `${MongodbPrefix}.tokenBoardStates`,
     indies: [

@@ -7,6 +7,7 @@ import CompoundLibs from '../modules/libs/compound';
 import { DataMetrics, LendingMarketVersions, Token } from '../types/configs';
 
 const dataPath = './src/configs/data/statics/cTokenMappings.json';
+const tokenListPath = './src/configs/data/tokenlists';
 
 (async function () {
   // cTokenAddress => underlying token
@@ -24,6 +25,12 @@ const dataPath = './src/configs/data/statics/cTokenMappings.json';
 
         for (const cToken of cTokens) {
           mappings[cToken.cToken] = cToken.underlying;
+
+          if (fs.existsSync(`${tokenListPath}/${cToken.chain}.json`)) {
+            const existingTokens = JSON.parse(fs.readFileSync(`${tokenListPath}/${cToken.chain}.json`).toString());
+            existingTokens[cToken.underlying.address] = cToken.underlying;
+            fs.writeFileSync(`${tokenListPath}/${cToken.chain}.json`, JSON.stringify(existingTokens));
+          }
         }
       }
     }
