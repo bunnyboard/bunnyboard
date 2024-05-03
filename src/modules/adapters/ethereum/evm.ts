@@ -88,7 +88,7 @@ export default class EvmChainAdapter extends ChainBoardAdapter {
 
       if (debug) {
         const blockProcessed = runBlock - fromBlock + 1;
-        if (blockProcessed % 10 === 0) {
+        if (blockProcessed % 500 === 0) {
           this.executeSession.endSession('get and processed blocks data', {
             service: this.name,
             chain: config.chain,
