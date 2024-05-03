@@ -26,20 +26,14 @@ export default class EvmChainAdapter extends ChainBoardAdapter {
       timestamp: fromTime,
       fromBlock: fromBlock,
       toBlock: toBlock,
-      totalGasLimit: '0',
       totalGasUsed: '0',
       volumeCoinTransfer: '0',
-      averageBlockSize: '0',
       numberOfTransactions: 0,
       numberOfAddresses: 0,
       numberOfDeployedContracts: 0,
       totalCoinBurnt: '0',
       logs: [],
     };
-
-    let runBlock = fromBlock;
-    let totalBlockSize = 0n;
-    const senders: { [key: string]: boolean } = {};
 
     if (debug) {
       this.executeSession.startSession('start to get blocks data', {
@@ -50,6 +44,10 @@ export default class EvmChainAdapter extends ChainBoardAdapter {
         total: totalBlockWillBeProcessed,
       });
     }
+
+    let runBlock = fromBlock;
+    const senders: { [key: string]: boolean } = {};
+    const txnDeployContracts: { [key: string]: boolean } = {};
     while (runBlock <= toBlock) {
       const block = await client.getBlock({
         blockNumber: BigInt(runBlock),
@@ -57,12 +55,7 @@ export default class EvmChainAdapter extends ChainBoardAdapter {
       });
 
       if (block) {
-        totalBlockSize += block.size;
-
         dataTimeframe.numberOfTransactions += block.transactions.length;
-        dataTimeframe.totalGasLimit = new BigNumber(dataTimeframe.totalGasLimit)
-          .plus(block.gasLimit.toString())
-          .toString(10);
         dataTimeframe.totalGasUsed = new BigNumber(dataTimeframe.totalGasUsed)
           .plus(block.gasUsed.toString())
           .toString(10);
@@ -80,6 +73,10 @@ export default class EvmChainAdapter extends ChainBoardAdapter {
           const sender = normalizeAddress(transaction.from);
           if (!senders[sender]) {
             senders[sender] = true;
+          }
+
+          if (!transaction.to && transaction.input !== '0x0' && (transaction.input as string) !== '') {
+            txnDeployContracts[transaction.hash] = true;
           }
 
           // count coin volume transfer
@@ -107,9 +104,8 @@ export default class EvmChainAdapter extends ChainBoardAdapter {
       runBlock += 1;
     }
 
-    dataTimeframe.averageBlockSize = new BigNumber(totalBlockSize.toString())
-      .dividedBy(toBlock - fromBlock + 1)
-      .toString(10);
+    dataTimeframe.numberOfAddresses = Object.keys(senders).length;
+    dataTimeframe.numberOfDeployedContracts = Object.keys(txnDeployContracts).length;
 
     return dataTimeframe;
   }

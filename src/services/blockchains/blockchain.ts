@@ -8,7 +8,7 @@ import ERC20Abi from '../../configs/abi/ERC20.json';
 import { AddressE, AddressF, AddressMulticall3, AddressZero } from '../../configs/constants';
 import EnvConfig from '../../configs/envConfig';
 import logger from '../../lib/logger';
-import { compareAddress, normalizeAddress, sleep } from '../../lib/utils';
+import { compareAddress, getTimestamp, normalizeAddress, sleep } from '../../lib/utils';
 import { Token } from '../../types/configs';
 import { CachingService } from '../caching/caching';
 import {
@@ -223,6 +223,11 @@ export default class BlockchainService extends CachingService implements IBlockc
   }
 
   public async getBlockNumberAtTimestamp(chain: string, timestamp: number): Promise<number | null> {
+    const current = getTimestamp();
+    if (timestamp > current) {
+      timestamp = current;
+    }
+
     const chainConfig = EnvConfig.blockchains[chain];
 
     let blockNumber = null;

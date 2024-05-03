@@ -4,9 +4,6 @@ export interface ChainBoardLogEntry {
 }
 
 export interface ChainBoardDataMetrics {
-  // sum gas limit of all blocks in snapshot time
-  totalGasLimit: string;
-
   // sum gas used all blocks in snapshot time
   totalGasUsed: string;
 
@@ -14,13 +11,10 @@ export interface ChainBoardDataMetrics {
   // simply count tx.value
   volumeCoinTransfer: string;
 
-  // calculate average size (in bytes) of all blocks in snapshot time
-  averageBlockSize: string;
-
   // total number of transactions were transact in all blocks
   numberOfTransactions: number;
 
-  // unique number of active addresses (were senders)
+  // unique number of active addresses (transaction senders)
   numberOfAddresses: number;
 
   // new contract were deployed

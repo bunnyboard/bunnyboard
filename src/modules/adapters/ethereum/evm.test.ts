@@ -1,4 +1,4 @@
-import { test } from 'vitest';
+import { expect, test } from 'vitest';
 
 import { ChainBoardConfigs, DefaultMemcacheTime } from '../../../configs';
 import BlockchainService from '../../../services/blockchains/blockchain';
@@ -25,12 +25,22 @@ const adapter = new EvmChainAdapter(
 
 test('should get evm block stats correctly', async function () {
   const fromTime = 1704067200;
-  const toTime = 1704070800;
+  const toTime = 1704067800;
   const dataTimeframe = await adapter.getDataTimeframe({
     config: ChainBoardConfigs[0],
     fromTime,
     toTime,
   });
 
-  console.log(dataTimeframe);
+  expect(dataTimeframe).not.equal(null);
+  if (dataTimeframe) {
+    expect(dataTimeframe.fromBlock).equal(18908894);
+    expect(dataTimeframe.toBlock).equal(18908942);
+    expect(dataTimeframe.totalGasUsed).equal('730915898');
+    expect(dataTimeframe.totalCoinBurnt).equal('9.05291964860071523');
+    expect(dataTimeframe.volumeCoinTransfer).equal('3808.916869365437301255');
+    expect(dataTimeframe.numberOfTransactions).equal(7642);
+    expect(dataTimeframe.numberOfAddresses).equal(4476);
+    expect(dataTimeframe.numberOfDeployedContracts).equal(15);
+  }
 });
