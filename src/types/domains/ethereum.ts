@@ -1,44 +1,38 @@
 // define data types for ethereum ecosystem board, adapters
+import { ChainBoardDataMetrics } from './chainBoard';
 
-export interface EthereumSnapshotMetrics {
-  // sum gas limit of all blocks in snapshot time
-  totalGasLimit: string;
+export interface EthereumLayer2Metrics {
+  chain: string;
 
-  // sum gas used all blocks in snapshot time
-  totalGasUsed: string;
+  // total ETH was locked in smart contract on Ethereum
+  bridgeTotalDeposited: string;
 
-  // calculate average size (in bytes) of all blocks in snapshot time
-  averageBlockSize: string;
+  // transfer ETH from Ethereum to layer 2
+  bridgeVolumeDeposit: string;
 
-  // total number of transactions were transact in all blocks
-  numberOfTransactions: number;
-
-  // unique number of active addresses (were senders)
-  numberOfAddresses: number;
+  // transfer ETH from layer back to Ethereum
+  bridgeVolumeWithdraw: string;
 }
 
-// https://eips.ethereum.org/EIPS/eip-1559
-export interface EthereumSnapshotForEip1559 {
-  // number of ETH were burnt
-  totalCoinBurnt: string;
+export interface EthereumEcosystemMetrics extends ChainBoardDataMetrics {
+  // native token price in USD
+  coinPrice: string;
 
-  // calculate average base fee of all blocks in snapshot time
-  averageBaseFeePerGas: string;
+  // number of ETH were deposited into Beacon Chain
+  volumeCoinDeposited: string;
+
+  // a list of layer 2 data
+  layer2: Array<EthereumLayer2Metrics>;
 }
 
-export interface EthereumSnapshotShapellaForShapella {
-  // number of ETH were withdrawn from ETH2 staking
-  // available after shanghai upgrade
-  totalCoinWithdrawn: string;
-}
-
-// snapshot of ethereum network state
-export interface EthereumNetworkSnapshot
-  extends EthereumSnapshotMetrics,
-    EthereumSnapshotForEip1559,
-    EthereumSnapshotShapellaForShapella {
+export interface EthereumEcosystemDataTimeframe extends EthereumEcosystemMetrics {
+  chain: string;
   timestamp: number;
-
   fromBlock: number;
   toBlock: number;
+}
+
+export interface EthereumEcosystemDataStateWithTimeframes extends EthereumEcosystemDataTimeframe {
+  // previous day data
+  last24Hours: EthereumEcosystemDataTimeframe | null;
 }

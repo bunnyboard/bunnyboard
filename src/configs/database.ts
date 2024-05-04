@@ -180,4 +180,21 @@ export const DatabaseCollectionConfigs: DatabaseCollectionConfig = {
       },
     ],
   },
+
+  ethereumEcosystemStates: {
+    name: `${MongodbPrefix}.ethereumEcosystemStates`,
+    indies: [
+      {
+        chain: 1,
+      },
+    ],
+  },
+  ethereumEcosystemSnapshots: {
+    name: `${MongodbPrefix}.ethereumEcosystemSnapshots`,
+    indies: [
+      {
+        chain: 1,
+      },
+    ],
+  },
 };

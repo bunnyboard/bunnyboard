@@ -11,6 +11,10 @@ export interface ChainBoardDataMetrics {
   // simply count tx.value
   volumeCoinTransfer: string;
 
+  // number of ETH were withdrawn from ETH2 staking
+  // available after shanghai upgrade
+  volumeCoinWithdrawn?: string;
+
   // total number of transactions were transact in all blocks
   numberOfTransactions: number;
 

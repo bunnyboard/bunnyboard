@@ -1,5 +1,6 @@
 import BigNumber from 'bignumber.js';
 
+import { ChainNames } from '../../../configs/names';
 import { normalizeAddress } from '../../../lib/utils';
 import { ChainBoardDataTimeframe } from '../../../types/domains/chainBoard';
 import { ContextServices, ContextStorages } from '../../../types/namespaces';
@@ -28,6 +29,7 @@ export default class EvmChainAdapter extends ChainBoardAdapter {
       toBlock: toBlock,
       totalGasUsed: '0',
       volumeCoinTransfer: '0',
+      volumeCoinWithdrawn: config.chain === ChainNames.ethereum ? '0' : undefined,
       numberOfTransactions: 0,
       numberOfAddresses: 0,
       numberOfDeployedContracts: 0,
@@ -83,6 +85,15 @@ export default class EvmChainAdapter extends ChainBoardAdapter {
           dataTimeframe.volumeCoinTransfer = new BigNumber(dataTimeframe.volumeCoinTransfer)
             .plus(new BigNumber(transaction.value.toString()).dividedBy(1e18))
             .toString(10);
+        }
+
+        // ETH withdrawals
+        if (block.withdrawals && dataTimeframe.volumeCoinWithdrawn) {
+          for (const withdrawal of block.withdrawals) {
+            dataTimeframe.volumeCoinWithdrawn = new BigNumber(dataTimeframe.volumeCoinWithdrawn)
+              .plus(new BigNumber(withdrawal.amount.toString()).dividedBy(1e18))
+              .toString(10);
+          }
         }
       }
 

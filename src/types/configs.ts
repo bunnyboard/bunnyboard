@@ -73,6 +73,10 @@ export interface DatabaseCollectionConfig {
 
   dexDataStates: MongoCollectionConfig;
   dexDataSnapshots: MongoCollectionConfig;
+
+  // support data for Ethereum ecosystem
+  ethereumEcosystemStates: MongoCollectionConfig;
+  ethereumEcosystemSnapshots: MongoCollectionConfig;
 }
 
 export interface EnvConfig {
