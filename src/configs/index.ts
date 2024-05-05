@@ -19,6 +19,7 @@ import { SparkConfigs } from './protocols/spark';
 import { SpookyConfigs } from './protocols/spooky';
 import { SushiConfigs, Sushiv3Configs } from './protocols/sushi';
 import { Uniswapv2Configs, Uniswapv3Configs } from './protocols/uniswap';
+import { UwulendConfigs } from './protocols/uwulend';
 import { VenusConfigs } from './protocols/venus';
 import { ZerolendConfigs } from './protocols/zerolend';
 
@@ -58,6 +59,7 @@ export const ProtocolConfigs = {
   sushiv3: Sushiv3Configs,
   uniswapv2: Uniswapv2Configs,
   uniswapv3: Uniswapv3Configs,
+  uwulend: UwulendConfigs,
   venus: VenusConfigs,
   zerolend: ZerolendConfigs,
 };

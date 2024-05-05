@@ -1,7 +1,7 @@
 import * as fs from 'fs';
 
 import { AaveLendingMarketConfig } from '../configs/protocols/aave';
-import { ZerolendConfigs } from '../configs/protocols/zerolend';
+import { UwulendConfigs } from '../configs/protocols/uwulend';
 import AaveLibs from '../modules/libs/aave';
 import { CrossLendingMarketConfig, DataMetrics, Token } from '../types/configs';
 
@@ -34,7 +34,7 @@ function loadExistedTokens(chain: string) {
     manta: loadExistedTokens('manta'),
   };
 
-  for (const protocolConfig of [ZerolendConfigs]) {
+  for (const protocolConfig of [UwulendConfigs]) {
     for (const config of protocolConfig.configs) {
       if (config.metric === DataMetrics.crossLending) {
         const lendingConfig = config as CrossLendingMarketConfig;
@@ -44,7 +44,7 @@ function loadExistedTokens(chain: string) {
 
         let tokens: Array<Token> = [];
 
-        if (lendingConfig.version === 'aavev3') {
+        if (lendingConfig.version === 'aavev2') {
           const marketInfo = await AaveLibs.getMarketInfo(lendingConfig as AaveLendingMarketConfig);
           if (marketInfo) {
             tokens = marketInfo.reserves;

@@ -46,6 +46,7 @@ export const ProtocolNames = {
   uniswap: 'uniswap',
   uniswapv2: 'uniswapv2',
   uniswapv3: 'uniswapv3',
+  uwulend: 'uwulend',
   venus: 'venus',
   zerolend: 'zerolend',
 };

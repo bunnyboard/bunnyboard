@@ -125,6 +125,12 @@
     "symbol": "yvCurve-IronBank",
     "decimals": 18
   },
+  "0x29127fe04ffa4c32acac0ffe17280abd74eac313": {
+    "chain": "ethereum",
+    "address": "0x29127fe04ffa4c32acac0ffe17280abd74eac313",
+    "symbol": "sifu",
+    "decimals": 18
+  },
   "0x32353a6c91143bfd6c7d363b546e62a9a2489a20": {
     "chain": "ethereum",
     "address": "0x32353a6c91143bfd6c7d363b546e62a9a2489a20",
@@ -142,6 +148,12 @@
     "address": "0x38ea452219524bb87e18de1c24d3bb59510bd783",
     "symbol": "S*USDT",
     "decimals": 6
+  },
+  "0x3b79a28264fc52c7b4cea90558aa0b162f7faf57": {
+    "chain": "ethereum",
+    "address": "0x3b79a28264fc52c7b4cea90558aa0b162f7faf57",
+    "symbol": "wMEMO",
+    "decimals": 18
   },
   "0x3ba207c25a278524e1cc7faaea950753049072a4": {
     "chain": "ethereum",
@@ -225,6 +237,12 @@
     "chain": "ethereum",
     "address": "0x57ab1ec28d129707052df4df418d58a2d46d5f51",
     "symbol": "sUSD",
+    "decimals": 18
+  },
+  "0x5938999dd0cc4d480c3b1a451aecc78ae4ddaab5": {
+    "chain": "ethereum",
+    "address": "0x5938999dd0cc4d480c3b1a451aecc78ae4ddaab5",
+    "symbol": "SifuM",
     "decimals": 18
   },
   "0x5958a8db7dfe0cc49382209069b00f54e17929c2": {
@@ -359,6 +377,12 @@
     "symbol": "RWA009",
     "decimals": 18
   },
+  "0x8dd09822e83313adca54c75696ae80c5429697ff": {
+    "chain": "ethereum",
+    "address": "0x8dd09822e83313adca54c75696ae80c5429697ff",
+    "symbol": "Sifu",
+    "decimals": 18
+  },
   "0x8e870d67f660d95d5be530380d0ec0bd388289e1": {
     "chain": "ethereum",
     "address": "0x8e870d67f660d95d5be530380d0ec0bd388289e1",
@@ -399,6 +423,18 @@
     "chain": "ethereum",
     "address": "0x99d8a9c45b2eca8864373a26d1459e3dff1e17f3",
     "symbol": "MIM",
+    "decimals": 18
+  },
+  "0x9b06f3c5de42d4623d7a2bd940ec735103c68a76": {
+    "chain": "ethereum",
+    "address": "0x9b06f3c5de42d4623d7a2bd940ec735103c68a76",
+    "symbol": "Volta",
+    "decimals": 18
+  },
+  "0x9d39a5de30e57443bff2a8307a4256c8797a3497": {
+    "chain": "ethereum",
+    "address": "0x9d39a5de30e57443bff2a8307a4256c8797a3497",
+    "symbol": "sUSDe",
     "decimals": 18
   },
   "0x9f8f72aa9304c8b593d555f12ef6589cc3a579a2": {
@@ -483,6 +519,12 @@
     "chain": "ethereum",
     "address": "0xb9737098b50d7c536b6416daeb32879444f59fca",
     "symbol": "RWA008",
+    "decimals": 18
+  },
+  "0xb9d7dddca9a4ac480991865efef82e01273f79c3": {
+    "chain": "ethereum",
+    "address": "0xb9d7dddca9a4ac480991865efef82e01273f79c3",
+    "symbol": "bLUSD",
     "decimals": 18
   },
   "0xba100000625a3754423978a60c9317c58a424e3d": {
