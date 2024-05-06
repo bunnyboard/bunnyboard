@@ -1,11 +1,14 @@
-// this task help to query and update token price from database documents
+// somehow collector missed to get token price on time
+// this script helps to rescan database with token price === null or '0'
+// get token price and update to database
 import EnvConfig from '../configs/envConfig';
+import logger from '../lib/logger';
 import { getDateString } from '../lib/utils';
 import DatabaseService from '../services/database/database';
 import OracleService from '../services/oracle/oracle';
 
-const chainName = 'ethereum';
-const tokenAddress = '0xcd5fe23c85820f7b72d0926fc9b05b43e359b7ee';
+// scan these collections
+const collectionNames = [EnvConfig.mongodb.collections.crossLendingReserveSnapshots.name];
 
 (async function () {
   const oracle = new OracleService();
@@ -13,43 +16,63 @@ const tokenAddress = '0xcd5fe23c85820f7b72d0926fc9b05b43e359b7ee';
   const database = new DatabaseService();
   await database.connect(EnvConfig.mongodb.connectionUri, EnvConfig.mongodb.databaseName);
 
-  const collectionNames = [EnvConfig.mongodb.collections.crossLendingReserveSnapshots.name];
-
   for (const collectionName of collectionNames) {
-    const snapshots = await database.query({
-      collection: collectionName,
-      query: {
-        chain: chainName,
-        'token.address': '0xcd5fe23c85820f7b72d0926fc9b05b43e359b7ee',
-      },
-    });
-
-    for (const snapshot of snapshots) {
-      if (snapshot.tokenPrice === '0') {
-        const timestamp = Number(snapshot.timestamp);
-
-        const tokenPrice = await oracle.getTokenPriceUsd({
-          address: tokenAddress,
-          chain: chainName,
-          timestamp: timestamp,
-        });
-
-        await database.update({
+    let wrongDocument = null;
+    do {
+      wrongDocument = (
+        await database.query({
           collection: collectionName,
-          keys: {
-            chain: chainName,
-            'token.address': tokenAddress,
-            timestamp: snapshot.timestamp,
+          query: {
+            tokenPrice: '0',
           },
-          updates: {
-            tokenPrice: tokenPrice,
+          options: {
+            limit: 1,
+            skip: 0,
+            order: { timestamp: -1 },
           },
-          upsert: false,
-        });
+        })
+      )[0];
 
-        console.log(getDateString(snapshot.timestamp), tokenPrice);
+      if (wrongDocument) {
+        const tokenPrice = await oracle.getTokenPriceUsd({
+          chain: wrongDocument.token.chain,
+          address: wrongDocument.token.address,
+          timestamp: wrongDocument.timestamp,
+        });
+        if (tokenPrice) {
+          await database.update({
+            collection: collectionName,
+            keys: {
+              chain: wrongDocument.chain,
+              'token.address': wrongDocument.token.address,
+              timestamp: wrongDocument.timestamp,
+            },
+            updates: {
+              tokenPrice: tokenPrice,
+            },
+            upsert: false,
+          });
+
+          logger.info('updated token price', {
+            service: 'task',
+            chain: wrongDocument.token.chain,
+            symbol: wrongDocument.token.symbol,
+            address: wrongDocument.token.address,
+            time: getDateString(wrongDocument.timestamp),
+            price: tokenPrice,
+          });
+        } else {
+          logger.error('failed to get token price', {
+            service: 'task',
+            chain: wrongDocument.token.chain,
+            symbol: wrongDocument.token.symbol,
+            address: wrongDocument.token.address,
+            time: getDateString(wrongDocument.timestamp),
+          });
+          process.exit(1);
+        }
       }
-    }
+    } while (wrongDocument);
   }
 
   process.exit(0);

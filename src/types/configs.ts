@@ -155,6 +155,21 @@ export interface IsolatedLendingMarketConfig extends CdpLendingMarketConfig {
   version: LendingIsolatedVersion;
 }
 
+export const StakingVersions = {
+  // https://docs.aave.com/developers/v/1.0/developing-on-aave/the-protocol/safety-module-stkaave
+  aave: 'aave',
+
+  // https://docs.sushi.com/docs/Products/Tokens/xSushi%20Token/Contracts/xSushi
+  xsushi: 'univ3',
+};
+const AllStakingVersions = Object.values(StakingVersions);
+export type StakingVersion = (typeof AllStakingVersions)[number];
+
+export interface StakingConfig extends MetricConfig {
+  stakingToken: Token;
+  rewardToken: Token;
+}
+
 export const DexVersions = {
   univ2: 'univ2',
   univ3: 'univ3',

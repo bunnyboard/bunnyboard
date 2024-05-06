@@ -58,13 +58,6 @@ export const OracleSourceUniswapv3List: { [key: string]: OracleSourcePool2 } = {
     baseToken: TokensBook.ethereum['0x5a98fcbea516cf06857215779fd812ca3bef1b32'],
     quotaToken: TokensBook.ethereum['0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'],
   },
-  GHO_USDC: {
-    type: 'univ3',
-    chain: 'ethereum',
-    address: '0x5c95d4b1c3321cf898d25949f41d50be2db5bc1d',
-    baseToken: TokensBook.ethereum['0x40d16fc0246ad3160ccc09b8d0d3a2cd28ae6c2f'],
-    quotaToken: TokensBook.ethereum['0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48'],
-  },
   RPL_WETH: {
     type: 'univ3',
     chain: 'ethereum',
@@ -93,13 +86,6 @@ export const OracleSourceUniswapv3List: { [key: string]: OracleSourcePool2 } = {
     baseToken: TokensBook.polygon['0xe0b52e49357fd4daf2c15e02058dce6bc0057db4'],
     quotaToken: TokensBook.polygon['0x2791bca1f2de4661ed88a30c99a7a9449aa84174'],
   },
-  SAI_WETH: {
-    type: 'univ3',
-    chain: 'ethereum',
-    address: '0x8f9a0935b26097a1fc15d4919e0b9e466edc1c57',
-    baseToken: TokensBook.ethereum['0x89d24a6b4ccb1b6faa2625fe562bdd9a23260359'],
-    quotaToken: TokensBook.ethereum['0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'],
-  },
   OP_WETH: {
     type: 'univ3',
     chain: 'optimism',
@@ -127,13 +113,6 @@ export const OracleSourceUniswapv3List: { [key: string]: OracleSourcePool2 } = {
     address: '0x379044e32f5a162233e82de19da852255d0951b8',
     baseToken: TokensBook.bnbchain['0xa2e3356610840701bdf5611a53974510ae27e2e1'],
     quotaToken: TokensBook.bnbchain['0x2170ed0880ac9a755fd29b2688956bd959f933f8'],
-  },
-  crvUSD_USDC: {
-    type: 'univ3',
-    chain: 'ethereum',
-    address: '0x73ea3d8ba3d7380201b270ec504b33ed5e478542',
-    baseToken: TokensBook.ethereum['0xf939e0a03fb07f59a73314e73794be0e57ac1b4e'],
-    quotaToken: TokensBook.ethereum['0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48'],
   },
   RDNT_WETH: {
     type: 'univ3',

@@ -174,9 +174,9 @@ export const OracleSourceChainlinkList: { [key: string]: OracleSourceChainlink }
   },
   SXP_USD: {
     type: 'chainlink',
-    chain: 'bnbchain',
+    chain: 'ethereum',
     currency: 'usd',
-    address: AddressesBook.bnbchain.ChainlinkFeed_SXP_USD,
+    address: AddressesBook.ethereum.ChainlinkFeed_SXP_USD,
     decimals: 8,
   },
   XVS_USD: {
@@ -202,9 +202,9 @@ export const OracleSourceChainlinkList: { [key: string]: OracleSourceChainlink }
   },
   LTC_USD: {
     type: 'chainlink',
-    chain: 'bnbchain',
+    chain: 'ethereum',
     currency: 'usd',
-    address: AddressesBook.bnbchain.ChainlinkFeed_LTC_USD,
+    address: AddressesBook.ethereum.ChainlinkFeed_LTC_USD,
     decimals: 8,
   },
   ADA_USD: {
@@ -212,6 +212,20 @@ export const OracleSourceChainlinkList: { [key: string]: OracleSourceChainlink }
     chain: 'bnbchain',
     currency: 'usd',
     address: AddressesBook.bnbchain.ChainlinkFeed_ADA_USD,
+    decimals: 8,
+  },
+  crvUSD_USD: {
+    type: 'chainlink',
+    chain: 'ethereum',
+    currency: 'usd',
+    address: AddressesBook.ethereum.ChainlinkFeed_crvUSD_USD,
+    decimals: 8,
+  },
+  GHO_USD: {
+    type: 'chainlink',
+    chain: 'ethereum',
+    currency: 'usd',
+    address: AddressesBook.ethereum.ChainlinkFeed_GHO_USD,
     decimals: 8,
   },
 };

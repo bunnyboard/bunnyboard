@@ -78,6 +78,10 @@ export default class EvmChainAdapter extends ChainBoardAdapter {
           }
 
           if (!transaction.to && transaction.input !== '0x0' && (transaction.input as string) !== '') {
+            if (transaction.gasPrice && transaction.gasPrice === 0n) {
+              // ignore, layer 2 system transaction
+              continue;
+            }
             txnDeployContracts[transaction.hash] = true;
           }
 

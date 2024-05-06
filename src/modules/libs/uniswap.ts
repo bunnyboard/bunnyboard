@@ -102,7 +102,7 @@ export default class UniswapLibs {
         blockNumber: blockNumber,
       });
 
-      if (baseTokenBalance && quotaTokenBalance && baseTokenBalance !== '0') {
+      if (baseTokenBalance && quotaTokenBalance && baseTokenBalance.toString() !== '0') {
         return new BigNumber(quotaTokenBalance.toString())
           .multipliedBy(new BigNumber(10).pow(source.baseToken.decimals))
           .dividedBy(new BigNumber(baseTokenBalance.toString()))

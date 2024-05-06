@@ -1,5 +1,11 @@
-import { CrossLendingMarketConfig, DataMetrics, LendingMarketVersions, ProtocolConfig } from '../../types/configs';
-import { AddressesBook } from '../data';
+import {
+  CrossLendingMarketConfig,
+  DataMetrics,
+  LendingMarketVersions,
+  ProtocolConfig,
+  StakingConfig,
+} from '../../types/configs';
+import { AddressesBook, TokensBook } from '../data';
 import { ChainNames, ProtocolNames } from '../names';
 
 export interface AaveOracleConfig {
@@ -214,6 +220,25 @@ export const Aavev3Configs: AaveProtocolConfig = {
         currency: 'usd',
         address: AddressesBook.scroll.Aavev3Oracle,
       },
+    },
+  ],
+};
+
+export interface AaveStakingConfig extends ProtocolConfig {
+  configs: Array<StakingConfig>;
+}
+
+export const AaveStakingConfigs: AaveStakingConfig = {
+  protocol: ProtocolNames.aave,
+  configs: [
+    {
+      chain: ChainNames.ethereum,
+      protocol: ProtocolNames.aave,
+      metric: DataMetrics.staking,
+      birthday: 1600992000, // Fri Sep 25 2020 00:00:00 GMT+0000
+      address: AddressesBook.ethereum.AavevStakingAAVE,
+      stakingToken: TokensBook.ethereum['0x7fc66500c84a76ad7e9c93437bfc5ac33e2ddae9'],
+      rewardToken: TokensBook.ethereum['0x7fc66500c84a76ad7e9c93437bfc5ac33e2ddae9'],
     },
   ],
 };

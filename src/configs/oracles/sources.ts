@@ -197,7 +197,8 @@ export const OracleSourceConfigs: { [key: string]: OracleConfig } = {
   },
   GHO: {
     currency: 'usd',
-    sources: [OracleSourceUniswapv3List.GHO_USDC],
+    stablecoin: true,
+    sources: [OracleSourceChainlinkList.GHO_USD],
   },
   RPL: {
     currency: 'eth',
@@ -217,7 +218,7 @@ export const OracleSourceConfigs: { [key: string]: OracleConfig } = {
   },
   SAI: {
     currency: 'eth',
-    sources: [OracleSourceUniswapv3List.SAI_WETH],
+    sources: [OracleSourceUniswapv2List.SAI_WETH],
   },
   EURS: {
     currency: 'usd',
@@ -385,7 +386,8 @@ export const OracleSourceConfigs: { [key: string]: OracleConfig } = {
   },
   crvUSD: {
     currency: 'usd',
-    sources: [OracleSourceUniswapv3List.crvUSD_USDC],
+    stablecoin: true,
+    sources: [OracleSourceChainlinkList.crvUSD_USD],
   },
   QI: {
     currency: 'avax',
