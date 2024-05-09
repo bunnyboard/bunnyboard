@@ -60,7 +60,7 @@ async function getMarketReserveFactorRate(
 
   await database.connect(EnvConfig.mongodb.connectionUri, EnvConfig.mongodb.databaseName);
 
-  let runDate = 1636934400;
+  let runDate = 1569369600;
   while (runDate >= fromDate) {
     const blockNumber = await blockchain.tryGetBlockNumberAtTimestamp('ethereum', runDate);
     const cTokens = await getAllMarkets(marketConfig, blockNumber);

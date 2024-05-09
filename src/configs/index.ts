@@ -1,6 +1,6 @@
 import { Token } from '../types/configs';
 import { TokensBook, TokensBookBase } from './data';
-import { Aavev2Configs, Aavev3Configs } from './protocols/aave';
+import { AaveConfigs, Aavev2Configs, Aavev3Configs } from './protocols/aave';
 import { AbracadabraConfigs } from './protocols/abracadabra';
 import { BenqiConfigs } from './protocols/benqi';
 import { CompoundConfigs, Compoundv3Configs } from './protocols/compound';
@@ -36,6 +36,7 @@ export const TokenList: { [key: string]: { [key: string]: Token } } = TokensBook
 export const TokenListBase = TokensBookBase;
 
 export const ProtocolConfigs = {
+  aave: AaveConfigs,
   aavev2: Aavev2Configs,
   aavev3: Aavev3Configs,
   abracadabra: AbracadabraConfigs,

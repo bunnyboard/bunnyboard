@@ -4,6 +4,8 @@ import {
   LendingMarketVersions,
   ProtocolConfig,
   StakingConfig,
+  StakingVersions,
+  Token,
 } from '../../types/configs';
 import { AddressesBook, TokensBook } from '../data';
 import { ChainNames, ProtocolNames } from '../names';
@@ -224,21 +226,79 @@ export const Aavev3Configs: AaveProtocolConfig = {
   ],
 };
 
-export interface AaveStakingConfig extends ProtocolConfig {
-  configs: Array<StakingConfig>;
+export interface AaveStakingConfig extends StakingConfig {
+  poolId: string;
+  stakingToken: Token;
+  rewardToken: Token; // AAVE token
 }
 
-export const AaveStakingConfigs: AaveStakingConfig = {
+export interface AaveProtocolStakingConfig extends ProtocolConfig {
+  configs: Array<AaveStakingConfig>;
+}
+
+export const AaveConfigs: AaveProtocolStakingConfig = {
   protocol: ProtocolNames.aave,
   configs: [
+    // aave staking
     {
       chain: ChainNames.ethereum,
       protocol: ProtocolNames.aave,
       metric: DataMetrics.staking,
-      birthday: 1600992000, // Fri Sep 25 2020 00:00:00 GMT+0000
+      version: StakingVersions.aave,
+      poolId: 'stkAAVE',
+      birthday: 1601683200, // Sat Oct 03 2020 00:00:00 GMT+0000
       address: AddressesBook.ethereum.AavevStakingAAVE,
       stakingToken: TokensBook.ethereum['0x7fc66500c84a76ad7e9c93437bfc5ac33e2ddae9'],
       rewardToken: TokensBook.ethereum['0x7fc66500c84a76ad7e9c93437bfc5ac33e2ddae9'],
+    },
+
+    // AAVE-ETH Balancer LP staking v1
+    {
+      chain: ChainNames.ethereum,
+      protocol: ProtocolNames.aave,
+      metric: DataMetrics.staking,
+      version: StakingVersions.aave,
+      poolId: 'stkABPT',
+      birthday: 1612137600, // Mon Feb 01 2021 00:00:00 GMT+0000
+      address: AddressesBook.ethereum.AavevStakingAAVE_BPT,
+      stakingToken: {
+        chain: ChainNames.ethereum,
+        symbol: 'ABPT',
+        decimals: 18,
+        address: '0x41a08648c3766f9f9d85598ff102a08f4ef84f84',
+      },
+      rewardToken: TokensBook.ethereum['0x7fc66500c84a76ad7e9c93437bfc5ac33e2ddae9'],
+    },
+
+    // AAVE-ETH Balancer LP staking v2
+    {
+      chain: ChainNames.ethereum,
+      protocol: ProtocolNames.aave,
+      metric: DataMetrics.staking,
+      version: StakingVersions.aave,
+      poolId: 'stkABPTv2',
+      birthday: 1705622400, // Fri Jan 19 2024 00:00:00 GMT+0000
+      address: AddressesBook.ethereum.AavevStakingAAVE_BPTv2,
+      stakingToken: {
+        chain: ChainNames.ethereum,
+        symbol: 'ABPTv2',
+        decimals: 18,
+        address: '0x3de27efa2f1aa663ae5d458857e731c129069f29',
+      },
+      rewardToken: TokensBook.ethereum['0x7fc66500c84a76ad7e9c93437bfc5ac33e2ddae9'],
+    },
+
+    // GHO staking
+    {
+      chain: ChainNames.ethereum,
+      protocol: ProtocolNames.aave,
+      metric: DataMetrics.staking,
+      version: StakingVersions.aave,
+      poolId: 'stkGHO',
+      birthday: 1705536000, // Thu Jan 18 2024 00:00:00 GMT+0000
+      address: AddressesBook.ethereum.AavevStakingGHO,
+      stakingToken: TokensBook.ethereum['0x40d16fc0246ad3160ccc09b8d0d3a2cd28ae6c2f'], // GHO
+      rewardToken: TokensBook.ethereum['0x7fc66500c84a76ad7e9c93437bfc5ac33e2ddae9'], // AAVE
     },
   ],
 };

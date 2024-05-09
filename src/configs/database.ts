@@ -181,6 +181,30 @@ export const DatabaseCollectionConfigs: DatabaseCollectionConfig = {
     ],
   },
 
+  stakingPoolDataStates: {
+    name: `${MongodbPrefix}.stakingPoolDataStates`,
+    indies: [
+      {
+        chain: 1,
+        protocol: 1,
+        address: 1,
+        poolId: 1,
+      },
+    ],
+  },
+  stakingPoolDataSnapshots: {
+    name: `${MongodbPrefix}.stakingPoolDataSnapshots`,
+    indies: [
+      {
+        chain: 1,
+        protocol: 1,
+        address: 1,
+        poolId: 1,
+        timestamp: 1,
+      },
+    ],
+  },
+
   ethereumEcosystemStates: {
     name: `${MongodbPrefix}.ethereumEcosystemStates`,
     indies: [

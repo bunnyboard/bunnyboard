@@ -7,6 +7,7 @@ import { CdpLendingAssetDataState, CdpLendingAssetDataTimeframe } from './domain
 import { CrossLendingReserveDataState, CrossLendingReserveDataTimeframe } from './domains/crossLending';
 import { DexDataState, DexDataTimeframe } from './domains/dex';
 import { IsolatedLendingAssetDataState, IsolatedLendingAssetDataTimeframe } from './domains/isolatedLending';
+import { StakingPoolDataTimeframe } from './domains/staking';
 import { TokenBoardDataState, TokenBoardDataTimeframe } from './domains/tokenBoard';
 import {
   AdapterAbiConfigs,
@@ -68,6 +69,10 @@ export interface IIsolatedLendingProtocolAdapter extends IProtocolAdapter {
 export interface IDexProtocolAdapter extends IProtocolAdapter {
   getDexDataState: (options: GetAdapterDataStateOptions) => Promise<DexDataState | null>;
   getDexDataTimeframe: (options: GetAdapterDataTimeframeOptions) => Promise<DexDataTimeframe | null>;
+}
+
+export interface IStakingProtocolAdapter extends IProtocolAdapter {
+  getStakingDataTimeframe: (options: GetAdapterDataTimeframeOptions) => Promise<Array<StakingPoolDataTimeframe> | null>;
 }
 
 export interface ITokenBoardAdapter extends IProtocolAdapter {

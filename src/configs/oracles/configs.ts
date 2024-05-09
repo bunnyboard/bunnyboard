@@ -72,6 +72,10 @@ export const OracleConfigs: { [key: string]: { [key: string]: OracleConfig } } =
     '0xc5f0f7b66764f6ec8c8dff7ba683102295e16409': OracleSourceConfigs.FDUSD,
     '0x6c3ea9036406852006290770bedfcaba0e23a0e8': OracleSourceConfigs.PYUSD,
     '0xcd5fe23c85820f7b72d0926fc9b05b43e359b7ee': OracleSourceConfigs.weETH,
+    '0xd71ecff9342a5ced620049e616c5035f1db98620': OracleSourceConfigs.sEUR,
+    '0x2ba592f78db6436527729929aaf6c908497cb200': OracleSourceConfigs.CREAM,
+    '0xe2f2a5c287993345a840db3b0845fbc70f5935a5': OracleSourceConfigs.mUSD,
+    '0x4d224452801aced8b2f0aebe155379bb5d594381': OracleSourceConfigs.APE,
 
     // ironbank fixed forex
     '0x69681f8fde45345c3870bcd5eaf4a05a60e7d227': OracleSourceConfigs.GBP,
@@ -265,6 +269,8 @@ export const OracleConfigs: { [key: string]: { [key: string]: OracleConfig } } =
     '0x8e9c35235c38c44b5a53b56a41eaf6db9a430cd6': OracleSourceConfigs.LTC,
     '0xc301e6fe31062c557aee806cc6a841ae989a3ac6': OracleSourceConfigs.DOGE,
     '0xfe6b19286885a4f7f55adad09c3cd1f906d2478f': OracleSourceConfigs.SOL,
+    '0xb599c3590f42f8f995ecfa0f85d2980b76862fc1': OracleSourceConfigs.UST,
+    '0x260bbf5698121eb85e7a74f2e45e16ce762ebe11': OracleSourceConfigs.UST,
   },
 
   // tokens on Fantom
@@ -286,6 +292,10 @@ export const OracleConfigs: { [key: string]: { [key: string]: OracleConfig } } =
     '0x29b0da86e484e1c0029b56e817912d778ac0ec69': OracleSourceConfigs.YFI,
     '0xdc301622e621166bd8e82f2ca0a26c13ad0be355': OracleSourceConfigs.FRAX,
     '0x56ee926bd8c72b2d5fa1af4d9e4cbb515a1e3adc': OracleSourceConfigs.SNX,
+    '0x9879abdea01a879644185341f7af7d8343556b7a': OracleSourceConfigs.TUSD,
+    '0xe2d27f06f63d98b8e11b38b5b08a75d0c8dd62b9': OracleSourceConfigs.UST,
+    '0x46e7628e8b4350b2716ab470ee0ba1fa9e76c6c5': OracleSourceConfigs.BAND,
+    '0x657a1861c15a3ded9af0b6799a195a249ebdcbc6': OracleSourceConfigs.CREAM,
   },
 
   // tokens on metis

@@ -125,6 +125,12 @@
     "symbol": "WAVAX",
     "decimals": 18
   },
+  "0xb599c3590f42f8f995ecfa0f85d2980b76862fc1": {
+    "chain": "avalanche",
+    "address": "0xb599c3590f42f8f995ecfa0f85d2980b76862fc1",
+    "symbol": "UST",
+    "decimals": 6
+  },
   "0xb97ef9ef8734c71904d8002f8b6bc66dd9c48a6e": {
     "chain": "avalanche",
     "address": "0xb97ef9ef8734c71904d8002f8b6bc66dd9c48a6e",

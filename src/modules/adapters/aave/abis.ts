@@ -21,3 +21,21 @@ export const Aavev3EventSignatures: AaveEventInterfaces = {
   Repay: '0xa534c8dbe71f871f9f3530e97a74601fea17b426cae02e1c5aee42c96c784051',
   Liquidate: '0xe413a321e8681d831f4dbccbca790d2952b56f977908e45be37335533e005286',
 };
+
+export interface AaveStakingEventInterfaces {
+  Staked: string;
+  StakedV2: string;
+  Redeem: string;
+  RedeemV2: string;
+  RewardsAccrued: string;
+  RewardsClaimed: string;
+}
+
+export const AaveStakingEvents: AaveStakingEventInterfaces = {
+  Staked: '0x5dac0c1b1112564a045ba943c9d50270893e8e826c49be8e7073adc713ab7bd7',
+  StakedV2: '0x6c86f3fd5118b3aa8bb4f389a617046de0a3d3d477de1a1673d227f802f616dc',
+  Redeem: '0xd12200efa34901b99367694174c3b0d32c99585fdf37c7c26892136ddd0836d9',
+  RedeemV2: '0x3f693fff038bb8a046aa76d9516190ac7444f7d69cf952c4cbdc086fdef2d6fc',
+  RewardsAccrued: '0x2468f9268c60ad90e2d49edb0032c8a001e733ae888b3ab8e982edf535be1a76',
+  RewardsClaimed: '0x9310ccfcb8de723f578a9e4282ea9f521f05ae40dc08f3068dfad528a65ee3c7',
+};

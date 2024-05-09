@@ -10,6 +10,16 @@ import OracleService from '../services/oracle/oracle';
 // scan these collections
 const collectionNames = [EnvConfig.mongodb.collections.crossLendingReserveSnapshots.name];
 
+const ignoredTokens = [
+  '0x81d66d255d47662b6b16f3c5bbfbb15283b05bc2', // ibZAR
+  '0x39aa39c021dfbae8fac545936693ac917d5e7563', // cUSDC
+  '0xf650c3d88d12db855b8bf7d11be6c55a4e07dcc9', // cUSDT
+  '0x5d3a536e4d6dbd6114cc1ead35777bab948e3643', // cDAI
+  '0x5bc25f649fc4e26069ddf4cf4010f9f706c23831', // DUSD
+  '0xb01e8419d842beebf1b70a7b5f7142abbaf7159d', // COVER
+  '0x44b26e839eb3572c5e959f994804a5de66600349', // HEGIC
+];
+
 (async function () {
   const oracle = new OracleService();
 
@@ -24,6 +34,9 @@ const collectionNames = [EnvConfig.mongodb.collections.crossLendingReserveSnapsh
           collection: collectionName,
           query: {
             tokenPrice: '0',
+            'token.address': {
+              $nin: ignoredTokens,
+            },
           },
           options: {
             limit: 1,

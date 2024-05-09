@@ -55,7 +55,7 @@ export default class ProtocolCollector {
       case DataMetrics.crossLending:
       case DataMetrics.cdpLending:
       case DataMetrics.isolatedLending:
-      case DataMetrics.dex: {
+      case DataMetrics.staking: {
         adapter = this.adapters[config.protocol];
         break;
       }

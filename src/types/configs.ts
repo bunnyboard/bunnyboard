@@ -74,6 +74,10 @@ export interface DatabaseCollectionConfig {
   dexDataStates: MongoCollectionConfig;
   dexDataSnapshots: MongoCollectionConfig;
 
+  // token staking
+  stakingPoolDataStates: MongoCollectionConfig;
+  stakingPoolDataSnapshots: MongoCollectionConfig;
+
   // support data for Ethereum ecosystem
   ethereumEcosystemStates: MongoCollectionConfig;
   ethereumEcosystemSnapshots: MongoCollectionConfig;
@@ -160,14 +164,13 @@ export const StakingVersions = {
   aave: 'aave',
 
   // https://docs.sushi.com/docs/Products/Tokens/xSushi%20Token/Contracts/xSushi
-  xsushi: 'univ3',
+  xsushi: 'xsushi',
 };
 const AllStakingVersions = Object.values(StakingVersions);
 export type StakingVersion = (typeof AllStakingVersions)[number];
 
 export interface StakingConfig extends MetricConfig {
-  stakingToken: Token;
-  rewardToken: Token;
+  version: StakingVersion;
 }
 
 export const DexVersions = {
