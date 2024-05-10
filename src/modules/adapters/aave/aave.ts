@@ -228,6 +228,7 @@ export default class AaveAdapter extends StakingProtocolAdapter {
       fromBlock: beginBlock,
       toBlock: endBlock,
     });
+
     let volumeDeposited = new BigNumber(0);
     let volumeWithdrawn = new BigNumber(0);
     let volumeRewardDistributed = new BigNumber(0);

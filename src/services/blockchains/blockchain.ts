@@ -115,9 +115,11 @@ export default class BlockchainService extends CachingService implements IBlockc
 
     const client = this.getPublicClient(options.chain);
 
-    const blockRange = CustomQueryContractLogsBlockRange[options.chain]
-      ? CustomQueryContractLogsBlockRange[options.chain]
-      : DefaultQueryContractLogsBlockRange;
+    const blockRange = options.blockRange
+      ? options.blockRange
+      : CustomQueryContractLogsBlockRange[options.chain]
+        ? CustomQueryContractLogsBlockRange[options.chain]
+        : DefaultQueryContractLogsBlockRange;
 
     let startBlock = options.fromBlock;
     while (startBlock <= options.toBlock) {
@@ -130,7 +132,7 @@ export default class BlockchainService extends CachingService implements IBlockc
         }),
       );
 
-      startBlock += DefaultQueryContractLogsBlockRange;
+      startBlock += blockRange;
     }
 
     return logs;

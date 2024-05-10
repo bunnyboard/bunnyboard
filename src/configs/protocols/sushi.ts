@@ -1,9 +1,23 @@
-import { DataMetrics, DexConfig, DexVersions, ProtocolConfig } from '../../types/configs';
-import { AddressesBook, SubgraphEndpoints } from '../data';
-import { ProtocolNames } from '../names';
+import {
+  DataMetrics,
+  DexConfig,
+  DexVersions,
+  ProtocolConfig,
+  StakingConfig,
+  StakingVersions,
+  Token,
+} from '../../types/configs';
+import { AddressesBook, SubgraphEndpoints, TokensBookBase } from '../data';
+import { ChainNames, ProtocolNames } from '../names';
+
+export interface SushiBarConfig extends StakingConfig {
+  poolId: string;
+  token: Token;
+  sushiLp: string;
+}
 
 export interface SushiConfig extends ProtocolConfig {
-  configs: Array<DexConfig>;
+  configs: Array<DexConfig | SushiBarConfig>;
 }
 
 const SushiSubgraphFilters = {
@@ -122,12 +136,23 @@ export const SushiAvalancheDexConfig: DexConfig = {
 export const SushiConfigs: SushiConfig = {
   protocol: 'sushi',
   configs: [
-    SushiEthereumDexConfig,
-    SushiArbitrumDexConfig,
-    SushiPolygonDexConfig,
-    SushiBnbchainDexConfig,
-    SushiFantomDexConfig,
-    SushiAvalancheDexConfig,
+    {
+      chain: ChainNames.ethereum,
+      protocol: ProtocolNames.sushi,
+      metric: DataMetrics.staking,
+      version: StakingVersions.xsushi,
+      poolId: 'xSushi',
+      birthday: 1599696000, // Thu Sep 10 2020 00:00:00 GMT+0000
+      token: TokensBookBase.ethereum.SUSHI,
+      address: '0x8798249c2e607446efb7ad49ec89dd1865ff4272',
+      sushiLp: '0x795065dcc9f64b5614c407a6efdc400da6221fb0',
+    },
+    // SushiEthereumDexConfig,
+    // SushiArbitrumDexConfig,
+    // SushiPolygonDexConfig,
+    // SushiBnbchainDexConfig,
+    // SushiFantomDexConfig,
+    // SushiAvalancheDexConfig,
   ],
 };
 

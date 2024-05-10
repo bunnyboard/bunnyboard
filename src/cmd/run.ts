@@ -23,7 +23,7 @@ export class RunCommand extends BasicCommand {
         const collector = new ProtocolCollector(storages, services);
         do {
           await collector.run({
-            metric: argv.metric !== '' ? argv.metric : undefined,
+            metric: argv.metric !== '' ? argv.metric.split(',') : undefined,
             chains: argv.chain !== '' ? argv.chain.split(',') : undefined,
             protocols: argv.protocol !== '' ? argv.protocol.split(',') : undefined,
             fromTime: argv.fromTime ? argv.fromTime : undefined,
@@ -70,13 +70,13 @@ export class RunCommand extends BasicCommand {
       metric: {
         type: 'string',
         default: '',
-        describe: 'Collect data from given data metric.',
+        describe: 'Collect data from given list of data metric.',
       },
       chain: {
         type: 'string',
         default: '',
         describe:
-          'Collect all protocols data on given a list of chain seperated by comma, ex: --chain "ethereum,arbitrum".',
+          'Collect all protocols data on given list of chain seperated by comma, ex: --chain "ethereum,arbitrum".',
       },
       protocol: {
         type: 'string',

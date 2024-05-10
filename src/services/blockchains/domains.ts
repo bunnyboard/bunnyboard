@@ -27,6 +27,8 @@ export interface GetContractLogsOptions {
   address: string;
   fromBlock: number;
   toBlock: number;
+
+  blockRange?: number;
 }
 
 export interface ContractCall {

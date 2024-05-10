@@ -6,7 +6,7 @@ import { ContextServices, ContextStorages, IProtocolAdapter } from '../../types/
 import { getProtocolAdapters } from '../adapters';
 
 export interface RunProtocolCollectorOptions {
-  metric?: DataMetric;
+  metric?: Array<DataMetric>;
 
   // if chain was given, run collector with given chain
   chains?: Array<string>;
@@ -44,7 +44,7 @@ export default class ProtocolCollector {
     }
 
     return configs
-      .filter((config) => metric === undefined || metric === config.metric)
+      .filter((config) => metric === undefined || metric.indexOf(config.metric) !== -1)
       .filter((config) => protocols === undefined || protocols.indexOf(config.protocol) !== -1)
       .filter((config) => chains === undefined || chains.indexOf(config.chain) !== -1);
   }
