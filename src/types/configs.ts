@@ -165,6 +165,9 @@ export const StakingVersions = {
 
   // https://docs.sushi.com/docs/Products/Tokens/xSushi%20Token/Contracts/xSushi
   xsushi: 'xsushi',
+
+  // https://docs.yearn.fi/getting-started/products/yeth/overview
+  yeth: 'yeth',
 };
 const AllStakingVersions = Object.values(StakingVersions);
 export type StakingVersion = (typeof AllStakingVersions)[number];

@@ -21,6 +21,7 @@ import { SushiConfigs, Sushiv3Configs } from './protocols/sushi';
 import { Uniswapv2Configs, Uniswapv3Configs } from './protocols/uniswap';
 import { UwulendConfigs } from './protocols/uwulend';
 import { VenusConfigs } from './protocols/venus';
+import { YethConfigs } from './protocols/yearn';
 import { ZerolendConfigs } from './protocols/zerolend';
 
 export { ChainBoardConfigs } from './boards/chainBoard';
@@ -62,5 +63,6 @@ export const ProtocolConfigs = {
   uniswapv3: Uniswapv3Configs,
   uwulend: UwulendConfigs,
   venus: VenusConfigs,
+  yeth: YethConfigs,
   zerolend: ZerolendConfigs,
 };

@@ -569,4 +569,24 @@ export const OracleSourceConfigs: { [key: string]: OracleConfig } = {
     currency: 'eth',
     sources: [OracleSourceUniswapv2List.APE_WETH],
   },
+  frxETH: {
+    currency: 'usd',
+    sources: [OracleSourceUniswapv3List.frxETH_FRAX],
+  },
+  swETH: {
+    currency: 'eth',
+    sources: [OracleSourceUniswapv3List.swETH_WETH],
+  },
+  ETHx: {
+    currency: 'eth',
+    sources: [OracleSourceUniswapv3List.ETHx_WETH],
+  },
+  mevETH: {
+    currency: 'eth',
+    sources: [OracleSourceUniswapv3List.mevETH_WETH],
+  },
+  pxETH: {
+    currency: 'eth',
+    sources: [OracleSourceUniswapv3List.pxETH_WETH],
+  },
 };

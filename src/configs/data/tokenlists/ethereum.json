@@ -17,6 +17,12 @@
     "symbol": "RAI",
     "decimals": 18
   },
+  "0x04c154b66cb340f3ae24111cc767e0184ed00cc6": {
+    "chain": "ethereum",
+    "address": "0x04c154b66cb340f3ae24111cc767e0184ed00cc6",
+    "symbol": "pxETH",
+    "decimals": 18
+  },
   "0x056fd409e1d7a124bd7017459dfea2f387b6d5cd": {
     "chain": "ethereum",
     "address": "0x056fd409e1d7a124bd7017459dfea2f387b6d5cd",
@@ -112,6 +118,12 @@
     "address": "0x2260fac5e5542a773aa44fbcfedf7c193bc2c599",
     "symbol": "WBTC",
     "decimals": 8
+  },
+  "0x24ae2da0f361aa4be46b48eb19c91e02c5e4f27e": {
+    "chain": "ethereum",
+    "address": "0x24ae2da0f361aa4be46b48eb19c91e02c5e4f27e",
+    "symbol": "mevETH",
+    "decimals": 18
   },
   "0x26fa3fffb6efe8c1e69103acb4044c26b9a106a9": {
     "chain": "ethereum",
@@ -267,6 +279,12 @@
     "chain": "ethereum",
     "address": "0x5a98fcbea516cf06857215779fd812ca3bef1b32",
     "symbol": "LDO",
+    "decimals": 18
+  },
+  "0x5e8422345238f34275888049021821e8e08caa1f": {
+    "chain": "ethereum",
+    "address": "0x5e8422345238f34275888049021821e8e08caa1f",
+    "symbol": "frxETH",
     "decimals": 18
   },
   "0x5f18c75abdae578b483e5f43f12a39cf75b973a9": {
@@ -443,6 +461,12 @@
     "symbol": "Volta",
     "decimals": 18
   },
+  "0x9ba021b0a9b958b5e75ce9f6dff97c7ee52cb3e6": {
+    "chain": "ethereum",
+    "address": "0x9ba021b0a9b958b5e75ce9f6dff97c7ee52cb3e6",
+    "symbol": "apxETH",
+    "decimals": 18
+  },
   "0x9d39a5de30e57443bff2a8307a4256c8797a3497": {
     "chain": "ethereum",
     "address": "0x9d39a5de30e57443bff2a8307a4256c8797a3497",
@@ -479,6 +503,12 @@
     "symbol": "yvWETH",
     "decimals": 18
   },
+  "0xa35b1b31ce002fbf2058d22f30f95d405200a15b": {
+    "chain": "ethereum",
+    "address": "0xa35b1b31ce002fbf2058d22f30f95d405200a15b",
+    "symbol": "ETHx",
+    "decimals": 18
+  },
   "0xa47c8bf37f92abed4a126bda807a7b7498661acd": {
     "chain": "ethereum",
     "address": "0xa47c8bf37f92abed4a126bda807a7b7498661acd",
@@ -501,6 +531,12 @@
     "chain": "ethereum",
     "address": "0xaaa760c2027817169d7c8db0dc61a2fb4c19ac23",
     "symbol": "RWA002",
+    "decimals": 18
+  },
+  "0xac3e018457b222d93114458476f3e3416abbe38f": {
+    "chain": "ethereum",
+    "address": "0xac3e018457b222d93114458476f3e3416abbe38f",
+    "symbol": "sfrxETH",
     "decimals": 18
   },
   "0xae78736cd615f374d3085123a210448e74fc6393": {

@@ -76,6 +76,13 @@ export const OracleConfigs: { [key: string]: { [key: string]: OracleConfig } } =
     '0x2ba592f78db6436527729929aaf6c908497cb200': OracleSourceConfigs.CREAM,
     '0xe2f2a5c287993345a840db3b0845fbc70f5935a5': OracleSourceConfigs.mUSD,
     '0x4d224452801aced8b2f0aebe155379bb5d594381': OracleSourceConfigs.APE,
+    '0x5e8422345238f34275888049021821e8e08caa1f': OracleSourceConfigs.frxETH,
+    '0xac3e018457b222d93114458476f3e3416abbe38f': OracleSourceConfigs.frxETH,
+    '0xf951e335afb289353dc249e82926178eac7ded78': OracleSourceConfigs.swETH,
+    '0xa35b1b31ce002fbf2058d22f30f95d405200a15b': OracleSourceConfigs.ETHx,
+    '0x24ae2da0f361aa4be46b48eb19c91e02c5e4f27e': OracleSourceConfigs.mevETH,
+    '0x04c154b66cb340f3ae24111cc767e0184ed00cc6': OracleSourceConfigs.pxETH,
+    '0x9ba021b0a9b958b5e75ce9f6dff97c7ee52cb3e6': OracleSourceConfigs.pxETH,
 
     // ironbank fixed forex
     '0x69681f8fde45345c3870bcd5eaf4a05a60e7d227': OracleSourceConfigs.GBP,

@@ -71,6 +71,7 @@ export default class BlockchainService extends CachingService implements IBlockc
     try {
       if (!onchain) {
         logger.warn('token not in the config list', {
+          service: this.name,
           chain: chain,
           address: address,
         });

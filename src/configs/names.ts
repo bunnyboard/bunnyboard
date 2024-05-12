@@ -48,5 +48,6 @@ export const ProtocolNames = {
   uniswapv3: 'uniswapv3',
   uwulend: 'uwulend',
   venus: 'venus',
+  yeth: 'yeth',
   zerolend: 'zerolend',
 };
