@@ -62,6 +62,7 @@ export interface MakerLendingMarketConfig extends CdpLendingMarketConfig {
 
 export interface MakerDataExtended {
   daiSavingRate: string;
+  daiSavingTvl: string;
 }
 
 export interface MakerProtocolConfig extends ProtocolConfig {
