@@ -25,6 +25,12 @@ export interface GetAdapterDataTimeframeOptions {
   config: MetricConfig;
   fromTime: number;
   toTime: number;
+
+  // if we are going to get latest data state
+  // should set latestState to True, it means we query contracts using block number at toTime
+  // otherwise, contract calls will use block number at fromTime
+  latestState?: boolean;
+
   props?: any;
 }
 

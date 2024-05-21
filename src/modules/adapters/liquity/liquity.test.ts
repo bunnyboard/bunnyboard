@@ -1,6 +1,7 @@
 import { expect, test } from 'vitest';
 
-import { DefaultMemcacheTime, ProtocolConfigs } from '../../../configs';
+import { DefaultMemcacheTime } from '../../../configs';
+import { TimeUnits } from '../../../configs/constants';
 import { LiquityConfigs } from '../../../configs/protocols/liquity';
 import BlockchainService from '../../../services/blockchains/blockchain';
 import { MemcacheService } from '../../../services/caching/memcache';
@@ -15,9 +16,6 @@ const blockchain = new BlockchainService();
 
 const timestamp = 1704240000; // Wed Jan 03 2024 00:00:00 GMT+0000
 
-const startDayTimestamp = 1708041600; // Fri Feb 16 2024 00:00:00 GMT+0000
-const endDayTimestamp = 1708128000; // Sat Feb 17 2024 00:00:00 GMT+0000
-
 const liquityAdapter = new LiquityAdapter(
   {
     blockchain: blockchain,
@@ -29,81 +27,39 @@ const liquityAdapter = new LiquityAdapter(
   },
   LiquityConfigs,
 );
-const configEthereum = ProtocolConfigs.liquity.configs.filter((item) => item.chain === 'ethereum')[0];
-
-test('should get state data correctly at birthday - liquity chain ethereum', async function () {
-  const dataState = await liquityAdapter.getLendingAssetDataState({
-    config: configEthereum,
-    timestamp: configEthereum.birthday,
-  });
-
-  expect(dataState).not.equal(null);
-
-  if (dataState) {
-    expect(dataState.tokenPrice).equal('1.0711946834743807403');
-    expect(dataState.totalBorrowed).equal('114200523.539');
-    expect(dataState.totalSupply).equal('114200523.539');
-    expect(dataState.collaterals.length).equal(1);
-
-    const ethCollateral = dataState.collaterals[0];
-    expect(ethCollateral.address).equal(LiquityConfigs.configs[0].troves[0].troveManager); // trove manager
-    expect(ethCollateral.tokenPrice).equal('2101.36069975');
-    expect(ethCollateral.totalDeposited).equal('96112.941441063868722705');
-    expect(ethCollateral.totalBorrowed).equal('114200523.539');
-    expect(ethCollateral.rateBorrow).equal('0');
-    expect(ethCollateral.rateBorrowFee).equal('0.005');
-    expect(ethCollateral.rateLoanToValue).equal('0.9');
-  }
-});
 
 test('should get state data correctly - liquity chain ethereum', async function () {
-  const dataState = await liquityAdapter.getLendingAssetDataState({
-    config: configEthereum,
-    timestamp: timestamp,
-  });
+  for (const config of LiquityConfigs.configs) {
+    const assetData = await liquityAdapter.getLendingAssetData({
+      config: config,
+      fromTime: timestamp - TimeUnits.SecondsPerDay,
+      toTime: timestamp,
+    });
 
-  expect(dataState).not.equal(null);
+    expect(assetData).not.equal(null);
+    if (assetData && config.chain === 'ethereum') {
+      expect(assetData.chain).equal('ethereum');
+      expect(assetData.protocol).equal('liquity');
+      expect(assetData.token.symbol).equal('LUSD');
+      expect(assetData.tokenPrice).equal('0.99590622231989577419');
+      expect(assetData.totalBorrowed).equal('176239346.77244703879448363');
+      expect(assetData.totalSupply).equal('176239346.77244703879448363');
+      expect(assetData.volumeBorrowed).equal('984795.306526581252191492');
+      expect(assetData.volumeRepaid).equal('748145.764442248218734515');
+      expect(assetData.feesPaid).equal('4562.367412826779664102');
+      expect(assetData.feesRevenue).equal('0');
+      expect(assetData.extended.borrowingFee).equal('0.006901347066874394');
 
-  if (dataState) {
-    expect(dataState.tokenPrice).equal('0.98319929447070801584');
-    expect(dataState.totalBorrowed).equal('174892809.938681132585837145');
-    expect(dataState.totalSupply).equal('174892809.938681132585837145');
-    expect(dataState.collaterals.length).equal(1);
-
-    const ethCollateral = dataState.collaterals[0];
-    expect(ethCollateral.address).equal(LiquityConfigs.configs[0].troves[0].troveManager); // trove manager
-    expect(ethCollateral.tokenPrice).equal('2358.45');
-    expect(ethCollateral.totalDeposited).equal('316094.699304118193290095');
-    expect(ethCollateral.totalBorrowed).equal('174892809.938681132585837145');
-    expect(ethCollateral.rateBorrow).equal('0');
-    expect(ethCollateral.rateBorrowFee).equal('0.008052092360099089');
-    expect(ethCollateral.rateLoanToValue).equal('0.9');
-  }
-});
-
-test('should get timeframe data correctly - liquity chain ethereum', async function () {
-  const dataTimeframe = await liquityAdapter.getLendingAssetDataTimeframe({
-    config: configEthereum,
-    fromTime: startDayTimestamp,
-    toTime: endDayTimestamp,
-  });
-
-  expect(dataTimeframe).not.equal(null);
-  if (dataTimeframe) {
-    expect(dataTimeframe.tokenPrice).equal('0.99171302850382854518');
-    expect(dataTimeframe.totalBorrowed).equal('153195539.082185262742860794');
-    expect(dataTimeframe.totalSupply).equal('153195539.082185262742860794');
-    expect(dataTimeframe.volumeBorrowed).equal('296948.444550847122605949');
-    expect(dataTimeframe.volumeRepaid).equal('166675.316445822536652491');
-
-    const ethCollateral = dataTimeframe.collaterals[0];
-    expect(ethCollateral).not.equal(undefined);
-    expect(ethCollateral.address).equal(LiquityConfigs.configs[0].troves[0].troveManager); // trove manager
-    expect(ethCollateral.tokenPrice).equal('2823.43011038');
-    expect(ethCollateral.totalBorrowed).equal('153195539.082185262742860794');
-    expect(ethCollateral.totalDeposited).equal('263802.267428494003463684');
-    expect(ethCollateral.volumeDeposited).equal('1034.250583049392519259');
-    expect(ethCollateral.volumeWithdrawn).equal('271.695408744045811863');
-    expect(ethCollateral.volumeLiquidated).equal('12.022359242949938296');
+      const ethCollateral = assetData.collaterals[0];
+      expect(ethCollateral.token.symbol).equal('ETH');
+      expect(ethCollateral.tokenPrice).equal('2350.6');
+      expect(ethCollateral.totalBorrowed).equal('176239346.77244703879448363');
+      expect(ethCollateral.totalDeposited).equal('317089.767024618363476336');
+      expect(ethCollateral.volumeDeposited).equal('1018.521073085510762708');
+      expect(ethCollateral.volumeWithdrawn).equal('708.48372804398418527');
+      expect(ethCollateral.volumeLiquidated).equal('0');
+      expect(ethCollateral.rateBorrow).equal('0');
+      expect(ethCollateral.rateLoanToValue).equal('0.9');
+    }
   }
 });

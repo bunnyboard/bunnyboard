@@ -18,6 +18,12 @@ const ignoredTokens = [
   '0x5bc25f649fc4e26069ddf4cf4010f9f706c23831', // DUSD
   '0xb01e8419d842beebf1b70a7b5f7142abbaf7159d', // COVER
   '0x44b26e839eb3572c5e959f994804a5de66600349', // HEGIC
+  '0x1456688345527be1f37e9e627da0837d6f08c925', // unit USDP
+  '0x924828a9fb17d47d0eb64b57271d10706699ff11', // SFI fantom
+  '0x0e1694483ebb3b74d3054e383840c6cf011e518e', // sUSD fantom
+  '0x2a5062d22adcfaafbd5c541d4da82e4b450d4212', // KP3R fantom
+  '0x1337def18c680af1f9f45cbcab6309562975b1dd', // arNXM
+  '0x1337def16f9b486faed0293eb623dc8395dfe46a', // ARMOR
 ];
 
 (async function () {

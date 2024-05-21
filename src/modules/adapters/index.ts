@@ -3,14 +3,12 @@ import { ContextServices, ContextStorages, IProtocolAdapter } from '../../types/
 import AaveAdapter from './aave/aave';
 import Aavev2Adapter from './aave/aavev2';
 import Aavev3Adapter from './aave/aavev3';
-import AbracadabraAdapter from './abracadabra/abracadabra';
 import BenqiAdapter from './benqi/benqi';
 import CompoundAdapter from './compound/compound';
 import Compoundv3Adapter from './compound/compoundv3';
 import IronbankAdapter from './ironbank/ironbank';
 import KinzaAdapter from './kinza/kinza';
 import LiquityAdapter from './liquity/liquity';
-import MakerAdapter from './maker/maker';
 import MendiAdapter from './mendi/mendi';
 import OrbitAdapter from './orbit/orbit';
 import PacAdapter from './pac/pac';
@@ -35,7 +33,7 @@ export function getProtocolAdapters(
     aave: new AaveAdapter(services, storages, ProtocolConfigs.aave),
     aavev2: new Aavev2Adapter(services, storages, ProtocolConfigs.aavev2),
     aavev3: new Aavev3Adapter(services, storages, ProtocolConfigs.aavev3),
-    abracadabra: new AbracadabraAdapter(services, storages, ProtocolConfigs.abracadabra),
+    // abracadabra: new AbracadabraAdapter(services, storages, ProtocolConfigs.abracadabra),
     benqi: new BenqiAdapter(services, storages, ProtocolConfigs.benqi),
     compound: new CompoundAdapter(services, storages, ProtocolConfigs.compound),
     compoundv3: new Compoundv3Adapter(services, storages, ProtocolConfigs.compoundv3),
@@ -46,7 +44,7 @@ export function getProtocolAdapters(
     sonne: new SonneAdapter(services, storages, ProtocolConfigs.sonne),
     spark: new SparkAdapter(services, storages, ProtocolConfigs.spark),
     liquity: new LiquityAdapter(services, storages, ProtocolConfigs.liquity),
-    maker: new MakerAdapter(services, storages, ProtocolConfigs.maker),
+    // maker: new MakerAdapter(services, storages, ProtocolConfigs.maker),
     mendi: new MendiAdapter(services, storages, ProtocolConfigs.mendi),
     orbit: new OrbitAdapter(services, storages, ProtocolConfigs.orbit),
     seamless: new SeamlessAdapter(services, storages, ProtocolConfigs.seamless),

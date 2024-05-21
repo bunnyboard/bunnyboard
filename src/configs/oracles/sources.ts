@@ -134,6 +134,7 @@ export const OracleSourceConfigs: { [key: string]: OracleConfig } = {
   USDP: {
     currency: 'usd',
     sources: [OracleSourceChainlinkList.USDP_USD],
+    stablecoin: true,
   },
   AMPL: {
     currency: 'eth',
@@ -146,6 +147,7 @@ export const OracleSourceConfigs: { [key: string]: OracleConfig } = {
   FRAX: {
     currency: 'usd',
     sources: [OracleSourceUniswapv2List.FRAX_USDC],
+    stablecoin: true,
   },
   FEI: {
     currency: 'eth',
@@ -160,8 +162,8 @@ export const OracleSourceConfigs: { [key: string]: OracleConfig } = {
     sources: [OracleSourceUniswapv3List.ENS_WETH],
   },
   UST: {
-    currency: 'eth',
-    sources: [OracleSourceUniswapv2List.UST_WETH],
+    currency: 'usd',
+    sources: [OracleSourceUniswapv2List.UST_BUSD],
   },
   CVX: {
     currency: 'eth',
@@ -588,5 +590,9 @@ export const OracleSourceConfigs: { [key: string]: OracleConfig } = {
   pxETH: {
     currency: 'eth',
     sources: [OracleSourceUniswapv3List.pxETH_WETH],
+  },
+  VELO: {
+    currency: 'usd',
+    sources: [OracleSourceUniswapv2List.VELO_USDC],
   },
 };

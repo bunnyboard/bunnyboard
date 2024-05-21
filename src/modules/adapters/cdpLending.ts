@@ -2,13 +2,9 @@ import { TimeUnits } from '../../configs/constants';
 import EnvConfig from '../../configs/envConfig';
 import { getTimestamp } from '../../lib/utils';
 import { DataMetrics, MetricConfig, ProtocolConfig } from '../../types/configs';
-import {
-  CdpLendingAssetDataState,
-  CdpLendingAssetDataStateWithTimeframes,
-  CdpLendingAssetDataTimeframe,
-} from '../../types/domains/cdpLending';
+import { CdpLendingAssetDataStateWithTimeframes, CdpLendingAssetDataTimeframe } from '../../types/domains/cdpLending';
 import { ContextServices, ContextStorages, ICdpLendingProtocolAdapter } from '../../types/namespaces';
-import { GetAdapterDataStateOptions, GetAdapterDataTimeframeOptions, RunAdapterOptions } from '../../types/options';
+import { GetAdapterDataTimeframeOptions, RunAdapterOptions } from '../../types/options';
 import ProtocolAdapter from './adapter';
 
 export default class CdpLendingProtocolAdapter extends ProtocolAdapter implements ICdpLendingProtocolAdapter {
@@ -18,11 +14,7 @@ export default class CdpLendingProtocolAdapter extends ProtocolAdapter implement
     super(services, storages, protocolConfig);
   }
 
-  public async getLendingAssetDataState(options: GetAdapterDataStateOptions): Promise<CdpLendingAssetDataState | null> {
-    return null;
-  }
-
-  public async getLendingAssetDataTimeframe(
+  public async getLendingAssetData(
     options: GetAdapterDataTimeframeOptions,
   ): Promise<CdpLendingAssetDataTimeframe | null> {
     return null;
@@ -33,47 +25,25 @@ export default class CdpLendingProtocolAdapter extends ProtocolAdapter implement
     if (config.metric === DataMetrics.cdpLending) {
       const timestamp = getTimestamp();
 
-      const dataState = await this.getLendingAssetDataState({
-        config: config,
-        timestamp: timestamp,
-      });
-
-      const timeframeLast24Hours = await this.getLendingAssetDataTimeframe({
+      const dataState = await this.getLendingAssetData({
         config: config,
         fromTime: timestamp - TimeUnits.SecondsPerDay,
         toTime: timestamp,
+        latestState: true,
       });
 
-      const timeframeLast48Hours = await this.getLendingAssetDataTimeframe({
+      const dataLast24Hours = await this.getLendingAssetData({
         config: config,
         fromTime: timestamp - TimeUnits.SecondsPerDay * 2,
         toTime: timestamp - TimeUnits.SecondsPerDay,
+        latestState: true,
       });
 
       if (dataState) {
         const stateWithTimeframes: CdpLendingAssetDataStateWithTimeframes = {
           ...dataState,
-          timefrom: timestamp - TimeUnits.SecondsPerDay,
-          timeto: timestamp,
-          volumeBorrowed: '0',
-          volumeRepaid: '0',
-          addresses: [],
-          transactions: [],
-          collaterals: [],
-          last24Hours: null,
+          last24Hours: dataLast24Hours,
         };
-
-        if (timeframeLast24Hours) {
-          stateWithTimeframes.volumeBorrowed = timeframeLast24Hours.volumeBorrowed;
-          stateWithTimeframes.volumeRepaid = timeframeLast24Hours.volumeRepaid;
-          stateWithTimeframes.addresses = timeframeLast24Hours.addresses;
-          stateWithTimeframes.transactions = timeframeLast24Hours.transactions;
-          stateWithTimeframes.collaterals = timeframeLast24Hours.collaterals;
-        }
-
-        if (timeframeLast48Hours) {
-          stateWithTimeframes.last24Hours = timeframeLast48Hours;
-        }
 
         await this.storages.database.update({
           collection: EnvConfig.mongodb.collections.cdpLendingAssetStates.name,
@@ -92,7 +62,7 @@ export default class CdpLendingProtocolAdapter extends ProtocolAdapter implement
   }
 
   protected async getSnapshot(config: MetricConfig, fromTime: number, toTime: number): Promise<any> {
-    return await this.getLendingAssetDataTimeframe({
+    return await this.getLendingAssetData({
       config: config,
       fromTime: fromTime,
       toTime: toTime,

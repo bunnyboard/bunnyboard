@@ -83,6 +83,7 @@ export const OracleConfigs: { [key: string]: { [key: string]: OracleConfig } } =
     '0x24ae2da0f361aa4be46b48eb19c91e02c5e4f27e': OracleSourceConfigs.mevETH,
     '0x04c154b66cb340f3ae24111cc767e0184ed00cc6': OracleSourceConfigs.pxETH,
     '0x9ba021b0a9b958b5e75ce9f6dff97c7ee52cb3e6': OracleSourceConfigs.pxETH,
+    '0xc581b735a1688071a1746c968e0798d642ede491': OracleSourceConfigs.EUR,
 
     // ironbank fixed forex
     '0x69681f8fde45345c3870bcd5eaf4a05a60e7d227': OracleSourceConfigs.GBP,
@@ -164,6 +165,7 @@ export const OracleConfigs: { [key: string]: { [key: string]: OracleConfig } } =
     '0x8700daec35af8ff88c16bdf0418774cb3d7599b4': OracleSourceConfigs.SNX,
     '0x1db2466d9f5e10d7090e7152b68d62703a2245f0': OracleSourceConfigs.SONNE,
     '0xb153fb3d196a8eb25522705560ac152eeec57901': OracleSourceConfigs.MIM,
+    '0x9560e827af36c94d2ac33a39bce1fe78631088db': OracleSourceConfigs.VELO,
   },
 
   // tokens on Base
@@ -303,6 +305,7 @@ export const OracleConfigs: { [key: string]: { [key: string]: OracleConfig } } =
     '0xe2d27f06f63d98b8e11b38b5b08a75d0c8dd62b9': OracleSourceConfigs.UST,
     '0x46e7628e8b4350b2716ab470ee0ba1fa9e76c6c5': OracleSourceConfigs.BAND,
     '0x657a1861c15a3ded9af0b6799a195a249ebdcbc6': OracleSourceConfigs.CREAM,
+    '0xaf319e5789945197e365e7f7fbfc56b130523b33': OracleSourceConfigs.FRAX,
   },
 
   // tokens on metis

@@ -1,9 +1,7 @@
-import { BaseActivityEvent, DataState, DataTimeframe } from '../base';
+import { DataState, DataTimeframe } from '../base';
 import { Token } from '../configs';
 
-export interface CdpLendingActivityEvent extends BaseActivityEvent {}
-
-export interface CdpLendingCollateralDataState extends DataState {
+export interface CdpLendingCollateralData {
   // lending logic contract for this collateral
   address: string;
 
@@ -19,19 +17,24 @@ export interface CdpLendingCollateralDataState extends DataState {
   // total debts were issued by this collateral
   totalBorrowed: string;
 
+  volumeDeposited: string;
+
+  volumeWithdrawn: string;
+
+  volumeLiquidated: string;
+
   // borrow interest
   rateBorrow: string;
-  // one-time paid borrow fee
-  rateBorrowFee: string;
+
   // LTV
   rateLoanToValue: string;
 }
 
-export interface CdpLendingAssetDataState extends DataState {
-  // token
+export interface CdpLendingAssetDataTimeframe extends DataState, DataTimeframe {
+  // debt token
   token: Token;
 
-  // the token price
+  // the debt token price
   tokenPrice: string;
 
   // total debt were borrowed
@@ -41,24 +44,17 @@ export interface CdpLendingAssetDataState extends DataState {
   // ERC20 totalSupply call DebtToken contract
   totalSupply: string;
 
-  // a list of collaterals
-  collaterals: Array<CdpLendingCollateralDataState>;
-}
-
-export interface CdpLendingCollateralDataTimeframe extends CdpLendingCollateralDataState, DataTimeframe {
-  volumeDeposited: string;
-  volumeWithdrawn: string;
-  volumeLiquidated: string;
-}
-
-export interface CdpLendingAssetDataTimeframe extends CdpLendingAssetDataState, DataTimeframe {
   volumeBorrowed: string;
   volumeRepaid: string;
+
+  feesPaid: string;
+  feesRevenue: string;
 
   addresses: Array<string>;
   transactions: Array<string>;
 
-  collaterals: Array<CdpLendingCollateralDataTimeframe>;
+  // a list of collaterals
+  collaterals: Array<CdpLendingCollateralData>;
 }
 
 export interface CdpLendingAssetDataStateWithTimeframes extends CdpLendingAssetDataTimeframe {

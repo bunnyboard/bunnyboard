@@ -77,6 +77,12 @@
     "symbol": "USDT",
     "decimals": 6
   },
+  "0x9560e827af36c94d2ac33a39bce1fe78631088db": {
+    "chain": "optimism",
+    "address": "0x9560e827af36c94d2ac33a39bce1fe78631088db",
+    "symbol": "VELO",
+    "decimals": 18
+  },
   "0x9bcef72be871e61ed4fbbc7630889bee758eb81d": {
     "chain": "optimism",
     "address": "0x9bcef72be871e61ed4fbbc7630889bee758eb81d",

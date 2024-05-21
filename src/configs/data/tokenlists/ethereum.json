@@ -629,6 +629,12 @@
     "symbol": "ENS",
     "decimals": 18
   },
+  "0xc581b735a1688071a1746c968e0798d642ede491": {
+    "chain": "ethereum",
+    "address": "0xc581b735a1688071a1746c968e0798d642ede491",
+    "symbol": "EURT",
+    "decimals": 6
+  },
   "0xc5f0f7b66764F6ec8C8Dff7BA683102295E16409": {
     "chain": "ethereum",
     "address": "0xc5f0f7b66764f6ec8c8dff7ba683102295e16409",
