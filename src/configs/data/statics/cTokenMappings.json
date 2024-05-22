@@ -982,5 +982,257 @@
     "address": "0xc5f0f7b66764f6ec8c8dff7ba683102295e16409",
     "symbol": "FDUSD",
     "decimals": 18
+  },
+  "0xca2d81aa7c09a1a025de797600a7081146dceed9": {
+    "chain": "bnbchain",
+    "address": "0x0782b6d8c4551b9760e74c0545a9bcd90bdc41e5",
+    "symbol": "lisUSD",
+    "decimals": 18
+  },
+  "0x5e3072305f9cae1c7a82f6fe9e38811c74922c3b": {
+    "chain": "bnbchain",
+    "address": "0x55d398326f99059ff775485246999027b3197955",
+    "symbol": "USDT",
+    "decimals": 18
+  },
+  "0xc3a45ad8812189cab659ad99e64b1376f6acd035": {
+    "chain": "bnbchain",
+    "address": "0xd17479997f34dd9156deef8f95a52d81d265be9c",
+    "symbol": "USDD",
+    "decimals": 18
+  },
+  "0x795de779be00ea46ea97a28bdd38d9ed570bcf0f": {
+    "chain": "bnbchain",
+    "address": "0x12f31b73d812c6bb0d735a218c086d44d5fe5f89",
+    "symbol": "EURA",
+    "decimals": 18
+  },
+  "0x53728fd51060a85ac41974c6c3eb1dae42776723": {
+    "chain": "bnbchain",
+    "address": "0x52f24a5e03aee338da5fd9df68d2b6fae1178827",
+    "symbol": "ankrBNB",
+    "decimals": 18
+  },
+  "0x8f657dfd3a1354deb4545765fe6840cc54afd379": {
+    "chain": "bnbchain",
+    "address": "0x965f527d9159dce6288a2219db51fc6eef120dd1",
+    "symbol": "BSW",
+    "decimals": 18
+  },
+  "0x02c5fb0f26761093d297165e902e96d08576d344": {
+    "chain": "bnbchain",
+    "address": "0x8f0528ce5ef7b51152a59745befdd91d97091d2f",
+    "symbol": "ALPACA",
+    "decimals": 18
+  },
+  "0x1d8bbde12b6b34140604e18e9f9c6e14dec16854": {
+    "chain": "bnbchain",
+    "address": "0x55d398326f99059ff775485246999027b3197955",
+    "symbol": "USDT",
+    "decimals": 18
+  },
+  "0xa615467cae6b9e0bb98bc04b4411d9296fd1dfa0": {
+    "chain": "bnbchain",
+    "address": "0xd17479997f34dd9156deef8f95a52d81d265be9c",
+    "symbol": "USDD",
+    "decimals": 18
+  },
+  "0x19ce11c8817a1828d1d357dfbf62dcf5b0b2a362": {
+    "chain": "bnbchain",
+    "address": "0xf307910a4c7bbc79691fd374889b36d8531b08e3",
+    "symbol": "ANKR",
+    "decimals": 18
+  },
+  "0x736bf1d21a28b5dc19a1ac8ca71fc2856c23c03f": {
+    "chain": "bnbchain",
+    "address": "0x4b0f1812e5df2a09796481ff14017e6005508003",
+    "symbol": "TWT",
+    "decimals": 18
+  },
+  "0xff1112ba7f88a53d4d23ed4e14a117a2ae17c6be": {
+    "chain": "bnbchain",
+    "address": "0xca6d678e74f553f0e59cccc03ae644a3c2c5ee7d",
+    "symbol": "PLANET",
+    "decimals": 18
+  },
+  "0xe5fe5527a5b76c75eede77fdfa6b80d52444a465": {
+    "chain": "bnbchain",
+    "address": "0x12bb890508c125661e03b09ec06e404bc9289040",
+    "symbol": "RACA",
+    "decimals": 18
+  },
+  "0xc353b7a1e13ddba393b5e120d4169da7185aa2cb": {
+    "chain": "bnbchain",
+    "address": "0xfb5b838b6cfeedc2873ab27866079ac55363d37e",
+    "symbol": "FLOKI",
+    "decimals": 9
+  },
+  "0x4978591f17670a846137d9d613e333c38dc68a37": {
+    "chain": "bnbchain",
+    "address": "0x55d398326f99059ff775485246999027b3197955",
+    "symbol": "USDT",
+    "decimals": 18
+  },
+  "0x9f2fd23bd0a5e08c5f2b9dd6cf9c96bfb5fa515c": {
+    "chain": "bnbchain",
+    "address": "0xd17479997f34dd9156deef8f95a52d81d265be9c",
+    "symbol": "USDD",
+    "decimals": 18
+  },
+  "0xbfe25459ba784e70e2d7a718be99a1f3521ca17f": {
+    "chain": "bnbchain",
+    "address": "0x52f24a5e03aee338da5fd9df68d2b6fae1178827",
+    "symbol": "ankrBNB",
+    "decimals": 18
+  },
+  "0x5e21bf67a6af41c74c1773e4b473ca5ce8fd3791": {
+    "chain": "bnbchain",
+    "address": "0x1bdd3cf7f79cfb8edbb955f20ad99211551ba275",
+    "symbol": "BNBx",
+    "decimals": 18
+  },
+  "0xcc5d9e502574cda17215e70bc0b4546663785227": {
+    "chain": "bnbchain",
+    "address": "0xc2e9d07f66a89c44062459a47a0d2dc038e4fb16",
+    "symbol": "stkBNB",
+    "decimals": 18
+  },
+  "0xe10e80b7fd3a29fe46e16c30cc8f4dd938b742e2": {
+    "chain": "bnbchain",
+    "address": "0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c",
+    "symbol": "WBNB",
+    "decimals": 18
+  },
+  "0xd3cc9d8f3689b83c91b7b59cab4946b063eb894a": {
+    "chain": "bnbchain",
+    "address": "0xb0b84d294e0c75a6abe60171b70edeb2efd14a1b",
+    "symbol": "slisBNB",
+    "decimals": 18
+  },
+  "0x49c26e12959345472e2fd95e5f79f8381058d3ee": {
+    "chain": "bnbchain",
+    "address": "0x352cb5e19b12fc216548a2677bd0fce83bae434b",
+    "symbol": "BTT",
+    "decimals": 18
+  },
+  "0xb114cfa615c828d88021a41bfc524b800e64a9d5": {
+    "chain": "bnbchain",
+    "address": "0xaef0d72a118ce24fee3cd1d43d383897d05b4e99",
+    "symbol": "WIN",
+    "decimals": 18
+  },
+  "0x836beb2cb723c498136e1119248436a645845f4e": {
+    "chain": "bnbchain",
+    "address": "0xce7de646e7208a4ef112cb6ed5038fa6cc6b12e3",
+    "symbol": "TRX",
+    "decimals": 6
+  },
+  "0x281e5378f99a4bc55b295abc0a3e7ed32deba059": {
+    "chain": "bnbchain",
+    "address": "0x55d398326f99059ff775485246999027b3197955",
+    "symbol": "USDT",
+    "decimals": 18
+  },
+  "0xf1da185cce5bed1bebbb3007ef738ea4224025f7": {
+    "chain": "bnbchain",
+    "address": "0xd17479997f34dd9156deef8f95a52d81d265be9c",
+    "symbol": "USDD",
+    "decimals": 18
+  },
+  "0x52ed99cd0a56d60451dd4314058854bc0845bbb5": {
+    "chain": "bnbchain",
+    "address": "0xc748673057861a797275cd8a068abb95a902e8de",
+    "symbol": "BabyDoge",
+    "decimals": 9
+  },
+  "0x4a9613d06a241b76b81d3777fce3ddd1f61d4bd0": {
+    "chain": "bnbchain",
+    "address": "0x55d398326f99059ff775485246999027b3197955",
+    "symbol": "USDT",
+    "decimals": 18
+  },
+  "0x8716554364f20bca783cb2baa744d39361fd1d8d": {
+    "chain": "ethereum",
+    "address": "0x2260fac5e5542a773aa44fbcfedf7c193bc2c599",
+    "symbol": "WBTC",
+    "decimals": 8
+  },
+  "0x7c8ff7d2a1372433726f879bd945ffb250b94c65": {
+    "chain": "ethereum",
+    "address": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
+    "symbol": "WETH",
+    "decimals": 18
+  },
+  "0x17c07e0c232f2f80dfdbd7a95b942d893a4c5acb": {
+    "chain": "ethereum",
+    "address": "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48",
+    "symbol": "USDC",
+    "decimals": 6
+  },
+  "0x8c3e3821259b82ffb32b2450a95d2dcbf161c24e": {
+    "chain": "ethereum",
+    "address": "0xdac17f958d2ee523a2206206994597c13d831ec7",
+    "symbol": "USDT",
+    "decimals": 6
+  },
+  "0x672208c10aaaa2f9a6719f449c4c8227bc0bc202": {
+    "chain": "ethereum",
+    "address": "0xf939e0a03fb07f59a73314e73794be0e57ac1b4e",
+    "symbol": "crvUSD",
+    "decimals": 18
+  },
+  "0xd8add9b41d4e1cd64edad8722ab0ba8d35536657": {
+    "chain": "ethereum",
+    "address": "0x6b175474e89094c44da98b954eedeac495271d0f",
+    "symbol": "DAI",
+    "decimals": 18
+  },
+  "0x13eb80fdbe5c5f4a7039728e258a6f05fb3b912b": {
+    "chain": "ethereum",
+    "address": "0x0000000000085d4780b73119b644ae5ecd22b376",
+    "symbol": "TUSD",
+    "decimals": 18
+  },
+  "0x4fafbdc4f2a9876bd1764827b26fb8dc4fd1db95": {
+    "chain": "ethereum",
+    "address": "0x853d955acef822db058eb8505911ed77f175b99e",
+    "symbol": "FRAX",
+    "decimals": 18
+  },
+  "0x17142a05fe678e9584fa1d88efac1bf181bf7abe": {
+    "chain": "ethereum",
+    "address": "0xa663b02cf0a4b149d2ad41910cb81e23e1c41c32",
+    "symbol": "sFRAX",
+    "decimals": 18
+  },
+  "0x2d499800239c4cd3012473cb1eae33562f0a6933": {
+    "chain": "ethereum",
+    "address": "0xf939e0a03fb07f59a73314e73794be0e57ac1b4e",
+    "symbol": "crvUSD",
+    "decimals": 18
+  },
+  "0x30ad10bd5be62cab37863c2bfcc6e8fb4fd85bda": {
+    "chain": "ethereum",
+    "address": "0xd533a949740bb3306d119cc777fa900ba034cd52",
+    "symbol": "CRV",
+    "decimals": 18
+  },
+  "0x4a240f0ee138697726c8a3e43efe6ac3593432cb": {
+    "chain": "ethereum",
+    "address": "0x7f39c581f595b53c5cb19bd0b3f8da6c935e2ca0",
+    "symbol": "wstETH",
+    "decimals": 18
+  },
+  "0xc82780db1257c788f262fbbda960b3706dfdcaf2": {
+    "chain": "ethereum",
+    "address": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
+    "symbol": "WETH",
+    "decimals": 18
+  },
+  "0xb4933af59868986316ed37fa865c829eba2df0c7": {
+    "chain": "ethereum",
+    "address": "0xcd5fe23c85820f7b72d0926fc9b05b43e359b7ee",
+    "symbol": "weETH",
+    "decimals": 18
   }
 }

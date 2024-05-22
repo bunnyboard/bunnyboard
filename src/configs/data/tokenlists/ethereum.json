@@ -515,6 +515,12 @@
     "symbol": "UST",
     "decimals": 18
   },
+  "0xa663b02cf0a4b149d2ad41910cb81e23e1c41c32": {
+    "chain": "ethereum",
+    "address": "0xa663b02cf0a4b149d2ad41910cb81e23e1c41c32",
+    "symbol": "sFRAX",
+    "decimals": 18
+  },
   "0xa693b19d2931d498c5b318df961919bb4aee87a5": {
     "chain": "ethereum",
     "address": "0xa693b19d2931d498c5b318df961919bb4aee87a5",
