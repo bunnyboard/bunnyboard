@@ -35,4 +35,5 @@ export const ChainBlockPeriods: { [key: string]: number } = {
   fantom: 2, // 2 seconds
   linea: 1, // 1 seconds
   blast: 2, // 2 seconds
+  mode: 2, // 2 seconds
 };

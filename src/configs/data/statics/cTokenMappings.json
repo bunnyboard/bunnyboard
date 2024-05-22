@@ -185,6 +185,66 @@
     "symbol": "FEI",
     "decimals": 18
   },
+  "0x71ef7eda2be775e5a7aa8afd02c45f059833e9d2": {
+    "chain": "mode",
+    "address": "0x4200000000000000000000000000000000000006",
+    "symbol": "WETH",
+    "decimals": 18
+  },
+  "0x2be717340023c9e14c1bb12cb3ecbcfd3c3fb038": {
+    "chain": "mode",
+    "address": "0xd988097fb8612cc24eec14542bc03424c656005f",
+    "symbol": "USDC",
+    "decimals": 6
+  },
+  "0x94812f2eea03a49869f95e1b5868c6f3206ee3d3": {
+    "chain": "mode",
+    "address": "0xf0f161fda2712db8b566946122a5af183995e2ed",
+    "symbol": "USDT",
+    "decimals": 6
+  },
+  "0xd70254c3bad29504789714a7c69d60ec1127375c": {
+    "chain": "mode",
+    "address": "0xcdd475325d6f564d27247d1dddbb0dac6fa0a5cf",
+    "symbol": "WBTC",
+    "decimals": 8
+  },
+  "0x59e710215d45f584f44c0fee83da6d43d762d857": {
+    "chain": "mode",
+    "address": "0x2416092f143378750bb29b79ed961ab195cceea5",
+    "symbol": "ezETH",
+    "decimals": 18
+  },
+  "0x9a9072302b775ffbd3db79a7766e75cf82bcac0a": {
+    "chain": "mode",
+    "address": "0x028227c4dd1e5419d11bb6fa6e661920c519d4f5",
+    "symbol": "weETH",
+    "decimals": 18
+  },
+  "0x959fa710ccbb22c7ce1e59da82a247e686629310": {
+    "chain": "mode",
+    "address": "0x80137510979822322193fc997d400d5a6c747bf7",
+    "symbol": "STONE",
+    "decimals": 18
+  },
+  "0x49950319abe7ce5c3a6c90698381b45989c99b46": {
+    "chain": "mode",
+    "address": "0xe7903b1f75c534dd8159b313d92cdcfbc62cb3cd",
+    "symbol": "wrsETH",
+    "decimals": 18
+  },
+  "0x19f245782b1258cf3e11eda25784a378cc18c108": {
+    "chain": "mode",
+    "address": "0x59889b7021243db5b1e065385f918316cd90d46c",
+    "symbol": "M-BTC",
+    "decimals": 18
+  },
+  "0xa0d844742b4abbbc43d8931a6edb00c56325aa18": {
+    "chain": "mode",
+    "address": "0x04c0599ae5a44757c0af6f9ec3b93da8976c150a",
+    "symbol": "weETH.mode",
+    "decimals": 18
+  },
   "0x41c84c0e2ee0b740cf0d31f63f3b6f627dc6b393": {
     "chain": "ethereum",
     "address": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
@@ -563,6 +623,12 @@
     "symbol": "ezETH",
     "decimals": 18
   },
+  "0x9b4971ac84054597eded7dc7b4b7e8a0c90753b5": {
+    "chain": "linea",
+    "address": "0x1bf74c010e6320bab11e2e5a532b5ac15e0b8aa6",
+    "symbol": "weETH",
+    "decimals": 18
+  },
   "0xf92996ddc677a8dcb032ac5fe62bbf00f92ae2ec": {
     "chain": "blast",
     "address": "0x0000000000000000000000000000000000000000",
@@ -682,6 +748,12 @@
     "address": "0x0b2c639c533813f4aa9d7837caf62653d097ff85",
     "symbol": "USDC",
     "decimals": 6
+  },
+  "0xe3b81318b1b6776f0877c3770afddff97b9f5fe5": {
+    "chain": "optimism",
+    "address": "0x9560e827af36c94d2ac33a39bce1fe78631088db",
+    "symbol": "VELO",
+    "decimals": 18
   },
   "0xb864ba2aab1f53bc3af7ae49a318202dd3fd54c2": {
     "chain": "base",

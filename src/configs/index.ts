@@ -4,6 +4,7 @@ import { AaveConfigs, Aavev2Configs, Aavev3Configs } from './protocols/aave';
 import { AbracadabraConfigs } from './protocols/abracadabra';
 import { BenqiConfigs } from './protocols/benqi';
 import { CompoundConfigs, Compoundv3Configs } from './protocols/compound';
+import { IonicConfigs } from './protocols/ionic';
 import { IronbankConfigs } from './protocols/ironbank';
 import { KinzaConfigs } from './protocols/kinza';
 import { KyberswapConfigs } from './protocols/kyberswap';
@@ -44,6 +45,7 @@ export const ProtocolConfigs = {
   benqi: BenqiConfigs,
   compound: CompoundConfigs,
   compoundv3: Compoundv3Configs,
+  ionic: IonicConfigs,
   ironbank: IronbankConfigs,
   kinza: KinzaConfigs,
   kyberswap: KyberswapConfigs,

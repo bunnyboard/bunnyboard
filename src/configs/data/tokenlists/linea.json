@@ -5,6 +5,12 @@
     "symbol": "USDC",
     "decimals": 6
   },
+  "0x1bf74c010e6320bab11e2e5a532b5ac15e0b8aa6": {
+    "chain": "linea",
+    "address": "0x1bf74c010e6320bab11e2e5a532b5ac15e0b8aa6",
+    "symbol": "weETH",
+    "decimals": 18
+  },
   "0x2416092f143378750bb29b79ed961ab195cceea5": {
     "chain": "linea",
     "address": "0x2416092f143378750bb29b79ed961ab195cceea5",
