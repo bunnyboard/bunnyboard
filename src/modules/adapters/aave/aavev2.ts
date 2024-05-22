@@ -7,6 +7,7 @@ import AaveLendingPoolV2Abi from '../../../configs/abi/aave/LendingPoolV2.json';
 import AaveOracleV2Abi from '../../../configs/abi/aave/OracleV2.json';
 import { AddressZero, SolidityUnits } from '../../../configs/constants';
 import { AaveLendingMarketConfig } from '../../../configs/protocols/aave';
+import logger from '../../../lib/logger';
 import { compareAddress, formatBigNumberToString, normalizeAddress } from '../../../lib/utils';
 import { ActivityAction, ActivityActions } from '../../../types/base';
 import { DataMetrics, ProtocolConfig } from '../../../types/configs';
@@ -359,30 +360,54 @@ export default class Aavev2Adapter extends CrossLendingProtocolAdapter {
         blockNumber,
       });
 
-      for (let i = 0; i < reserveList.length; i++) {
-        let price = null;
-        if (reservePrices[i]) {
-          if (config.oracle.currency === 'eth') {
-            const ethPrice = await this.services.oracle.getTokenPriceUsd({
-              chain: 'ethereum',
-              address: AddressZero,
-              timestamp: timestamp,
-            });
-            if (ethPrice) {
-              price = new BigNumber(reservePrices[i].toString())
-                .multipliedBy(new BigNumber(ethPrice))
-                .dividedBy(1e18)
-                .toString(10);
+      if (reservePrices) {
+        for (let i = 0; i < reserveList.length; i++) {
+          let price = null;
+          if (reservePrices[i]) {
+            if (config.oracle.currency === 'eth') {
+              const ethPrice = await this.services.oracle.getTokenPriceUsd({
+                chain: 'ethereum',
+                address: AddressZero,
+                timestamp: timestamp,
+              });
+              if (ethPrice) {
+                price = new BigNumber(reservePrices[i].toString())
+                  .multipliedBy(new BigNumber(ethPrice))
+                  .dividedBy(1e18)
+                  .toString(10);
+              }
+            } else {
+              price = formatBigNumberToString(reservePrices[i].toString(), 8);
             }
-          } else {
-            price = formatBigNumberToString(reservePrices[i].toString(), 8);
           }
-        }
 
-        reservesAndPrices.push({
-          reserve: reserveList[i],
-          price: price,
+          reservesAndPrices.push({
+            reserve: reserveList[i],
+            price: price,
+          });
+        }
+      } else {
+        logger.debug('failed to get reserve prices from oracle', {
+          service: this.name,
+          metric: config.metric,
+          protocol: this.protocolConfig.protocol,
+          chain: config.chain,
+          address: config.address,
+          oracle: config.oracle.address,
+          blockNumber: blockNumber,
         });
+
+        for (let i = 0; i < reserveList.length; i++) {
+          const tokenPrice = await this.services.oracle.getTokenPriceUsd({
+            chain: config.chain,
+            address: reserveList[i],
+            timestamp: timestamp,
+          });
+          reservesAndPrices.push({
+            reserve: reserveList[i],
+            price: tokenPrice ? tokenPrice : '0',
+          });
+        }
       }
     }
 

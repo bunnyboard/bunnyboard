@@ -68,7 +68,7 @@ export default class MakerAdapter extends CdpLendingProtocolAdapter {
     });
 
     // get total debt
-    const [debt, jugBase, potDsr, potPie, potChi] = await this.services.blockchain.multicall({
+    const [debt, jugBase] = await this.services.blockchain.multicall({
       chain: marketConfig.chain,
       calls: [
         {
@@ -83,6 +83,13 @@ export default class MakerAdapter extends CdpLendingProtocolAdapter {
           method: 'base',
           params: [],
         },
+      ],
+      blockNumber: stateBlock,
+    });
+
+    const [potDsr, potPie, potChi] = await this.services.blockchain.multicall({
+      chain: marketConfig.chain,
+      calls: [
         {
           abi: this.abiConfigs.eventAbis.pot,
           target: marketConfig.pot,
@@ -160,6 +167,7 @@ export default class MakerAdapter extends CdpLendingProtocolAdapter {
       fromBlock: beginBlock,
       toBlock: endBlock,
     });
+
     for (const log of daiJoinLogs) {
       const signature = log.topics[0];
       const address = normalizeAddress(log.address);

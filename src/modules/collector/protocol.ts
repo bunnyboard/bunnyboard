@@ -75,6 +75,10 @@ export default class ProtocolCollector {
       configs: configs.length,
     });
 
+    if (configs.length === 0) {
+      process.exit(0);
+    }
+
     for (const config of configs) {
       const adapter = this.getAdapter(config);
       if (adapter) {

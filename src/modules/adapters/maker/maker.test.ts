@@ -2,7 +2,7 @@ import { expect, test } from 'vitest';
 
 import { DefaultMemcacheTime } from '../../../configs';
 import { MakerConfigs } from '../../../configs/protocols/maker';
-import { getDateString, getTimestamp } from '../../../lib/utils';
+import { getDateString } from '../../../lib/utils';
 import BlockchainService from '../../../services/blockchains/blockchain';
 import { MemcacheService } from '../../../services/caching/memcache';
 import DatabaseService from '../../../services/database/database';
@@ -14,7 +14,7 @@ const memcache = new MemcacheService(DefaultMemcacheTime);
 const oracle = new OracleService();
 const blockchain = new BlockchainService();
 
-const timestamp = getTimestamp(); // Wed Mar 20 2024 00:00:00 GMT+0000
+const timestamp = 1710892800; // Wed Mar 20 2024 00:00:00 GMT+0000
 
 const makerAdapter = new MakerAdapter(
   {
@@ -31,8 +31,8 @@ const makerAdapter = new MakerAdapter(
 test(`should get state data correctly at ${getDateString(timestamp)} - maker chain ethereum`, async function () {
   const data = await makerAdapter.getLendingAssetData({
     config: MakerConfigs.configs[0],
-    fromTime: timestamp - 60 * 60,
-    toTime: timestamp,
+    fromTime: timestamp,
+    toTime: timestamp + 60 * 60,
   });
 
   expect(data).not.equal(null);

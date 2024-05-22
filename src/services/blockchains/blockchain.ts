@@ -31,7 +31,11 @@ export default class BlockchainService extends CachingService implements IBlockc
       batch: {
         multicall: true,
       },
-      transport: http(EnvConfig.blockchains[chain].nodeRpc),
+      transport: http(EnvConfig.blockchains[chain].nodeRpc, {
+        timeout: 10000, // 10 secs
+        retryCount: 2,
+        retryDelay: 5000, // 5 secs
+      }),
     });
   }
 
