@@ -79,7 +79,7 @@ test(`should get data correctly at ${getDateString(timestamp)} - venus chain bnb
   }
 });
 
-const currentTimestamp = 1716249600;
+const currentTimestamp = 1716508800;
 test(`should get data correctly at ${getDateString(currentTimestamp)} - venus chain ethereum`, async function () {
   const adapter = new VenusAdapter(
     {
@@ -95,20 +95,21 @@ test(`should get data correctly at ${getDateString(currentTimestamp)} - venus ch
 
   const configEthereum = ProtocolConfigs.venus.configs.filter((item) => item.chain === 'ethereum')[0];
   if (configEthereum) {
-    const dataState = await adapter.getLendingReservesDataState({
+    const dataTimeframe = await adapter.getLendingReservesDataTimeframe({
       config: configEthereum,
-      timestamp: currentTimestamp,
+      fromTime: currentTimestamp,
+      toTime: currentTimestamp + 24 * 60 * 60,
     });
 
-    expect(dataState).not.equal(null);
+    expect(dataTimeframe).not.equal(null);
 
-    if (dataState) {
-      expect(dataState.length).equal(9);
+    if (dataTimeframe) {
+      expect(dataTimeframe.length).equal(9);
 
-      for (const reserve of dataState) {
+      for (const reserve of dataTimeframe) {
         expect(
           reserve.tokenPrice,
-          `can not get price of ${reserve.token.chain}:${reserve.token.address} at ${timestamp}`,
+          `can not get price of ${reserve.token.chain}:${reserve.token.address} at ${currentTimestamp}`,
         ).not.eq('0');
       }
     }

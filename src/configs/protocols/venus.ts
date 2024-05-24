@@ -12,7 +12,7 @@ export const VenusConfigs: CompoundProtocolConfig = {
       version: 'compound',
       metric: DataMetrics.crossLending,
       birthday: 1614211200, // Fri Jan 01 2021 00:00:00 GMT+0000
-      address: '0xfD36E2c2a6789Db23113685031d7F16329158384',
+      address: '0xfd36e2c2a6789db23113685031d7f16329158384',
       governanceToken: {
         chain: 'bnbchain',
         symbol: 'XVS',
