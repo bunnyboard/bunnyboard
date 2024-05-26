@@ -6,9 +6,8 @@ import { ProtocolConfig } from './configs';
 import { CdpLendingAssetDataTimeframe } from './domains/cdpLending';
 import { CrossLendingReserveDataState, CrossLendingReserveDataTimeframe } from './domains/crossLending';
 import { DexDataState, DexDataTimeframe } from './domains/dex';
-import { IsolatedLendingAssetDataState, IsolatedLendingAssetDataTimeframe } from './domains/isolatedLending';
+import { IsolatedLendingAssetDataTimeframe } from './domains/isolatedLending';
 import { StakingPoolDataTimeframe } from './domains/staking';
-import { TokenBoardDataState, TokenBoardDataTimeframe } from './domains/tokenBoard';
 import {
   AdapterAbiConfigs,
   GetAdapterDataStateOptions,
@@ -57,10 +56,7 @@ export interface ICdpLendingProtocolAdapter extends IProtocolAdapter {
 }
 
 export interface IIsolatedLendingProtocolAdapter extends IProtocolAdapter {
-  getLendingAssetDataState: (options: GetAdapterDataStateOptions) => Promise<IsolatedLendingAssetDataState | null>;
-  getLendingAssetDataTimeframe: (
-    options: GetAdapterDataTimeframeOptions,
-  ) => Promise<IsolatedLendingAssetDataTimeframe | null>;
+  getLendingAssetData: (options: GetAdapterDataTimeframeOptions) => Promise<IsolatedLendingAssetDataTimeframe | null>;
 }
 
 export interface IDexProtocolAdapter extends IProtocolAdapter {
@@ -70,11 +66,6 @@ export interface IDexProtocolAdapter extends IProtocolAdapter {
 
 export interface IStakingProtocolAdapter extends IProtocolAdapter {
   getStakingDataTimeframe: (options: GetAdapterDataTimeframeOptions) => Promise<Array<StakingPoolDataTimeframe> | null>;
-}
-
-export interface ITokenBoardAdapter extends IProtocolAdapter {
-  getTokenDataState: (options: GetAdapterDataStateOptions) => Promise<TokenBoardDataState | null>;
-  getTokenDataTimeframe: (options: GetAdapterDataTimeframeOptions) => Promise<TokenBoardDataTimeframe | null>;
 }
 
 export interface IChainBoardAdapter {

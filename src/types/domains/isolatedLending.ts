@@ -1,7 +1,7 @@
-import { DataState, DataTimeframe } from '../base';
+import { DataTimeframe } from '../base';
 import { Token } from '../configs';
 
-export interface IsolatedLendingCollateralDataState extends DataState {
+export interface IsolatedLendingCollateralData {
   // token
   token: Token;
 
@@ -13,13 +13,17 @@ export interface IsolatedLendingCollateralDataState extends DataState {
 
   // LTV
   rateLoanToValue: string;
+
+  volumeDeposited: string;
+  volumeWithdrawn: string;
+  volumeLiquidated: string;
 }
 
-export interface IsolatedLendingAssetDataState extends DataState {
+export interface IsolatedLendingAssetDataTimeframe extends DataTimeframe {
   // market contract
   address: string;
 
-  // token
+  // debt token
   token: Token;
 
   // the token price
@@ -34,17 +38,6 @@ export interface IsolatedLendingAssetDataState extends DataState {
   rateSupply: string;
   rateBorrow: string;
 
-  // a list of collaterals
-  collaterals: Array<IsolatedLendingCollateralDataState>;
-}
-
-export interface IsolatedLendingCollateralDataTimeframe extends IsolatedLendingCollateralDataState, DataTimeframe {
-  volumeDeposited: string;
-  volumeWithdrawn: string;
-  volumeLiquidated: string;
-}
-
-export interface IsolatedLendingAssetDataTimeframe extends IsolatedLendingAssetDataState, DataTimeframe {
   volumeDeposited: string;
   volumeWithdrawn: string;
   volumeBorrowed: string;
@@ -53,7 +46,8 @@ export interface IsolatedLendingAssetDataTimeframe extends IsolatedLendingAssetD
   addresses: Array<string>;
   transactions: Array<string>;
 
-  collaterals: Array<IsolatedLendingCollateralDataTimeframe>;
+  // a list of collaterals
+  collaterals: Array<IsolatedLendingCollateralData>;
 }
 
 export interface IsolatedLendingAssetDataStateWithTimeframes extends IsolatedLendingAssetDataTimeframe {
