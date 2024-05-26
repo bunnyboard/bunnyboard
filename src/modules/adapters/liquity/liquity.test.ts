@@ -47,8 +47,6 @@ test('should get state data correctly - liquity chain ethereum', async function 
       expect(assetData.volumeBorrowed).equal('984795.306526581252191492');
       expect(assetData.volumeRepaid).equal('748145.764442248218734515');
       expect(assetData.feesPaid).equal('4562.367412826779664102');
-      expect(assetData.feesRevenue).equal('0');
-      expect(assetData.extended.borrowingFee).equal('0.006901347066874394');
 
       const ethCollateral = assetData.collaterals[0];
       expect(ethCollateral.token.symbol).equal('ETH');
@@ -59,6 +57,7 @@ test('should get state data correctly - liquity chain ethereum', async function 
       expect(ethCollateral.volumeWithdrawn).equal('708.48372804398418527');
       expect(ethCollateral.volumeLiquidated).equal('0');
       expect(ethCollateral.rateBorrow).equal('0');
+      expect(ethCollateral.rateBorrowOpeningFee).equal('0.006901347066874394');
       expect(ethCollateral.rateLoanToValue).equal('0.9');
     }
   }

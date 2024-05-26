@@ -26,6 +26,7 @@ export const ProtocolNames = {
   benqi: 'benqi',
   compound: 'compound',
   compoundv3: 'compoundv3',
+  crvusd: 'crvusd',
   ionic: 'ionic',
   ironbank: 'ironbank',
   kinza: 'kinza',

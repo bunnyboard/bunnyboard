@@ -4,7 +4,7 @@ import { decodeEventLog } from 'viem';
 import Erc20Abi from '../../../configs/abi/ERC20.json';
 import BorrowOperationsAbi from '../../../configs/abi/liquity/BorrowOperations.json';
 import TroveManagerAbi from '../../../configs/abi/liquity/TroveManager.json';
-import { LiquityCdpAssetExtendedData, LiquityLendingMarketConfig } from '../../../configs/protocols/liquity';
+import { LiquityLendingMarketConfig } from '../../../configs/protocols/liquity';
 import { compareAddress, formatBigNumberToString, normalizeAddress } from '../../../lib/utils';
 import { ProtocolConfig, Token } from '../../../types/configs';
 import { CdpLendingAssetDataTimeframe } from '../../../types/domains/cdpLending';
@@ -117,7 +117,6 @@ export default class LiquityAdapter extends CdpLendingProtocolAdapter {
       volumeRepaid: '0',
       volumeBorrowed: '0',
       feesPaid: '0',
-      feesRevenue: '0',
 
       addresses: [],
       transactions: [],
@@ -154,11 +153,6 @@ export default class LiquityAdapter extends CdpLendingProtocolAdapter {
       assetState.totalBorrowed = new BigNumber(assetState.totalBorrowed)
         .plus(formatBigNumberToString(totalDebt.toString(), debtToken.decimals))
         .toString(10);
-
-      // addition Liquity data
-      assetState.extended = {
-        borrowingFee: await this.getBorrowingFee(marketConfig.chain, troveConfig.troveManager, stateBlock),
-      } as LiquityCdpAssetExtendedData;
 
       let logs: Array<any> = await this.services.blockchain.getContractLogs({
         chain: marketConfig.chain,
@@ -284,6 +278,8 @@ export default class LiquityAdapter extends CdpLendingProtocolAdapter {
 
         // zero-interest borrowing on liquity
         rateBorrow: '0',
+
+        rateBorrowOpeningFee: await this.getBorrowingFee(marketConfig.chain, troveConfig.troveManager, stateBlock),
 
         // liquity must maintain 110% collateral value on debts
         // so, the loan to value is always 100 / 110 -> 0.9 -> 90%

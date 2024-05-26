@@ -89,6 +89,12 @@
     "symbol": "yvCurve-CVXETH",
     "decimals": 18
   },
+  "0x18084fba666a33d37592fa2633fd49a74dd93a88": {
+    "chain": "ethereum",
+    "address": "0x18084fba666a33d37592fa2633fd49a74dd93a88",
+    "symbol": "tBTC",
+    "decimals": 18
+  },
   "0x1985365e9f78359a9b6ad760e32412f4a445e862": {
     "chain": "ethereum",
     "address": "0x1985365e9f78359a9b6ad760e32412f4a445e862",

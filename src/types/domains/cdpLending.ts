@@ -26,6 +26,9 @@ export interface CdpLendingCollateralData {
   // borrow interest
   rateBorrow: string;
 
+  // opening fees if any
+  rateBorrowOpeningFee: string;
+
   // LTV
   rateLoanToValue: string;
 }
@@ -48,7 +51,6 @@ export interface CdpLendingAssetDataTimeframe extends DataState, DataTimeframe {
   volumeRepaid: string;
 
   feesPaid: string;
-  feesRevenue: string;
 
   addresses: Array<string>;
   transactions: Array<string>;

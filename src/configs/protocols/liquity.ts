@@ -18,10 +18,6 @@ export interface LiquityProtocolConfig extends ProtocolConfig {
   configs: Array<LiquityLendingMarketConfig>;
 }
 
-export interface LiquityCdpAssetExtendedData {
-  borrowingFee: string;
-}
-
 export function formatLiquityLendingMarketConfig(
   configs: Array<LiquityLendingMarketConfig>,
 ): Array<LiquityLendingMarketConfig> {

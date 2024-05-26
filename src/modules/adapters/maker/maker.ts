@@ -10,9 +10,9 @@ import PotAbi from '../../../configs/abi/maker/Pot.json';
 import SpotAbi from '../../../configs/abi/maker/Spot.json';
 import VatAbi from '../../../configs/abi/maker/Vat.json';
 import { SolidityUnits, TimeUnits } from '../../../configs/constants';
-import { MakerDataExtended, MakerLendingMarketConfig } from '../../../configs/protocols/maker';
+import { MakerLendingMarketConfig } from '../../../configs/protocols/maker';
 import { compareAddress, formatBigNumberToString, normalizeAddress } from '../../../lib/utils';
-import { ProtocolConfig, Token } from '../../../types/configs';
+import { ProtocolConfig } from '../../../types/configs';
 import { CdpLendingAssetDataTimeframe } from '../../../types/domains/cdpLending';
 import { ContextServices, ContextStorages } from '../../../types/namespaces';
 import { GetAdapterDataTimeframeOptions } from '../../../types/options';
@@ -40,35 +40,11 @@ export default class MakerAdapter extends CdpLendingProtocolAdapter {
   public async getLendingAssetData(
     options: GetAdapterDataTimeframeOptions,
   ): Promise<CdpLendingAssetDataTimeframe | null> {
+    const { beginBlock, endBlock, stateTime, stateBlock, assetState } = await this.initialLendingAssetData(options);
+
     const marketConfig: MakerLendingMarketConfig = options.config as MakerLendingMarketConfig;
 
-    const beginBlock = await this.services.blockchain.tryGetBlockNumberAtTimestamp(
-      options.config.chain,
-      options.fromTime,
-    );
-    const endBlock = await this.services.blockchain.tryGetBlockNumberAtTimestamp(options.config.chain, options.toTime);
-
-    const stateTime = options.latestState ? options.toTime : options.fromTime;
-    const stateBlock = options.latestState ? endBlock : beginBlock;
-
-    const debtToken = marketConfig.debtToken as Token;
-    const debtTokenPrice = await this.services.oracle.getTokenPriceUsd({
-      chain: debtToken.chain,
-      address: debtToken.address,
-      timestamp: stateTime,
-    });
-
-    const totalSupply = await this.services.blockchain.readContract({
-      chain: marketConfig.chain,
-      abi: Erc20Abi,
-      target: marketConfig.debtToken.address,
-      method: 'totalSupply',
-      params: [],
-      blockNumber: stateBlock,
-    });
-
-    // get total debt
-    const [debt, jugBase] = await this.services.blockchain.multicall({
+    const [vatDebt, jugBase] = await this.services.blockchain.multicall({
       chain: marketConfig.chain,
       calls: [
         {
@@ -87,74 +63,21 @@ export default class MakerAdapter extends CdpLendingProtocolAdapter {
       blockNumber: stateBlock,
     });
 
-    const [potDsr, potPie, potChi] = await this.services.blockchain.multicall({
-      chain: marketConfig.chain,
-      calls: [
-        {
-          abi: this.abiConfigs.eventAbis.pot,
-          target: marketConfig.pot,
-          method: 'dsr',
-          params: [],
-        },
-        {
-          abi: this.abiConfigs.eventAbis.pot,
-          target: marketConfig.pot,
-          method: 'Pie',
-          params: [],
-        },
-        {
-          abi: this.abiConfigs.eventAbis.pot,
-          target: marketConfig.pot,
-          method: 'chi',
-          params: [],
-        },
-      ],
-      blockNumber: stateBlock,
-    });
+    assetState.totalBorrowed = formatBigNumberToString(vatDebt.toString(), SolidityUnits.RadDecimals);
 
     // https://docs.makerdao.com/smart-contract-modules/rates-module#a-note-on-setting-rates
-    const daiSavingRate = new BigNumber(1)
-      .minus(
-        new BigNumber(formatBigNumberToString(potDsr.toString(), SolidityUnits.RayDecimals)).pow(
-          TimeUnits.SecondsPerYear,
-        ),
-      )
-      .toString(10);
-    const daiSavingTvl = new BigNumber(potPie.toString())
-      .multipliedBy(new BigNumber(potChi.toString()))
-      .dividedBy(1e18)
-      .dividedBy(1e27)
-      .toString(10);
-
-    const assetState: CdpLendingAssetDataTimeframe = {
-      chain: options.config.chain,
-      protocol: options.config.protocol,
-      metric: options.config.metric,
-      timestamp: stateTime,
-      timefrom: options.fromTime,
-      timeto: options.toTime,
-
-      token: debtToken,
-      tokenPrice: debtTokenPrice ? debtTokenPrice : '0',
-
-      totalBorrowed: formatBigNumberToString(debt.toString(), SolidityUnits.RadDecimals),
-      totalSupply: formatBigNumberToString(totalSupply.toString(), debtToken.decimals),
-
-      volumeRepaid: '0',
-      volumeBorrowed: '0',
-
-      feesPaid: '0',
-      feesRevenue: '0',
-
-      addresses: [],
-      transactions: [],
-      collaterals: [],
-
-      extended: {
-        daiSavingRate: daiSavingRate,
-        daiSavingTvl: daiSavingTvl,
-      } as MakerDataExtended,
-    };
+    // const daiSavingRate = new BigNumber(1)
+    //   .minus(
+    //     new BigNumber(formatBigNumberToString(potDsr.toString(), SolidityUnits.RayDecimals)).pow(
+    //       TimeUnits.SecondsPerYear,
+    //     ),
+    //   )
+    //   .toString(10);
+    // const daiSavingTvl = new BigNumber(potPie.toString())
+    //   .multipliedBy(new BigNumber(potChi.toString()))
+    //   .dividedBy(1e18)
+    //   .dividedBy(1e27)
+    //   .toString(10);
 
     const addresses: any = {};
     const transactions: any = {};
@@ -185,7 +108,7 @@ export default class MakerAdapter extends CdpLendingProtocolAdapter {
           transactions[log.transactionHash] = true;
 
           // borrow/repay DAI
-          const amount = formatBigNumberToString(rawAmount, debtToken.decimals);
+          const amount = formatBigNumberToString(rawAmount, marketConfig.debtToken.decimals);
           if (signature === MakerEventSignatures.Join) {
             assetState.volumeRepaid = new BigNumber(assetState.volumeRepaid).plus(new BigNumber(amount)).toString(10);
           } else {
@@ -260,7 +183,7 @@ export default class MakerAdapter extends CdpLendingProtocolAdapter {
             .dividedBy(100);
           const totalBorrowed = formatBigNumberToString(
             art.multipliedBy(rate).toString(10),
-            SolidityUnits.RayDecimals + debtToken.decimals,
+            SolidityUnits.RayDecimals + marketConfig.debtToken.decimals,
           );
           const totalDeposited = formatBigNumberToString(gemBalance.toString(), gemConfig.collateralToken.decimals);
 
@@ -372,6 +295,9 @@ export default class MakerAdapter extends CdpLendingProtocolAdapter {
             volumeDeposited: volumeDeposited,
             volumeLiquidated: volumeWithdrawn,
             volumeWithdrawn: volumeLiquidated,
+
+            // no opening fees on Maker
+            rateBorrowOpeningFee: '0',
           });
 
           assetState.feesPaid = new BigNumber(assetState.feesPaid)
@@ -380,9 +306,6 @@ export default class MakerAdapter extends CdpLendingProtocolAdapter {
         }
       }
     }
-
-    const daiSavingCost = new BigNumber(daiSavingTvl).multipliedBy(new BigNumber(daiSavingRate));
-    assetState.feesRevenue = new BigNumber(assetState.feesPaid).minus(daiSavingCost).toString(10);
 
     return assetState;
   }
