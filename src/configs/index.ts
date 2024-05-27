@@ -8,7 +8,6 @@ import { CrvusdConfigs } from './protocols/crvusd';
 import { IonicConfigs } from './protocols/ionic';
 import { IronbankConfigs } from './protocols/ironbank';
 import { KinzaConfigs } from './protocols/kinza';
-import { KyberswapConfigs } from './protocols/kyberswap';
 import { LiquityConfigs } from './protocols/liquity';
 import { MakerConfigs } from './protocols/maker';
 import { MendiConfigs } from './protocols/mendi';
@@ -18,15 +17,11 @@ import { RadiantConfigs } from './protocols/radiant';
 import { SeamlessConfigs } from './protocols/seamless';
 import { SonneConfigs } from './protocols/sonne';
 import { SparkConfigs } from './protocols/spark';
-import { SpookyConfigs } from './protocols/spooky';
-import { SushiConfigs, Sushiv3Configs } from './protocols/sushi';
-import { Uniswapv2Configs, Uniswapv3Configs } from './protocols/uniswap';
+import { SushiConfigs } from './protocols/sushi';
 import { UwulendConfigs } from './protocols/uwulend';
 import { VenusConfigs } from './protocols/venus';
 import { YethConfigs } from './protocols/yearn';
 import { ZerolendConfigs } from './protocols/zerolend';
-
-export { ChainBoardConfigs } from './boards/chainBoard';
 
 export const DefaultQueryContractLogsBlockRange = 1000;
 export const CustomQueryContractLogsBlockRange: { [key: string]: number } = {
@@ -50,7 +45,6 @@ export const ProtocolConfigs = {
   ionic: IonicConfigs,
   ironbank: IronbankConfigs,
   kinza: KinzaConfigs,
-  kyberswap: KyberswapConfigs,
   liquity: LiquityConfigs,
   maker: MakerConfigs,
   mendi: MendiConfigs,
@@ -60,11 +54,7 @@ export const ProtocolConfigs = {
   seamless: SeamlessConfigs,
   sonne: SonneConfigs,
   spark: SparkConfigs,
-  spooky: SpookyConfigs,
   sushi: SushiConfigs,
-  sushiv3: Sushiv3Configs,
-  uniswapv2: Uniswapv2Configs,
-  uniswapv3: Uniswapv3Configs,
   uwulend: UwulendConfigs,
   venus: VenusConfigs,
   yeth: YethConfigs,

@@ -19,11 +19,7 @@ import RadiantAdapter from './radiant/radiant';
 import SeamlessAdapter from './seamless/seamless';
 import SonneAdapter from './sonne/sonne';
 import SparkAdapter from './spark/spark';
-import SpookyAdapter from './spooky/spooky';
 import SushiAdapter from './sushi/sushi';
-import Sushiv3Adapter from './sushi/sushiv3';
-import Uniswapv2Adapter from './uniswap/uniswapv2';
-import Uniswapv3Adapter from './uniswap/uniswapv3';
 import UwulendAdapter from './uwulend/uwulend';
 import VenusAdapter from './venus/venus';
 import ZerolendAdapter from './zerolend/zerolend';
@@ -52,11 +48,7 @@ export function getProtocolAdapters(
     mendi: new MendiAdapter(services, storages, ProtocolConfigs.mendi),
     orbit: new OrbitAdapter(services, storages, ProtocolConfigs.orbit),
     seamless: new SeamlessAdapter(services, storages, ProtocolConfigs.seamless),
-    spooky: new SpookyAdapter(services, storages, ProtocolConfigs.spooky),
     sushi: new SushiAdapter(services, storages, ProtocolConfigs.sushi),
-    sushiv3: new Sushiv3Adapter(services, storages, ProtocolConfigs.sushiv3),
-    uniswapv2: new Uniswapv2Adapter(services, storages, ProtocolConfigs.uniswapv2),
-    uniswapv3: new Uniswapv3Adapter(services, storages, ProtocolConfigs.uniswapv3),
     uwulend: new UwulendAdapter(services, storages, ProtocolConfigs.uwulend),
     pac: new PacAdapter(services, storages, ProtocolConfigs.pac),
     zerolend: new ZerolendAdapter(services, storages, ProtocolConfigs.zerolend),

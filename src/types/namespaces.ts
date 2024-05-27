@@ -5,7 +5,6 @@ import { IOracleService } from '../services/oracle/domains';
 import { ProtocolConfig } from './configs';
 import { CdpLendingAssetDataTimeframe } from './domains/cdpLending';
 import { CrossLendingReserveDataState, CrossLendingReserveDataTimeframe } from './domains/crossLending';
-import { DexDataState, DexDataTimeframe } from './domains/dex';
 import { IsolatedLendingAssetDataTimeframe } from './domains/isolatedLending';
 import { StakingPoolDataTimeframe } from './domains/staking';
 import {
@@ -13,7 +12,6 @@ import {
   GetAdapterDataStateOptions,
   GetAdapterDataTimeframeOptions,
   RunAdapterOptions,
-  RunChainBoardAdapterOptions,
 } from './options';
 
 export interface ContextStorages {
@@ -59,20 +57,6 @@ export interface IIsolatedLendingProtocolAdapter extends IProtocolAdapter {
   getLendingAssetData: (options: GetAdapterDataTimeframeOptions) => Promise<IsolatedLendingAssetDataTimeframe | null>;
 }
 
-export interface IDexProtocolAdapter extends IProtocolAdapter {
-  getDexDataState: (options: GetAdapterDataStateOptions) => Promise<DexDataState | null>;
-  getDexDataTimeframe: (options: GetAdapterDataTimeframeOptions) => Promise<DexDataTimeframe | null>;
-}
-
 export interface IStakingProtocolAdapter extends IProtocolAdapter {
   getStakingDataTimeframe: (options: GetAdapterDataTimeframeOptions) => Promise<Array<StakingPoolDataTimeframe> | null>;
-}
-
-export interface IChainBoardAdapter {
-  name: string;
-
-  services: ContextServices;
-  storages: ContextStorages;
-
-  run: (options: RunChainBoardAdapterOptions) => Promise<void>;
 }

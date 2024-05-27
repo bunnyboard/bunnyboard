@@ -46,11 +46,6 @@ export interface DatabaseCollectionConfig {
   cachingStates: MongoCollectionConfig;
   cachingData: MongoCollectionConfig;
 
-  // we support to save special data in this collection
-  // we example, we can save historical DAI saving rate here
-  // document should be unique by name
-  historicalData: MongoCollectionConfig;
-
   crossLendingReserveStates: MongoCollectionConfig;
   crossLendingReserveSnapshots: MongoCollectionConfig;
 
@@ -60,27 +55,9 @@ export interface DatabaseCollectionConfig {
   isolatedLendingAssetStates: MongoCollectionConfig;
   isolatedLendingAssetSnapshots: MongoCollectionConfig;
 
-  // used to save dex liquidity data
-  // check dexscan adapter for more details
-  dexLiquidityTokenSnapshots: MongoCollectionConfig;
-  dexLiquidityPoolSnapshots: MongoCollectionConfig;
-
-  chainBoardStates: MongoCollectionConfig;
-  chainBoardSnapshots: MongoCollectionConfig;
-
-  tokenBoardStates: MongoCollectionConfig;
-  tokenBoardSnapshots: MongoCollectionConfig;
-
-  dexDataStates: MongoCollectionConfig;
-  dexDataSnapshots: MongoCollectionConfig;
-
   // token staking
   stakingPoolDataStates: MongoCollectionConfig;
   stakingPoolDataSnapshots: MongoCollectionConfig;
-
-  // support data for Ethereum ecosystem
-  ethereumEcosystemStates: MongoCollectionConfig;
-  ethereumEcosystemSnapshots: MongoCollectionConfig;
 }
 
 export interface EnvConfig {
@@ -108,8 +85,6 @@ export const DataMetrics = {
   staking: 'staking',
   flashloan: 'flashloan',
   perpetual: 'perpetual',
-  chainBoard: 'chainBoard',
-  tokenBoard: 'tokenBoard',
 };
 const Metrics = Object.values(DataMetrics);
 export type DataMetric = (typeof Metrics)[number];
@@ -179,77 +154,6 @@ export type StakingVersion = (typeof AllStakingVersions)[number];
 
 export interface StakingConfig extends MetricConfig {
   version: StakingVersion;
-}
-
-export const DexVersions = {
-  univ2: 'univ2',
-  univ3: 'univ3',
-};
-const AllDexVersions = Object.values(DexVersions);
-export type DexVersion = (typeof AllDexVersions)[number];
-
-export interface DexSubgraph {
-  endpoint: string;
-  filters: {
-    bundles: {
-      baseTokenPrice: string;
-    };
-    tokens: {
-      volume: string;
-      liquidity: string;
-      txCount: string;
-      derivedBase: string;
-      fees?: string;
-    };
-    pools: {
-      pool: string;
-      pools: string;
-      volume: string;
-      liquidity: string;
-      txCount: string;
-      derivedBase: string;
-      reserve0: string;
-      reserve1: string;
-      fees?: string;
-      feesTiger?: string;
-    };
-    factory: {
-      factories: string;
-      volume: string;
-      liquidity: string;
-      txCount: string;
-      fees?: string;
-    };
-    factoryDayData?: {
-      factories: string;
-      volume: string;
-      liquidity: string;
-      txCount: string;
-    };
-    eventSwaps?: {
-      event: string;
-      volumeUsd: string;
-      trader: string;
-      timestamp: string;
-    };
-  };
-  fixedFeePercentage?: number;
-  httpRequestOptions?: any;
-}
-
-export interface DexConfig extends MetricConfig {
-  version: DexVersion;
-  subgraph?: DexSubgraph;
-}
-
-export interface TokenBoardConfig extends MetricConfig, Token {
-  stablecoin: boolean;
-}
-
-export interface ChainBoardConfig {
-  chain: string;
-  metric: DataMetric;
-  birthday: number;
 }
 
 export interface ProtocolConfig {

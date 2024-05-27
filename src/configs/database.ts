@@ -22,14 +22,6 @@ export const DatabaseCollectionConfigs: DatabaseCollectionConfig = {
       },
     ],
   },
-  historicalData: {
-    name: `${MongodbPrefix}.historicalData`,
-    indies: [
-      {
-        name: 1,
-      },
-    ],
-  },
 
   crossLendingReserveStates: {
     name: `${MongodbPrefix}.crossLendingReserveStates`,
@@ -99,87 +91,6 @@ export const DatabaseCollectionConfigs: DatabaseCollectionConfig = {
       },
     ],
   },
-  chainBoardStates: {
-    name: `${MongodbPrefix}.chainBoardStates`,
-    indies: [
-      // write new documents
-      {
-        chain: 1,
-      },
-    ],
-  },
-  chainBoardSnapshots: {
-    name: `${MongodbPrefix}.chainBoardSnapshots`,
-    indies: [
-      {
-        chain: 1,
-        timestamp: 1,
-      },
-    ],
-  },
-  tokenBoardStates: {
-    name: `${MongodbPrefix}.tokenBoardStates`,
-    indies: [
-      // write new documents
-      {
-        chain: 1,
-        address: 1,
-      },
-    ],
-  },
-  tokenBoardSnapshots: {
-    name: `${MongodbPrefix}.tokenBoardSnapshots`,
-    indies: [
-      {
-        chain: 1,
-        address: 1,
-        timestamp: 1,
-      },
-    ],
-  },
-  dexDataStates: {
-    name: `${MongodbPrefix}.dexDataStates`,
-    indies: [
-      {
-        chain: 1,
-        protocol: 1,
-      },
-    ],
-  },
-  dexDataSnapshots: {
-    name: `${MongodbPrefix}.dexDataSnapshots`,
-    indies: [
-      {
-        chain: 1,
-        protocol: 1,
-        timestamp: 1,
-      },
-    ],
-  },
-  dexLiquidityTokenSnapshots: {
-    name: `${MongodbPrefix}.dexLiquidityTokenSnapshots`,
-    indies: [
-      {
-        chain: 1,
-        protocol: 1,
-        address: 1, // token address
-      },
-    ],
-  },
-  dexLiquidityPoolSnapshots: {
-    name: `${MongodbPrefix}.dexLiquidityPoolSnapshots`,
-    indies: [
-      {
-        chain: 1,
-        protocol: 1,
-        address: 1, // pool address
-      },
-      {
-        chain: 1,
-        'tokens.address': 1,
-      },
-    ],
-  },
 
   stakingPoolDataStates: {
     name: `${MongodbPrefix}.stakingPoolDataStates`,
@@ -201,23 +112,6 @@ export const DatabaseCollectionConfigs: DatabaseCollectionConfig = {
         address: 1,
         poolId: 1,
         timestamp: 1,
-      },
-    ],
-  },
-
-  ethereumEcosystemStates: {
-    name: `${MongodbPrefix}.ethereumEcosystemStates`,
-    indies: [
-      {
-        chain: 1,
-      },
-    ],
-  },
-  ethereumEcosystemSnapshots: {
-    name: `${MongodbPrefix}.ethereumEcosystemSnapshots`,
-    indies: [
-      {
-        chain: 1,
       },
     ],
   },

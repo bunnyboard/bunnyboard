@@ -1,5 +1,4 @@
 import { sleep } from '../lib/utils';
-import ChainBoardCollector from '../modules/collector/chainBoard';
 import ProtocolCollector from '../modules/collector/protocol';
 import { ContextServices, ContextStorages } from '../types/namespaces';
 import { BasicCommand } from './basic';
@@ -18,55 +17,28 @@ export class RunCommand extends BasicCommand {
     const services: ContextServices = await super.getServices();
     const storages: ContextStorages = await super.getStorages();
 
-    switch (argv.service) {
-      case 'adapter': {
-        const collector = new ProtocolCollector(storages, services);
-        do {
-          await collector.run({
-            metric: argv.metric !== '' ? argv.metric.split(',') : undefined,
-            chains: argv.chain !== '' ? argv.chain.split(',') : undefined,
-            protocols: argv.protocol !== '' ? argv.protocol.split(',') : undefined,
-            fromTime: argv.fromTime ? argv.fromTime : undefined,
-            force: argv.force,
-          });
+    const collector = new ProtocolCollector(storages, services);
+    do {
+      await collector.run({
+        metric: argv.metric !== '' ? argv.metric.split(',') : undefined,
+        chains: argv.chain !== '' ? argv.chain.split(',') : undefined,
+        protocols: argv.protocol !== '' ? argv.protocol.split(',') : undefined,
+        fromTime: argv.fromTime ? argv.fromTime : undefined,
+        force: argv.force,
+      });
 
-          if (argv.exit) {
-            process.exit(0);
-          } else {
-            await sleep(argv.sleep ? Number(argv.sleep) : DefaultServiceSleepSeconds);
-          }
-        } while (!argv.exit);
-        break;
+      if (argv.exit) {
+        process.exit(0);
+      } else {
+        await sleep(argv.sleep ? Number(argv.sleep) : DefaultServiceSleepSeconds);
       }
-      case 'chainBoard': {
-        const collector = new ChainBoardCollector(services, storages);
-        do {
-          await collector.run({
-            chains: argv.chain !== '' ? argv.chain.split(',') : undefined,
-            fromTime: argv.fromTime ? argv.fromTime : undefined,
-            force: argv.force,
-          });
-
-          if (argv.exit) {
-            process.exit(0);
-          } else {
-            await sleep(argv.sleep ? Number(argv.sleep) : DefaultServiceSleepSeconds);
-          }
-        } while (!argv.exit);
-        break;
-      }
-    }
+    } while (!argv.exit);
 
     process.exit(0);
   }
 
   public setOptions(yargs: any) {
     return yargs.option({
-      service: {
-        type: 'string',
-        default: 'adapter',
-        describe: 'Run collector with given service: adapter, dexscan, tokenBoard',
-      },
       metric: {
         type: 'string',
         default: '',
