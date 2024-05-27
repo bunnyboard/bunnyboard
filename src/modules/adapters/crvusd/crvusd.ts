@@ -145,7 +145,7 @@ export default class CrvusdAdapter extends CdpLendingProtocolAdapter {
       );
       assetState.totalBorrowed = new BigNumber(assetState.totalBorrowed).plus(totalBorrow).toString(10);
       assetState.feesPaid = new BigNumber(assetState.feesPaid)
-        .plus(totalBorrow.multipliedBy(new BigNumber(rate.toString()).multipliedBy(options.toTime - options.fromTime)))
+        .plus(totalBorrow.multipliedBy(new BigNumber(rate.toString()).multipliedBy(options.toTime - options.fromTime)).dividedBy(1e18))
         .toString(10);
 
       collateralDataState.tokenPrice = formatBigNumberToString(price_oracle.toString(), 18);
