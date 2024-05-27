@@ -84,6 +84,10 @@ export interface DatabaseCollectionConfig {
 }
 
 export interface EnvConfig {
+  env: {
+    debug: boolean;
+  };
+
   mongodb: {
     databaseName: string;
     connectionUri: string;

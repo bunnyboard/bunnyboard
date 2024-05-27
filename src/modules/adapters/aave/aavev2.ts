@@ -239,6 +239,14 @@ export default class Aavev2Adapter extends CrossLendingProtocolAdapter {
         rateReserveFactor: this.getReserveFactor(reserveConfigData),
       };
 
+      logger.debug('got cross lending reserve data', {
+        service: this.name,
+        protocol: marketConfig.protocol,
+        chain: marketConfig.chain,
+        token: token.symbol,
+        tokenPrice: tokenPrice,
+      });
+
       result.push(dataState);
     }
 
@@ -250,7 +258,7 @@ export default class Aavev2Adapter extends CrossLendingProtocolAdapter {
   ): Promise<Array<CrossLendingReserveDataTimeframe> | null> {
     const states = await this.getLendingReservesDataState({
       config: options.config,
-      timestamp: options.fromTime,
+      timestamp: options.latestState ? options.toTime : options.fromTime,
     });
 
     if (!states) {

@@ -492,7 +492,7 @@ export default class CompoundAdapter extends CrossLendingProtocolAdapter {
   ): Promise<Array<CrossLendingReserveDataTimeframe> | null> {
     const states = await this.getLendingReservesDataState({
       config: options.config,
-      timestamp: options.fromTime,
+      timestamp: options.latestState ? options.toTime : options.fromTime,
     });
     if (!states) {
       return null;

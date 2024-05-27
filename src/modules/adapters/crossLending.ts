@@ -35,15 +35,11 @@ export default class CrossLendingProtocolAdapter extends ProtocolAdapter impleme
     if (config.metric === DataMetrics.crossLending) {
       const timestamp = getTimestamp();
 
-      const states = await this.getLendingReservesDataState({
-        config: config,
-        timestamp: timestamp,
-      });
-
       const timeframeLast24Hours = await this.getLendingReservesDataTimeframe({
         config: config,
         fromTime: timestamp - TimeUnits.SecondsPerDay,
         toTime: timestamp,
+        latestState: true,
       });
 
       const timeframeLast48Hours = await this.getLendingReservesDataTimeframe({
@@ -52,40 +48,12 @@ export default class CrossLendingProtocolAdapter extends ProtocolAdapter impleme
         toTime: timestamp - TimeUnits.SecondsPerDay,
       });
 
-      if (states) {
-        for (const dataState of states) {
+      if (timeframeLast24Hours) {
+        for (const dataState of timeframeLast24Hours) {
           const stateWithTimeframes: CrossLendingReserveDataStateWithTimeframes = {
             ...dataState,
-            timefrom: timestamp - TimeUnits.SecondsPerDay,
-            timeto: timestamp,
-            volumeDeposited: '0',
-            volumeWithdrawn: '0',
-            volumeBorrowed: '0',
-            volumeRepaid: '0',
-            volumeLiquidated: '0',
-            addresses: [],
-            transactions: [],
             last24Hours: null,
           };
-
-          if (timeframeLast24Hours) {
-            const dataLast24Hours = timeframeLast24Hours.filter(
-              (item: CrossLendingReserveDataTimeframe) =>
-                item.chain === dataState.chain &&
-                item.protocol === dataState.protocol &&
-                item.address === dataState.address &&
-                item.token.address === dataState.token.address,
-            )[0];
-            if (dataLast24Hours) {
-              stateWithTimeframes.volumeDeposited = dataLast24Hours.volumeDeposited;
-              stateWithTimeframes.volumeWithdrawn = dataLast24Hours.volumeWithdrawn;
-              stateWithTimeframes.volumeBorrowed = dataLast24Hours.volumeBorrowed;
-              stateWithTimeframes.volumeRepaid = dataLast24Hours.volumeRepaid;
-              stateWithTimeframes.volumeLiquidated = dataLast24Hours.volumeLiquidated;
-              stateWithTimeframes.addresses = dataLast24Hours.addresses;
-              stateWithTimeframes.transactions = dataLast24Hours.transactions;
-            }
-          }
 
           if (timeframeLast48Hours) {
             const dataLast48Hours = timeframeLast48Hours.filter(

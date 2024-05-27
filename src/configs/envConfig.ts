@@ -14,6 +14,9 @@ const envConfig: EnvConfig = {
     collections: DatabaseCollectionConfigs,
   },
   blockchains: BlockchainConfigs,
+  env: {
+    debug: String(process.env.BUNNYBOARD_ENV_DEBUG) === 'true',
+  },
 };
 
 export default envConfig;

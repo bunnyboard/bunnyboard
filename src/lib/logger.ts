@@ -1,5 +1,7 @@
 import winston from 'winston';
 
+import EnvConfig from '../configs/envConfig';
+
 const customFormat = winston.format.printf((entry: any) => {
   let propsLine = '';
 
@@ -17,7 +19,7 @@ const customFormat = winston.format.printf((entry: any) => {
 });
 
 const logger = winston.createLogger({
-  level: 'debug',
+  level: EnvConfig.env.debug ? 'debug' : 'info',
   format: winston.format.combine(winston.format.colorize(), winston.format.timestamp(), customFormat),
   transports: [new winston.transports.Console({})],
 });

@@ -40,6 +40,7 @@ export default class ProtocolAdapter implements IProtocolAdapter {
       service: this.name,
       metric: options.metricConfig.metric,
       protocol: options.metricConfig.protocol,
+      chain: options.metricConfig.chain,
       address: options.metricConfig.address,
       fromTime: options.fromTime ? options.fromTime : 'none',
       force: options.force ? options.force : false,

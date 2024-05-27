@@ -137,6 +137,14 @@ export default class BlockchainService extends CachingService implements IBlockc
         }),
       );
 
+      logger.debug('got contract event logs', {
+        service: this.name,
+        chain: options.chain,
+        address: options.address,
+        processed: `${toBlock - options.fromBlock}/${options.toBlock - options.fromBlock}`,
+        events: logs.length,
+      });
+
       startBlock += blockRange;
     }
 
