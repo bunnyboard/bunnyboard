@@ -140,7 +140,7 @@ export default class CrvusdAdapter extends CdpLendingProtocolAdapter {
         .dividedBy(one)
         .toString(10);
 
-      const totalBorrow = new BigNumber(assetState.totalBorrowed).plus(
+      const totalBorrow = new BigNumber(
         formatBigNumberToString(total_debt.toString(), marketConfig.debtToken.decimals),
       );
       assetState.totalBorrowed = new BigNumber(assetState.totalBorrowed).plus(totalBorrow).toString(10);
