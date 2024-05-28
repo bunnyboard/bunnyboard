@@ -10,7 +10,6 @@ export interface VenusEventInterfaces extends CompoundEventInterfaces {
   DistributedBorrowerRewards: string;
 
   MintV2: string;
-  RedeemV2: string;
   MintBehalf: string;
 }
 
@@ -25,5 +24,4 @@ export const VenusEventSignatures: VenusEventInterfaces = {
 
   MintV2: '0xb4c03061fb5b7fed76389d5af8f2e0ddb09f8c70d1333abbb62582835e10accb',
   MintBehalf: '0xa24ddbdf0865ba440d364725c062eac72a908faeedffc33fe64d4640c82e3ab8',
-  RedeemV2: '0xe5b754fb1abb7f01b499791d0b820ae3b6af3424ac1c59768edb53f4ec31a929',
 };

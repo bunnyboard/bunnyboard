@@ -36,11 +36,7 @@ export default class VenusAdapter extends CompoundWithOracleAdapter {
         const cToken = allCTokens.filter((item) => compareAddress(item.cToken, address))[0];
         if (cToken) {
           let event: any;
-          if (
-            signature === VenusEventSignatures.MintV2 ||
-            signature === VenusEventSignatures.MintBehalf ||
-            signature === VenusEventSignatures.RedeemV2
-          ) {
+          if (signature === VenusEventSignatures.MintV2 || signature === VenusEventSignatures.MintBehalf) {
             try {
               event = decodeEventLog({
                 abi: vTokenAbi,
@@ -95,12 +91,6 @@ export default class VenusAdapter extends CompoundWithOracleAdapter {
                 break;
               }
               case VenusEventSignatures.Redeem: {
-                action = ActivityActions.withdraw;
-                user = normalizeAddress(event.args.redeemer);
-                tokenAmount = formatBigNumberToString(event.args.redeemAmount.toString(), cToken.underlying.decimals);
-                break;
-              }
-              case VenusEventSignatures.RedeemV2: {
                 action = ActivityActions.withdraw;
                 user = normalizeAddress(event.args.redeemer);
                 tokenAmount = formatBigNumberToString(event.args.redeemAmount.toString(), cToken.underlying.decimals);
