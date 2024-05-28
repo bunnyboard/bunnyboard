@@ -252,6 +252,12 @@ export default class AbracadabraAdapter extends CdpLendingProtocolAdapter {
       collateralDataState.rateBorrowOpeningFee = cauldronData.rateBorrowOpenFee;
       collateralDataState.rateLoanToValue = cauldronData.rateLoanToValue;
 
+      const feesPaidFromCauldron = new BigNumber(cauldronData.totalBorrowed)
+        .multipliedBy(new BigNumber(cauldronData.rateBorrow))
+        .multipliedBy(options.toTime - options.fromTime)
+        .dividedBy(TimeUnits.SecondsPerYear);
+      assetState.feesPaid = new BigNumber(assetState.feesPaid).plus(feesPaidFromCauldron).toString(10);
+
       for (const log of logs.filter((item) => compareAddress(item.address, cauldron.address))) {
         const signature = log.topics[0];
 
@@ -334,6 +340,8 @@ export default class AbracadabraAdapter extends CdpLendingProtocolAdapter {
 
     assetState.addresses = Object.keys(addresses);
     assetState.transactions = Object.keys(transactions);
+
+    console.log(assetState);
 
     return assetState;
   }
