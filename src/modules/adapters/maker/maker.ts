@@ -307,6 +307,9 @@ export default class MakerAdapter extends CdpLendingProtocolAdapter {
       }
     }
 
+    assetState.addresses = Object.keys(addresses);
+    assetState.transactions = Object.keys(transactions);
+
     return assetState;
   }
 }
