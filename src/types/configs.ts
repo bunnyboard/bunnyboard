@@ -52,8 +52,8 @@ export interface DatabaseCollectionConfig {
   cdpLendingAssetStates: MongoCollectionConfig;
   cdpLendingAssetSnapshots: MongoCollectionConfig;
 
-  isolatedLendingAssetStates: MongoCollectionConfig;
-  isolatedLendingAssetSnapshots: MongoCollectionConfig;
+  isolatedLendingPoolStates: MongoCollectionConfig;
+  isolatedLendingPoolSnapshots: MongoCollectionConfig;
 
   // token staking
   stakingPoolDataStates: MongoCollectionConfig;

@@ -7,8 +7,8 @@ import { Compoundv3LendingMarketConfig } from '../../../configs/protocols/compou
 import { compareAddress, formatBigNumberToString, normalizeAddress } from '../../../lib/utils';
 import { ProtocolConfig } from '../../../types/configs';
 import {
-  IsolatedLendingAssetDataTimeframe,
   IsolatedLendingCollateralData,
+  IsolatedLendingPoolDataTimeframe,
 } from '../../../types/domains/isolatedLending';
 import { ContextServices, ContextStorages } from '../../../types/namespaces';
 import { GetAdapterDataTimeframeOptions } from '../../../types/options';
@@ -33,9 +33,9 @@ export default class Compoundv3Adapter extends IsolatedLendingProtocolAdapter {
     });
   }
 
-  public async getLendingAssetData(
+  public async getLendingPoolData(
     options: GetAdapterDataTimeframeOptions,
-  ): Promise<IsolatedLendingAssetDataTimeframe | null> {
+  ): Promise<IsolatedLendingPoolDataTimeframe | null> {
     const { beginBlock, endBlock, stateBlock, stateTime, assetState } = await this.initialLendingAssetData(options);
 
     const marketConfig = options.config as Compoundv3LendingMarketConfig;

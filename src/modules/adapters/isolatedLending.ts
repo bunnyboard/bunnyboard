@@ -3,8 +3,8 @@ import EnvConfig from '../../configs/envConfig';
 import { getTimestamp } from '../../lib/utils';
 import { DataMetrics, IsolatedLendingMarketConfig, MetricConfig, ProtocolConfig, Token } from '../../types/configs';
 import {
-  IsolatedLendingAssetDataStateWithTimeframes,
-  IsolatedLendingAssetDataTimeframe,
+  IsolatedLendingPoolDataStateWithTimeframes,
+  IsolatedLendingPoolDataTimeframe,
 } from '../../types/domains/isolatedLending';
 import { ContextServices, ContextStorages, IIsolatedLendingProtocolAdapter } from '../../types/namespaces';
 import { GetAdapterDataTimeframeOptions, RunAdapterOptions } from '../../types/options';
@@ -15,7 +15,7 @@ export interface IsolatedAdapterInitialDataState {
   endBlock: number;
   stateTime: number;
   stateBlock: number;
-  assetState: IsolatedLendingAssetDataTimeframe;
+  assetState: IsolatedLendingPoolDataTimeframe;
 }
 
 export default class IsolatedLendingProtocolAdapter extends ProtocolAdapter implements IIsolatedLendingProtocolAdapter {
@@ -25,9 +25,9 @@ export default class IsolatedLendingProtocolAdapter extends ProtocolAdapter impl
     super(services, storages, protocolConfig);
   }
 
-  public async getLendingAssetData(
+  public async getLendingPoolData(
     options: GetAdapterDataTimeframeOptions,
-  ): Promise<IsolatedLendingAssetDataTimeframe | null> {
+  ): Promise<IsolatedLendingPoolDataTimeframe | null> {
     return null;
   }
 
@@ -85,7 +85,7 @@ export default class IsolatedLendingProtocolAdapter extends ProtocolAdapter impl
         transactions: [],
 
         collaterals: [],
-      } as IsolatedLendingAssetDataTimeframe,
+      } as IsolatedLendingPoolDataTimeframe,
     };
   }
 
@@ -94,14 +94,14 @@ export default class IsolatedLendingProtocolAdapter extends ProtocolAdapter impl
     if (config.metric === DataMetrics.isolatedLending) {
       const timestamp = getTimestamp();
 
-      const dataState = await this.getLendingAssetData({
+      const dataState = await this.getLendingPoolData({
         config: config,
         fromTime: timestamp - TimeUnits.SecondsPerDay,
         toTime: timestamp,
         latestState: true,
       });
 
-      const dataLast24Hours = await this.getLendingAssetData({
+      const dataLast24Hours = await this.getLendingPoolData({
         config: config,
         fromTime: timestamp - TimeUnits.SecondsPerDay * 2,
         toTime: timestamp - TimeUnits.SecondsPerDay,
@@ -109,13 +109,13 @@ export default class IsolatedLendingProtocolAdapter extends ProtocolAdapter impl
       });
 
       if (dataState) {
-        const stateWithTimeframes: IsolatedLendingAssetDataStateWithTimeframes = {
+        const stateWithTimeframes: IsolatedLendingPoolDataStateWithTimeframes = {
           ...dataState,
           last24Hours: dataLast24Hours,
         };
 
         await this.storages.database.update({
-          collection: EnvConfig.mongodb.collections.isolatedLendingAssetStates.name,
+          collection: EnvConfig.mongodb.collections.isolatedLendingPoolStates.name,
           keys: {
             chain: dataState.chain,
             protocol: dataState.protocol,
@@ -131,7 +131,7 @@ export default class IsolatedLendingProtocolAdapter extends ProtocolAdapter impl
   }
 
   protected async getSnapshot(config: MetricConfig, fromTime: number, toTime: number): Promise<any> {
-    return await this.getLendingAssetData({
+    return await this.getLendingPoolData({
       config: config,
       fromTime: fromTime,
       toTime: toTime,
@@ -140,7 +140,7 @@ export default class IsolatedLendingProtocolAdapter extends ProtocolAdapter impl
 
   protected async processSnapshot(config: MetricConfig, snapshot: any): Promise<void> {
     await this.storages.database.update({
-      collection: EnvConfig.mongodb.collections.isolatedLendingAssetSnapshots.name,
+      collection: EnvConfig.mongodb.collections.isolatedLendingPoolSnapshots.name,
       keys: {
         chain: snapshot.chain,
         protocol: snapshot.protocol,

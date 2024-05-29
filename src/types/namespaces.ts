@@ -5,7 +5,7 @@ import { IOracleService } from '../services/oracle/domains';
 import { ProtocolConfig } from './configs';
 import { CdpLendingAssetDataTimeframe } from './domains/cdpLending';
 import { CrossLendingReserveDataState, CrossLendingReserveDataTimeframe } from './domains/crossLending';
-import { IsolatedLendingAssetDataTimeframe } from './domains/isolatedLending';
+import { IsolatedLendingPoolDataTimeframe } from './domains/isolatedLending';
 import { StakingPoolDataTimeframe } from './domains/staking';
 import {
   AdapterAbiConfigs,
@@ -54,7 +54,7 @@ export interface ICdpLendingProtocolAdapter extends IProtocolAdapter {
 }
 
 export interface IIsolatedLendingProtocolAdapter extends IProtocolAdapter {
-  getLendingAssetData: (options: GetAdapterDataTimeframeOptions) => Promise<IsolatedLendingAssetDataTimeframe | null>;
+  getLendingPoolData: (options: GetAdapterDataTimeframeOptions) => Promise<IsolatedLendingPoolDataTimeframe | null>;
 }
 
 export interface IStakingProtocolAdapter extends IProtocolAdapter {

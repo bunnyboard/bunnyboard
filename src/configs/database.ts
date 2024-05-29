@@ -70,8 +70,8 @@ export const DatabaseCollectionConfigs: DatabaseCollectionConfig = {
       },
     ],
   },
-  isolatedLendingAssetStates: {
-    name: `${MongodbPrefix}.isolatedLendingAssetStates`,
+  isolatedLendingPoolStates: {
+    name: `${MongodbPrefix}.isolatedLendingPoolStates`,
     indies: [
       {
         chain: 1,
@@ -80,8 +80,8 @@ export const DatabaseCollectionConfigs: DatabaseCollectionConfig = {
       },
     ],
   },
-  isolatedLendingAssetSnapshots: {
-    name: `${MongodbPrefix}.isolatedLendingAssetSnapshots`,
+  isolatedLendingPoolSnapshots: {
+    name: `${MongodbPrefix}.isolatedLendingPoolSnapshots`,
     indies: [
       {
         chain: 1,

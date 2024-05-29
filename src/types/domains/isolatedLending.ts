@@ -19,7 +19,7 @@ export interface IsolatedLendingCollateralData {
   volumeLiquidated: string;
 }
 
-export interface IsolatedLendingAssetDataTimeframe extends DataTimeframe {
+export interface IsolatedLendingPoolDataTimeframe extends DataTimeframe {
   // market contract
   address: string;
 
@@ -50,7 +50,7 @@ export interface IsolatedLendingAssetDataTimeframe extends DataTimeframe {
   collaterals: Array<IsolatedLendingCollateralData>;
 }
 
-export interface IsolatedLendingAssetDataStateWithTimeframes extends IsolatedLendingAssetDataTimeframe {
+export interface IsolatedLendingPoolDataStateWithTimeframes extends IsolatedLendingPoolDataTimeframe {
   // previous day data
-  last24Hours: IsolatedLendingAssetDataTimeframe | null;
+  last24Hours: IsolatedLendingPoolDataTimeframe | null;
 }
