@@ -355,4 +355,11 @@ export const OracleSourceUniswapv2List: { [key: string]: OracleSourcePool2 } = {
     baseToken: TokensBook.optimism['0x9560e827af36c94d2ac33a39bce1fe78631088db'],
     quotaToken: TokensBook.optimism['0x7f5c764cbc14f9669b88837ca1490cca17c31607'],
   },
+  FRIEND_WETH: {
+    type: 'univ2',
+    chain: 'base',
+    address: '0x7cfc830448484cdf830625373820241e61ef4acf',
+    baseToken: TokensBook.base['0x0bd4887f7d41b35cd75dff9ffee2856106f86670'],
+    quotaToken: TokensBook.base['0x4200000000000000000000000000000000000006'],
+  },
 };

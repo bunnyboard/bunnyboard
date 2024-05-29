@@ -2,6 +2,7 @@ import { Token } from '../types/configs';
 import { TokensBook, TokensBookBase } from './data';
 import { AaveConfigs, Aavev2Configs, Aavev3Configs } from './protocols/aave';
 import { AbracadabraConfigs } from './protocols/abracadabra';
+import { AjnaConfigs } from './protocols/ajna';
 import { BenqiConfigs } from './protocols/benqi';
 import { CompoundConfigs, Compoundv3Configs } from './protocols/compound';
 import { CrvusdConfigs } from './protocols/crvusd';
@@ -38,6 +39,7 @@ export const ProtocolConfigs = {
   aavev2: Aavev2Configs,
   aavev3: Aavev3Configs,
   abracadabra: AbracadabraConfigs,
+  ajna: AjnaConfigs,
   benqi: BenqiConfigs,
   compound: CompoundConfigs,
   compoundv3: Compoundv3Configs,

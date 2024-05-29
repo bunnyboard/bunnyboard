@@ -1,6 +1,6 @@
 import { TimeUnits } from '../../configs/constants';
 import EnvConfig from '../../configs/envConfig';
-import { getTimestamp } from '../../lib/utils';
+import { compareAddress, getTimestamp } from '../../lib/utils';
 import { DataMetrics, IsolatedLendingMarketConfig, MetricConfig, ProtocolConfig, Token } from '../../types/configs';
 import {
   IsolatedLendingPoolDataStateWithTimeframes,
@@ -27,7 +27,7 @@ export default class IsolatedLendingProtocolAdapter extends ProtocolAdapter impl
 
   public async getLendingPoolData(
     options: GetAdapterDataTimeframeOptions,
-  ): Promise<IsolatedLendingPoolDataTimeframe | null> {
+  ): Promise<Array<IsolatedLendingPoolDataTimeframe> | null> {
     return null;
   }
 
@@ -94,7 +94,7 @@ export default class IsolatedLendingProtocolAdapter extends ProtocolAdapter impl
     if (config.metric === DataMetrics.isolatedLending) {
       const timestamp = getTimestamp();
 
-      const dataState = await this.getLendingPoolData({
+      const dataStates = await this.getLendingPoolData({
         config: config,
         fromTime: timestamp - TimeUnits.SecondsPerDay,
         toTime: timestamp,
@@ -108,24 +108,30 @@ export default class IsolatedLendingProtocolAdapter extends ProtocolAdapter impl
         latestState: true,
       });
 
-      if (dataState) {
-        const stateWithTimeframes: IsolatedLendingPoolDataStateWithTimeframes = {
-          ...dataState,
-          last24Hours: dataLast24Hours,
-        };
+      if (dataStates && dataLast24Hours) {
+        for (const dataState of dataStates) {
+          const last24Hours = dataLast24Hours.filter(
+            (item) => item.chain === dataState.chain && compareAddress(item.address, dataState.address),
+          )[0];
 
-        await this.storages.database.update({
-          collection: EnvConfig.mongodb.collections.isolatedLendingPoolStates.name,
-          keys: {
-            chain: dataState.chain,
-            protocol: dataState.protocol,
-            address: dataState.address, // market address
-          },
-          updates: {
-            ...stateWithTimeframes,
-          },
-          upsert: true,
-        });
+          const stateWithTimeframes: IsolatedLendingPoolDataStateWithTimeframes = {
+            ...dataState,
+            last24Hours: last24Hours ? last24Hours : null,
+          };
+
+          await this.storages.database.update({
+            collection: EnvConfig.mongodb.collections.isolatedLendingPoolStates.name,
+            keys: {
+              chain: dataState.chain,
+              protocol: dataState.protocol,
+              address: dataState.address, // market address
+            },
+            updates: {
+              ...stateWithTimeframes,
+            },
+            upsert: true,
+          });
+        }
       }
     }
   }
@@ -138,19 +144,21 @@ export default class IsolatedLendingProtocolAdapter extends ProtocolAdapter impl
     });
   }
 
-  protected async processSnapshot(config: MetricConfig, snapshot: any): Promise<void> {
-    await this.storages.database.update({
-      collection: EnvConfig.mongodb.collections.isolatedLendingPoolSnapshots.name,
-      keys: {
-        chain: snapshot.chain,
-        protocol: snapshot.protocol,
-        address: snapshot.address, // market contract address
-        timestamp: snapshot.timestamp,
-      },
-      updates: {
-        ...snapshot,
-      },
-      upsert: true,
-    });
+  protected async processSnapshot(config: MetricConfig, snapshots: any): Promise<void> {
+    for (const snapshot of snapshots) {
+      await this.storages.database.update({
+        collection: EnvConfig.mongodb.collections.isolatedLendingPoolSnapshots.name,
+        keys: {
+          chain: snapshot.chain,
+          protocol: snapshot.protocol,
+          address: snapshot.address, // market contract address
+          timestamp: snapshot.timestamp,
+        },
+        updates: {
+          ...snapshot,
+        },
+        upsert: true,
+      });
+    }
   }
 }

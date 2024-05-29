@@ -84,6 +84,20 @@ export const OracleConfigs: { [key: string]: { [key: string]: OracleConfig } } =
     '0x04c154b66cb340f3ae24111cc767e0184ed00cc6': OracleSourceConfigs.pxETH,
     '0x9ba021b0a9b958b5e75ce9f6dff97c7ee52cb3e6': OracleSourceConfigs.pxETH,
     '0xc581b735a1688071a1746c968e0798d642ede491': OracleSourceConfigs.EUR,
+    '0x9a96ec9b57fb64fbc60b423d1f4da7691bd35079': OracleSourceConfigs.AJNA,
+    '0x6123b0049f904d730db3c36a31167d9d4121fa6b': OracleSourceConfigs.RBN,
+    '0xb23d80f5fefcddaa212212f028021b41ded428cf': OracleSourceConfigs.PRIME,
+    '0xdef1ca1fb7fbcdc777520aa7f396b4e015f497ab': OracleSourceConfigs.COW,
+
+    // todo need to find better oracle source
+    '0x9d39a5de30e57443bff2a8307a4256c8797a3497': OracleSourceConfigs.USDT,
+    '0x5d74468b69073f809d4fae90afec439e69bf6263': OracleSourceConfigs.ETH,
+    '0x3d1e5cf16077f349e999d6b21a4f646e83cd90c5': OracleSourceConfigs.ETH,
+    '0x583019ff0f430721ada9cfb4fac8f06ca104d0b4': OracleSourceConfigs.ETH,
+    '0x43e54c2e7b3e294de3a155785f52ab49d87b9922': OracleSourceConfigs.CRV,
+    '0x2027d3b2b58f522178ce4cc4e86e99b7c4de3876': OracleSourceConfigs.USDT,
+    '0xc975342a95ccb75378ddc646b8620fa3cd5bc051': OracleSourceConfigs.wstETH,
+    '0xc272b96bccdaf1bf98f2197d355066da3c15982a': OracleSourceConfigs.wstETH,
 
     // ironbank fixed forex
     '0x69681f8fde45345c3870bcd5eaf4a05a60e7d227': OracleSourceConfigs.GBP,
@@ -181,6 +195,10 @@ export const OracleConfigs: { [key: string]: { [key: string]: OracleConfig } } =
     '0x50c5725949a6f0c72e6c4a641f24049a917db0cb': OracleSourceConfigs.DAI,
     '0x9e1028f5f1d5ede59748ffcee5532509976840e0': OracleSourceConfigs.COMP,
     '0x940181a94a35a4569e4529a3cdfb74e38fd98631': OracleSourceConfigs.AERO,
+    '0x4ed4e862860bed51a9570b96d89af5e1b0efefed': OracleSourceConfigs.DEGEN,
+    '0x22e6966b799c4d5b13be962e1d117b56327fda66': OracleSourceConfigs.SNX,
+    '0xfa980ced6895ac314e7de34ef1bfae90a5add21b': OracleSourceConfigs.PRIME,
+    '0x0bd4887f7d41b35cd75dff9ffee2856106f86670': OracleSourceConfigs.FRIEND,
   },
 
   // tokens on Polygon
@@ -212,6 +230,10 @@ export const OracleConfigs: { [key: string]: { [key: string]: OracleConfig } } =
     '0x1d734a02ef1e1f5886e66b0673b71af5b53ffa94': OracleSourceConfigs.SD,
     '0xc3c7d422809852031b44ab29eec9f1eff2a58756': OracleSourceConfigs.LDO,
     '0x8505b9d2254a7ae468c0e9dd10ccea3a837aef5c': OracleSourceConfigs.COMP,
+
+    // todo need to find better oracle source
+    '0xa013fbd4b711f9ded6fb09c1c0d358e2fbc2eaa0': OracleSourceConfigs.USDC,
+    '0x57f5e098cad7a3d1eed53991d4d66c45c9af7812': OracleSourceConfigs.USDC,
   },
 
   // tokens on Bnbchain

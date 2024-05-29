@@ -35,7 +35,7 @@ export default class Compoundv3Adapter extends IsolatedLendingProtocolAdapter {
 
   public async getLendingPoolData(
     options: GetAdapterDataTimeframeOptions,
-  ): Promise<IsolatedLendingPoolDataTimeframe | null> {
+  ): Promise<Array<IsolatedLendingPoolDataTimeframe> | null> {
     const { beginBlock, endBlock, stateBlock, stateTime, assetState } = await this.initialLendingAssetData(options);
 
     const marketConfig = options.config as Compoundv3LendingMarketConfig;
@@ -255,6 +255,6 @@ export default class Compoundv3Adapter extends IsolatedLendingProtocolAdapter {
     assetState.transactions = Object.keys(transactions);
     assetState.collaterals = Object.values(collaterals);
 
-    return assetState;
+    return [assetState];
   }
 }

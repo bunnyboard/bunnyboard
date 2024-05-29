@@ -23,6 +23,7 @@ export const ProtocolNames = {
   aavev2: 'aavev2',
   aavev3: 'aavev3',
   abracadabra: 'abracadabra',
+  ajna: 'ajna',
   benqi: 'benqi',
   compound: 'compound',
   compoundv3: 'compoundv3',

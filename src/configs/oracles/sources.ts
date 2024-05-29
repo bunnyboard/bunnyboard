@@ -595,4 +595,28 @@ export const OracleSourceConfigs: { [key: string]: OracleConfig } = {
     currency: 'usd',
     sources: [OracleSourceUniswapv2List.VELO_USDC],
   },
+  AJNA: {
+    currency: 'eth',
+    sources: [OracleSourceUniswapv3List.AJNA_WETH],
+  },
+  RBN: {
+    currency: 'usd',
+    sources: [OracleSourceUniswapv3List.RBN_USDC],
+  },
+  PRIME: {
+    currency: 'eth',
+    sources: [OracleSourceUniswapv3List.PRIME_WETH],
+  },
+  COW: {
+    currency: 'eth',
+    sources: [OracleSourceUniswapv3List.COW_WETH],
+  },
+  DEGEN: {
+    currency: 'eth',
+    sources: [OracleSourceUniswapv3List.DEGEN_WETH],
+  },
+  FRIEND: {
+    currency: 'eth',
+    sources: [OracleSourceUniswapv2List.FRIEND_WETH],
+  },
 };

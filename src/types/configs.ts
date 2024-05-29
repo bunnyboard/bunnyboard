@@ -108,6 +108,7 @@ export const LendingMarketVersions = {
     crvusd: 'crvusd',
   },
   isolated: {
+    ajna: 'ajna',
     compoundv3: 'compoundv3',
   },
 };
@@ -135,8 +136,9 @@ export interface CdpLendingMarketConfig extends MetricConfig {
   debtToken: Token;
 }
 
-export interface IsolatedLendingMarketConfig extends CdpLendingMarketConfig {
+export interface IsolatedLendingMarketConfig extends MetricConfig {
   version: LendingIsolatedVersion;
+  debtToken?: Token;
 }
 
 export const StakingVersions = {

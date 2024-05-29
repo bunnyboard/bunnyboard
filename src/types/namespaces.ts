@@ -54,7 +54,9 @@ export interface ICdpLendingProtocolAdapter extends IProtocolAdapter {
 }
 
 export interface IIsolatedLendingProtocolAdapter extends IProtocolAdapter {
-  getLendingPoolData: (options: GetAdapterDataTimeframeOptions) => Promise<IsolatedLendingPoolDataTimeframe | null>;
+  getLendingPoolData: (
+    options: GetAdapterDataTimeframeOptions,
+  ) => Promise<Array<IsolatedLendingPoolDataTimeframe> | null>;
 }
 
 export interface IStakingProtocolAdapter extends IProtocolAdapter {

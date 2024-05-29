@@ -71,6 +71,12 @@
     "symbol": "LINK",
     "decimals": 18
   },
+  "0x57f5e098cad7a3d1eed53991d4d66c45c9af7812": {
+    "chain": "polygon",
+    "address": "0x57f5e098cad7a3d1eed53991d4d66c45c9af7812",
+    "symbol": "wUSDM",
+    "decimals": 18
+  },
   "0x7ceb23fd6bc0add59e62ac25578270cff1b9f619": {
     "chain": "polygon",
     "address": "0x7ceb23fd6bc0add59e62ac25578270cff1b9f619",
@@ -100,6 +106,12 @@
     "address": "0x9a71012b13ca4d3d0cdc72a177df3ef03b0e76a3",
     "symbol": "BAL",
     "decimals": 18
+  },
+  "0xa013fbd4b711f9ded6fb09c1c0d358e2fbc2eaa0": {
+    "chain": "polygon",
+    "address": "0xa013fbd4b711f9ded6fb09c1c0d358e2fbc2eaa0",
+    "symbol": "yvUSDC-A",
+    "decimals": 6
   },
   "0xa3fa99a148fa48d14ed51d610c367c61876997f1": {
     "chain": "polygon",

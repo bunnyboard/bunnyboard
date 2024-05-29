@@ -1,8 +1,20 @@
 {
+  "0x0bd4887f7d41b35cd75dff9ffee2856106f86670": {
+    "chain": "base",
+    "address": "0x0bd4887f7d41b35cd75dff9ffee2856106f86670",
+    "symbol": "FRIEND",
+    "decimals": 18
+  },
   "0x1c7a460413dd4e964f96d8dfc56e7223ce88cd85": {
     "chain": "base",
     "address": "0x1c7a460413dd4e964f96d8dfc56e7223ce88cd85",
     "symbol": "SEAM",
+    "decimals": 18
+  },
+  "0x22e6966b799c4d5b13be962e1d117b56327fda66": {
+    "chain": "base",
+    "address": "0x22e6966b799c4d5b13be962e1d117b56327fda66",
+    "symbol": "SNX",
     "decimals": 18
   },
   "0x2ae3f1ec7f1f5012cfeab0185bfc7aa3cf0dec22": {
@@ -70,5 +82,11 @@
     "address": "0xd9aaec86b65d86f6a7b5b1b0c42ffa531710b6ca",
     "symbol": "USDbC",
     "decimals": 6
+  },
+  "0xfa980ced6895ac314e7de34ef1bfae90a5add21b": {
+    "chain": "base",
+    "address": "0xfa980ced6895ac314e7de34ef1bfae90a5add21b",
+    "symbol": "PRIME",
+    "decimals": 18
   }
 }

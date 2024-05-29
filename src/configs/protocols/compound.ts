@@ -72,7 +72,9 @@ export const CompoundConfigs: CompoundProtocolConfig = {
   ]),
 };
 
-export interface Compoundv3LendingMarketConfig extends IsolatedLendingMarketConfig {}
+export interface Compoundv3LendingMarketConfig extends IsolatedLendingMarketConfig {
+  debtToken: Token;
+}
 
 export function formatCompoundv3LendingMarketConfig(
   configs: Array<Compoundv3LendingMarketConfig>,
