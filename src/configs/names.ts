@@ -16,6 +16,9 @@ export const ChainNames = {
   mode: 'mode',
   manta: 'manta',
   harmony: 'harmony',
+  aurora: 'aurora',
+  mantle: 'mantle',
+  polygonzkevm: 'polygonzkevm',
 };
 
 export const ProtocolNames = {

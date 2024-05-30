@@ -224,4 +224,46 @@ export const BlockchainConfigs: { [key: string]: Blockchain } = {
       decimals: 18,
     },
   },
+  [ChainNames.aurora]: {
+    name: ChainNames.aurora,
+    family: 'evm',
+    chainId: 1313161554,
+    nodeRpc: String(process.env.BUNNYBOARD_AURORA_NODE),
+    blockSubgraph: '', // don't use or not available
+    explorerApiEndpoint: 'https://explorer.aurora.dev/api',
+    nativeToken: {
+      chain: ChainNames.aurora,
+      address: AddressZero,
+      symbol: 'ETH',
+      decimals: 18,
+    },
+  },
+  [ChainNames.mantle]: {
+    name: ChainNames.mantle,
+    family: 'evm',
+    chainId: 5000,
+    nodeRpc: String(process.env.BUNNYBOARD_MANTLE_NODE),
+    blockSubgraph: '', // don't use or not available
+    explorerApiEndpoint: 'https://explorer.mantle.xyz/api',
+    nativeToken: {
+      chain: ChainNames.mantle,
+      address: AddressZero,
+      symbol: 'MNT',
+      decimals: 18,
+    },
+  },
+  [ChainNames.polygonzkevm]: {
+    name: ChainNames.polygonzkevm,
+    family: 'evm',
+    chainId: 1101,
+    nodeRpc: String(process.env.BUNNYBOARD_MANTLE_NODE),
+    blockSubgraph: '', // don't use or not available
+    explorerApiEndpoint: 'https://api-zkevm.polygonscan.com/api',
+    nativeToken: {
+      chain: ChainNames.polygonzkevm,
+      address: AddressZero,
+      symbol: 'ETH',
+      decimals: 18,
+    },
+  },
 };

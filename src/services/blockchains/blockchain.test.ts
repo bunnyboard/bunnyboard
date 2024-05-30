@@ -87,6 +87,21 @@ const testcases = [
     timestamp: 1704067200, // Mon Jan 01 2024 00:00:00 GMT+0000
     expectedBlockNumber: 984324,
   },
+  {
+    ...EnvConfig.blockchains.mantle,
+    timestamp: 1704067200, // Mon Jan 01 2024 00:00:00 GMT+0000
+    expectedBlockNumber: 36794906,
+  },
+  {
+    ...EnvConfig.blockchains.aurora,
+    timestamp: 1704067200, // Mon Jan 01 2024 00:00:00 GMT+0000
+    expectedBlockNumber: 109276896,
+  },
+  {
+    ...EnvConfig.blockchains.polygonzkevm,
+    timestamp: 1704067200, // Mon Jan 01 2024 00:00:00 GMT+0000
+    expectedBlockNumber: 8922196,
+  },
 ];
 
 describe('getBlockNumberAtTimestamp', function () {
