@@ -757,7 +757,7 @@ export const OracleSourceConfigs: { [key: string]: OracleConfig } = {
   },
   MNT: {
     currency: 'eth',
-    sources: [OracleSourceUniswapv2List.MNT_WETH],
+    sources: [OracleSourceUniswapv3List.MNT_WETH],
   },
   BONK: {
     currency: 'eth',

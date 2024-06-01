@@ -130,6 +130,7 @@ export const OracleConfigs: { [key: string]: { [key: string]: OracleConfig } } =
     '0x42476f744292107e34519f9c357927074ea3f75d': OracleSourceConfigs.LOOM,
     '0x3c3a81e81dc49a522a592e7622a7e711c06bf354': OracleSourceConfigs.MNT,
     '0x0cec1a9154ff802e7934fc916ed7ca50bde6844e': OracleSourceConfigs.POOL,
+    '0x01ba67aac7f75f647d94220cc98fb30fcc5105bf': OracleSourceConfigs.LYRA,
 
     // todo need to find better oracle source
     '0x9d39a5de30e57443bff2a8307a4256c8797a3497': OracleSourceConfigs.USDT,
