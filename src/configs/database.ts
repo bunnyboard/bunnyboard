@@ -115,4 +115,25 @@ export const DatabaseCollectionConfigs: DatabaseCollectionConfig = {
       },
     ],
   },
+
+  // must be unique name field
+  ecosystemDataStates: {
+    name: `${MongodbPrefix}.ecosystemDataStates`,
+    indies: [
+      {
+        protocol: 1,
+        chain: 1,
+      },
+    ],
+  },
+  ecosystemDataSnapshots: {
+    name: `${MongodbPrefix}.ecosystemDataSnapshots`,
+    indies: [
+      {
+        protocol: 1,
+        chain: 1,
+        timestamp: 1,
+      },
+    ],
+  },
 };

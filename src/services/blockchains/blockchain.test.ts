@@ -102,6 +102,11 @@ const testcases = [
     timestamp: 1704067200, // Mon Jan 01 2024 00:00:00 GMT+0000
     expectedBlockNumber: 8922196,
   },
+  {
+    ...EnvConfig.blockchains.zora,
+    timestamp: 1704067200, // Mon Jan 01 2024 00:00:00 GMT+0000
+    expectedBlockNumber: 8686680,
+  },
 ];
 
 describe('getBlockNumberAtTimestamp', function () {

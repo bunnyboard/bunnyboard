@@ -110,6 +110,14 @@ export const OracleSourceConfigs: { [key: string]: OracleConfig } = {
     currency: 'eth',
     sources: [OracleSourceUniswapv2List.CRV_WETH],
   },
+  EOS: {
+    currency: 'usd',
+    sources: [OracleSourceChainlinkList.EOS_USD],
+  },
+  XTZ: {
+    currency: 'usd',
+    sources: [OracleSourceChainlinkList.XTZ_USD],
+  },
   BAL: {
     currency: 'eth',
     sources: [OracleSourceUniswapv2List.BAL_WETH],
@@ -423,10 +431,6 @@ export const OracleSourceConfigs: { [key: string]: OracleConfig } = {
     currency: 'eth',
     sources: [OracleSourceUniswapv2List.pONT_WETH],
   },
-  PENDLE: {
-    currency: 'eth',
-    sources: [OracleSourceUniswapv2List.PENDLE_WETH],
-  },
   DOLA: {
     currency: 'eth',
     sources: [OracleSourceUniswapv2List.DOLA_WETH],
@@ -618,5 +622,265 @@ export const OracleSourceConfigs: { [key: string]: OracleConfig } = {
   FRIEND: {
     currency: 'eth',
     sources: [OracleSourceUniswapv2List.FRIEND_WETH],
+  },
+  DATA: {
+    currency: 'eth',
+    sources: [OracleSourceUniswapv2List.DATA_WETH],
+  },
+  PENDLE: {
+    currency: 'eth',
+    sources: [OracleSourceUniswapv2List.PENDLE_WETH],
+  },
+  RNDR: {
+    currency: 'eth',
+    sources: [OracleSourceUniswapv2List.RNDR_WETH],
+  },
+  SAND: {
+    currency: 'eth',
+    sources: [OracleSourceUniswapv2List.SAND_WETH],
+  },
+  UCO: {
+    currency: 'eth',
+    sources: [OracleSourceUniswapv2List.UCO_WETH],
+  },
+  IGG: {
+    currency: 'eth',
+    sources: [OracleSourceUniswapv2List.IGG_WETH],
+  },
+  MNW: {
+    currency: 'eth',
+    sources: [OracleSourceUniswapv3List.MNW_WETH],
+  },
+  ACX: {
+    currency: 'eth',
+    sources: [OracleSourceUniswapv3List.ACX_WETH],
+  },
+  POOL: {
+    currency: 'eth',
+    sources: [OracleSourceUniswapv2List.POOL_WETH],
+  },
+  FORT: {
+    currency: 'eth',
+    sources: [OracleSourceUniswapv3List.FORT_WETH],
+  },
+  UBT: {
+    currency: 'eth',
+    sources: [OracleSourceUniswapv2List.UBT_WETH],
+  },
+  PERP: {
+    currency: 'eth',
+    sources: [OracleSourceUniswapv3List.PERP_WETH],
+  },
+  GRT: {
+    currency: 'eth',
+    sources: [OracleSourceUniswapv2List.GRT_WETH],
+  },
+  MAGIC: {
+    currency: 'eth',
+    sources: [OracleSourceUniswapv2List.MAGIC_WETH],
+  },
+  GROW: {
+    currency: 'eth',
+    sources: [OracleSourceUniswapv3List.GROW_WETH],
+  },
+  tBTC: {
+    currency: 'eth',
+    sources: [OracleSourceUniswapv2List.tBTC_WETH],
+  },
+  UMA: {
+    currency: 'eth',
+    sources: [OracleSourceUniswapv2List.UMA_WETH],
+  },
+  BNT: {
+    currency: 'eth',
+    sources: [OracleSourceUniswapv2List.BNT_WETH],
+  },
+  NMR: {
+    currency: 'eth',
+    sources: [OracleSourceUniswapv3List.NMR_WETH],
+  },
+  MCB: {
+    currency: 'eth',
+    sources: [OracleSourceUniswapv3List.MCB_WETH],
+  },
+  INST: {
+    currency: 'eth',
+    sources: [OracleSourceUniswapv3List.INST_WETH],
+  },
+  XSGD: {
+    currency: 'usd',
+    sources: [OracleSourceUniswapv3List.XSDG_WETH],
+  },
+  CVC: {
+    currency: 'eth',
+    sources: [OracleSourceUniswapv2List.CVC_WETH],
+  },
+  ANT: {
+    currency: 'eth',
+    sources: [OracleSourceUniswapv2List.ANT_WETH],
+  },
+  MLN: {
+    currency: 'eth',
+    sources: [OracleSourceUniswapv2List.MNL_WETH],
+  },
+  KEEP: {
+    currency: 'eth',
+    sources: [OracleSourceUniswapv2List.KEEP_WETH],
+  },
+  AMKT: {
+    currency: 'btc',
+    sources: [OracleSourceUniswapv3List.AMKT_WBTC],
+  },
+  STORJ: {
+    currency: 'eth',
+    sources: [OracleSourceUniswapv2List.STORJ_WETH],
+  },
+  AMP: {
+    currency: 'eth',
+    sources: [OracleSourceUniswapv2List.AMP_WETH],
+  },
+  NU: {
+    currency: 'eth',
+    sources: [OracleSourceUniswapv2List.NU_WETH],
+  },
+  OATH: {
+    currency: 'ftm',
+    sources: [OracleSourceUniswapv2List.OATH_WFTM],
+  },
+  PREMIA: {
+    currency: 'eth',
+    sources: [OracleSourceUniswapv2List.PREMIA_WETH],
+  },
+  LOOM: {
+    currency: 'usd',
+    sources: [OracleSourceUniswapv2List.LOOM_USDC],
+  },
+  MNT: {
+    currency: 'eth',
+    sources: [OracleSourceUniswapv2List.MNT_WETH],
+  },
+  BONK: {
+    currency: 'eth',
+    sources: [OracleSourceUniswapv3List.BONK_WETH],
+  },
+  DNT: {
+    currency: 'eth',
+    sources: [OracleSourceUniswapv2List.DNT_WETH],
+  },
+  OXT: {
+    currency: 'eth',
+    sources: [OracleSourceUniswapv2List.OXT_WETH],
+  },
+  cmUMAMI: {
+    currency: 'eth',
+    sources: [OracleSourceUniswapv3List.cmUMAMI_WETH],
+  },
+  L2DAO: {
+    currency: 'eth',
+    sources: [OracleSourceUniswapv2List.L2DAO_WETH],
+  },
+  CELR: {
+    currency: 'eth',
+    sources: [OracleSourceUniswapv3List.CELR_WETH],
+  },
+  MATH: {
+    currency: 'eth',
+    sources: [OracleSourceUniswapv2List.MATH_WETH],
+  },
+  SPELL: {
+    currency: 'eth',
+    sources: [OracleSourceUniswapv2List.SPELL_WETH],
+  },
+  DPX: {
+    currency: 'eth',
+    sources: [OracleSourceUniswapv2List.DPX_WETH],
+  },
+  BIFI: {
+    currency: 'eth',
+    sources: [OracleSourceUniswapv2List.BIFI_WETH],
+  },
+  UNAMI: {
+    currency: 'eth',
+    sources: [OracleSourceUniswapv2List.UNAMI_WETH],
+  },
+  SIS: {
+    currency: 'eth',
+    sources: [OracleSourceUniswapv2List.SIS_WETH],
+  },
+  DODO: {
+    currency: 'eth',
+    sources: [OracleSourceUniswapv2List.DODO_WETH],
+  },
+  THALES: {
+    currency: 'eth',
+    sources: [OracleSourceUniswapv2List.THALES_WETH],
+  },
+  WOO: {
+    currency: 'eth',
+    sources: [OracleSourceUniswapv2List.WOO_WETH],
+  },
+  KROM: {
+    currency: 'eth',
+    sources: [OracleSourceUniswapv3List.KROM_WETH],
+  },
+  LYRA: {
+    currency: 'usd',
+    sources: [OracleSourceUniswapv2List.LYRA_USDC],
+  },
+  DHT: {
+    currency: 'eth',
+    sources: [OracleSourceUniswapv2List.DHT_WETH],
+  },
+  USX: {
+    currency: 'eth',
+    sources: [OracleSourceUniswapv2List.USX_USDC],
+  },
+  STAKE: {
+    currency: 'usd',
+    sources: [OracleSourceUniswapv2List.STAKE_XDAI],
+  },
+  MVX: {
+    currency: 'eth',
+    sources: [OracleSourceUniswapv3List.MVX_WETH],
+  },
+  CTK: {
+    currency: 'bnb',
+    sources: [OracleSourceUniswapv2List.CTK_WBNB],
+  },
+  SYN: {
+    currency: 'eth',
+    sources: [OracleSourceUniswapv2List.SYN_WETH],
+  },
+  VAI: {
+    currency: 'usd',
+    sources: [OracleSourceUniswapv2List.VAI_BUSD],
+  },
+  BAKE: {
+    currency: 'bnb',
+    sources: [OracleSourceUniswapv2List.BAKE_WBNB],
+  },
+  ATOM: {
+    currency: 'bnb',
+    sources: [OracleSourceChainlinkList.ATOM_USD],
+  },
+  INJ: {
+    currency: 'bnb',
+    sources: [OracleSourceChainlinkList.INJ_USD],
+  },
+  JOE: {
+    currency: 'usd',
+    sources: [OracleSourceUniswapv2List.JOE_USDC],
+  },
+  PNG: {
+    currency: 'usd',
+    sources: [OracleSourceUniswapv2List.PNG_USDC],
+  },
+  XAVA: {
+    currency: 'avax',
+    sources: [OracleSourceUniswapv2List.XAVA_WAVAX],
+  },
+  PTP: {
+    currency: 'avax',
+    sources: [OracleSourceUniswapv2List.PTP_WAVAX],
   },
 };

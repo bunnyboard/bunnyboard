@@ -58,6 +58,10 @@ export interface DatabaseCollectionConfig {
   // token staking
   stakingPoolDataStates: MongoCollectionConfig;
   stakingPoolDataSnapshots: MongoCollectionConfig;
+
+  // for ecosystem
+  ecosystemDataStates: MongoCollectionConfig;
+  ecosystemDataSnapshots: MongoCollectionConfig;
 }
 
 export interface EnvConfig {
@@ -85,6 +89,9 @@ export const DataMetrics = {
   staking: 'staking',
   flashloan: 'flashloan',
   perpetual: 'perpetual',
+
+  // ecosystem - special data for every type
+  ecosystem: 'ecosystem',
 };
 const Metrics = Object.values(DataMetrics);
 export type DataMetric = (typeof Metrics)[number];

@@ -188,7 +188,7 @@ export const BlockchainConfigs: { [key: string]: Blockchain } = {
     chainId: 324,
     nodeRpc: String(process.env.BUNNYBOARD_ZKSYNC_NODE),
     blockSubgraph: '', // don't use or not available
-    explorerApiEndpoint: 'https://block-explorer-api.mainnet.zksync.io/api',
+    explorerApiEndpoint: 'https://api-era.zksync.network/api',
     nativeToken: {
       chain: ChainNames.zksync,
       address: AddressZero,
@@ -256,11 +256,25 @@ export const BlockchainConfigs: { [key: string]: Blockchain } = {
     name: ChainNames.polygonzkevm,
     family: 'evm',
     chainId: 1101,
-    nodeRpc: String(process.env.BUNNYBOARD_MANTLE_NODE),
+    nodeRpc: String(process.env.BUNNYBOARD_POLYGONZKEVM_NODE),
     blockSubgraph: '', // don't use or not available
     explorerApiEndpoint: 'https://api-zkevm.polygonscan.com/api',
     nativeToken: {
       chain: ChainNames.polygonzkevm,
+      address: AddressZero,
+      symbol: 'ETH',
+      decimals: 18,
+    },
+  },
+  [ChainNames.zora]: {
+    name: ChainNames.zora,
+    family: 'evm',
+    chainId: 7777777,
+    nodeRpc: String(process.env.BUNNYBOARD_ZORA_NODE),
+    blockSubgraph: '', // don't use or not available
+    explorerApiEndpoint: 'https://explorer.zora.energy/api',
+    nativeToken: {
+      chain: ChainNames.zora,
       address: AddressZero,
       symbol: 'ETH',
       decimals: 18,

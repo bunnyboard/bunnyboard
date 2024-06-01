@@ -20,8 +20,8 @@ export interface RunProtocolCollectorOptions {
   force?: boolean;
 }
 
-export default class ProtocolCollector {
-  public readonly name: string = 'collector.protocol';
+export default class Collector {
+  public readonly name: string = 'collector';
   public readonly services: ContextServices;
   public readonly storages: ContextStorages;
 
@@ -55,6 +55,7 @@ export default class ProtocolCollector {
       case DataMetrics.crossLending:
       case DataMetrics.cdpLending:
       case DataMetrics.isolatedLending:
+      case DataMetrics.ecosystem:
       case DataMetrics.staking: {
         adapter = this.adapters[config.protocol];
         break;
@@ -90,6 +91,13 @@ export default class ProtocolCollector {
 
         // sleep 60 seconds before run the next config
         await sleep(60);
+      } else {
+        logger.warn('can not find adapter for config', {
+          service: this.name,
+          metric: config.metric,
+          protocol: config.protocol,
+          chain: config.chain,
+        });
       }
     }
   }

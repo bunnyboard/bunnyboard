@@ -1,0 +1,14 @@
+{
+  "0x4f9a0e7fd2bf6067db6994cf12e4495df938e6e9": {
+    "chain": "polygonzkevm",
+    "symbol": "WETH",
+    "decimals": 18,
+    "address": "0x4f9a0e7fd2bf6067db6994cf12e4495df938e6e9"
+  },
+  "0xa8ce8aee21bc2a48a5ef670afcc9274c7bbbc035": {
+    "chain": "polygonzkevm",
+    "symbol": "USDC",
+    "decimals": 6,
+    "address": "0xa8ce8aee21bc2a48a5ef670afcc9274c7bbbc035"
+  }
+}

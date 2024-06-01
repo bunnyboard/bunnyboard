@@ -1,9 +1,15 @@
 {
   "0x0bd4887f7d41b35cd75dff9ffee2856106f86670": {
     "chain": "base",
-    "address": "0x0bd4887f7d41b35cd75dff9ffee2856106f86670",
     "symbol": "FRIEND",
-    "decimals": 18
+    "decimals": 18,
+    "address": "0x0bd4887f7d41b35cd75dff9ffee2856106f86670"
+  },
+  "0x13f4196cc779275888440b3000ae533bbbbc3166": {
+    "chain": "base",
+    "symbol": "AMKT",
+    "decimals": 18,
+    "address": "0x13f4196cc779275888440b3000ae533bbbbc3166"
   },
   "0x1c7a460413dd4e964f96d8dfc56e7223ce88cd85": {
     "chain": "base",
@@ -23,6 +29,18 @@
     "symbol": "cbETH",
     "decimals": 18
   },
+  "0x321725ee44cb4bfa544cf45a5a585b925d30a58c": {
+    "chain": "base",
+    "symbol": "GROW",
+    "decimals": 18,
+    "address": "0x321725ee44cb4bfa544cf45a5a585b925d30a58c"
+  },
+  "0x38815a4455921667d673b4cb3d48f0383ee93400": {
+    "chain": "base",
+    "symbol": "PSTAKE",
+    "decimals": 18,
+    "address": "0x38815a4455921667d673b4cb3d48f0383ee93400"
+  },
   "0x3e8707557d4ad25d6042f590bcf8a06071da2c5f": {
     "chain": "base",
     "address": "0x3e8707557d4ad25d6042f590bcf8a06071da2c5f",
@@ -37,9 +55,9 @@
   },
   "0x4ed4e862860bed51a9570b96d89af5e1b0efefed": {
     "chain": "base",
-    "address": "0x4ed4e862860bed51a9570b96d89af5e1b0efefed",
     "symbol": "DEGEN",
-    "decimals": 18
+    "decimals": 18,
+    "address": "0x4ed4e862860bed51a9570b96d89af5e1b0efefed"
   },
   "0x50c5725949a6f0c72e6c4a641f24049a917db0cb": {
     "chain": "base",
@@ -49,9 +67,9 @@
   },
   "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913": {
     "chain": "base",
-    "address": "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913",
     "symbol": "USDC",
-    "decimals": 6
+    "decimals": 6,
+    "address": "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913"
   },
   "0x940181a94a35a4569e4529a3cdfb74e38fd98631": {
     "chain": "base",
@@ -64,6 +82,12 @@
     "address": "0x9e1028f5f1d5ede59748ffcee5532509976840e0",
     "symbol": "COMP",
     "decimals": 18
+  },
+  "0xb6fe221fe9eef5aba221c348ba20a1bf5e73624c": {
+    "chain": "base",
+    "symbol": "RETH",
+    "decimals": 18,
+    "address": "0xb6fe221fe9eef5aba221c348ba20a1bf5e73624c"
   },
   "0xc1cba3fcea344f92d9239c08c0568f6f2f0ee452": {
     "chain": "base",
@@ -79,9 +103,9 @@
   },
   "0xd9aaec86b65d86f6a7b5b1b0c42ffa531710b6ca": {
     "chain": "base",
-    "address": "0xd9aaec86b65d86f6a7b5b1b0c42ffa531710b6ca",
-    "symbol": "USDbC",
-    "decimals": 6
+    "symbol": "USDBC",
+    "decimals": 6,
+    "address": "0xd9aaec86b65d86f6a7b5b1b0c42ffa531710b6ca"
   },
   "0xfa980ced6895ac314e7de34ef1bfae90a5add21b": {
     "chain": "base",

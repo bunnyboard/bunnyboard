@@ -1,5 +1,5 @@
 import { sleep } from '../lib/utils';
-import ProtocolCollector from '../modules/collector/protocol';
+import Collector from '../modules/collector/collector';
 import { ContextServices, ContextStorages } from '../types/namespaces';
 import { BasicCommand } from './basic';
 
@@ -17,7 +17,7 @@ export class RunCommand extends BasicCommand {
     const services: ContextServices = await super.getServices();
     const storages: ContextStorages = await super.getStorages();
 
-    const collector = new ProtocolCollector(storages, services);
+    const collector = new Collector(storages, services);
     do {
       await collector.run({
         metric: argv.metric !== '' ? argv.metric.split(',') : undefined,

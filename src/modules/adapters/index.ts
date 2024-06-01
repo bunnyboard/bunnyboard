@@ -6,6 +6,7 @@ import Aavev3Adapter from './aave/aavev3';
 import AbracadabraAdapter from './abracadabra/abracadabra';
 import AjnaAdapter from './ajna/ajna';
 import BenqiAdapter from './benqi/benqi';
+import BungeeAdapter from './bungee/bungee';
 import CompoundAdapter from './compound/compound';
 import Compoundv3Adapter from './compound/compoundv3';
 import CrvusdAdapter from './crvusd/crvusd';
@@ -36,6 +37,7 @@ export function getProtocolAdapters(
     abracadabra: new AbracadabraAdapter(services, storages, ProtocolConfigs.abracadabra),
     ajna: new AjnaAdapter(services, storages, ProtocolConfigs.ajna),
     benqi: new BenqiAdapter(services, storages, ProtocolConfigs.benqi),
+    bungee: new BungeeAdapter(services, storages, ProtocolConfigs.bungee),
     compound: new CompoundAdapter(services, storages, ProtocolConfigs.compound),
     compoundv3: new Compoundv3Adapter(services, storages, ProtocolConfigs.compoundv3),
     crvusd: new CrvusdAdapter(services, storages, ProtocolConfigs.crvusd),

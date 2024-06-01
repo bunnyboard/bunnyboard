@@ -228,4 +228,32 @@ export const OracleSourceChainlinkList: { [key: string]: OracleSourceChainlink }
     address: AddressesBook.ethereum.ChainlinkFeed_GHO_USD,
     decimals: 8,
   },
+  EOS_USD: {
+    type: 'chainlink',
+    chain: 'bnbchain',
+    currency: 'usd',
+    address: '0xd5508c8Ffdb8F15cE336e629fD4ca9AdB48f50F0',
+    decimals: 8,
+  },
+  XTZ_USD: {
+    type: 'chainlink',
+    chain: 'bnbchain',
+    currency: 'usd',
+    address: '0x9A18137ADCF7b05f033ad26968Ed5a9cf0Bf8E6b',
+    decimals: 8,
+  },
+  ATOM_USD: {
+    type: 'chainlink',
+    chain: 'bnbchain',
+    currency: 'usd',
+    address: '0xb056B7C804297279A9a673289264c17E6Dc6055d',
+    decimals: 8,
+  },
+  INJ_USD: {
+    type: 'chainlink',
+    chain: 'bnbchain',
+    currency: 'usd',
+    address: '0x63A9133cd7c611d6049761038C16f238FddA71d7',
+    decimals: 8,
+  },
 };

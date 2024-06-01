@@ -4,6 +4,7 @@ import { AaveConfigs, Aavev2Configs, Aavev3Configs } from './protocols/aave';
 import { AbracadabraConfigs } from './protocols/abracadabra';
 import { AjnaConfigs } from './protocols/ajna';
 import { BenqiConfigs } from './protocols/benqi';
+import { BungeeConfigs } from './protocols/bungee';
 import { CompoundConfigs, Compoundv3Configs } from './protocols/compound';
 import { CrvusdConfigs } from './protocols/crvusd';
 import { IonicConfigs } from './protocols/ionic';
@@ -41,6 +42,7 @@ export const ProtocolConfigs = {
   abracadabra: AbracadabraConfigs,
   ajna: AjnaConfigs,
   benqi: BenqiConfigs,
+  bungee: BungeeConfigs,
   compound: CompoundConfigs,
   compoundv3: Compoundv3Configs,
   crvusd: CrvusdConfigs,

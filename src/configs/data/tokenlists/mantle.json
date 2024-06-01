@@ -1,0 +1,14 @@
+{
+  "0xdeaddeaddeaddeaddeaddeaddeaddeaddead1111": {
+    "chain": "mantle",
+    "symbol": "ETH",
+    "decimals": 18,
+    "address": "0xdeaddeaddeaddeaddeaddeaddeaddeaddead1111"
+  },
+  "0x09bc4e0d864854c6afb6eb9a9cdf58ac190d0df9": {
+    "chain": "mantle",
+    "symbol": "USD COIN",
+    "decimals": 6,
+    "address": "0x09bc4e0d864854c6afb6eb9a9cdf58ac190d0df9"
+  }
+}
