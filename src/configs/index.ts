@@ -3,6 +3,7 @@ import { TokensBook, TokensBookBase } from './data';
 import { AaveConfigs, Aavev2Configs, Aavev3Configs } from './protocols/aave';
 import { AbracadabraConfigs } from './protocols/abracadabra';
 import { AjnaConfigs } from './protocols/ajna';
+import { AvalonConfigs } from './protocols/avalon';
 import { BenqiConfigs } from './protocols/benqi';
 import { BungeeConfigs } from './protocols/bungee';
 import { CompoundConfigs, Compoundv3Configs } from './protocols/compound';
@@ -41,6 +42,7 @@ export const ProtocolConfigs = {
   aavev3: Aavev3Configs,
   abracadabra: AbracadabraConfigs,
   ajna: AjnaConfigs,
+  avalon: AvalonConfigs,
   benqi: BenqiConfigs,
   bungee: BungeeConfigs,
   compound: CompoundConfigs,

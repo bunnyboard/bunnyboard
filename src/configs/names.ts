@@ -20,6 +20,7 @@ export const ChainNames = {
   mantle: 'mantle',
   polygonzkevm: 'polygonzkevm',
   zora: 'zora',
+  merlin: 'merlin',
 };
 
 export const ProtocolNames = {
@@ -28,6 +29,7 @@ export const ProtocolNames = {
   aavev3: 'aavev3',
   abracadabra: 'abracadabra',
   ajna: 'ajna',
+  avalon: 'avalon',
   benqi: 'benqi',
   bungee: 'bungee',
   compound: 'compound',

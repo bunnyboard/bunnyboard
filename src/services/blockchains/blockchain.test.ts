@@ -107,6 +107,11 @@ const testcases = [
     timestamp: 1704067200, // Mon Jan 01 2024 00:00:00 GMT+0000
     expectedBlockNumber: 8686680,
   },
+  {
+    ...EnvConfig.blockchains.merlin,
+    timestamp: 1714521600, // Wed May 01 2024 00:00:00 GMT+0000
+    expectedBlockNumber: 10784371,
+  },
 ];
 
 describe('getBlockNumberAtTimestamp', function () {

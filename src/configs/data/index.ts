@@ -25,6 +25,7 @@ import TokenListGnosis from './tokenlists/gnosis.json';
 import TokenListLinea from './tokenlists/linea.json';
 import TokenListManta from './tokenlists/manta.json';
 import TokenListMantle from './tokenlists/mantle.json';
+import TokenListMerlin from './tokenlists/merlin.json';
 import TokenListMetis from './tokenlists/metis.json';
 import TokenListOptimism from './tokenlists/optimism.json';
 import TokenListPolygon from './tokenlists/polygon.json';
@@ -71,6 +72,7 @@ export const TokensBook = {
   zksync: TokenListZksync,
   manta: TokenListManta,
   mantle: TokenListMantle,
+  merlin: TokenListMerlin,
 };
 
 // these tokens will be used for general purpose

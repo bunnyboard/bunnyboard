@@ -280,4 +280,18 @@ export const BlockchainConfigs: { [key: string]: Blockchain } = {
       decimals: 18,
     },
   },
+  [ChainNames.merlin]: {
+    name: ChainNames.merlin,
+    family: 'evm',
+    chainId: 4200,
+    nodeRpc: String(process.env.BUNNYBOARD_MERLIN_NODE),
+    blockSubgraph: '', // don't use or not available
+    explorerApiEndpoint: 'https://scan.merlinchain.io/api',
+    nativeToken: {
+      chain: ChainNames.merlin,
+      address: AddressZero,
+      symbol: 'BTC',
+      decimals: 18,
+    },
+  },
 };

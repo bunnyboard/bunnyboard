@@ -1,0 +1,56 @@
+{
+  "0xf6d226f9dc15d9bb51182815b320d3fbe324e1ba": {
+    "chain": "merlin",
+    "address": "0xf6d226f9dc15d9bb51182815b320d3fbe324e1ba",
+    "symbol": "WBTC",
+    "decimals": 18
+  },
+  "0xb880fd278198bd590252621d4cd071b1842e9bcd": {
+    "chain": "merlin",
+    "address": "0xb880fd278198bd590252621d4cd071b1842e9bcd",
+    "symbol": "M-BTC",
+    "decimals": 18
+  },
+  "0x967aec3276b63c5e2262da9641db9dbebb07dc0d": {
+    "chain": "merlin",
+    "address": "0x967aec3276b63c5e2262da9641db9dbebb07dc0d",
+    "symbol": "M-USDT",
+    "decimals": 6
+  },
+  "0x6b4ecada640f1b30dbdb68f77821a03a5f282ebe": {
+    "chain": "merlin",
+    "address": "0x6b4ecada640f1b30dbdb68f77821a03a5f282ebe",
+    "symbol": "M-USDC",
+    "decimals": 6
+  },
+  "0x41d9036454be47d3745a823c4aacd0e29cfb0f71": {
+    "chain": "merlin",
+    "address": "0x41d9036454be47d3745a823c4aacd0e29cfb0f71",
+    "symbol": "SolvBTC",
+    "decimals": 18
+  },
+  "0x0726523eba12edad467c55a962842ef358865559": {
+    "chain": "merlin",
+    "address": "0x0726523eba12edad467c55a962842ef358865559",
+    "symbol": "M-ordi",
+    "decimals": 18
+  },
+  "0x5c46bff4b38dc1eae09c5bac65872a1d8bc87378": {
+    "chain": "merlin",
+    "address": "0x5c46bff4b38dc1eae09c5bac65872a1d8bc87378",
+    "symbol": "MERL",
+    "decimals": 18
+  },
+  "0xb5d8b1e73c79483d7750c5b8df8db45a0d24e2cf": {
+    "chain": "merlin",
+    "address": "0xb5d8b1e73c79483d7750c5b8df8db45a0d24e2cf",
+    "symbol": "M-STONE",
+    "decimals": 18
+  },
+  "0x7dcb50b2180bc896da1200d2726a88af5d2cbb5a": {
+    "chain": "merlin",
+    "address": "0x7dcb50b2180bc896da1200d2726a88af5d2cbb5a",
+    "symbol": "ordi",
+    "decimals": 18
+  }
+}
