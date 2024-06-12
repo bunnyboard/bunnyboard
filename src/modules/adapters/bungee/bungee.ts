@@ -102,10 +102,9 @@ export default class BungeeAdapter extends ProtocolAdapter {
           timestamp: stateTime,
         });
 
+        const tokenAmount = new BigNumber(formatBigNumberToString(event.args.amount.toString(), token.decimals));
         const tokenPrice = new BigNumber(tokenPricePrice ? tokenPricePrice : '0');
-        const usdAmount = new BigNumber(
-          formatBigNumberToString(event.args.amount.toString(), token.decimals),
-        ).multipliedBy(tokenPrice);
+        const usdAmount = tokenAmount.multipliedBy(tokenPrice);
 
         bungeeData.volumeBridgeUsd += usdAmount.toNumber();
 
@@ -125,7 +124,9 @@ export default class BungeeAdapter extends ProtocolAdapter {
 
         bungeeData.volumeBridgeUsdDestinations[toChainName] += usdAmount.toNumber();
         bungeeData.volumeBridgeUsdProtocols[bridgeName] += usdAmount.toNumber();
-        bungeeData.volumeBridgeTokens[token.address].tokenVolume += usdAmount.toNumber();
+
+        // increase volume in token unit
+        bungeeData.volumeBridgeTokens[token.address].tokenVolume += tokenAmount.toNumber();
       }
     }
 

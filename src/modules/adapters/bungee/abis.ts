@@ -15,10 +15,11 @@ export const BungeeKnownBridgeNames: { [key: string]: string } = {
 
   // native bridges
   '0xf1c09a354cd800a13f6f260a3a96a0e33db28b0b53528072473336977bba34f4': 'polygonBridge',
-  '0x2e27c951e4ed3f2f1e7771dd262432f093b6ddeabfca0688443958d00b9bcf56': 'optimismNative',
+  '0x2e27c951e4ed3f2f1e7771dd262432f093b6ddeabfca0688443958d00b9bcf56': 'optimismBridge',
   '0x2e760812e6696b561a918e71ad2845639638959ed846b188488dd0d8c0b953ef': 'zksyncBridge',
-  '0x7c4e564b66172ccd4006719b3b9e6d8e4eabbc54c5cf017495bf6a3b3f4dd06f': 'gnosisNative',
-  '0x7da5d3610317b9820c1f9de12c4c257f3f0e2ea5b63c99f27ed8e0592ac8fb4c': 'arbitrumNative',
+  '0x7c4e564b66172ccd4006719b3b9e6d8e4eabbc54c5cf017495bf6a3b3f4dd06f': 'gnosisBridge',
+  '0x7da5d3610317b9820c1f9de12c4c257f3f0e2ea5b63c99f27ed8e0592ac8fb4c': 'arbitrumBridge',
+  '0x86c029f16460117b4488dbcebd1ea3d4f22aee8859770297bc010a8caaa1b116': 'baseBridge',
 };
 
 // https://stargateprotocol.gitbook.io/stargate/developers/chain-ids
