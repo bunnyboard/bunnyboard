@@ -146,7 +146,9 @@ export default class AjnaAdapter extends IsolatedLendingProtocolAdapter {
           const rateBorrow = new BigNumber(formatBigNumberToString(interestRateInfo.toString(), 18));
 
           // rateSupply = totalBorrowed * rateBorrow / totalDeposited
-          const rateSupply = totalBorrowed.multipliedBy(rateBorrow).dividedBy(totalDeposited);
+          const rateSupply = totalDeposited.gt(0)
+            ? totalBorrowed.multipliedBy(rateBorrow).dividedBy(totalDeposited)
+            : new BigNumber(0);
 
           const logs = await this.services.blockchain.getContractLogs({
             chain: marketConfig.chain,
