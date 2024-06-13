@@ -20,6 +20,8 @@ export const BungeeKnownBridgeNames: { [key: string]: string } = {
   '0x7c4e564b66172ccd4006719b3b9e6d8e4eabbc54c5cf017495bf6a3b3f4dd06f': 'gnosisBridge',
   '0x7da5d3610317b9820c1f9de12c4c257f3f0e2ea5b63c99f27ed8e0592ac8fb4c': 'arbitrumBridge',
   '0x86c029f16460117b4488dbcebd1ea3d4f22aee8859770297bc010a8caaa1b116': 'baseBridge',
+  '0xcc231b7032e768dd0a97e8b21d355ca609fe31ebcb2a827b8759fc5dd1d9c95f': 'scrollBridge',
+  '0xddc44bae4cec4168e76c8f60940ee0abbae677cacb55590a890235614317ef6b': 'zoraBridge',
 };
 
 // https://stargateprotocol.gitbook.io/stargate/developers/chain-ids
