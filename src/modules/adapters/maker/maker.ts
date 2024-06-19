@@ -302,8 +302,7 @@ export default class MakerAdapter extends CdpLendingProtocolAdapter {
 
           // 24 hours borrow fees
           assetState.feesPaid = new BigNumber(assetState.feesPaid)
-            .plus(new BigNumber(totalBorrowed).multipliedBy(borrowRate.toString(10)))
-            .dividedBy(TimeUnits.DaysPerYear)
+            .plus(new BigNumber(totalBorrowed).multipliedBy(borrowRate.toString(10)).dividedBy(TimeUnits.DaysPerYear))
             .toString(10);
         }
       }
