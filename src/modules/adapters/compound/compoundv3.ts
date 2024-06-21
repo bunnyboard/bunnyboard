@@ -217,22 +217,24 @@ export default class Compoundv3Adapter extends IsolatedLendingProtocolAdapter {
           case Compoundv3EventSignatures.SupplyCollateral:
           case Compoundv3EventSignatures.WithdrawCollateral: {
             const asset = normalizeAddress(event.args.asset);
-            if (signature === Compoundv3EventSignatures.SupplyCollateral) {
-              collaterals[asset].volumeDeposited = new BigNumber(collaterals[asset].volumeDeposited)
-                .plus(
-                  new BigNumber(
-                    formatBigNumberToString(event.args.amount.toString(), collaterals[asset].token.decimals),
-                  ),
-                )
-                .toString(10);
-            } else {
-              collaterals[asset].volumeWithdrawn = new BigNumber(collaterals[asset].volumeWithdrawn)
-                .plus(
-                  new BigNumber(
-                    formatBigNumberToString(event.args.amount.toString(), collaterals[asset].token.decimals),
-                  ),
-                )
-                .toString(10);
+            if (collaterals[asset]) {
+              if (signature === Compoundv3EventSignatures.SupplyCollateral) {
+                collaterals[asset].volumeDeposited = new BigNumber(collaterals[asset].volumeDeposited)
+                  .plus(
+                    new BigNumber(
+                      formatBigNumberToString(event.args.amount.toString(), collaterals[asset].token.decimals),
+                    ),
+                  )
+                  .toString(10);
+              } else {
+                collaterals[asset].volumeWithdrawn = new BigNumber(collaterals[asset].volumeWithdrawn)
+                  .plus(
+                    new BigNumber(
+                      formatBigNumberToString(event.args.amount.toString(), collaterals[asset].token.decimals),
+                    ),
+                  )
+                  .toString(10);
+              }
             }
             break;
           }
