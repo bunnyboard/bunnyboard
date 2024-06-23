@@ -546,6 +546,7 @@ export const OracleConfigs: { [key: string]: { [key: string]: OracleConfig } } =
     '0x0000000000000000000000000000000000000000': OracleSourceConfigs.ETH,
     '0x4300000000000000000000000000000000000004': OracleSourceConfigs.ETH,
     '0x4300000000000000000000000000000000000003': OracleSourceConfigs.USDC,
+    '0x76da31d7c9cbeae102aff34d3398bc450c8374c1': OracleSourceConfigs.MIM,
   },
 
   // token on aurora

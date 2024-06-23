@@ -341,8 +341,6 @@ export default class AbracadabraAdapter extends CdpLendingProtocolAdapter {
     assetState.addresses = Object.keys(addresses);
     assetState.transactions = Object.keys(transactions);
 
-    console.log(assetState);
-
     return assetState;
   }
 }

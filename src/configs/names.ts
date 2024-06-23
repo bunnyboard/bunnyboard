@@ -21,6 +21,7 @@ export const ChainNames = {
   polygonzkevm: 'polygonzkevm',
   zora: 'zora',
   merlin: 'merlin',
+  kava: 'kava',
 };
 
 export const ProtocolNames = {

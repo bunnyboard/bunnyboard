@@ -53,6 +53,12 @@
     "symbol": "fwWETH",
     "decimals": 18
   },
+  "0x76da31d7c9cbeae102aff34d3398bc450c8374c1": {
+    "chain": "blast",
+    "address": "0x76da31d7c9cbeae102aff34d3398bc450c8374c1",
+    "symbol": "MIM",
+    "decimals": 18
+  },
   "0x866f2c06b83df2ed7ca9c2d044940e7cd55a06d6": {
     "chain": "blast",
     "address": "0x866f2c06b83df2ed7ca9c2d044940e7cd55a06d6",

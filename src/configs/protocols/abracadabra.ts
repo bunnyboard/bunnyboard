@@ -26,6 +26,7 @@ const DebtTokens: { [key: string]: Token } = {
   avalanche: TokensBook.avalanche['0x130966628846bfd36ff31a822705796e8cb8c18d'],
   fantom: TokensBook.fantom['0x82f0b8b456c1a451378467398982d4834b6829c1'],
   bnbchain: TokensBook.bnbchain['0xfe19f0b51438fd612f6fd59c1dbb3ea319f433ba'],
+  blast: TokensBook.blast['0x76da31d7c9cbeae102aff34d3398bc450c8374c1'],
 };
 
 // chain:cauldronVersion:birthday:marketAddress:collateralAddress
@@ -116,6 +117,9 @@ const Markets: Array<string> = [
   // bnbchain
   'bnbchain:2:1637280000:0x692CF15F80415D83E8c0e139cAbcDA67fcc12C90:0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c', // BNB
   'bnbchain:2:1637366400:0xF8049467F3A9D50176f4816b20cDdd9bB8a93319:0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82', // CAKE
+
+  // blast
+  'blast:4:1709251200:0x79e8CAd80E2aA49A246B789584C45aAB1CFe402e:0x4300000000000000000000000000000000000004', // CAKE
 ];
 
 function formatMarket(chain: string, birthday: number): AbracadabraMarketConfig {
@@ -155,5 +159,6 @@ export const AbracadabraConfigs: AbracadabraProtocolConfig = {
     formatMarket('avalanche', 1630540800), // Thu Sep 02 2021 00:00:00 GMT+0000
     formatMarket('fantom', 1625702400), // Thu Jul 08 2021 00:00:00 GMT+0000
     formatMarket('bnbchain', 1637280000), // Fri Nov 19 2021 00:00:00 GMT+0000
+    formatMarket('blast', 1709251200), // Fri Mar 01 2024 00:00:00 GMT+0000
   ],
 };

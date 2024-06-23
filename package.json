@@ -43,5 +43,21 @@
     "yamljs": "^0.3.0",
     "yargs": "^17.4.0"
   },
+  "prettier": {
+    "plugins": [
+      "@trivago/prettier-plugin-sort-imports"
+    ],
+    "importOrder": [
+      "^@core/(.*)$",
+      "^@server/(.*)$",
+      "^@ui/(.*)$",
+      "^[./]"
+    ],
+    "importOrderSeparation": true,
+    "importOrderSortSpecifiers": true,
+    "printWidth": 120,
+    "semi": true,
+    "singleQuote": true
+  },
   "packageManager": "yarn@4.0.2"
 }
