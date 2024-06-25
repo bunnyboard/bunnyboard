@@ -14,6 +14,7 @@ import { KinzaConfigs } from './protocols/kinza';
 import { LiquityConfigs } from './protocols/liquity';
 import { MakerConfigs } from './protocols/maker';
 import { MendiConfigs } from './protocols/mendi';
+import { MorphoConfigs } from './protocols/morpho';
 import { OrbitConfigs } from './protocols/orbit';
 import { PacConfigs } from './protocols/pac';
 import { RadiantConfigs } from './protocols/radiant';
@@ -55,6 +56,7 @@ export const ProtocolConfigs = {
   liquity: LiquityConfigs,
   maker: MakerConfigs,
   mendi: MendiConfigs,
+  morpho: MorphoConfigs,
   orbit: OrbitConfigs,
   pac: PacConfigs,
   radiant: RadiantConfigs,

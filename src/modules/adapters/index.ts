@@ -16,6 +16,7 @@ import KinzaAdapter from './kinza/kinza';
 import LiquityAdapter from './liquity/liquity';
 import MakerAdapter from './maker/maker';
 import MendiAdapter from './mendi/mendi';
+import MorphoAdapter from './morpho/morpho';
 import OrbitAdapter from './orbit/orbit';
 import PacAdapter from './pac/pac';
 import RadiantAdapter from './radiant/radiant';
@@ -52,6 +53,7 @@ export function getProtocolAdapters(
     liquity: new LiquityAdapter(services, storages, ProtocolConfigs.liquity),
     maker: new MakerAdapter(services, storages, ProtocolConfigs.maker),
     mendi: new MendiAdapter(services, storages, ProtocolConfigs.mendi),
+    morpho: new MorphoAdapter(services, storages, ProtocolConfigs.morpho),
     orbit: new OrbitAdapter(services, storages, ProtocolConfigs.orbit),
     seamless: new SeamlessAdapter(services, storages, ProtocolConfigs.seamless),
     sushi: new SushiAdapter(services, storages, ProtocolConfigs.sushi),

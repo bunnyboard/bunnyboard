@@ -883,4 +883,25 @@ export const OracleSourceConfigs: { [key: string]: OracleConfig } = {
     currency: 'avax',
     sources: [OracleSourceUniswapv2List.PTP_WAVAX],
   },
+  USDM: {
+    currency: 'usd',
+    sources: [OracleSourceUniswapv3List.USDM_USDT],
+  },
+  USDA: {
+    currency: 'eur',
+    sources: [OracleSourceUniswapv3List.USDA_EURA],
+  },
+  USDe: {
+    currency: 'usd',
+    sources: [OracleSourceUniswapv3List.USDe_USDT],
+  },
+  ezETH: {
+    currency: 'eth',
+    sources: [OracleSourceUniswapv3List.ezETH_WETH],
+  },
+  USD0: {
+    currency: 'usd',
+    stablecoin: true,
+    sources: [],
+  },
 };

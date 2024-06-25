@@ -13,6 +13,7 @@ export interface Contract {
   chain: string;
   protocol: string;
   address: string;
+  birthblock?: number;
 }
 
 export interface LiquidityPoolConfig extends Token {
@@ -45,6 +46,9 @@ export interface Blockchain {
 export interface DatabaseCollectionConfig {
   cachingStates: MongoCollectionConfig;
   cachingData: MongoCollectionConfig;
+
+  // raw contract event logs
+  cachingContractLogs: MongoCollectionConfig;
 
   crossLendingReserveStates: MongoCollectionConfig;
   crossLendingReserveSnapshots: MongoCollectionConfig;
@@ -117,6 +121,7 @@ export const LendingMarketVersions = {
   isolated: {
     ajna: 'ajna',
     compoundv3: 'compoundv3',
+    morpho: 'morpho',
   },
 };
 

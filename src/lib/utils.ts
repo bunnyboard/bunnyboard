@@ -14,6 +14,12 @@ export function getTodayUTCTimestamp() {
   return Math.floor(new Date(today).getTime() / 1000);
 }
 
+// get start day timestamp of a timestamp
+export function getStartDayTimestamp(timestamp: number) {
+  const theDay = new Date(timestamp * 1000).toISOString().split('T')[0];
+  return Math.floor(new Date(theDay).getTime() / 1000);
+}
+
 export function getDateString(timestamp: number): string {
   return new Date(timestamp * 1000).toISOString().split('T')[0];
 }

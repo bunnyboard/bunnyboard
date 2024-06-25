@@ -22,6 +22,17 @@ export const DatabaseCollectionConfigs: DatabaseCollectionConfig = {
       },
     ],
   },
+  cachingContractLogs: {
+    name: `${MongodbPrefix}.cachingContractLogs`,
+    indies: [
+      {
+        chain: 1,
+        address: 1,
+        transactionHash: 1,
+        logIndex: 1,
+      },
+    ],
+  },
 
   crossLendingReserveStates: {
     name: `${MongodbPrefix}.crossLendingReserveStates`,

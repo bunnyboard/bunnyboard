@@ -1,6 +1,7 @@
 import { PublicClient } from 'viem';
 
 import { Token } from '../../types/configs';
+import { ContextStorages } from '../../types/namespaces';
 
 export interface ReadContractOptions {
   chain: string;
@@ -44,6 +45,10 @@ export interface MulticallOptions {
   calls: Array<ContractCall>;
 }
 
+export interface IndexContractLogsOptions extends GetContractLogsOptions {
+  signatures: Array<string>;
+}
+
 export interface IBlockchainService {
   // should be labeled as blockchain
   name: string;
@@ -72,4 +77,7 @@ export interface IBlockchainService {
 
   // loop until get block number success
   tryGetBlockNumberAtTimestamp: (chain: string, timestamp: number) => Promise<number>;
+
+  // get contract logs and save to database
+  indexContractLogs: (storages: ContextStorages, options: IndexContractLogsOptions) => Promise<void>;
 }

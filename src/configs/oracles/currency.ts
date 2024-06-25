@@ -28,4 +28,8 @@ export const OracleCurrencyBaseConfigs: { [key: string]: OracleConfig } = {
     currency: 'eth',
     sources: [OracleSourceChainlinkList.FTM_ETH],
   },
+  eur: {
+    currency: 'usd',
+    sources: [OracleSourceChainlinkList.EUR_USD],
+  },
 };

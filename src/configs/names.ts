@@ -43,6 +43,7 @@ export const ProtocolNames = {
   liquity: 'liquity',
   maker: 'maker',
   mendi: 'mendi',
+  morpho: 'morpho',
   orbit: 'orbit',
   pac: 'pac',
   pancake: 'pancake',
