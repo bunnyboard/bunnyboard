@@ -15,12 +15,12 @@ const testcases = [
   {
     ...EnvConfig.blockchains.arbitrum,
     timestamp: 1672531200, // Sun Jan 01 2023 00:00:00 GMT+0000
-    expectedBlockNumber: 50084143,
+    expectedBlockNumber: 50084144,
   },
   {
     ...EnvConfig.blockchains.optimism,
     timestamp: 1672531200, // Sun Jan 01 2023 00:00:00 GMT+0000
-    expectedBlockNumber: 58462085,
+    expectedBlockNumber: 58462111,
   },
   {
     ...EnvConfig.blockchains.polygon,

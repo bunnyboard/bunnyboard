@@ -35,12 +35,8 @@ export interface Blockchain {
   // the native coin
   nativeToken: Token;
 
-  // some time we need to get multiple block timestamp
-  // subgraph helps us query them in a single API call
-  blockSubgraph: string;
-
   // explorer api endpoint
-  explorerApiEndpoint?: string;
+  explorerApiEndpoint: string;
 }
 
 export interface DatabaseCollectionConfig {

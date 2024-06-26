@@ -1,4 +1,3 @@
-import retry from 'async-retry';
 import axios, { RawAxiosRequestHeaders } from 'axios';
 import BigNumber from 'bignumber.js';
 import { Address, PublicClient, createPublicClient, http } from 'viem';
@@ -249,42 +248,6 @@ export default class BlockchainService extends CachingService implements IBlockc
     const chainConfig = EnvConfig.blockchains[chain];
 
     let blockNumber = null;
-
-    // get from subgraph
-    if (chainConfig && chainConfig.blockSubgraph !== '') {
-      const query = `
-        {
-          blocks(first: 1, where: {timestamp_lte: ${timestamp}}, orderBy: timestamp, orderDirection: desc) {
-            number
-          }
-        }
-      `;
-
-      const response = await retry(
-        async function () {
-          const response = await axios.post(
-            chainConfig.blockSubgraph,
-            {
-              query: query,
-            },
-            {
-              headers: {
-                'Content-Type': 'application/json',
-              } as RawAxiosRequestHeaders,
-            },
-          );
-
-          return response.data.data;
-        },
-        {
-          retries: 5,
-        },
-      );
-
-      if (response && response.blocks && response.blocks[0] && response.blocks[0].number) {
-        blockNumber = Number(response.blocks[0].number);
-      }
-    }
 
     // get from explorer api
     if (chainConfig && chainConfig.explorerApiEndpoint) {
