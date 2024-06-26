@@ -2,7 +2,6 @@ import dotenv from 'dotenv';
 
 import { Blockchain } from '../types/configs';
 import { AddressZero } from './constants';
-import { SubgraphEndpoints } from './data';
 import { ChainNames } from './names';
 
 // global env and configurations
@@ -14,7 +13,7 @@ export const BlockchainConfigs: { [key: string]: Blockchain } = {
     family: 'evm',
     chainId: 1,
     nodeRpc: String(process.env.BUNNYBOARD_ETHEREUM_NODE),
-    blockSubgraph: SubgraphEndpoints.blocks.ethereum,
+    explorerApiEndpoint: 'https://api.etherscan.io/api',
     nativeToken: {
       chain: ChainNames.ethereum,
       address: AddressZero,
@@ -27,7 +26,7 @@ export const BlockchainConfigs: { [key: string]: Blockchain } = {
     family: 'evm',
     chainId: 42161,
     nodeRpc: String(process.env.BUNNYBOARD_ARBITRUM_NODE),
-    blockSubgraph: SubgraphEndpoints.blocks.arbitrum,
+    explorerApiEndpoint: 'https://api.arbiscan.io/api',
     nativeToken: {
       chain: ChainNames.arbitrum,
       address: AddressZero,
@@ -40,7 +39,7 @@ export const BlockchainConfigs: { [key: string]: Blockchain } = {
     family: 'evm',
     chainId: 8453,
     nodeRpc: String(process.env.BUNNYBOARD_BASE_NODE),
-    blockSubgraph: SubgraphEndpoints.blocks.base,
+    explorerApiEndpoint: 'https://api.basescan.org/api',
     nativeToken: {
       chain: ChainNames.base,
       address: AddressZero,
@@ -53,7 +52,7 @@ export const BlockchainConfigs: { [key: string]: Blockchain } = {
     family: 'evm',
     chainId: 10,
     nodeRpc: String(process.env.BUNNYBOARD_OPTIMISM_NODE),
-    blockSubgraph: SubgraphEndpoints.blocks.optimism,
+    explorerApiEndpoint: 'https://api-optimistic.etherscan.io/api',
     nativeToken: {
       chain: ChainNames.optimism,
       address: AddressZero,
@@ -66,7 +65,7 @@ export const BlockchainConfigs: { [key: string]: Blockchain } = {
     family: 'evm',
     chainId: 137,
     nodeRpc: String(process.env.BUNNYBOARD_POLYGON_NODE),
-    blockSubgraph: SubgraphEndpoints.blocks.polygon,
+    explorerApiEndpoint: 'https://api.polygonscan.com/api',
     nativeToken: {
       chain: ChainNames.polygon,
       address: AddressZero,
@@ -79,7 +78,7 @@ export const BlockchainConfigs: { [key: string]: Blockchain } = {
     family: 'evm',
     chainId: 56,
     nodeRpc: String(process.env.BUNNYBOARD_BNBCHAIN_NODE),
-    blockSubgraph: SubgraphEndpoints.blocks.bnbchain,
+    explorerApiEndpoint: 'https://api.bscscan.com/api',
     nativeToken: {
       chain: ChainNames.bnbchain,
       address: AddressZero,
@@ -92,7 +91,7 @@ export const BlockchainConfigs: { [key: string]: Blockchain } = {
     family: 'evm',
     chainId: 43114,
     nodeRpc: String(process.env.BUNNYBOARD_AVALANCHE_NODE),
-    blockSubgraph: SubgraphEndpoints.blocks.avalanche,
+    explorerApiEndpoint: 'https://api.snowscan.xyz/api',
     nativeToken: {
       chain: ChainNames.avalanche,
       address: AddressZero,
@@ -105,7 +104,7 @@ export const BlockchainConfigs: { [key: string]: Blockchain } = {
     family: 'evm',
     chainId: 250,
     nodeRpc: String(process.env.BUNNYBOARD_FANTOM_NODE),
-    blockSubgraph: SubgraphEndpoints.blocks.fantom,
+    explorerApiEndpoint: 'https://api.ftmscan.com/api',
     nativeToken: {
       chain: ChainNames.fantom,
       address: AddressZero,
@@ -118,7 +117,6 @@ export const BlockchainConfigs: { [key: string]: Blockchain } = {
     family: 'evm',
     chainId: 1088,
     nodeRpc: String(process.env.BUNNYBOARD_METIS_NODE),
-    blockSubgraph: '', // don't use or not available
     explorerApiEndpoint: 'https://api.routescan.io/v2/network/mainnet/evm/1088/etherscan/api',
     nativeToken: {
       chain: ChainNames.metis,
@@ -132,7 +130,7 @@ export const BlockchainConfigs: { [key: string]: Blockchain } = {
     family: 'evm',
     chainId: 100,
     nodeRpc: String(process.env.BUNNYBOARD_GNOSIS_NODE),
-    blockSubgraph: SubgraphEndpoints.blocks.gnosis,
+    explorerApiEndpoint: 'https://api.gnosisscan.io/api',
     nativeToken: {
       chain: ChainNames.gnosis,
       address: AddressZero,
@@ -145,7 +143,6 @@ export const BlockchainConfigs: { [key: string]: Blockchain } = {
     family: 'evm',
     chainId: 534352,
     nodeRpc: String(process.env.BUNNYBOARD_SCROLL_NODE),
-    blockSubgraph: '', // don't use or not available
     explorerApiEndpoint: 'https://api.scrollscan.com/api',
     nativeToken: {
       chain: ChainNames.scroll,
@@ -159,7 +156,6 @@ export const BlockchainConfigs: { [key: string]: Blockchain } = {
     family: 'evm',
     chainId: 81457,
     nodeRpc: String(process.env.BUNNYBOARD_BLAST_NODE),
-    blockSubgraph: '', // don't use or not available
     explorerApiEndpoint: 'https://api.blastscan.io/api',
     nativeToken: {
       chain: ChainNames.blast,
@@ -173,7 +169,6 @@ export const BlockchainConfigs: { [key: string]: Blockchain } = {
     family: 'evm',
     chainId: 59144,
     nodeRpc: String(process.env.BUNNYBOARD_LINEA_NODE),
-    blockSubgraph: '', // don't use or not available
     explorerApiEndpoint: 'https://api.lineascan.build/api',
     nativeToken: {
       chain: ChainNames.linea,
@@ -187,7 +182,6 @@ export const BlockchainConfigs: { [key: string]: Blockchain } = {
     family: 'evm',
     chainId: 324,
     nodeRpc: String(process.env.BUNNYBOARD_ZKSYNC_NODE),
-    blockSubgraph: '', // don't use or not available
     explorerApiEndpoint: 'https://api-era.zksync.network/api',
     nativeToken: {
       chain: ChainNames.zksync,
@@ -201,7 +195,6 @@ export const BlockchainConfigs: { [key: string]: Blockchain } = {
     family: 'evm',
     chainId: 34443,
     nodeRpc: String(process.env.BUNNYBOARD_MODE_NODE),
-    blockSubgraph: '', // don't use or not available
     explorerApiEndpoint: 'https://explorer.mode.network/api',
     nativeToken: {
       chain: ChainNames.mode,
@@ -215,7 +208,6 @@ export const BlockchainConfigs: { [key: string]: Blockchain } = {
     family: 'evm',
     chainId: 169,
     nodeRpc: String(process.env.BUNNYBOARD_MANTA_NODE),
-    blockSubgraph: '', // don't use or not available
     explorerApiEndpoint: 'https://pacific-explorer.manta.network/api',
     nativeToken: {
       chain: ChainNames.manta,
@@ -229,7 +221,6 @@ export const BlockchainConfigs: { [key: string]: Blockchain } = {
     family: 'evm',
     chainId: 1313161554,
     nodeRpc: String(process.env.BUNNYBOARD_AURORA_NODE),
-    blockSubgraph: '', // don't use or not available
     explorerApiEndpoint: 'https://explorer.aurora.dev/api',
     nativeToken: {
       chain: ChainNames.aurora,
@@ -243,7 +234,6 @@ export const BlockchainConfigs: { [key: string]: Blockchain } = {
     family: 'evm',
     chainId: 5000,
     nodeRpc: String(process.env.BUNNYBOARD_MANTLE_NODE),
-    blockSubgraph: '', // don't use or not available
     explorerApiEndpoint: 'https://explorer.mantle.xyz/api',
     nativeToken: {
       chain: ChainNames.mantle,
@@ -257,7 +247,6 @@ export const BlockchainConfigs: { [key: string]: Blockchain } = {
     family: 'evm',
     chainId: 1101,
     nodeRpc: String(process.env.BUNNYBOARD_POLYGONZKEVM_NODE),
-    blockSubgraph: '', // don't use or not available
     explorerApiEndpoint: 'https://api-zkevm.polygonscan.com/api',
     nativeToken: {
       chain: ChainNames.polygonzkevm,
@@ -271,7 +260,6 @@ export const BlockchainConfigs: { [key: string]: Blockchain } = {
     family: 'evm',
     chainId: 7777777,
     nodeRpc: String(process.env.BUNNYBOARD_ZORA_NODE),
-    blockSubgraph: '', // don't use or not available
     explorerApiEndpoint: 'https://explorer.zora.energy/api',
     nativeToken: {
       chain: ChainNames.zora,
@@ -285,7 +273,6 @@ export const BlockchainConfigs: { [key: string]: Blockchain } = {
     family: 'evm',
     chainId: 4200,
     nodeRpc: String(process.env.BUNNYBOARD_MERLIN_NODE),
-    blockSubgraph: '', // don't use or not available
     explorerApiEndpoint: 'https://scan.merlinchain.io/api',
     nativeToken: {
       chain: ChainNames.merlin,

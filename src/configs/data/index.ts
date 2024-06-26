@@ -13,7 +13,6 @@ import OptimismAddresses from './addresses/optimism.json';
 import PolygonAddresses from './addresses/polygon.json';
 import ScrollAddresses from './addresses/scroll.json';
 import ZksyncAddresses from './addresses/zksync.json';
-import { BlockSubGraphEndpoints, DataSubGraphEndpoints } from './subgraphs';
 import TokenListArbitrum from './tokenlists/arbitrum.json';
 import TokenListAvalanche from './tokenlists/avalanche.json';
 import TokenListBase from './tokenlists/base.json';
@@ -31,11 +30,6 @@ import TokenListOptimism from './tokenlists/optimism.json';
 import TokenListPolygon from './tokenlists/polygon.json';
 import TokenListScroll from './tokenlists/scroll.json';
 import TokenListZksync from './tokenlists/zksync.json';
-
-export const SubgraphEndpoints = {
-  blocks: BlockSubGraphEndpoints,
-  data: DataSubGraphEndpoints,
-};
 
 export const AddressesBook = {
   ethereum: EthereumAddresses,
