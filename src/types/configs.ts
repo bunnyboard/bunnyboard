@@ -66,6 +66,10 @@ export interface DatabaseCollectionConfig {
   // for ecosystem
   ecosystemDataStates: MongoCollectionConfig;
   ecosystemDataSnapshots: MongoCollectionConfig;
+
+  // for flashloan
+  flashloanDataStates: MongoCollectionConfig;
+  flashloanDataSnapshots: MongoCollectionConfig;
 }
 
 export interface EnvConfig {
@@ -110,7 +114,6 @@ export const LendingMarketVersions = {
     aavev2: 'aavev2',
     aavev3: 'aavev3',
     compound: 'compound',
-    undefined,
   },
   cdp: {
     maker: 'maker',
@@ -168,6 +171,20 @@ export type StakingVersion = (typeof AllStakingVersions)[number];
 
 export interface StakingConfig extends MetricConfig {
   version: StakingVersion;
+}
+
+export const FlashloanVersion = {
+  aavev2: 'aavev2',
+  aavev3: 'aavev3',
+  ironbank: 'ironbank',
+  balancer: 'balancer',
+  maker: 'maker',
+}
+const AllFlashloanVersions = Object.values(FlashloanVersion);
+export type FlashloanVerion = (typeof AllFlashloanVersions)[number];
+
+export interface FlashloanConfig extends MetricConfig {
+  version: FlashloanVerion;
 }
 
 export interface ProtocolConfig {

@@ -147,4 +147,26 @@ export const DatabaseCollectionConfigs: DatabaseCollectionConfig = {
       },
     ],
   },
+
+  flashloanDataStates: {
+    name: `${MongodbPrefix}.flashloanDataStates`,
+    indies: [
+      {
+        protocol: 1,
+        chain: 1,
+        address: 1,
+      },
+    ],
+  },
+  flashloanDataSnapshots: {
+    name: `${MongodbPrefix}.flashloanDataSnapshots`,
+    indies: [
+      {
+        protocol: 1,
+        chain: 1,
+        address: 1,
+        timestamp: 1,
+      },
+    ],
+  },
 };

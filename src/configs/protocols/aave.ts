@@ -1,6 +1,8 @@
 import {
   CrossLendingMarketConfig,
   DataMetrics,
+  FlashloanConfig,
+  FlashloanVersion,
   LendingMarketVersions,
   ProtocolConfig,
   StakingConfig,
@@ -29,7 +31,7 @@ export interface AaveLendingMarketConfig extends CrossLendingMarketConfig {
 }
 
 export interface AaveProtocolConfig extends ProtocolConfig {
-  configs: Array<AaveLendingMarketConfig>;
+  configs: Array<AaveLendingMarketConfig | FlashloanConfig>;
 }
 
 export const Aavev2Configs: AaveProtocolConfig = {
@@ -73,6 +75,32 @@ export const Aavev2Configs: AaveProtocolConfig = {
         currency: 'usd',
         address: AddressesBook.avalanche.Aavev2Oracle,
       },
+    },
+
+    // flashloan
+    {
+      chain: ChainNames.ethereum,
+      protocol: ProtocolNames.aavev2,
+      version: FlashloanVersion.aavev2,
+      birthday: 1606780800, // Tue Dec 01 2020 00:00:00 GMT+0000
+      metric: DataMetrics.flashloan,
+      address: AddressesBook.ethereum.Aavev2LendingPool,
+    },
+    {
+      chain: ChainNames.polygon,
+      protocol: ProtocolNames.aavev2,
+      version: FlashloanVersion.aavev2,
+      birthday: 1617235200, // Thu Apr 01 2021 00:00:00 GMT+0000
+      metric: DataMetrics.flashloan,
+      address: AddressesBook.polygon.Aavev2LendingPool,
+    },
+    {
+      chain: ChainNames.avalanche,
+      protocol: ProtocolNames.aavev2,
+      version: FlashloanVersion.aavev2,
+      birthday: 1632182400, // Tue Sep 21 2021 00:00:00 GMT+0000
+      metric: DataMetrics.flashloan,
+      address: AddressesBook.avalanche.Aavev2LendingPool,
     },
   ],
 };
