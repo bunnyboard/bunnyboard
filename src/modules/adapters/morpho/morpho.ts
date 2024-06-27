@@ -131,14 +131,16 @@ export default class MorphoAdapter extends IsolatedLendingProtocolAdapter {
         });
 
         // https://docs.morpho.org/morpho-blue/contracts/oracles/#price
-        const collateralPriceUsd = new BigNumber(
-          formatBigNumberToString(
-            collateralPrice.toString(),
-            36 + market.debtToken.decimals - market.collateral.decimals,
-          ),
-        )
-          .multipliedBy(new BigNumber(debtTokenPrice))
-          .toString(10);
+        const collateralPriceUsd = collateralPrice
+          ? new BigNumber(
+              formatBigNumberToString(
+                collateralPrice.toString(),
+                36 + market.debtToken.decimals - market.collateral.decimals,
+              ),
+            )
+              .multipliedBy(new BigNumber(debtTokenPrice))
+              .toString(10)
+          : '0';
 
         // borrowRatePerSecond from Morpho Irm
         const borrowRate = new BigNumber(borrowRateView.toString()).dividedBy(1e18);
