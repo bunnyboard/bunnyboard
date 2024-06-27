@@ -899,6 +899,10 @@ export const OracleSourceConfigs: { [key: string]: OracleConfig } = {
     currency: 'eth',
     sources: [OracleSourceUniswapv3List.ezETH_WETH],
   },
+  osETH: {
+    currency: 'eth',
+    sources: [OracleSourceUniswapv3List.osETH_WETH],
+  },
   USD0: {
     currency: 'usd',
     stablecoin: true,

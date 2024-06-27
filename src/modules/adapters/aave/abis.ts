@@ -4,6 +4,7 @@ export interface AaveEventInterfaces {
   Borrow: string;
   Repay: string;
   Liquidate: string;
+  Flashloan: string;
 }
 
 export const Aavev2EventSignatures: AaveEventInterfaces = {
@@ -12,6 +13,7 @@ export const Aavev2EventSignatures: AaveEventInterfaces = {
   Borrow: '0xc6a898309e823ee50bac64e45ca8adba6690e99e7841c45d754e2a38e9019d9b',
   Repay: '0x4cdde6e09bb755c9a5589ebaec640bbfedff1362d4b255ebf8339782b9942faa',
   Liquidate: '0xe413a321e8681d831f4dbccbca790d2952b56f977908e45be37335533e005286',
+  Flashloan: '0x631042c832b07452973831137f2d73e395028b44b250dedc5abb0ee766e168ac',
 };
 
 export const Aavev3EventSignatures: AaveEventInterfaces = {
@@ -20,6 +22,7 @@ export const Aavev3EventSignatures: AaveEventInterfaces = {
   Borrow: '0xb3d084820fb1a9decffb176436bd02558d15fac9b0ddfed8c465bc7359d7dce0',
   Repay: '0xa534c8dbe71f871f9f3530e97a74601fea17b426cae02e1c5aee42c96c784051',
   Liquidate: '0xe413a321e8681d831f4dbccbca790d2952b56f977908e45be37335533e005286',
+  Flashloan: '0xefefaba5e921573100900a3ad9cf29f222d995fb3b6045797eaea7521bd8d6f0',
 };
 
 export interface AaveStakingEventInterfaces {

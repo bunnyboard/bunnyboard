@@ -251,6 +251,96 @@ export const Aavev3Configs: AaveProtocolConfig = {
         address: AddressesBook.scroll.Aavev3Oracle,
       },
     },
+
+    // for flashloan
+    {
+      chain: ChainNames.ethereum,
+      protocol: ProtocolNames.aavev3,
+      version: LendingMarketVersions.cross.aavev3,
+      birthday: 1674864000, // Sat Jan 28 2023 00:00:00 GMT+0000
+      metric: DataMetrics.flashloan,
+      address: AddressesBook.ethereum.Aavev3LendingPool,
+    },
+    {
+      chain: ChainNames.optimism,
+      protocol: ProtocolNames.aavev3,
+      version: LendingMarketVersions.cross.aavev3,
+      birthday: 1647043200, // Sat Mar 12 2022 00:00:00 GMT+0000
+      metric: DataMetrics.flashloan,
+      address: AddressesBook.optimism.Aavev3LendingPool,
+    },
+    {
+      chain: ChainNames.arbitrum,
+      protocol: ProtocolNames.aavev3,
+      version: LendingMarketVersions.cross.aavev3,
+      birthday: 1647043200, // Sat Mar 12 2022 00:00:00 GMT+0000
+      metric: DataMetrics.flashloan,
+      address: AddressesBook.arbitrum.Aavev3LendingPool,
+    },
+    {
+      chain: ChainNames.polygon,
+      protocol: ProtocolNames.aavev3,
+      version: LendingMarketVersions.cross.aavev3,
+      birthday: 1647043200, // Sat Mar 12 2022 00:00:00 GMT+0000
+      metric: DataMetrics.flashloan,
+      address: AddressesBook.polygon.Aavev3LendingPool,
+    },
+    {
+      chain: ChainNames.avalanche,
+      protocol: ProtocolNames.aavev3,
+      version: LendingMarketVersions.cross.aavev3,
+      birthday: 1647043200, // Sat Mar 12 2022 00:00:00 GMT+0000
+      metric: DataMetrics.flashloan,
+      address: AddressesBook.avalanche.Aavev3LendingPool,
+    },
+    {
+      chain: ChainNames.fantom,
+      protocol: ProtocolNames.aavev3,
+      version: LendingMarketVersions.cross.aavev3,
+      birthday: 1692748800, // Wed Aug 23 2023 00:00:00 GMT+0000
+      metric: DataMetrics.flashloan,
+      address: AddressesBook.fantom.Aavev3LendingPool,
+    },
+    {
+      chain: ChainNames.base,
+      protocol: ProtocolNames.aavev3,
+      version: LendingMarketVersions.cross.aavev3,
+      birthday: 1692662400, // Tue Aug 22 2023 00:00:00 GMT+0000
+      metric: DataMetrics.flashloan,
+      address: AddressesBook.base.Aavev3LendingPool,
+    },
+    {
+      chain: ChainNames.metis,
+      protocol: ProtocolNames.aavev3,
+      version: LendingMarketVersions.cross.aavev3,
+      birthday: 1682294400, // Mon Apr 24 2023 00:00:00 GMT+0000
+      metric: DataMetrics.flashloan,
+      address: AddressesBook.metis.Aavev3LendingPool,
+    },
+    {
+      chain: ChainNames.gnosis,
+      protocol: ProtocolNames.aavev3,
+      version: LendingMarketVersions.cross.aavev3,
+      birthday: 1696464000, // Thu Oct 05 2023 00:00:00 GMT+0000
+      metric: DataMetrics.flashloan,
+      address: AddressesBook.gnosis.Aavev3LendingPool,
+    },
+    {
+      chain: ChainNames.bnbchain,
+      protocol: ProtocolNames.aavev3,
+      version: LendingMarketVersions.cross.aavev3,
+      birthday: 1706054400, // Wed Jan 24 2024 00:00:00 GMT+0000
+      metric: DataMetrics.flashloan,
+      address: AddressesBook.bnbchain.Aavev3LendingPool,
+    },
+    {
+      chain: ChainNames.scroll,
+      protocol: ProtocolNames.aavev3,
+      version: LendingMarketVersions.cross.aavev3,
+      birthday: 1705795200, // Sun Jan 21 2024 00:00:00 GMT+0000
+      metric: DataMetrics.flashloan,
+      address: AddressesBook.scroll.Aavev3LendingPool,
+    },
   ],
 };
 

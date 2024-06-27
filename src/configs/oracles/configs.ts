@@ -138,6 +138,7 @@ export const OracleConfigs: { [key: string]: { [key: string]: OracleConfig } } =
     '0x4c9edd5852cd905f086c759e8383e09bff1e68b3': OracleSourceConfigs.USDe,
     '0xbf5495efe5db9ce00f80364c8b423567e58d2110': OracleSourceConfigs.ezETH,
     '0x73a15fed60bf67631dc6cd7bc5b6e8da8190acf5': OracleSourceConfigs.USD0,
+    '0xf1c9acdc66974dfb6decb12aa385b9cd01190e38': OracleSourceConfigs.osETH,
 
     // todo need to find better oracle source
     '0x9d39a5de30e57443bff2a8307a4256c8797a3497': OracleSourceConfigs.USDT,

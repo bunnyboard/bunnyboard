@@ -1,8 +1,6 @@
 import { ProtocolConfigs } from '../../configs';
 import { ContextServices, ContextStorages, IProtocolAdapter } from '../../types/namespaces';
 import AaveAdapter from './aave/aave';
-import Aavev2Adapter from './aave/aavev2';
-import Aavev3Adapter from './aave/aavev3';
 import AbracadabraAdapter from './abracadabra/abracadabra';
 import AjnaAdapter from './ajna/ajna';
 import AvalonAdapter from './avalon/avalon';
@@ -34,8 +32,8 @@ export function getProtocolAdapters(
 ): { [key: string]: IProtocolAdapter } {
   return {
     aave: new AaveAdapter(services, storages, ProtocolConfigs.aave),
-    aavev2: new Aavev2Adapter(services, storages, ProtocolConfigs.aavev2),
-    aavev3: new Aavev3Adapter(services, storages, ProtocolConfigs.aavev3),
+    aavev2: new AaveAdapter(services, storages, ProtocolConfigs.aavev2),
+    aavev3: new AaveAdapter(services, storages, ProtocolConfigs.aavev3),
     abracadabra: new AbracadabraAdapter(services, storages, ProtocolConfigs.abracadabra),
     ajna: new AjnaAdapter(services, storages, ProtocolConfigs.ajna),
     avalon: new AvalonAdapter(services, storages, ProtocolConfigs.avalon),

@@ -3,7 +3,6 @@ import EnvConfig from '../../configs/envConfig';
 import { getTimestamp } from '../../lib/utils';
 import { DataMetrics, MetricConfig, ProtocolConfig } from '../../types/configs';
 import { FlashloanDataStateWithTimeframes, FlashloanDataTimeframe } from '../../types/domains/flashloan';
-import { StakingPoolDataStateWithTimeframes, StakingPoolDataTimeframe } from '../../types/domains/staking';
 import { ContextServices, ContextStorages, IFlashloanProtocolAdapter } from '../../types/namespaces';
 import { GetAdapterDataTimeframeOptions, RunAdapterOptions } from '../../types/options';
 import ProtocolAdapter from './adapter';
@@ -23,7 +22,7 @@ export default class FlashloanProtocolAdapter extends ProtocolAdapter implements
 
   public async collectDataState(options: RunAdapterOptions): Promise<void> {
     const config = options.metricConfig;
-    if (config.metric === DataMetrics.staking) {
+    if (config.metric === DataMetrics.flashloan) {
       const timestamp = getTimestamp();
 
       const timeframeLast24Hours = await this.getFlashloanDataTimeframe({
@@ -45,12 +44,11 @@ export default class FlashloanProtocolAdapter extends ProtocolAdapter implements
         };
 
         await this.storages.database.update({
-          collection: EnvConfig.mongodb.collections.stakingPoolDataStates.name,
+          collection: EnvConfig.mongodb.collections.flashloanDataStates.name,
           keys: {
-            chain: dataItem.chain,
-            protocol: dataItem.protocol,
-            address: dataItem.address,
-            poolId: dataItem.poolId,
+            chain: timeframeLast24Hours.chain,
+            protocol: timeframeLast24Hours.protocol,
+            address: timeframeLast24Hours.address,
           },
           updates: {
             ...dataWithTimeframes,
@@ -62,29 +60,26 @@ export default class FlashloanProtocolAdapter extends ProtocolAdapter implements
   }
 
   protected async getSnapshot(config: MetricConfig, fromTime: number, toTime: number): Promise<any> {
-    return await this.getStakingDataTimeframe({
+    return await this.getFlashloanDataTimeframe({
       config: config,
       fromTime: fromTime,
       toTime: toTime,
     });
   }
 
-  protected async processSnapshot(config: MetricConfig, snapshots: Array<StakingPoolDataTimeframe>): Promise<void> {
-    for (const snapshot of snapshots) {
-      await this.storages.database.update({
-        collection: EnvConfig.mongodb.collections.stakingPoolDataSnapshots.name,
-        keys: {
-          chain: snapshot.chain,
-          protocol: snapshot.protocol,
-          address: snapshot.address,
-          poolId: snapshot.poolId,
-          timestamp: snapshot.timestamp,
-        },
-        updates: {
-          ...snapshot,
-        },
-        upsert: true,
-      });
-    }
+  protected async processSnapshot(config: MetricConfig, snapshot: FlashloanDataTimeframe): Promise<void> {
+    await this.storages.database.update({
+      collection: EnvConfig.mongodb.collections.flashloanDataSnapshots.name,
+      keys: {
+        chain: snapshot.chain,
+        protocol: snapshot.protocol,
+        address: snapshot.address,
+        timestamp: snapshot.timestamp,
+      },
+      updates: {
+        ...snapshot,
+      },
+      upsert: true,
+    });
   }
 }

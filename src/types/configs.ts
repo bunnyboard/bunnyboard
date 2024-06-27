@@ -175,7 +175,7 @@ export const FlashloanVersion = {
   ironbank: 'ironbank',
   balancer: 'balancer',
   maker: 'maker',
-}
+};
 const AllFlashloanVersions = Object.values(FlashloanVersion);
 export type FlashloanVerion = (typeof AllFlashloanVersions)[number];
 
