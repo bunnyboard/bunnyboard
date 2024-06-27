@@ -31,6 +31,8 @@ export const ProtocolNames = {
   abracadabra: 'abracadabra',
   ajna: 'ajna',
   avalon: 'avalon',
+  balancer: 'balancer',
+  beets: 'beets',
   benqi: 'benqi',
   bungee: 'bungee',
   compound: 'compound',

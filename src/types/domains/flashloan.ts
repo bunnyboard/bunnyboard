@@ -22,9 +22,6 @@ export interface FlashloanDataTimeframe extends DataTimeframe {
   // a list of reserves
   reserves: Array<FlashloanReserveData>;
 
-  // a list of senders
-  addresses: Array<string>;
-
   // txn list
   transactions: Array<string>;
 }

@@ -8,6 +8,9 @@ export interface MakerEventInterfaces {
 
   // for liquidation on Maker Dog contract
   Bark: string;
+
+  // for flashloan
+  Flashloan: string;
 }
 
 export const MakerEventSignatures: MakerEventInterfaces = {
@@ -17,4 +20,5 @@ export const MakerEventSignatures: MakerEventInterfaces = {
   AuthJoin: '0x16c03c2fe01ac285473b0d10ba5c5de59ede582fcac27a866b5827415fe44b03',
   AuthExit: '0x22d324652c93739755cf4581508b60875ebdd78c20c0cff5cf8e23452b299631',
   Bark: '0x85258d09e1e4ef299ff3fc11e74af99563f022d21f3f940db982229dc2a3358c',
+  Flashloan: '0x0d7d75e01ab95780d3cd1c8ec0dd6c2ce19e3a20427eec8bf53283b6fb8e95f0',
 };

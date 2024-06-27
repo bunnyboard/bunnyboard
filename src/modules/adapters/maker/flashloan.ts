@@ -1,41 +1,26 @@
 import BigNumber from 'bignumber.js';
 import { decodeEventLog } from 'viem';
 
-import AaveV2LendingPoolAbi from '../../../configs/abi/aave/LendingPoolV2.json';
-import AaveV3LendingPoolAbi from '../../../configs/abi/aave/LendingPoolV3.json';
-import { AaveLendingMarketConfig } from '../../../configs/protocols/aave';
+import MakerDssFlashAbi from '../../../configs/abi/maker/DssFlash.json';
 import { formatBigNumberToString, normalizeAddress } from '../../../lib/utils';
-import { LendingMarketVersions, ProtocolConfig } from '../../../types/configs';
+import { FlashloanConfig, ProtocolConfig } from '../../../types/configs';
 import { FlashloanDataTimeframe, FlashloanReserveData } from '../../../types/domains/flashloan';
 import { ContextServices, ContextStorages } from '../../../types/namespaces';
 import { GetAdapterDataTimeframeOptions } from '../../../types/options';
 import FlashloanProtocolAdapter from '../flashloan';
-import { Aavev2EventSignatures, Aavev3EventSignatures } from './abis';
+import { MakerEventSignatures } from './abis';
 
-export class Aavev2FlashloanAdapter extends FlashloanProtocolAdapter {
-  public readonly name: string = 'adapter.aavev2';
-
-  protected abi: any;
-  protected flashloanEventSignature: string;
+export default class MakerFlashloanAdapter extends FlashloanProtocolAdapter {
+  public readonly name: string = 'adapter.maker';
 
   constructor(services: ContextServices, storages: ContextStorages, protocolConfig: ProtocolConfig) {
     super(services, storages, protocolConfig);
-
-    this.abi = AaveV2LendingPoolAbi;
-    this.flashloanEventSignature = Aavev2EventSignatures.Flashloan;
   }
 
   public async getFlashloanDataTimeframe(
     options: GetAdapterDataTimeframeOptions,
   ): Promise<FlashloanDataTimeframe | null> {
-    const config = options.config as AaveLendingMarketConfig;
-
-    if (
-      config.version !== LendingMarketVersions.cross.aavev2 &&
-      config.version !== LendingMarketVersions.cross.aavev3
-    ) {
-      return null;
-    }
+    const config = options.config as FlashloanConfig;
 
     const beginBlock = await this.services.blockchain.tryGetBlockNumberAtTimestamp(
       options.config.chain,
@@ -67,9 +52,9 @@ export class Aavev2FlashloanAdapter extends FlashloanProtocolAdapter {
     const reserves: { [key: string]: FlashloanReserveData } = {};
     for (const log of logs) {
       const signature = log.topics[0];
-      if (signature === this.flashloanEventSignature) {
+      if (signature === MakerEventSignatures.Flashloan) {
         const event: any = decodeEventLog({
-          abi: this.abi,
+          abi: MakerDssFlashAbi,
           topics: log.topics,
           data: log.data,
         });
@@ -78,19 +63,18 @@ export class Aavev2FlashloanAdapter extends FlashloanProtocolAdapter {
 
         const token = await this.services.blockchain.getTokenInfo({
           chain: config.chain,
-          address: event.args.asset,
+          address: event.args.token,
         });
-
+        const tokenPrice = await this.services.oracle.getTokenPriceUsd({
+          chain: config.chain,
+          address: event.args.token,
+          timestamp: stateTime,
+        });
         if (token) {
-          const tokenPrice = await this.services.oracle.getTokenPriceUsd({
-            chain: config.chain,
-            address: event.args.asset,
-            timestamp: stateTime,
-          });
-
-          const executor = normalizeAddress(event.args.target);
-          const feesAmount = new BigNumber(formatBigNumberToString(event.args.premium.toString(), token.decimals));
+          const feesAmount = new BigNumber(formatBigNumberToString(event.args.fee.toString(), token.decimals));
           const amount = new BigNumber(formatBigNumberToString(event.args.amount.toString(), token.decimals));
+
+          const executor = normalizeAddress(event.args.receiver);
 
           if (!reserves[token.address]) {
             reserves[token.address] = {
@@ -120,16 +104,5 @@ export class Aavev2FlashloanAdapter extends FlashloanProtocolAdapter {
     data.transactions = Object.keys(transactions);
 
     return data;
-  }
-}
-
-export class Aavev3FlashloanAdapter extends Aavev2FlashloanAdapter {
-  public readonly name: string = 'adapter.aavev3';
-
-  constructor(services: ContextServices, storages: ContextStorages, protocolConfig: ProtocolConfig) {
-    super(services, storages, protocolConfig);
-
-    this.abi = AaveV3LendingPoolAbi;
-    this.flashloanEventSignature = Aavev3EventSignatures.Flashloan;
   }
 }

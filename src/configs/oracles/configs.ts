@@ -139,6 +139,10 @@ export const OracleConfigs: { [key: string]: { [key: string]: OracleConfig } } =
     '0xbf5495efe5db9ce00f80364c8b423567e58d2110': OracleSourceConfigs.ezETH,
     '0x73a15fed60bf67631dc6cd7bc5b6e8da8190acf5': OracleSourceConfigs.USD0,
     '0xf1c9acdc66974dfb6decb12aa385b9cd01190e38': OracleSourceConfigs.osETH,
+    '0x18084fba666a33d37592fa2633fd49a74dd93a88': OracleSourceConfigs.tBTCv2,
+    '0xfd0205066521550d7d7ab19da8f72bb004b4c341': OracleSourceConfigs.LIT,
+    '0xfae103dc9cf190ed75350761e95403b7b8afa6c0': OracleSourceConfigs.rswETH,
+    '0x3472a5a71965499acd81997a54bba8d852c6e53d': OracleSourceConfigs.BADGER,
 
     // todo need to find better oracle source
     '0x9d39a5de30e57443bff2a8307a4256c8797a3497': OracleSourceConfigs.USDT,
@@ -514,6 +518,10 @@ export const OracleConfigs: { [key: string]: { [key: string]: OracleConfig } } =
     '0x468003b688943977e6130f4f68f23aad939a1040': OracleSourceConfigs.SPELL,
     '0x7d016eec9c25232b01f23ef992d98ca97fc2af5a': OracleSourceConfigs.FXS,
     '0x21ada0d2ac28c3a5fa3cd2ee30882da8812279b6': OracleSourceConfigs.OATH,
+    '0x28a92dde19d9989f39a49905d7c9c2fac7799bdf': OracleSourceConfigs.USDC,
+    '0x2f733095b80a04b38b0d10cc884524a3d09b836a': OracleSourceConfigs.USDC,
+    '0x1b6382dbdea11d97f24495c9a90b7c88469134a4': OracleSourceConfigs.USDC,
+    '0x695921034f0387eac4e11620ee91b1b15a6a09fe': OracleSourceConfigs.ETH,
   },
 
   // tokens on metis

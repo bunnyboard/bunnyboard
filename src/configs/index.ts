@@ -4,6 +4,8 @@ import { AaveConfigs, Aavev2Configs, Aavev3Configs } from './protocols/aave';
 import { AbracadabraConfigs } from './protocols/abracadabra';
 import { AjnaConfigs } from './protocols/ajna';
 import { AvalonConfigs } from './protocols/avalon';
+import { BalancerConfigs } from './protocols/balancer';
+import { BeetsConfigs } from './protocols/beets';
 import { BenqiConfigs } from './protocols/benqi';
 import { BungeeConfigs } from './protocols/bungee';
 import { CompoundConfigs, Compoundv3Configs } from './protocols/compound';
@@ -45,6 +47,8 @@ export const ProtocolConfigs = {
   abracadabra: AbracadabraConfigs,
   ajna: AjnaConfigs,
   avalon: AvalonConfigs,
+  balancer: BalancerConfigs,
+  beets: BeetsConfigs,
   benqi: BenqiConfigs,
   bungee: BungeeConfigs,
   compound: CompoundConfigs,

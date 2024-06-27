@@ -227,6 +227,12 @@
     "decimals": 18,
     "address": "0x3432b6a60d23ca0dfca7761b7ab56459d9c964d0"
   },
+  "0x3472a5a71965499acd81997a54bba8d852c6e53d": {
+    "chain": "ethereum",
+    "address": "0x3472a5a71965499acd81997a54bba8d852c6e53d",
+    "symbol": "BADGER",
+    "decimals": 18
+  },
   "0x3845badade8e6dff049820680d1f14bd3903a5d0": {
     "chain": "ethereum",
     "address": "0x3845badade8e6dff049820680d1f14bd3903a5d0",
@@ -1181,6 +1187,12 @@
     "symbol": "swETH",
     "decimals": 18
   },
+  "0xfae103dc9cf190ed75350761e95403b7b8afa6c0": {
+    "chain": "ethereum",
+    "address": "0xfae103dc9cf190ed75350761e95403b7b8afa6c0",
+    "symbol": "rswETH",
+    "decimals": 18
+  },
   "0xfafdf0c4c1cb09d430bf88c75d88bb46dae09967": {
     "chain": "ethereum",
     "address": "0xfafdf0c4c1cb09d430bf88c75d88bb46dae09967",
@@ -1192,6 +1204,12 @@
     "symbol": "PSTAKE",
     "decimals": 18,
     "address": "0xfb5c6815ca3ac72ce9f5006869ae67f18bf77006"
+  },
+  "0xfd0205066521550d7d7ab19da8f72bb004b4c341": {
+    "chain": "ethereum",
+    "address": "0xfd0205066521550d7d7ab19da8f72bb004b4c341",
+    "symbol": "LIT",
+    "decimals": 18
   },
   "0xff20817765cb7f73d4bde2e66e067e58d11095c2": {
     "chain": "ethereum",

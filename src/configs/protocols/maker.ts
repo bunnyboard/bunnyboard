@@ -1,6 +1,15 @@
 import { normalizeAddress } from '../../lib/utils';
-import { CdpLendingMarketConfig, DataMetrics, LendingMarketVersions, ProtocolConfig, Token } from '../../types/configs';
+import {
+  CdpLendingMarketConfig,
+  DataMetrics,
+  FlashloanConfig,
+  FlashloanVersion,
+  LendingMarketVersions,
+  ProtocolConfig,
+  Token,
+} from '../../types/configs';
 import { AddressesBook, TokensBook } from '../data';
+import { ChainNames, ProtocolNames } from '../names';
 
 const MakerDaiJoinContract = AddressesBook.ethereum.MakerDaiJoin;
 const MakerVatContract = AddressesBook.ethereum.MakerVat;
@@ -61,7 +70,7 @@ export interface MakerLendingMarketConfig extends CdpLendingMarketConfig {
 }
 
 export interface MakerProtocolConfig extends ProtocolConfig {
-  configs: Array<MakerLendingMarketConfig>;
+  configs: Array<MakerLendingMarketConfig | FlashloanConfig>;
 }
 
 function formatMakerConfigs(configs: Array<MakerLendingMarketConfig>): Array<MakerLendingMarketConfig> {
@@ -122,5 +131,15 @@ const MakerMarket: MakerLendingMarketConfig = {
 
 export const MakerConfigs: MakerProtocolConfig = {
   protocol: 'maker',
-  configs: [...formatMakerConfigs([MakerMarket])],
+  configs: [
+    ...formatMakerConfigs([MakerMarket]),
+    {
+      chain: ChainNames.ethereum,
+      protocol: ProtocolNames.maker,
+      metric: DataMetrics.flashloan,
+      version: FlashloanVersion.maker,
+      birthday: 1652745600, // Tue May 17 2022 00:00:00 GMT+0000
+      address: '0x60744434d6339a6b27d73d9eda62b6f66a0a04fa', // DssFlash
+    },
+  ],
 };

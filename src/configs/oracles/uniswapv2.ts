@@ -705,4 +705,11 @@ export const OracleSourceUniswapv2List: { [key: string]: OracleSourcePool2 } = {
     baseToken: TokensBook.avalanche['0x22d4002028f537599be9f666d1c4fa138522f9c8'],
     quotaToken: TokensBook.avalanche['0xb31f66aa3c1e785363f0875a1b74e27b85fd66c7'],
   },
+  BADGER_WBTC: {
+    type: 'univ2',
+    chain: 'ethereum',
+    address: '0xcd7989894bc033581532d2cd88da5db0a4b12859',
+    baseToken: TokensBook.ethereum['0x3472a5a71965499acd81997a54bba8d852c6e53d'],
+    quotaToken: TokensBook.ethereum['0x2260fac5e5542a773aa44fbcfedf7c193bc2c599'],
+  },
 };

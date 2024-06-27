@@ -4,6 +4,7 @@ import AaveAdapter from './aave/aave';
 import AbracadabraAdapter from './abracadabra/abracadabra';
 import AjnaAdapter from './ajna/ajna';
 import AvalonAdapter from './avalon/avalon';
+import BalancerAdapter from './balancer/balancer';
 import BenqiAdapter from './benqi/benqi';
 import BungeeAdapter from './bungee/bungee';
 import CompoundAdapter from './compound/compound';
@@ -37,6 +38,8 @@ export function getProtocolAdapters(
     abracadabra: new AbracadabraAdapter(services, storages, ProtocolConfigs.abracadabra),
     ajna: new AjnaAdapter(services, storages, ProtocolConfigs.ajna),
     avalon: new AvalonAdapter(services, storages, ProtocolConfigs.avalon),
+    balancer: new BalancerAdapter(services, storages, ProtocolConfigs.balancer),
+    beets: new BalancerAdapter(services, storages, ProtocolConfigs.beets),
     benqi: new BenqiAdapter(services, storages, ProtocolConfigs.benqi),
     bungee: new BungeeAdapter(services, storages, ProtocolConfigs.bungee),
     compound: new CompoundAdapter(services, storages, ProtocolConfigs.compound),
