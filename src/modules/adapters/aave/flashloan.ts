@@ -10,7 +10,7 @@ import { FlashloanDataTimeframe, FlashloanReserveData } from '../../../types/dom
 import { ContextServices, ContextStorages } from '../../../types/namespaces';
 import { GetAdapterDataTimeframeOptions } from '../../../types/options';
 import FlashloanProtocolAdapter from '../flashloan';
-import { Aavev2EventSignatures, Aavev3EventSignatures } from './abis';
+import { Aavev2FlashloanEventSignature, Aavev3FlashloanEventSignature } from './abis';
 
 export class Aavev2FlashloanAdapter extends FlashloanProtocolAdapter {
   public readonly name: string = 'adapter.aavev2';
@@ -22,7 +22,7 @@ export class Aavev2FlashloanAdapter extends FlashloanProtocolAdapter {
     super(services, storages, protocolConfig);
 
     this.abi = AaveV2LendingPoolAbi;
-    this.flashloanEventSignature = Aavev2EventSignatures.Flashloan;
+    this.flashloanEventSignature = Aavev2FlashloanEventSignature;
   }
 
   public async getFlashloanDataTimeframe(
@@ -130,6 +130,6 @@ export class Aavev3FlashloanAdapter extends Aavev2FlashloanAdapter {
     super(services, storages, protocolConfig);
 
     this.abi = AaveV3LendingPoolAbi;
-    this.flashloanEventSignature = Aavev3EventSignatures.Flashloan;
+    this.flashloanEventSignature = Aavev3FlashloanEventSignature;
   }
 }
