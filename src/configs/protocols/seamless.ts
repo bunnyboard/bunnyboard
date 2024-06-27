@@ -19,5 +19,15 @@ export const SeamlessConfigs: AaveProtocolConfig = {
         address: AddressesBook.base.SeamlessOracle,
       },
     },
+
+    // for flashloan
+    {
+      chain: ChainNames.base,
+      protocol: ProtocolNames.seamless,
+      version: LendingMarketVersions.cross.aavev3,
+      metric: DataMetrics.flashloan,
+      birthday: 1693526400, // Fri Sep 01 2023 00:00:00 GMT+0000
+      address: AddressesBook.base.SeamlessLendingPool,
+    },
   ],
 };

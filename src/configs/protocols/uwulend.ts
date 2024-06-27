@@ -19,5 +19,15 @@ export const UwulendConfigs: AaveProtocolConfig = {
         address: AddressesBook.ethereum.UwulendOracle,
       },
     },
+
+    // for flashloan
+    {
+      chain: ChainNames.ethereum,
+      protocol: ProtocolNames.uwulend,
+      version: LendingMarketVersions.cross.aavev2,
+      metric: DataMetrics.flashloan,
+      birthday: 1663632000, // Tue Sep 20 2022 00:00:00 GMT+0000
+      address: AddressesBook.ethereum.UwulendLendingPool,
+    },
   ],
 };

@@ -71,5 +71,47 @@ export const ZerolendConfigs: AaveProtocolConfig = {
         address: AddressesBook.manta.ZerolendOracle,
       },
     },
+
+    // for flashloan
+    {
+      chain: ChainNames.ethereum,
+      protocol: ProtocolNames.zerolend,
+      version: LendingMarketVersions.cross.aavev3,
+      metric: DataMetrics.flashloan,
+      birthday: 1709510400, // Mon Mar 04 2024 00:00:00 GMT+0000
+      address: AddressesBook.ethereum.ZerolendLendingPool,
+    },
+    {
+      chain: ChainNames.blast,
+      protocol: ProtocolNames.zerolend,
+      version: LendingMarketVersions.cross.aavev3,
+      birthday: 1709251200, // Fri Mar 01 2024 00:00:00 GMT+0000
+      metric: DataMetrics.flashloan,
+      address: AddressesBook.blast.ZerolendLendingPool,
+    },
+    {
+      chain: ChainNames.linea,
+      protocol: ProtocolNames.zerolend,
+      version: LendingMarketVersions.cross.aavev3,
+      birthday: 1710028800, // Sun Mar 10 2024 00:00:00 GMT+0000
+      metric: DataMetrics.flashloan,
+      address: AddressesBook.linea.ZerolendLendingPool,
+    },
+    {
+      chain: ChainNames.zksync,
+      protocol: ProtocolNames.zerolend,
+      version: LendingMarketVersions.cross.aavev3,
+      birthday: 1689552000, // Mon Jul 17 2023 00:00:00 GMT+0000
+      metric: DataMetrics.flashloan,
+      address: AddressesBook.zksync.ZerolendLendingPool,
+    },
+    {
+      chain: ChainNames.manta,
+      protocol: ProtocolNames.zerolend,
+      version: LendingMarketVersions.cross.aavev3,
+      birthday: 1705276800, // Mon Jan 15 2024 00:00:00 GMT+0000
+      metric: DataMetrics.flashloan,
+      address: AddressesBook.manta.ZerolendLendingPool,
+    },
   ],
 };

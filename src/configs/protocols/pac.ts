@@ -19,5 +19,15 @@ export const PacConfigs: AaveProtocolConfig = {
         address: AddressesBook.blast.PacOracle,
       },
     },
+
+    // for flashloan
+    {
+      chain: ChainNames.blast,
+      protocol: ProtocolNames.pac,
+      version: LendingMarketVersions.cross.aavev3,
+      metric: DataMetrics.flashloan,
+      birthday: 1709251200, // Fri Mar 01 2024 00:00:00 GMT+0000
+      address: AddressesBook.blast.PacLendingPool,
+    },
   ],
 };
