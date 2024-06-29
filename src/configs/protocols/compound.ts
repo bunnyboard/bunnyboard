@@ -144,6 +144,15 @@ export const Compoundv3Configs: Compoundv3ProtocolConfig = {
       debtToken: TokensBook.arbitrum['0xaf88d065e77c8cc2239327c5edb3a432268e5831'],
     },
     {
+      chain: ChainNames.arbitrum,
+      protocol: ProtocolNames.compoundv3,
+      version: LendingMarketVersions.isolated.compoundv3,
+      birthday: 1717804800, // Sat Jun 08 2024 00:00:00 GMT+0000
+      metric: DataMetrics.isolatedLending,
+      address: '0x6f7d514bbd4aff3bcd1140b7344b32f063dee486', // cWETHv3
+      debtToken: TokensBook.arbitrum['0x82af49447d8a07e3bd95bd0d56f35241523fbab1'],
+    },
+    {
       chain: ChainNames.base,
       protocol: ProtocolNames.compoundv3,
       version: LendingMarketVersions.isolated.compoundv3,
@@ -187,6 +196,15 @@ export const Compoundv3Configs: Compoundv3ProtocolConfig = {
       metric: DataMetrics.isolatedLending,
       address: '0x2e44e174f7D53F0212823acC11C01A11d58c5bCB', // cUSDCv3
       debtToken: TokensBook.optimism['0x0b2c639c533813f4aa9d7837caf62653d097ff85'],
+    },
+    {
+      chain: ChainNames.optimism,
+      protocol: ProtocolNames.compoundv3,
+      version: LendingMarketVersions.isolated.compoundv3,
+      birthday: 1716249600, // Tue May 21 2024 00:00:00 GMT+0000
+      metric: DataMetrics.isolatedLending,
+      address: '0x995e394b8b2437ac8ce61ee0bc610d617962b214', // cUSDTv3
+      debtToken: TokensBook.optimism['0x94b008aa00579c1307b0ef2c499ad98a8ce58e58'],
     },
   ]),
 };
