@@ -10,6 +10,7 @@ import BungeeAdapter from './bungee/bungee';
 import CompoundAdapter from './compound/compound';
 import Compoundv3Adapter from './compound/compoundv3';
 import CrvusdAdapter from './crvusd/crvusd';
+import IonicAdapter from './ionic/ionic';
 import IronbankAdapter from './ironbank/ironbank';
 import KinzaAdapter from './kinza/kinza';
 import LiquityAdapter from './liquity/liquity';
@@ -45,6 +46,7 @@ export function getProtocolAdapters(
     compound: new CompoundAdapter(services, storages, ProtocolConfigs.compound),
     compoundv3: new Compoundv3Adapter(services, storages, ProtocolConfigs.compoundv3),
     crvusd: new CrvusdAdapter(services, storages, ProtocolConfigs.crvusd),
+    ionic: new IonicAdapter(services, storages, ProtocolConfigs.ionic),
     ironbank: new IronbankAdapter(services, storages, ProtocolConfigs.ironbank),
     kinza: new KinzaAdapter(services, storages, ProtocolConfigs.kinza),
     venus: new VenusAdapter(services, storages, ProtocolConfigs.venus),

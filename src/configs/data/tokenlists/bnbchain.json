@@ -13,15 +13,15 @@
   },
   "0x0d8ce2a99bb6e3b7db580ed848240e4a0f9ae153": {
     "chain": "bnbchain",
+    "address": "0x0d8ce2a99bb6e3b7db580ed848240e4a0f9ae153",
     "symbol": "FIL",
-    "decimals": 18,
-    "address": "0x0d8ce2a99bb6e3b7db580ed848240e4a0f9ae153"
+    "decimals": 18
   },
   "0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82": {
     "chain": "bnbchain",
-    "symbol": "CAKE",
-    "decimals": 18,
-    "address": "0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82"
+    "address": "0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82",
+    "symbol": "Cake",
+    "decimals": 18
   },
   "0x0eb3a705fc54725037cc9e008bdede697f62f335": {
     "chain": "bnbchain",
@@ -61,9 +61,9 @@
   },
   "0x1af3f329e8be154074d8769d1ffa4ee058b1dbc3": {
     "chain": "bnbchain",
+    "address": "0x1af3f329e8be154074d8769d1ffa4ee058b1dbc3",
     "symbol": "DAI",
-    "decimals": 18,
-    "address": "0x1af3f329e8be154074d8769d1ffa4ee058b1dbc3"
+    "decimals": 18
   },
   "0x1ba42e5193dfa8b03d15dd1b86a3113bbbef8eeb": {
     "chain": "bnbchain",
@@ -79,9 +79,9 @@
   },
   "0x1d2f0da169ceb9fc7b3144628db156f3f6c60dbe": {
     "chain": "bnbchain",
+    "address": "0x1d2f0da169ceb9fc7b3144628db156f3f6c60dbe",
     "symbol": "XRP",
-    "decimals": 18,
-    "address": "0x1d2f0da169ceb9fc7b3144628db156f3f6c60dbe"
+    "decimals": 18
   },
   "0x2090c8295769791ab7a3cf1cc6e0aa19f35e441a": {
     "chain": "bnbchain",
@@ -97,9 +97,9 @@
   },
   "0x2170ed0880ac9a755fd29b2688956bd959f933f8": {
     "chain": "bnbchain",
+    "address": "0x2170ed0880ac9a755fd29b2688956bd959f933f8",
     "symbol": "ETH",
-    "decimals": 18,
-    "address": "0x2170ed0880ac9a755fd29b2688956bd959f933f8"
+    "decimals": 18
   },
   "0x23396cf899ca06c4472205fc903bdb4de249d6fc": {
     "chain": "bnbchain",
@@ -145,9 +145,9 @@
   },
   "0x3ee2200efb3400fabb9aacf31297cbdd1d435d47": {
     "chain": "bnbchain",
+    "address": "0x3ee2200efb3400fabb9aacf31297cbdd1d435d47",
     "symbol": "ADA",
-    "decimals": 18,
-    "address": "0x3ee2200efb3400fabb9aacf31297cbdd1d435d47"
+    "decimals": 18
   },
   "0x3f56e0c36d275367b8c502090edf38289b3dea0d": {
     "chain": "bnbchain",
@@ -163,9 +163,9 @@
   },
   "0x4338665cbb7b2485a8855a139b75d5e34ab0db94": {
     "chain": "bnbchain",
+    "address": "0x4338665cbb7b2485a8855a139b75d5e34ab0db94",
     "symbol": "LTC",
-    "decimals": 18,
-    "address": "0x4338665cbb7b2485a8855a139b75d5e34ab0db94"
+    "decimals": 18
   },
   "0x45b817b36cadba2c3b6c2427db5b22e2e65400dd": {
     "chain": "bnbchain",
@@ -175,9 +175,9 @@
   },
   "0x47bead2563dcbf3bf2c9407fea4dc236faba485a": {
     "chain": "bnbchain",
+    "address": "0x47bead2563dcbf3bf2c9407fea4dc236faba485a",
     "symbol": "SXP",
-    "decimals": 18,
-    "address": "0x47bead2563dcbf3bf2c9407fea4dc236faba485a"
+    "decimals": 18
   },
   "0x4b0f1812e5df2a09796481ff14017e6005508003": {
     "chain": "bnbchain",
@@ -205,9 +205,9 @@
   },
   "0x55d398326f99059ff775485246999027b3197955": {
     "chain": "bnbchain",
+    "address": "0x55d398326f99059ff775485246999027b3197955",
     "symbol": "USDT",
-    "decimals": 18,
-    "address": "0x55d398326f99059ff775485246999027b3197955"
+    "decimals": 18
   },
   "0x56b6fb708fc5732dec1afc8d8556423a2edccbd6": {
     "chain": "bnbchain",
@@ -229,15 +229,15 @@
   },
   "0x7083609fce4d1d8dc0c979aab8c869ea2c873402": {
     "chain": "bnbchain",
+    "address": "0x7083609fce4d1d8dc0c979aab8c869ea2c873402",
     "symbol": "DOT",
-    "decimals": 18,
-    "address": "0x7083609fce4d1d8dc0c979aab8c869ea2c873402"
+    "decimals": 18
   },
   "0x7130d2a12b9bcbfae4f2634d864a1ee1ce3ead9c": {
     "chain": "bnbchain",
+    "address": "0x7130d2a12b9bcbfae4f2634d864a1ee1ce3ead9c",
     "symbol": "BTCB",
-    "decimals": 18,
-    "address": "0x7130d2a12b9bcbfae4f2634d864a1ee1ce3ead9c"
+    "decimals": 18
   },
   "0x728c5bac3c3e370e372fc4671f9ef6916b814d8b": {
     "chain": "bnbchain",
@@ -271,9 +271,9 @@
   },
   "0x8ac76a51cc950d9822d68b83fe1ad97b32cd580d": {
     "chain": "bnbchain",
+    "address": "0x8ac76a51cc950d9822d68b83fe1ad97b32cd580d",
     "symbol": "USDC",
-    "decimals": 18,
-    "address": "0x8ac76a51cc950d9822d68b83fe1ad97b32cd580d"
+    "decimals": 18
   },
   "0x8f0528ce5ef7b51152a59745befdd91d97091d2f": {
     "chain": "bnbchain",
@@ -283,9 +283,9 @@
   },
   "0x8ff795a6f4d97e7887c79bea79aba5cc76444adf": {
     "chain": "bnbchain",
+    "address": "0x8ff795a6f4d97e7887c79bea79aba5cc76444adf",
     "symbol": "BCH",
-    "decimals": 18,
-    "address": "0x8ff795a6f4d97e7887c79bea79aba5cc76444adf"
+    "decimals": 18
   },
   "0x90c97f71e18723b0cf0dfa30ee176ab653e89f40": {
     "chain": "bnbchain",
@@ -385,9 +385,9 @@
   },
   "0xbf5140a22578168fd562dccf235e5d43a02ce9b1": {
     "chain": "bnbchain",
+    "address": "0xbf5140a22578168fd562dccf235e5d43a02ce9b1",
     "symbol": "UNI",
-    "decimals": 18,
-    "address": "0xbf5140a22578168fd562dccf235e5d43a02ce9b1"
+    "decimals": 18
   },
   "0xc2e9d07f66a89c44062459a47a0d2dc038e4fb16": {
     "chain": "bnbchain",
@@ -445,9 +445,9 @@
   },
   "0xcf6bb5389c92bdda8a3747ddb454cb7a64626c63": {
     "chain": "bnbchain",
+    "address": "0xcf6bb5389c92bdda8a3747ddb454cb7a64626c63",
     "symbol": "XVS",
-    "decimals": 18,
-    "address": "0xcf6bb5389c92bdda8a3747ddb454cb7a64626c63"
+    "decimals": 18
   },
   "0xd17479997f34dd9156deef8f95a52d81d265be9c": {
     "chain": "bnbchain",
@@ -487,9 +487,9 @@
   },
   "0xe9e7cea3dedca5984780bafc599bd69add087d56": {
     "chain": "bnbchain",
+    "address": "0xe9e7cea3dedca5984780bafc599bd69add087d56",
     "symbol": "BUSD",
-    "decimals": 18,
-    "address": "0xe9e7cea3dedca5984780bafc599bd69add087d56"
+    "decimals": 18
   },
   "0xee9801669c6138e84bd50deb500827b776777d28": {
     "chain": "bnbchain",
@@ -547,9 +547,9 @@
   },
   "0xf8a0bf9cf54bb92f17374d9e9a321e6a111a51bd": {
     "chain": "bnbchain",
+    "address": "0xf8a0bf9cf54bb92f17374d9e9a321e6a111a51bd",
     "symbol": "LINK",
-    "decimals": 18,
-    "address": "0xf8a0bf9cf54bb92f17374d9e9a321e6a111a51bd"
+    "decimals": 18
   },
   "0xf98b660adf2ed7d9d9d9daacc2fb0cace4f21835": {
     "chain": "bnbchain",
