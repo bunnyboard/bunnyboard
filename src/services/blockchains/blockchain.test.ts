@@ -112,6 +112,11 @@ const testcases = [
     timestamp: 1714521600, // Wed May 01 2024 00:00:00 GMT+0000
     expectedBlockNumber: 10784371,
   },
+  {
+    ...EnvConfig.blockchains.zklinknova,
+    timestamp: 1714521600, // Wed May 01 2024 00:00:00 GMT+0000
+    expectedBlockNumber: 1091881,
+  },
 ];
 
 describe('getBlockNumberAtTimestamp', function () {

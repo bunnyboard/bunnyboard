@@ -22,6 +22,7 @@ export const ChainNames = {
   zora: 'zora',
   merlin: 'merlin',
   kava: 'kava',
+  zklinknova: 'zklinknova',
 };
 
 export const ProtocolNames = {

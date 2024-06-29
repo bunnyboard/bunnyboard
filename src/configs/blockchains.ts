@@ -281,4 +281,17 @@ export const BlockchainConfigs: { [key: string]: Blockchain } = {
       decimals: 18,
     },
   },
+  [ChainNames.zklinknova]: {
+    name: ChainNames.zklinknova,
+    family: 'evm',
+    chainId: 810180,
+    nodeRpc: String(process.env.BUNNYBOARD_ZKLINKNOVA_NODE),
+    explorerApiEndpoint: 'https://explorer-api.zklink.io/api',
+    nativeToken: {
+      chain: ChainNames.zklinknova,
+      address: AddressZero,
+      symbol: 'ETH',
+      decimals: 18,
+    },
+  },
 };
