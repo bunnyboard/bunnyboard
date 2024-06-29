@@ -12,6 +12,7 @@ import { CompoundConfigs, Compoundv3Configs } from './protocols/compound';
 import { CrvusdConfigs } from './protocols/crvusd';
 import { IonicConfigs } from './protocols/ionic';
 import { IronbankConfigs } from './protocols/ironbank';
+import { IroncladConfigs } from './protocols/ironclad';
 import { KinzaConfigs } from './protocols/kinza';
 import { LiquityConfigs } from './protocols/liquity';
 import { MakerConfigs } from './protocols/maker';
@@ -56,6 +57,7 @@ export const ProtocolConfigs = {
   crvusd: CrvusdConfigs,
   ionic: IonicConfigs,
   ironbank: IronbankConfigs,
+  ironclad: IroncladConfigs,
   kinza: KinzaConfigs,
   liquity: LiquityConfigs,
   maker: MakerConfigs,

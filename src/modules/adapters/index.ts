@@ -12,6 +12,7 @@ import Compoundv3Adapter from './compound/compoundv3';
 import CrvusdAdapter from './crvusd/crvusd';
 import IonicAdapter from './ionic/ionic';
 import IronbankAdapter from './ironbank/ironbank';
+import IroncladAdapter from './ironclad/ironclad';
 import KinzaAdapter from './kinza/kinza';
 import LiquityAdapter from './liquity/liquity';
 import MakerAdapter from './maker/maker';
@@ -48,6 +49,7 @@ export function getProtocolAdapters(
     crvusd: new CrvusdAdapter(services, storages, ProtocolConfigs.crvusd),
     ionic: new IonicAdapter(services, storages, ProtocolConfigs.ionic),
     ironbank: new IronbankAdapter(services, storages, ProtocolConfigs.ironbank),
+    ironclad: new IroncladAdapter(services, storages, ProtocolConfigs.ironclad),
     kinza: new KinzaAdapter(services, storages, ProtocolConfigs.kinza),
     venus: new VenusAdapter(services, storages, ProtocolConfigs.venus),
     radiant: new RadiantAdapter(services, storages, ProtocolConfigs.radiant),

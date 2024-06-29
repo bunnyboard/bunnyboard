@@ -41,6 +41,7 @@ export const ProtocolNames = {
   crvusd: 'crvusd',
   ionic: 'ionic',
   ironbank: 'ironbank',
+  ironclad: 'ironclad',
   kinza: 'kinza',
   kyberswap: 'kyberswap',
   liquity: 'liquity',
