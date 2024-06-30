@@ -5,15 +5,15 @@
     "marketId": "0xc54d7acf14de29e0e5527cabd7a576506870346a78a11a6762e2cca66322ec41",
     "debtToken": {
       "chain": "ethereum",
+      "address": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
       "symbol": "WETH",
-      "decimals": 18,
-      "address": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2"
+      "decimals": 18
     },
     "collateral": {
       "chain": "ethereum",
-      "symbol": "WSTETH",
-      "decimals": 18,
-      "address": "0x7f39c581f595b53c5cb19bd0b3f8da6c935e2ca0"
+      "address": "0x7f39c581f595b53c5cb19bd0b3f8da6c935e2ca0",
+      "symbol": "wstETH",
+      "decimals": 18
     },
     "oracle": "0x2a01eb9496094da03c4e364def50f5ad1280ad72",
     "irm": "0x870ac11d48b15db9a138cf899d20f13f79ba00bc",
@@ -27,9 +27,9 @@
     "marketId": "0x54efdee08e272e929034a8f26f7ca34b1ebe364b275391169b28c6d7db24dbc8",
     "debtToken": {
       "chain": "ethereum",
+      "address": "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48",
       "symbol": "USDC",
-      "decimals": 6,
-      "address": "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48"
+      "decimals": 6
     },
     "collateral": {
       "chain": "ethereum",
@@ -49,9 +49,9 @@
     "marketId": "0x58e212060645d18eab6d9b2af3d56fbc906a92ff5667385f616f662c70372284",
     "debtToken": {
       "chain": "ethereum",
+      "address": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
       "symbol": "WETH",
-      "decimals": 18,
-      "address": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2"
+      "decimals": 18
     },
     "collateral": {
       "chain": "ethereum",
@@ -71,9 +71,9 @@
     "marketId": "0x08535810feadf52d61a182dc7a12ba78f9b38a829ee477e0e1d488d4e262bc0a",
     "debtToken": {
       "chain": "ethereum",
+      "address": "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48",
       "symbol": "USDC",
-      "decimals": 6,
-      "address": "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48"
+      "decimals": 6
     },
     "collateral": {
       "chain": "ethereum",
@@ -93,15 +93,15 @@
     "marketId": "0xb323495f7e4148be5643a4ea4a8221eef163e4bccfdedc2a6f4696baacbc86cc",
     "debtToken": {
       "chain": "ethereum",
+      "address": "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48",
       "symbol": "USDC",
-      "decimals": 6,
-      "address": "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48"
+      "decimals": 6
     },
     "collateral": {
       "chain": "ethereum",
-      "symbol": "WSTETH",
-      "decimals": 18,
-      "address": "0x7f39c581f595b53c5cb19bd0b3f8da6c935e2ca0"
+      "address": "0x7f39c581f595b53c5cb19bd0b3f8da6c935e2ca0",
+      "symbol": "wstETH",
+      "decimals": 18
     },
     "oracle": "0x48f7e36eb6b826b2df4b2e630b62cd25e89e40e2",
     "irm": "0x870ac11d48b15db9a138cf899d20f13f79ba00bc",
@@ -115,9 +115,9 @@
     "marketId": "0x495130878b7d2f1391e21589a8bcaef22cbc7e1fbbd6866127193b3cc239d8b1",
     "debtToken": {
       "chain": "ethereum",
+      "address": "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48",
       "symbol": "USDC",
-      "decimals": 6,
-      "address": "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48"
+      "decimals": 6
     },
     "collateral": {
       "chain": "ethereum",
@@ -137,15 +137,15 @@
     "marketId": "0x1500bf50feba561f004d35c7695d96d685fa117c4985b91a75885c4aa24b6ceb",
     "debtToken": {
       "chain": "ethereum",
-      "symbol": "WSTETH",
-      "decimals": 18,
-      "address": "0x7f39c581f595b53c5cb19bd0b3f8da6c935e2ca0"
+      "address": "0x7f39c581f595b53c5cb19bd0b3f8da6c935e2ca0",
+      "symbol": "wstETH",
+      "decimals": 18
     },
     "collateral": {
       "chain": "ethereum",
+      "address": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
       "symbol": "WETH",
-      "decimals": 18,
-      "address": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2"
+      "decimals": 18
     },
     "oracle": "0x6f234ff075b35312756a6b0a19ddb55ff683e59d",
     "irm": "0x870ac11d48b15db9a138cf899d20f13f79ba00bc",
@@ -159,15 +159,15 @@
     "marketId": "0x3a85e619751152991742810df6ec69ce473daef99e28a64ab2340d7b7ccfee49",
     "debtToken": {
       "chain": "ethereum",
+      "address": "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48",
       "symbol": "USDC",
-      "decimals": 6,
-      "address": "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48"
+      "decimals": 6
     },
     "collateral": {
       "chain": "ethereum",
+      "address": "0x2260fac5e5542a773aa44fbcfedf7c193bc2c599",
       "symbol": "WBTC",
-      "decimals": 8,
-      "address": "0x2260fac5e5542a773aa44fbcfedf7c193bc2c599"
+      "decimals": 8
     },
     "oracle": "0xdddd770badd886df3864029e4b377b5f6a2b6b83",
     "irm": "0x870ac11d48b15db9a138cf899d20f13f79ba00bc",
@@ -181,15 +181,15 @@
     "marketId": "0x7dde86a1e94561d9690ec678db673c1a6396365f7d1d65e129c5fff0990ff758",
     "debtToken": {
       "chain": "ethereum",
+      "address": "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48",
       "symbol": "USDC",
-      "decimals": 6,
-      "address": "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48"
+      "decimals": 6
     },
     "collateral": {
       "chain": "ethereum",
+      "address": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
       "symbol": "WETH",
-      "decimals": 18,
-      "address": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2"
+      "decimals": 18
     },
     "oracle": "0xdc6fd5831277c693b1054e19e94047cb37c77615",
     "irm": "0x870ac11d48b15db9a138cf899d20f13f79ba00bc",
@@ -203,15 +203,15 @@
     "marketId": "0xf9acc677910cc17f650416a22e2a14d5da7ccb9626db18f1bf94efe64f92b372",
     "debtToken": {
       "chain": "ethereum",
+      "address": "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48",
       "symbol": "USDC",
-      "decimals": 6,
-      "address": "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48"
+      "decimals": 6
     },
     "collateral": {
       "chain": "ethereum",
+      "address": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
       "symbol": "WETH",
-      "decimals": 18,
-      "address": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2"
+      "decimals": 18
     },
     "oracle": "0xdc6fd5831277c693b1054e19e94047cb37c77615",
     "irm": "0x870ac11d48b15db9a138cf899d20f13f79ba00bc",
@@ -225,9 +225,9 @@
     "marketId": "0x06f2842602373d247c4934f7656e513955ccc4c377f0febc0d9ca2c3bcc191b1",
     "debtToken": {
       "chain": "ethereum",
+      "address": "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48",
       "symbol": "USDC",
-      "decimals": 6,
-      "address": "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48"
+      "decimals": 6
     },
     "collateral": {
       "chain": "ethereum",
@@ -247,15 +247,15 @@
     "marketId": "0xe7399fdebc318d76dfec7356caafcf8cd4b91287e139a3ec423f09aeeb656fc4",
     "debtToken": {
       "chain": "ethereum",
+      "address": "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48",
       "symbol": "USDC",
-      "decimals": 6,
-      "address": "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48"
+      "decimals": 6
     },
     "collateral": {
       "chain": "ethereum",
+      "address": "0x6b175474e89094c44da98b954eedeac495271d0f",
       "symbol": "DAI",
-      "decimals": 18,
-      "address": "0x6b175474e89094c44da98b954eedeac495271d0f"
+      "decimals": 18
     },
     "oracle": "0x50537098c66075f62e1234e6f9a394111d5d22ed",
     "irm": "0x870ac11d48b15db9a138cf899d20f13f79ba00bc",
@@ -269,9 +269,9 @@
     "marketId": "0x90f336c58b38a736508e12102b09b58edbb8fb3b149b380e441d45992d3c7b58",
     "debtToken": {
       "chain": "ethereum",
+      "address": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
       "symbol": "WETH",
-      "decimals": 18,
-      "address": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2"
+      "decimals": 18
     },
     "collateral": {
       "chain": "ethereum",
@@ -291,9 +291,9 @@
     "marketId": "0xd5211d0e3f4a30d5c98653d988585792bb7812221f04801be73a44ceecb11e89",
     "debtToken": {
       "chain": "ethereum",
+      "address": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
       "symbol": "WETH",
-      "decimals": 18,
-      "address": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2"
+      "decimals": 18
     },
     "collateral": {
       "chain": "ethereum",
@@ -313,9 +313,9 @@
     "marketId": "0x8c2df0d6f57680fafe2934db29e53c91e66238dbcbaeed8e5467d7c0f932cd45",
     "debtToken": {
       "chain": "ethereum",
+      "address": "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48",
       "symbol": "USDC",
-      "decimals": 6,
-      "address": "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48"
+      "decimals": 6
     },
     "collateral": {
       "chain": "ethereum",
@@ -335,9 +335,9 @@
     "marketId": "0x698fe98247a40c5771537b5786b2f3f9d78eb487b4ce4d75533cd0e94d88a115",
     "debtToken": {
       "chain": "ethereum",
+      "address": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
       "symbol": "WETH",
-      "decimals": 18,
-      "address": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2"
+      "decimals": 18
     },
     "collateral": {
       "chain": "ethereum",
@@ -357,9 +357,9 @@
     "marketId": "0x5c6aaf2dfecf6b2d60ef4ee8192b83c53ade0b35cb8e7f763a83a30db10502d1",
     "debtToken": {
       "chain": "ethereum",
+      "address": "0xdac17f958d2ee523a2206206994597c13d831ec7",
       "symbol": "USDT",
-      "decimals": 6,
-      "address": "0xdac17f958d2ee523a2206206994597c13d831ec7"
+      "decimals": 6
     },
     "collateral": {
       "chain": "ethereum",
@@ -379,15 +379,15 @@
     "marketId": "0x608929d6de2a10bacf1046ff157ae38df5b9f466fb89413211efb8f63c63833a",
     "debtToken": {
       "chain": "ethereum",
+      "address": "0xdac17f958d2ee523a2206206994597c13d831ec7",
       "symbol": "USDT",
-      "decimals": 6,
-      "address": "0xdac17f958d2ee523a2206206994597c13d831ec7"
+      "decimals": 6
     },
     "collateral": {
       "chain": "ethereum",
+      "address": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
       "symbol": "WETH",
-      "decimals": 18,
-      "address": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2"
+      "decimals": 18
     },
     "oracle": "0xe9ee579684716c7bb837224f4c7beefa4f1f3d7f",
     "irm": "0x870ac11d48b15db9a138cf899d20f13f79ba00bc",
@@ -401,15 +401,15 @@
     "marketId": "0xdbffac82c2dc7e8aa781bd05746530b0068d80929f23ac1628580e27810bc0c5",
     "debtToken": {
       "chain": "ethereum",
+      "address": "0xdac17f958d2ee523a2206206994597c13d831ec7",
       "symbol": "USDT",
-      "decimals": 6,
-      "address": "0xdac17f958d2ee523a2206206994597c13d831ec7"
+      "decimals": 6
     },
     "collateral": {
       "chain": "ethereum",
+      "address": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
       "symbol": "WETH",
-      "decimals": 18,
-      "address": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2"
+      "decimals": 18
     },
     "oracle": "0xe9ee579684716c7bb837224f4c7beefa4f1f3d7f",
     "irm": "0x870ac11d48b15db9a138cf899d20f13f79ba00bc",
@@ -423,15 +423,15 @@
     "marketId": "0xa921ef34e2fc7a27ccc50ae7e4b154e16c9799d3387076c421423ef52ac4df99",
     "debtToken": {
       "chain": "ethereum",
+      "address": "0xdac17f958d2ee523a2206206994597c13d831ec7",
       "symbol": "USDT",
-      "decimals": 6,
-      "address": "0xdac17f958d2ee523a2206206994597c13d831ec7"
+      "decimals": 6
     },
     "collateral": {
       "chain": "ethereum",
+      "address": "0x2260fac5e5542a773aa44fbcfedf7c193bc2c599",
       "symbol": "WBTC",
-      "decimals": 8,
-      "address": "0x2260fac5e5542a773aa44fbcfedf7c193bc2c599"
+      "decimals": 8
     },
     "oracle": "0x008bf4b1cda0cc9f0e882e0697f036667652e1ef",
     "irm": "0x870ac11d48b15db9a138cf899d20f13f79ba00bc",
@@ -445,15 +445,15 @@
     "marketId": "0xe7e9694b754c4d4f7e21faf7223f6fa71abaeb10296a4c43a54a7977149687d2",
     "debtToken": {
       "chain": "ethereum",
+      "address": "0xdac17f958d2ee523a2206206994597c13d831ec7",
       "symbol": "USDT",
-      "decimals": 6,
-      "address": "0xdac17f958d2ee523a2206206994597c13d831ec7"
+      "decimals": 6
     },
     "collateral": {
       "chain": "ethereum",
-      "symbol": "WSTETH",
-      "decimals": 18,
-      "address": "0x7f39c581f595b53c5cb19bd0b3f8da6c935e2ca0"
+      "address": "0x7f39c581f595b53c5cb19bd0b3f8da6c935e2ca0",
+      "symbol": "wstETH",
+      "decimals": 18
     },
     "oracle": "0x95db30fab9a3754e42423000df27732cb2396992",
     "irm": "0x870ac11d48b15db9a138cf899d20f13f79ba00bc",
@@ -467,9 +467,9 @@
     "marketId": "0xeb809769a0ea3fe0a405b94dbcaf1940c9d2cb1546d175cbc6898bfde817801a",
     "debtToken": {
       "chain": "ethereum",
-      "address": "0x57f5e098cad7a3d1eed53991d4d66c45c9af7812",
       "symbol": "wUSDM",
-      "decimals": 18
+      "decimals": 18,
+      "address": "0x57f5e098cad7a3d1eed53991d4d66c45c9af7812"
     },
     "collateral": {
       "chain": "ethereum",
@@ -517,9 +517,9 @@
     },
     "collateral": {
       "chain": "ethereum",
-      "symbol": "WSTETH",
-      "decimals": 18,
-      "address": "0x7f39c581f595b53c5cb19bd0b3f8da6c935e2ca0"
+      "address": "0x7f39c581f595b53c5cb19bd0b3f8da6c935e2ca0",
+      "symbol": "wstETH",
+      "decimals": 18
     },
     "oracle": "0x27679a17b7419fb10bd9d143f21407760fda5c53",
     "irm": "0x870ac11d48b15db9a138cf899d20f13f79ba00bc",
@@ -555,9 +555,9 @@
     "marketId": "0xae1839e7d779b32e91e2128405525b7f38478f38fed74b9a4795e8ed952592b7",
     "debtToken": {
       "chain": "ethereum",
+      "address": "0xdac17f958d2ee523a2206206994597c13d831ec7",
       "symbol": "USDT",
-      "decimals": 6,
-      "address": "0xdac17f958d2ee523a2206206994597c13d831ec7"
+      "decimals": 6
     },
     "collateral": {
       "chain": "ethereum",
@@ -577,9 +577,9 @@
     "marketId": "0xf213843ac8ce2c8408182fc80c9e8f9911b420cce24adec8ea105ae44de087ad",
     "debtToken": {
       "chain": "ethereum",
+      "address": "0xdac17f958d2ee523a2206206994597c13d831ec7",
       "symbol": "USDT",
-      "decimals": 6,
-      "address": "0xdac17f958d2ee523a2206206994597c13d831ec7"
+      "decimals": 6
     },
     "collateral": {
       "chain": "ethereum",
@@ -599,9 +599,9 @@
     "marketId": "0x3c83f77bde9541f8d3d82533b19bbc1f97eb2f1098bb991728acbfbede09cc5d",
     "debtToken": {
       "chain": "ethereum",
+      "address": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
       "symbol": "WETH",
-      "decimals": 18,
-      "address": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2"
+      "decimals": 18
     },
     "collateral": {
       "chain": "ethereum",
@@ -649,9 +649,9 @@
     },
     "collateral": {
       "chain": "ethereum",
+      "address": "0x2260fac5e5542a773aa44fbcfedf7c193bc2c599",
       "symbol": "WBTC",
-      "decimals": 8,
-      "address": "0x2260fac5e5542a773aa44fbcfedf7c193bc2c599"
+      "decimals": 8
     },
     "oracle": "0xfe44dc5afa1d302dcc4f71a8ae3e5bb8cc04ec3b",
     "irm": "0x870ac11d48b15db9a138cf899d20f13f79ba00bc",
@@ -671,9 +671,9 @@
     },
     "collateral": {
       "chain": "ethereum",
+      "address": "0x2260fac5e5542a773aa44fbcfedf7c193bc2c599",
       "symbol": "WBTC",
-      "decimals": 8,
-      "address": "0x2260fac5e5542a773aa44fbcfedf7c193bc2c599"
+      "decimals": 8
     },
     "oracle": "0xc53c90d6e9a5b69e4abf3d5ae4c79225c7fef3d2",
     "irm": "0x870ac11d48b15db9a138cf899d20f13f79ba00bc",
@@ -687,9 +687,9 @@
     "marketId": "0xefcc25ddfb12eec31cc3fd568ed04b4eb568a332600df308d09dbda248edf72e",
     "debtToken": {
       "chain": "ethereum",
+      "address": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
       "symbol": "WETH",
-      "decimals": 18,
-      "address": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2"
+      "decimals": 18
     },
     "collateral": {
       "chain": "ethereum",
@@ -731,9 +731,9 @@
     "marketId": "0x49bb2d114be9041a787432952927f6f144f05ad3e83196a7d062f374ee11d0ee",
     "debtToken": {
       "chain": "ethereum",
+      "address": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
       "symbol": "WETH",
-      "decimals": 18,
-      "address": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2"
+      "decimals": 18
     },
     "collateral": {
       "chain": "ethereum",
@@ -753,9 +753,9 @@
     "marketId": "0x70014ba4411257948ddbe73fc1d65056721c31a583fc1ead7fba4c57b5e9790d",
     "debtToken": {
       "chain": "ethereum",
+      "address": "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48",
       "symbol": "USDC",
-      "decimals": 6,
-      "address": "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48"
+      "decimals": 6
     },
     "collateral": {
       "chain": "ethereum",
@@ -775,9 +775,9 @@
     "marketId": "0x6dd2c4f44111a54f4de7919ac33b3038dd03df491e8c6e77a4363ae0d6e8a872",
     "debtToken": {
       "chain": "ethereum",
+      "address": "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48",
       "symbol": "USDC",
-      "decimals": 6,
-      "address": "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48"
+      "decimals": 6
     },
     "collateral": {
       "chain": "ethereum",
@@ -797,9 +797,9 @@
     "marketId": "0x97bb820669a19ba5fa6de964a466292edd67957849f9631eb8b830c382f58b7f",
     "debtToken": {
       "chain": "ethereum",
+      "address": "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48",
       "symbol": "USDC",
-      "decimals": 6,
-      "address": "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48"
+      "decimals": 6
     },
     "collateral": {
       "chain": "ethereum",
@@ -819,9 +819,9 @@
     "marketId": "0xb1eac1c0f3ad13fb45b01beac8458c055c903b1bff8cb882346635996a774f77",
     "debtToken": {
       "chain": "ethereum",
+      "address": "0x6b175474e89094c44da98b954eedeac495271d0f",
       "symbol": "DAI",
-      "decimals": 18,
-      "address": "0x6b175474e89094c44da98b954eedeac495271d0f"
+      "decimals": 18
     },
     "collateral": {
       "chain": "ethereum",
@@ -841,15 +841,15 @@
     "marketId": "0x4ebe73200ef920f3b0fbbaf7d9b2472538d650efed4b171a24a4f0b7ca339388",
     "debtToken": {
       "chain": "ethereum",
+      "address": "0x6b175474e89094c44da98b954eedeac495271d0f",
       "symbol": "DAI",
-      "decimals": 18,
-      "address": "0x6b175474e89094c44da98b954eedeac495271d0f"
+      "decimals": 18
     },
     "collateral": {
       "chain": "ethereum",
-      "symbol": "WSTETH",
-      "decimals": 18,
-      "address": "0x7f39c581f595b53c5cb19bd0b3f8da6c935e2ca0"
+      "address": "0x7f39c581f595b53c5cb19bd0b3f8da6c935e2ca0",
+      "symbol": "wstETH",
+      "decimals": 18
     },
     "oracle": "0x51bb52307882a6b0d87558b7955902e76ce03cf5",
     "irm": "0x870ac11d48b15db9a138cf899d20f13f79ba00bc",
@@ -863,9 +863,9 @@
     "marketId": "0x578996c3c3ac4f100c4284b5c239673b04840e07945d04b681763c7b3401997c",
     "debtToken": {
       "chain": "ethereum",
+      "address": "0x6b175474e89094c44da98b954eedeac495271d0f",
       "symbol": "DAI",
-      "decimals": 18,
-      "address": "0x6b175474e89094c44da98b954eedeac495271d0f"
+      "decimals": 18
     },
     "collateral": {
       "chain": "ethereum",
@@ -885,9 +885,9 @@
     "marketId": "0x3ccaeeefe263eb204e9bec7fdc88262aa8818b88c40e1b37fbf224ff274a9d08",
     "debtToken": {
       "chain": "ethereum",
+      "address": "0x6b175474e89094c44da98b954eedeac495271d0f",
       "symbol": "DAI",
-      "decimals": 18,
-      "address": "0x6b175474e89094c44da98b954eedeac495271d0f"
+      "decimals": 18
     },
     "collateral": {
       "chain": "ethereum",
@@ -907,15 +907,15 @@
     "marketId": "0x4a4485b1b7efcc440f9435dbf982fb4a428edf2e16549c75158fe8e125c9702d",
     "debtToken": {
       "chain": "ethereum",
-      "address": "0x57f5e098cad7a3d1eed53991d4d66c45c9af7812",
       "symbol": "wUSDM",
-      "decimals": 18
+      "decimals": 18,
+      "address": "0x57f5e098cad7a3d1eed53991d4d66c45c9af7812"
     },
     "collateral": {
       "chain": "ethereum",
-      "symbol": "WSTETH",
-      "decimals": 18,
-      "address": "0x7f39c581f595b53c5cb19bd0b3f8da6c935e2ca0"
+      "address": "0x7f39c581f595b53c5cb19bd0b3f8da6c935e2ca0",
+      "symbol": "wstETH",
+      "decimals": 18
     },
     "oracle": "0xe0adefae3c4115bfe7dc29a172c5f46b4b5df621",
     "irm": "0x870ac11d48b15db9a138cf899d20f13f79ba00bc",
@@ -929,9 +929,9 @@
     "marketId": "0xa36e440fbc54d7ed744ae4895b2729642a8be5d488cdd477c59b54afbb90b5bf",
     "debtToken": {
       "chain": "ethereum",
+      "address": "0x2260fac5e5542a773aa44fbcfedf7c193bc2c599",
       "symbol": "WBTC",
-      "decimals": 8,
-      "address": "0x2260fac5e5542a773aa44fbcfedf7c193bc2c599"
+      "decimals": 8
     },
     "collateral": {
       "chain": "ethereum",
@@ -951,15 +951,15 @@
     "marketId": "0x3197babfc8c9f0fd05fbd5b48e2c5b3d3eeec8277586c02f933a17f5e83e067a",
     "debtToken": {
       "chain": "ethereum",
+      "address": "0x2260fac5e5542a773aa44fbcfedf7c193bc2c599",
       "symbol": "WBTC",
-      "decimals": 8,
-      "address": "0x2260fac5e5542a773aa44fbcfedf7c193bc2c599"
+      "decimals": 8
     },
     "collateral": {
       "chain": "ethereum",
-      "symbol": "WSTETH",
-      "decimals": 18,
-      "address": "0x7f39c581f595b53c5cb19bd0b3f8da6c935e2ca0"
+      "address": "0x7f39c581f595b53c5cb19bd0b3f8da6c935e2ca0",
+      "symbol": "wstETH",
+      "decimals": 18
     },
     "oracle": "0xae12416c1f21b0698c27fe042d9309c83bac6597",
     "irm": "0x870ac11d48b15db9a138cf899d20f13f79ba00bc",
@@ -973,9 +973,9 @@
     "marketId": "0x3bb29b62affbedc60b8446b235aaa349d5e3bad96c09bca1d7a2d693c06669aa",
     "debtToken": {
       "chain": "ethereum",
+      "address": "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48",
       "symbol": "USDC",
-      "decimals": 6,
-      "address": "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48"
+      "decimals": 6
     },
     "collateral": {
       "chain": "ethereum",
@@ -995,9 +995,9 @@
     "marketId": "0x1ca7ff6b26581fe3155f391f3960d32a033b5f7d537b1f1932b2021a6cf4f706",
     "debtToken": {
       "chain": "ethereum",
+      "address": "0xdac17f958d2ee523a2206206994597c13d831ec7",
       "symbol": "USDT",
-      "decimals": 6,
-      "address": "0xdac17f958d2ee523a2206206994597c13d831ec7"
+      "decimals": 6
     },
     "collateral": {
       "chain": "ethereum",
@@ -1023,9 +1023,9 @@
     },
     "collateral": {
       "chain": "ethereum",
+      "address": "0x2260fac5e5542a773aa44fbcfedf7c193bc2c599",
       "symbol": "WBTC",
-      "decimals": 8,
-      "address": "0x2260fac5e5542a773aa44fbcfedf7c193bc2c599"
+      "decimals": 8
     },
     "oracle": "0x032f1c64899b2c89835e51aced9434b0adeaa69d",
     "irm": "0x870ac11d48b15db9a138cf899d20f13f79ba00bc",
@@ -1039,9 +1039,9 @@
     "marketId": "0x8bbd1763671eb82a75d5f7ca33a0023ffabdd9d1a3d4316f34753685ae988e80",
     "debtToken": {
       "chain": "ethereum",
+      "address": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
       "symbol": "WETH",
-      "decimals": 18,
-      "address": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2"
+      "decimals": 18
     },
     "collateral": {
       "chain": "ethereum",
@@ -1067,9 +1067,9 @@
     },
     "collateral": {
       "chain": "ethereum",
-      "symbol": "WSTETH",
-      "decimals": 18,
-      "address": "0x7f39c581f595b53c5cb19bd0b3f8da6c935e2ca0"
+      "address": "0x7f39c581f595b53c5cb19bd0b3f8da6c935e2ca0",
+      "symbol": "wstETH",
+      "decimals": 18
     },
     "oracle": "0x032f1c64899b2c89835e51aced9434b0adeaa69d",
     "irm": "0x870ac11d48b15db9a138cf899d20f13f79ba00bc",
@@ -1089,9 +1089,9 @@
     },
     "collateral": {
       "chain": "ethereum",
-      "symbol": "WSTETH",
-      "decimals": 18,
-      "address": "0x7f39c581f595b53c5cb19bd0b3f8da6c935e2ca0"
+      "address": "0x7f39c581f595b53c5cb19bd0b3f8da6c935e2ca0",
+      "symbol": "wstETH",
+      "decimals": 18
     },
     "oracle": "0xbc693693fdbb177ad05ff38633110016bc043ac5",
     "irm": "0x870ac11d48b15db9a138cf899d20f13f79ba00bc",
@@ -1105,9 +1105,9 @@
     "marketId": "0xdc5333039bcf15f1237133f74d5806675d83d9cf19cfd4cfdd9be674842651bf",
     "debtToken": {
       "chain": "ethereum",
+      "address": "0xdac17f958d2ee523a2206206994597c13d831ec7",
       "symbol": "USDT",
-      "decimals": 6,
-      "address": "0xdac17f958d2ee523a2206206994597c13d831ec7"
+      "decimals": 6
     },
     "collateral": {
       "chain": "ethereum",
@@ -1127,9 +1127,9 @@
     "marketId": "0xcec858380cba2d9ca710fce3ce864d74c3f620d53826f69d08508902e09be86f",
     "debtToken": {
       "chain": "ethereum",
+      "address": "0xdac17f958d2ee523a2206206994597c13d831ec7",
       "symbol": "USDT",
-      "decimals": 6,
-      "address": "0xdac17f958d2ee523a2206206994597c13d831ec7"
+      "decimals": 6
     },
     "collateral": {
       "chain": "ethereum",
@@ -1149,9 +1149,9 @@
     "marketId": "0xbe4c211adca4400078db69af91ea0df98401adb5959510ae99edd06fee5146f7",
     "debtToken": {
       "chain": "ethereum",
+      "address": "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48",
       "symbol": "USDC",
-      "decimals": 6,
-      "address": "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48"
+      "decimals": 6
     },
     "collateral": {
       "chain": "ethereum",
@@ -1171,9 +1171,9 @@
     "marketId": "0x1929f8139224cb7d5db8c270addc9ce366d37ad279e1135f73c0adce74b0f936",
     "debtToken": {
       "chain": "ethereum",
+      "address": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
       "symbol": "WETH",
-      "decimals": 18,
-      "address": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2"
+      "decimals": 18
     },
     "collateral": {
       "chain": "ethereum",
@@ -1193,9 +1193,9 @@
     "marketId": "0xe475337d11be1db07f7c5a156e511f05d1844308e66e17d2ba5da0839d3b34d9",
     "debtToken": {
       "chain": "ethereum",
+      "address": "0x6b175474e89094c44da98b954eedeac495271d0f",
       "symbol": "DAI",
-      "decimals": 18,
-      "address": "0x6b175474e89094c44da98b954eedeac495271d0f"
+      "decimals": 18
     },
     "collateral": {
       "chain": "ethereum",
@@ -1215,9 +1215,9 @@
     "marketId": "0x1247f1c237eceae0602eab1470a5061a6dd8f734ba88c7cdc5d6109fb0026b28",
     "debtToken": {
       "chain": "ethereum",
+      "address": "0x6b175474e89094c44da98b954eedeac495271d0f",
       "symbol": "DAI",
-      "decimals": 18,
-      "address": "0x6b175474e89094c44da98b954eedeac495271d0f"
+      "decimals": 18
     },
     "collateral": {
       "chain": "ethereum",
@@ -1237,9 +1237,9 @@
     "marketId": "0x39d11026eae1c6ec02aa4c0910778664089cdd97c3fd23f68f7cd05e2e95af48",
     "debtToken": {
       "chain": "ethereum",
+      "address": "0x6b175474e89094c44da98b954eedeac495271d0f",
       "symbol": "DAI",
-      "decimals": 18,
-      "address": "0x6b175474e89094c44da98b954eedeac495271d0f"
+      "decimals": 18
     },
     "collateral": {
       "chain": "ethereum",
@@ -1259,9 +1259,9 @@
     "marketId": "0x42dcfb38bb98767afb6e38ccf90d59d0d3f0aa216beb3a234f12850323d17536",
     "debtToken": {
       "chain": "ethereum",
+      "address": "0x6b175474e89094c44da98b954eedeac495271d0f",
       "symbol": "DAI",
-      "decimals": 18,
-      "address": "0x6b175474e89094c44da98b954eedeac495271d0f"
+      "decimals": 18
     },
     "collateral": {
       "chain": "ethereum",
@@ -1281,15 +1281,15 @@
     "marketId": "0x27dc2546042d49c948772a38432849a60fdb41f26af32fac42336f2278591296",
     "debtToken": {
       "chain": "ethereum",
+      "address": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
       "symbol": "WETH",
-      "decimals": 18,
-      "address": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2"
+      "decimals": 18
     },
     "collateral": {
       "chain": "ethereum",
-      "symbol": "WSTETH",
-      "decimals": 18,
-      "address": "0x7f39c581f595b53c5cb19bd0b3f8da6c935e2ca0"
+      "address": "0x7f39c581f595b53c5cb19bd0b3f8da6c935e2ca0",
+      "symbol": "wstETH",
+      "decimals": 18
     },
     "oracle": "0x3a7bb36ee3f3ee32a60e9f2b33c1e5f2e83ad766",
     "irm": "0x870ac11d48b15db9a138cf899d20f13f79ba00bc",
@@ -1303,15 +1303,15 @@
     "marketId": "0xb8fc70e82bc5bb53e773626fcc6a23f7eefa036918d7ef216ecfb1950a94a85e",
     "debtToken": {
       "chain": "ethereum",
+      "address": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
       "symbol": "WETH",
-      "decimals": 18,
-      "address": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2"
+      "decimals": 18
     },
     "collateral": {
       "chain": "ethereum",
-      "symbol": "WSTETH",
-      "decimals": 18,
-      "address": "0x7f39c581f595b53c5cb19bd0b3f8da6c935e2ca0"
+      "address": "0x7f39c581f595b53c5cb19bd0b3f8da6c935e2ca0",
+      "symbol": "wstETH",
+      "decimals": 18
     },
     "oracle": "0xbd60a6770b27e084e8617335dde769241b0e71d8",
     "irm": "0x870ac11d48b15db9a138cf899d20f13f79ba00bc",
@@ -1325,9 +1325,9 @@
     "marketId": "0xdb760246f6859780f6c1b272d47a8f64710777121118e56e0cdb4b8b744a3094",
     "debtToken": {
       "chain": "ethereum",
+      "address": "0x6b175474e89094c44da98b954eedeac495271d0f",
       "symbol": "DAI",
-      "decimals": 18,
-      "address": "0x6b175474e89094c44da98b954eedeac495271d0f"
+      "decimals": 18
     },
     "collateral": {
       "chain": "ethereum",
@@ -1347,9 +1347,9 @@
     "marketId": "0x8e6aeb10c401de3279ac79b4b2ea15fc94b7d9cfc098d6c2a1ff7b2b26d9d02c",
     "debtToken": {
       "chain": "ethereum",
+      "address": "0x6b175474e89094c44da98b954eedeac495271d0f",
       "symbol": "DAI",
-      "decimals": 18,
-      "address": "0x6b175474e89094c44da98b954eedeac495271d0f"
+      "decimals": 18
     },
     "collateral": {
       "chain": "ethereum",
@@ -1369,9 +1369,9 @@
     "marketId": "0xc581c5f70bd1afa283eed57d1418c6432cbff1d862f94eaf58fdd4e46afbb67f",
     "debtToken": {
       "chain": "ethereum",
+      "address": "0x6b175474e89094c44da98b954eedeac495271d0f",
       "symbol": "DAI",
-      "decimals": 18,
-      "address": "0x6b175474e89094c44da98b954eedeac495271d0f"
+      "decimals": 18
     },
     "collateral": {
       "chain": "ethereum",
@@ -1391,9 +1391,9 @@
     "marketId": "0xfd8493f09eb6203615221378d89f53fcd92ff4f7d62cca87eece9a2fff59e86f",
     "debtToken": {
       "chain": "ethereum",
+      "address": "0x6b175474e89094c44da98b954eedeac495271d0f",
       "symbol": "DAI",
-      "decimals": 18,
-      "address": "0x6b175474e89094c44da98b954eedeac495271d0f"
+      "decimals": 18
     },
     "collateral": {
       "chain": "ethereum",
@@ -1413,9 +1413,9 @@
     "marketId": "0x57f4e42c0707d3ae0ae39c9343dcba78ff79fa663da040eca45717a9b0b0557f",
     "debtToken": {
       "chain": "ethereum",
+      "address": "0x6b175474e89094c44da98b954eedeac495271d0f",
       "symbol": "DAI",
-      "decimals": 18,
-      "address": "0x6b175474e89094c44da98b954eedeac495271d0f"
+      "decimals": 18
     },
     "collateral": {
       "chain": "ethereum",
@@ -1545,9 +1545,9 @@
     "marketId": "0xdffc48c16cca3880240220ab8791e5a7e5a41233ca11a5999f0dd4294d221aed",
     "debtToken": {
       "chain": "ethereum",
+      "address": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
       "symbol": "WETH",
-      "decimals": 18,
-      "address": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2"
+      "decimals": 18
     },
     "collateral": {
       "chain": "ethereum",
@@ -1567,15 +1567,15 @@
     "marketId": "0xd0e50cdac92fe2172043f5e0c36532c6369d24947e40968f34a5e8819ca9ec5d",
     "debtToken": {
       "chain": "ethereum",
+      "address": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
       "symbol": "WETH",
-      "decimals": 18,
-      "address": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2"
+      "decimals": 18
     },
     "collateral": {
       "chain": "ethereum",
-      "symbol": "WSTETH",
-      "decimals": 18,
-      "address": "0x7f39c581f595b53c5cb19bd0b3f8da6c935e2ca0"
+      "address": "0x7f39c581f595b53c5cb19bd0b3f8da6c935e2ca0",
+      "symbol": "wstETH",
+      "decimals": 18
     },
     "oracle": "0xbd60a6770b27e084e8617335dde769241b0e71d8",
     "irm": "0x870ac11d48b15db9a138cf899d20f13f79ba00bc",
@@ -1589,15 +1589,15 @@
     "marketId": "0x138eec0e4a1937eb92ebc70043ed539661dd7ed5a89fb92a720b341650288a40",
     "debtToken": {
       "chain": "ethereum",
+      "address": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
       "symbol": "WETH",
-      "decimals": 18,
-      "address": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2"
+      "decimals": 18
     },
     "collateral": {
       "chain": "ethereum",
+      "address": "0x2260fac5e5542a773aa44fbcfedf7c193bc2c599",
       "symbol": "WBTC",
-      "decimals": 8,
-      "address": "0x2260fac5e5542a773aa44fbcfedf7c193bc2c599"
+      "decimals": 8
     },
     "oracle": "0xc29b3bc033640bae31ca53f8a0eb892adf68e663",
     "irm": "0x870ac11d48b15db9a138cf899d20f13f79ba00bc",
@@ -1633,15 +1633,15 @@
     "marketId": "0xd95c5285ed6009b272a25a94539bd1ae5af0e9020ad482123e01539ae43844e1",
     "debtToken": {
       "chain": "ethereum",
+      "address": "0x6b175474e89094c44da98b954eedeac495271d0f",
       "symbol": "DAI",
-      "decimals": 18,
-      "address": "0x6b175474e89094c44da98b954eedeac495271d0f"
+      "decimals": 18
     },
     "collateral": {
       "chain": "ethereum",
-      "symbol": "WSTETH",
-      "decimals": 18,
-      "address": "0x7f39c581f595b53c5cb19bd0b3f8da6c935e2ca0"
+      "address": "0x7f39c581f595b53c5cb19bd0b3f8da6c935e2ca0",
+      "symbol": "wstETH",
+      "decimals": 18
     },
     "oracle": "0xb6f9a5da6dfa52dc8f61592e83d22502c65d3bc8",
     "irm": "0x870ac11d48b15db9a138cf899d20f13f79ba00bc",
@@ -1655,15 +1655,15 @@
     "marketId": "0x06cb6aaee2279b46185dc2c8c107b4a56ff6550ea86063ec011fa4a52920841b",
     "debtToken": {
       "chain": "ethereum",
+      "address": "0x6b175474e89094c44da98b954eedeac495271d0f",
       "symbol": "DAI",
-      "decimals": 18,
-      "address": "0x6b175474e89094c44da98b954eedeac495271d0f"
+      "decimals": 18
     },
     "collateral": {
       "chain": "ethereum",
+      "address": "0x2260fac5e5542a773aa44fbcfedf7c193bc2c599",
       "symbol": "WBTC",
-      "decimals": 8,
-      "address": "0x2260fac5e5542a773aa44fbcfedf7c193bc2c599"
+      "decimals": 8
     },
     "oracle": "0xea1433b67667878941ca2a61c359e379397b155e",
     "irm": "0x870ac11d48b15db9a138cf899d20f13f79ba00bc",
@@ -1721,9 +1721,9 @@
     "marketId": "0x093d5b432aace8bf6c4d67494f4ac2542a499571ff7a1bcc9f8778f3200d457d",
     "debtToken": {
       "chain": "ethereum",
+      "address": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
       "symbol": "WETH",
-      "decimals": 18,
-      "address": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2"
+      "decimals": 18
     },
     "collateral": {
       "chain": "ethereum",
@@ -1743,9 +1743,9 @@
     "marketId": "0x355c9a4c12f60a10ab3b68507bfab21bd6913182037ffe25d94dabffea45429f",
     "debtToken": {
       "chain": "ethereum",
+      "address": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
       "symbol": "WETH",
-      "decimals": 18,
-      "address": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2"
+      "decimals": 18
     },
     "collateral": {
       "chain": "ethereum",
@@ -1765,9 +1765,9 @@
     "marketId": "0xdf2654405b27b5cf7a8f5fd78337e0440d37cbc797de38b1421752671f0ed3b6",
     "debtToken": {
       "chain": "ethereum",
+      "address": "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48",
       "symbol": "USDC",
-      "decimals": 6,
-      "address": "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48"
+      "decimals": 6
     },
     "collateral": {
       "chain": "ethereum",
@@ -1919,9 +1919,9 @@
     "marketId": "0x3c81a7e3cbcdeeecc7d9f7c45ed28ef62d63357cfcc7295e9d2b3368f0386b46",
     "debtToken": {
       "chain": "ethereum",
+      "address": "0x853d955acef822db058eb8505911ed77f175b99e",
       "symbol": "FRAX",
-      "decimals": 18,
-      "address": "0x853d955acef822db058eb8505911ed77f175b99e"
+      "decimals": 18
     },
     "collateral": {
       "chain": "ethereum",
@@ -1941,9 +1941,9 @@
     "marketId": "0x8a8650a5ed923712ca86a9b83bd12ea520131c646c4da5de3a443416e1bb8c98",
     "debtToken": {
       "chain": "ethereum",
+      "address": "0x853d955acef822db058eb8505911ed77f175b99e",
       "symbol": "FRAX",
-      "decimals": 18,
-      "address": "0x853d955acef822db058eb8505911ed77f175b99e"
+      "decimals": 18
     },
     "collateral": {
       "chain": "ethereum",
@@ -1963,9 +1963,9 @@
     "marketId": "0x5109cda72b0603e1bac4631ddebd3104bea6414e686c3f7aa2cb3c65795602f0",
     "debtToken": {
       "chain": "ethereum",
+      "address": "0x853d955acef822db058eb8505911ed77f175b99e",
       "symbol": "FRAX",
-      "decimals": 18,
-      "address": "0x853d955acef822db058eb8505911ed77f175b99e"
+      "decimals": 18
     },
     "collateral": {
       "chain": "ethereum",
@@ -1985,9 +1985,9 @@
     "marketId": "0x3df62177d8dd48708addac57caad778286f104c98a6866817b105795be0605e8",
     "debtToken": {
       "chain": "ethereum",
+      "address": "0x853d955acef822db058eb8505911ed77f175b99e",
       "symbol": "FRAX",
-      "decimals": 18,
-      "address": "0x853d955acef822db058eb8505911ed77f175b99e"
+      "decimals": 18
     },
     "collateral": {
       "chain": "ethereum",
@@ -2007,9 +2007,9 @@
     "marketId": "0x08cfaaa2e7797b4e1326d1d174dd364c9fb3a2a718623a3b7f97ea1debba47b8",
     "debtToken": {
       "chain": "ethereum",
+      "address": "0x853d955acef822db058eb8505911ed77f175b99e",
       "symbol": "FRAX",
-      "decimals": 18,
-      "address": "0x853d955acef822db058eb8505911ed77f175b99e"
+      "decimals": 18
     },
     "collateral": {
       "chain": "ethereum",
@@ -2029,9 +2029,9 @@
     "marketId": "0x7e72f1671f1fd2c0900b6ef8bb6b55299d6a58fd398e3b8e05c12e3c429c401b",
     "debtToken": {
       "chain": "ethereum",
+      "address": "0x853d955acef822db058eb8505911ed77f175b99e",
       "symbol": "FRAX",
-      "decimals": 18,
-      "address": "0x853d955acef822db058eb8505911ed77f175b99e"
+      "decimals": 18
     },
     "collateral": {
       "chain": "ethereum",
@@ -2073,9 +2073,9 @@
     "marketId": "0x000c918917765555eade0947e9f5ad0dac5782214436ed159ef36a4c164ff306",
     "debtToken": {
       "chain": "ethereum",
-      "symbol": "WSTETH",
-      "decimals": 18,
-      "address": "0x7f39c581f595b53c5cb19bd0b3f8da6c935e2ca0"
+      "address": "0x7f39c581f595b53c5cb19bd0b3f8da6c935e2ca0",
+      "symbol": "wstETH",
+      "decimals": 18
     },
     "collateral": {
       "chain": "ethereum",
@@ -2227,15 +2227,15 @@
     "marketId": "0x6a6c8e41a6a7ccbea68e1e6a19ece1fdd863b2b6c9e0f71bbcd4dcbe8b1062e8",
     "debtToken": {
       "chain": "ethereum",
+      "address": "0xdac17f958d2ee523a2206206994597c13d831ec7",
       "symbol": "USDT",
-      "decimals": 6,
-      "address": "0xdac17f958d2ee523a2206206994597c13d831ec7"
+      "decimals": 6
     },
     "collateral": {
       "chain": "ethereum",
-      "symbol": "WSTETH",
-      "decimals": 18,
-      "address": "0x7f39c581f595b53c5cb19bd0b3f8da6c935e2ca0"
+      "address": "0x7f39c581f595b53c5cb19bd0b3f8da6c935e2ca0",
+      "symbol": "wstETH",
+      "decimals": 18
     },
     "oracle": "0xa1bdbfd967620332b9fd7d60885e19ebbe49b882",
     "irm": "0x870ac11d48b15db9a138cf899d20f13f79ba00bc",
@@ -2271,9 +2271,9 @@
     "marketId": "0x9ec52d7195bafeba7137fa4d707a0f674a04a6d658c9066bcdbebc6d81eb0011",
     "debtToken": {
       "chain": "ethereum",
+      "address": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
       "symbol": "WETH",
-      "decimals": 18,
-      "address": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2"
+      "decimals": 18
     },
     "collateral": {
       "chain": "ethereum",
@@ -2293,15 +2293,15 @@
     "marketId": "0x9c765f69d8a8e40d2174824bc5107d05d7f0d0f81181048c9403262aeb1ab457",
     "debtToken": {
       "chain": "ethereum",
+      "address": "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48",
       "symbol": "USDC",
-      "decimals": 6,
-      "address": "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48"
+      "decimals": 6
     },
     "collateral": {
       "chain": "ethereum",
+      "address": "0x514910771af9ca656af840dff83e8264ecf986ca",
       "symbol": "LINK",
-      "decimals": 18,
-      "address": "0x514910771af9ca656af840dff83e8264ecf986ca"
+      "decimals": 18
     },
     "oracle": "0x2b6efe10f7c7c0f2fd172213ad99017855a8e512",
     "irm": "0x870ac11d48b15db9a138cf899d20f13f79ba00bc",
@@ -2337,9 +2337,9 @@
     "marketId": "0x162492d45b6fc0e8d66f20746317b8e93554b8c5dcdd196454e98a0fcde027f9",
     "debtToken": {
       "chain": "ethereum",
-      "symbol": "WSTETH",
-      "decimals": 18,
-      "address": "0x7f39c581f595b53c5cb19bd0b3f8da6c935e2ca0"
+      "address": "0x7f39c581f595b53c5cb19bd0b3f8da6c935e2ca0",
+      "symbol": "wstETH",
+      "decimals": 18
     },
     "collateral": {
       "chain": "ethereum",
@@ -2381,9 +2381,9 @@
     "marketId": "0xc118d50277e7334ef78fed7dc33183a5b0dd5612dc936ac8f3444371d64ffbe2",
     "debtToken": {
       "chain": "ethereum",
+      "address": "0x2260fac5e5542a773aa44fbcfedf7c193bc2c599",
       "symbol": "WBTC",
-      "decimals": 8,
-      "address": "0x2260fac5e5542a773aa44fbcfedf7c193bc2c599"
+      "decimals": 8
     },
     "collateral": {
       "chain": "ethereum",
@@ -2425,9 +2425,9 @@
     "marketId": "0x397f43e433aac18a72478d695d8ffa9713e9da2addb778726b5b4d352eb92cfc",
     "debtToken": {
       "chain": "ethereum",
+      "address": "0x6b175474e89094c44da98b954eedeac495271d0f",
       "symbol": "DAI",
-      "decimals": 18,
-      "address": "0x6b175474e89094c44da98b954eedeac495271d0f"
+      "decimals": 18
     },
     "collateral": {
       "chain": "ethereum",
@@ -2469,9 +2469,9 @@
     "marketId": "0xf6968c7556ab96561faf472ea9fd7bb27c5c4b8d29834c4a09654493f5742dea",
     "debtToken": {
       "chain": "ethereum",
+      "address": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
       "symbol": "WETH",
-      "decimals": 18,
-      "address": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2"
+      "decimals": 18
     },
     "collateral": {
       "chain": "ethereum",
@@ -2513,9 +2513,9 @@
     "marketId": "0x38e0e4e9271b14c03fc982d337c4651dd611e32aeba4d2530cc2d7edabbe7d68",
     "debtToken": {
       "chain": "ethereum",
+      "address": "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48",
       "symbol": "USDC",
-      "decimals": 6,
-      "address": "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48"
+      "decimals": 6
     },
     "collateral": {
       "chain": "ethereum",
@@ -2535,9 +2535,9 @@
     "marketId": "0xb7aaedc202cc26f4d714507605efdd2d03cf9f4994a814cb19bb49a513a506a8",
     "debtToken": {
       "chain": "ethereum",
+      "address": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
       "symbol": "WETH",
-      "decimals": 18,
-      "address": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2"
+      "decimals": 18
     },
     "collateral": {
       "chain": "ethereum",
@@ -2557,9 +2557,9 @@
     "marketId": "0x0eed5a89c7d397d02fd0b9b8e42811ca67e50ed5aeaa4f22e506516c716cfbbf",
     "debtToken": {
       "chain": "ethereum",
+      "address": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
       "symbol": "WETH",
-      "decimals": 18,
-      "address": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2"
+      "decimals": 18
     },
     "collateral": {
       "chain": "ethereum",
@@ -2579,9 +2579,9 @@
     "marketId": "0x2b1800a3b96cc786e4ae6d8f0c8047c0000fc2587939a3fbf14301a170d76537",
     "debtToken": {
       "chain": "ethereum",
+      "address": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
       "symbol": "WETH",
-      "decimals": 18,
-      "address": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2"
+      "decimals": 18
     },
     "collateral": {
       "chain": "ethereum",
@@ -2601,9 +2601,9 @@
     "marketId": "0xeeabdcb98e9f7ec216d259a2c026bbb701971efae0b44eec79a86053f9b128b6",
     "debtToken": {
       "chain": "ethereum",
+      "address": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
       "symbol": "WETH",
-      "decimals": 18,
-      "address": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2"
+      "decimals": 18
     },
     "collateral": {
       "chain": "ethereum",
@@ -2645,9 +2645,9 @@
     "marketId": "0xbd33e0ae076c82cfd0fa8d759ea83a296190f9f98d9f79b74a0eb4a294d8bf42",
     "debtToken": {
       "chain": "ethereum",
+      "address": "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48",
       "symbol": "USDC",
-      "decimals": 6,
-      "address": "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48"
+      "decimals": 6
     },
     "collateral": {
       "chain": "ethereum",
@@ -2667,9 +2667,9 @@
     "marketId": "0x28c028a1af0fa01da5b9c46bb8d999e3e8e65b8304edc09fd8cbaef03a64cb35",
     "debtToken": {
       "chain": "ethereum",
+      "address": "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48",
       "symbol": "USDC",
-      "decimals": 6,
-      "address": "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48"
+      "decimals": 6
     },
     "collateral": {
       "chain": "ethereum",
@@ -2689,9 +2689,9 @@
     "marketId": "0xea023e57814fb9a814a5a9ee9f3e7ece5b771dd8cc703e50b911e9cde064a12d",
     "debtToken": {
       "chain": "ethereum",
+      "address": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
       "symbol": "WETH",
-      "decimals": 18,
-      "address": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2"
+      "decimals": 18
     },
     "collateral": {
       "chain": "ethereum",
@@ -2711,9 +2711,9 @@
     "marketId": "0xe4cfbee9af4ad713b41bf79f009ca02b17c001a0c0e7bd2e6a89b1111b3d3f08",
     "debtToken": {
       "chain": "ethereum",
+      "address": "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48",
       "symbol": "USDC",
-      "decimals": 6,
-      "address": "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48"
+      "decimals": 6
     },
     "collateral": {
       "chain": "ethereum",
@@ -2755,15 +2755,15 @@
     "marketId": "0x718af3af39b183758849486340b69466e3e89b84b7884188323416621ee91cb7",
     "debtToken": {
       "chain": "ethereum",
+      "address": "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48",
       "symbol": "USDC",
-      "decimals": 6,
-      "address": "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48"
+      "decimals": 6
     },
     "collateral": {
       "chain": "ethereum",
+      "address": "0x1f9840a85d5af5bf1d1762f925bdaddc4201f984",
       "symbol": "UNI",
-      "decimals": 18,
-      "address": "0x1f9840a85d5af5bf1d1762f925bdaddc4201f984"
+      "decimals": 18
     },
     "oracle": "0x630a3b4a095220f4b36082dec1deae903346e372",
     "irm": "0x870ac11d48b15db9a138cf899d20f13f79ba00bc",
@@ -2865,9 +2865,9 @@
     "marketId": "0x7e9c708876fa3816c46aeb08937b51aa0461c2af3865ecb306433db8a80b1d1b",
     "debtToken": {
       "chain": "ethereum",
+      "address": "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48",
       "symbol": "USDC",
-      "decimals": 6,
-      "address": "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48"
+      "decimals": 6
     },
     "collateral": {
       "chain": "ethereum",
@@ -2881,15 +2881,81 @@
     "birthblock": 20142616,
     "birthday": 1719014400
   },
+  "0xa42ba90e4d3013dee8eb0d7bb7ae0817297337eeecd525dbdd48c7b5c5e6988d": {
+    "chain": "ethereum",
+    "morphoBlue": "0xbbbbbbbbbb9cc5e90e3b3af64bdaf62c37eeffcb",
+    "marketId": "0xa42ba90e4d3013dee8eb0d7bb7ae0817297337eeecd525dbdd48c7b5c5e6988d",
+    "debtToken": {
+      "chain": "ethereum",
+      "address": "0x0000206329b97db379d5e1bf586bbdb969c63274",
+      "symbol": "USDA",
+      "decimals": 18
+    },
+    "collateral": {
+      "chain": "ethereum",
+      "address": "0xd9a442856c234a39a81a089c06451ebaa4306a72",
+      "symbol": "pufETH",
+      "decimals": 18
+    },
+    "oracle": "0x0bc6fae2640bd074f5451cbbbac73bf86bccbcfa",
+    "irm": "0x870ac11d48b15db9a138cf899d20f13f79ba00bc",
+    "ltv": "770000000000000000",
+    "birthblock": 20163332,
+    "birthday": 1719273600
+  },
+  "0x60fce64eeeaec462a3fdf674f786ad71e4eef6e717d848d992a8631a5cb0b4b2": {
+    "chain": "ethereum",
+    "morphoBlue": "0xbbbbbbbbbb9cc5e90e3b3af64bdaf62c37eeffcb",
+    "marketId": "0x60fce64eeeaec462a3fdf674f786ad71e4eef6e717d848d992a8631a5cb0b4b2",
+    "debtToken": {
+      "chain": "ethereum",
+      "address": "0x0000206329b97db379d5e1bf586bbdb969c63274",
+      "symbol": "USDA",
+      "decimals": 18
+    },
+    "collateral": {
+      "chain": "ethereum",
+      "address": "0xcd5fe23c85820f7b72d0926fc9b05b43e359b7ee",
+      "symbol": "weETH",
+      "decimals": 18
+    },
+    "oracle": "0xf8db6a27a5033d029e38ef8b8c2c5dcb48aadb53",
+    "irm": "0x870ac11d48b15db9a138cf899d20f13f79ba00bc",
+    "ltv": "770000000000000000",
+    "birthblock": 20164033,
+    "birthday": 1719273600
+  },
+  "0xbef47159fd478cdd8c34073b71f97ca796aad295a87192fcffc813fad60de9f4": {
+    "chain": "ethereum",
+    "morphoBlue": "0xbbbbbbbbbb9cc5e90e3b3af64bdaf62c37eeffcb",
+    "marketId": "0xbef47159fd478cdd8c34073b71f97ca796aad295a87192fcffc813fad60de9f4",
+    "debtToken": {
+      "chain": "ethereum",
+      "address": "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48",
+      "symbol": "USDC",
+      "decimals": 6
+    },
+    "collateral": {
+      "chain": "ethereum",
+      "address": "0x35d8949372d46b7a3d5a56006ae77b215fc69bc0",
+      "symbol": "USD0++",
+      "decimals": 18
+    },
+    "oracle": "0x3a72f1f8e549c2398c83fb223c178162bac2bdc3",
+    "irm": "0x870ac11d48b15db9a138cf899d20f13f79ba00bc",
+    "ltv": "860000000000000000",
+    "birthblock": 20177764,
+    "birthday": 1719446400
+  },
   "0xdba352d93a64b17c71104cbddc6aef85cd432322a1446b5b65163cbbc615cd0c": {
     "chain": "base",
     "morphoBlue": "0xbbbbbbbbbb9cc5e90e3b3af64bdaf62c37eeffcb",
     "marketId": "0xdba352d93a64b17c71104cbddc6aef85cd432322a1446b5b65163cbbc615cd0c",
     "debtToken": {
       "chain": "base",
+      "address": "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913",
       "symbol": "USDC",
-      "decimals": 6,
-      "address": "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913"
+      "decimals": 6
     },
     "collateral": {
       "chain": "base",
@@ -2997,9 +3063,9 @@
     "marketId": "0x6a331b22b56c9c0ee32a1a7d6f852d2c682ea8b27a1b0f99a9c484a37a951eb7",
     "debtToken": {
       "chain": "base",
+      "address": "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913",
       "symbol": "USDC",
-      "decimals": 6,
-      "address": "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913"
+      "decimals": 6
     },
     "collateral": {
       "chain": "base",
@@ -3019,9 +3085,9 @@
     "marketId": "0xf24417ee06adc0b0836cf0dbec3ba56c1059f62f53a55990a38356d42fa75fa2",
     "debtToken": {
       "chain": "base",
+      "address": "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913",
       "symbol": "USDC",
-      "decimals": 6,
-      "address": "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913"
+      "decimals": 6
     },
     "collateral": {
       "chain": "base",
@@ -3041,9 +3107,9 @@
     "marketId": "0xa066f3893b780833699043f824e5bb88b8df039886f524f62b9a1ac83cb7f1f0",
     "debtToken": {
       "chain": "base",
+      "address": "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913",
       "symbol": "USDC",
-      "decimals": 6,
-      "address": "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913"
+      "decimals": 6
     },
     "collateral": {
       "chain": "base",
@@ -3107,9 +3173,9 @@
     "marketId": "0x38c846197ac32a752a60c25d4536ebb0c3920c532e9a859c38c91efb7b8c2abb",
     "debtToken": {
       "chain": "base",
+      "address": "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913",
       "symbol": "USDC",
-      "decimals": 6,
-      "address": "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913"
+      "decimals": 6
     },
     "collateral": {
       "chain": "base",
@@ -3151,9 +3217,9 @@
     "marketId": "0xdaa04f6819210b11fe4e3b65300c725c32e55755e3598671559b9ae3bac453d7",
     "debtToken": {
       "chain": "base",
+      "address": "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913",
       "symbol": "USDC",
-      "decimals": 6,
-      "address": "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913"
+      "decimals": 6
     },
     "collateral": {
       "chain": "base",
@@ -3195,9 +3261,9 @@
     "marketId": "0x8793cf302b8ffd655ab97bd1c695dbd967807e8367a65cb2f4edaf1380ba1bda",
     "debtToken": {
       "chain": "base",
+      "address": "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913",
       "symbol": "USDC",
-      "decimals": 6,
-      "address": "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913"
+      "decimals": 6
     },
     "collateral": {
       "chain": "base",
@@ -3217,9 +3283,9 @@
     "marketId": "0xdb0bc9f10a174f29a345c5f30a719933f71ccea7a2a75a632a281929bba1b535",
     "debtToken": {
       "chain": "base",
+      "address": "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913",
       "symbol": "USDC",
-      "decimals": 6,
-      "address": "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913"
+      "decimals": 6
     },
     "collateral": {
       "chain": "base",
@@ -3349,9 +3415,9 @@
     "marketId": "0x8e1a07763061c6b9fe883ec888833674819614f5cab86af7558660e49c1942d7",
     "debtToken": {
       "chain": "base",
+      "address": "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913",
       "symbol": "USDC",
-      "decimals": 6,
-      "address": "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913"
+      "decimals": 6
     },
     "collateral": {
       "chain": "base",
@@ -3371,9 +3437,9 @@
     "marketId": "0x8cb0d41e8de31e9bbad72e18f61b840677545d242a8ff871f7242ada651a70ed",
     "debtToken": {
       "chain": "base",
+      "address": "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913",
       "symbol": "USDC",
-      "decimals": 6,
-      "address": "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913"
+      "decimals": 6
     },
     "collateral": {
       "chain": "base",
@@ -3465,9 +3531,9 @@
     },
     "collateral": {
       "chain": "base",
+      "address": "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913",
       "symbol": "USDC",
-      "decimals": 6,
-      "address": "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913"
+      "decimals": 6
     },
     "oracle": "0xd09048c8b568dbf5f189302bea26c9edabfc4858",
     "irm": "0x46415998764c29ab2a25cbea6254146d50d22687",
@@ -3685,9 +3751,9 @@
     },
     "collateral": {
       "chain": "base",
+      "address": "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913",
       "symbol": "USDC",
-      "decimals": 6,
-      "address": "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913"
+      "decimals": 6
     },
     "oracle": "0x30f505e85c95ad83b019346122907e5b81aae355",
     "irm": "0x46415998764c29ab2a25cbea6254146d50d22687",
@@ -3848,5 +3914,71 @@
     "ltv": "860000000000000000",
     "birthblock": 16087473,
     "birthday": 1719014400
+  },
+  "0xb63256b02a975e00ff390fb8a280f8b332c0111a668917aaa4b07e8fbcf1bc9d": {
+    "chain": "base",
+    "morphoBlue": "0xbbbbbbbbbb9cc5e90e3b3af64bdaf62c37eeffcb",
+    "marketId": "0xb63256b02a975e00ff390fb8a280f8b332c0111a668917aaa4b07e8fbcf1bc9d",
+    "debtToken": {
+      "chain": "base",
+      "address": "0x59aaf835d34b1e3df2170e4872b785f11e2a964b",
+      "symbol": "verUSDC",
+      "decimals": 6
+    },
+    "collateral": {
+      "chain": "base",
+      "address": "0x6d2b49608a716e30bc7abcfe00181bf261bf6fc5",
+      "symbol": "LTF",
+      "decimals": 6
+    },
+    "oracle": "0x0a7e34c6888953cde70f4e6bc415b8bfd4cdc7f9",
+    "irm": "0x46415998764c29ab2a25cbea6254146d50d22687",
+    "ltv": "980000000000000000",
+    "birthblock": 16259776,
+    "birthday": 1719360000
+  },
+  "0xdf38296dc41c7805354cef95c9b29527e7871ecb689617534dfc67596ef638de": {
+    "chain": "base",
+    "morphoBlue": "0xbbbbbbbbbb9cc5e90e3b3af64bdaf62c37eeffcb",
+    "marketId": "0xdf38296dc41c7805354cef95c9b29527e7871ecb689617534dfc67596ef638de",
+    "debtToken": {
+      "chain": "base",
+      "address": "0x59aaf835d34b1e3df2170e4872b785f11e2a964b",
+      "symbol": "verUSDC",
+      "decimals": 6
+    },
+    "collateral": {
+      "chain": "base",
+      "address": "0xc1cba3fcea344f92d9239c08c0568f6f2f0ee452",
+      "symbol": "wstETH",
+      "decimals": 18
+    },
+    "oracle": "0x957e76d8f2d3ab0b4f342cd5f4b03a6f6ef2ce5f",
+    "irm": "0x46415998764c29ab2a25cbea6254146d50d22687",
+    "ltv": "860000000000000000",
+    "birthblock": 16300391,
+    "birthday": 1719446400
+  },
+  "0x104ff0b7c0d67301cb24e3a10b928b0fb0026ee26338e28553b7064fa8b659a9": {
+    "chain": "base",
+    "morphoBlue": "0xbbbbbbbbbb9cc5e90e3b3af64bdaf62c37eeffcb",
+    "marketId": "0x104ff0b7c0d67301cb24e3a10b928b0fb0026ee26338e28553b7064fa8b659a9",
+    "debtToken": {
+      "chain": "base",
+      "address": "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913",
+      "symbol": "USDC",
+      "decimals": 6
+    },
+    "collateral": {
+      "chain": "base",
+      "address": "0xd95ca61ce9aaf2143e81ef5462c0c2325172e028",
+      "symbol": "wUSD+",
+      "decimals": 6
+    },
+    "oracle": "0x510a4c82f7ebf030ae2bcbdac2504e59df03b3e8",
+    "irm": "0x46415998764c29ab2a25cbea6254146d50d22687",
+    "ltv": "770000000000000000",
+    "birthblock": 16367878,
+    "birthday": 1719532800
   }
 }
