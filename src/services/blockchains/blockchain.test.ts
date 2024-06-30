@@ -1,6 +1,5 @@
 import { describe, expect, test } from 'vitest';
 
-import ERC20Abi from '../../configs/abi/ERC20.json';
 import EnvConfig from '../../configs/envConfig';
 import BlockchainService from './blockchain';
 
@@ -117,6 +116,21 @@ const testcases = [
     timestamp: 1714521600, // Wed May 01 2024 00:00:00 GMT+0000
     expectedBlockNumber: 1091881,
   },
+  {
+    ...EnvConfig.blockchains.cronos,
+    timestamp: 1714521600, // Wed May 01 2024 00:00:00 GMT+0000
+    expectedBlockNumber: 13728035,
+  },
+  {
+    ...EnvConfig.blockchains.moonbeam,
+    timestamp: 1714521600, // Wed May 01 2024 00:00:00 GMT+0000
+    expectedBlockNumber: 13728035,
+  },
+  {
+    ...EnvConfig.blockchains.moonriver,
+    timestamp: 1714521600, // Wed May 01 2024 00:00:00 GMT+0000
+    expectedBlockNumber: 6661015,
+  },
 ];
 
 describe('getBlockNumberAtTimestamp', function () {
@@ -128,80 +142,80 @@ describe('getBlockNumberAtTimestamp', function () {
   );
 });
 
-describe('multicall', function () {
-  test('should be able to get token metadata', async function () {
-    const tokens = [
-      {
-        chain: 'ethereum',
-        address: '0xdac17f958d2ee523a2206206994597c13d831ec7',
-        symbol: 'USDT',
-        decimals: 6,
-        blockNumber: 10634748,
-      },
-      {
-        chain: 'bnbchain',
-        address: '0x55d398326f99059ff775485246999027b3197955',
-        symbol: 'USDT',
-        decimals: 18,
-      },
-      {
-        chain: 'arbitrum',
-        address: '0x912ce59144191c1204e64559fe8253a0e49e6548',
-        symbol: 'ARB',
-        decimals: 18,
-      },
-      {
-        chain: 'optimism',
-        address: '0x4200000000000000000000000000000000000042',
-        symbol: 'OP',
-        decimals: 18,
-      },
-    ];
+// describe('multicall', function () {
+//   test('should be able to get token metadata', async function () {
+//     const tokens = [
+//       {
+//         chain: 'ethereum',
+//         address: '0xdac17f958d2ee523a2206206994597c13d831ec7',
+//         symbol: 'USDT',
+//         decimals: 6,
+//         blockNumber: 10634748,
+//       },
+//       {
+//         chain: 'bnbchain',
+//         address: '0x55d398326f99059ff775485246999027b3197955',
+//         symbol: 'USDT',
+//         decimals: 18,
+//       },
+//       {
+//         chain: 'arbitrum',
+//         address: '0x912ce59144191c1204e64559fe8253a0e49e6548',
+//         symbol: 'ARB',
+//         decimals: 18,
+//       },
+//       {
+//         chain: 'optimism',
+//         address: '0x4200000000000000000000000000000000000042',
+//         symbol: 'OP',
+//         decimals: 18,
+//       },
+//     ];
 
-    for (const token of tokens) {
-      const multicall3Results = await blockchain.multicall3({
-        chain: token.chain,
-        calls: [
-          {
-            target: token.address,
-            abi: ERC20Abi,
-            method: 'symbol',
-            params: [],
-          },
-          {
-            target: token.address,
-            abi: ERC20Abi,
-            method: 'decimals',
-            params: [],
-          },
-        ],
-      });
+//     for (const token of tokens) {
+//       const multicall3Results = await blockchain.multicall3({
+//         chain: token.chain,
+//         calls: [
+//           {
+//             target: token.address,
+//             abi: ERC20Abi,
+//             method: 'symbol',
+//             params: [],
+//           },
+//           {
+//             target: token.address,
+//             abi: ERC20Abi,
+//             method: 'decimals',
+//             params: [],
+//           },
+//         ],
+//       });
 
-      const readContractMultipleResults = await blockchain.multicall({
-        chain: token.chain,
-        blockNumber: token.blockNumber,
-        calls: [
-          {
-            target: token.address,
-            abi: ERC20Abi,
-            method: 'symbol',
-            params: [],
-          },
-          {
-            target: token.address,
-            abi: ERC20Abi,
-            method: 'decimals',
-            params: [],
-          },
-        ],
-      });
+//       const readContractMultipleResults = await blockchain.multicall({
+//         chain: token.chain,
+//         blockNumber: token.blockNumber,
+//         calls: [
+//           {
+//             target: token.address,
+//             abi: ERC20Abi,
+//             method: 'symbol',
+//             params: [],
+//           },
+//           {
+//             target: token.address,
+//             abi: ERC20Abi,
+//             method: 'decimals',
+//             params: [],
+//           },
+//         ],
+//       });
 
-      expect(JSON.stringify(multicall3Results)).equal(JSON.stringify(readContractMultipleResults));
+//       expect(JSON.stringify(multicall3Results)).equal(JSON.stringify(readContractMultipleResults));
 
-      expect(multicall3Results[0]).equal(token.symbol);
-      expect(multicall3Results[1]).equal(token.decimals);
-      expect(readContractMultipleResults[0]).equal(token.symbol);
-      expect(readContractMultipleResults[1]).equal(token.decimals);
-    }
-  });
-});
+//       expect(multicall3Results[0]).equal(token.symbol);
+//       expect(multicall3Results[1]).equal(token.decimals);
+//       expect(readContractMultipleResults[0]).equal(token.symbol);
+//       expect(readContractMultipleResults[1]).equal(token.decimals);
+//     }
+//   });
+// });

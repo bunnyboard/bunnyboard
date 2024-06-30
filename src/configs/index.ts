@@ -17,6 +17,7 @@ import { KinzaConfigs } from './protocols/kinza';
 import { LiquityConfigs } from './protocols/liquity';
 import { MakerConfigs } from './protocols/maker';
 import { MendiConfigs } from './protocols/mendi';
+import { MoonwellConfigs } from './protocols/moonwell';
 import { MorphoConfigs } from './protocols/morpho';
 import { OrbitConfigs } from './protocols/orbit';
 import { PacConfigs } from './protocols/pac';
@@ -24,7 +25,9 @@ import { RadiantConfigs } from './protocols/radiant';
 import { SeamlessConfigs } from './protocols/seamless';
 import { SonneConfigs } from './protocols/sonne';
 import { SparkConfigs } from './protocols/spark';
+import { StrikeConfigs } from './protocols/strike';
 import { SushiConfigs } from './protocols/sushi';
+import { TectonicConfigs } from './protocols/tectonic';
 import { UwulendConfigs } from './protocols/uwulend';
 import { VenusConfigs } from './protocols/venus';
 import { YethConfigs } from './protocols/yearn';
@@ -62,6 +65,7 @@ export const ProtocolConfigs = {
   liquity: LiquityConfigs,
   maker: MakerConfigs,
   mendi: MendiConfigs,
+  moonwell: MoonwellConfigs,
   morpho: MorphoConfigs,
   orbit: OrbitConfigs,
   pac: PacConfigs,
@@ -70,6 +74,8 @@ export const ProtocolConfigs = {
   sonne: SonneConfigs,
   spark: SparkConfigs,
   sushi: SushiConfigs,
+  strike: StrikeConfigs,
+  tectonic: TectonicConfigs,
   uwulend: UwulendConfigs,
   venus: VenusConfigs,
   yeth: YethConfigs,

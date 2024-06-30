@@ -294,4 +294,43 @@ export const BlockchainConfigs: { [key: string]: Blockchain } = {
       decimals: 18,
     },
   },
+  [ChainNames.cronos]: {
+    name: ChainNames.cronos,
+    family: 'evm',
+    chainId: 25,
+    nodeRpc: String(process.env.BUNNYBOARD_CRONOS_NODE),
+    explorerApiEndpoint: 'https://api.cronoscan.com/api',
+    nativeToken: {
+      chain: ChainNames.cronos,
+      address: AddressZero,
+      symbol: 'CRO',
+      decimals: 18,
+    },
+  },
+  [ChainNames.moonbeam]: {
+    name: ChainNames.moonbeam,
+    family: 'evm',
+    chainId: 1284,
+    nodeRpc: String(process.env.BUNNYBOARD_MOONBEAM_NODE),
+    explorerApiEndpoint: 'https://api-moonbeam.moonscan.io/api',
+    nativeToken: {
+      chain: ChainNames.moonbeam,
+      address: AddressZero,
+      symbol: 'GLMR',
+      decimals: 18,
+    },
+  },
+  [ChainNames.moonriver]: {
+    name: ChainNames.moonriver,
+    family: 'evm',
+    chainId: 1285,
+    nodeRpc: String(process.env.BUNNYBOARD_MOONRIVER_NODE),
+    explorerApiEndpoint: 'https://api-moonriver.moonscan.io/api',
+    nativeToken: {
+      chain: ChainNames.moonriver,
+      address: AddressZero,
+      symbol: 'MOVR',
+      decimals: 18,
+    },
+  },
 };

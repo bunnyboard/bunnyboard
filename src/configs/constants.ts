@@ -36,4 +36,5 @@ export const ChainBlockPeriods: { [key: string]: number } = {
   linea: 1, // 1 seconds
   blast: 2, // 2 seconds
   mode: 2, // 2 seconds
+  cronos: 5.6, // 5.6 seconds
 };

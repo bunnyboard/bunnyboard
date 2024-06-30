@@ -23,6 +23,9 @@ export const ChainNames = {
   merlin: 'merlin',
   kava: 'kava',
   zklinknova: 'zklinknova',
+  cronos: 'cronos',
+  moonbeam: 'moonbeam',
+  moonriver: 'moonriver',
 };
 
 export const ProtocolNames = {
@@ -47,6 +50,7 @@ export const ProtocolNames = {
   liquity: 'liquity',
   maker: 'maker',
   mendi: 'mendi',
+  moonwell: 'moonwell',
   morpho: 'morpho',
   orbit: 'orbit',
   pac: 'pac',
@@ -57,8 +61,10 @@ export const ProtocolNames = {
   sonne: 'sonne',
   spark: 'spark',
   spooky: 'spooky',
+  strike: 'strike',
   sushi: 'sushi',
   sushiv3: 'sushiv3',
+  tectonic: 'tectonic',
   uniswap: 'uniswap',
   uniswapv2: 'uniswapv2',
   uniswapv3: 'uniswapv3',

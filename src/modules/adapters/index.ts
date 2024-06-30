@@ -17,6 +17,7 @@ import KinzaAdapter from './kinza/kinza';
 import LiquityAdapter from './liquity/liquity';
 import MakerAdapter from './maker/maker';
 import MendiAdapter from './mendi/mendi';
+import MoonwellAdapter from './moonwell/moonwell';
 import MorphoAdapter from './morpho/morpho';
 import OrbitAdapter from './orbit/orbit';
 import PacAdapter from './pac/pac';
@@ -24,7 +25,9 @@ import RadiantAdapter from './radiant/radiant';
 import SeamlessAdapter from './seamless/seamless';
 import SonneAdapter from './sonne/sonne';
 import SparkAdapter from './spark/spark';
+import StrikeAdapter from './strike/strike';
 import SushiAdapter from './sushi/sushi';
+import TectonicAdapter from './tectonic/tectonic';
 import UwulendAdapter from './uwulend/uwulend';
 import VenusAdapter from './venus/venus';
 import ZerolendAdapter from './zerolend/zerolend';
@@ -58,10 +61,13 @@ export function getProtocolAdapters(
     liquity: new LiquityAdapter(services, storages, ProtocolConfigs.liquity),
     maker: new MakerAdapter(services, storages, ProtocolConfigs.maker),
     mendi: new MendiAdapter(services, storages, ProtocolConfigs.mendi),
+    moonwell: new MoonwellAdapter(services, storages, ProtocolConfigs.moonwell),
     morpho: new MorphoAdapter(services, storages, ProtocolConfigs.morpho),
     orbit: new OrbitAdapter(services, storages, ProtocolConfigs.orbit),
     seamless: new SeamlessAdapter(services, storages, ProtocolConfigs.seamless),
     sushi: new SushiAdapter(services, storages, ProtocolConfigs.sushi),
+    strike: new StrikeAdapter(services, storages, ProtocolConfigs.strike),
+    tectonic: new TectonicAdapter(services, storages, ProtocolConfigs.tectonic),
     uwulend: new UwulendAdapter(services, storages, ProtocolConfigs.uwulend),
     pac: new PacAdapter(services, storages, ProtocolConfigs.pac),
     zerolend: new ZerolendAdapter(services, storages, ProtocolConfigs.zerolend),
