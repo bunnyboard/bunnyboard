@@ -26,6 +26,8 @@ export const ChainNames = {
   cronos: 'cronos',
   moonbeam: 'moonbeam',
   moonriver: 'moonriver',
+  bitlayer: 'bitlayer',
+  core: 'core',
 };
 
 export const ProtocolNames = {

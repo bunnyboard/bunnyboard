@@ -20,6 +20,7 @@ import {
   MulticallOptions,
   ReadContractOptions,
 } from './domains';
+import { ChainNames } from '../../configs/names';
 
 export default class BlockchainService extends CachingService implements IBlockchainService {
   public readonly name: string = 'blockchain';
@@ -251,7 +252,11 @@ export default class BlockchainService extends CachingService implements IBlockc
 
     // get from explorer api
     if (chainConfig && chainConfig.explorerApiEndpoint) {
-      const url = `${chainConfig.explorerApiEndpoint}?module=block&action=getblocknobytime&timestamp=${timestamp}&closest=before`;
+      let url = `${chainConfig.explorerApiEndpoint}?module=block&action=getblocknobytime&timestamp=${timestamp}&closest=before`;
+
+      if (chain === ChainNames.core) {
+        url += `&apikey=b4d33c1698e4446dbf0f05f520117a76`;
+      }
 
       try {
         const response = await axios.get(url, {
@@ -259,7 +264,12 @@ export default class BlockchainService extends CachingService implements IBlockc
             'Content-Type': 'application/json',
           } as RawAxiosRequestHeaders,
         });
-        if (response && response.data && response.data.status === '1' && response.data.result) {
+        if (
+          response &&
+          response.data &&
+          (response.data.status === '1' || response.data.status === 1) &&
+          response.data.result
+        ) {
           if (response.data.result.blockNumber) {
             blockNumber = Number(response.data.result.blockNumber);
           } else {

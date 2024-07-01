@@ -333,4 +333,30 @@ export const BlockchainConfigs: { [key: string]: Blockchain } = {
       decimals: 18,
     },
   },
+  [ChainNames.core]: {
+    name: ChainNames.core,
+    family: 'evm',
+    chainId: 1116,
+    nodeRpc: String(process.env.BUNNYBOARD_CORE_NODE),
+    explorerApiEndpoint: 'https://openapi.coredao.org/api',
+    nativeToken: {
+      chain: ChainNames.core,
+      address: AddressZero,
+      symbol: 'CORE',
+      decimals: 18,
+    },
+  },
+  [ChainNames.bitlayer]: {
+    name: ChainNames.bitlayer,
+    family: 'evm',
+    chainId: 200901,
+    nodeRpc: String(process.env.BUNNYBOARD_BITLAYER_NODE),
+    explorerApiEndpoint: 'https://api.btrscan.com/scan/api',
+    nativeToken: {
+      chain: ChainNames.bitlayer,
+      address: AddressZero,
+      symbol: 'BTC',
+      decimals: 18,
+    },
+  },
 };

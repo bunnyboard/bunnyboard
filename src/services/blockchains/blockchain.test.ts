@@ -124,12 +124,22 @@ const testcases = [
   {
     ...EnvConfig.blockchains.moonbeam,
     timestamp: 1714521600, // Wed May 01 2024 00:00:00 GMT+0000
-    expectedBlockNumber: 13728035,
+    expectedBlockNumber: 6058082,
   },
   {
     ...EnvConfig.blockchains.moonriver,
     timestamp: 1714521600, // Wed May 01 2024 00:00:00 GMT+0000
     expectedBlockNumber: 6661015,
+  },
+  {
+    ...EnvConfig.blockchains.bitlayer,
+    timestamp: 1714521600, // Wed May 01 2024 00:00:00 GMT+0000
+    expectedBlockNumber: 748323,
+  },
+  {
+    ...EnvConfig.blockchains.core,
+    timestamp: 1714521600, // Wed May 01 2024 00:00:00 GMT+0000
+    expectedBlockNumber: 13740381,
   },
 ];
 
