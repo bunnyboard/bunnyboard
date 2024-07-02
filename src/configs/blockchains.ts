@@ -359,4 +359,17 @@ export const BlockchainConfigs: { [key: string]: Blockchain } = {
       decimals: 18,
     },
   },
+  [ChainNames.taiko]: {
+    name: ChainNames.taiko,
+    family: 'evm',
+    chainId: 167000,
+    nodeRpc: String(process.env.BUNNYBOARD_TAIKO_NODE),
+    explorerApiEndpoint: 'https://api.taikoscan.io/api',
+    nativeToken: {
+      chain: ChainNames.taiko,
+      address: AddressZero,
+      symbol: 'ETH',
+      decimals: 18,
+    },
+  },
 };

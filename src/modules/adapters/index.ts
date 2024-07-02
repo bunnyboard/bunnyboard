@@ -1,6 +1,7 @@
 import { ProtocolConfigs } from '../../configs';
 import { ContextServices, ContextStorages, IProtocolAdapter } from '../../types/namespaces';
 import AaveAdapter from './aave/aave';
+import Aavev3Adapter from './aave/aavev3';
 import AbracadabraAdapter from './abracadabra/abracadabra';
 // import AjnaAdapter from './ajna/ajna';
 import AvalonAdapter from './avalon/avalon';
@@ -17,6 +18,7 @@ import KinzaAdapter from './kinza/kinza';
 import LiquityAdapter from './liquity/liquity';
 import MakerAdapter from './maker/maker';
 import MendiAdapter from './mendi/mendi';
+import MoonwellAdapter from './moonwell/moonwell';
 import MorphoAdapter from './morpho/morpho';
 import OrbitAdapter from './orbit/orbit';
 import PacAdapter from './pac/pac';
@@ -24,6 +26,7 @@ import RadiantAdapter from './radiant/radiant';
 import SeamlessAdapter from './seamless/seamless';
 import SonneAdapter from './sonne/sonne';
 import SparkAdapter from './spark/spark';
+import StrikeAdapter from './strike/strike';
 import SushiAdapter from './sushi/sushi';
 import TectonicAdapter from './tectonic/tectonic';
 import UwulendAdapter from './uwulend/uwulend';
@@ -48,6 +51,7 @@ export function getProtocolAdapters(
     compound: new CompoundAdapter(services, storages, ProtocolConfigs.compound),
     compoundv3: new Compoundv3Adapter(services, storages, ProtocolConfigs.compoundv3),
     crvusd: new CrvusdAdapter(services, storages, ProtocolConfigs.crvusd),
+    hana: new Aavev3Adapter(services, storages, ProtocolConfigs.hana),
     ionic: new IonicAdapter(services, storages, ProtocolConfigs.ionic),
     ironbank: new IronbankAdapter(services, storages, ProtocolConfigs.ironbank),
     ironclad: new IroncladAdapter(services, storages, ProtocolConfigs.ironclad),
@@ -59,12 +63,12 @@ export function getProtocolAdapters(
     liquity: new LiquityAdapter(services, storages, ProtocolConfigs.liquity),
     maker: new MakerAdapter(services, storages, ProtocolConfigs.maker),
     mendi: new MendiAdapter(services, storages, ProtocolConfigs.mendi),
-    // moonwell: new MoonwellAdapter(services, storages, ProtocolConfigs.moonwell),
+    moonwell: new MoonwellAdapter(services, storages, ProtocolConfigs.moonwell),
     morpho: new MorphoAdapter(services, storages, ProtocolConfigs.morpho),
     orbit: new OrbitAdapter(services, storages, ProtocolConfigs.orbit),
     seamless: new SeamlessAdapter(services, storages, ProtocolConfigs.seamless),
     sushi: new SushiAdapter(services, storages, ProtocolConfigs.sushi),
-    // strike: new StrikeAdapter(services, storages, ProtocolConfigs.strike),
+    strike: new StrikeAdapter(services, storages, ProtocolConfigs.strike),
     tectonic: new TectonicAdapter(services, storages, ProtocolConfigs.tectonic),
     uwulend: new UwulendAdapter(services, storages, ProtocolConfigs.uwulend),
     pac: new PacAdapter(services, storages, ProtocolConfigs.pac),

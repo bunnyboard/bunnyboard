@@ -141,6 +141,11 @@ const testcases = [
     timestamp: 1714521600, // Wed May 01 2024 00:00:00 GMT+0000
     expectedBlockNumber: 13740381,
   },
+  {
+    ...EnvConfig.blockchains.taiko,
+    timestamp: 1717200000, // Sat Jun 01 2024 00:00:00 GMT+0000
+    expectedBlockNumber: 16662,
+  },
 ];
 
 describe('getBlockNumberAtTimestamp', function () {

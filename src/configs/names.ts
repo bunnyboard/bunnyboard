@@ -28,6 +28,7 @@ export const ChainNames = {
   moonriver: 'moonriver',
   bitlayer: 'bitlayer',
   core: 'core',
+  taiko: 'taiko',
 };
 
 export const ProtocolNames = {
@@ -44,6 +45,7 @@ export const ProtocolNames = {
   compound: 'compound',
   compoundv3: 'compoundv3',
   crvusd: 'crvusd',
+  hana: 'hana',
   ionic: 'ionic',
   ironbank: 'ironbank',
   ironclad: 'ironclad',
