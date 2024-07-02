@@ -26,7 +26,6 @@ import RadiantAdapter from './radiant/radiant';
 import SeamlessAdapter from './seamless/seamless';
 import SonneAdapter from './sonne/sonne';
 import SparkAdapter from './spark/spark';
-import StrikeAdapter from './strike/strike';
 import SushiAdapter from './sushi/sushi';
 import TectonicAdapter from './tectonic/tectonic';
 import UwulendAdapter from './uwulend/uwulend';
@@ -68,7 +67,7 @@ export function getProtocolAdapters(
     orbit: new OrbitAdapter(services, storages, ProtocolConfigs.orbit),
     seamless: new SeamlessAdapter(services, storages, ProtocolConfigs.seamless),
     sushi: new SushiAdapter(services, storages, ProtocolConfigs.sushi),
-    strike: new StrikeAdapter(services, storages, ProtocolConfigs.strike),
+    // strike: new StrikeAdapter(services, storages, ProtocolConfigs.strike),
     tectonic: new TectonicAdapter(services, storages, ProtocolConfigs.tectonic),
     uwulend: new UwulendAdapter(services, storages, ProtocolConfigs.uwulend),
     pac: new PacAdapter(services, storages, ProtocolConfigs.pac),
