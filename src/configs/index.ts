@@ -23,6 +23,7 @@ import { MorphoConfigs } from './protocols/morpho';
 import { OrbitConfigs } from './protocols/orbit';
 import { PacConfigs } from './protocols/pac';
 import { RadiantConfigs } from './protocols/radiant';
+import { RhoConfigs } from './protocols/rho';
 import { SeamlessConfigs } from './protocols/seamless';
 import { SonneConfigs } from './protocols/sonne';
 import { SparkConfigs } from './protocols/spark';
@@ -73,6 +74,7 @@ export const ProtocolConfigs = {
   orbit: OrbitConfigs,
   pac: PacConfigs,
   radiant: RadiantConfigs,
+  rho: RhoConfigs,
   seamless: SeamlessConfigs,
   sonne: SonneConfigs,
   spark: SparkConfigs,

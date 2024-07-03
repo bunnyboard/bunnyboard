@@ -37,4 +37,5 @@ export const ChainBlockPeriods: { [key: string]: number } = {
   blast: 2, // 2 seconds
   mode: 2, // 2 seconds
   cronos: 5.6, // 5.6 seconds
+  scroll: 3, // 3 seconds
 };

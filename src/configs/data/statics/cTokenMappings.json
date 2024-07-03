@@ -845,6 +845,60 @@
     "symbol": "fwWETH",
     "decimals": 18
   },
+  "0x855cea8626fa7b42c13e7a688b179bf61e6c1e81": {
+    "chain": "scroll",
+    "address": "0xf55bec9cafdbe8730f096aa55dad6d22d44099df",
+    "symbol": "USDT",
+    "decimals": 6
+  },
+  "0xae1846110f72f2daabc75b7ceee96558289edfc5": {
+    "chain": "scroll",
+    "address": "0x06efdbff2a14a7c8e15944d1f4a48f9f95f663a4",
+    "symbol": "USDC",
+    "decimals": 6
+  },
+  "0xad3d07d431b85b525d81372802504fa18dbd554c": {
+    "chain": "scroll",
+    "address": "0x80137510979822322193fc997d400d5a6c747bf7",
+    "symbol": "STONE",
+    "decimals": 18
+  },
+  "0xe4fc4c444effb5eca80274c021f652980794eae6": {
+    "chain": "scroll",
+    "address": "0xf610a9dfb7c89644979b4a0f27063e9e7d7cda32",
+    "symbol": "wstETH",
+    "decimals": 18
+  },
+  "0x8966993138b95b48142f6ecb590427eb7e18a719": {
+    "chain": "scroll",
+    "address": "0x3ba89d490ab1c0c9cc2313385b30710e838370a4",
+    "symbol": "SolvBTC.b",
+    "decimals": 18
+  },
+  "0x8698fb1093b6dbc345e2aafeb853c602a3582548": {
+    "chain": "scroll",
+    "address": "0x01f0a31698c4d065659b9bdc21b3610292a1c506",
+    "symbol": "weETH",
+    "decimals": 18
+  },
+  "0x00b49129af3be28d0cdb1e60b155b234d0e19190": {
+    "chain": "scroll",
+    "address": "0x01f0a31698c4d065659b9bdc21b3610292a1c506",
+    "symbol": "weETH",
+    "decimals": 18
+  },
+  "0x65a5dbef0d1bff772822e4652aed2829718dc43f": {
+    "chain": "scroll",
+    "address": "0x01f0a31698c4d065659b9bdc21b3610292a1c506",
+    "symbol": "weETH",
+    "decimals": 18
+  },
+  "0x52fef2b9040ba81e40421660335655d70fe8cf03": {
+    "chain": "scroll",
+    "address": "0xa25b25548b4c98b0c7d3d27dca5d5ca743d68b7f",
+    "symbol": "wrsETH",
+    "decimals": 18
+  },
   "0xf7b5965f5c117eb1b5450187c9dcfccc3c317e8e": {
     "chain": "optimism",
     "address": "0x4200000000000000000000000000000000000006",

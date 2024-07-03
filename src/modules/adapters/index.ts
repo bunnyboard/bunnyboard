@@ -10,6 +10,7 @@ import BenqiAdapter from './benqi/benqi';
 import BungeeAdapter from './bungee/bungee';
 import CompoundAdapter from './compound/compound';
 import Compoundv3Adapter from './compound/compoundv3';
+import CompoundWithOracleAdapter from './compound/compoundWithOracle';
 import CrvusdAdapter from './crvusd/crvusd';
 import IonicAdapter from './ionic/ionic';
 import IronbankAdapter from './ironbank/ironbank';
@@ -57,6 +58,7 @@ export function getProtocolAdapters(
     kinza: new KinzaAdapter(services, storages, ProtocolConfigs.kinza),
     venus: new VenusAdapter(services, storages, ProtocolConfigs.venus),
     radiant: new RadiantAdapter(services, storages, ProtocolConfigs.radiant),
+    rho: new CompoundWithOracleAdapter(services, storages, ProtocolConfigs.rho),
     sonne: new SonneAdapter(services, storages, ProtocolConfigs.sonne),
     spark: new SparkAdapter(services, storages, ProtocolConfigs.spark),
     liquity: new LiquityAdapter(services, storages, ProtocolConfigs.liquity),
