@@ -146,6 +146,11 @@ const testcases = [
     timestamp: 1717200000, // Sat Jun 01 2024 00:00:00 GMT+0000
     expectedBlockNumber: 16662,
   },
+  {
+    ...EnvConfig.blockchains.seievm,
+    timestamp: 1717200000, // Sat Jun 01 2024 00:00:00 GMT+0000
+    expectedBlockNumber: 80041938,
+  },
 ];
 
 describe('getBlockNumberAtTimestamp', function () {

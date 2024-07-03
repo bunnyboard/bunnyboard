@@ -32,6 +32,7 @@ import { TectonicConfigs } from './protocols/tectonic';
 import { UwulendConfigs } from './protocols/uwulend';
 import { VenusConfigs } from './protocols/venus';
 import { YethConfigs } from './protocols/yearn';
+import { YeifinanceConfigs } from './protocols/yeifinance';
 import { ZerolendConfigs } from './protocols/zerolend';
 
 export const DefaultQueryContractLogsBlockRange = 1000;
@@ -81,5 +82,6 @@ export const ProtocolConfigs = {
   uwulend: UwulendConfigs,
   venus: VenusConfigs,
   yeth: YethConfigs,
+  yeifinance: YeifinanceConfigs,
   zerolend: ZerolendConfigs,
 };

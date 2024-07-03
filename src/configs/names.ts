@@ -29,6 +29,7 @@ export const ChainNames = {
   bitlayer: 'bitlayer',
   core: 'core',
   taiko: 'taiko',
+  seievm: 'seievm',
 };
 
 export const ProtocolNames = {
@@ -75,5 +76,6 @@ export const ProtocolNames = {
   uwulend: 'uwulend',
   venus: 'venus',
   yeth: 'yeth',
+  yeifinance: 'yeifinance',
   zerolend: 'zerolend',
 };

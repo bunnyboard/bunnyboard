@@ -372,4 +372,17 @@ export const BlockchainConfigs: { [key: string]: Blockchain } = {
       decimals: 18,
     },
   },
+  [ChainNames.seievm]: {
+    name: ChainNames.seievm,
+    family: 'evm',
+    chainId: 1329,
+    nodeRpc: String(process.env.BUNNYBOARD_SEIEVM_NODE),
+    explorerApiEndpoint: 'https://seitrace.com/pacific-1/api/v1',
+    nativeToken: {
+      chain: ChainNames.seievm,
+      address: AddressZero,
+      symbol: 'SEI',
+      decimals: 18,
+    },
+  },
 };

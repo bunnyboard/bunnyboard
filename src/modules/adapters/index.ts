@@ -71,6 +71,7 @@ export function getProtocolAdapters(
     tectonic: new TectonicAdapter(services, storages, ProtocolConfigs.tectonic),
     uwulend: new UwulendAdapter(services, storages, ProtocolConfigs.uwulend),
     pac: new PacAdapter(services, storages, ProtocolConfigs.pac),
+    yeifinance: new Aavev3Adapter(services, storages, ProtocolConfigs.yeifinance),
     zerolend: new ZerolendAdapter(services, storages, ProtocolConfigs.zerolend),
   };
 }
