@@ -924,4 +924,14 @@ export const OracleSourceConfigs: { [key: string]: OracleConfig } = {
     stablecoin: true,
     sources: [],
   },
+  USC: {
+    currency: 'usd',
+    stablecoin: true,
+    sources: [OracleSourceUniswapv2List.USC_USDC],
+  },
+  CDCETH: {
+    currency: 'eth',
+    stablecoin: true,
+    sources: [OracleSourceUniswapv2List.CDCETH_WETH],
+  },
 };

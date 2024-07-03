@@ -30,6 +30,7 @@ import TokenListOptimism from './tokenlists/optimism.json';
 import TokenListPolygon from './tokenlists/polygon.json';
 import TokenListScroll from './tokenlists/scroll.json';
 import TokenListZksync from './tokenlists/zksync.json';
+import TokenListCronos from './tokenlists/cronos.json';
 
 export const AddressesBook = {
   ethereum: EthereumAddresses,
@@ -67,6 +68,7 @@ export const TokensBook = {
   manta: TokenListManta,
   mantle: TokenListMantle,
   merlin: TokenListMerlin,
+  cronos: TokenListCronos,
 };
 
 // these tokens will be used for general purpose

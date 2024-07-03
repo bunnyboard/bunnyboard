@@ -21,6 +21,7 @@ import { MendiConfigs } from './protocols/mendi';
 import { MoonwellConfigs } from './protocols/moonwell';
 import { MorphoConfigs } from './protocols/morpho';
 import { OrbitConfigs } from './protocols/orbit';
+import { OrbynetworkConfigs } from './protocols/orbynetwork';
 import { PacConfigs } from './protocols/pac';
 import { RadiantConfigs } from './protocols/radiant';
 import { RhoConfigs } from './protocols/rho';
@@ -72,6 +73,7 @@ export const ProtocolConfigs = {
   moonwell: MoonwellConfigs,
   morpho: MorphoConfigs,
   orbit: OrbitConfigs,
+  orbynetwork: OrbynetworkConfigs,
   pac: PacConfigs,
   radiant: RadiantConfigs,
   rho: RhoConfigs,

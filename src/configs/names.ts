@@ -58,6 +58,7 @@ export const ProtocolNames = {
   moonwell: 'moonwell',
   morpho: 'morpho',
   orbit: 'orbit',
+  orbynetwork: 'orbynetwork',
   pac: 'pac',
   pancake: 'pancake',
   pancakev3: 'pancakev3',

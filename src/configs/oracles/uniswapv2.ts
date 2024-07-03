@@ -712,4 +712,18 @@ export const OracleSourceUniswapv2List: { [key: string]: OracleSourcePool2 } = {
     baseToken: TokensBook.ethereum['0x3472a5a71965499acd81997a54bba8d852c6e53d'],
     quotaToken: TokensBook.ethereum['0x2260fac5e5542a773aa44fbcfedf7c193bc2c599'],
   },
+  USC_USDC: {
+    type: 'univ2',
+    chain: 'cronos',
+    address: '0x1555f9df84ba0fb50f446a2ab284da787d66f225',
+    baseToken: TokensBook.cronos['0xd42e078cea2be8d03cd9dfecc1f0d28915edea78'],
+    quotaToken: TokensBook.cronos['0xc21223249ca28397b4b6541dffaecc539bff0c59'],
+  },
+  CDCETH_WETH: {
+    type: 'univ2',
+    chain: 'cronos',
+    address: '0xce0d09ff4a543e11dce3ea4c4ed68a9aced9ec49',
+    baseToken: TokensBook.cronos['0x7a7c9db510ab29a2fc362a4c34260becb5ce3446'],
+    quotaToken: TokensBook.cronos['0xe44fd7fcb2b1581822d0c862b68222998a0c299a'],
+  },
 };

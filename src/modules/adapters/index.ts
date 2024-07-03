@@ -22,6 +22,7 @@ import MendiAdapter from './mendi/mendi';
 import MoonwellAdapter from './moonwell/moonwell';
 import MorphoAdapter from './morpho/morpho';
 import OrbitAdapter from './orbit/orbit';
+import OrbynetworkAdapter from './orbynetwork/orbynetwork';
 import PacAdapter from './pac/pac';
 import RadiantAdapter from './radiant/radiant';
 import SeamlessAdapter from './seamless/seamless';
@@ -67,6 +68,7 @@ export function getProtocolAdapters(
     moonwell: new MoonwellAdapter(services, storages, ProtocolConfigs.moonwell),
     morpho: new MorphoAdapter(services, storages, ProtocolConfigs.morpho),
     orbit: new OrbitAdapter(services, storages, ProtocolConfigs.orbit),
+    orbynetwork: new OrbynetworkAdapter(services, storages, ProtocolConfigs.orbynetwork),
     seamless: new SeamlessAdapter(services, storages, ProtocolConfigs.seamless),
     sushi: new SushiAdapter(services, storages, ProtocolConfigs.sushi),
     // strike: new StrikeAdapter(services, storages, ProtocolConfigs.strike),

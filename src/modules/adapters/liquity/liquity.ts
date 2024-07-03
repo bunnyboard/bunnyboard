@@ -11,7 +11,7 @@ import { CdpLendingAssetDataTimeframe } from '../../../types/domains/cdpLending'
 import { ContextServices, ContextStorages } from '../../../types/namespaces';
 import { GetAdapterDataTimeframeOptions } from '../../../types/options';
 import CdpLendingProtocolAdapter from '../cdpLending';
-import { LiquityEventSignatures } from './abis';
+import { LiquityEventInterfaces, LiquityEventSignatures } from './abis';
 
 interface GetTroveStateInfo {
   debtAmount: string;
@@ -41,7 +41,7 @@ export default class LiquityAdapter extends CdpLendingProtocolAdapter {
     const troveInfo = await this.services.blockchain.readContract({
       chain: chain,
       target: troveManager,
-      abi: TroveManagerAbi,
+      abi: this.abiConfigs.eventAbis.troveManager,
       method: 'Troves',
       params: [decodedEvent.args._borrower],
       blockNumber: blockNumber - 1,
@@ -63,7 +63,7 @@ export default class LiquityAdapter extends CdpLendingProtocolAdapter {
     const borrowingFee = await this.services.blockchain.readContract({
       chain: chain,
       target: troveManager,
-      abi: TroveManagerAbi,
+      abi: this.abiConfigs.eventAbis.troveManager,
       method: 'getBorrowingRate',
       params: [],
       blockNumber: blockNumber,
@@ -178,7 +178,8 @@ export default class LiquityAdapter extends CdpLendingProtocolAdapter {
         const signature = log.topics[0];
         const address = normalizeAddress(log.address);
 
-        if (signature === LiquityEventSignatures.TroveUpdated && compareAddress(address, troveConfig.borrowOperation)) {
+        const eventSignatures = this.abiConfigs.eventSignatures as LiquityEventInterfaces;
+        if (signature === eventSignatures.TroveUpdated && compareAddress(address, troveConfig.borrowOperation)) {
           // borrow/repay
           const event: any = decodeEventLog({
             abi: this.abiConfigs.eventAbis.borrowOperation,
@@ -227,7 +228,7 @@ export default class LiquityAdapter extends CdpLendingProtocolAdapter {
             }
           }
         } else if (
-          signature === LiquityEventSignatures.LUSDBorrowingFeePaid &&
+          signature === eventSignatures.LUSDBorrowingFeePaid &&
           compareAddress(address, troveConfig.borrowOperation)
         ) {
           const event: any = decodeEventLog({
@@ -241,10 +242,7 @@ export default class LiquityAdapter extends CdpLendingProtocolAdapter {
 
           const amount = formatBigNumberToString(event.args._LUSDFee, marketConfig.debtToken.decimals);
           assetState.feesPaid = new BigNumber(assetState.feesPaid).plus(new BigNumber(amount)).toString(10);
-        } else if (
-          signature === LiquityEventSignatures.TroveLiquidated &&
-          compareAddress(address, troveConfig.troveManager)
-        ) {
+        } else if (signature === eventSignatures.TroveLiquidated && compareAddress(address, troveConfig.troveManager)) {
           // liquidation
           const event: any = decodeEventLog({
             abi: this.abiConfigs.eventAbis.troveManager,

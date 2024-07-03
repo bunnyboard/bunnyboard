@@ -1,0 +1,26 @@
+{
+  "0xd42e078cea2be8d03cd9dfecc1f0d28915edea78": {
+    "chain": "cronos",
+    "address": "0xd42e078cea2be8d03cd9dfecc1f0d28915edea78",
+    "symbol": "USC",
+    "decimals": 18
+  },
+  "0xc21223249ca28397b4b6541dffaecc539bff0c59": {
+    "chain": "cronos",
+    "address": "0xc21223249ca28397b4b6541dffaecc539bff0c59",
+    "symbol": "USDC",
+    "decimals": 6
+  },
+  "0xe44fd7fcb2b1581822d0c862b68222998a0c299a": {
+    "chain": "cronos",
+    "address": "0xe44fd7fcb2b1581822d0c862b68222998a0c299a",
+    "symbol": "WETH",
+    "decimals": 18
+  },
+  "0x7a7c9db510ab29a2fc362a4c34260becb5ce3446": {
+    "chain": "cronos",
+    "address": "0x7a7c9db510ab29a2fc362a4c34260becb5ce3446",
+    "symbol": "CDCETH",
+    "decimals": 18
+  }
+}

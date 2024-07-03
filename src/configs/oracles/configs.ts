@@ -617,4 +617,11 @@ export const OracleConfigs: { [key: string]: { [key: string]: OracleConfig } } =
     '0xd988097fb8612cc24eec14542bc03424c656005f': OracleSourceConfigs.USDC,
     '0xf0f161fda2712db8b566946122a5af183995e2ed': OracleSourceConfigs.USDT,
   },
+
+  cronos: {
+    '0xd42e078cea2be8d03cd9dfecc1f0d28915edea78': OracleSourceConfigs.USC,
+    '0xc21223249ca28397b4b6541dffaecc539bff0c59': OracleSourceConfigs.USDC,
+    '0x7a7c9db510ab29a2fc362a4c34260becb5ce3446': OracleSourceConfigs.CDCETH,
+    '0xe44fd7fcb2b1581822d0c862b68222998a0c299a': OracleSourceConfigs.ETH,
+  },
 };
