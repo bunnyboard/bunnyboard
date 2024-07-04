@@ -113,6 +113,12 @@
     "symbol": "DPI",
     "decimals": 18
   },
+  "0x15f74458ae0bfdaa1a96ca1aa779d715cc1eefe4": {
+    "chain": "ethereum",
+    "symbol": "GRAI",
+    "decimals": 18,
+    "address": "0x15f74458ae0bfdaa1a96ca1aa779d715cc1eefe4"
+  },
   "0x1635b506a88fbf428465ad65d00e8d6b6e5846c3": {
     "chain": "ethereum",
     "address": "0x1635b506a88fbf428465ad65d00e8d6b6e5846c3",

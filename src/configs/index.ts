@@ -10,6 +10,7 @@ import { BenqiConfigs } from './protocols/benqi';
 import { BungeeConfigs } from './protocols/bungee';
 import { CompoundConfigs, Compoundv3Configs } from './protocols/compound';
 import { CrvusdConfigs } from './protocols/crvusd';
+import { GravitaConfigs } from './protocols/gravita';
 import { HanaConfigs } from './protocols/hana';
 import { IonicConfigs } from './protocols/ionic';
 import { IronbankConfigs } from './protocols/ironbank';
@@ -62,6 +63,7 @@ export const ProtocolConfigs = {
   compound: CompoundConfigs,
   compoundv3: Compoundv3Configs,
   crvusd: CrvusdConfigs,
+  gravita: GravitaConfigs,
   hana: HanaConfigs,
   ionic: IonicConfigs,
   ironbank: IronbankConfigs,

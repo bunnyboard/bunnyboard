@@ -116,6 +116,7 @@ export const LendingMarketVersions = {
     liquity: 'liquity',
     abracadabra: 'abracadabra',
     crvusd: 'crvusd',
+    gravita: 'gravita',
   },
   isolated: {
     ajna: 'ajna',

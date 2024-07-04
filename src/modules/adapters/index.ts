@@ -12,6 +12,7 @@ import CompoundAdapter from './compound/compound';
 import Compoundv3Adapter from './compound/compoundv3';
 import CompoundWithOracleAdapter from './compound/compoundWithOracle';
 import CrvusdAdapter from './crvusd/crvusd';
+import GravitaAdapter from './gravita/gravita';
 import IonicAdapter from './ionic/ionic';
 import IronbankAdapter from './ironbank/ironbank';
 import IroncladAdapter from './ironclad/ironclad';
@@ -53,6 +54,7 @@ export function getProtocolAdapters(
     compoundv3: new Compoundv3Adapter(services, storages, ProtocolConfigs.compoundv3),
     crvusd: new CrvusdAdapter(services, storages, ProtocolConfigs.crvusd),
     hana: new Aavev3Adapter(services, storages, ProtocolConfigs.hana),
+    gravita: new GravitaAdapter(services, storages, ProtocolConfigs.gravita),
     ionic: new IonicAdapter(services, storages, ProtocolConfigs.ionic),
     ironbank: new IronbankAdapter(services, storages, ProtocolConfigs.ironbank),
     ironclad: new IroncladAdapter(services, storages, ProtocolConfigs.ironclad),
