@@ -22,6 +22,9 @@ export const OracleTypes = {
 
   // https://etherscan.io/address/0x5a6a4d54456819380173272a5e8e9b9904bdf41b
   curveMetaPool: 'curveMetaPool',
+
+  // https://etherscan.io/address/0xdc24316b9ae028f1497c275eb9192a3ea0f67022
+  curveFactoryPool: 'curveFactoryPool',
 };
 const AllOracleTypes = Object.values(OracleTypes);
 export type OracleType = (typeof AllOracleTypes)[number];
@@ -65,8 +68,12 @@ export interface OracleSourceOffchain {
   ticker: string; // ETHUSDT
 }
 
-export interface OracleSourceCurveMetaPool extends OracleSourceBase {
+export interface OracleSourceCurvePool extends OracleSourceBase {
+  type: 'curveMetaPool' | 'curveFactoryPool';
   baseToken: Token;
+  baseTokenIndex: number;
+  quotaToken: Token;
+  quotaTokenIndex: number;
 }
 
 export interface OracleConfig {
@@ -76,11 +83,7 @@ export interface OracleConfig {
 
   // a list of on-chain sources where we can get the token price
   sources: Array<
-    | OracleSourceChainlink
-    | OracleSourcePool2
-    | OracleSourceSavingDai
-    | OracleSourceMakerRwaPip
-    | OracleSourceCurveMetaPool
+    OracleSourceChainlink | OracleSourcePool2 | OracleSourceSavingDai | OracleSourceMakerRwaPip | OracleSourceCurvePool
   >;
 
   // if is stablecoin, return 1 when we can not fetch the price from any source

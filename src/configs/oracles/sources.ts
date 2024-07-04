@@ -1,6 +1,7 @@
 import { OracleConfig } from '../../types/oracles';
 import { OracleSourceChainlinkList } from './chainlink';
 import { OracleCurrencyBaseConfigs } from './currency';
+import { OracleSourceCurveList } from './curve';
 import { OracleSourceCustomList } from './custom';
 import { OracleSourceUniswapv2List } from './uniswapv2';
 import { OracleSourceUniswapv3List } from './uniswapv3';
@@ -128,7 +129,18 @@ export const OracleSourceConfigs: { [key: string]: OracleConfig } = {
   },
   GUSD: {
     currency: 'usd',
-    sources: [OracleSourceChainlinkList.GUSD_USD, OracleSourceCustomList.GUSD_METAPOOL],
+    stablecoin: true,
+    sources: [OracleSourceChainlinkList.GUSD_USD, OracleSourceCurveList.GUSD_METAPOOL],
+  },
+  mkUSD: {
+    currency: 'usd',
+    stablecoin: true,
+    sources: [OracleSourceCurveList.mkUSD_USDC],
+  },
+  ULTRA: {
+    currency: 'usd',
+    stablecoin: true,
+    sources: [OracleSourceCurveList.ULTRA_USDC],
   },
   FIL: {
     // FIl on bnbchain and renFIL on ethereum
@@ -240,7 +252,8 @@ export const OracleSourceConfigs: { [key: string]: OracleConfig } = {
   },
   MIM: {
     currency: 'eth',
-    sources: [OracleSourceCustomList.MIM_METAPOOL, OracleSourceUniswapv2List.MIM_WETH],
+    stablecoin: true,
+    sources: [OracleSourceCurveList.MIM_METAPOOL, OracleSourceUniswapv2List.MIM_WETH],
   },
   FXS: {
     currency: 'usd',
@@ -565,7 +578,8 @@ export const OracleSourceConfigs: { [key: string]: OracleConfig } = {
   },
   mUSD: {
     currency: 'usd',
-    sources: [OracleSourceCustomList.mUSD_METAPOOL],
+    stablecoin: true,
+    sources: [OracleSourceCurveList.mUSD_METAPOOL],
   },
   BAND: {
     currency: 'eth',

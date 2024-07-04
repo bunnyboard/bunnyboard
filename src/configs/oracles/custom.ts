@@ -1,8 +1,8 @@
-import { OracleSourceCurveMetaPool, OracleSourceMakerRwaPip, OracleSourceSavingDai } from '../../types/oracles';
+import { OracleSourceMakerRwaPip, OracleSourceSavingDai } from '../../types/oracles';
 import { TokensBook } from '../data';
 
 export const OracleSourceCustomList: {
-  [key: string]: OracleSourceSavingDai | OracleSourceMakerRwaPip | OracleSourceCurveMetaPool;
+  [key: string]: OracleSourceSavingDai | OracleSourceMakerRwaPip;
 } = {
   SAVING_DAI: {
     type: 'savingDai',
@@ -106,26 +106,5 @@ export const OracleSourceCustomList: {
     address: '0x35d1b3f3d7966a1dfe207aa4514c12a259a0492b',
     token: TokensBook.ethereum['0xf5e5e706efc841bed1d24460cd04028075cdbfde'],
     ilk: '0x5257413031352d41000000000000000000000000000000000000000000000000',
-  },
-  MIM_METAPOOL: {
-    type: 'curveMetaPool',
-    chain: 'ethereum',
-    currency: 'usd',
-    address: '0x5a6a4d54456819380173272a5e8e9b9904bdf41b',
-    baseToken: TokensBook.ethereum['0x99d8a9c45b2eca8864373a26d1459e3dff1e17f3'],
-  },
-  GUSD_METAPOOL: {
-    type: 'curveMetaPool',
-    chain: 'ethereum',
-    currency: 'usd',
-    address: '0x4f062658eaaf2c1ccf8c8e36d6824cdf41167956',
-    baseToken: TokensBook.ethereum['0x056fd409e1d7a124bd7017459dfea2f387b6d5cd'],
-  },
-  mUSD_METAPOOL: {
-    type: 'curveMetaPool',
-    chain: 'ethereum',
-    currency: 'usd',
-    address: '0x8474ddbe98f5aa3179b3b3f5942d724afcdec9f6',
-    baseToken: TokensBook.ethereum['0xe2f2a5c287993345a840db3b0845fbc70f5935a5'],
   },
 };

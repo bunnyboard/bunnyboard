@@ -144,6 +144,8 @@ export const OracleConfigs: { [key: string]: { [key: string]: OracleConfig } } =
     '0xfae103dc9cf190ed75350761e95403b7b8afa6c0': OracleSourceConfigs.rswETH,
     '0x3472a5a71965499acd81997a54bba8d852c6e53d': OracleSourceConfigs.BADGER,
     '0x15f74458ae0bfdaa1a96ca1aa779d715cc1eefe4': OracleSourceConfigs.GRAI,
+    '0x4591dbff62656e7859afe5e45f6f47d3669fbb28': OracleSourceConfigs.mkUSD,
+    '0x35282d87011f87508d457f08252bc5bfa52e10a0': OracleSourceConfigs.ULTRA,
 
     // todo need to find better oracle source
     '0x9d39a5de30e57443bff2a8307a4256c8797a3497': OracleSourceConfigs.USDT,

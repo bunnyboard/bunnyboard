@@ -11,7 +11,7 @@ import UniswapLibs from '../../modules/libs/uniswap';
 import {
   OracleCurrencyBase,
   OracleSourceChainlink,
-  OracleSourceCurveMetaPool,
+  OracleSourceCurvePool,
   OracleSourceMakerRwaPip,
   OracleSourceOffchain,
   OracleSourcePool2,
@@ -36,7 +36,7 @@ export default class OracleService extends CachingService implements IOracleServ
       | OracleSourcePool2
       | OracleSourceSavingDai
       | OracleSourceMakerRwaPip
-      | OracleSourceCurveMetaPool,
+      | OracleSourceCurvePool,
     timestamp: number,
   ): Promise<string | null> {
     const sourceCachingKey = `source:${source.type}:${source.chain}:${source.address}:${
@@ -96,9 +96,10 @@ export default class OracleService extends CachingService implements IOracleServ
 
         break;
       }
-      case 'curveMetaPool': {
-        const answer = await CurveLibs.getMetaPoolPrice({
-          config: source as OracleSourceCurveMetaPool,
+      case 'curveMetaPool':
+      case 'curveFactoryPool': {
+        const answer = await CurveLibs.getCurvePoolPrice({
+          config: source as OracleSourceCurvePool,
           blockNumber: blockNumber,
         });
         if (answer) {

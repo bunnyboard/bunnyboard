@@ -239,6 +239,12 @@
     "symbol": "BADGER",
     "decimals": 18
   },
+  "0x35282d87011f87508d457f08252bc5bfa52e10a0": {
+    "chain": "ethereum",
+    "address": "0x35282d87011f87508d457f08252bc5bfa52e10a0",
+    "symbol": "ULTRA",
+    "decimals": 18
+  },
   "0x3845badade8e6dff049820680d1f14bd3903a5d0": {
     "chain": "ethereum",
     "address": "0x3845badade8e6dff049820680d1f14bd3903a5d0",
@@ -334,6 +340,12 @@
     "symbol": "OXT",
     "decimals": 18,
     "address": "0x4575f41308ec1483f3d399aa9a2826d74da13deb"
+  },
+  "0x4591dbff62656e7859afe5e45f6f47d3669fbb28": {
+    "chain": "ethereum",
+    "address": "0x4591dbff62656e7859afe5e45f6f47d3669fbb28",
+    "symbol": "mkUSD",
+    "decimals": 18
   },
   "0x4691937a7508860f876c9c0a2a617e7d9e945d4b": {
     "chain": "ethereum",
