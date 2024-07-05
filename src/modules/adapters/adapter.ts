@@ -65,6 +65,8 @@ export default class ProtocolAdapter implements IProtocolAdapter {
     await this.collectSnapshots(options);
   }
 
+  public async runTest(options: RunAdapterOptions): Promise<void> {}
+
   protected async getEventLogs(options: AdapterGetEventLogsOptions): Promise<Array<any>> {
     return [];
   }

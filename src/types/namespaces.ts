@@ -39,6 +39,9 @@ export interface IProtocolAdapter {
   abiConfigs: AdapterAbiConfigs;
 
   run: (options: RunAdapterOptions) => Promise<void>;
+
+  // run test
+  runTest: (options: RunAdapterOptions) => Promise<void>;
 }
 
 export interface ICrossLendingProtocolAdapter extends IProtocolAdapter {

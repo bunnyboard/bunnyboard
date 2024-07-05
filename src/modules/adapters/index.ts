@@ -25,6 +25,7 @@ import MorphoAdapter from './morpho/morpho';
 import OrbitAdapter from './orbit/orbit';
 import OrbynetworkAdapter from './orbynetwork/orbynetwork';
 import PacAdapter from './pac/pac';
+import PrismaAdapter from './prisma/prisma';
 import RadiantAdapter from './radiant/radiant';
 import SeamlessAdapter from './seamless/seamless';
 import SonneAdapter from './sonne/sonne';
@@ -60,6 +61,7 @@ export function getProtocolAdapters(
     ironclad: new IroncladAdapter(services, storages, ProtocolConfigs.ironclad),
     kinza: new KinzaAdapter(services, storages, ProtocolConfigs.kinza),
     venus: new VenusAdapter(services, storages, ProtocolConfigs.venus),
+    prisma: new PrismaAdapter(services, storages, ProtocolConfigs.prisma),
     radiant: new RadiantAdapter(services, storages, ProtocolConfigs.radiant),
     rho: new CompoundWithOracleAdapter(services, storages, ProtocolConfigs.rho),
     sonne: new SonneAdapter(services, storages, ProtocolConfigs.sonne),

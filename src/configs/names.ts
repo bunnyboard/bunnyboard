@@ -63,6 +63,7 @@ export const ProtocolNames = {
   pac: 'pac',
   pancake: 'pancake',
   pancakev3: 'pancakev3',
+  prisma: 'prisma',
   radiant: 'radiant',
   rho: 'rho',
   seamless: 'seamless',

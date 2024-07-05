@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "description": "Blockchain and DeFi data collecting services",
   "license": "MIT",
+  "bin": {
+    "bunny": "./build/index.js"
+  },
   "scripts": {
     "build": "rm -rf ./build && tsc",
     "test": "vitest",

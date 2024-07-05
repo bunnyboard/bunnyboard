@@ -61,18 +61,6 @@ export default class GravitaAdapter extends CdpLendingProtocolAdapter {
     };
   }
 
-  protected async getBorrowingFee(chain: string, troveManager: string, blockNumber: number): Promise<string> {
-    const borrowingFee = await this.services.blockchain.readContract({
-      chain: chain,
-      target: troveManager,
-      abi: this.abiConfigs.eventAbis.troveManager,
-      method: 'getBorrowingRate',
-      params: [],
-      blockNumber: blockNumber,
-    });
-    return formatBigNumberToString(borrowingFee.toString(), 18);
-  }
-
   protected async getCollateralsAndPrices(
     config: GravitaLendingMarketConfig,
     blockNumber: number,
