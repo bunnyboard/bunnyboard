@@ -112,4 +112,17 @@ export default class CrossLendingProtocolAdapter extends ProtocolAdapter impleme
       });
     }
   }
+
+  public async runTest(options: RunAdapterOptions): Promise<void> {
+    const currentTime = getTimestamp();
+    const last24Hours = currentTime - 24 * 60 * 60;
+    console.log(
+      await this.getLendingReservesDataTimeframe({
+        config: options.metricConfig,
+        fromTime: last24Hours,
+        toTime: currentTime,
+        latestState: true,
+      }),
+    );
+  }
 }

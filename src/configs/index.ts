@@ -8,6 +8,7 @@ import { BalancerConfigs } from './protocols/balancer';
 import { BeetsConfigs } from './protocols/beets';
 import { BenqiConfigs } from './protocols/benqi';
 import { BungeeConfigs } from './protocols/bungee';
+import { ColendCOnfigs } from './protocols/colend';
 import { CompoundConfigs, Compoundv3Configs } from './protocols/compound';
 import { CrvusdConfigs } from './protocols/crvusd';
 import { GravitaConfigs } from './protocols/gravita';
@@ -61,6 +62,7 @@ export const ProtocolConfigs = {
   beets: BeetsConfigs,
   benqi: BenqiConfigs,
   bungee: BungeeConfigs,
+  colend: ColendCOnfigs,
   compound: CompoundConfigs,
   compoundv3: Compoundv3Configs,
   crvusd: CrvusdConfigs,

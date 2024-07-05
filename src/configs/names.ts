@@ -43,6 +43,7 @@ export const ProtocolNames = {
   beets: 'beets',
   benqi: 'benqi',
   bungee: 'bungee',
+  colend: 'colend',
   compound: 'compound',
   compoundv3: 'compoundv3',
   crvusd: 'crvusd',

@@ -51,6 +51,7 @@ export function getProtocolAdapters(
     beets: new BalancerAdapter(services, storages, ProtocolConfigs.beets),
     benqi: new BenqiAdapter(services, storages, ProtocolConfigs.benqi),
     bungee: new BungeeAdapter(services, storages, ProtocolConfigs.bungee),
+    colend: new Aavev3Adapter(services, storages, ProtocolConfigs.colend),
     compound: new CompoundAdapter(services, storages, ProtocolConfigs.compound),
     compoundv3: new Compoundv3Adapter(services, storages, ProtocolConfigs.compoundv3),
     crvusd: new CrvusdAdapter(services, storages, ProtocolConfigs.crvusd),
