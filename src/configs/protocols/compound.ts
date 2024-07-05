@@ -153,6 +153,15 @@ export const Compoundv3Configs: Compoundv3ProtocolConfig = {
       debtToken: TokensBook.arbitrum['0x82af49447d8a07e3bd95bd0d56f35241523fbab1'],
     },
     {
+      chain: ChainNames.arbitrum,
+      protocol: ProtocolNames.compoundv3,
+      version: LendingMarketVersions.isolated.compoundv3,
+      birthday: 1718928000, // Fri Jun 21 2024 00:00:00 GMT+0000
+      metric: DataMetrics.isolatedLending,
+      address: '0xd98be00b5d27fc98112bde293e487f8d4ca57d07', // cUSDTv3
+      debtToken: TokensBook.arbitrum['0xfd086bc7cd5c481dcc9c85ebe478a1c0b69fcbb9'],
+    },
+    {
       chain: ChainNames.base,
       protocol: ProtocolNames.compoundv3,
       version: LendingMarketVersions.isolated.compoundv3,

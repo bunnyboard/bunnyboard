@@ -3,7 +3,6 @@ import { ContextServices, ContextStorages, IProtocolAdapter } from '../../types/
 import AaveAdapter from './aave/aave';
 import Aavev3Adapter from './aave/aavev3';
 import AbracadabraAdapter from './abracadabra/abracadabra';
-// import AjnaAdapter from './ajna/ajna';
 import AvalonAdapter from './avalon/avalon';
 import BalancerAdapter from './balancer/balancer';
 import BenqiAdapter from './benqi/benqi';
@@ -12,7 +11,6 @@ import CompoundAdapter from './compound/compound';
 import Compoundv3Adapter from './compound/compoundv3';
 import CompoundWithOracleAdapter from './compound/compoundWithOracle';
 import CrvusdAdapter from './crvusd/crvusd';
-import GravitaAdapter from './gravita/gravita';
 import IonicAdapter from './ionic/ionic';
 import IronbankAdapter from './ironbank/ironbank';
 import IroncladAdapter from './ironclad/ironclad';
@@ -25,7 +23,6 @@ import MorphoAdapter from './morpho/morpho';
 import OrbitAdapter from './orbit/orbit';
 import OrbynetworkAdapter from './orbynetwork/orbynetwork';
 import PacAdapter from './pac/pac';
-import PrismaAdapter from './prisma/prisma';
 import RadiantAdapter from './radiant/radiant';
 import SeamlessAdapter from './seamless/seamless';
 import SonneAdapter from './sonne/sonne';
@@ -56,13 +53,13 @@ export function getProtocolAdapters(
     compoundv3: new Compoundv3Adapter(services, storages, ProtocolConfigs.compoundv3),
     crvusd: new CrvusdAdapter(services, storages, ProtocolConfigs.crvusd),
     hana: new Aavev3Adapter(services, storages, ProtocolConfigs.hana),
-    gravita: new GravitaAdapter(services, storages, ProtocolConfigs.gravita),
+    // gravita: new GravitaAdapter(services, storages, ProtocolConfigs.gravita),
     ionic: new IonicAdapter(services, storages, ProtocolConfigs.ionic),
     ironbank: new IronbankAdapter(services, storages, ProtocolConfigs.ironbank),
     ironclad: new IroncladAdapter(services, storages, ProtocolConfigs.ironclad),
     kinza: new KinzaAdapter(services, storages, ProtocolConfigs.kinza),
     venus: new VenusAdapter(services, storages, ProtocolConfigs.venus),
-    prisma: new PrismaAdapter(services, storages, ProtocolConfigs.prisma),
+    // prisma: new PrismaAdapter(services, storages, ProtocolConfigs.prisma),
     radiant: new RadiantAdapter(services, storages, ProtocolConfigs.radiant),
     rho: new CompoundWithOracleAdapter(services, storages, ProtocolConfigs.rho),
     sonne: new SonneAdapter(services, storages, ProtocolConfigs.sonne),
