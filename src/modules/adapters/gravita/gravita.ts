@@ -102,7 +102,7 @@ export default class GravitaAdapter extends CdpLendingProtocolAdapter {
           if (token) {
             tokens.push({
               token: token,
-              tokenPrice: formatBigNumberToString(prices[i].toString(), 18),
+              tokenPrice: prices[i] ? formatBigNumberToString(prices[i].toString(), 18) : '0',
             });
           }
         }
