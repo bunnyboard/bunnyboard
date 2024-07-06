@@ -16,6 +16,7 @@ import IonicAdapter from './ionic/ionic';
 import IronbankAdapter from './ironbank/ironbank';
 import IroncladAdapter from './ironclad/ironclad';
 import KinzaAdapter from './kinza/kinza';
+import LayerbankAdapter from './layerbank/layerbank';
 import LiquityAdapter from './liquity/liquity';
 import MakerAdapter from './maker/maker';
 import MendiAdapter from './mendi/mendi';
@@ -81,5 +82,6 @@ export function getProtocolAdapters(
     pac: new PacAdapter(services, storages, ProtocolConfigs.pac),
     yeifinance: new Aavev3Adapter(services, storages, ProtocolConfigs.yeifinance),
     zerolend: new ZerolendAdapter(services, storages, ProtocolConfigs.zerolend),
+    layerbank: new LayerbankAdapter(services, storages, ProtocolConfigs.layerbank),
   };
 }

@@ -4,16 +4,11 @@ import { IDatabaseService } from '../services/database/domains';
 import { IOracleService } from '../services/oracle/domains';
 import { ProtocolConfig } from './configs';
 import { CdpLendingAssetDataTimeframe } from './domains/cdpLending';
-import { CrossLendingReserveDataState, CrossLendingReserveDataTimeframe } from './domains/crossLending';
+import { CrossLendingReserveDataTimeframe } from './domains/crossLending';
 import { FlashloanDataTimeframe } from './domains/flashloan';
 import { IsolatedLendingPoolDataTimeframe } from './domains/isolatedLending';
 import { StakingPoolDataTimeframe } from './domains/staking';
-import {
-  AdapterAbiConfigs,
-  GetAdapterDataStateOptions,
-  GetAdapterDataTimeframeOptions,
-  RunAdapterOptions,
-} from './options';
+import { AdapterAbiConfigs, GetAdapterDataTimeframeOptions, RunAdapterOptions } from './options';
 
 export interface ContextStorages {
   database: IDatabaseService;
@@ -45,9 +40,6 @@ export interface IProtocolAdapter {
 }
 
 export interface ICrossLendingProtocolAdapter extends IProtocolAdapter {
-  getLendingReservesDataState: (
-    options: GetAdapterDataStateOptions,
-  ) => Promise<Array<CrossLendingReserveDataState> | null>;
   getLendingReservesDataTimeframe: (
     options: GetAdapterDataTimeframeOptions,
   ) => Promise<Array<CrossLendingReserveDataTimeframe> | null>;

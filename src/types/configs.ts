@@ -110,6 +110,7 @@ export const LendingMarketVersions = {
     aavev2: 'aavev2',
     aavev3: 'aavev3',
     compound: 'compound',
+    layerbank: 'layerbank',
   },
   cdp: {
     maker: 'maker',

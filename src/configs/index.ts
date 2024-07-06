@@ -17,6 +17,7 @@ import { IonicConfigs } from './protocols/ionic';
 import { IronbankConfigs } from './protocols/ironbank';
 import { IroncladConfigs } from './protocols/ironclad';
 import { KinzaConfigs } from './protocols/kinza';
+import { LayerbankConfigs } from './protocols/layerbank';
 import { LiquityConfigs } from './protocols/liquity';
 import { MakerConfigs } from './protocols/maker';
 import { MendiConfigs } from './protocols/mendi';
@@ -72,6 +73,7 @@ export const ProtocolConfigs = {
   ironbank: IronbankConfigs,
   ironclad: IroncladConfigs,
   kinza: KinzaConfigs,
+  layerbank: LayerbankConfigs,
   liquity: LiquityConfigs,
   maker: MakerConfigs,
   mendi: MendiConfigs,

@@ -56,6 +56,7 @@ export const ProtocolNames = {
   ironclad: 'ironclad',
   kinza: 'kinza',
   kyberswap: 'kyberswap',
+  layerbank: 'layerbank',
   liquity: 'liquity',
   maker: 'maker',
   mendi: 'mendi',

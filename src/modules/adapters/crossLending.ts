@@ -3,12 +3,11 @@ import EnvConfig from '../../configs/envConfig';
 import { getTimestamp } from '../../lib/utils';
 import { DataMetrics, MetricConfig, ProtocolConfig } from '../../types/configs';
 import {
-  CrossLendingReserveDataState,
   CrossLendingReserveDataStateWithTimeframes,
   CrossLendingReserveDataTimeframe,
 } from '../../types/domains/crossLending';
 import { ContextServices, ContextStorages, ICrossLendingProtocolAdapter } from '../../types/namespaces';
-import { GetAdapterDataStateOptions, GetAdapterDataTimeframeOptions, RunAdapterOptions } from '../../types/options';
+import { GetAdapterDataTimeframeOptions, RunAdapterOptions } from '../../types/options';
 import ProtocolAdapter from './adapter';
 
 export default class CrossLendingProtocolAdapter extends ProtocolAdapter implements ICrossLendingProtocolAdapter {
@@ -16,12 +15,6 @@ export default class CrossLendingProtocolAdapter extends ProtocolAdapter impleme
 
   constructor(services: ContextServices, storages: ContextStorages, protocolConfig: ProtocolConfig) {
     super(services, storages, protocolConfig);
-  }
-
-  public async getLendingReservesDataState(
-    options: GetAdapterDataStateOptions,
-  ): Promise<Array<CrossLendingReserveDataState> | null> {
-    return null;
   }
 
   public async getLendingReservesDataTimeframe(
