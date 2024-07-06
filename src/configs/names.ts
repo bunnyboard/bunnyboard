@@ -30,6 +30,8 @@ export const ChainNames = {
   core: 'core',
   taiko: 'taiko',
   seievm: 'seievm',
+  bob: 'bob',
+  bsquared: 'bsquared',
 };
 
 export const ProtocolNames = {

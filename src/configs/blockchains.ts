@@ -385,4 +385,30 @@ export const BlockchainConfigs: { [key: string]: Blockchain } = {
       decimals: 18,
     },
   },
+  [ChainNames.bob]: {
+    name: ChainNames.bob,
+    family: 'evm',
+    chainId: 60808,
+    nodeRpc: String(process.env.BUNNYBOARD_BOB_NODE),
+    explorerApiEndpoint: 'https://explorer.gobob.xyz/api',
+    nativeToken: {
+      chain: ChainNames.bob,
+      address: AddressZero,
+      symbol: 'ETH',
+      decimals: 18,
+    },
+  },
+  [ChainNames.bsquared]: {
+    name: ChainNames.bsquared,
+    family: 'evm',
+    chainId: 223,
+    nodeRpc: String(process.env.BUNNYBOARD_BSQUARED_NODE),
+    explorerApiEndpoint: 'https://explorer.bsquared.network/api',
+    nativeToken: {
+      chain: ChainNames.bsquared,
+      address: AddressZero,
+      symbol: 'BTC',
+      decimals: 18,
+    },
+  },
 };
