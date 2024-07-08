@@ -203,6 +203,12 @@
     "decimals": 18,
     "address": "0x66efb7cc647e0efab02eba4316a2d2941193f6b3"
   },
+  "0x6985884c4392d348587b19cb9eaaf157f13271cd": {
+    "chain": "polygon",
+    "symbol": "ZRO",
+    "decimals": 18,
+    "address": "0x6985884c4392d348587b19cb9eaaf157f13271cd"
+  },
   "0x6f7c932e7684666c9fd1d44527765433e01ff61d": {
     "chain": "polygon",
     "symbol": "MKR",

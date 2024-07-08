@@ -1,9 +1,9 @@
 {
   "0x176211869ca2b568f2a7d4ee941e073a821ee1ff": {
     "chain": "linea",
-    "address": "0x176211869ca2b568f2a7d4ee941e073a821ee1ff",
-    "symbol": "USDC",
-    "decimals": 6
+    "symbol": "USDC.E",
+    "decimals": 6,
+    "address": "0x176211869ca2b568f2a7d4ee941e073a821ee1ff"
   },
   "0x1bf74c010e6320bab11e2e5a532b5ac15e0b8aa6": {
     "chain": "linea",
@@ -37,9 +37,9 @@
   },
   "0xa219439258ca9da29e9cc4ce5596924745e12b93": {
     "chain": "linea",
-    "address": "0xa219439258ca9da29e9cc4ce5596924745e12b93",
-    "symbol": "USDT",
-    "decimals": 6
+    "symbol": "TETHER USD",
+    "decimals": 6,
+    "address": "0xa219439258ca9da29e9cc4ce5596924745e12b93"
   },
   "0xb5bedd42000b71fdde22d3ee8a79bd49a568fc8f": {
     "chain": "linea",
@@ -55,9 +55,9 @@
   },
   "0xe5d7c2a44ffddf6b295a15c148167daaaf5cf34f": {
     "chain": "linea",
-    "address": "0xe5d7c2a44ffddf6b295a15c148167daaaf5cf34f",
     "symbol": "WETH",
-    "decimals": 18
+    "decimals": 18,
+    "address": "0xe5d7c2a44ffddf6b295a15c148167daaaf5cf34f"
   },
   "0xf3b001d64c656e30a62fbaaca003b1336b4ce12a": {
     "chain": "linea",

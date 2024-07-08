@@ -65,11 +65,17 @@
     "symbol": "DAI",
     "decimals": 18
   },
+  "0x6985884c4392d348587b19cb9eaaf157f13271cd": {
+    "chain": "base",
+    "symbol": "ZRO",
+    "decimals": 18,
+    "address": "0x6985884c4392d348587b19cb9eaaf157f13271cd"
+  },
   "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913": {
     "chain": "base",
-    "address": "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913",
     "symbol": "USDC",
-    "decimals": 6
+    "decimals": 6,
+    "address": "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913"
   },
   "0x940181a94a35a4569e4529a3cdfb74e38fd98631": {
     "chain": "base",
@@ -85,9 +91,9 @@
   },
   "0xb6fe221fe9eef5aba221c348ba20a1bf5e73624c": {
     "chain": "base",
-    "address": "0xb6fe221fe9eef5aba221c348ba20a1bf5e73624c",
-    "symbol": "rETH",
-    "decimals": 18
+    "symbol": "RETH",
+    "decimals": 18,
+    "address": "0xb6fe221fe9eef5aba221c348ba20a1bf5e73624c"
   },
   "0xc1cba3fcea344f92d9239c08c0568f6f2f0ee452": {
     "chain": "base",
@@ -103,9 +109,9 @@
   },
   "0xd9aaec86b65d86f6a7b5b1b0c42ffa531710b6ca": {
     "chain": "base",
-    "address": "0xd9aaec86b65d86f6a7b5b1b0c42ffa531710b6ca",
-    "symbol": "USDbC",
-    "decimals": 6
+    "symbol": "USDBC",
+    "decimals": 6,
+    "address": "0xd9aaec86b65d86f6a7b5b1b0c42ffa531710b6ca"
   },
   "0xfa980ced6895ac314e7de34ef1bfae90a5add21b": {
     "chain": "base",

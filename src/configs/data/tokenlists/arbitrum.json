@@ -197,6 +197,12 @@
     "decimals": 18,
     "address": "0x6694340fc020c5e6b96567843da2df01b2ce1eb6"
   },
+  "0x6985884c4392d348587b19cb9eaaf157f13271cd": {
+    "chain": "arbitrum",
+    "symbol": "ZRO",
+    "decimals": 18,
+    "address": "0x6985884c4392d348587b19cb9eaaf157f13271cd"
+  },
   "0x69eb4fa4a2fbd498c257c57ea8b7655a2559a581": {
     "chain": "arbitrum",
     "symbol": "DODO",
