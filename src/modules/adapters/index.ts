@@ -11,6 +11,7 @@ import CompoundAdapter from './compound/compound';
 import Compoundv3Adapter from './compound/compoundv3';
 import CompoundWithOracleAdapter from './compound/compoundWithOracle';
 import CrvusdAdapter from './crvusd/crvusd';
+import FluidAdapter from './fluid/fluid';
 import GravitaAdapter from './gravita/gravita';
 import IonicAdapter from './ionic/ionic';
 import IronbankAdapter from './ironbank/ironbank';
@@ -83,5 +84,6 @@ export function getProtocolAdapters(
     yeifinance: new Aavev3Adapter(services, storages, ProtocolConfigs.yeifinance),
     zerolend: new ZerolendAdapter(services, storages, ProtocolConfigs.zerolend),
     layerbank: new LayerbankAdapter(services, storages, ProtocolConfigs.layerbank),
+    fluid: new FluidAdapter(services, storages, ProtocolConfigs.fluid),
   };
 }

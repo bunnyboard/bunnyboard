@@ -11,6 +11,7 @@ import { BungeeConfigs } from './protocols/bungee';
 import { ColendCOnfigs } from './protocols/colend';
 import { CompoundConfigs, Compoundv3Configs } from './protocols/compound';
 import { CrvusdConfigs } from './protocols/crvusd';
+import { FluidConfigs } from './protocols/fluid';
 import { GravitaConfigs } from './protocols/gravita';
 import { HanaConfigs } from './protocols/hana';
 import { IonicConfigs } from './protocols/ionic';
@@ -68,6 +69,7 @@ export const ProtocolConfigs = {
   compound: CompoundConfigs,
   compoundv3: Compoundv3Configs,
   crvusd: CrvusdConfigs,
+  fluid: FluidConfigs,
   gravita: GravitaConfigs,
   hana: HanaConfigs,
   ionic: IonicConfigs,
