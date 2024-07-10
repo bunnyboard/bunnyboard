@@ -152,4 +152,17 @@ export default class CdpLendingProtocolAdapter extends ProtocolAdapter implement
       upsert: true,
     });
   }
+
+  public async runTest(options: RunAdapterOptions): Promise<void> {
+    const currentTime = getTimestamp();
+    const last24Hours = currentTime - 24 * 60 * 60;
+    console.log(
+      await this.getLendingAssetData({
+        config: options.metricConfig,
+        fromTime: last24Hours,
+        toTime: currentTime,
+        latestState: true,
+      }),
+    );
+  }
 }

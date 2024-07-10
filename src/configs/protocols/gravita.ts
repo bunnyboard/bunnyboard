@@ -106,24 +106,24 @@ export const GravitaConfigs: GravitaProtocolConfig = {
       vesselManager: '0x40e0e274a42d9b1a9d4b64dc6c46d21228d45c20',
       oracle: '0x15f74458ae0bfdaa1a96ca1aa779d715cc1eefe4',
     },
-    {
-      chain: ChainNames.polygonzkevm,
-      protocol: ProtocolNames.gravita,
-      metric: DataMetrics.cdpLending,
-      version: LendingMarketVersions.cdp.gravita,
-      birthday: 1690848000, // Tue Aug 01 2023 00:00:00 GMT+0000
-      address: '0xca68ad4ee5c96871ec6c6dac2f714a8437a3fe66', // GRAI,
-      debtToken: {
-        chain: ChainNames.polygonzkevm,
-        symbol: 'GRAI',
-        decimals: 18,
-        address: '0xca68ad4ee5c96871ec6c6dac2f714a8437a3fe66',
-      },
-      adminContract: '0x6b42581ac12f442503dfb3dff2bc75ed83850637',
-      borrowOperations: '0xc818f878f27d0273fb53b71d281c82921f0af15c',
-      vesselManager: '0x57a1953bf194a1ef73396e442ac7dc761dcd23cc',
-      oracle: '0x5c3b45c9f9c6e3d37de94bc03318622d3dd3f525',
-    },
+    // {
+    //   chain: ChainNames.polygonzkevm,
+    //   protocol: ProtocolNames.gravita,
+    //   metric: DataMetrics.cdpLending,
+    //   version: LendingMarketVersions.cdp.gravita,
+    //   birthday: 1690848000, // Tue Aug 01 2023 00:00:00 GMT+0000
+    //   address: '0xca68ad4ee5c96871ec6c6dac2f714a8437a3fe66', // GRAI,
+    //   debtToken: {
+    //     chain: ChainNames.polygonzkevm,
+    //     symbol: 'GRAI',
+    //     decimals: 18,
+    //     address: '0xca68ad4ee5c96871ec6c6dac2f714a8437a3fe66',
+    //   },
+    //   adminContract: '0x6b42581ac12f442503dfb3dff2bc75ed83850637',
+    //   borrowOperations: '0xc818f878f27d0273fb53b71d281c82921f0af15c',
+    //   vesselManager: '0x57a1953bf194a1ef73396e442ac7dc761dcd23cc',
+    //   oracle: '0x5c3b45c9f9c6e3d37de94bc03318622d3dd3f525',
+    // },
     {
       chain: ChainNames.zksync,
       protocol: ProtocolNames.gravita,

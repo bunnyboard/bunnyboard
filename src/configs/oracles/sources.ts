@@ -948,7 +948,7 @@ export const OracleSourceConfigs: { [key: string]: OracleConfig } = {
     sources: [OracleSourceUniswapv2List.CDCETH_WETH],
   },
   GRAI: {
-    currency: 'eth',
+    currency: 'usd',
     stablecoin: true,
     sources: [OracleSourceUniswapv3List.GRAI_USDC],
   },
