@@ -146,6 +146,14 @@ export const OracleConfigs: { [key: string]: { [key: string]: OracleConfig } } =
     '0x15f74458ae0bfdaa1a96ca1aa779d715cc1eefe4': OracleSourceConfigs.GRAI,
     '0x4591dbff62656e7859afe5e45f6f47d3669fbb28': OracleSourceConfigs.mkUSD,
     '0x35282d87011f87508d457f08252bc5bfa52e10a0': OracleSourceConfigs.ULTRA,
+    '0xaf620e6913fc52acf7c5a5e08bd4cb8aa64be211': OracleSourceConfigs.ezETH,
+    '0xa663b02cf0a4b149d2ad41910cb81e23e1c41c32': OracleSourceConfigs.sFRAX,
+    '0xb45ad160634c528cc3d2926d9807104fa3157305': OracleSourceConfigs.sDOLA,
+    '0x5ca135cb8527d76e932f34b5145575f9d8cbe08e': OracleSourceConfigs.FPI, // FPI
+    '0x0de54cfdfed8005176f8b7a9d5438b45c4f1df1e': OracleSourceConfigs.FPI, // FXB_20240630
+    '0xf8fde8a259a3698902c88bdb1e13ff28cd7f6f09': OracleSourceConfigs.FPI, // FXB_20241231
+    '0x76237bcfdbe8e06fb774663add96216961df4ff3': OracleSourceConfigs.FPI, // FXB_20261231
+    '0xa1290d69c65a6fe4df752f95823fae25cb99e5a7': OracleSourceConfigs.rsETH,
 
     // todo need to find better oracle source
     '0x9d39a5de30e57443bff2a8307a4256c8797a3497': OracleSourceConfigs.USDT,

@@ -25,6 +25,10 @@ export const OracleTypes = {
 
   // https://etherscan.io/address/0xdc24316b9ae028f1497c275eb9192a3ea0f67022
   curveFactoryPool: 'curveFactoryPool',
+
+  // get the price of a staking wrapper token, let say xSUSHI
+  // by get SUSHI balance and divide to xSUSHI supply
+  stakingTokenWrapper: 'stakingTokenWrapper',
 };
 const AllOracleTypes = Object.values(OracleTypes);
 export type OracleType = (typeof AllOracleTypes)[number];
@@ -76,6 +80,12 @@ export interface OracleSourceCurvePool extends OracleSourceBase {
   quotaTokenIndex: number;
 }
 
+export interface OracleSourceStakingTokenWrapper extends OracleSourceBase {
+  type: 'stakingTokenWrapper';
+  method: 'balance' | 'erc4626';
+  underlyingToken: Token;
+}
+
 export interface OracleConfig {
   // if the currency is not usd
   // we need to get currency base token price too
@@ -83,7 +93,12 @@ export interface OracleConfig {
 
   // a list of on-chain sources where we can get the token price
   sources: Array<
-    OracleSourceChainlink | OracleSourcePool2 | OracleSourceSavingDai | OracleSourceMakerRwaPip | OracleSourceCurvePool
+    | OracleSourceChainlink
+    | OracleSourcePool2
+    | OracleSourceSavingDai
+    | OracleSourceMakerRwaPip
+    | OracleSourceCurvePool
+    | OracleSourceStakingTokenWrapper
   >;
 
   // if is stablecoin, return 1 when we can not fetch the price from any source

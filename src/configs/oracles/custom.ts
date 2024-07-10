@@ -1,8 +1,8 @@
-import { OracleSourceMakerRwaPip, OracleSourceSavingDai } from '../../types/oracles';
+import { OracleSourceMakerRwaPip, OracleSourceSavingDai, OracleSourceStakingTokenWrapper } from '../../types/oracles';
 import { TokensBook } from '../data';
 
 export const OracleSourceCustomList: {
-  [key: string]: OracleSourceSavingDai | OracleSourceMakerRwaPip;
+  [key: string]: OracleSourceSavingDai | OracleSourceMakerRwaPip | OracleSourceStakingTokenWrapper;
 } = {
   SAVING_DAI: {
     type: 'savingDai',
@@ -106,5 +106,19 @@ export const OracleSourceCustomList: {
     address: '0x35d1b3f3d7966a1dfe207aa4514c12a259a0492b',
     token: TokensBook.ethereum['0xf5e5e706efc841bed1d24460cd04028075cdbfde'],
     ilk: '0x5257413031352d41000000000000000000000000000000000000000000000000',
+  },
+  sFRAX: {
+    type: 'stakingTokenWrapper',
+    chain: 'ethereum',
+    method: 'balance',
+    address: '0xa663b02cf0a4b149d2ad41910cb81e23e1c41c32',
+    underlyingToken: TokensBook.ethereum['0x853d955acef822db058eb8505911ed77f175b99e'],
+  },
+  sDOLA: {
+    type: 'stakingTokenWrapper',
+    chain: 'ethereum',
+    method: 'erc4626',
+    address: '0xb45ad160634c528cc3d2926d9807104fa3157305',
+    underlyingToken: TokensBook.ethereum['0x865377367054516e17014ccded1e7d814edc9ce4'],
   },
 };

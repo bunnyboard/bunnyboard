@@ -111,7 +111,6 @@ export const LendingMarketVersions = {
     aavev3: 'aavev3',
     compound: 'compound',
     layerbank: 'layerbank',
-    fluid: 'fluid',
   },
   cdp: {
     maker: 'maker',
@@ -125,6 +124,8 @@ export const LendingMarketVersions = {
     ajna: 'ajna',
     compoundv3: 'compoundv3',
     morpho: 'morpho',
+    fluid: 'fluid',
+    fraxlend: 'fraxlend',
   },
 };
 

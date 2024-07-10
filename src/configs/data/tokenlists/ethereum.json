@@ -905,6 +905,12 @@
     "symbol": "STG",
     "decimals": 18
   },
+  "0xaf620e6913fc52acf7c5a5e08bd4cb8aa64be211": {
+    "chain": "ethereum",
+    "address": "0xaf620e6913fc52acf7c5a5e08bd4cb8aa64be211",
+    "symbol": "ezETH",
+    "decimals": 18
+  },
   "0xb0c7a3ba49c7a6eaba6cd4a96c55a1391070ac9a": {
     "chain": "ethereum",
     "symbol": "MAGIC",
@@ -915,6 +921,12 @@
     "chain": "ethereum",
     "address": "0xb23d80f5fefcddaa212212f028021b41ded428cf",
     "symbol": "PRIME",
+    "decimals": 18
+  },
+  "0xb45ad160634c528cc3d2926d9807104fa3157305": {
+    "chain": "ethereum",
+    "address": "0xb45ad160634c528cc3d2926d9807104fa3157305",
+    "symbol": "sDOLA",
     "decimals": 18
   },
   "0xb64ef51c888972c908cfacf59b47c1afbc0ab8ac": {

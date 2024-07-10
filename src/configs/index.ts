@@ -12,6 +12,7 @@ import { ColendCOnfigs } from './protocols/colend';
 import { CompoundConfigs, Compoundv3Configs } from './protocols/compound';
 import { CrvusdConfigs } from './protocols/crvusd';
 import { FluidConfigs } from './protocols/fluid';
+import { FraxlendConfigs } from './protocols/fraxlend';
 import { GravitaConfigs } from './protocols/gravita';
 import { HanaConfigs } from './protocols/hana';
 import { IonicConfigs } from './protocols/ionic';
@@ -70,6 +71,7 @@ export const ProtocolConfigs = {
   compoundv3: Compoundv3Configs,
   crvusd: CrvusdConfigs,
   fluid: FluidConfigs,
+  fraxlend: FraxlendConfigs,
   gravita: GravitaConfigs,
   hana: HanaConfigs,
   ionic: IonicConfigs,
