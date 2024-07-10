@@ -46,7 +46,7 @@ export const DefaultQueryContractLogsBlockRange = 1000;
 export const CustomQueryContractLogsBlockRange: { [key: string]: number } = {
   polygon: 200,
   merlin: 200,
-  zklinknova: 200,
+  zklinknova: 100,
 };
 
 export const DefaultMemcacheTime = 300; // 5 minutes
