@@ -55,9 +55,7 @@ export default class Collector {
       case DataMetrics.crossLending:
       case DataMetrics.cdpLending:
       case DataMetrics.isolatedLending:
-      case DataMetrics.ecosystem:
-      case DataMetrics.staking:
-      case DataMetrics.flashloan: {
+      case DataMetrics.ecosystem: {
         adapter = this.adapters[config.protocol];
         break;
       }
