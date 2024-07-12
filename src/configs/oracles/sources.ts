@@ -952,4 +952,21 @@ export const OracleSourceConfigs: { [key: string]: OracleConfig } = {
     stablecoin: true,
     sources: [OracleSourceUniswapv3List.GRAI_USDC],
   },
+  sFRAX: {
+    currency: 'usd',
+    sources: [OracleSourceCustomList.sFRAX],
+  },
+  sDOLA: {
+    currency: 'usd',
+    sources: [OracleSourceCustomList.sDOLA],
+  },
+  FPI: {
+    currency: 'usd',
+    stablecoin: true,
+    sources: [],
+  },
+  rsETH: {
+    currency: 'eth',
+    sources: [OracleSourceUniswapv3List.rsETH_WETH],
+  },
 };

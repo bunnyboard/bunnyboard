@@ -125,6 +125,7 @@ export const LendingMarketVersions = {
     ajna: 'ajna',
     compoundv3: 'compoundv3',
     morpho: 'morpho',
+    fraxlend: 'fraxlend',
   },
 };
 

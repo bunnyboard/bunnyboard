@@ -3,7 +3,7 @@ import BigNumber from 'bignumber.js';
 import { OracleConfigs } from '../../configs/oracles/configs';
 import { OracleCurrencyBaseConfigs } from '../../configs/oracles/currency';
 import logger from '../../lib/logger';
-import { normalizeAddress } from '../../lib/utils';
+import { formatBigNumberToString, normalizeAddress } from '../../lib/utils';
 import ChainlinkLibs from '../../modules/libs/chainlink';
 import CurveLibs from '../../modules/libs/curve';
 import OracleLibs from '../../modules/libs/custom';
@@ -16,6 +16,7 @@ import {
   OracleSourceOffchain,
   OracleSourcePool2,
   OracleSourceSavingDai,
+  OracleSourceStakingTokenWrapper,
   OracleTypes,
 } from '../../types/oracles';
 import BlockchainService from '../blockchains/blockchain';
@@ -23,6 +24,8 @@ import { CachingService } from '../caching/caching';
 import { getTokenPriceFromBinance } from './binance';
 import { GetTokenPriceOptions, IOracleService } from './domains';
 import { IBlockchainService } from '../blockchains/domains';
+import Erc20Abi from '../../configs/abi/ERC20.json';
+import Erc4626Abi from '../../configs/abi/ERC4626.json';
 
 export default class OracleService extends CachingService implements IOracleService {
   public readonly name: string = 'oracle';
@@ -48,7 +51,8 @@ export default class OracleService extends CachingService implements IOracleServ
       | OracleSourcePool2
       | OracleSourceSavingDai
       | OracleSourceMakerRwaPip
-      | OracleSourceCurvePool,
+      | OracleSourceCurvePool
+      | OracleSourceStakingTokenWrapper,
     timestamp: number,
   ): Promise<string | null> {
     const sourceCachingKey = `source:${source.type}:${source.chain}:${source.address}:${
@@ -121,6 +125,53 @@ export default class OracleService extends CachingService implements IOracleServ
 
         break;
       }
+      case 'stakingTokenWrapper': {
+        const config = source as OracleSourceStakingTokenWrapper;
+
+        if (config.method === 'balance') {
+          const [balance, supply] = await blockchain.multicall({
+            chain: source.chain,
+            blockNumber: blockNumber,
+            calls: [
+              {
+                abi: Erc20Abi,
+                target: config.underlyingToken.address,
+                method: 'balanceOf',
+                params: [config.address],
+              },
+              {
+                abi: Erc20Abi,
+                target: config.address,
+                method: 'totalSupply',
+                params: [],
+              },
+            ],
+          });
+          if (balance && supply !== 0n) {
+            return new BigNumber(balance.toString()).dividedBy(new BigNumber(supply.toString())).toString(10);
+          }
+        } else if (config.method === 'erc4626') {
+          const [balance] = await blockchain.multicall({
+            chain: source.chain,
+            blockNumber: blockNumber,
+            calls: [
+              {
+                abi: Erc4626Abi,
+                target: config.address,
+                method: 'convertToAssets',
+                params: [
+                  new BigNumber(1).multipliedBy(new BigNumber(10).pow(config.underlyingToken.decimals)).toString(10),
+                ],
+              },
+            ],
+          });
+          if (balance) {
+            return formatBigNumberToString(balance.toString(10), config.underlyingToken.decimals);
+          }
+        }
+
+        break;
+      }
     }
 
     return null;
@@ -153,26 +204,42 @@ export default class OracleService extends CachingService implements IOracleServ
 
     if (OracleConfigs[options.chain] && OracleConfigs[options.chain][options.address]) {
       for (const source of OracleConfigs[options.chain][options.address].sources) {
-        const priceFirst = await this.getTokenPriceSource(source, options.timestamp);
-        if (priceFirst) {
-          if (source.currency === 'usd' || OracleConfigs[options.chain][options.address].currency === 'usd') {
-            priceUsd = priceFirst;
-          } else {
-            const currencyBasePriceUsd = await this.getTokenCurrencyBasePriceUsd(
-              OracleConfigs[options.chain][options.address].currency,
-              options.timestamp,
-            );
-            if (currencyBasePriceUsd) {
-              priceUsd = new BigNumber(priceFirst).multipliedBy(new BigNumber(currencyBasePriceUsd)).toString(10);
-            }
-          }
-
-          if (priceUsd && priceUsd !== '0') {
+        if (source.type === 'stakingTokenWrapper') {
+          const stakingTokenWrapperConfig = source as OracleSourceStakingTokenWrapper;
+          const pricePerShare = await this.getTokenPriceSource(source, options.timestamp);
+          const underlyingPrice = await this.getTokenPriceUsd({
+            chain: stakingTokenWrapperConfig.underlyingToken.chain,
+            address: stakingTokenWrapperConfig.underlyingToken.address,
+            timestamp: options.timestamp,
+          });
+          if (pricePerShare && underlyingPrice) {
+            returnPrice = new BigNumber(pricePerShare).multipliedBy(new BigNumber(underlyingPrice)).toString(10);
             await this.setCachingData(cachingKey, priceUsd);
 
-            returnPrice = priceUsd;
-
             break;
+          }
+        } else {
+          const priceFirst = await this.getTokenPriceSource(source, options.timestamp);
+          if (priceFirst) {
+            if (source.currency === 'usd' || OracleConfigs[options.chain][options.address].currency === 'usd') {
+              priceUsd = priceFirst;
+            } else {
+              const currencyBasePriceUsd = await this.getTokenCurrencyBasePriceUsd(
+                OracleConfigs[options.chain][options.address].currency,
+                options.timestamp,
+              );
+              if (currencyBasePriceUsd) {
+                priceUsd = new BigNumber(priceFirst).multipliedBy(new BigNumber(currencyBasePriceUsd)).toString(10);
+              }
+            }
+
+            if (priceUsd && priceUsd !== '0') {
+              await this.setCachingData(cachingKey, priceUsd);
+
+              returnPrice = priceUsd;
+
+              break;
+            }
           }
         }
       }

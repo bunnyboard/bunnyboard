@@ -75,10 +75,12 @@ const oracle = new OracleService(null);
 const chain = 'ethereum';
 
 const tokens = [
-  '0xa35b1b31ce002fbf2058d22f30f95d405200a15b',
-  '0x24ae2da0f361aa4be46b48eb19c91e02c5e4f27e',
-  '0x04c154b66cb340f3ae24111cc767e0184ed00cc6',
-  '0x9ba021b0a9b958b5e75ce9f6dff97c7ee52cb3e6',
+  // '0xa35b1b31ce002fbf2058d22f30f95d405200a15b',
+  // '0x24ae2da0f361aa4be46b48eb19c91e02c5e4f27e',
+  // '0x04c154b66cb340f3ae24111cc767e0184ed00cc6',
+  // '0x9ba021b0a9b958b5e75ce9f6dff97c7ee52cb3e6',
+  // '0xa663b02cf0a4b149d2ad41910cb81e23e1c41c32',
+  '0xb45ad160634c528cc3d2926d9807104fa3157305',
 ];
 
 const timestamp = getTimestamp();
