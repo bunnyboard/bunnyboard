@@ -3,7 +3,7 @@ import { test } from 'vitest';
 import { getTimestamp } from '../../lib/utils';
 import OracleService from './oracle';
 
-const oracle = new OracleService();
+const oracle = new OracleService(null);
 
 // const customCases = [
 //   {

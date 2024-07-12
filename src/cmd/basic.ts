@@ -14,7 +14,7 @@ export class BasicCommand {
 
   public async getServices(): Promise<ContextServices> {
     const blockchain = new BlockchainService();
-    const oracle = new OracleService();
+    const oracle = new OracleService(blockchain);
 
     return {
       blockchain: blockchain,

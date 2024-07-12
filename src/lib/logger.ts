@@ -1,6 +1,7 @@
 import winston from 'winston';
 
 import EnvConfig from '../configs/envConfig';
+import { AxiosError } from 'axios';
 
 const customFormat = winston.format.printf((entry: any) => {
   let propsLine = '';
@@ -23,5 +24,13 @@ const logger = winston.createLogger({
   format: winston.format.combine(winston.format.colorize(), winston.format.timestamp(), customFormat),
   transports: [new winston.transports.Console({})],
 });
+
+// extension
+export function logAxiosError(error: AxiosError) {
+  console.log('axios request error');
+  console.log(error.config ? error.config.url : '');
+  console.log(error.response ? error.response.status : '', error.response ? error.response.statusText : '');
+  console.log(error.response && error.response.data ? error.response.statusText : '');
+}
 
 export default logger;

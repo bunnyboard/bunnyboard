@@ -296,13 +296,6 @@
   },
   {
     "inputs": [],
-    "name": "absorb",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [],
     "name": "constantsView",
     "outputs": [
       {

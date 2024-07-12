@@ -18,7 +18,7 @@ export class TestCommand extends BasicCommand {
 
   public async execute(argv: any) {
     const blockchain = new BlockchainService();
-    const oracle = new OracleService();
+    const oracle = new OracleService(blockchain);
     const memcache = new MemcacheService(DefaultMemcacheTime);
     const database = new DatabaseService();
 

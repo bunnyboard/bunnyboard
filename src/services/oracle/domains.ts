@@ -1,4 +1,5 @@
 import { OracleSourceChainlink, OracleSourcePool2, OracleSourceSavingDai } from '../../types/oracles';
+import { IBlockchainService } from '../blockchains/domains';
 
 export interface GetTokenPriceOptions {
   // chain where token was deployed
@@ -13,6 +14,8 @@ export interface GetTokenPriceOptions {
 
 export interface IOracleService {
   name: string;
+
+  blockchain: IBlockchainService | null | undefined;
 
   // this will get token price vs base token in the oracle config only
   getTokenPriceSource: (

@@ -27,7 +27,7 @@ const ignoredTokens = [
 ];
 
 (async function () {
-  const oracle = new OracleService();
+  const oracle = new OracleService(null);
 
   const database = new DatabaseService();
   await database.connect(EnvConfig.mongodb.connectionUri, EnvConfig.mongodb.databaseName);

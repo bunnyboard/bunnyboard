@@ -22,12 +22,24 @@ import BlockchainService from '../blockchains/blockchain';
 import { CachingService } from '../caching/caching';
 import { getTokenPriceFromBinance } from './binance';
 import { GetTokenPriceOptions, IOracleService } from './domains';
+import { IBlockchainService } from '../blockchains/domains';
 
 export default class OracleService extends CachingService implements IOracleService {
   public readonly name: string = 'oracle';
+  public readonly blockchain: IBlockchainService | undefined | null;
 
-  constructor() {
+  constructor(blockchain: IBlockchainService | undefined | null) {
     super();
+
+    this.blockchain = blockchain;
+  }
+
+  public getBlockchainService(): IBlockchainService {
+    if (this.blockchain) {
+      return this.blockchain;
+    }
+
+    return new BlockchainService();
   }
 
   public async getTokenPriceSource(
@@ -47,7 +59,7 @@ export default class OracleService extends CachingService implements IOracleServ
       return cachingPrice;
     }
 
-    const blockchain = new BlockchainService();
+    const blockchain = this.getBlockchainService();
     const blockNumber = await blockchain.tryGetBlockNumberAtTimestamp(source.chain, timestamp);
 
     switch (source.type) {

@@ -7,7 +7,7 @@ import ERC20Abi from '../../configs/abi/ERC20.json';
 import { AddressE, AddressF, AddressMulticall3, AddressZero } from '../../configs/constants';
 import EnvConfig from '../../configs/envConfig';
 import envConfig from '../../configs/envConfig';
-import logger from '../../lib/logger';
+import logger, { logAxiosError } from '../../lib/logger';
 import { compareAddress, getTimestamp, normalizeAddress, sleep } from '../../lib/utils';
 import { Token } from '../../types/configs';
 import { ContextStorages } from '../../types/namespaces';
@@ -277,7 +277,7 @@ export default class BlockchainService extends CachingService implements IBlockc
           }
         }
       } catch (e: any) {
-        console.log(e);
+        logAxiosError(e);
       }
     }
 
