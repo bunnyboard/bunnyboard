@@ -1,6 +1,7 @@
 import { ProtocolConfigs } from '../../configs';
 import { ContextServices, ContextStorages, IProtocolAdapter } from '../../types/namespaces';
 import AaveAdapter from './aave/aave';
+import Aavev2Adapter from './aave/aavev2';
 import Aavev3Adapter from './aave/aavev3';
 import AvalonAdapter from './avalon/avalon';
 import BalancerAdapter from './balancer/balancer';
@@ -88,5 +89,6 @@ export function getProtocolAdapters(
     fluid: new FluidAdapter(services, storages, ProtocolConfigs.fluid),
     fraxlend: new FraxlendAdapter(services, storages, ProtocolConfigs.fraxlend),
     curvelend: new CurvelendAdapter(services, storages, ProtocolConfigs.curvelend),
+    polter: new Aavev2Adapter(services, storages, ProtocolConfigs.polter),
   };
 }

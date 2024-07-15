@@ -29,6 +29,7 @@ import { MorphoConfigs } from './protocols/morpho';
 import { OrbitConfigs } from './protocols/orbit';
 import { OrbynetworkConfigs } from './protocols/orbynetwork';
 import { PacConfigs } from './protocols/pac';
+import { PolterConfigs } from './protocols/polter';
 import { PrismaConfigs } from './protocols/prisma';
 import { RadiantConfigs } from './protocols/radiant';
 import { RhoConfigs } from './protocols/rho';
@@ -89,6 +90,7 @@ export const ProtocolConfigs = {
   orbit: OrbitConfigs,
   orbynetwork: OrbynetworkConfigs,
   pac: PacConfigs,
+  polter: PolterConfigs,
   prisma: PrismaConfigs,
   radiant: RadiantConfigs,
   rho: RhoConfigs,
