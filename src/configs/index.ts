@@ -11,6 +11,7 @@ import { BungeeConfigs } from './protocols/bungee';
 import { ColendCOnfigs } from './protocols/colend';
 import { CompoundConfigs, Compoundv3Configs } from './protocols/compound';
 import { CrvusdConfigs } from './protocols/crvusd';
+import { CurvelendConfigs } from './protocols/curvelend';
 import { FluidConfigs } from './protocols/fluid';
 import { FraxlendConfigs } from './protocols/fraxlend';
 import { GravitaConfigs } from './protocols/gravita';
@@ -70,6 +71,7 @@ export const ProtocolConfigs = {
   compound: CompoundConfigs,
   compoundv3: Compoundv3Configs,
   crvusd: CrvusdConfigs,
+  curvelend: CurvelendConfigs,
   fluid: FluidConfigs,
   fraxlend: FraxlendConfigs,
   gravita: GravitaConfigs,

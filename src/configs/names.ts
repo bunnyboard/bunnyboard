@@ -49,6 +49,7 @@ export const ProtocolNames = {
   compound: 'compound',
   compoundv3: 'compoundv3',
   crvusd: 'crvusd',
+  curvelend: 'curvelend',
   fluid: 'fluid',
   fraxlend: 'fraxlend',
   gravita: 'gravita',
