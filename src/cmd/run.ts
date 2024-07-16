@@ -17,10 +17,16 @@ export class RunCommand extends BasicCommand {
     const services: ContextServices = await super.getServices();
     const storages: ContextStorages = await super.getStorages();
 
+    let service = undefined;
+    if (argv.service === 'state' || argv.service === 'snapshot') {
+      service = argv.service;
+    }
+
     const collector = new Collector(storages, services);
     do {
       await collector.run({
         metric: argv.metric !== '' ? argv.metric.split(',') : undefined,
+        service: service,
         chains: argv.chain !== '' ? argv.chain.split(',') : undefined,
         protocols: argv.protocol !== '' ? argv.protocol.split(',') : undefined,
         fromTime: argv.fromTime ? argv.fromTime : undefined,
@@ -43,6 +49,11 @@ export class RunCommand extends BasicCommand {
         type: 'string',
         default: '',
         describe: 'Collect data from given list of data metric.',
+      },
+      service: {
+        type: 'string',
+        default: '',
+        describe: 'Collect current data state or historical snapshots.',
       },
       chain: {
         type: 'string',

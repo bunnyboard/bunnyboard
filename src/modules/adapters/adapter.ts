@@ -46,23 +46,27 @@ export default class ProtocolAdapter implements IProtocolAdapter {
       force: options.force ? options.force : false,
     });
 
-    const startExeTime = Math.floor(new Date().getTime() / 1000);
+    if (options.service === undefined || options.service === 'state') {
+      const startExeTime = Math.floor(new Date().getTime() / 1000);
 
-    await this.collectDataState(options);
+      await this.collectDataState(options);
 
-    const endExeTime = Math.floor(new Date().getTime() / 1000);
-    const elapsed = endExeTime - startExeTime;
+      const endExeTime = Math.floor(new Date().getTime() / 1000);
+      const elapsed = endExeTime - startExeTime;
 
-    logger.info('updated adapter data state', {
-      service: this.name,
-      chain: options.metricConfig.chain,
-      protocol: options.metricConfig.protocol,
-      metric: options.metricConfig.metric,
-      address: options.metricConfig.address,
-      elapses: `${elapsed}s`,
-    });
+      logger.info('updated adapter data state', {
+        service: this.name,
+        chain: options.metricConfig.chain,
+        protocol: options.metricConfig.protocol,
+        metric: options.metricConfig.metric,
+        address: options.metricConfig.address,
+        elapses: `${elapsed}s`,
+      });
+    }
 
-    await this.collectSnapshots(options);
+    if (options.service === undefined || options.service === 'snapshot') {
+      await this.collectSnapshots(options);
+    }
   }
 
   public async runTest(options: RunAdapterOptions): Promise<void> {}

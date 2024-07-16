@@ -8,6 +8,8 @@ import { getProtocolAdapters } from '../adapters';
 export interface RunProtocolCollectorOptions {
   metric?: Array<DataMetric>;
 
+  service?: string;
+
   // if chain was given, run collector with given chain
   chains?: Array<string>;
 
@@ -83,6 +85,7 @@ export default class Collector {
       const adapter = this.getAdapter(config);
       if (adapter) {
         await adapter.run({
+          service: options.service,
           metricConfig: config,
           fromTime: options.fromTime,
           force: options.force,

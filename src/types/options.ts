@@ -35,6 +35,8 @@ export interface GetAdapterDataTimeframeOptions {
 }
 
 export interface RunAdapterBaseOptions {
+  service?: string;
+
   // give a timestamp where adapter will start to collect snapshots from
   // if fromTime was given, adapter will use this value instead of config birthday
   fromTime?: number;
