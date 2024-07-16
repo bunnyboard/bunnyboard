@@ -23,6 +23,9 @@ export interface AaveOracleConfig {
   // All V3 markets use USD based oracles which return values with 8 decimals.
   // https://docs.aave.com/developers/core-contracts/aaveoracle
   currency: 'eth' | 'usd';
+
+  // defaul: 8
+  decimals?: number;
 }
 
 export interface AaveLendingMarketConfig extends CrossLendingMarketConfig {

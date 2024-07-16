@@ -185,7 +185,7 @@ export default class CurvelendAdapter extends IsolatedLendingProtocolAdapter {
           collateralBalance.toString(10),
           collateralToken.decimals,
         );
-        const collateralPrice = new BigNumber(formatBigNumberToString(price.toString(), collateralToken.decimals))
+        const collateralPrice = new BigNumber(formatBigNumberToString(price.toString(), 18))
           .multipliedBy(new BigNumber(borrowTokenPrice))
           .toString(10);
 

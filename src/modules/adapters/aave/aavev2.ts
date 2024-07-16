@@ -385,7 +385,10 @@ export default class Aavev2Adapter extends CrossLendingProtocolAdapter {
                   .toString(10);
               }
             } else {
-              price = formatBigNumberToString(reservePrices[i].toString(), 8);
+              price = formatBigNumberToString(
+                reservePrices[i].toString(),
+                config.oracle && config.oracle.decimals ? config.oracle.decimals : 8,
+              );
             }
           }
 
