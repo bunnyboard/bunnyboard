@@ -1,3 +1,4 @@
+import { getTimestamp } from '../../../lib/utils';
 import { DataMetrics, ProtocolConfig } from '../../../types/configs';
 import { ContextServices, ContextStorages } from '../../../types/namespaces';
 import { RunAdapterOptions } from '../../../types/options';
@@ -29,5 +30,20 @@ export default class MakerAdapter extends ProtocolAdapter {
         break;
       }
     }
+  }
+
+  public async runTest(options: RunAdapterOptions): Promise<void> {
+    const currentTime = getTimestamp();
+    const last24Hours = currentTime - 24 * 60 * 60;
+    console.log(
+      JSON.stringify(
+        await this.flashloan.getFlashloanDataTimeframe({
+          config: options.metricConfig,
+          fromTime: last24Hours,
+          toTime: currentTime,
+          latestState: true,
+        }),
+      ),
+    );
   }
 }

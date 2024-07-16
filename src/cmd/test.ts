@@ -27,6 +27,9 @@ export class TestCommand extends BasicCommand {
       configs = configs.concat(protocolConfig.configs);
     }
 
+    if (argv.metric !== '') {
+      configs = configs.filter((config) => config.metric === argv.metric);
+    }
     if (argv.chain !== '') {
       configs = configs.filter((config) => config.chain === argv.chain);
     }
@@ -34,7 +37,7 @@ export class TestCommand extends BasicCommand {
       configs = configs.filter((config) => config.protocol === argv.protocol);
     }
 
-    if (argv.chain === '' && argv.protocol === '') {
+    if (argv.chain === '' && argv.protocol === '' && argv.metric === '') {
       logger.error('require chain or protocol parameters', {
         service: 'testing',
         chain: argv.chain === '' ? 'none' : argv.chain,
@@ -70,6 +73,11 @@ export class TestCommand extends BasicCommand {
 
   public setOptions(yargs: any) {
     return yargs.option({
+      metric: {
+        type: 'string',
+        default: '',
+        describe: 'Collect data from given list of data metric.',
+      },
       chain: {
         type: 'string',
         default: '',
