@@ -164,12 +164,12 @@ export default class IsolatedLendingProtocolAdapter extends ProtocolAdapter impl
 
   public async runTest(options: RunAdapterOptions): Promise<void> {
     const currentTime = getTimestamp();
-    const last24Hours = currentTime - 24 * 60 * 60;
+    const lastHour = currentTime - 60 * 60;
     console.log(
       JSON.stringify(
         await this.getLendingPoolData({
           config: options.metricConfig,
-          fromTime: last24Hours,
+          fromTime: lastHour,
           toTime: currentTime,
           latestState: true,
         }),

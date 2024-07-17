@@ -178,7 +178,6 @@ export interface StakingConfig extends MetricConfig {
 export const FlashloanVersion = {
   aavev2: 'aavev2',
   aavev3: 'aavev3',
-  ironbank: 'ironbank',
   balancer: 'balancer',
   maker: 'maker',
 };

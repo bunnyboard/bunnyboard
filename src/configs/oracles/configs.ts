@@ -253,6 +253,7 @@ export const OracleConfigs: { [key: string]: { [key: string]: OracleConfig } } =
     '0xe85b662fe97e8562f4099d8a1d5a92d4b453bf30': OracleSourceConfigs.THALES,
     '0xcafcd85d8ca7ad1e1c6f82f651fa15e33aefd07b': OracleSourceConfigs.WOO,
     '0x894134a25a5fac1c2c26f1d8fbf05111a3cb9487': OracleSourceConfigs.GRAI,
+    '0x498bf2b1e120fed3ad3d42ea2165e9b73f99c1e5': OracleSourceConfigs.crvUSD,
   },
 
   // tokens on Optimism

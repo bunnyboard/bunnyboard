@@ -106,6 +106,10 @@ export default class CurvelendAdapter extends IsolatedLendingProtocolAdapter {
           ],
         });
 
+      if (marketConfig.blacklists && marketConfig.blacklists.includes(normalizeAddress(vault))) {
+        continue;
+      }
+
       const borrowToken = await this.services.blockchain.getTokenInfo({
         chain: marketConfig.chain,
         address: borrowed_token,
