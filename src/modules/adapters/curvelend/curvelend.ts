@@ -248,6 +248,7 @@ export default class CurvelendAdapter extends IsolatedLendingProtocolAdapter {
           address: vault,
           fromBlock: beginBlock,
           toBlock: endBlock,
+          blockRange: marketConfig.chain === 'arbitrum' ? 10000 : undefined,
         });
         logs = logs.concat(
           await this.services.blockchain.getContractLogs({
@@ -255,6 +256,7 @@ export default class CurvelendAdapter extends IsolatedLendingProtocolAdapter {
             address: controller,
             fromBlock: beginBlock,
             toBlock: endBlock,
+            blockRange: marketConfig.chain === 'arbitrum' ? 10000 : undefined,
           }),
         );
 
