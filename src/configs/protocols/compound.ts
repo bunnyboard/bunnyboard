@@ -117,6 +117,15 @@ export const Compoundv3Configs: Compoundv3ProtocolConfig = {
       debtToken: TokensBook.ethereum['0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'],
     },
     {
+      chain: ChainNames.ethereum,
+      protocol: ProtocolNames.compoundv3,
+      version: LendingMarketVersions.isolated.compoundv3,
+      birthday: 1719619200, // Sat Jun 29 2024 00:00:00 GMT+0000
+      metric: DataMetrics.isolatedLending,
+      address: '0x3afdc9bca9213a35503b077a6072f3d0d5ab0840', // cUSDTv3
+      debtToken: TokensBook.ethereum['0xdac17f958d2ee523a2206206994597c13d831ec7'],
+    },
+    {
       chain: ChainNames.polygon,
       protocol: ProtocolNames.compoundv3,
       version: LendingMarketVersions.isolated.compoundv3,
@@ -124,6 +133,15 @@ export const Compoundv3Configs: Compoundv3ProtocolConfig = {
       metric: DataMetrics.isolatedLending,
       address: '0xF25212E676D1F7F89Cd72fFEe66158f541246445', // cWETHv3
       debtToken: TokensBook.polygon['0x2791bca1f2de4661ed88a30c99a7a9449aa84174'],
+    },
+    {
+      chain: ChainNames.polygon,
+      protocol: ProtocolNames.compoundv3,
+      version: LendingMarketVersions.isolated.compoundv3,
+      birthday: 1719100800, // Sun Jun 23 2024 00:00:00 GMT+0000
+      metric: DataMetrics.isolatedLending,
+      address: '0xaeb318360f27748acb200ce616e389a6c9409a07', // cUSDTv3
+      debtToken: TokensBook.polygon['0xc2132d05d31c914a87c6611c10748aeb04b58e8f'],
     },
     {
       chain: ChainNames.arbitrum,
