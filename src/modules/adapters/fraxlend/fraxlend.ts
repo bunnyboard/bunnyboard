@@ -252,13 +252,21 @@ export default class FraxlendAdapter extends IsolatedLendingProtocolAdapter {
               }
               case FraxPairEvents.AddCollateral: {
                 collateralData.volumeDeposited = new BigNumber(collateralData.volumeDeposited)
-                  .plus(new BigNumber(formatBigNumberToString(event.args._collateralAmount.toString(), token.decimals)))
+                  .plus(
+                    new BigNumber(
+                      formatBigNumberToString(event.args._collateralAmount.toString(), collateral.decimals),
+                    ),
+                  )
                   .toString(10);
                 break;
               }
-              case FraxPairEvents.AddCollateral: {
+              case FraxPairEvents.RemoveCollateral: {
                 collateralData.volumeWithdrawn = new BigNumber(collateralData.volumeWithdrawn)
-                  .plus(new BigNumber(formatBigNumberToString(event.args._collateralAmount.toString(), token.decimals)))
+                  .plus(
+                    new BigNumber(
+                      formatBigNumberToString(event.args._collateralAmount.toString(), collateral.decimals),
+                    ),
+                  )
                   .toString(10);
                 break;
               }
@@ -276,7 +284,7 @@ export default class FraxlendAdapter extends IsolatedLendingProtocolAdapter {
                 collateralData.volumeLiquidated = new BigNumber(collateralData.volumeLiquidated)
                   .plus(
                     new BigNumber(
-                      formatBigNumberToString(event.args._collateralForLiquidator.toString(), token.decimals),
+                      formatBigNumberToString(event.args._collateralForLiquidator.toString(), collateral.decimals),
                     ),
                   )
                   .toString(10);
