@@ -345,7 +345,7 @@ export default class CurvelendAdapter extends IsolatedLendingProtocolAdapter {
               }
               case ControllerEvents.Liquidate: {
                 poolData.volumeRepaid = new BigNumber(poolData.volumeRepaid)
-                  .plus(new BigNumber(formatBigNumberToString(event.args.debt.toString(), collateralToken.decimals)))
+                  .plus(new BigNumber(formatBigNumberToString(event.args.debt.toString(), borrowToken.decimals)))
                   .toString(10);
                 collateralData.volumeLiquidated = new BigNumber(collateralData.volumeLiquidated)
                   .plus(
