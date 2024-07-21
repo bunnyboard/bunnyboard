@@ -7,6 +7,7 @@ import envConfig from '../../configs/envConfig';
 import { ChainNames } from '../../configs/names';
 import axios, { RawAxiosRequestHeaders } from 'axios';
 import { logAxiosError } from '../../lib/logger';
+import { getTimestamp } from '../../lib/utils';
 
 export default class BlockDater {
   private chain: string;
@@ -42,6 +43,11 @@ export default class BlockDater {
   }
 
   public async getBlockNumberByTimestamp(timestamp: number, after = true, refresh = false): Promise<number> {
+    const current = getTimestamp();
+    if (timestamp > current) {
+      timestamp = current;
+    }
+
     if (this.chain === ChainNames.seievm) {
       return await this.getFromExplorerApi('https://seitrace.com/pacific-1/api/v1', timestamp);
     }
