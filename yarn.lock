@@ -675,6 +675,8 @@ __metadata:
     winston: "npm:^3.9.0"
     yamljs: "npm:^0.3.0"
     yargs: "npm:^17.4.0"
+  bin:
+    bunny: ./build/index.js
   languageName: unknown
   linkType: soft
 

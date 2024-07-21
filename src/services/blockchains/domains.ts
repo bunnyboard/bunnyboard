@@ -72,9 +72,6 @@ export interface IBlockchainService {
   // if it failed, we do read contract one by one
   multicall: (options: MulticallOptions) => Promise<any>;
 
-  // help to query block number at given timestamp
-  getBlockNumberAtTimestamp: (chain: string, timestamp: number) => Promise<number | null>;
-
   // loop until get block number success
   tryGetBlockNumberAtTimestamp: (chain: string, timestamp: number) => Promise<number>;
 

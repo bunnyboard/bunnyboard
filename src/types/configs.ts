@@ -34,9 +34,6 @@ export interface Blockchain {
 
   // the native coin
   nativeToken: Token;
-
-  // explorer api endpoint
-  explorerApiEndpoint: string;
 }
 
 export interface DatabaseCollectionConfig {
