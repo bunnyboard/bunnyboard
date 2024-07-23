@@ -247,6 +247,7 @@ export default class AbracadabraAdapter extends CdpLendingProtocolAdapter {
       assetState.totalBorrowed = new BigNumber(assetState.totalBorrowed)
         .plus(new BigNumber(cauldronData.totalBorrowed))
         .toString(10);
+      collateralDataState.totalBorrowed = cauldronData.totalBorrowed;
       collateralDataState.totalDeposited = cauldronData.totalDeposited;
       collateralDataState.rateBorrow = cauldronData.rateBorrow;
       collateralDataState.rateBorrowOpeningFee = cauldronData.rateBorrowOpenFee;
