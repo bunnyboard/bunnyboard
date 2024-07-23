@@ -26,6 +26,7 @@ import { GetTokenPriceOptions, IOracleService } from './domains';
 import { IBlockchainService } from '../blockchains/domains';
 import Erc20Abi from '../../configs/abi/ERC20.json';
 import Erc4626Abi from '../../configs/abi/ERC4626.json';
+import { OracleTokenBlacklists } from '../../configs/oracles/blacklists';
 
 export default class OracleService extends CachingService implements IOracleService {
   public readonly name: string = 'oracle';
@@ -191,6 +192,10 @@ export default class OracleService extends CachingService implements IOracleServ
   }
 
   public async getTokenPriceUsd(options: GetTokenPriceOptions): Promise<string | null> {
+    if (OracleTokenBlacklists[options.chain] && OracleTokenBlacklists[options.chain].includes(options.address)) {
+      return null;
+    }
+
     let returnPrice = null;
     options.address = normalizeAddress(options.address);
 

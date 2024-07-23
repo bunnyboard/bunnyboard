@@ -154,6 +154,7 @@ export const OracleConfigs: { [key: string]: { [key: string]: OracleConfig } } =
     '0xf8fde8a259a3698902c88bdb1e13ff28cd7f6f09': OracleSourceConfigs.FPI, // FXB_20241231
     '0x76237bcfdbe8e06fb774663add96216961df4ff3': OracleSourceConfigs.FPI, // FXB_20261231
     '0xa1290d69c65a6fe4df752f95823fae25cb99e5a7': OracleSourceConfigs.rsETH,
+    '0x1a7e4e63778b4f12a199c062f3efdd288afcbce8': OracleSourceConfigs.agEUR,
 
     // todo need to find better oracle source
     '0x9d39a5de30e57443bff2a8307a4256c8797a3497': OracleSourceConfigs.USDT,
