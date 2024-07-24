@@ -1,4 +1,3 @@
-import axios, { RawAxiosRequestHeaders } from 'axios';
 import BigNumber from 'bignumber.js';
 import { Address, PublicClient, createPublicClient, http } from 'viem';
 
@@ -7,8 +6,8 @@ import ERC20Abi from '../../configs/abi/ERC20.json';
 import { AddressE, AddressF, AddressMulticall3, AddressZero } from '../../configs/constants';
 import EnvConfig from '../../configs/envConfig';
 import envConfig from '../../configs/envConfig';
-import logger, { logAxiosError } from '../../lib/logger';
-import { compareAddress, getTimestamp, normalizeAddress, sleep } from '../../lib/utils';
+import logger from '../../lib/logger';
+import { compareAddress, normalizeAddress, sleep } from '../../lib/utils';
 import { Token } from '../../types/configs';
 import { ContextStorages } from '../../types/namespaces';
 import { CachingService } from '../caching/caching';
@@ -20,7 +19,7 @@ import {
   MulticallOptions,
   ReadContractOptions,
 } from './domains';
-import { ChainNames } from '../../configs/names';
+import BlockDater from './dater';
 
 export default class BlockchainService extends CachingService implements IBlockchainService {
   public readonly name: string = 'blockchain';
@@ -240,50 +239,6 @@ export default class BlockchainService extends CachingService implements IBlockc
     });
   }
 
-  public async getBlockNumberAtTimestamp(chain: string, timestamp: number): Promise<number | null> {
-    const current = getTimestamp();
-    if (timestamp > current) {
-      timestamp = current;
-    }
-
-    const chainConfig = EnvConfig.blockchains[chain];
-
-    let blockNumber = null;
-
-    // get from explorer api
-    if (chainConfig && chainConfig.explorerApiEndpoint) {
-      let url = `${chainConfig.explorerApiEndpoint}?module=block&action=getblocknobytime&timestamp=${timestamp}&closest=before`;
-
-      if (chain === ChainNames.core) {
-        url += `&apikey=b4d33c1698e4446dbf0f05f520117a76`;
-      }
-
-      try {
-        const response = await axios.get(url, {
-          headers: {
-            'Content-Type': 'application/json',
-          } as RawAxiosRequestHeaders,
-        });
-        if (
-          response &&
-          response.data &&
-          (response.data.status === '1' || response.data.status === 1) &&
-          response.data.result
-        ) {
-          if (response.data.result.blockNumber) {
-            blockNumber = Number(response.data.result.blockNumber);
-          } else {
-            blockNumber = Number(response.data.result);
-          }
-        }
-      } catch (e: any) {
-        logAxiosError(e);
-      }
-    }
-
-    return blockNumber;
-  }
-
   public async tryGetBlockNumberAtTimestamp(chain: string, timestamp: number): Promise<number> {
     const cachingKey = `getBlockAtTimestamp-${chain}-${timestamp}`;
     const cache = await this.getCachingData(cachingKey);
@@ -291,10 +246,15 @@ export default class BlockchainService extends CachingService implements IBlockc
       return Number(cache);
     }
 
-    let blockNumber = null;
+    const blockDater = new BlockDater(chain);
 
+    let blockNumber = null;
     do {
-      blockNumber = await this.getBlockNumberAtTimestamp(chain, timestamp);
+      blockNumber = await blockDater.getBlockNumberByTimestamp(
+        timestamp,
+        true, // block after, optional. Search for the nearest block before or after the given date. By default true.
+        true, // refresh boundaries, optional. Recheck the latest block before request. By default false.
+      );
 
       if (!blockNumber) {
         logger.warn('retrying to query block number at timestamp', {
@@ -302,9 +262,9 @@ export default class BlockchainService extends CachingService implements IBlockc
           chain,
           time: timestamp,
         });
-        await sleep(10);
+        await sleep(5);
       }
-    } while (blockNumber === null);
+    } while (blockNumber === null || blockNumber === 0);
 
     await this.setCachingData(cachingKey, blockNumber);
 
