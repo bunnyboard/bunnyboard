@@ -1,28 +1,22 @@
-// contracts that were called by transaction senders
-export interface EthereumGasGruzzler {
-  // the contract address
+export interface EthereumBeaconDeposit {
+  depositor: string;
+
+  // transaction to address
   contract: string;
 
-  // total gasUsed from all transactions to the contract
-  gasUsed: string;
-  
-  // total fee was paid by sender from all transactions to the contract
-  feePaid: string;
+  // amount deposit, from DepositEvent
+  amount: string;
 }
 
-export interface EthereumGasSpender {
-  // the sender address
-  spender: string;
+export interface EthereumLayer2Stats {
+  layer2: string;
 
-  // total gasUsed from all transactions to the contract
-  gasUsed: string;
+  // total ETH were being locked in contract layer
+  totalCoinLocked: string;
 
-  // average gas price was paid by the spender
-  // value in ETH
-  avgGasPrice: string;
-
-  // total fee was paid by spender from all transactions
-  feePaid: string;
+  // volumes deposit/withdraw to/from layer 2
+  volumeDepositedToLayer2: string;
+  volumeWithdrawnFromLayer2: string;
 }
 
 export interface EthereumDataTimeframe {
@@ -30,8 +24,7 @@ export interface EthereumDataTimeframe {
   chain: string;
   timestamp: number;
 
-  // total ETH supply which was ever exists
-  totalCoinSUpply: string;
+  coinPrice: string;
 
   // total ETH was deposited into staking contract
   volumeCoinDeposited: string;
@@ -39,27 +32,48 @@ export interface EthereumDataTimeframe {
   // total ETH was withdrawn
   volumeCoinWithdrawn: string;
 
-  // total ETH was transfered on-chain transactions
-  // count transaction.value
-  volumeCoinTransferred: string;
-
   // total ETH was burned by EIP-1559
   volumeCoinBurnt: string;
 
-  // total ETH fee was paid from transaction fee
-  volumeCoinFeePaid: string;
-
   // total gas limits from all blocks
-  totalGasLimit: string;
+  gasLimit: string;
 
   // total gas were spent
-
-  // list of gas gruzzler
-  gasGuzzlers: Array<EthereumGasGruzzler>;
-
-  // list of gas spenders
-  gasSpenders: Array<EthereumGasSpender>;
+  gasUsed: string;
 
   // total transactions were sent
   transactionCount: number;
+
+  // transaction type distribution
+  transactuonTypes: {
+    [key: string]: number;
+  };
+
+  // sender addresses
+  senderAddresses: Array<string>;
+
+  // list of beacon deposits
+  beaconDeposits: Array<EthereumBeaconDeposit>;
+
+  // list of layer 2 bridge stats
+  layer2: Array<EthereumLayer2Stats>;
+}
+
+export interface EthereumDataState extends EthereumDataTimeframe {
+  // total ETH supply ever exists
+  totalCoinSupply: string;
+
+  // total ETH were ever burnt
+  totalCoinBurnt: string;
+
+  // total ETH rewards for eth2 staking
+  totalCoinEth2Rewards: string;
+
+  // total ETH were withdrawn from eth2
+  totalCoinEth2Withdrawn: string;
+}
+
+export interface EthereumDataStateWithTimeframe extends EthereumDataState {
+  // previous day data
+  last24Hours: EthereumDataTimeframe | null;
 }

@@ -32,6 +32,12 @@ export const ChainNames = {
   seievm: 'seievm',
   bob: 'bob',
   bsquared: 'bsquared',
+  fraxtal: 'fraxtal',
+  cyber: 'cyber',
+  redstone: 'redstone',
+  mint: 'mint',
+  aevo: 'aevo',
+  lyra: 'lyra',
 };
 
 export const ProtocolNames = {
@@ -50,6 +56,7 @@ export const ProtocolNames = {
   compoundv3: 'compoundv3',
   crvusd: 'crvusd',
   curvelend: 'curvelend',
+  ethereum: 'ethereum',
   fluid: 'fluid',
   fraxlend: 'fraxlend',
   gravita: 'gravita',
