@@ -4464,5 +4464,511 @@
     "ltv": "860000000000000000",
     "birthblock": 17005946,
     "birthday": 1720828800
+  },
+  "0x84d0c5c07b5dc83710d3922a7eba2b03f3a3e78cea72556633433bd1b4304e36": {
+    "chain": "ethereum",
+    "morphoBlue": "0xbbbbbbbbbb9cc5e90e3b3af64bdaf62c37eeffcb",
+    "marketId": "0x84d0c5c07b5dc83710d3922a7eba2b03f3a3e78cea72556633433bd1b4304e36",
+    "debtToken": {
+      "chain": "ethereum",
+      "address": "0xf939e0a03fb07f59a73314e73794be0e57ac1b4e",
+      "symbol": "crvUSD",
+      "decimals": 18
+    },
+    "collateral": {
+      "chain": "ethereum",
+      "address": "0x385e12cf4040543bc8c18e05c1298be5b04f3f5e",
+      "symbol": "stkcvx2BTC-f-morpho",
+      "decimals": 18
+    },
+    "oracle": "0x20c4fa59f032bec6de1905b7201cb88dfd968aba",
+    "irm": "0x870ac11d48b15db9a138cf899d20f13f79ba00bc",
+    "ltv": "860000000000000000",
+    "birthblock": 20305175,
+    "birthday": 1721001600
+  },
+  "0x461da96754b33fec844fc5e5718bf24298a2c832d8216c5ffd17a5230548f01f": {
+    "chain": "ethereum",
+    "morphoBlue": "0xbbbbbbbbbb9cc5e90e3b3af64bdaf62c37eeffcb",
+    "marketId": "0x461da96754b33fec844fc5e5718bf24298a2c832d8216c5ffd17a5230548f01f",
+    "debtToken": {
+      "chain": "ethereum",
+      "address": "0xa0d69e286b938e21cbf7e51d71f6a4c8918f482f",
+      "symbol": "eUSD",
+      "decimals": 18
+    },
+    "collateral": {
+      "chain": "ethereum",
+      "symbol": "WBTC",
+      "decimals": 8,
+      "address": "0x2260fac5e5542a773aa44fbcfedf7c193bc2c599"
+    },
+    "oracle": "0x032f1c64899b2c89835e51aced9434b0adeaa69d",
+    "irm": "0x870ac11d48b15db9a138cf899d20f13f79ba00bc",
+    "ltv": "860000000000000000",
+    "birthblock": 20326853,
+    "birthday": 1721260800
+  },
+  "0x61b01462df103a57205fea706a58cd0efa4a56570245e7ccea19677a056a835f": {
+    "chain": "ethereum",
+    "morphoBlue": "0xbbbbbbbbbb9cc5e90e3b3af64bdaf62c37eeffcb",
+    "marketId": "0x61b01462df103a57205fea706a58cd0efa4a56570245e7ccea19677a056a835f",
+    "debtToken": {
+      "chain": "ethereum",
+      "symbol": "DAI",
+      "decimals": 18,
+      "address": "0x6b175474e89094c44da98b954eedeac495271d0f"
+    },
+    "collateral": {
+      "chain": "ethereum",
+      "address": "0xbbf399db59a845066aafce9ae55e68c505fa97b7",
+      "symbol": "PENDLE-LPT",
+      "decimals": 18
+    },
+    "oracle": "0x5d916980d5ae1737a8330bf24df812b2911aae25",
+    "irm": "0x870ac11d48b15db9a138cf899d20f13f79ba00bc",
+    "ltv": "860000000000000000",
+    "birthblock": 20328927,
+    "birthday": 1721260800
+  },
+  "0x5baddd7c6613f8814d0d2a12ea7dfe2e50fb7723eeb082d2f2c4cdad3ec91560": {
+    "chain": "ethereum",
+    "morphoBlue": "0xbbbbbbbbbb9cc5e90e3b3af64bdaf62c37eeffcb",
+    "marketId": "0x5baddd7c6613f8814d0d2a12ea7dfe2e50fb7723eeb082d2f2c4cdad3ec91560",
+    "debtToken": {
+      "chain": "ethereum",
+      "symbol": "DAI",
+      "decimals": 18,
+      "address": "0x6b175474e89094c44da98b954eedeac495271d0f"
+    },
+    "collateral": {
+      "chain": "ethereum",
+      "address": "0xae5099c39f023c91d3dd55244cafb36225b0850e",
+      "symbol": "PT-sUSDE-24OCT2024",
+      "decimals": 18
+    },
+    "oracle": "0x5d916980d5ae1737a8330bf24df812b2911aae25",
+    "irm": "0x870ac11d48b15db9a138cf899d20f13f79ba00bc",
+    "ltv": "860000000000000000",
+    "birthblock": 20332467,
+    "birthday": 1721347200
+  },
+  "0x6029eea874791e01e2f3ce361f2e08839cd18b1e26eea6243fa3e43fe8f6fa23": {
+    "chain": "ethereum",
+    "morphoBlue": "0xbbbbbbbbbb9cc5e90e3b3af64bdaf62c37eeffcb",
+    "marketId": "0x6029eea874791e01e2f3ce361f2e08839cd18b1e26eea6243fa3e43fe8f6fa23",
+    "debtToken": {
+      "chain": "ethereum",
+      "address": "0xa0d69e286b938e21cbf7e51d71f6a4c8918f482f",
+      "symbol": "eUSD",
+      "decimals": 18
+    },
+    "collateral": {
+      "chain": "ethereum",
+      "symbol": "WSTETH",
+      "decimals": 18,
+      "address": "0x7f39c581f595b53c5cb19bd0b3f8da6c935e2ca0"
+    },
+    "oracle": "0xbc693693fdbb177ad05ff38633110016bc043ac5",
+    "irm": "0x870ac11d48b15db9a138cf899d20f13f79ba00bc",
+    "ltv": "860000000000000000",
+    "birthblock": 20335180,
+    "birthday": 1721347200
+  },
+  "0xfd2d1fa27920a406bdf9f84300f7b4b086dec491a16adb5fdcdb06544ec523a5": {
+    "chain": "ethereum",
+    "morphoBlue": "0xbbbbbbbbbb9cc5e90e3b3af64bdaf62c37eeffcb",
+    "marketId": "0xfd2d1fa27920a406bdf9f84300f7b4b086dec491a16adb5fdcdb06544ec523a5",
+    "debtToken": {
+      "chain": "ethereum",
+      "address": "0xa0d69e286b938e21cbf7e51d71f6a4c8918f482f",
+      "symbol": "eUSD",
+      "decimals": 18
+    },
+    "collateral": {
+      "chain": "ethereum",
+      "address": "0x0000000000000000000000000000000000000000",
+      "symbol": "ETH",
+      "decimals": 18
+    },
+    "oracle": "0x0000000000000000000000000000000000000000",
+    "irm": "0x0000000000000000000000000000000000000000",
+    "ltv": "0",
+    "birthblock": 20335180,
+    "birthday": 1721347200
+  },
+  "0x3f4d007982a480dd99052c05d811cf6838ce61b2a2be8dc52fca107f783d1f15": {
+    "chain": "ethereum",
+    "morphoBlue": "0xbbbbbbbbbb9cc5e90e3b3af64bdaf62c37eeffcb",
+    "marketId": "0x3f4d007982a480dd99052c05d811cf6838ce61b2a2be8dc52fca107f783d1f15",
+    "debtToken": {
+      "chain": "ethereum",
+      "address": "0xa0d69e286b938e21cbf7e51d71f6a4c8918f482f",
+      "symbol": "eUSD",
+      "decimals": 18
+    },
+    "collateral": {
+      "chain": "ethereum",
+      "address": "0xe72b141df173b999ae7c1adcbf60cc9833ce56a8",
+      "symbol": "ETH+",
+      "decimals": 18
+    },
+    "oracle": "0xb3e24f938db830c903450dcfe200e0ac121d8033",
+    "irm": "0x870ac11d48b15db9a138cf899d20f13f79ba00bc",
+    "ltv": "770000000000000000",
+    "birthblock": 20335225,
+    "birthday": 1721347200
+  },
+  "0x67992b26ac5eee3c3a6cea090690ad3b41ee33d1d53ed7937823695ffd92a283": {
+    "chain": "ethereum",
+    "morphoBlue": "0xbbbbbbbbbb9cc5e90e3b3af64bdaf62c37eeffcb",
+    "marketId": "0x67992b26ac5eee3c3a6cea090690ad3b41ee33d1d53ed7937823695ffd92a283",
+    "debtToken": {
+      "chain": "ethereum",
+      "symbol": "USDC",
+      "decimals": 6,
+      "address": "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48"
+    },
+    "collateral": {
+      "chain": "ethereum",
+      "address": "0x547213367cfb08ab418e7b54d7883b2c2aa27fd7",
+      "symbol": "sUSDz",
+      "decimals": 18
+    },
+    "oracle": "0x19458f400d93817503c5bf7558624cca09f2487e",
+    "irm": "0x870ac11d48b15db9a138cf899d20f13f79ba00bc",
+    "ltv": "945000000000000000",
+    "birthblock": 20337820,
+    "birthday": 1721433600
+  },
+  "0x8f46cd82c4c44a090c3d72bd7a84baf4e69ee50331d5deae514f86fe062b0748": {
+    "chain": "ethereum",
+    "morphoBlue": "0xbbbbbbbbbb9cc5e90e3b3af64bdaf62c37eeffcb",
+    "marketId": "0x8f46cd82c4c44a090c3d72bd7a84baf4e69ee50331d5deae514f86fe062b0748",
+    "debtToken": {
+      "chain": "ethereum",
+      "symbol": "DAI",
+      "decimals": 18,
+      "address": "0x6b175474e89094c44da98b954eedeac495271d0f"
+    },
+    "collateral": {
+      "chain": "ethereum",
+      "address": "0xae5099c39f023c91d3dd55244cafb36225b0850e",
+      "symbol": "PT-sUSDE-24OCT2024",
+      "decimals": 18
+    },
+    "oracle": "0xae4750d0813b5e37a51f7629beedd72af1f9ca35",
+    "irm": "0x870ac11d48b15db9a138cf899d20f13f79ba00bc",
+    "ltv": "860000000000000000",
+    "birthblock": 20340925,
+    "birthday": 1721433600
+  },
+  "0xb48bb53f0f2690c71e8813f2dc7ed6fca9ac4b0ace3faa37b4a8e5ece38fa1a2": {
+    "chain": "ethereum",
+    "morphoBlue": "0xbbbbbbbbbb9cc5e90e3b3af64bdaf62c37eeffcb",
+    "marketId": "0xb48bb53f0f2690c71e8813f2dc7ed6fca9ac4b0ace3faa37b4a8e5ece38fa1a2",
+    "debtToken": {
+      "chain": "ethereum",
+      "symbol": "USDC",
+      "decimals": 6,
+      "address": "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48"
+    },
+    "collateral": {
+      "chain": "ethereum",
+      "address": "0x35d8949372d46b7a3d5a56006ae77b215fc69bc0",
+      "symbol": "USD0++",
+      "decimals": 18
+    },
+    "oracle": "0x1325eb089ac14b437e78d5d481e32611f6907ef8",
+    "irm": "0x870ac11d48b15db9a138cf899d20f13f79ba00bc",
+    "ltv": "860000000000000000",
+    "birthblock": 20371534,
+    "birthday": 1721779200
+  },
+  "0x864c9b82eb066ae2c038ba763dfc0221001e62fc40925530056349633eb0a259": {
+    "chain": "ethereum",
+    "morphoBlue": "0xbbbbbbbbbb9cc5e90e3b3af64bdaf62c37eeffcb",
+    "marketId": "0x864c9b82eb066ae2c038ba763dfc0221001e62fc40925530056349633eb0a259",
+    "debtToken": {
+      "chain": "ethereum",
+      "symbol": "USDC",
+      "decimals": 6,
+      "address": "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48"
+    },
+    "collateral": {
+      "chain": "ethereum",
+      "address": "0x1d08e7adc263cfc70b1babe6dc5bb339c16eec52",
+      "symbol": "USD0USD0++",
+      "decimals": 18
+    },
+    "oracle": "0x7bec5e135845b37136167ea62bd8c0354b1ef246",
+    "irm": "0x870ac11d48b15db9a138cf899d20f13f79ba00bc",
+    "ltv": "860000000000000000",
+    "birthblock": 20377048,
+    "birthday": 1721865600
+  },
+  "0x72ba175d0d51ffffd1652c730413f81e1b5fd766028a8ca3fcc4140be40d756f": {
+    "chain": "base",
+    "morphoBlue": "0xbbbbbbbbbb9cc5e90e3b3af64bdaf62c37eeffcb",
+    "marketId": "0x72ba175d0d51ffffd1652c730413f81e1b5fd766028a8ca3fcc4140be40d756f",
+    "debtToken": {
+      "chain": "base",
+      "symbol": "DEGEN",
+      "decimals": 18,
+      "address": "0x4ed4e862860bed51a9570b96d89af5e1b0efefed"
+    },
+    "collateral": {
+      "chain": "base",
+      "address": "0x0000000000000000000000000000000000000000",
+      "symbol": "ETH",
+      "decimals": 18
+    },
+    "oracle": "0x0000000000000000000000000000000000000000",
+    "irm": "0x0000000000000000000000000000000000000000",
+    "ltv": "0",
+    "birthblock": 17212282,
+    "birthday": 1721260800
+  },
+  "0xde1979b67c815863afd1105cae097ecb71b05b0978bc1605d0a58a25231d924f": {
+    "chain": "base",
+    "morphoBlue": "0xbbbbbbbbbb9cc5e90e3b3af64bdaf62c37eeffcb",
+    "marketId": "0xde1979b67c815863afd1105cae097ecb71b05b0978bc1605d0a58a25231d924f",
+    "debtToken": {
+      "chain": "base",
+      "address": "0x0000206329b97db379d5e1bf586bbdb969c63274",
+      "symbol": "USDA",
+      "decimals": 18
+    },
+    "collateral": {
+      "chain": "base",
+      "address": "0x2ae3f1ec7f1f5012cfeab0185bfc7aa3cf0dec22",
+      "symbol": "cbETH",
+      "decimals": 18
+    },
+    "oracle": "0x1f83f671b5d4ed169985eabb01e27a89c49cfb73",
+    "irm": "0x46415998764c29ab2a25cbea6254146d50d22687",
+    "ltv": "860000000000000000",
+    "birthblock": 17216301,
+    "birthday": 1721260800
+  },
+  "0xefb576606581c5ac9f731d80cb453519d06776fdc1de51d6230d180d74890c3b": {
+    "chain": "base",
+    "morphoBlue": "0xbbbbbbbbbb9cc5e90e3b3af64bdaf62c37eeffcb",
+    "marketId": "0xefb576606581c5ac9f731d80cb453519d06776fdc1de51d6230d180d74890c3b",
+    "debtToken": {
+      "chain": "base",
+      "address": "0xa61beb4a3d02decb01039e378237032b351125b4",
+      "symbol": "EURA",
+      "decimals": 18
+    },
+    "collateral": {
+      "chain": "base",
+      "address": "0x2ae3f1ec7f1f5012cfeab0185bfc7aa3cf0dec22",
+      "symbol": "cbETH",
+      "decimals": 18
+    },
+    "oracle": "0xa479f84993855b6ca54ec1fdd65d5a82b75ea48f",
+    "irm": "0x46415998764c29ab2a25cbea6254146d50d22687",
+    "ltv": "860000000000000000",
+    "birthblock": 17216316,
+    "birthday": 1721260800
+  },
+  "0x3a5bdf0be8d820c1303654b078b14f8fc6d715efaeca56cec150b934bdcbff31": {
+    "chain": "base",
+    "morphoBlue": "0xbbbbbbbbbb9cc5e90e3b3af64bdaf62c37eeffcb",
+    "marketId": "0x3a5bdf0be8d820c1303654b078b14f8fc6d715efaeca56cec150b934bdcbff31",
+    "debtToken": {
+      "chain": "base",
+      "address": "0xcfa3ef56d303ae4faaba0592388f19d7c3399fb4",
+      "symbol": "eUSD",
+      "decimals": 18
+    },
+    "collateral": {
+      "chain": "base",
+      "address": "0xcc7ff230365bd730ee4b352cc2492cedac49383e",
+      "symbol": "hyUSD",
+      "decimals": 18
+    },
+    "oracle": "0xd93f135cbe98338bd8b7ca043aad8fb1d86acaee",
+    "irm": "0x46415998764c29ab2a25cbea6254146d50d22687",
+    "ltv": "860000000000000000",
+    "birthblock": 17267425,
+    "birthday": 1721347200
+  },
+  "0xe73d71cacb1a11ce1033966787e21b85573b8b8a3936bbd7d83b2546a1077c26": {
+    "chain": "base",
+    "morphoBlue": "0xbbbbbbbbbb9cc5e90e3b3af64bdaf62c37eeffcb",
+    "marketId": "0xe73d71cacb1a11ce1033966787e21b85573b8b8a3936bbd7d83b2546a1077c26",
+    "debtToken": {
+      "chain": "base",
+      "symbol": "USDC",
+      "decimals": 6,
+      "address": "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913"
+    },
+    "collateral": {
+      "chain": "base",
+      "address": "0x2ae3f1ec7f1f5012cfeab0185bfc7aa3cf0dec22",
+      "symbol": "cbETH",
+      "decimals": 18
+    },
+    "oracle": "0x8370d60541403b5cd42966d6a7d6d1239bd50ed1",
+    "irm": "0x46415998764c29ab2a25cbea6254146d50d22687",
+    "ltv": "860000000000000000",
+    "birthblock": 17436838,
+    "birthday": 1721692800
+  },
+  "0x87ff0aad672898c24411f98555f958e232c048f41e6d3f2059d26c13fad07563": {
+    "chain": "base",
+    "morphoBlue": "0xbbbbbbbbbb9cc5e90e3b3af64bdaf62c37eeffcb",
+    "marketId": "0x87ff0aad672898c24411f98555f958e232c048f41e6d3f2059d26c13fad07563",
+    "debtToken": {
+      "chain": "base",
+      "symbol": "USDC",
+      "decimals": 6,
+      "address": "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913"
+    },
+    "collateral": {
+      "chain": "base",
+      "address": "0xc1cba3fcea344f92d9239c08c0568f6f2f0ee452",
+      "symbol": "wstETH",
+      "decimals": 18
+    },
+    "oracle": "0xedfd893bbc1230321ab6d2a8e491a9f7e61fc3c0",
+    "irm": "0x46415998764c29ab2a25cbea6254146d50d22687",
+    "ltv": "860000000000000000",
+    "birthblock": 17436869,
+    "birthday": 1721692800
+  },
+  "0x026ecee9b3a8d0ce979837333349cfc2075a2af6cd9b41c1c1d9fa16c44e54c5": {
+    "chain": "base",
+    "morphoBlue": "0xbbbbbbbbbb9cc5e90e3b3af64bdaf62c37eeffcb",
+    "marketId": "0x026ecee9b3a8d0ce979837333349cfc2075a2af6cd9b41c1c1d9fa16c44e54c5",
+    "debtToken": {
+      "chain": "base",
+      "symbol": "USDC",
+      "decimals": 6,
+      "address": "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913"
+    },
+    "collateral": {
+      "chain": "base",
+      "address": "0x2416092f143378750bb29b79ed961ab195cceea5",
+      "symbol": "ezETH",
+      "decimals": 18
+    },
+    "oracle": "0xc9e90d1a6e769a846bcb332ea900d078e2f967b3",
+    "irm": "0x46415998764c29ab2a25cbea6254146d50d22687",
+    "ltv": "770000000000000000",
+    "birthblock": 17436901,
+    "birthday": 1721692800
+  },
+  "0xa4e2843486610e6851f4e0a8fcdee819958598c71c7e99b0315904ccf162ddc3": {
+    "chain": "base",
+    "morphoBlue": "0xbbbbbbbbbb9cc5e90e3b3af64bdaf62c37eeffcb",
+    "marketId": "0xa4e2843486610e6851f4e0a8fcdee819958598c71c7e99b0315904ccf162ddc3",
+    "debtToken": {
+      "chain": "base",
+      "symbol": "USDC",
+      "decimals": 6,
+      "address": "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913"
+    },
+    "collateral": {
+      "chain": "base",
+      "address": "0x04c0599ae5a44757c0af6f9ec3b93da8976c150a",
+      "symbol": "weETH",
+      "decimals": 18
+    },
+    "oracle": "0x9dbcd79e1f47d95de6f211bfb610f082fc584406",
+    "irm": "0x46415998764c29ab2a25cbea6254146d50d22687",
+    "ltv": "770000000000000000",
+    "birthblock": 17436932,
+    "birthday": 1721692800
+  },
+  "0x96d3ac6b4cf992e8bc3dd0855e0c84c18c34a6880f7e005e74c40096a82e0072": {
+    "chain": "base",
+    "morphoBlue": "0xbbbbbbbbbb9cc5e90e3b3af64bdaf62c37eeffcb",
+    "marketId": "0x96d3ac6b4cf992e8bc3dd0855e0c84c18c34a6880f7e005e74c40096a82e0072",
+    "debtToken": {
+      "chain": "base",
+      "address": "0x4200000000000000000000000000000000000006",
+      "symbol": "WETH",
+      "decimals": 18
+    },
+    "collateral": {
+      "chain": "base",
+      "address": "0xc1cba3fcea344f92d9239c08c0568f6f2f0ee452",
+      "symbol": "wstETH",
+      "decimals": 18
+    },
+    "oracle": "0x6cb45d19700ee83558c06a29d3e57143b71c6c9a",
+    "irm": "0x46415998764c29ab2a25cbea6254146d50d22687",
+    "ltv": "945000000000000000",
+    "birthblock": 17443677,
+    "birthday": 1721692800
+  },
+  "0xd75387f30c983be0aec58b03b51cca52337b496e38cf4effbe995531bf34901c": {
+    "chain": "base",
+    "morphoBlue": "0xbbbbbbbbbb9cc5e90e3b3af64bdaf62c37eeffcb",
+    "marketId": "0xd75387f30c983be0aec58b03b51cca52337b496e38cf4effbe995531bf34901c",
+    "debtToken": {
+      "chain": "base",
+      "address": "0x4200000000000000000000000000000000000006",
+      "symbol": "WETH",
+      "decimals": 18
+    },
+    "collateral": {
+      "chain": "base",
+      "address": "0x2ae3f1ec7f1f5012cfeab0185bfc7aa3cf0dec22",
+      "symbol": "cbETH",
+      "decimals": 18
+    },
+    "oracle": "0xd7e2307bafb6e8ee916c54a50d938161c0c9cec3",
+    "irm": "0x46415998764c29ab2a25cbea6254146d50d22687",
+    "ltv": "945000000000000000",
+    "birthblock": 17443687,
+    "birthday": 1721692800
+  },
+  "0x3fa37d9cc9922c120972c89ae0da86843e7e51c0dd04668e6fac3e7cd1ada1d3": {
+    "chain": "base",
+    "morphoBlue": "0xbbbbbbbbbb9cc5e90e3b3af64bdaf62c37eeffcb",
+    "marketId": "0x3fa37d9cc9922c120972c89ae0da86843e7e51c0dd04668e6fac3e7cd1ada1d3",
+    "debtToken": {
+      "chain": "base",
+      "address": "0x4200000000000000000000000000000000000006",
+      "symbol": "WETH",
+      "decimals": 18
+    },
+    "collateral": {
+      "chain": "base",
+      "address": "0x04c0599ae5a44757c0af6f9ec3b93da8976c150a",
+      "symbol": "weETH",
+      "decimals": 18
+    },
+    "oracle": "0xfb3ba172665d5953516821d05f7db8a9d1b65355",
+    "irm": "0x46415998764c29ab2a25cbea6254146d50d22687",
+    "ltv": "915000000000000000",
+    "birthblock": 17443698,
+    "birthday": 1721692800
+  },
+  "0xc338cc2dc3f6a25bace40a920eea39ff27f184899def6bda478e27e591e5cef2": {
+    "chain": "base",
+    "morphoBlue": "0xbbbbbbbbbb9cc5e90e3b3af64bdaf62c37eeffcb",
+    "marketId": "0xc338cc2dc3f6a25bace40a920eea39ff27f184899def6bda478e27e591e5cef2",
+    "debtToken": {
+      "chain": "base",
+      "address": "0x4200000000000000000000000000000000000006",
+      "symbol": "WETH",
+      "decimals": 18
+    },
+    "collateral": {
+      "chain": "base",
+      "address": "0x2416092f143378750bb29b79ed961ab195cceea5",
+      "symbol": "ezETH",
+      "decimals": 18
+    },
+    "oracle": "0x451b6e60cea6ef4614f73f9bc7e5039e8039ef20",
+    "irm": "0x46415998764c29ab2a25cbea6254146d50d22687",
+    "ltv": "915000000000000000",
+    "birthblock": 17443705,
+    "birthday": 1721692800
   }
 }

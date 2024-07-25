@@ -24,18 +24,44 @@ interface MorphoMarket {
 }
 
 const configs: Array<string> = [
-  'ethereum:18883124:0xbbbbbbbbbb9cc5e90e3b3af64bdaf62c37eeffcb',
-  'base:13977148:0xBBBBBbbBBb9cC5e90e3b3Af64bdAF62C37EEFFCb',
+  'ethereum:0xbbbbbbbbbb9cc5e90e3b3af64bdaf62c37eeffcb',
+  'base:0xBBBBBbbBBb9cC5e90e3b3Af64bdAF62C37EEFFCb',
 ];
 
 const blockchain = new BlockchainService();
 
+function getBirthBlock(chain: string, mappings: any) {
+  if (mappings) {
+    let latestBlock = 0;
+    for (const market of Object.values(mappings)) {
+      if ((market as any).chain === chain && (market as any).birthblock > latestBlock) {
+        latestBlock = (market as any).birthblock;
+      }
+    }
+    return latestBlock;
+  } else {
+    if (chain === 'ethereum') {
+      // ethereum
+      return 18883124;
+    } else {
+      // base
+      return 13977148;
+    }
+  }
+}
+
 (async function () {
   // marketId => underlying token
-  const mappings: { [key: string]: MorphoMarket } = {};
+  let mappings: { [key: string]: MorphoMarket } = {};
+  try {
+    mappings = JSON.parse(fs.readFileSync(dataPath).toString());
+  } catch (e: any) {}
 
   for (const config of configs) {
-    const [chain, birthblock, address] = config.split(':');
+    const [chain, address] = config.split(':');
+    const birthblock = getBirthBlock(chain, mappings);
+
+    console.log('start getting markets data', chain, address, birthblock);
 
     const publiClient = blockchain.getPublicClient(chain);
     const latestBlock = Number(await publiClient.getBlockNumber());
