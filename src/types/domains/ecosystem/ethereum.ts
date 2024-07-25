@@ -19,6 +19,13 @@ export interface EthereumLayer2Stats {
   volumeWithdrawnFromLayer2: string;
 }
 
+export interface EthereumLiquidStakingData {
+  protocol: string;
+
+  // total ETh were being staked
+  totalDeposited: string;
+}
+
 export interface EthereumDataTimeframe {
   protocol: string;
   chain: string;
@@ -57,6 +64,9 @@ export interface EthereumDataTimeframe {
 
   // list of layer 2 bridge stats
   layer2: Array<EthereumLayer2Stats>;
+
+  // liquid staking
+  liquidStaking: Array<EthereumLiquidStakingData>;
 }
 
 export interface EthereumDataState extends EthereumDataTimeframe {

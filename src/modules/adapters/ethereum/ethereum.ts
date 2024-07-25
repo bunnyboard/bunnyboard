@@ -6,6 +6,7 @@ import {
   formatLittleEndian64ToString,
   getTimestamp,
   normalizeAddress,
+  sleep,
 } from '../../../lib/utils';
 import { DataMetrics, MetricConfig, ProtocolConfig } from '../../../types/configs';
 import { ContextServices, ContextStorages } from '../../../types/namespaces';
@@ -32,6 +33,7 @@ import BlastYieldManagerAbi from '../../../configs/abi/blast/YieldManager.json';
 import ArbitrumInboxAbi from '../../../configs/abi/arbitrum/Inbox.json';
 import ArbitrumBridgeAbi from '../../../configs/abi/arbitrum/Bridge.json';
 import { ChainNames } from '../../../configs/names';
+import LsdHelper from './lsdHelper';
 
 const BeaconDepositEvent = '0x649bbc62d0e31342afea4e5cd82d4049e7e1ee912fc0889aa790803be39038c5';
 const OptimismBridgeDepositEvent = '0x2849b43074093a05396b6f2a937dee8565b15a48a7b3d4bffb732a5017380af5';
@@ -59,19 +61,26 @@ export default class EthereumAdapter extends ProtocolAdapter {
 
     // query stats from Etherscan
     let etherscanResponse = null;
-    if (ethereumConfig.etherscanApiKey !== '') {
-      const etherscanUrl = `https://api.etherscan.io/api?module=stats&action=ethsupply2&apikey=${ethereumConfig.etherscanApiKey}`;
-      try {
-        etherscanResponse = (await axios.get(etherscanUrl)).data;
-      } catch (e: any) {
-        logger.warn('failed to query etherscan api', {
-          service: this.name,
-          chain: ethereumConfig.chain,
-          protocol: ethereumConfig.protocol,
-          error: e.message,
-        });
+
+    do {
+      if (ethereumConfig.etherscanApiKey !== '') {
+        const etherscanUrl = `https://api.etherscan.io/api?module=stats&action=ethsupply2&apikey=${ethereumConfig.etherscanApiKey}`;
+        try {
+          etherscanResponse = (await axios.get(etherscanUrl)).data;
+        } catch (e: any) {
+          logger.warn('failed to query etherscan api, retrying', {
+            service: this.name,
+            chain: ethereumConfig.chain,
+            protocol: ethereumConfig.protocol,
+            error: e.message,
+          });
+        }
       }
-    }
+
+      if (etherscanResponse === null) {
+        await sleep(5);
+      }
+    } while (etherscanResponse === null);
 
     const dataTimeframe = await this.getEcosystemDataTimeframe(options);
     if (dataTimeframe) {
@@ -137,6 +146,7 @@ export default class EthereumAdapter extends ProtocolAdapter {
       senderAddresses: [],
       beaconDeposits: [],
       layer2: [],
+      liquidStaking: [],
     };
 
     const client = this.services.blockchain.getPublicClient(ethereumConfig.chain);
@@ -378,6 +388,13 @@ export default class EthereumAdapter extends ProtocolAdapter {
 
       ethereumData.layer2.push(layer2Stats);
     }
+
+    // get liquid staking data
+    ethereumData.liquidStaking = await LsdHelper.getEthereumLsdData({
+      services: this.services,
+      ethereumConfig: ethereumConfig,
+      timestamp: stateTime,
+    });
 
     ethereumData.senderAddresses = Object.keys(senderAddresses);
 
