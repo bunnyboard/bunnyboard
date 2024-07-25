@@ -258,6 +258,42 @@ export const EthereumConfigs: EthereumProtocolConfig = {
             },
           },
         },
+        {
+          protocol: ProtocolNames.liquidcollective,
+          contracts: {
+            lsETH: {
+              chain: ChainNames.ethereum,
+              address: '0x8c1BEd5b9a0928467c9B1341Da1D7BD5e10b6549',
+            },
+          },
+        },
+        {
+          protocol: ProtocolNames.originether,
+          contracts: {
+            OETHVault: {
+              chain: ChainNames.ethereum,
+              address: '0x39254033945aa2e4809cc2977e7087bee48bd7ab',
+            },
+          },
+        },
+        {
+          protocol: ProtocolNames.ankr,
+          contracts: {
+            ankrETH: {
+              chain: ChainNames.ethereum,
+              address: '0xe95a203b1a91a908f9b9ce46459d101078c2c3cb',
+            },
+          },
+        },
+        {
+          protocol: ProtocolNames.cryptocomStakedEth,
+          contracts: {
+            CDCETH: {
+              chain: ChainNames.cronos,
+              address: '0x7a7c9db510ab29a2fc362a4c34260becb5ce3446',
+            },
+          },
+        },
       ],
     },
   ],

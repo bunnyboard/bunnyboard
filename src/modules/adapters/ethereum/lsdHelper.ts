@@ -295,6 +295,145 @@ export default class LsdHelper {
             18,
           ),
         });
+      } else if (liquidStakingConfig.protocol === ProtocolNames.liquidcollective) {
+        const blockNumber = await services.blockchain.tryGetBlockNumberAtTimestamp(
+          liquidStakingConfig.contracts.lsETH.chain,
+          timestamp,
+        );
+        const totalUnderlyingSupply = await services.blockchain.readContract({
+          chain: liquidStakingConfig.contracts.lsETH.chain,
+          target: liquidStakingConfig.contracts.lsETH.address,
+          abi: [
+            {
+              inputs: [],
+              name: 'totalUnderlyingSupply',
+              outputs: [
+                {
+                  internalType: 'uint256',
+                  name: '',
+                  type: 'uint256',
+                },
+              ],
+              stateMutability: 'view',
+              type: 'function',
+            },
+          ],
+          method: 'totalUnderlyingSupply',
+          params: [],
+          blockNumber: blockNumber,
+        });
+        data.push({
+          protocol: liquidStakingConfig.protocol,
+          totalDeposited: formatBigNumberToString(totalUnderlyingSupply.toString(), 18),
+        });
+      } else if (liquidStakingConfig.protocol === ProtocolNames.originether) {
+        const blockNumber = await services.blockchain.tryGetBlockNumberAtTimestamp(
+          liquidStakingConfig.contracts.OETHVault.chain,
+          timestamp,
+        );
+        // Origin Ethere vault supports multiple assets include: WETH, stETH, rETH
+        // we count WETh only because we are accounting ETH were being deposited into eth2
+        // if wee count other assets, it seem like double count issue
+        const checkBalance = await services.blockchain.readContract({
+          chain: liquidStakingConfig.contracts.OETHVault.chain,
+          target: liquidStakingConfig.contracts.OETHVault.address,
+          abi: [
+            {
+              inputs: [{ internalType: 'address', name: '_asset', type: 'address' }],
+              name: 'checkBalance',
+              outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
+              stateMutability: 'view',
+              type: 'function',
+            },
+          ],
+          method: 'checkBalance',
+          params: ['0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2'],
+          blockNumber: blockNumber,
+        });
+        data.push({
+          protocol: liquidStakingConfig.protocol,
+          totalDeposited: formatBigNumberToString(checkBalance.toString(), 18),
+        });
+      } else if (liquidStakingConfig.protocol === ProtocolNames.ankr) {
+        const blockNumber = await services.blockchain.tryGetBlockNumberAtTimestamp(
+          liquidStakingConfig.contracts.ankrETH.chain,
+          timestamp,
+        );
+
+        const [rate, totalSupply] = await services.blockchain.multicall({
+          chain: liquidStakingConfig.contracts.ankrETH.chain,
+          blockNumber: blockNumber,
+          calls: [
+            {
+              target: liquidStakingConfig.contracts.ankrETH.address,
+              abi: [
+                {
+                  inputs: [{ internalType: 'uint256', name: 'amount', type: 'uint256' }],
+                  name: 'sharesToBonds',
+                  outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
+                  stateMutability: 'view',
+                  type: 'function',
+                },
+              ],
+              method: 'sharesToBonds',
+              params: ['1000000000000000000'],
+            },
+            {
+              target: liquidStakingConfig.contracts.ankrETH.address,
+              abi: Erc20Abi,
+              method: 'totalSupply',
+              params: [],
+            },
+          ],
+        });
+
+        data.push({
+          protocol: liquidStakingConfig.protocol,
+          totalDeposited: formatBigNumberToString(
+            new BigNumber(rate.toString()).multipliedBy(new BigNumber(totalSupply.toString())).toString(10),
+            36,
+          ),
+        });
+      } else if (liquidStakingConfig.protocol === ProtocolNames.cryptocomStakedEth) {
+        const blockNumber = await services.blockchain.tryGetBlockNumberAtTimestamp(
+          liquidStakingConfig.contracts.CDCETH.chain,
+          timestamp,
+        );
+
+        const [exchangeRate, totalSupply] = await services.blockchain.multicall({
+          chain: liquidStakingConfig.contracts.CDCETH.chain,
+          blockNumber: blockNumber,
+          calls: [
+            {
+              target: liquidStakingConfig.contracts.CDCETH.address,
+              abi: [
+                {
+                  inputs: [],
+                  name: 'exchangeRate',
+                  outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
+                  stateMutability: 'view',
+                  type: 'function',
+                },
+              ],
+              method: 'exchangeRate',
+              params: [],
+            },
+            {
+              target: liquidStakingConfig.contracts.CDCETH.address,
+              abi: Erc20Abi,
+              method: 'totalSupply',
+              params: [],
+            },
+          ],
+        });
+
+        data.push({
+          protocol: liquidStakingConfig.protocol,
+          totalDeposited: formatBigNumberToString(
+            new BigNumber(exchangeRate.toString()).multipliedBy(new BigNumber(totalSupply.toString())).toString(10),
+            36,
+          ),
+        });
       }
     }
 
