@@ -81,8 +81,9 @@ export interface EnvConfig {
     [key: string]: Blockchain;
   };
 
-  apiKeys: {
-    etherscan: string;
+  externalConfigs: {
+    etherscanApiKey: string;
+    beaconNode: string;
   };
 }
 

@@ -33,6 +33,9 @@ export interface EthereumEcosystemConfig extends MetricConfig {
   // etherscan api key
   etherscanApiKey: string;
 
+  // beacon api
+  beaconNode: string;
+
   // list of layer 2 configs
   layer2: Array<Layer2Config>;
 
@@ -82,7 +85,10 @@ export const EthereumConfigs: EthereumProtocolConfig = {
       address: EthereumBeaconDepositContract,
 
       // to get Ether supply info
-      etherscanApiKey: envConfig.apiKeys.etherscan,
+      etherscanApiKey: envConfig.externalConfigs.etherscanApiKey,
+
+      // to get beacon CL data
+      beaconNode: envConfig.externalConfigs.beaconNode,
 
       // layer 2 configs
       layer2: AllLayer2.map((item) => {

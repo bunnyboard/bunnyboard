@@ -26,6 +26,7 @@ import { decodeEventLog } from 'viem';
 import BeaconDepositAbi from '../../../configs/abi/BeaconDeposit.json';
 import LsdHelper from './lsdHelper';
 import Layer2Helper from './layer2Helper';
+import BeaconHelper from './beaconHelper';
 
 const BeaconDepositEvent = '0x649bbc62d0e31342afea4e5cd82d4049e7e1ee912fc0889aa790803be39038c5';
 
@@ -66,10 +67,16 @@ export default class EthereumAdapter extends ProtocolAdapter {
       }
     } while (etherscanResponse === null);
 
+    const beaconStats = await BeaconHelper.getBeaconData({
+      services: this.services,
+      ethereumConfig: ethereumConfig,
+    });
+
     const dataTimeframe = await this.getEcosystemDataTimeframe(options);
     if (dataTimeframe) {
       return {
         ...dataTimeframe,
+        beaconStats: beaconStats,
         totalCoinSupply: etherscanResponse
           ? formatBigNumberToString(etherscanResponse.result.EthSupply.toString(), 18)
           : '0',

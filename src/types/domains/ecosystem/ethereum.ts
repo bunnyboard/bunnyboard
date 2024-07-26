@@ -78,6 +78,16 @@ export interface EthereumDataTimeframe {
   liquidStaking: Array<EthereumLiquidStakingData>;
 }
 
+export interface EthereumBeaconStats {
+  // total validators includes all status from the genesis
+  cumulativeValidatorCount: number;
+
+  // status => validator count
+  validatorStates: {
+    [key: string]: number;
+  };
+}
+
 export interface EthereumDataState extends EthereumDataTimeframe {
   // total ETH supply ever exists
   totalCoinSupply: string;
@@ -90,6 +100,9 @@ export interface EthereumDataState extends EthereumDataTimeframe {
 
   // total ETH were withdrawn from eth2
   totalCoinEth2Withdrawn: string;
+
+  // current beacon chain stats
+  beaconStats: EthereumBeaconStats | null;
 }
 
 export interface EthereumDataStateWithTimeframe extends EthereumDataState {
