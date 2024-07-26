@@ -38,6 +38,9 @@ export const ChainNames = {
   mint: 'mint',
   aevo: 'aevo',
   lyra: 'lyra',
+  kroma: 'kroma',
+  ancient8: 'ancient8',
+  lisk: 'lisk',
 };
 
 export const ProtocolNames = {

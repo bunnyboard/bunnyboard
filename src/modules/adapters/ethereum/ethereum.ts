@@ -1,7 +1,6 @@
 import { AddressZero, TimeUnits } from '../../../configs/constants';
 import EnvConfig from '../../../configs/envConfig';
 import {
-  compareAddress,
   formatBigNumberToString,
   formatLittleEndian64ToString,
   getTimestamp,
@@ -12,38 +11,23 @@ import { DataMetrics, MetricConfig, ProtocolConfig } from '../../../types/config
 import { ContextServices, ContextStorages } from '../../../types/namespaces';
 import { GetAdapterDataTimeframeOptions, RunAdapterOptions } from '../../../types/options';
 import ProtocolAdapter from '../adapter';
-import {
-  ArbitrumBridgeConfig,
-  EthereumEcosystemConfig,
-  OptimismBridgeConfig,
-} from '../../../configs/protocols/ethereum';
+import { EthereumEcosystemConfig } from '../../../configs/protocols/ethereum';
 import logger from '../../../lib/logger';
 import axios from 'axios';
 import {
   EthereumDataState,
   EthereumDataStateWithTimeframe,
   EthereumDataTimeframe,
-  EthereumLayer2Stats,
+  EthereumMinerStats,
+  EthereumSenderStats,
 } from '../../../types/domains/ecosystem/ethereum';
 import BigNumber from 'bignumber.js';
-import { Address, decodeEventLog, decodeFunctionData } from 'viem';
+import { decodeEventLog } from 'viem';
 import BeaconDepositAbi from '../../../configs/abi/BeaconDeposit.json';
-import OptimismBridgeAbi from '../../../configs/abi/optimism/L1StandardBridge.json';
-import BlastYieldManagerAbi from '../../../configs/abi/blast/YieldManager.json';
-import ArbitrumInboxAbi from '../../../configs/abi/arbitrum/Inbox.json';
-import ArbitrumBridgeAbi from '../../../configs/abi/arbitrum/Bridge.json';
-import { ChainNames } from '../../../configs/names';
 import LsdHelper from './lsdHelper';
+import Layer2Helper from './layer2Helper';
 
 const BeaconDepositEvent = '0x649bbc62d0e31342afea4e5cd82d4049e7e1ee912fc0889aa790803be39038c5';
-const OptimismBridgeDepositEvent = '0x2849b43074093a05396b6f2a937dee8565b15a48a7b3d4bffb732a5017380af5';
-const OptimismBridgeWithdrawEvent = '0x31b2166ff604fc5672ea5df08a78081d2bc6d746cadce880747f3643d819e83d';
-
-// deposit to arbitrum
-const ArbitrumInboxMessageDeliveredEvent = '0xff64905f73a67fb594e0f940a8075a860db489ad991e032f48c81123eb52d60b';
-
-// for withdraw from arbitrum
-const ArbitrumBridgeCallTriggered = '0x2d9d115ef3e4a606d698913b1eae831a3cdfe20d9a83d48007b0526749c3d466';
 
 export default class EthereumAdapter extends ProtocolAdapter {
   public readonly name: string = 'adapter.ethereum';
@@ -144,6 +128,7 @@ export default class EthereumAdapter extends ProtocolAdapter {
       transactionCount: 0,
       transactuonTypes: {},
       senderAddresses: [],
+      minerAddresses: [],
       beaconDeposits: [],
       layer2: [],
       liquidStaking: [],
@@ -197,7 +182,7 @@ export default class EthereumAdapter extends ProtocolAdapter {
       }
     }
 
-    logger.debug('processing ethereum blocks data', {
+    logger.debug('getting ethereum blocks data', {
       service: this.name,
       chain: ethereumConfig.chain,
       protocol: ethereumConfig.protocol,
@@ -205,13 +190,23 @@ export default class EthereumAdapter extends ProtocolAdapter {
       toBlock: endBlock,
     });
 
-    const senderAddresses: { [key: string]: true } = {};
+    const senderAddresses: { [key: string]: EthereumSenderStats } = {};
+    const minerAddresses: { [key: string]: EthereumMinerStats } = {};
     for (let queryBlock = beginBlock; queryBlock <= endBlock; queryBlock++) {
       const block = await client.getBlock({
         blockNumber: BigInt(queryBlock),
         includeTransactions: true,
       });
       if (block) {
+        const miner = normalizeAddress(block.miner);
+        if (!minerAddresses[miner]) {
+          minerAddresses[miner] = {
+            address: miner,
+            producedBlockCount: 0,
+          };
+        }
+        minerAddresses[miner].producedBlockCount += 1;
+
         ethereumData.gasLimit = new BigNumber(ethereumData.gasLimit)
           .plus(new BigNumber(block.gasLimit.toString()))
           .toString(10);
@@ -239,7 +234,14 @@ export default class EthereumAdapter extends ProtocolAdapter {
         }
 
         for (const transaction of block.transactions) {
-          senderAddresses[normalizeAddress(transaction.from)] = true;
+          const sender = normalizeAddress(transaction.from);
+          if (!senderAddresses[sender]) {
+            senderAddresses[sender] = {
+              address: sender,
+              transactionCount: 0,
+            };
+          }
+          senderAddresses[sender].transactionCount += 1;
 
           if (!ethereumData.transactuonTypes[transaction.type]) {
             ethereumData.transactuonTypes[transaction.type] = 0;
@@ -247,7 +249,7 @@ export default class EthereumAdapter extends ProtocolAdapter {
           ethereumData.transactuonTypes[transaction.type] += 1;
         }
       } else {
-        logger.warn('failed to query ethereum block data', {
+        logger.warn('failed to get ethereum block data', {
           service: this.name,
           chain: ethereumConfig.chain,
           protocol: ethereumConfig.protocol,
@@ -256,138 +258,14 @@ export default class EthereumAdapter extends ProtocolAdapter {
       }
     }
 
-    for (const layer2Config of ethereumConfig.layer2) {
-      logger.debug(`processing layer 2 data`, {
-        service: this.name,
-        chain: ethereumConfig.chain,
-        protocol: ethereumConfig.protocol,
-        layer2: layer2Config.layer2,
-        based: layer2Config.based,
-      });
-
-      const layer2Stats: EthereumLayer2Stats = {
-        layer2: layer2Config.layer2,
-        totalCoinLocked: '0',
-        volumeDepositedToLayer2: '0',
-        volumeWithdrawnFromLayer2: '0',
-      };
-
-      if (layer2Config.based === 'optimism') {
-        if (layer2Config.layer2 === ChainNames.blast) {
-          const balance = await this.services.blockchain.readContract({
-            chain: ethereumConfig.chain,
-            target: (layer2Config.bridgeConfig as OptimismBridgeConfig).portal,
-            abi: BlastYieldManagerAbi,
-            method: 'totalValue',
-            params: [],
-            blockNumber: stateBlock,
-          });
-          layer2Stats.totalCoinLocked = formatBigNumberToString(balance.toString(), 18);
-        } else {
-          const client = this.services.blockchain.getPublicClient(ethereumConfig.chain);
-          const balance = await client.getBalance({
-            address: (layer2Config.bridgeConfig as OptimismBridgeConfig).portal as Address,
-          });
-          layer2Stats.totalCoinLocked = formatBigNumberToString(balance.toString(), 18);
-        }
-
-        for (const gatewayContract of (layer2Config.bridgeConfig as OptimismBridgeConfig).gateways) {
-          const gatewayEvents = await this.services.blockchain.getContractLogs({
-            chain: ethereumConfig.chain,
-            address: gatewayContract,
-            fromBlock: beginBlock,
-            toBlock: endBlock,
-          });
-
-          for (const log of gatewayEvents) {
-            const signature = log.topics[0];
-            if (
-              (signature === OptimismBridgeDepositEvent || signature === OptimismBridgeWithdrawEvent) &&
-              compareAddress(log.address, gatewayContract)
-            ) {
-              const event: any = decodeEventLog({
-                abi: OptimismBridgeAbi,
-                topics: log.topics,
-                data: log.data,
-              });
-              const amount = formatBigNumberToString(event.args.amount.toString(), 18);
-
-              if (signature === OptimismBridgeDepositEvent) {
-                layer2Stats.volumeDepositedToLayer2 = new BigNumber(layer2Stats.volumeDepositedToLayer2)
-                  .plus(amount)
-                  .toString(10);
-              } else {
-                layer2Stats.volumeWithdrawnFromLayer2 = new BigNumber(layer2Stats.volumeWithdrawnFromLayer2)
-                  .plus(amount)
-                  .toString(10);
-              }
-            }
-          }
-        }
-      } else if (layer2Config.based === 'arbitrum') {
-        const client = this.services.blockchain.getPublicClient(ethereumConfig.chain);
-        const balance = await client.getBalance({
-          address: (layer2Config.bridgeConfig as ArbitrumBridgeConfig).bridge as Address,
-        });
-        layer2Stats.totalCoinLocked = formatBigNumberToString(balance.toString(), 18);
-
-        let bridgeLogs = await this.services.blockchain.getContractLogs({
-          chain: ethereumConfig.chain,
-          address: (layer2Config.bridgeConfig as ArbitrumBridgeConfig).bridge,
-          fromBlock: beginBlock,
-          toBlock: endBlock,
-        });
-        bridgeLogs = bridgeLogs.concat(
-          await this.services.blockchain.getContractLogs({
-            chain: ethereumConfig.chain,
-            address: (layer2Config.bridgeConfig as ArbitrumBridgeConfig).inbox,
-            fromBlock: beginBlock,
-            toBlock: endBlock,
-          }),
-        );
-
-        for (const log of bridgeLogs) {
-          const signature = log.topics[0];
-          if (
-            signature === ArbitrumInboxMessageDeliveredEvent &&
-            compareAddress(log.address, (layer2Config.bridgeConfig as ArbitrumBridgeConfig).inbox)
-          ) {
-            if (!transactions[log.transactionHash]) {
-              transactions[log.transactionHash] = await client.getTransaction({
-                hash: log.transactionHash,
-              });
-              try {
-                const params = decodeFunctionData({
-                  abi: ArbitrumInboxAbi,
-                  data: transactions[log.transactionHash].input,
-                });
-                if (params && params.functionName === 'depositEth') {
-                  layer2Stats.volumeDepositedToLayer2 = new BigNumber(layer2Stats.volumeDepositedToLayer2)
-                    .plus(formatBigNumberToString(transactions[log.transactionHash].value.toString(), 18))
-                    .toString(10);
-                }
-              } catch (e: any) {}
-            }
-          } else if (
-            signature === ArbitrumBridgeCallTriggered &&
-            compareAddress(log.address, (layer2Config.bridgeConfig as ArbitrumBridgeConfig).bridge)
-          ) {
-            const event: any = decodeEventLog({
-              abi: ArbitrumBridgeAbi,
-              topics: log.topics,
-              data: log.data,
-            });
-            if (event.args.data === '' || event.args.data === '0x') {
-              layer2Stats.volumeWithdrawnFromLayer2 = new BigNumber(layer2Stats.volumeWithdrawnFromLayer2)
-                .plus(formatBigNumberToString(event.args.value.toString(), 18))
-                .toString(10);
-            }
-          }
-        }
-      }
-
-      ethereumData.layer2.push(layer2Stats);
-    }
+    // get layer 2 data
+    ethereumData.layer2 = await Layer2Helper.getLayer2Data({
+      services: this.services,
+      ethereumConfig: ethereumConfig,
+      beginBlock,
+      endBlock,
+      stateBlock,
+    });
 
     // get liquid staking data
     ethereumData.liquidStaking = await LsdHelper.getEthereumLsdData({
@@ -396,7 +274,8 @@ export default class EthereumAdapter extends ProtocolAdapter {
       timestamp: stateTime,
     });
 
-    ethereumData.senderAddresses = Object.keys(senderAddresses);
+    ethereumData.senderAddresses = Object.values(senderAddresses);
+    ethereumData.minerAddresses = Object.values(minerAddresses);
 
     return ethereumData;
   }

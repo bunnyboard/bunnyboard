@@ -13,10 +13,6 @@ export interface EthereumLayer2Stats {
 
   // total ETH were being locked in contract layer
   totalCoinLocked: string;
-
-  // volumes deposit/withdraw to/from layer 2
-  volumeDepositedToLayer2: string;
-  volumeWithdrawnFromLayer2: string;
 }
 
 export interface EthereumLiquidStakingData {
@@ -24,6 +20,16 @@ export interface EthereumLiquidStakingData {
 
   // total ETh were being staked
   totalDeposited: string;
+}
+
+export interface EthereumMinerStats {
+  address: string;
+  producedBlockCount: number;
+}
+
+export interface EthereumSenderStats {
+  address: string;
+  transactionCount: number;
 }
 
 export interface EthereumDataTimeframe {
@@ -57,7 +63,10 @@ export interface EthereumDataTimeframe {
   };
 
   // sender addresses
-  senderAddresses: Array<string>;
+  senderAddresses: Array<EthereumSenderStats>;
+
+  // fee recipients or block builders
+  minerAddresses: Array<EthereumMinerStats>;
 
   // list of beacon deposits
   beaconDeposits: Array<EthereumBeaconDeposit>;
