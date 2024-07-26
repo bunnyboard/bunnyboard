@@ -12,8 +12,8 @@ export interface GetBeaconDataOptions {
 export default class BeaconHelper {
   public static async getBeaconData(options: GetBeaconDataOptions): Promise<EthereumBeaconStats> {
     const stats: EthereumBeaconStats = {
-      cumulativeValidatorCount: 0,
-      validatorStates: {},
+      totalValidator: 0,
+      validatorStatus: {},
     };
 
     const chunk = 1000; // get 1000 validators at once
@@ -31,20 +31,19 @@ export default class BeaconHelper {
         if (response.data.data.length === 0) {
           break;
         } else {
-          stats.cumulativeValidatorCount = response.data.data[response.data.data.length - 1].index;
-
           for (const validator of response.data.data) {
-            if (!stats.validatorStates[validator.status]) {
-              stats.validatorStates[validator.status] = 0;
+            stats.totalValidator += 1;
+            if (!stats.validatorStatus[validator.status]) {
+              stats.validatorStatus[validator.status] = 0;
             }
-            stats.validatorStates[validator.status] += 1;
+            stats.validatorStatus[validator.status] += 1;
           }
         }
       }
 
       startIndex += chunk;
 
-      logger.debug('getting validator info from beacon', {
+      logger.debug('getting beacon validator info by indies', {
         service: this.name,
         toIndex: startIndex,
       });

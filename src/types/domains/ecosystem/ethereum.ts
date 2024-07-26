@@ -80,10 +80,10 @@ export interface EthereumDataTimeframe {
 
 export interface EthereumBeaconStats {
   // total validators includes all status from the genesis
-  cumulativeValidatorCount: number;
+  totalValidator: number;
 
   // status => validator count
-  validatorStates: {
+  validatorStatus: {
     [key: string]: number;
   };
 }
