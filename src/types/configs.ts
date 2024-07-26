@@ -80,6 +80,11 @@ export interface EnvConfig {
   blockchains: {
     [key: string]: Blockchain;
   };
+
+  externalConfigs: {
+    etherscanApiKey: string;
+    beaconNode: string;
+  };
 }
 
 export const DataMetrics = {

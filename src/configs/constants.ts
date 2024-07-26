@@ -24,6 +24,8 @@ export const AddressMulticall3 = '0xca11bde05977b3631167028862be2a173976ca11';
 
 export const Erc20TransferEventSignature = '0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef';
 
+export const EthereumBeaconDepositContract = '0x00000000219ab540356cbb839cbe05303d7705fa';
+
 // chain => number of second per block confirmation
 export const ChainBlockPeriods: { [key: string]: number } = {
   ethereum: 13, // 13 seconds

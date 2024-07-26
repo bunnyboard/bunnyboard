@@ -12,6 +12,7 @@ import { ColendCOnfigs } from './protocols/colend';
 import { CompoundConfigs, Compoundv3Configs } from './protocols/compound';
 import { CrvusdConfigs } from './protocols/crvusd';
 import { CurvelendConfigs } from './protocols/curvelend';
+import { EthereumConfigs } from './protocols/ethereum';
 import { FluidConfigs } from './protocols/fluid';
 import { FraxlendConfigs } from './protocols/fraxlend';
 import { GravitaConfigs } from './protocols/gravita';
@@ -73,6 +74,7 @@ export const ProtocolConfigs = {
   compoundv3: Compoundv3Configs,
   crvusd: CrvusdConfigs,
   curvelend: CurvelendConfigs,
+  ethereum: EthereumConfigs,
   fluid: FluidConfigs,
   fraxlend: FraxlendConfigs,
   gravita: GravitaConfigs,

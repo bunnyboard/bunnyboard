@@ -12,6 +12,7 @@ import Compoundv3Adapter from './compound/compoundv3';
 import CompoundWithOracleAdapter from './compound/compoundWithOracle';
 import CrvusdAdapter from './crvusd/crvusd';
 import CurvelendAdapter from './curvelend/curvelend';
+import EthereumAdapter from './ethereum/ethereum';
 import FluidAdapter from './fluid/fluid';
 import FraxlendAdapter from './fraxlend/fraxlend';
 import GravitaAdapter from './gravita/gravita';
@@ -90,5 +91,6 @@ export function getProtocolAdapters(
     fraxlend: new FraxlendAdapter(services, storages, ProtocolConfigs.fraxlend),
     curvelend: new CurvelendAdapter(services, storages, ProtocolConfigs.curvelend),
     polter: new Aavev2Adapter(services, storages, ProtocolConfigs.polter),
+    ethereum: new EthereumAdapter(services, storages, ProtocolConfigs.ethereum),
   };
 }
