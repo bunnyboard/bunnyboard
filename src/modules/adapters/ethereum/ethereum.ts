@@ -18,15 +18,13 @@ import {
   EthereumDataState,
   EthereumDataStateWithTimeframe,
   EthereumDataTimeframe,
-  EthereumMinerStats,
-  EthereumSenderStats,
 } from '../../../types/domains/ecosystem/ethereum';
 import BigNumber from 'bignumber.js';
 import { decodeEventLog } from 'viem';
 import BeaconDepositAbi from '../../../configs/abi/BeaconDeposit.json';
 import LsdHelper from './lsdHelper';
 import Layer2Helper from './layer2Helper';
-import BeaconHelper from './beaconHelper';
+import ChainHelper from './chainHelper';
 
 const BeaconDepositEvent = '0x649bbc62d0e31342afea4e5cd82d4049e7e1ee912fc0889aa790803be39038c5';
 
@@ -67,16 +65,16 @@ export default class EthereumAdapter extends ProtocolAdapter {
       }
     } while (etherscanResponse === null);
 
-    const beaconStats = await BeaconHelper.getBeaconData({
-      services: this.services,
-      ethereumConfig: ethereumConfig,
-    });
+    // const beaconStats = await BeaconHelper.getBeaconData({
+    //   services: this.services,
+    //   ethereumConfig: ethereumConfig,
+    // });
 
     const dataTimeframe = await this.getEcosystemDataTimeframe(options);
     if (dataTimeframe) {
       return {
         ...dataTimeframe,
-        beaconStats: beaconStats,
+        beaconStats: null,
         totalCoinSupply: etherscanResponse
           ? formatBigNumberToString(etherscanResponse.result.EthSupply.toString(), 18)
           : '0',
@@ -193,77 +191,26 @@ export default class EthereumAdapter extends ProtocolAdapter {
       service: this.name,
       chain: ethereumConfig.chain,
       protocol: ethereumConfig.protocol,
+      total: endBlock - beginBlock,
       fromBlock: beginBlock,
       toBlock: endBlock,
     });
 
-    const senderAddresses: { [key: string]: EthereumSenderStats } = {};
-    const minerAddresses: { [key: string]: EthereumMinerStats } = {};
-    for (let queryBlock = beginBlock; queryBlock <= endBlock; queryBlock++) {
-      const block = await client.getBlock({
-        blockNumber: BigInt(queryBlock),
-        includeTransactions: true,
-      });
-      if (block) {
-        const miner = normalizeAddress(block.miner);
-        if (!minerAddresses[miner]) {
-          minerAddresses[miner] = {
-            address: miner,
-            producedBlockCount: 0,
-          };
-        }
-        minerAddresses[miner].producedBlockCount += 1;
+    const result = await ChainHelper.getChainStats({
+      services: this.services,
+      ethereumConfig: ethereumConfig,
+      beginBlock: beginBlock,
+      endBlock: endBlock,
+    });
 
-        ethereumData.gasLimit = new BigNumber(ethereumData.gasLimit)
-          .plus(new BigNumber(block.gasLimit.toString()))
-          .toString(10);
-        ethereumData.gasUsed = new BigNumber(ethereumData.gasUsed)
-          .plus(new BigNumber(block.gasUsed.toString()))
-          .toString(10);
-        ethereumData.volumeCoinBurnt = new BigNumber(ethereumData.volumeCoinBurnt)
-          .plus(
-            formatBigNumberToString(
-              new BigNumber(block.gasUsed.toString())
-                .multipliedBy(new BigNumber(block.baseFeePerGas ? block.baseFeePerGas.toString() : '0'))
-                .toString(10),
-              18,
-            ),
-          )
-          .toString(10);
-        ethereumData.transactionCount += block.transactions.length;
-
-        if (block.withdrawals) {
-          for (const withdrawal of block.withdrawals) {
-            ethereumData.volumeCoinWithdrawn = new BigNumber(ethereumData.volumeCoinWithdrawn)
-              .plus(formatBigNumberToString(withdrawal.amount.toString(), 9))
-              .toString(10);
-          }
-        }
-
-        for (const transaction of block.transactions) {
-          const sender = normalizeAddress(transaction.from);
-          if (!senderAddresses[sender]) {
-            senderAddresses[sender] = {
-              address: sender,
-              transactionCount: 0,
-            };
-          }
-          senderAddresses[sender].transactionCount += 1;
-
-          if (!ethereumData.transactuonTypes[transaction.type]) {
-            ethereumData.transactuonTypes[transaction.type] = 0;
-          }
-          ethereumData.transactuonTypes[transaction.type] += 1;
-        }
-      } else {
-        logger.warn('failed to get ethereum block data', {
-          service: this.name,
-          chain: ethereumConfig.chain,
-          protocol: ethereumConfig.protocol,
-          number: queryBlock,
-        });
-      }
-    }
+    ethereumData.gasLimit = result.gasLimit;
+    ethereumData.gasUsed = result.gasUsed;
+    ethereumData.volumeCoinBurnt = result.volumeCoinBurnt;
+    ethereumData.volumeCoinWithdrawn = result.volumeCoinWithdrawn;
+    ethereumData.transactionCount = result.transactionCount;
+    ethereumData.transactuonTypes = result.transactuonTypes;
+    ethereumData.senderAddresses = result.senderAddresses;
+    ethereumData.minerAddresses = result.minerAddresses;
 
     // get layer 2 data
     ethereumData.layer2 = await Layer2Helper.getLayer2Data({
@@ -280,9 +227,6 @@ export default class EthereumAdapter extends ProtocolAdapter {
       ethereumConfig: ethereumConfig,
       timestamp: stateTime,
     });
-
-    ethereumData.senderAddresses = Object.values(senderAddresses);
-    ethereumData.minerAddresses = Object.values(minerAddresses);
 
     return ethereumData;
   }
