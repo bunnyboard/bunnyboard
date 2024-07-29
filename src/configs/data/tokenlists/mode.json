@@ -13,9 +13,9 @@
   },
   "0xf0f161fda2712db8b566946122a5af183995e2ed": {
     "chain": "mode",
-    "address": "0xf0f161fda2712db8b566946122a5af183995e2ed",
     "symbol": "USDT",
-    "decimals": 6
+    "decimals": 6,
+    "address": "0xf0f161fda2712db8b566946122a5af183995e2ed"
   },
   "0xcdd475325d6f564d27247d1dddbb0dac6fa0a5cf": {
     "chain": "mode",
