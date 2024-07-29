@@ -30,7 +30,7 @@ export class TestCommand extends BasicCommand {
     if (argv.chain !== '') {
       configs = configs.filter((config) => config.chain === argv.chain);
     }
-    if (argv.protocl !== '') {
+    if (argv.protocol !== '') {
       configs = configs.filter((config) => config.protocol === argv.protocol);
     }
 

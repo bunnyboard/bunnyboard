@@ -51,4 +51,10 @@ export default class AaveAdapter extends ProtocolAdapter {
       }
     }
   }
+
+  public async runTest(options: RunAdapterOptions): Promise<void> {
+    if (options.metricConfig.metric === DataMetrics.crossLending) {
+      await this.adapter3.runTest(options);
+    }
+  }
 }

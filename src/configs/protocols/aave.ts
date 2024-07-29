@@ -124,6 +124,20 @@ export const Aavev3Configs: AaveProtocolConfig = {
         address: AddressesBook.ethereum.Aavev3Oracle,
       },
     },
+    // lido
+    {
+      chain: ChainNames.ethereum,
+      protocol: ProtocolNames.aavev3,
+      version: LendingMarketVersions.cross.aavev3,
+      birthday: 1720483200, // Tue Jul 09 2024 00:00:00 GMT+0000
+      metric: DataMetrics.crossLending,
+      address: '0x4e033931ad43597d96d6bcc25c280717730b58b1',
+      dataProvider: '0xa3206d66cf94aa1e93b21a9d8d409d6375309f4a',
+      oracle: {
+        currency: 'usd',
+        address: '0xe3c061981870c0c7b1f3c4f4bb36b95f1f260be6',
+      },
+    },
     {
       chain: ChainNames.optimism,
       protocol: ProtocolNames.aavev3,
