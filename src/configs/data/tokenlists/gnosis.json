@@ -1,4 +1,10 @@
 {
+  "0x177127622c4a00f3d409b75571e12cb3c8973d3c": {
+    "chain": "gnosis",
+    "address": "0x177127622c4a00f3d409b75571e12cb3c8973d3c",
+    "symbol": "COW",
+    "decimals": 18
+  },
   "0x3f56e0c36d275367b8c502090edf38289b3dea0d": {
     "chain": "gnosis",
     "symbol": "MIMATIC",
@@ -16,6 +22,12 @@
     "symbol": "USDT",
     "decimals": 6,
     "address": "0x4ecaba5870353805a9f068101a40e0f32ed605c6"
+  },
+  "0x5012c6bf79b3047ecfff2f212dffda4d2128188f": {
+    "chain": "gnosis",
+    "address": "0x5012c6bf79b3047ecfff2f212dffda4d2128188f",
+    "symbol": "yvEURe-1",
+    "decimals": 18
   },
   "0x5cb9073902f2035222b9749f8fb0c9bfe5527108": {
     "chain": "gnosis",

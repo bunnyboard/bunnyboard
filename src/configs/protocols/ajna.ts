@@ -68,14 +68,23 @@ export const AjnaConfigs: AjnaProtocolConfig = {
         '0xd784b2ee3cd12a93e7ed592e583f6929f2d4e0b2',
       ],
     },
-    {
-      chain: ChainNames.polygon,
-      protocol: ProtocolNames.ajna,
-      metric: DataMetrics.isolatedLending,
-      version: LendingMarketVersions.isolated.ajna,
-      birthday: 1705536000, // Thu Jan 18 2024 00:00:00 GMT+0000
-      address: '0x1f172f881eba06aa7a991651780527c173783cf6', // Pool Factory
-      whitelistedPools: ['0xeacb97e9490b8ce6228e740104741c74a931a67e', '0x6904d832505fe533c4851602220e8692de79fc60'],
-    },
+    // {
+    //   chain: ChainNames.polygon,
+    //   protocol: ProtocolNames.ajna,
+    //   metric: DataMetrics.isolatedLending,
+    //   version: LendingMarketVersions.isolated.ajna,
+    //   birthday: 1705536000, // Thu Jan 18 2024 00:00:00 GMT+0000
+    //   address: '0x1f172f881eba06aa7a991651780527c173783cf6', // Pool Factory
+    //   whitelistedPools: ['0xeacb97e9490b8ce6228e740104741c74a931a67e'],
+    // },
+    // {
+    //   chain: ChainNames.arbitrum,
+    //   protocol: ProtocolNames.ajna,
+    //   metric: DataMetrics.isolatedLending,
+    //   version: LendingMarketVersions.isolated.ajna,
+    //   birthday: 1705536000, // Thu Jan 18 2024 00:00:00 GMT+0000
+    //   address: '0xa3a1e968bd6c578205e11256c8e6929f21742aaf', // Pool Factory
+    //   whitelistedPools: ['0x400975250114cbb4ccc7a2c6cecf88656f4aeb91', '0xbf8e2550242631522fa88fbe4a5262439b07254a'],
+    // },
   ],
 };

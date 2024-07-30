@@ -17,6 +17,12 @@
     "symbol": "T-LP",
     "decimals": 18
   },
+  "0x20fe91f17ec9080e3cac2d688b4ecb48c5ac3a9c": {
+    "chain": "blast",
+    "address": "0x20fe91f17ec9080e3cac2d688b4ecb48c5ac3a9c",
+    "symbol": "YES",
+    "decimals": 18
+  },
   "0x2416092f143378750bb29b79ed961ab195cceea5": {
     "chain": "blast",
     "address": "0x2416092f143378750bb29b79ed961ab195cceea5",
@@ -53,6 +59,12 @@
     "symbol": "fwWETH",
     "decimals": 18
   },
+  "0x6d5564584b70240691bd6ff7a834b9fab844e0d4": {
+    "chain": "blast",
+    "address": "0x6d5564584b70240691bd6ff7a834b9fab844e0d4",
+    "symbol": "W2ETH",
+    "decimals": 18
+  },
   "0x76da31d7c9cbeae102aff34d3398bc450c8374c1": {
     "chain": "blast",
     "address": "0x76da31d7c9cbeae102aff34d3398bc450c8374c1",
@@ -75,6 +87,12 @@
     "chain": "blast",
     "address": "0x9be8a40c9cf00fe33fd84eaedaa5c4fe3f04cbc3",
     "symbol": "RING-V2",
+    "decimals": 18
+  },
+  "0xb1a5700fa2358173fe465e6ea4ff52e36e88e2ad": {
+    "chain": "blast",
+    "address": "0xb1a5700fa2358173fe465e6ea4ff52e36e88e2ad",
+    "symbol": "BLAST",
     "decimals": 18
   },
   "0xcbf7b47e9da345812e3bd732e3ee369a7203b5ae": {

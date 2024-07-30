@@ -17,6 +17,12 @@
     "symbol": "ezETH",
     "decimals": 18
   },
+  "0x36607298fbfabac509b3d24bf02777d372a38dd4": {
+    "chain": "linea",
+    "address": "0x36607298fbfabac509b3d24bf02777d372a38dd4",
+    "symbol": "bwAJNA",
+    "decimals": 18
+  },
   "0x3aab2285ddcddad8edf438c1bab47e1a9d05a9b4": {
     "chain": "linea",
     "address": "0x3aab2285ddcddad8edf438c1bab47e1a9d05a9b4",
