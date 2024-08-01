@@ -131,16 +131,15 @@ export default class AjnaAdapter extends IsolatedLendingProtocolAdapter {
             });
 
             // totalBorrowed = debtInfo * inflatorInfo
-            const totalBorrowed = new BigNumber(
-              formatBigNumberToString(debtInfo.toString(), debtToken.decimals),
-            ).multipliedBy(new BigNumber(formatBigNumberToString(inflatorInfo.toString(), 18)));
+            // NOTE debtInfo has 18 decimal places
+            const totalBorrowed = new BigNumber(formatBigNumberToString(debtInfo.toString(), 18)).multipliedBy(
+              new BigNumber(formatBigNumberToString(inflatorInfo.toString(), 18)),
+            );
 
             // totalDeposited
-            const totalDeposited = new BigNumber(formatBigNumberToString(depositSize.toString(), debtToken.decimals));
-            const totalCollateralDeposited = formatBigNumberToString(
-              pledgedCollateral.toString(),
-              collateralToken.decimals,
-            );
+            // NOTE pledgedCollateral has 18 decimal places
+            const totalDeposited = new BigNumber(formatBigNumberToString(depositSize.toString(), 18));
+            const totalCollateralDeposited = formatBigNumberToString(pledgedCollateral.toString(), 18);
 
             // 1e18
             const rateBorrow = new BigNumber(formatBigNumberToString(interestRateInfo.toString(), 18));
