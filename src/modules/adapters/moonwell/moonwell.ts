@@ -13,7 +13,7 @@ interface Rates {
 }
 
 export default class MoonwellAdapter extends CompoundWithOracleAdapter {
-  public readonly name: string = 'adapter.moonwell';
+  public readonly name: string = 'adapter.moonwell 🌕';
 
   constructor(services: ContextServices, storages: ContextStorages, protocolConfig: ProtocolConfig) {
     super(services, storages, protocolConfig);

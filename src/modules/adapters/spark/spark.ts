@@ -6,7 +6,7 @@ import { Aavev3FlashloanAdapter } from '../aave/flashloan';
 import ProtocolAdapter from '../adapter';
 
 export default class SparkAdapter extends ProtocolAdapter {
-  public readonly name: string = 'adapter.spark';
+  public readonly name: string = 'adapter.spark ⚡';
 
   private aave: Aavev3Adapter;
   private flashloan: Aavev3FlashloanAdapter;

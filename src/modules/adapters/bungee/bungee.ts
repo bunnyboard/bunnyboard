@@ -17,7 +17,7 @@ import ProtocolAdapter from '../adapter';
 import { BungeeEventSignatures, BungeeKnownBridgeNames, BungeeStargateChainIds } from './abis';
 
 export default class BungeeAdapter extends ProtocolAdapter {
-  public readonly name: string = 'adapter.bungee';
+  public readonly name: string = 'adapter.bungee 🐝';
 
   constructor(services: ContextServices, storages: ContextStorages, protocolConfig: ProtocolConfig) {
     super(services, storages, protocolConfig);

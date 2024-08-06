@@ -15,7 +15,7 @@ import IsolatedLendingProtocolAdapter from '../isolatedLending';
 import { AjnaEventSignatures } from './abis';
 
 export default class AjnaAdapter extends IsolatedLendingProtocolAdapter {
-  public readonly name: string = 'adapter.ajna';
+  public readonly name: string = 'adapter.ajna 👁';
 
   constructor(services: ContextServices, storages: ContextStorages, protocolConfig: ProtocolConfig) {
     super(services, storages, protocolConfig);

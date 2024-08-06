@@ -18,7 +18,7 @@ import IsolatedLendingProtocolAdapter from '../isolatedLending';
 import { MorphoEventSignatures } from './abis';
 
 export default class MorphoAdapter extends IsolatedLendingProtocolAdapter {
-  public readonly name: string = 'adapter.morpho';
+  public readonly name: string = 'adapter.morpho 🦋';
 
   constructor(services: ContextServices, storages: ContextStorages, protocolConfig: ProtocolConfig) {
     super(services, storages, protocolConfig);

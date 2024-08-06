@@ -18,7 +18,7 @@ import { AaveStakingEvents } from './abis';
 import { TokensBook } from '../../../configs/data';
 
 export default class AaveStakingAdapter extends StakingProtocolAdapter {
-  public readonly name: string = 'adapter.aave';
+  public readonly name: string = 'adapter.aave 👻';
 
   constructor(services: ContextServices, storages: ContextStorages, protocolConfig: ProtocolConfig) {
     super(services, storages, protocolConfig);

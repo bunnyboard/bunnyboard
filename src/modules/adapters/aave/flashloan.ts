@@ -13,7 +13,7 @@ import FlashloanProtocolAdapter from '../flashloan';
 import { Aavev2FlashloanEventSignature, Aavev3FlashloanEventSignature } from './abis';
 
 export class Aavev2FlashloanAdapter extends FlashloanProtocolAdapter {
-  public readonly name: string = 'adapter.aavev2';
+  public readonly name: string = 'adapter.aavev2 👻';
 
   protected abi: any;
   protected flashloanEventSignature: string;
@@ -124,7 +124,7 @@ export class Aavev2FlashloanAdapter extends FlashloanProtocolAdapter {
 }
 
 export class Aavev3FlashloanAdapter extends Aavev2FlashloanAdapter {
-  public readonly name: string = 'adapter.aavev3';
+  public readonly name: string = 'adapter.aavev3 👻';
 
   constructor(services: ContextServices, storages: ContextStorages, protocolConfig: ProtocolConfig) {
     super(services, storages, protocolConfig);

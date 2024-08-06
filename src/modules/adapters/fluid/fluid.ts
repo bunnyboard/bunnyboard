@@ -22,7 +22,7 @@ export const FluidVaultEvents = {
 };
 
 export default class FluidAdapter extends CrossLendingProtocolAdapter {
-  public readonly name: string = 'adapter.fluid';
+  public readonly name: string = 'adapter.fluid 🌊';
 
   constructor(services: ContextServices, storages: ContextStorages, protocolConfig: ProtocolConfig) {
     super(services, storages, protocolConfig);

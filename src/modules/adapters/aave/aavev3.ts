@@ -12,7 +12,7 @@ import Aavev2Adapter, { AaveMarketRates } from './aavev2';
 import { Aavev3EventSignatures } from './abis';
 
 export default class Aavev3Adapter extends Aavev2Adapter {
-  public readonly name: string = 'adapter.aavev3';
+  public readonly name: string = 'adapter.aavev3 👻';
 
   constructor(services: ContextServices, storages: ContextStorages, protocolConfig: ProtocolConfig) {
     super(services, storages, protocolConfig);

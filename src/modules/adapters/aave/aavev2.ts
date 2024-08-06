@@ -36,7 +36,7 @@ export interface ReserveAndPrice {
 }
 
 export default class Aavev2Adapter extends CrossLendingProtocolAdapter {
-  public readonly name: string = 'adapter.aavev2';
+  public readonly name: string = 'adapter.aavev2 👻';
 
   constructor(services: ContextServices, storages: ContextStorages, protocolConfig: ProtocolConfig) {
     super(services, storages, protocolConfig);

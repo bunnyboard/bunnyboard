@@ -9,7 +9,7 @@ import { Aavev2FlashloanAdapter, Aavev3FlashloanAdapter } from './flashloan';
 import AaveStakingAdapter from './staking';
 
 export default class AaveAdapter extends ProtocolAdapter {
-  public readonly name: string = 'adapter.aave';
+  public readonly name: string = 'adapter.aave 👻';
 
   private readonly adapter2: Aavev2Adapter;
   private readonly adapter3: Aavev3Adapter;
