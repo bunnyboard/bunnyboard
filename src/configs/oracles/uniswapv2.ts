@@ -726,4 +726,28 @@ export const OracleSourceUniswapv2List: { [key: string]: OracleSourcePool2 } = {
     baseToken: TokensBook.cronos['0x7a7c9db510ab29a2fc362a4c34260becb5ce3446'],
     quotaToken: TokensBook.cronos['0xe44fd7fcb2b1581822d0c862b68222998a0c299a'],
   },
+  WCRO_USDC: {
+    type: 'univ2',
+    chain: 'cronos',
+    address: '0xe61db569e231b3f5530168aa2c9d50246525b6d6',
+    baseToken: TokensBook.cronos['0x5c7f8a570d578ed84e63fdfa7b1ee72deae1ae23'],
+    quotaToken: TokensBook.cronos['0xc21223249ca28397b4b6541dffaecc539bff0c59'],
+  },
+  WRON_USDC: {
+    type: 'univ2',
+    chain: 'ronin',
+    address: '0x4f7687affc10857fccd0938ecda0947de7ad3812',
+    baseToken: {
+      chain: 'ronin',
+      symbol: 'WRON',
+      decimals: 18,
+      address: '0xe514d9deb7966c8be0ca922de8a064264ea6bcd4',
+    },
+    quotaToken: {
+      chain: 'ronin',
+      symbol: 'USDC',
+      decimals: 6,
+      address: '0x0b7007c13325c48911f73a2dad5fa5dcbf808adc',
+    },
+  },
 };

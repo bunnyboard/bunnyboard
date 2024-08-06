@@ -1,0 +1,74 @@
+{
+  "0x0b7007c13325c48911f73a2dad5fa5dcbf808adc": {
+    "chain": "ronin",
+    "symbol": "USDC",
+    "decimals": 6,
+    "address": "0x0b7007c13325c48911f73a2dad5fa5dcbf808adc"
+  },
+  "0x1a89ecd466a23e98f07111b0510a2d6c1cd5e400": {
+    "chain": "ronin",
+    "symbol": "BANANA",
+    "decimals": 18,
+    "address": "0x1a89ecd466a23e98f07111b0510a2d6c1cd5e400"
+  },
+  "0x1b918543b518e34902e1e8dd76052bee43c762ff": {
+    "chain": "ronin",
+    "symbol": "BERRY",
+    "decimals": 18,
+    "address": "0x1b918543b518e34902e1e8dd76052bee43c762ff"
+  },
+  "0x1c306872bc82525d72bf3562e8f0aa3f8f26e857": {
+    "chain": "ronin",
+    "symbol": "YGG",
+    "decimals": 18,
+    "address": "0x1c306872bc82525d72bf3562e8f0aa3f8f26e857"
+  },
+  "0x63c6e9f027947be84d390cfa7b2332d13b529353": {
+    "chain": "ronin",
+    "symbol": "PHPC",
+    "decimals": 6,
+    "address": "0x63c6e9f027947be84d390cfa7b2332d13b529353"
+  },
+  "0x7894b3088d069e70895effa4e8f7d2c243fd04c1": {
+    "chain": "ronin",
+    "symbol": "APRS",
+    "decimals": 18,
+    "address": "0x7894b3088d069e70895effa4e8f7d2c243fd04c1"
+  },
+  "0x7eae20d11ef8c779433eb24503def900b9d28ad7": {
+    "chain": "ronin",
+    "symbol": "PIXEL",
+    "decimals": 18,
+    "address": "0x7eae20d11ef8c779433eb24503def900b9d28ad7"
+  },
+  "0x97a9107c1793bc407d6f527b77e7fff4d812bece": {
+    "chain": "ronin",
+    "symbol": "AXS",
+    "decimals": 18,
+    "address": "0x97a9107c1793bc407d6f527b77e7fff4d812bece"
+  },
+  "0xa8754b9fa15fc18bb59458815510e40a12cd2014": {
+    "chain": "ronin",
+    "symbol": "SLP",
+    "decimals": 0,
+    "address": "0xa8754b9fa15fc18bb59458815510e40a12cd2014"
+  },
+  "0xc99a6a985ed2cac1ef41640596c5a5f9f4e19ef5": {
+    "chain": "ronin",
+    "symbol": "WETH",
+    "decimals": 18,
+    "address": "0xc99a6a985ed2cac1ef41640596c5a5f9f4e19ef5"
+  },
+  "0xe514d9deb7966c8be0ca922de8a064264ea6bcd4": {
+    "chain": "ronin",
+    "symbol": "WRON",
+    "decimals": 18,
+    "address": "0xe514d9deb7966c8be0ca922de8a064264ea6bcd4"
+  },
+  "0xf80132fc0a86add011bffce3aedd60a86e3d704d": {
+    "chain": "ronin",
+    "symbol": "ANIMA",
+    "decimals": 18,
+    "address": "0xf80132fc0a86add011bffce3aedd60a86e3d704d"
+  }
+}

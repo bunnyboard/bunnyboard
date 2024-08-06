@@ -19,6 +19,7 @@ import GravitaAdapter from './gravita/gravita';
 import IonicAdapter from './ionic/ionic';
 import IronbankAdapter from './ironbank/ironbank';
 import IroncladAdapter from './ironclad/ironclad';
+import KatanaAdapter from './katana/katana';
 import KinzaAdapter from './kinza/kinza';
 import LayerbankAdapter from './layerbank/layerbank';
 import LiquityAdapter from './liquity/liquity';
@@ -42,6 +43,8 @@ import Uniswapv2Adapter from './uniswap/uniswapv2';
 import Uniswapv3Adapter from './uniswap/uniswapv3';
 import UwulendAdapter from './uwulend/uwulend';
 import VenusAdapter from './venus/venus';
+import VvsfinanceAdapter from './vvsfinance/vvsfinance';
+import Vvsfinancev3Adapter from './vvsfinance/vvsfinancev3';
 import ZerolendAdapter from './zerolend/zerolend';
 
 export function getProtocolAdapters(
@@ -101,5 +104,8 @@ export function getProtocolAdapters(
     uniswapv3: new Uniswapv3Adapter(services, storages, ProtocolConfigs.uniswapv3),
     pancake: new PancakeAdapter(services, storages, ProtocolConfigs.pancake),
     pancakev3: new Pancakev3Adapter(services, storages, ProtocolConfigs.pancakev3),
+    vvsfinance: new VvsfinanceAdapter(services, storages, ProtocolConfigs.vvsfinance),
+    vvsfinancev3: new Vvsfinancev3Adapter(services, storages, ProtocolConfigs.vvsfinancev3),
+    katana: new KatanaAdapter(services, storages, ProtocolConfigs.katana),
   };
 }

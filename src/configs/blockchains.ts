@@ -392,4 +392,16 @@ export const BlockchainConfigs: { [key: string]: Blockchain } = {
       decimals: 18,
     },
   },
+  [ChainNames.ronin]: {
+    name: ChainNames.ronin,
+    family: 'evm',
+    chainId: 2020,
+    nodeRpc: String(process.env.BUNNYBOARD_RONIN_NODE),
+    nativeToken: {
+      chain: ChainNames.ronin,
+      address: AddressZero,
+      symbol: 'RON',
+      decimals: 18,
+    },
+  },
 };

@@ -17,6 +17,12 @@
     "symbol": "WETH",
     "decimals": 18
   },
+  "0x5c7f8a570d578ed84e63fdfa7b1ee72deae1ae23": {
+    "chain": "cronos",
+    "address": "0x5c7f8a570d578ed84e63fdfa7b1ee72deae1ae23",
+    "symbol": "WCRO",
+    "decimals": 18
+  },
   "0x7a7c9db510ab29a2fc362a4c34260becb5ce3446": {
     "chain": "cronos",
     "address": "0x7a7c9db510ab29a2fc362a4c34260becb5ce3446",

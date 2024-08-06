@@ -121,7 +121,7 @@ export default class BlockchainService extends CachingService implements IBlockc
         ],
       });
 
-      if (symbol && decimals) {
+      if (symbol !== null && decimals !== null) {
         const token: Token = {
           chain,
           address: normalizeAddress(address),

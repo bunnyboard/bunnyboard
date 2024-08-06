@@ -20,6 +20,7 @@ import { HanaConfigs } from './protocols/hana';
 import { IonicConfigs } from './protocols/ionic';
 import { IronbankConfigs } from './protocols/ironbank';
 import { IroncladConfigs } from './protocols/ironclad';
+import { KatanaConfigs } from './protocols/katana';
 import { KinzaConfigs } from './protocols/kinza';
 import { LayerbankConfigs } from './protocols/layerbank';
 import { LiquityConfigs } from './protocols/liquity';
@@ -44,6 +45,7 @@ import { TectonicConfigs } from './protocols/tectonic';
 import { Uniswapv2Configs, Uniswapv3Configs } from './protocols/uniswap';
 import { UwulendConfigs } from './protocols/uwulend';
 import { VenusConfigs } from './protocols/venus';
+import { VvsfinanceConfigs, Vvsfinancev3Configs } from './protocols/vvsfinance';
 import { YethConfigs } from './protocols/yearn';
 import { YeifinanceConfigs } from './protocols/yeifinance';
 import { ZerolendConfigs } from './protocols/zerolend';
@@ -53,6 +55,7 @@ export const CustomQueryContractLogsBlockRange: { [key: string]: number } = {
   polygon: 200,
   merlin: 200,
   zklinknova: 50,
+  ronin: 400,
 };
 
 export const DefaultMemcacheTime = 300; // 5 minutes
@@ -84,6 +87,7 @@ export const ProtocolConfigs = {
   ionic: IonicConfigs,
   ironbank: IronbankConfigs,
   ironclad: IroncladConfigs,
+  katana: KatanaConfigs,
   kinza: KinzaConfigs,
   layerbank: LayerbankConfigs,
   liquity: LiquityConfigs,
@@ -111,6 +115,8 @@ export const ProtocolConfigs = {
   uniswapv3: Uniswapv3Configs,
   uwulend: UwulendConfigs,
   venus: VenusConfigs,
+  vvsfinance: VvsfinanceConfigs,
+  vvsfinancev3: Vvsfinancev3Configs,
   yeth: YethConfigs,
   yeifinance: YeifinanceConfigs,
   zerolend: ZerolendConfigs,

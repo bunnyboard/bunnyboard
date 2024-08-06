@@ -42,6 +42,7 @@ export const ChainNames = {
   ancient8: 'ancient8',
   lisk: 'lisk',
   celo: 'celo',
+  ronin: 'ronin',
 };
 
 export const ProtocolNames = {
@@ -73,6 +74,7 @@ export const ProtocolNames = {
   ionic: 'ionic',
   ironbank: 'ironbank',
   ironclad: 'ironclad',
+  katana: 'katana',
   kinza: 'kinza',
   kyberswap: 'kyberswap',
   layerbank: 'layerbank',
@@ -111,6 +113,8 @@ export const ProtocolNames = {
   uniswapv3: 'uniswapv3',
   uwulend: 'uwulend',
   venus: 'venus',
+  vvsfinance: 'vvsfinance',
+  vvsfinancev3: 'vvsfinancev3',
   yeth: 'yeth',
   yeifinance: 'yeifinance',
   zerolend: 'zerolend',

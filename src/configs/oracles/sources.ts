@@ -969,4 +969,12 @@ export const OracleSourceConfigs: { [key: string]: OracleConfig } = {
     currency: 'eth',
     sources: [OracleSourceUniswapv3List.rsETH_WETH],
   },
+  CRO: {
+    currency: 'usd',
+    sources: [OracleSourceUniswapv2List.WCRO_USDC],
+  },
+  RON: {
+    currency: 'usd',
+    sources: [OracleSourceUniswapv2List.WRON_USDC],
+  },
 };

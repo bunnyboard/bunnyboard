@@ -171,6 +171,11 @@ const testcases = [
     timestamp: 1672531200, // Sun Jan 01 2023 00:00:00 GMT+0000
     expectedBlockNumber: 16972631,
   },
+  {
+    ...EnvConfig.blockchains.ronin,
+    timestamp: 1672531200, // Sun Jan 01 2023 00:00:00 GMT+0000
+    expectedBlockNumber: 20260913,
+  },
 ];
 
 describe('getBlockNumberAtTimestamp', function () {
