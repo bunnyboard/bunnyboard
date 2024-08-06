@@ -1,35 +1,33 @@
 {
   "0x0e97c7a0f8b2c9885c8ac9fc6136e829cbc21d42": {
     "chain": "zksync",
-    "address": "0x0e97c7a0f8b2c9885c8ac9fc6136e829cbc21d42",
     "symbol": "MUTE",
-    "decimals": 18
+    "decimals": 18,
+    "address": "0x0e97c7a0f8b2c9885c8ac9fc6136e829cbc21d42"
   },
   "0x1d17cbcf0d6d143135ae902365d2e5e2a16538d4": {
     "chain": "zksync",
     "symbol": "USDC",
     "decimals": 6,
-    "address": "0x1d17cbcf0d6d143135ae902365d2e5e2a16538d4",
-    "logoURI": "https://tokens.pancakeswap.finance/images/zksync/0x1d17CBcF0D6D143135aE902365D2E5e2A16538D4.png"
+    "address": "0x1d17cbcf0d6d143135ae902365d2e5e2a16538d4"
   },
   "0x2039bb4116b4efc145ec4f0e2ea75012d6c0f181": {
     "chain": "zksync",
-    "address": "0x2039bb4116b4efc145ec4f0e2ea75012d6c0f181",
     "symbol": "BUSD",
-    "decimals": 18
+    "decimals": 18,
+    "address": "0x2039bb4116b4efc145ec4f0e2ea75012d6c0f181"
   },
   "0x240f765af2273b0cab6caff2880d6d8f8b285fa4": {
     "chain": "zksync",
-    "address": "0x240f765af2273b0cab6caff2880d6d8f8b285fa4",
     "symbol": "SWORD",
-    "decimals": 18
+    "decimals": 18,
+    "address": "0x240f765af2273b0cab6caff2880d6d8f8b285fa4"
   },
   "0x32fd44bb869620c0ef993754c8a00be67c464806": {
     "chain": "zksync",
     "symbol": "rETH",
     "decimals": 18,
-    "address": "0x32fd44bb869620c0ef993754c8a00be67c464806",
-    "logoURI": "https://tokens.pancakeswap.finance/images/zksync/0x32Fd44bB869620C0EF993754c8a00Be67C464806.png"
+    "address": "0x32fd44bb869620c0ef993754c8a00be67c464806"
   },
   "0x3355df6d4c9c3035724fd0e3914de96a5a83aaf4": {
     "chain": "zksync",
@@ -39,33 +37,33 @@
   },
   "0x3a287a06c66f9e95a56327185ca2bdf5f031cecd": {
     "chain": "zksync",
-    "address": "0x3a287a06c66f9e95a56327185ca2bdf5f031cecd",
     "symbol": "Cake",
-    "decimals": 18
+    "decimals": 18,
+    "address": "0x3a287a06c66f9e95a56327185ca2bdf5f031cecd"
   },
   "0x493257fd37edb34451f62edf8d2a0c418852ba4c": {
     "chain": "zksync",
-    "address": "0x493257fd37edb34451f62edf8d2a0c418852ba4c",
     "symbol": "USDT",
-    "decimals": 6
+    "decimals": 6,
+    "address": "0x493257fd37edb34451f62edf8d2a0c418852ba4c"
   },
   "0x4b9eb6c0b6ea15176bbf62841c6b2a8a398cb656": {
     "chain": "zksync",
-    "address": "0x4b9eb6c0b6ea15176bbf62841c6b2a8a398cb656",
     "symbol": "DAI",
-    "decimals": 18
+    "decimals": 18,
+    "address": "0x4b9eb6c0b6ea15176bbf62841c6b2a8a398cb656"
   },
   "0x4d321cd88c5680ce4f85bb58c578dfe9c2cc1ef6": {
     "chain": "zksync",
-    "address": "0x4d321cd88c5680ce4f85bb58c578dfe9c2cc1ef6",
     "symbol": "KS-LP USDC.e-USDT",
-    "decimals": 18
+    "decimals": 18,
+    "address": "0x4d321cd88c5680ce4f85bb58c578dfe9c2cc1ef6"
   },
   "0x503234f203fc7eb888eec8513210612a43cf6115": {
     "chain": "zksync",
-    "address": "0x503234f203fc7eb888eec8513210612a43cf6115",
     "symbol": "LUSD",
-    "decimals": 18
+    "decimals": 18,
+    "address": "0x503234f203fc7eb888eec8513210612a43cf6115"
   },
   "0x5a7d6b2f92c77fad6ccabd7ee0624e64907eaf3e": {
     "chain": "zksync",
@@ -83,93 +81,84 @@
     "chain": "zksync",
     "symbol": "RF",
     "decimals": 18,
-    "address": "0x5f7cbcb391d33988dad74d6fd683aadda1123e4d",
-    "logoURI": "https://tokens.pancakeswap.finance/images/zksync/0x5f7CBcb391d33988DAD74D6Fd683AadDA1123E4D.png"
+    "address": "0x5f7cbcb391d33988dad74d6fd683aadda1123e4d"
   },
   "0x5fc44e95eaa48f9eb84be17bd3ac66b6a82af709": {
     "chain": "zksync",
     "symbol": "GRAI",
     "decimals": 18,
-    "address": "0x5fc44e95eaa48f9eb84be17bd3ac66b6a82af709",
-    "logoURI": "https://tokens.pancakeswap.finance/images/zksync/0x5FC44E95eaa48F9eB84Be17bd3aC66B6A82Af709.png"
+    "address": "0x5fc44e95eaa48f9eb84be17bd3ac66b6a82af709"
   },
   "0x703b52f2b28febcb60e1372858af5b18849fe867": {
     "chain": "zksync",
-    "address": "0x703b52f2b28febcb60e1372858af5b18849fe867",
     "symbol": "wstETH",
-    "decimals": 18
+    "decimals": 18,
+    "address": "0x703b52f2b28febcb60e1372858af5b18849fe867"
   },
   "0x79db8c67d0c33203da4efb58f7d325e1e0d4d692": {
     "chain": "zksync",
     "symbol": "MEOW",
     "decimals": 18,
-    "address": "0x79db8c67d0c33203da4efb58f7d325e1e0d4d692",
-    "logoURI": "https://tokens.pancakeswap.finance/images/zksync/0x79db8c67d0c33203da4Efb58F7D325E1e0d4d692.png"
+    "address": "0x79db8c67d0c33203da4efb58f7d325e1e0d4d692"
   },
   "0x7b3e1236c39ddd2e61cf6da6ac6d11193238ccb0": {
     "chain": "zksync",
     "symbol": "ZKE",
     "decimals": 18,
-    "address": "0x7b3e1236c39ddd2e61cf6da6ac6d11193238ccb0",
-    "logoURI": "https://tokens.pancakeswap.finance/images/zksync/0x7b3e1236c39ddD2e61cF6Da6ac6D11193238ccB0.png"
+    "address": "0x7b3e1236c39ddd2e61cf6da6ac6d11193238ccb0"
   },
   "0x8e86e46278518efc1c5ced245cba2c7e3ef11557": {
     "chain": "zksync",
     "symbol": "USD+",
     "decimals": 6,
-    "address": "0x8e86e46278518efc1c5ced245cba2c7e3ef11557",
-    "logoURI": "https://tokens.pancakeswap.finance/images/zksync/0x8E86e46278518EFc1C5CEd245cBA2C7e3ef11557.png"
+    "address": "0x8e86e46278518efc1c5ced245cba2c7e3ef11557"
   },
   "0x90059c32eeeb1a2aa1351a58860d98855f3655ad": {
     "chain": "zksync",
-    "address": "0x90059c32eeeb1a2aa1351a58860d98855f3655ad",
     "symbol": "ONEZ",
-    "decimals": 18
+    "decimals": 18,
+    "address": "0x90059c32eeeb1a2aa1351a58860d98855f3655ad"
   },
   "0x99bbe51be7cce6c8b84883148fd3d12ace5787f2": {
     "chain": "zksync",
-    "address": "0x99bbe51be7cce6c8b84883148fd3d12ace5787f2",
     "symbol": "VC",
-    "decimals": 18
+    "decimals": 18,
+    "address": "0x99bbe51be7cce6c8b84883148fd3d12ace5787f2"
   },
   "0xbb8d60008a08b1828e02120f1a952d295036ef3d": {
     "chain": "zksync",
     "symbol": "USDT+",
     "decimals": 6,
-    "address": "0xbb8d60008a08b1828e02120f1a952d295036ef3d",
-    "logoURI": "https://tokens.pancakeswap.finance/images/zksync/0xBb8D60008A08b1828E02120F1a952D295036eF3d.png"
+    "address": "0xbb8d60008a08b1828e02120f1a952d295036ef3d"
   },
   "0xbbeb516fb02a01611cbbe0453fe3c580d7281011": {
     "chain": "zksync",
-    "address": "0xbbeb516fb02a01611cbbe0453fe3c580d7281011",
     "symbol": "WBTC",
-    "decimals": 8
+    "decimals": 8,
+    "address": "0xbbeb516fb02a01611cbbe0453fe3c580d7281011"
   },
   "0xcab3f741fa54e79e34753b95717b23018332b8ac": {
     "chain": "zksync",
     "symbol": "TES",
     "decimals": 18,
-    "address": "0xcab3f741fa54e79e34753b95717b23018332b8ac",
-    "logoURI": "https://tokens.pancakeswap.finance/images/zksync/0xCab3F741Fa54e79E34753B95717b23018332b8AC.png"
+    "address": "0xcab3f741fa54e79e34753b95717b23018332b8ac"
   },
   "0xed4040fd47629e7c8fbb7da76bb50b3e7695f0f2": {
     "chain": "zksync",
     "symbol": "HOLD",
     "decimals": 18,
-    "address": "0xed4040fd47629e7c8fbb7da76bb50b3e7695f0f2",
-    "logoURI": "https://tokens.pancakeswap.finance/images/zksync/0xed4040fD47629e7c8FBB7DA76bb50B3e7695F0f2.png"
+    "address": "0xed4040fd47629e7c8fbb7da76bb50b3e7695f0f2"
   },
   "0xf00dad97284d0c6f06dc4db3c32454d4292c6813": {
     "chain": "zksync",
     "symbol": "WETH.e",
     "decimals": 18,
-    "address": "0xf00dad97284d0c6f06dc4db3c32454d4292c6813",
-    "logoURI": "https://tokens.pancakeswap.finance/images/zksync/0xf00DAD97284D0c6F06dc4Db3c32454D4292c6813.png"
+    "address": "0xf00dad97284d0c6f06dc4db3c32454d4292c6813"
   },
   "0xfd282f16a64c6d304ac05d1a58da15bed0467c71": {
     "chain": "zksync",
-    "address": "0xfd282f16a64c6d304ac05d1a58da15bed0467c71",
     "symbol": "PEPE",
-    "decimals": 18
+    "decimals": 18,
+    "address": "0xfd282f16a64c6d304ac05d1a58da15bed0467c71"
   }
 }

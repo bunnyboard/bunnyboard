@@ -1,16 +1,15 @@
 {
   "0x177127622c4a00f3d409b75571e12cb3c8973d3c": {
     "chain": "gnosis",
-    "address": "0x177127622c4a00f3d409b75571e12cb3c8973d3c",
     "symbol": "COW",
-    "decimals": 18
+    "decimals": 18,
+    "address": "0x177127622c4a00f3d409b75571e12cb3c8973d3c"
   },
   "0x2995d1317dcd4f0ab89f4ae60f3f020a4f17c7ce": {
     "chain": "gnosis",
     "symbol": "SUSHI",
     "decimals": 18,
-    "address": "0x2995d1317dcd4f0ab89f4ae60f3f020a4f17c7ce",
-    "logoURI": "https://raw.githubusercontent.com/sushiswap/list/master/logos/token-logos/network/gnosis/0x2995D1317DcD4f0aB89f4AE60F3f020A4F17C7CE.jpg"
+    "address": "0x2995d1317dcd4f0ab89f4ae60f3f020a4f17c7ce"
   },
   "0x3f56e0c36d275367b8c502090edf38289b3dea0d": {
     "chain": "gnosis",
@@ -28,8 +27,7 @@
     "chain": "gnosis",
     "symbol": "agEUR",
     "decimals": 18,
-    "address": "0x4b1e2c2762667331bc91648052f646d1b0d35984",
-    "logoURI": "https://raw.githubusercontent.com/sushiswap/list/master/logos/token-logos/network/gnosis/0x4b1E2c2762667331Bc91648052F646d1b0d35984.jpg"
+    "address": "0x4b1e2c2762667331bc91648052f646d1b0d35984"
   },
   "0x4ecaba5870353805a9f068101a40e0f32ed605c6": {
     "chain": "gnosis",
@@ -39,16 +37,15 @@
   },
   "0x5012c6bf79b3047ecfff2f212dffda4d2128188f": {
     "chain": "gnosis",
-    "address": "0x5012c6bf79b3047ecfff2f212dffda4d2128188f",
     "symbol": "yvEURe-1",
-    "decimals": 18
+    "decimals": 18,
+    "address": "0x5012c6bf79b3047ecfff2f212dffda4d2128188f"
   },
   "0x524b969793a64a602342d89bc2789d43a016b13a": {
     "chain": "gnosis",
     "symbol": "DONUT",
     "decimals": 18,
-    "address": "0x524b969793a64a602342d89bc2789d43a016b13a",
-    "logoURI": "https://raw.githubusercontent.com/sushiswap/list/master/logos/token-logos/network/gnosis/0x524B969793a64a602342d89BC2789D43a016B13A.jpg"
+    "address": "0x524b969793a64a602342d89bc2789d43a016b13a"
   },
   "0x5cb9073902f2035222b9749f8fb0c9bfe5527108": {
     "chain": "gnosis",
@@ -64,9 +61,9 @@
   },
   "0x6c76971f98945ae98dd7d4dfca8711ebea946ea6": {
     "chain": "gnosis",
-    "address": "0x6c76971f98945ae98dd7d4dfca8711ebea946ea6",
     "symbol": "wstETH",
-    "decimals": 18
+    "decimals": 18,
+    "address": "0x6c76971f98945ae98dd7d4dfca8711ebea946ea6"
   },
   "0x82dfe19164729949fd66da1a37bc70dd6c4746ce": {
     "chain": "gnosis",
@@ -126,8 +123,7 @@
     "chain": "gnosis",
     "symbol": "FCL",
     "decimals": 18,
-    "address": "0xe68856eb29b2fb39699286cca7f10f90ce8ae9de",
-    "logoURI": "https://raw.githubusercontent.com/sushiswap/list/master/logos/token-logos/network/gnosis/0xe68856eb29B2FB39699286CcA7F10f90Ce8AE9De.jpg"
+    "address": "0xe68856eb29b2fb39699286cca7f10f90ce8ae9de"
   },
   "0xe91d153e0b41518a2ce8dd3d7944fa863463a97d": {
     "chain": "gnosis",

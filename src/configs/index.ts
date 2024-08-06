@@ -30,6 +30,7 @@ import { MorphoConfigs } from './protocols/morpho';
 import { OrbitConfigs } from './protocols/orbit';
 import { OrbynetworkConfigs } from './protocols/orbynetwork';
 import { PacConfigs } from './protocols/pac';
+import { PancakeConfigs, Pancakev3Configs } from './protocols/pancake';
 import { PolterConfigs } from './protocols/polter';
 import { PrismaConfigs } from './protocols/prisma';
 import { RadiantConfigs } from './protocols/radiant';
@@ -38,7 +39,7 @@ import { SeamlessConfigs } from './protocols/seamless';
 import { SonneConfigs } from './protocols/sonne';
 import { SparkConfigs } from './protocols/spark';
 import { StrikeConfigs } from './protocols/strike';
-import { SushiConfigs } from './protocols/sushi';
+import { SushiConfigs, Sushiv3Configs } from './protocols/sushi';
 import { TectonicConfigs } from './protocols/tectonic';
 import { Uniswapv2Configs, Uniswapv3Configs } from './protocols/uniswap';
 import { UwulendConfigs } from './protocols/uwulend';
@@ -93,6 +94,8 @@ export const ProtocolConfigs = {
   orbit: OrbitConfigs,
   orbynetwork: OrbynetworkConfigs,
   pac: PacConfigs,
+  pancake: PancakeConfigs,
+  pancakev3: Pancakev3Configs,
   polter: PolterConfigs,
   prisma: PrismaConfigs,
   radiant: RadiantConfigs,
@@ -101,6 +104,7 @@ export const ProtocolConfigs = {
   sonne: SonneConfigs,
   spark: SparkConfigs,
   sushi: SushiConfigs,
+  sushiv3: Sushiv3Configs,
   strike: StrikeConfigs,
   tectonic: TectonicConfigs,
   uniswapv2: Uniswapv2Configs,

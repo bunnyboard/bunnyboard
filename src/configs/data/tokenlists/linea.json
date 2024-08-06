@@ -3,8 +3,7 @@
     "chain": "linea",
     "symbol": "CAKE",
     "decimals": 18,
-    "address": "0x0d1e753a25ebda689453309112904807625befbe",
-    "logoURI": "https://tokens.pancakeswap.finance/images/symbol/cake.png"
+    "address": "0x0d1e753a25ebda689453309112904807625befbe"
   },
   "0x176211869ca2b568f2a7d4ee941e073a821ee1ff": {
     "chain": "linea",
@@ -14,67 +13,63 @@
   },
   "0x1bf74c010e6320bab11e2e5a532b5ac15e0b8aa6": {
     "chain": "linea",
-    "address": "0x1bf74c010e6320bab11e2e5a532b5ac15e0b8aa6",
     "symbol": "weETH",
-    "decimals": 18
+    "decimals": 18,
+    "address": "0x1bf74c010e6320bab11e2e5a532b5ac15e0b8aa6"
   },
   "0x1f63d0ec7193964142ef6b13d901462d0e5cbb50": {
     "chain": "linea",
     "symbol": "ONEPUNCH",
     "decimals": 18,
-    "address": "0x1f63d0ec7193964142ef6b13d901462d0e5cbb50",
-    "logoURI": "https://tokens.pancakeswap.finance/images/linea/0x1F63D0EC7193964142ef6B13d901462d0E5CbB50.png"
+    "address": "0x1f63d0ec7193964142ef6b13d901462d0e5cbb50"
   },
   "0x2140ea50bc3b6ac3971f9e9ea93a1442665670e4": {
     "chain": "linea",
     "symbol": "NFTE",
     "decimals": 18,
-    "address": "0x2140ea50bc3b6ac3971f9e9ea93a1442665670e4",
-    "logoURI": "https://raw.githubusercontent.com/sushiswap/list/master/logos/token-logos/network/linea/0x2140Ea50bc3B6Ac3971F9e9Ea93A1442665670e4.jpg"
+    "address": "0x2140ea50bc3b6ac3971f9e9ea93a1442665670e4"
   },
   "0x2416092f143378750bb29b79ed961ab195cceea5": {
     "chain": "linea",
-    "address": "0x2416092f143378750bb29b79ed961ab195cceea5",
     "symbol": "ezETH",
-    "decimals": 18
+    "decimals": 18,
+    "address": "0x2416092f143378750bb29b79ed961ab195cceea5"
   },
   "0x36607298fbfabac509b3d24bf02777d372a38dd4": {
     "chain": "linea",
-    "address": "0x36607298fbfabac509b3d24bf02777d372a38dd4",
     "symbol": "bwAJNA",
-    "decimals": 18
+    "decimals": 18,
+    "address": "0x36607298fbfabac509b3d24bf02777d372a38dd4"
   },
   "0x3aab2285ddcddad8edf438c1bab47e1a9d05a9b4": {
     "chain": "linea",
-    "address": "0x3aab2285ddcddad8edf438c1bab47e1a9d05a9b4",
     "symbol": "WBTC",
-    "decimals": 8
+    "decimals": 8,
+    "address": "0x3aab2285ddcddad8edf438c1bab47e1a9d05a9b4"
   },
   "0x4af15ec2a0bd43db75dd04e62faa3b8ef36b00d5": {
     "chain": "linea",
-    "address": "0x4af15ec2a0bd43db75dd04e62faa3b8ef36b00d5",
     "symbol": "DAI",
-    "decimals": 18
+    "decimals": 18,
+    "address": "0x4af15ec2a0bd43db75dd04e62faa3b8ef36b00d5"
   },
   "0x5c7e299cf531eb66f2a1df637d37abb78e6200c7": {
     "chain": "linea",
     "symbol": "axlDAI",
     "decimals": 18,
-    "address": "0x5c7e299cf531eb66f2a1df637d37abb78e6200c7",
-    "logoURI": "https://raw.githubusercontent.com/sushiswap/list/master/logos/token-logos/network/linea/0x5C7e299CF531eb66f2A1dF637d37AbB78e6200C7.jpg"
+    "address": "0x5c7e299cf531eb66f2a1df637d37abb78e6200c7"
   },
   "0x5fbdf89403270a1846f5ae7d113a989f850d1566": {
     "chain": "linea",
     "symbol": "FOXY",
     "decimals": 18,
-    "address": "0x5fbdf89403270a1846f5ae7d113a989f850d1566",
-    "logoURI": "https://tokens.pancakeswap.finance/images/linea/0x5FBDF89403270a1846F5ae7D113A989F850d1566.png"
+    "address": "0x5fbdf89403270a1846f5ae7d113a989f850d1566"
   },
   "0x894134a25a5fac1c2c26f1d8fbf05111a3cb9487": {
     "chain": "linea",
-    "address": "0x894134a25a5fac1c2c26f1d8fbf05111a3cb9487",
     "symbol": "GRAI",
-    "decimals": 18
+    "decimals": 18,
+    "address": "0x894134a25a5fac1c2c26f1d8fbf05111a3cb9487"
   },
   "0xa219439258ca9da29e9cc4ce5596924745e12b93": {
     "chain": "linea",
@@ -84,15 +79,15 @@
   },
   "0xb5bedd42000b71fdde22d3ee8a79bd49a568fc8f": {
     "chain": "linea",
-    "address": "0xb5bedd42000b71fdde22d3ee8a79bd49a568fc8f",
     "symbol": "wstETH",
-    "decimals": 18
+    "decimals": 18,
+    "address": "0xb5bedd42000b71fdde22d3ee8a79bd49a568fc8f"
   },
   "0xd2671165570f41bbb3b0097893300b6eb6101e6c": {
     "chain": "linea",
-    "address": "0xd2671165570f41bbb3b0097893300b6eb6101e6c",
     "symbol": "wrsETH",
-    "decimals": 18
+    "decimals": 18,
+    "address": "0xd2671165570f41bbb3b0097893300b6eb6101e6c"
   },
   "0xe5d7c2a44ffddf6b295a15c148167daaaf5cf34f": {
     "chain": "linea",
@@ -104,13 +99,12 @@
     "chain": "linea",
     "symbol": "axlUSDC",
     "decimals": 6,
-    "address": "0xeb466342c4d449bc9f53a865d5cb90586f405215",
-    "logoURI": "https://tokens.pancakeswap.finance/images/linea/0xEB466342C4d449BC9f53A865D5Cb90586f405215.png"
+    "address": "0xeb466342c4d449bc9f53a865d5cb90586f405215"
   },
   "0xf3b001d64c656e30a62fbaaca003b1336b4ce12a": {
     "chain": "linea",
-    "address": "0xf3b001d64c656e30a62fbaaca003b1336b4ce12a",
     "symbol": "MAI",
-    "decimals": 18
+    "decimals": 18,
+    "address": "0xf3b001d64c656e30a62fbaaca003b1336b4ce12a"
   }
 }

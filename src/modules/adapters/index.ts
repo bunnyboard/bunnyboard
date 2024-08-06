@@ -29,6 +29,8 @@ import MorphoAdapter from './morpho/morpho';
 import OrbitAdapter from './orbit/orbit';
 import OrbynetworkAdapter from './orbynetwork/orbynetwork';
 import PacAdapter from './pac/pac';
+import PancakeAdapter from './pancake/pancake';
+import Pancakev3Adapter from './pancake/pancakev3';
 import PrismaAdapter from './prisma/prisma';
 import RadiantAdapter from './radiant/radiant';
 import SeamlessAdapter from './seamless/seamless';
@@ -82,6 +84,7 @@ export function getProtocolAdapters(
     orbynetwork: new OrbynetworkAdapter(services, storages, ProtocolConfigs.orbynetwork),
     seamless: new SeamlessAdapter(services, storages, ProtocolConfigs.seamless),
     sushi: new SushiAdapter(services, storages, ProtocolConfigs.sushi),
+    sushiv3: new SushiAdapter(services, storages, ProtocolConfigs.sushiv3),
     // strike: new StrikeAdapter(services, storages, ProtocolConfigs.strike),
     tectonic: new TectonicAdapter(services, storages, ProtocolConfigs.tectonic),
     uwulend: new UwulendAdapter(services, storages, ProtocolConfigs.uwulend),
@@ -96,5 +99,7 @@ export function getProtocolAdapters(
     // ethereum: new EthereumAdapter(services, storages, ProtocolConfigs.ethereum),
     uniswapv2: new Uniswapv2Adapter(services, storages, ProtocolConfigs.uniswapv2),
     uniswapv3: new Uniswapv3Adapter(services, storages, ProtocolConfigs.uniswapv3),
+    pancake: new PancakeAdapter(services, storages, ProtocolConfigs.pancake),
+    pancakev3: new Pancakev3Adapter(services, storages, ProtocolConfigs.pancakev3),
   };
 }

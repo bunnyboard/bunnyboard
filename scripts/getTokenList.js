@@ -134,7 +134,6 @@ async function getTokens() {
           symbol: tokenInfo.symbol,
           decimals: tokenInfo.decimals,
           address: address,
-          logoURI: tokenInfo.logoURI,
         };
       }
 
@@ -153,7 +152,6 @@ async function getTokens() {
               symbol: tokenInfo.symbol,
               decimals: tokenInfo.decimals,
               address: bridgeAddress,
-              logoURI: tokenInfo.logoURI,
             };
           }
         }
@@ -171,7 +169,12 @@ function saveTokens(chainTokens) {
     if (fs.existsSync(filePath)) {
       const existedTokens = JSON.parse(fs.readFileSync(filePath).toString());
       for (const [address, token] of Object.entries(existedTokens)) {
-        tokens[address] = token;
+        tokens[address] = {
+          chain: token.chain,
+          symbol: token.symbol,
+          decimals: token.decimals,
+          address: token.address,
+        };
       }
     }
 

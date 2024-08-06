@@ -1,29 +1,27 @@
 {
   "0x0000000000000000000000000000000000001010": {
     "chain": "polygon",
-    "address": "0x0000000000000000000000000000000000001010",
     "symbol": "MATIC",
-    "decimals": 18
+    "decimals": 18,
+    "address": "0x0000000000000000000000000000000000001010"
   },
   "0x00e8c0e92eb3ad88189e7125ec8825edc03ab265": {
     "chain": "polygon",
-    "address": "0x00e8c0e92eb3ad88189e7125ec8825edc03ab265",
     "symbol": "wUSDR",
-    "decimals": 9
+    "decimals": 9,
+    "address": "0x00e8c0e92eb3ad88189e7125ec8825edc03ab265"
   },
   "0x0169ec1f8f639b32eec6d923e24c2a2ff45b9dd6": {
     "chain": "polygon",
     "symbol": "ALGB",
     "decimals": 18,
-    "address": "0x0169ec1f8f639b32eec6d923e24c2a2ff45b9dd6",
-    "logoURI": "https://raw.githubusercontent.com/sushiswap/assets/master/blockchains/polygon/assets/0x0169eC1f8f639B32Eec6D923e24C2A2ff45B9DD6/logo.png"
+    "address": "0x0169ec1f8f639b32eec6d923e24c2a2ff45b9dd6"
   },
   "0x02649c1ff4296038de4b9ba8f491b42b940a8252": {
     "chain": "polygon",
     "symbol": "XGEM",
     "decimals": 18,
-    "address": "0x02649c1ff4296038de4b9ba8f491b42b940a8252",
-    "logoURI": "https://raw.githubusercontent.com/sushiswap/assets/master/blockchains/polygon/assets/0x02649C1Ff4296038De4b9bA8F491b42b940A8252/logo.png"
+    "address": "0x02649c1ff4296038de4b9ba8f491b42b940a8252"
   },
   "0x0266f4f08d82372cf0fcbccc0ff74309089c74d1": {
     "chain": "polygon",
@@ -33,22 +31,21 @@
   },
   "0x03496bf7c698a4478edad79c3fdb5410b8b34191": {
     "chain": "polygon",
-    "address": "0x03496bf7c698a4478edad79c3fdb5410b8b34191",
     "symbol": "WT2",
-    "decimals": 18
+    "decimals": 18,
+    "address": "0x03496bf7c698a4478edad79c3fdb5410b8b34191"
   },
   "0x0354ed2caec8e357feb3b5d0b705a3f313bc6dd9": {
     "chain": "polygon",
-    "address": "0x0354ed2caec8e357feb3b5d0b705a3f313bc6dd9",
     "symbol": "WIETH2",
-    "decimals": 18
+    "decimals": 18,
+    "address": "0x0354ed2caec8e357feb3b5d0b705a3f313bc6dd9"
   },
   "0x0361bdeab89df6bbcc52c43589fabba5143d19dd": {
     "chain": "polygon",
     "symbol": "dTOP",
     "decimals": 18,
-    "address": "0x0361bdeab89df6bbcc52c43589fabba5143d19dd",
-    "logoURI": "https://raw.githubusercontent.com/sushiswap/assets/master/blockchains/polygon/assets/0x0361BdEAB89DF6BBcc52c43589FABba5143d19dD/logo.png"
+    "address": "0x0361bdeab89df6bbcc52c43589fabba5143d19dd"
   },
   "0x03b54a6e9a984069379fae1a4fc4dbae93b3bccd": {
     "chain": "polygon",
@@ -60,29 +57,25 @@
     "chain": "polygon",
     "symbol": "CREAM",
     "decimals": 18,
-    "address": "0x04f3c4cf2e806da6df31e80e8a5d121f98edd61d",
-    "logoURI": "https://raw.githubusercontent.com/sushiswap/assets/master/blockchains/polygon/assets/0x04f3C4cF2e806da6DF31e80E8A5D121F98eDD61d/logo.png"
+    "address": "0x04f3c4cf2e806da6df31e80e8a5d121f98edd61d"
   },
   "0x05089c9ebffa4f0aca269e32056b1b36b37ed71b": {
     "chain": "polygon",
     "symbol": "KRILL",
     "decimals": 18,
-    "address": "0x05089c9ebffa4f0aca269e32056b1b36b37ed71b",
-    "logoURI": "https://raw.githubusercontent.com/sushiswap/list/master/logos/token-logos/token/krill.jpg"
+    "address": "0x05089c9ebffa4f0aca269e32056b1b36b37ed71b"
   },
   "0x0527c8c43250279d6eb74da1078193f5316fc9a0": {
     "chain": "polygon",
     "symbol": "PYD",
     "decimals": 18,
-    "address": "0x0527c8c43250279d6eb74da1078193f5316fc9a0",
-    "logoURI": "https://raw.githubusercontent.com/sushiswap/assets/master/blockchains/polygon/assets/0x0527c8C43250279D6Eb74dA1078193f5316fc9a0/logo.png"
+    "address": "0x0527c8c43250279d6eb74da1078193f5316fc9a0"
   },
   "0x057e0bd9b797f9eeeb8307b35dbc8c12e534c41e": {
     "chain": "polygon",
     "symbol": "GURU",
     "decimals": 9,
-    "address": "0x057e0bd9b797f9eeeb8307b35dbc8c12e534c41e",
-    "logoURI": "https://raw.githubusercontent.com/sushiswap/assets/master/blockchains/polygon/assets/0x057E0bd9B797f9Eeeb8307B35DbC8c12E534c41E/logo.png"
+    "address": "0x057e0bd9b797f9eeeb8307b35dbc8c12e534c41e"
   },
   "0x0621d647cecbfb64b79e44302c1933cb4f27054d": {
     "chain": "polygon",
@@ -92,29 +85,27 @@
   },
   "0x06b6d004206d04db24b2cb3041758d5a755c6e27": {
     "chain": "polygon",
-    "address": "0x06b6d004206d04db24b2cb3041758d5a755c6e27",
     "symbol": "WIETH3",
-    "decimals": 18
+    "decimals": 18,
+    "address": "0x06b6d004206d04db24b2cb3041758d5a755c6e27"
   },
   "0x08be454de533509e8832b257116c5506e55b0b64": {
     "chain": "polygon",
     "symbol": "STND",
     "decimals": 18,
-    "address": "0x08be454de533509e8832b257116c5506e55b0b64",
-    "logoURI": "https://raw.githubusercontent.com/sushiswap/assets/master/blockchains/polygon/assets/0x08BE454de533509e8832B257116C5506E55b0b64/logo.png"
+    "address": "0x08be454de533509e8832b257116c5506e55b0b64"
   },
   "0x0b048d6e01a6b9002c291060bf2179938fd8264c": {
     "chain": "polygon",
     "symbol": "ALPHA",
     "decimals": 18,
-    "address": "0x0b048d6e01a6b9002c291060bf2179938fd8264c",
-    "logoURI": "https://raw.githubusercontent.com/sushiswap/assets/master/blockchains/polygon/assets/0x0B048D6e01a6b9002C291060bF2179938fd8264c/logo.png"
+    "address": "0x0b048d6e01a6b9002c291060bf2179938fd8264c"
   },
   "0x0b3f868e0be5597d5db7feb59e1cadbb0fdda50a": {
     "chain": "polygon",
-    "address": "0x0b3f868e0be5597d5db7feb59e1cadbb0fdda50a",
     "symbol": "SUSHI",
-    "decimals": 18
+    "decimals": 18,
+    "address": "0x0b3f868e0be5597d5db7feb59e1cadbb0fdda50a"
   },
   "0x0bf519071b02f22c17e7ed5f4002ee1911f46729": {
     "chain": "polygon",
@@ -132,90 +123,79 @@
     "chain": "polygon",
     "symbol": "GMS",
     "decimals": 18,
-    "address": "0x0d962a1a2a27b402e4d84772dea65ac8592eb6bf",
-    "logoURI": "https://raw.githubusercontent.com/sushiswap/assets/master/blockchains/polygon/assets/0x0d962A1A2A27B402e4D84772dea65Ac8592Eb6bF/logo.png"
+    "address": "0x0d962a1a2a27b402e4d84772dea65ac8592eb6bf"
   },
   "0x0e9b89007eee9c958c0eda24ef70723c2c93dd58": {
     "chain": "polygon",
     "symbol": "ankrMATIC",
     "decimals": 18,
-    "address": "0x0e9b89007eee9c958c0eda24ef70723c2c93dd58",
-    "logoURI": "https://raw.githubusercontent.com/sushiswap/list/master/logos/token-logos/network/polygon/0x0E9b89007eEE9c958c0EDA24eF70723C2C93dD58.jpg"
+    "address": "0x0e9b89007eee9c958c0eda24ef70723c2c93dd58"
   },
   "0x0f972ece94292cfccb7ee5a1e273f7c9e23c49eb": {
     "chain": "polygon",
-    "address": "0x0f972ece94292cfccb7ee5a1e273f7c9e23c49eb",
     "symbol": "N2TEST",
-    "decimals": 18
+    "decimals": 18,
+    "address": "0x0f972ece94292cfccb7ee5a1e273f7c9e23c49eb"
   },
   "0x101a023270368c0d50bffb62780f4afd4ea79c35": {
     "chain": "polygon",
     "symbol": "ANKR",
     "decimals": 18,
-    "address": "0x101a023270368c0d50bffb62780f4afd4ea79c35",
-    "logoURI": "https://raw.githubusercontent.com/sushiswap/list/master/logos/token-logos/network/polygon/0x101A023270368c0D50BFfb62780F4aFd4ea79C35.jpg"
+    "address": "0x101a023270368c0d50bffb62780f4afd4ea79c35"
   },
   "0x104592a158490a9228070e0a8e5343b499e125d0": {
     "chain": "polygon",
     "symbol": "polyFRAX",
     "decimals": 18,
-    "address": "0x104592a158490a9228070e0a8e5343b499e125d0",
-    "logoURI": "https://raw.githubusercontent.com/sushiswap/assets/master/blockchains/polygon/assets/0x104592a158490a9228070E0A8e5343B499e125D0/logo.png"
+    "address": "0x104592a158490a9228070e0a8e5343b499e125d0"
   },
   "0x11cd72f7a4b699c67f225ca8abb20bc9f8db90c7": {
     "chain": "polygon",
     "symbol": "OSAK",
     "decimals": 18,
-    "address": "0x11cd72f7a4b699c67f225ca8abb20bc9f8db90c7",
-    "logoURI": "https://raw.githubusercontent.com/sushiswap/list/master/logos/token-logos/network/polygon/0x11cd72f7A4B699c67f225ca8aBb20bC9F8DB90c7.jpg"
+    "address": "0x11cd72f7a4b699c67f225ca8abb20bc9f8db90c7"
   },
   "0x11fc3a14d5807b004b14f2f8d568a2a205e5fc29": {
     "chain": "polygon",
-    "address": "0x11fc3a14d5807b004b14f2f8d568a2a205e5fc29",
     "symbol": "NWETH",
-    "decimals": 18
+    "decimals": 18,
+    "address": "0x11fc3a14d5807b004b14f2f8d568a2a205e5fc29"
   },
   "0x1221591c1d77a9c334abb0fe530ae6ee3af51af9": {
     "chain": "polygon",
     "symbol": "AXMATIC",
     "decimals": 18,
-    "address": "0x1221591c1d77a9c334abb0fe530ae6ee3af51af9",
-    "logoURI": "https://raw.githubusercontent.com/sushiswap/assets/master/blockchains/polygon/assets/0x1221591c1d77A9c334aBb0fe530ae6EE3aF51Af9/logo.png"
+    "address": "0x1221591c1d77a9c334abb0fe530ae6ee3af51af9"
   },
   "0x127e47aba094a9a87d084a3a93732909ff031419": {
     "chain": "polygon",
     "symbol": "GNUS",
     "decimals": 18,
-    "address": "0x127e47aba094a9a87d084a3a93732909ff031419",
-    "logoURI": "https://raw.githubusercontent.com/sushiswap/list/master/logos/token-logos/network/polygon/0x127E47abA094a9a87D084a3a93732909Ff031419.jpg"
+    "address": "0x127e47aba094a9a87d084a3a93732909ff031419"
   },
   "0x12a34a6759c871c4c1e8a0a42cfc97e4d7aaf68d": {
     "chain": "polygon",
     "symbol": "TUT",
     "decimals": 18,
-    "address": "0x12a34a6759c871c4c1e8a0a42cfc97e4d7aaf68d",
-    "logoURI": "https://raw.githubusercontent.com/sushiswap/assets/master/blockchains/polygon/assets/0x12a34A6759c871C4C1E8A0A42CFc97e4D7Aaf68d/logo.png"
+    "address": "0x12a34a6759c871c4c1e8a0a42cfc97e4d7aaf68d"
   },
   "0x137ee749f0f8c2ed34ca00de33bb59e3dafa494a": {
     "chain": "polygon",
     "symbol": "wCCX",
     "decimals": 6,
-    "address": "0x137ee749f0f8c2ed34ca00de33bb59e3dafa494a",
-    "logoURI": "https://raw.githubusercontent.com/sushiswap/assets/master/blockchains/polygon/assets/0x137Ee749f0F8c2eD34cA00dE33BB59E3dafA494A/logo.png"
+    "address": "0x137ee749f0f8c2ed34ca00de33bb59e3dafa494a"
   },
   "0x140a4e80dd8184536acc45f1c452d7540472e6e1": {
     "chain": "polygon",
     "symbol": "PKR",
     "decimals": 18,
-    "address": "0x140a4e80dd8184536acc45f1c452d7540472e6e1",
-    "logoURI": "https://raw.githubusercontent.com/sushiswap/list/master/logos/token-logos/network/polygon/0x140a4e80dD8184536acc45F1C452D7540472e6E1.jpg"
+    "address": "0x140a4e80dd8184536acc45f1c452d7540472e6e1"
   },
   "0x16eccfdbb4ee1a85a33f3a9b21175cd7ae753db4": {
     "chain": "polygon",
     "symbol": "ROUTE",
     "decimals": 18,
-    "address": "0x16eccfdbb4ee1a85a33f3a9b21175cd7ae753db4",
-    "logoURI": "https://s2.coinmarketcap.com/static/img/coins/64x64/8292.png"
+    "address": "0x16eccfdbb4ee1a85a33f3a9b21175cd7ae753db4"
   },
   "0x172370d5cd63279efa6d502dab29171933a610af": {
     "chain": "polygon",
@@ -227,8 +207,7 @@
     "chain": "polygon",
     "symbol": "DUCKIES",
     "decimals": 8,
-    "address": "0x18e73a5333984549484348a94f4d219f4fab7b81",
-    "logoURI": "https://raw.githubusercontent.com/sushiswap/list/master/logos/token-logos/network/polygon/0x18e73A5333984549484348A94f4D219f4faB7b81.jpg"
+    "address": "0x18e73a5333984549484348a94f4d219f4fab7b81"
   },
   "0x19782d3dc4701ceeedcd90f0993f0a9126ed89d0": {
     "chain": "polygon",
@@ -246,22 +225,19 @@
     "chain": "polygon",
     "symbol": "LICP",
     "decimals": 18,
-    "address": "0x1b43b97094aa3c6cc678edb9e28ac67daaa7cc64",
-    "logoURI": "https://raw.githubusercontent.com/sushiswap/assets/master/blockchains/polygon/assets/0x1B43b97094Aa3c6Cc678eDb9e28Ac67dAaa7Cc64/logo.png"
+    "address": "0x1b43b97094aa3c6cc678edb9e28ac67daaa7cc64"
   },
   "0x1b815d120b3ef02039ee11dc2d33de7aa4a8c603": {
     "chain": "polygon",
     "symbol": "WOO",
     "decimals": 18,
-    "address": "0x1b815d120b3ef02039ee11dc2d33de7aa4a8c603",
-    "logoURI": "https://raw.githubusercontent.com/sushiswap/assets/master/blockchains/ethereum/assets/0x4691937a7508860F876c9c0a2a617E7d9E945D4B/logo.png"
+    "address": "0x1b815d120b3ef02039ee11dc2d33de7aa4a8c603"
   },
   "0x1ba3510a9ceeb72e5cdba8bcdde9647e1f20fb4b": {
     "chain": "polygon",
     "symbol": "DRAX",
     "decimals": 18,
-    "address": "0x1ba3510a9ceeb72e5cdba8bcdde9647e1f20fb4b",
-    "logoURI": "https://raw.githubusercontent.com/sushiswap/assets/master/blockchains/polygon/assets/0x1Ba3510A9ceEb72E5CdBa8bcdDe9647E1f20fB4b/logo.png"
+    "address": "0x1ba3510a9ceeb72e5cdba8bcdde9647e1f20fb4b"
   },
   "0x1bfd67037b42cf73acf2047067bd4f2c47d9bfd6": {
     "chain": "polygon",
@@ -273,27 +249,25 @@
     "chain": "polygon",
     "symbol": "KNC",
     "decimals": 18,
-    "address": "0x1c954e8fe737f99f68fa1ccda3e51ebdb291948c",
-    "logoURI": "https://raw.githubusercontent.com/sushiswap/assets/master/blockchains/polygon/assets/0x1C954E8fe737F99f68Fa1CCda3e51ebDB291948C/logo.png"
+    "address": "0x1c954e8fe737f99f68fa1ccda3e51ebdb291948c"
   },
   "0x1d607faa0a51518a7728580c238d912747e71f7a": {
     "chain": "polygon",
     "symbol": "DATA",
     "decimals": 18,
-    "address": "0x1d607faa0a51518a7728580c238d912747e71f7a",
-    "logoURI": "https://raw.githubusercontent.com/sushiswap/assets/master/blockchains/polygon/assets/0x1D607Faa0A51518a7728580C238d912747e71F7a/logo.png"
+    "address": "0x1d607faa0a51518a7728580c238d912747e71f7a"
   },
   "0x1d734a02ef1e1f5886e66b0673b71af5b53ffa94": {
     "chain": "polygon",
-    "address": "0x1d734a02ef1e1f5886e66b0673b71af5b53ffa94",
     "symbol": "SD",
-    "decimals": 18
+    "decimals": 18,
+    "address": "0x1d734a02ef1e1f5886e66b0673b71af5b53ffa94"
   },
   "0x20e2374058bbbf14d9f7bc7e0985c1a22324ef12": {
     "chain": "polygon",
-    "address": "0x20e2374058bbbf14d9f7bc7e0985c1a22324ef12",
     "symbol": "TBTC2",
-    "decimals": 18
+    "decimals": 18,
+    "address": "0x20e2374058bbbf14d9f7bc7e0985c1a22324ef12"
   },
   "0x23001f892c0c82b79303edc9b9033cd190bb21c7": {
     "chain": "polygon",
@@ -305,81 +279,73 @@
     "chain": "polygon",
     "symbol": "USD+",
     "decimals": 6,
-    "address": "0x236eec6359fb44cce8f97e99387aa7f8cd5cde1f",
-    "logoURI": "https://raw.githubusercontent.com/sushiswap/list/master/logos/token-logos/network/polygon/0x236eeC6359fb44CCe8f97E99387aa7F8cd5cdE1f.jpg"
+    "address": "0x236eec6359fb44cce8f97e99387aa7f8cd5cde1f"
   },
   "0x23c70dd93d4ecac7fb93631488c5412e02f4a57c": {
     "chain": "polygon",
     "symbol": "REIN",
     "decimals": 18,
-    "address": "0x23c70dd93d4ecac7fb93631488c5412e02f4a57c",
-    "logoURI": "https://raw.githubusercontent.com/sushiswap/list/master/logos/token-logos/network/polygon/0x23c70Dd93d4ecaC7fb93631488C5412E02f4A57c.jpg"
+    "address": "0x23c70dd93d4ecac7fb93631488c5412e02f4a57c"
   },
   "0x23fe1ee2f536427b7e8ac02fb037a7f867037fe8": {
     "chain": "polygon",
     "symbol": "TORN",
     "decimals": 18,
-    "address": "0x23fe1ee2f536427b7e8ac02fb037a7f867037fe8",
-    "logoURI": "https://raw.githubusercontent.com/sushiswap/assets/master/blockchains/polygon/assets/0x23fE1Ee2f536427B7e8aC02FB037A7f867037Fe8/logo.png"
+    "address": "0x23fe1ee2f536427b7e8ac02fb037a7f867037fe8"
   },
   "0x24b0559a93bbd9ae6364be2eb6173ad8fe10d011": {
     "chain": "polygon",
-    "address": "0x24b0559a93bbd9ae6364be2eb6173ad8fe10d011",
     "symbol": "LFIX",
-    "decimals": 18
+    "decimals": 18,
+    "address": "0x24b0559a93bbd9ae6364be2eb6173ad8fe10d011"
   },
   "0x250856157b144e7b7ac75a8fbcd7258a2a76a101": {
     "chain": "polygon",
-    "address": "0x250856157b144e7b7ac75a8fbcd7258a2a76a101",
     "symbol": "TEST2",
-    "decimals": 18
+    "decimals": 18,
+    "address": "0x250856157b144e7b7ac75a8fbcd7258a2a76a101"
   },
   "0x255707b70bf90aa112006e1b07b9aea6de021424": {
     "chain": "polygon",
     "symbol": "TETU",
     "decimals": 18,
-    "address": "0x255707b70bf90aa112006e1b07b9aea6de021424",
-    "logoURI": "https://raw.githubusercontent.com/sushiswap/assets/master/blockchains/polygon/assets/0x255707B70BF90aa112006E1b07B9AeA6De021424/logo.png"
+    "address": "0x255707b70bf90aa112006e1b07b9aea6de021424"
   },
   "0x25788a1a171ec66da6502f9975a15b609ff54cf6": {
     "chain": "polygon",
     "symbol": "POOL",
     "decimals": 18,
-    "address": "0x25788a1a171ec66da6502f9975a15b609ff54cf6",
-    "logoURI": "https://raw.githubusercontent.com/sushiswap/assets/master/blockchains/polygon/assets/0x25788a1a171ec66Da6502f9975a15B609fF54CF6/logo.png"
+    "address": "0x25788a1a171ec66da6502f9975a15b609ff54cf6"
   },
   "0x257bb4079a21bf458d81fbad1c82ac73994d475d": {
     "chain": "polygon",
-    "address": "0x257bb4079a21bf458d81fbad1c82ac73994d475d",
     "symbol": "SHME",
-    "decimals": 18
+    "decimals": 18,
+    "address": "0x257bb4079a21bf458d81fbad1c82ac73994d475d"
   },
   "0x25e3064d81a1ee1e96f8891b7a7a748d76d1a75d": {
     "chain": "polygon",
-    "address": "0x25e3064d81a1ee1e96f8891b7a7a748d76d1a75d",
     "symbol": "WIETH4",
-    "decimals": 18
+    "decimals": 18,
+    "address": "0x25e3064d81a1ee1e96f8891b7a7a748d76d1a75d"
   },
   "0x2628568509e87c4429fbb5c664ed11391be1bd29": {
     "chain": "polygon",
     "symbol": "renDGB",
     "decimals": 8,
-    "address": "0x2628568509e87c4429fbb5c664ed11391be1bd29",
-    "logoURI": "https://raw.githubusercontent.com/sushiswap/assets/master/blockchains/polygon/assets/0x2628568509E87c4429fBb5c664Ed11391BE1BD29/logo.png"
+    "address": "0x2628568509e87c4429fbb5c664ed11391be1bd29"
   },
   "0x263026e7e53dbfdce5ae55ade22493f828922965": {
     "chain": "polygon",
     "symbol": "RIC",
     "decimals": 18,
-    "address": "0x263026e7e53dbfdce5ae55ade22493f828922965",
-    "logoURI": "https://raw.githubusercontent.com/sushiswap/assets/master/blockchains/polygon/assets/0x263026E7e53DBFDce5ae55Ade22493f828922965/logo.png"
+    "address": "0x263026e7e53dbfdce5ae55ade22493f828922965"
   },
   "0x26aa9b3d8a49a2ed849ac66ea9aa37ee36bc6b24": {
     "chain": "polygon",
     "symbol": "cSUSHI",
     "decimals": 18,
-    "address": "0x26aa9b3d8a49a2ed849ac66ea9aa37ee36bc6b24",
-    "logoURI": "https://raw.githubusercontent.com/sushiswap/list/master/logos/token-logos/network/polygon/0x26AA9B3D8A49A2ed849Ac66EA9AA37Ee36Bc6b24.jpg"
+    "address": "0x26aa9b3d8a49a2ed849ac66ea9aa37ee36bc6b24"
   },
   "0x2760e46d9bb43dafcbecaad1f64b93207f9f0ed7": {
     "chain": "polygon",
@@ -395,110 +361,99 @@
   },
   "0x28288970ddaa774aee955f4973f87d3b64ed5674": {
     "chain": "polygon",
-    "address": "0x28288970ddaa774aee955f4973f87d3b64ed5674",
     "symbol": "WIETH",
-    "decimals": 18
+    "decimals": 18,
+    "address": "0x28288970ddaa774aee955f4973f87d3b64ed5674"
   },
   "0x29f1e986fca02b7e54138c04c4f503dddd250558": {
     "chain": "polygon",
     "symbol": "VSQ",
     "decimals": 9,
-    "address": "0x29f1e986fca02b7e54138c04c4f503dddd250558",
-    "logoURI": "https://raw.githubusercontent.com/sushiswap/list/master/logos/token-logos/network/polygon/0x29F1e986FCa02B7E54138c04C4F503DdDD250558.jpg"
+    "address": "0x29f1e986fca02b7e54138c04c4f503dddd250558"
   },
   "0x2a93172c8dccbfbc60a39d56183b7279a2f647b4": {
     "chain": "polygon",
     "symbol": "DG",
     "decimals": 18,
-    "address": "0x2a93172c8dccbfbc60a39d56183b7279a2f647b4",
-    "logoURI": "https://raw.githubusercontent.com/sushiswap/assets/master/blockchains/polygon/assets/0x2a93172c8DCCbfBC60a39d56183B7279a2F647b4/logo.png"
+    "address": "0x2a93172c8dccbfbc60a39d56183b7279a2f647b4"
   },
   "0x2ab4f9ac80f33071211729e45cfc346c1f8446d5": {
     "chain": "polygon",
     "symbol": "CGG",
     "decimals": 18,
-    "address": "0x2ab4f9ac80f33071211729e45cfc346c1f8446d5",
-    "logoURI": "https://raw.githubusercontent.com/sushiswap/list/master/logos/token-logos/network/polygon/0x2Ab4f9aC80F33071211729e45Cfc346C1f8446d5.jpg"
+    "address": "0x2ab4f9ac80f33071211729e45cfc346c1f8446d5"
   },
   "0x2b3ecb0991af0498ece9135bcd04013d7993110c": {
     "chain": "polygon",
     "symbol": "UBO",
     "decimals": 18,
-    "address": "0x2b3ecb0991af0498ece9135bcd04013d7993110c",
-    "logoURI": "https://raw.githubusercontent.com/sushiswap/list/master/logos/token-logos/network/polygon/0x2B3eCb0991AF0498ECE9135bcD04013d7993110c.jpg"
+    "address": "0x2b3ecb0991af0498ece9135bcd04013d7993110c"
   },
   "0x2b88ad57897a8b496595925f43048301c37615da": {
     "chain": "polygon",
     "symbol": "PICKLE",
     "decimals": 18,
-    "address": "0x2b88ad57897a8b496595925f43048301c37615da",
-    "logoURI": "https://raw.githubusercontent.com/sushiswap/assets/master/blockchains/polygon/assets/0x2b88aD57897A8b496595925F43048301C37615Da/logo.png"
+    "address": "0x2b88ad57897a8b496595925f43048301c37615da"
   },
   "0x2c89bbc92bd86f8075d1decc58c7f4e0107f286b": {
     "chain": "polygon",
     "symbol": "AVAX",
     "decimals": 18,
-    "address": "0x2c89bbc92bd86f8075d1decc58c7f4e0107f286b",
-    "logoURI": "https://raw.githubusercontent.com/sushiswap/assets/master/blockchains/polygon/assets/0x2C89bbc92BD86F8075d1DEcc58C7F4E0107f286b/logo.png"
+    "address": "0x2c89bbc92bd86f8075d1decc58c7f4e0107f286b"
   },
   "0x2caa0c981f965e22cf081385fee8e0972c0b1f27": {
     "chain": "polygon",
-    "address": "0x2caa0c981f965e22cf081385fee8e0972c0b1f27",
     "symbol": "JDWETH",
-    "decimals": 18
+    "decimals": 18,
+    "address": "0x2caa0c981f965e22cf081385fee8e0972c0b1f27"
   },
   "0x2df54842cd85c60f21b4871e09bcc6047b2dcc4d": {
     "chain": "polygon",
     "symbol": "IMRTL",
     "decimals": 18,
-    "address": "0x2df54842cd85c60f21b4871e09bcc6047b2dcc4d",
-    "logoURI": "https://raw.githubusercontent.com/sushiswap/list/master/logos/token-logos/network/polygon/0x2df54842cD85C60f21b4871E09bcc6047b2dcC4d.jpg"
+    "address": "0x2df54842cd85c60f21b4871e09bcc6047b2dcc4d"
   },
   "0x2e1ad108ff1d8c782fcbbb89aad783ac49586756": {
     "chain": "polygon",
     "symbol": "TUSD",
     "decimals": 18,
-    "address": "0x2e1ad108ff1d8c782fcbbb89aad783ac49586756",
-    "logoURI": "https://raw.githubusercontent.com/sushiswap/assets/master/blockchains/polygon/assets/0x2e1AD108fF1D8C782fcBbB89AAd783aC49586756/logo.png"
+    "address": "0x2e1ad108ff1d8c782fcbbb89aad783ac49586756"
   },
   "0x2e2dde47952b9c7defde7424d00dd2341ad927ca": {
     "chain": "polygon",
     "symbol": "CHUM",
     "decimals": 18,
-    "address": "0x2e2dde47952b9c7defde7424d00dd2341ad927ca",
-    "logoURI": "https://raw.githubusercontent.com/sushiswap/assets/master/blockchains/polygon/assets/0x2e2DDe47952b9c7deFDE7424d00dD2341AD927Ca/logo.png"
+    "address": "0x2e2dde47952b9c7defde7424d00dd2341ad927ca"
   },
   "0x2e98656ce8880dd9883fac77c6c3f2d3cda3b21b": {
     "chain": "polygon",
-    "address": "0x2e98656ce8880dd9883fac77c6c3f2d3cda3b21b",
     "symbol": "PPSN",
-    "decimals": 18
+    "decimals": 18,
+    "address": "0x2e98656ce8880dd9883fac77c6c3f2d3cda3b21b"
   },
   "0x2f6f07cdcf3588944bf4c42ac74ff24bf56e7590": {
     "chain": "polygon",
     "symbol": "STG",
     "decimals": 18,
-    "address": "0x2f6f07cdcf3588944bf4c42ac74ff24bf56e7590",
-    "logoURI": "https://raw.githubusercontent.com/sushiswap/list/master/logos/token-logos/network/polygon/0x2F6F07CDcf3588944Bf4C42aC74ff24bF56e7590.jpg"
+    "address": "0x2f6f07cdcf3588944bf4c42ac74ff24bf56e7590"
   },
   "0x2f800db0fdb5223b3c3f354886d907a671414a7f": {
     "chain": "polygon",
     "symbol": "BCT",
     "decimals": 18,
-    "address": "0x2f800db0fdb5223b3c3f354886d907a671414a7f",
-    "logoURI": "https://raw.githubusercontent.com/sushiswap/assets/master/blockchains/polygon/assets/0x2F800Db0fdb5223b3C3f354886d907A671414A7F/logo.png"
+    "address": "0x2f800db0fdb5223b3c3f354886d907a671414a7f"
   },
   "0x302c95c7a90e8b19bb0f3e62ee34c8239d9f1ce2": {
     "chain": "polygon",
-    "address": "0x302c95c7a90e8b19bb0f3e62ee34c8239d9f1ce2",
     "symbol": "FAJNA",
-    "decimals": 18
+    "decimals": 18,
+    "address": "0x302c95c7a90e8b19bb0f3e62ee34c8239d9f1ce2"
   },
   "0x3057e065a3606bf2acb50286bacd39913faf6575": {
     "chain": "polygon",
-    "address": "0x3057e065a3606bf2acb50286bacd39913faf6575",
     "symbol": "DWETH",
-    "decimals": 18
+    "decimals": 18,
+    "address": "0x3057e065a3606bf2acb50286bacd39913faf6575"
   },
   "0x3066818837c5e6ed6601bd5a91b0762877a6b731": {
     "chain": "polygon",
@@ -508,9 +463,9 @@
   },
   "0x321358c6207101a7a5dd0e0a213b76dd0f3e5bd9": {
     "chain": "polygon",
-    "address": "0x321358c6207101a7a5dd0e0a213b76dd0f3e5bd9",
     "symbol": "FAJNA2",
-    "decimals": 18
+    "decimals": 18,
+    "address": "0x321358c6207101a7a5dd0e0a213b76dd0f3e5bd9"
   },
   "0x324b28d6565f784d596422b0f2e5ab6e9cfa1dc7": {
     "chain": "polygon",
@@ -520,67 +475,63 @@
   },
   "0x3341b656fdf9802753122f6806571a6d128ac5a5": {
     "chain": "polygon",
-    "address": "0x3341b656fdf9802753122f6806571a6d128ac5a5",
     "symbol": "JBWETH",
-    "decimals": 18
+    "decimals": 18,
+    "address": "0x3341b656fdf9802753122f6806571a6d128ac5a5"
   },
   "0x34b9421fe3d52191b64bc32ec1ab764dcbcdbf5e": {
     "chain": "polygon",
-    "address": "0x34b9421fe3d52191b64bc32ec1ab764dcbcdbf5e",
     "symbol": "USDC-1",
-    "decimals": 6
+    "decimals": 6,
+    "address": "0x34b9421fe3d52191b64bc32ec1ab764dcbcdbf5e"
   },
   "0x34d4ab47bee066f361fa52d792e69ac7bd05ee23": {
     "chain": "polygon",
     "symbol": "AURUM",
     "decimals": 18,
-    "address": "0x34d4ab47bee066f361fa52d792e69ac7bd05ee23",
-    "logoURI": "https://raw.githubusercontent.com/sushiswap/assets/master/blockchains/polygon/assets/0x34d4ab47Bee066F361fA52d792e69AC7bD05ee23/logo.png"
+    "address": "0x34d4ab47bee066f361fa52d792e69ac7bd05ee23"
   },
   "0x368ec12623412432dc6435d764013d8c5883e318": {
     "chain": "polygon",
-    "address": "0x368ec12623412432dc6435d764013d8c5883e318",
     "symbol": "FBTC",
-    "decimals": 18
+    "decimals": 18,
+    "address": "0x368ec12623412432dc6435d764013d8c5883e318"
   },
   "0x382586651f043cbdec7bb586e367d77b26d7d149": {
     "chain": "polygon",
     "symbol": "WGC",
     "decimals": 6,
-    "address": "0x382586651f043cbdec7bb586e367d77b26d7d149",
-    "logoURI": "https://raw.githubusercontent.com/sushiswap/list/master/logos/token-logos/network/polygon/0x382586651f043cBdEc7bb586e367D77B26D7d149.jpg"
+    "address": "0x382586651f043cbdec7bb586e367d77b26d7d149"
   },
   "0x385eeac5cb85a38a9a07a70c73e0a3271cfb54a7": {
     "chain": "polygon",
-    "address": "0x385eeac5cb85a38a9a07a70c73e0a3271cfb54a7",
     "symbol": "GHST",
-    "decimals": 18
+    "decimals": 18,
+    "address": "0x385eeac5cb85a38a9a07a70c73e0a3271cfb54a7"
   },
   "0x3a3df212b7aa91aa0402b9035b098891d276572b": {
     "chain": "polygon",
     "symbol": "FISH",
     "decimals": 18,
-    "address": "0x3a3df212b7aa91aa0402b9035b098891d276572b",
-    "logoURI": "https://raw.githubusercontent.com/sushiswap/assets/master/blockchains/polygon/assets/0x3a3Df212b7AA91Aa0402B9035b098891d276572B/logo.png"
+    "address": "0x3a3df212b7aa91aa0402b9035b098891d276572b"
   },
   "0x3a58a54c066fdc0f2d55fc9c89f0415c92ebf3c4": {
     "chain": "polygon",
-    "address": "0x3a58a54c066fdc0f2d55fc9c89f0415c92ebf3c4",
     "symbol": "stMATIC",
-    "decimals": 18
+    "decimals": 18,
+    "address": "0x3a58a54c066fdc0f2d55fc9c89f0415c92ebf3c4"
   },
   "0x3ad707da309f3845cd602059901e39c4dcd66473": {
     "chain": "polygon",
     "symbol": "ETH2X-FLI-P",
     "decimals": 18,
-    "address": "0x3ad707da309f3845cd602059901e39c4dcd66473",
-    "logoURI": "https://raw.githubusercontent.com/sushiswap/list/master/logos/token-logos/network/matic/0x3Ad707dA309f3845cd602059901E39C4dcd66473.jpg"
+    "address": "0x3ad707da309f3845cd602059901e39c4dcd66473"
   },
   "0x3bacefedb50e72fc010611d510712d8ef0ab9b59": {
     "chain": "polygon",
-    "address": "0x3bacefedb50e72fc010611d510712d8ef0ab9b59",
     "symbol": "TBTC",
-    "decimals": 18
+    "decimals": 18,
+    "address": "0x3bacefedb50e72fc010611d510712d8ef0ab9b59"
   },
   "0x3c499c542cef5e3811e1192ce70d8cc03d5c3359": {
     "chain": "polygon",
@@ -590,68 +541,63 @@
   },
   "0x3c720206bfacb2d16fa3ac0ed87d2048dbc401fc": {
     "chain": "polygon",
-    "address": "0x3c720206bfacb2d16fa3ac0ed87d2048dbc401fc",
     "symbol": "UCO",
-    "decimals": 18
+    "decimals": 18,
+    "address": "0x3c720206bfacb2d16fa3ac0ed87d2048dbc401fc"
   },
   "0x3cef98bb43d732e2f285ee605a8158cde967d219": {
     "chain": "polygon",
     "symbol": "BAT",
     "decimals": 18,
-    "address": "0x3cef98bb43d732e2f285ee605a8158cde967d219",
-    "logoURI": "https://raw.githubusercontent.com/sushiswap/list/master/logos/token-logos/token/bat.jpg"
+    "address": "0x3cef98bb43d732e2f285ee605a8158cde967d219"
   },
   "0x3d1d2afd191b165d140e3e8329e634665ffb0e5e": {
     "chain": "polygon",
     "symbol": "DERI",
     "decimals": 18,
-    "address": "0x3d1d2afd191b165d140e3e8329e634665ffb0e5e",
-    "logoURI": "https://raw.githubusercontent.com/sushiswap/assets/master/blockchains/polygon/assets/0x3D1D2aFd191b165D140e3E8329E634665fFB0E5e/logo.png"
+    "address": "0x3d1d2afd191b165d140e3e8329e634665ffb0e5e"
   },
   "0x3d2bd0e15829aa5c362a4144fdf4a1112fa29b5c": {
     "chain": "polygon",
-    "address": "0x3d2bd0e15829aa5c362a4144fdf4a1112fa29b5c",
     "symbol": "BONSAI",
-    "decimals": 18
+    "decimals": 18,
+    "address": "0x3d2bd0e15829aa5c362a4144fdf4a1112fa29b5c"
   },
   "0x3e121107f6f22da4911079845a470757af4e1a1b": {
     "chain": "polygon",
     "symbol": "polyFXS",
     "decimals": 18,
-    "address": "0x3e121107f6f22da4911079845a470757af4e1a1b",
-    "logoURI": "https://raw.githubusercontent.com/sushiswap/assets/master/blockchains/polygon/assets/0x3e121107F6F22DA4911079845a470757aF4e1A1b/logo.png"
+    "address": "0x3e121107f6f22da4911079845a470757af4e1a1b"
   },
   "0x3ea542d7600c28c505e9b73be8b70568b11032b2": {
     "chain": "polygon",
-    "address": "0x3ea542d7600c28c505e9b73be8b70568b11032b2",
     "symbol": "LVST",
-    "decimals": 18
+    "decimals": 18,
+    "address": "0x3ea542d7600c28c505e9b73be8b70568b11032b2"
   },
   "0x3f717919def69f81d17b80839bf8af35697ccbfa": {
     "chain": "polygon",
     "symbol": "DTX",
     "decimals": 18,
-    "address": "0x3f717919def69f81d17b80839bf8af35697ccbfa",
-    "logoURI": "https://raw.githubusercontent.com/sushiswap/assets/master/blockchains/polygon/assets/0x3f717919deF69f81d17b80839bf8af35697ccbFa/logo.png"
+    "address": "0x3f717919def69f81d17b80839bf8af35697ccbfa"
   },
   "0x40ec1d24e1fdfcfd2c422cf7592a33cb5894dfc8": {
     "chain": "polygon",
-    "address": "0x40ec1d24e1fdfcfd2c422cf7592a33cb5894dfc8",
     "symbol": "ZVWETH",
-    "decimals": 18
+    "decimals": 18,
+    "address": "0x40ec1d24e1fdfcfd2c422cf7592a33cb5894dfc8"
   },
   "0x41b3966b4ff7b427969ddf5da3627d6aeae9a48e": {
     "chain": "polygon",
     "symbol": "NEXO",
     "decimals": 18,
-    "address": "0x41b3966b4ff7b427969ddf5da3627d6aeae9a48e",
-    "logoURI": "https://s2.coinmarketcap.com/static/img/coins/64x64/2694.png"
+    "address": "0x41b3966b4ff7b427969ddf5da3627d6aeae9a48e"
   },
   "0x42f2c39c67aa4f14085dc8ac66fa32576506c125": {
     "chain": "polygon",
-    "address": "0x42f2c39c67aa4f14085dc8ac66fa32576506c125",
     "symbol": "ELEF",
-    "decimals": 18
+    "decimals": 18,
+    "address": "0x42f2c39c67aa4f14085dc8ac66fa32576506c125"
   },
   "0x42f37a1296b2981f7c3caced84c5096b2eb0c72c": {
     "chain": "polygon",
@@ -661,15 +607,15 @@
   },
   "0x433cde5a82b5e0658da3543b47a375dffd126eb6": {
     "chain": "polygon",
-    "address": "0x433cde5a82b5e0658da3543b47a375dffd126eb6",
     "symbol": "GOON",
-    "decimals": 18
+    "decimals": 18,
+    "address": "0x433cde5a82b5e0658da3543b47a375dffd126eb6"
   },
   "0x433ce9a15a740cd9fa65fe40daf95cba34e32910": {
     "chain": "polygon",
-    "address": "0x433ce9a15a740cd9fa65fe40daf95cba34e32910",
     "symbol": "LDWETH",
-    "decimals": 18
+    "decimals": 18,
+    "address": "0x433ce9a15a740cd9fa65fe40daf95cba34e32910"
   },
   "0x45c32fa6df82ead1e2ef74d17b76547eddfaff89": {
     "chain": "polygon",
@@ -681,15 +627,13 @@
     "chain": "polygon",
     "symbol": "WSPP",
     "decimals": 18,
-    "address": "0x46d502fac9aea7c5bc7b13c8ec9d02378c33d36f",
-    "logoURI": "https://raw.githubusercontent.com/sushiswap/assets/master/blockchains/polygon/assets/0x46D502Fac9aEA7c5bC7B13C8Ec9D02378C33D36F/logo.png"
+    "address": "0x46d502fac9aea7c5bc7b13c8ec9d02378c33d36f"
   },
   "0x492fa53b88614923937b7197c87e0f7f8eeb7b20": {
     "chain": "polygon",
     "symbol": "NFTE",
     "decimals": 18,
-    "address": "0x492fa53b88614923937b7197c87e0f7f8eeb7b20",
-    "logoURI": "https://raw.githubusercontent.com/sushiswap/list/master/logos/token-logos/network/polygon/0x492Fa53b88614923937B7197C87E0F7F8EEb7B20.jpg"
+    "address": "0x492fa53b88614923937b7197c87e0f7f8eeb7b20"
   },
   "0x49a0400587a7f65072c87c4910449fdcc5c47242": {
     "chain": "polygon",
@@ -701,26 +645,25 @@
     "chain": "polygon",
     "symbol": "TNGBL",
     "decimals": 18,
-    "address": "0x49e6a20f1bbdfeec2a8222e052000bbb14ee6007",
-    "logoURI": "https://raw.githubusercontent.com/sushiswap/list/master/logos/token-logos/network/polygon/0x49e6A20f1BBdfEeC2a8222E052000BbB14EE6007.jpg"
+    "address": "0x49e6a20f1bbdfeec2a8222e052000bbb14ee6007"
   },
   "0x4aa508ac876252843e4efee366155c68b9d2fb6c": {
     "chain": "polygon",
-    "address": "0x4aa508ac876252843e4efee366155c68b9d2fb6c",
     "symbol": "TEST2",
-    "decimals": 18
+    "decimals": 18,
+    "address": "0x4aa508ac876252843e4efee366155c68b9d2fb6c"
   },
   "0x4abc82351c73bc16326a5e5f48fdc74d230f24a6": {
     "chain": "polygon",
-    "address": "0x4abc82351c73bc16326a5e5f48fdc74d230f24a6",
     "symbol": "JEWETH",
-    "decimals": 18
+    "decimals": 18,
+    "address": "0x4abc82351c73bc16326a5e5f48fdc74d230f24a6"
   },
   "0x4b118be5aabd3a6166b90b9e7a830a369a501b54": {
     "chain": "polygon",
-    "address": "0x4b118be5aabd3a6166b90b9e7a830a369a501b54",
     "symbol": "IMT",
-    "decimals": 18
+    "decimals": 18,
+    "address": "0x4b118be5aabd3a6166b90b9e7a830a369a501b54"
   },
   "0x4b4327db1600b8b1440163f667e199cef35385f5": {
     "chain": "polygon",
@@ -732,60 +675,55 @@
     "chain": "polygon",
     "symbol": "BTC2x-FLI",
     "decimals": 18,
-    "address": "0x4b54bc363f5f9c6e0fcd82eac6919ae213464cc6",
-    "logoURI": "https://raw.githubusercontent.com/sushiswap/assets/master/blockchains/polygon/assets/0x4b54Bc363f5F9c6E0fcd82EaC6919aE213464Cc6/logo.png"
+    "address": "0x4b54bc363f5f9c6e0fcd82eac6919ae213464cc6"
   },
   "0x4bbb478f212c6299dad6d2531514df7860c61350": {
     "chain": "polygon",
-    "address": "0x4bbb478f212c6299dad6d2531514df7860c61350",
     "symbol": "ELE",
-    "decimals": 18
+    "decimals": 18,
+    "address": "0x4bbb478f212c6299dad6d2531514df7860c61350"
   },
   "0x4c16f69302ccb511c5fac682c7626b9ef0dc126a": {
     "chain": "polygon",
     "symbol": "polyBUNNY",
     "decimals": 18,
-    "address": "0x4c16f69302ccb511c5fac682c7626b9ef0dc126a",
-    "logoURI": "https://raw.githubusercontent.com/sushiswap/assets/master/blockchains/polygon/assets/0x4C16f69302CcB511c5Fac682c7626B9eF0Dc126a/logo.png"
+    "address": "0x4c16f69302ccb511c5fac682c7626b9ef0dc126a"
   },
   "0x4c6b65fe93fc9daf413498b88195fafff36dd960": {
     "chain": "polygon",
-    "address": "0x4c6b65fe93fc9daf413498b88195fafff36dd960",
     "symbol": "stETH",
-    "decimals": 18
+    "decimals": 18,
+    "address": "0x4c6b65fe93fc9daf413498b88195fafff36dd960"
   },
   "0x4e1581f01046efdd7a1a2cdb0f82cdd7f71f2e59": {
     "chain": "polygon",
     "symbol": "ICE",
     "decimals": 18,
-    "address": "0x4e1581f01046efdd7a1a2cdb0f82cdd7f71f2e59",
-    "logoURI": "https://raw.githubusercontent.com/sushiswap/list/master/logos/token-logos/network/matic/0x4e1581f01046eFDd7a1a2CDB0F82cdd7F71F2E59.jpg"
+    "address": "0x4e1581f01046efdd7a1a2cdb0f82cdd7f71f2e59"
   },
   "0x4e3decbb3645551b8a19f0ea1678079fcb33fb4c": {
     "chain": "polygon",
-    "address": "0x4e3decbb3645551b8a19f0ea1678079fcb33fb4c",
     "symbol": "jEUR",
-    "decimals": 18
+    "decimals": 18,
+    "address": "0x4e3decbb3645551b8a19f0ea1678079fcb33fb4c"
   },
   "0x4e604ce4f3502f3e16214b16054fe0709ea91146": {
     "chain": "polygon",
-    "address": "0x4e604ce4f3502f3e16214b16054fe0709ea91146",
     "symbol": "MOON",
-    "decimals": 18
+    "decimals": 18,
+    "address": "0x4e604ce4f3502f3e16214b16054fe0709ea91146"
   },
   "0x4e78011ce80ee02d2c3e649fb657e45898257815": {
     "chain": "polygon",
     "symbol": "KLIMA",
     "decimals": 9,
-    "address": "0x4e78011ce80ee02d2c3e649fb657e45898257815",
-    "logoURI": "https://raw.githubusercontent.com/sushiswap/list/master/logos/token-logos/network/polygon/0x4e78011Ce80ee02d2c3e649Fb657E45898257815.jpg"
+    "address": "0x4e78011ce80ee02d2c3e649fb657e45898257815"
   },
   "0x4eac4c4e9050464067d673102f8e24b2fcceb350": {
     "chain": "polygon",
     "symbol": "ibBTC",
     "decimals": 18,
-    "address": "0x4eac4c4e9050464067d673102f8e24b2fcceb350",
-    "logoURI": "https://raw.githubusercontent.com/sushiswap/assets/master/blockchains/polygon/assets/0x4EaC4c4e9050464067D673102F8E24b2FccEB350/logo.png"
+    "address": "0x4eac4c4e9050464067d673102f8e24b2fcceb350"
   },
   "0x50a4a434247089848991dd8f09b889d4e2870ab6": {
     "chain": "polygon",
@@ -801,9 +739,9 @@
   },
   "0x52af46b524bf75bd809c9808608ca84f61ac3953": {
     "chain": "polygon",
-    "address": "0x52af46b524bf75bd809c9808608ca84f61ac3953",
     "symbol": "TESTM",
-    "decimals": 18
+    "decimals": 18,
+    "address": "0x52af46b524bf75bd809c9808608ca84f61ac3953"
   },
   "0x53e0bca35ec356bd5dddfebbd1fc0fd03fabad39": {
     "chain": "polygon",
@@ -813,22 +751,21 @@
   },
   "0x53e6f8bb06c687851cd85593fcd8950a2c248bbd": {
     "chain": "polygon",
-    "address": "0x53e6f8bb06c687851cd85593fcd8950a2c248bbd",
     "symbol": "TEST2",
-    "decimals": 18
+    "decimals": 18,
+    "address": "0x53e6f8bb06c687851cd85593fcd8950a2c248bbd"
   },
   "0x54138e8b40df7c3639e6a044dc57173eb830b972": {
     "chain": "polygon",
-    "address": "0x54138e8b40df7c3639e6a044dc57173eb830b972",
     "symbol": "USD",
-    "decimals": 18
+    "decimals": 18,
+    "address": "0x54138e8b40df7c3639e6a044dc57173eb830b972"
   },
   "0x54cfe73f2c7d0c4b62ab869b473f5512dc0944d2": {
     "chain": "polygon",
     "symbol": "BZRX",
     "decimals": 18,
-    "address": "0x54cfe73f2c7d0c4b62ab869b473f5512dc0944d2",
-    "logoURI": "https://raw.githubusercontent.com/sushiswap/assets/master/blockchains/polygon/assets/0x54cFe73f2c7d0c4b62Ab869B473F5512Dc0944D2/logo.png"
+    "address": "0x54cfe73f2c7d0c4b62ab869b473f5512dc0944d2"
   },
   "0x5559edb74751a0ede9dea4dc23aee72cca6be3d5": {
     "chain": "polygon",
@@ -840,90 +777,79 @@
     "chain": "polygon",
     "symbol": "AX",
     "decimals": 18,
-    "address": "0x5617604ba0a30e0ff1d2163ab94e50d8b6d0b0df",
-    "logoURI": "https://raw.githubusercontent.com/sushiswap/assets/master/blockchains/polygon/assets/0x5617604BA0a30E0ff1d2163aB94E50d8b6D0B0Df/logo.png"
+    "address": "0x5617604ba0a30e0ff1d2163ab94e50d8b6d0b0df"
   },
   "0x5647fe4281f8f6f01e84bce775ad4b828a7b8927": {
     "chain": "polygon",
     "symbol": "MM",
     "decimals": 18,
-    "address": "0x5647fe4281f8f6f01e84bce775ad4b828a7b8927",
-    "logoURI": "https://raw.githubusercontent.com/sushiswap/assets/master/blockchains/polygon/assets/0x5647Fe4281F8F6F01E84BCE775AD4b828A7b8927/logo.png"
+    "address": "0x5647fe4281f8f6f01e84bce775ad4b828a7b8927"
   },
   "0x573adc31fc20cdd3fc8171a61385507a0456d525": {
     "chain": "polygon",
-    "address": "0x573adc31fc20cdd3fc8171a61385507a0456d525",
     "symbol": "TEST3",
-    "decimals": 18
+    "decimals": 18,
+    "address": "0x573adc31fc20cdd3fc8171a61385507a0456d525"
   },
   "0x57f12fe6a4e5fe819eec699fadf9db2d06606bb4": {
     "chain": "polygon",
     "symbol": "NPM",
     "decimals": 18,
-    "address": "0x57f12fe6a4e5fe819eec699fadf9db2d06606bb4",
-    "logoURI": "https://raw.githubusercontent.com/sushiswap/list/master/logos/token-logos/network/polygon/0x57f12FE6A4e5fe819eec699FAdf9Db2D06606bB4.jpg"
+    "address": "0x57f12fe6a4e5fe819eec699fadf9db2d06606bb4"
   },
   "0x57f5e098cad7a3d1eed53991d4d66c45c9af7812": {
     "chain": "polygon",
-    "address": "0x57f5e098cad7a3d1eed53991d4d66c45c9af7812",
     "symbol": "wUSDM",
-    "decimals": 18
+    "decimals": 18,
+    "address": "0x57f5e098cad7a3d1eed53991d4d66c45c9af7812"
   },
   "0x580a84c73811e1839f75d86d75d88cca0c241ff4": {
     "chain": "polygon",
     "symbol": "Qi",
     "decimals": 18,
-    "address": "0x580a84c73811e1839f75d86d75d88cca0c241ff4",
-    "logoURI": "https://raw.githubusercontent.com/sushiswap/assets/master/blockchains/polygon/assets/0x580A84C73811E1839F75d86d75d88cCa0c241fF4/logo.png"
+    "address": "0x580a84c73811e1839f75d86d75d88cca0c241ff4"
   },
   "0x58c7b2828e7f2b2caa0cc7feef242fa3196d03df": {
     "chain": "polygon",
     "symbol": "fxA3A",
     "decimals": 18,
-    "address": "0x58c7b2828e7f2b2caa0cc7feef242fa3196d03df",
-    "logoURI": "https://raw.githubusercontent.com/sushiswap/list/master/logos/token-logos/network/polygon/0x58c7B2828e7F2B2CaA0cC7fEef242fA3196d03df.jpg"
+    "address": "0x58c7b2828e7f2b2caa0cc7feef242fa3196d03df"
   },
   "0x596ebe76e2db4470966ea395b0d063ac6197a8c5": {
     "chain": "polygon",
     "symbol": "JRT",
     "decimals": 18,
-    "address": "0x596ebe76e2db4470966ea395b0d063ac6197a8c5",
-    "logoURI": "https://raw.githubusercontent.com/sushiswap/assets/master/blockchains/polygon/assets/0x596eBE76e2DB4470966ea395B0d063aC6197A8C5/logo.png"
+    "address": "0x596ebe76e2db4470966ea395b0d063ac6197a8c5"
   },
   "0x5a3064cbdccf428ae907796cf6ad5a664cd7f3d8": {
     "chain": "polygon",
     "symbol": "PYQ",
     "decimals": 18,
-    "address": "0x5a3064cbdccf428ae907796cf6ad5a664cd7f3d8",
-    "logoURI": "https://raw.githubusercontent.com/sushiswap/assets/master/blockchains/polygon/assets/0x5a3064CbDCCF428ae907796cF6aD5a664CD7F3d8/logo.png"
+    "address": "0x5a3064cbdccf428ae907796cf6ad5a664cd7f3d8"
   },
   "0x5d0915f929fc090fd9c843a53e7e30335dd199bc": {
     "chain": "polygon",
     "symbol": "pTREAT",
     "decimals": 18,
-    "address": "0x5d0915f929fc090fd9c843a53e7e30335dd199bc",
-    "logoURI": "https://raw.githubusercontent.com/sushiswap/assets/master/blockchains/polygon/assets/0x5d0915f929FC090fd9c843a53e7e30335dD199bc/logo.png"
+    "address": "0x5d0915f929fc090fd9c843a53e7e30335dd199bc"
   },
   "0x5d2375c6af4b7de4e395ada20aab937895b4fa70": {
     "chain": "polygon",
     "symbol": "MSC",
     "decimals": 18,
-    "address": "0x5d2375c6af4b7de4e395ada20aab937895b4fa70",
-    "logoURI": "https://raw.githubusercontent.com/sushiswap/list/master/logos/token-logos/network/polygon/0x5d2375C6af4b7dE4e395ADa20aab937895B4fa70.jpg"
+    "address": "0x5d2375c6af4b7de4e395ada20aab937895b4fa70"
   },
   "0x5eb8d998371971d01954205c7afe90a7af6a95ac": {
     "chain": "polygon",
     "symbol": "AUDIO",
     "decimals": 18,
-    "address": "0x5eb8d998371971d01954205c7afe90a7af6a95ac",
-    "logoURI": "https://s2.coinmarketcap.com/static/img/coins/64x64/7455.png"
+    "address": "0x5eb8d998371971d01954205c7afe90a7af6a95ac"
   },
   "0x5ec03c1f7fa7ff05ec476d19e34a22eddb48acdc": {
     "chain": "polygon",
     "symbol": "ZED",
     "decimals": 18,
-    "address": "0x5ec03c1f7fa7ff05ec476d19e34a22eddb48acdc",
-    "logoURI": "https://raw.githubusercontent.com/sushiswap/list/master/logos/token-logos/network/polygon/0x5eC03C1f7fA7FF05EC476d19e34A22eDDb48ACdc.jpg"
+    "address": "0x5ec03c1f7fa7ff05ec476d19e34a22eddb48acdc"
   },
   "0x5fe2b58c013d7601147dcdd68c143a77499f5531": {
     "chain": "polygon",
@@ -941,49 +867,43 @@
     "chain": "polygon",
     "symbol": "WORK",
     "decimals": 18,
-    "address": "0x6002410dda2fb88b4d0dc3c1d562f7761191ea80",
-    "logoURI": "https://raw.githubusercontent.com/sushiswap/assets/master/blockchains/polygon/assets/0x6002410dDA2Fb88b4D0dc3c1D562F7761191eA80/logo.png"
+    "address": "0x6002410dda2fb88b4d0dc3c1d562f7761191ea80"
   },
   "0x60ed6acef3a96f8cdaf0c0d207bbafa66e751af2": {
     "chain": "polygon",
     "symbol": "EP",
     "decimals": 18,
-    "address": "0x60ed6acef3a96f8cdaf0c0d207bbafa66e751af2",
-    "logoURI": "https://raw.githubusercontent.com/sushiswap/list/master/logos/token-logos/network/polygon/0x60Ed6aCEF3a96F8CDaF0c0D207BbAfA66e751af2.jpg"
+    "address": "0x60ed6acef3a96f8cdaf0c0d207bbafa66e751af2"
   },
   "0x61bdd9c7d4df4bf47a4508c0c8245505f2af5b7b": {
     "chain": "polygon",
     "symbol": "AXS",
     "decimals": 18,
-    "address": "0x61bdd9c7d4df4bf47a4508c0c8245505f2af5b7b",
-    "logoURI": "https://raw.githubusercontent.com/sushiswap/assets/master/blockchains/polygon/assets/0x61BDD9C7d4dF4Bf47A4508c0c8245505F2Af5b7b/logo.png"
+    "address": "0x61bdd9c7d4df4bf47a4508c0c8245505f2af5b7b"
   },
   "0x61daecab65ee2a1d5b6032df030f3faa3d116aa7": {
     "chain": "polygon",
     "symbol": "DMAGIC",
     "decimals": 18,
-    "address": "0x61daecab65ee2a1d5b6032df030f3faa3d116aa7",
-    "logoURI": "https://raw.githubusercontent.com/sushiswap/assets/master/blockchains/polygon/assets/0x61dAECaB65EE2A1D5b6032df030f3fAA3d116Aa7/logo.png"
+    "address": "0x61daecab65ee2a1d5b6032df030f3faa3d116aa7"
   },
   "0x61e9c2f3501889f6167921087bd6ea306002904a": {
     "chain": "polygon",
     "symbol": "PIXEL",
     "decimals": 18,
-    "address": "0x61e9c2f3501889f6167921087bd6ea306002904a",
-    "logoURI": "https://raw.githubusercontent.com/sushiswap/assets/master/blockchains/polygon/assets/0x61E9c2F3501889f6167921087Bd6EA306002904a/logo.png"
+    "address": "0x61e9c2f3501889f6167921087bd6ea306002904a"
   },
   "0x61f95bd637e3034133335c1baa0148e518d438ad": {
     "chain": "polygon",
     "symbol": "MHUNT",
     "decimals": 18,
-    "address": "0x61f95bd637e3034133335c1baa0148e518d438ad",
-    "logoURI": "https://raw.githubusercontent.com/sushiswap/list/master/logos/token-logos/network/polygon/0x61f95bd637e3034133335C1baA0148E518D438ad.jpg"
+    "address": "0x61f95bd637e3034133335c1baa0148e518d438ad"
   },
   "0x621e1d2f1f96cb33aa4b74f08d1fef0f0427d9ce": {
     "chain": "polygon",
-    "address": "0x621e1d2f1f96cb33aa4b74f08d1fef0f0427d9ce",
     "symbol": "DWETH",
-    "decimals": 18
+    "decimals": 18,
+    "address": "0x621e1d2f1f96cb33aa4b74f08d1fef0f0427d9ce"
   },
   "0x6563c1244820cfbd6ca8820fbdf0f2847363f733": {
     "chain": "polygon",
@@ -995,15 +915,13 @@
     "chain": "polygon",
     "symbol": "FOX",
     "decimals": 18,
-    "address": "0x65a05db8322701724c197af82c9cae41195b0aa8",
-    "logoURI": "https://raw.githubusercontent.com/sushiswap/assets/master/blockchains/polygon/assets/0x65A05DB8322701724c197AF82C9CaE41195B0aA8/logo.png"
+    "address": "0x65a05db8322701724c197af82c9cae41195b0aa8"
   },
   "0x66d7fdcc7403f18cae9b0e2e8385649d2acbc12a": {
     "chain": "polygon",
     "symbol": "ETH2x-FLI",
     "decimals": 18,
-    "address": "0x66d7fdcc7403f18cae9b0e2e8385649d2acbc12a",
-    "logoURI": "https://raw.githubusercontent.com/sushiswap/assets/master/blockchains/polygon/assets/0x66d7FDCc7403f18cAE9b0e2e8385649D2AcBC12A/logo.png"
+    "address": "0x66d7fdcc7403f18cae9b0e2e8385649d2acbc12a"
   },
   "0x66dc5a08091d1968e08c16aa5b27bac8398b02be": {
     "chain": "polygon",
@@ -1013,9 +931,9 @@
   },
   "0x66e001bd3ae202928b333723615263a465418c12": {
     "chain": "polygon",
-    "address": "0x66e001bd3ae202928b333723615263a465418c12",
     "symbol": "TestUSDT",
-    "decimals": 18
+    "decimals": 18,
+    "address": "0x66e001bd3ae202928b333723615263a465418c12"
   },
   "0x66efb7cc647e0efab02eba4316a2d2941193f6b3": {
     "chain": "polygon",
@@ -1027,22 +945,19 @@
     "chain": "polygon",
     "symbol": "GIDDY",
     "decimals": 18,
-    "address": "0x67eb41a14c0fe5cd701fc9d5a3d6597a72f641a6",
-    "logoURI": "https://raw.githubusercontent.com/sushiswap/list/master/logos/token-logos/network/polygon/0x67eB41A14C0fe5CD701FC9d5A3D6597A72F641a6.jpg"
+    "address": "0x67eb41a14c0fe5cd701fc9d5a3d6597a72f641a6"
   },
   "0x6811079e3c63ed96eb005384d7e7ec8810e3d521": {
     "chain": "polygon",
     "symbol": "xSUSHI",
     "decimals": 18,
-    "address": "0x6811079e3c63ed96eb005384d7e7ec8810e3d521",
-    "logoURI": "https://raw.githubusercontent.com/sushiswap/list/master/logos/token-logos/token/xsushi.jpg"
+    "address": "0x6811079e3c63ed96eb005384d7e7ec8810e3d521"
   },
   "0x68ee0d0aad9e1984af85ca224117e4d20eaf68be": {
     "chain": "polygon",
     "symbol": "ROY",
     "decimals": 18,
-    "address": "0x68ee0d0aad9e1984af85ca224117e4d20eaf68be",
-    "logoURI": "https://raw.githubusercontent.com/sushiswap/list/master/logos/token-logos/network/polygon/0x68EE0D0aad9e1984aF85CA224117E4D20eaF68BE.jpg"
+    "address": "0x68ee0d0aad9e1984af85ca224117e4d20eaf68be"
   },
   "0x6985884c4392d348587b19cb9eaaf157f13271cd": {
     "chain": "polygon",
@@ -1054,49 +969,43 @@
     "chain": "polygon",
     "symbol": "JPYC",
     "decimals": 18,
-    "address": "0x6ae7dfc73e0dde2aa99ac063dcf7e8a63265108c",
-    "logoURI": "https://jpyc.jp/static/media/jpyc.0d1e5d3f.png"
+    "address": "0x6ae7dfc73e0dde2aa99ac063dcf7e8a63265108c"
   },
   "0x6bb45ceac714c52342ef73ec663479da35934bf7": {
     "chain": "polygon",
     "symbol": "BONE",
     "decimals": 18,
-    "address": "0x6bb45ceac714c52342ef73ec663479da35934bf7",
-    "logoURI": "https://raw.githubusercontent.com/sushiswap/assets/master/blockchains/polygon/assets/0x6bb45cEAC714c52342Ef73ec663479da35934bf7/logo.png"
+    "address": "0x6bb45ceac714c52342ef73ec663479da35934bf7"
   },
   "0x6bca3b77c1909ce1a4ba1a20d1103bde8d222e48": {
     "chain": "polygon",
     "symbol": "NBO",
     "decimals": 18,
-    "address": "0x6bca3b77c1909ce1a4ba1a20d1103bde8d222e48",
-    "logoURI": "https://raw.githubusercontent.com/sushiswap/list/master/logos/token-logos/network/polygon/0x6BCa3B77C1909Ce1a4Ba1A20d1103bDe8d222E48.jpg"
+    "address": "0x6bca3b77c1909ce1a4ba1a20d1103bde8d222e48"
   },
   "0x6d5f5317308c6fe7d6ce16930353a8dfd92ba4d7": {
     "chain": "polygon",
     "symbol": "ABI",
     "decimals": 9,
-    "address": "0x6d5f5317308c6fe7d6ce16930353a8dfd92ba4d7",
-    "logoURI": "https://raw.githubusercontent.com/sushiswap/assets/master/blockchains/polygon/assets/0x6d5f5317308C6fE7D6CE16930353a8Dfd92Ba4D7/logo.png"
+    "address": "0x6d5f5317308c6fe7d6ce16930353a8dfd92ba4d7"
   },
   "0x6d969cea201e427d2875724fd4e8044833fbc7f4": {
     "chain": "polygon",
     "symbol": "pHBD",
     "decimals": 3,
-    "address": "0x6d969cea201e427d2875724fd4e8044833fbc7f4",
-    "logoURI": "https://raw.githubusercontent.com/sushiswap/list/master/logos/token-logos/network/polygon/0x6D969cEA201e427d2875724Fd4E8044833fBc7f4.jpg"
+    "address": "0x6d969cea201e427d2875724fd4e8044833fbc7f4"
   },
   "0x6ddb31002abc64e1479fc439692f7ea061e78165": {
     "chain": "polygon",
     "symbol": "COMBO",
     "decimals": 18,
-    "address": "0x6ddb31002abc64e1479fc439692f7ea061e78165",
-    "logoURI": "https://raw.githubusercontent.com/sushiswap/assets/master/blockchains/polygon/assets/0x6DdB31002abC64e1479Fc439692F7eA061e78165/logo.png"
+    "address": "0x6ddb31002abc64e1479fc439692f7ea061e78165"
   },
   "0x6eb3605c2e7c5a53dc12ccbd5c3d3c633d2abe3a": {
     "chain": "polygon",
-    "address": "0x6eb3605c2e7c5a53dc12ccbd5c3d3c633d2abe3a",
     "symbol": "XBT",
-    "decimals": 18
+    "decimals": 18,
+    "address": "0x6eb3605c2e7c5a53dc12ccbd5c3d3c633d2abe3a"
   },
   "0x6f7c932e7684666c9fd1d44527765433e01ff61d": {
     "chain": "polygon",
@@ -1106,49 +1015,45 @@
   },
   "0x6f8a06447ff6fcf75d803135a7de15ce88c1d4ec": {
     "chain": "polygon",
-    "address": "0x6f8a06447ff6fcf75d803135a7de15ce88c1d4ec",
     "symbol": "SHIB",
-    "decimals": 18
+    "decimals": 18,
+    "address": "0x6f8a06447ff6fcf75d803135a7de15ce88c1d4ec"
   },
   "0x7075cab6bcca06613e2d071bd918d1a0241379e2": {
     "chain": "polygon",
     "symbol": "GFARM2",
     "decimals": 18,
-    "address": "0x7075cab6bcca06613e2d071bd918d1a0241379e2",
-    "logoURI": "https://s2.coinmarketcap.com/static/img/coins/64x64/8444.png"
+    "address": "0x7075cab6bcca06613e2d071bd918d1a0241379e2"
   },
   "0x750e4c4984a9e0f12978ea6742bc1c5d248f40ed": {
     "chain": "polygon",
     "symbol": "axlUSDC",
     "decimals": 6,
-    "address": "0x750e4c4984a9e0f12978ea6742bc1c5d248f40ed",
-    "logoURI": "https://raw.githubusercontent.com/sushiswap/list/master/logos/token-logos/network/polygon/0x750e4C4984a9e0f12978eA6742Bc1c5D248f40ed.jpg"
+    "address": "0x750e4c4984a9e0f12978ea6742bc1c5d248f40ed"
   },
   "0x750f276015831c1bd40b1f098ea0f24a466940d6": {
     "chain": "polygon",
-    "address": "0x750f276015831c1bd40b1f098ea0f24a466940d6",
     "symbol": "123",
-    "decimals": 18
+    "decimals": 18,
+    "address": "0x750f276015831c1bd40b1f098ea0f24a466940d6"
   },
   "0x76e63a3e7ba1e2e61d3da86a87479f983de89a7e": {
     "chain": "polygon",
     "symbol": "OMEN",
     "decimals": 18,
-    "address": "0x76e63a3e7ba1e2e61d3da86a87479f983de89a7e",
-    "logoURI": "https://raw.githubusercontent.com/sushiswap/assets/master/blockchains/polygon/assets/0x76e63a3E7Ba1e2E61D3DA86a87479f983dE89a7E/logo.png"
+    "address": "0x76e63a3e7ba1e2e61d3da86a87479f983de89a7e"
   },
   "0x774b995b7753b2e142dc4feb58c5dd4581f0fa03": {
     "chain": "polygon",
-    "address": "0x774b995b7753b2e142dc4feb58c5dd4581f0fa03",
     "symbol": "CHMSH",
-    "decimals": 18
+    "decimals": 18,
+    "address": "0x774b995b7753b2e142dc4feb58c5dd4581f0fa03"
   },
   "0x7cc15fef543f205bf21018f038f591c6bada941c": {
     "chain": "polygon",
     "symbol": "POLYCUB",
     "decimals": 18,
-    "address": "0x7cc15fef543f205bf21018f038f591c6bada941c",
-    "logoURI": "https://raw.githubusercontent.com/sushiswap/list/master/logos/token-logos/network/polygon/0x7cC15fEf543f205Bf21018F038F591C6BaDa941c.jpg"
+    "address": "0x7cc15fef543f205bf21018f038f591c6bada941c"
   },
   "0x7ceb23fd6bc0add59e62ac25578270cff1b9f619": {
     "chain": "polygon",
@@ -1158,80 +1063,75 @@
   },
   "0x7d50ee976a67ef964552352da5b0a08dc74d69f9": {
     "chain": "polygon",
-    "address": "0x7d50ee976a67ef964552352da5b0a08dc74d69f9",
     "symbol": "MTEST4",
-    "decimals": 18
+    "decimals": 18,
+    "address": "0x7d50ee976a67ef964552352da5b0a08dc74d69f9"
   },
   "0x7e94de269df2eb9f4d0443d46500191f19c9a8da": {
     "chain": "polygon",
     "symbol": "UNITY",
     "decimals": 18,
-    "address": "0x7e94de269df2eb9f4d0443d46500191f19c9a8da",
-    "logoURI": "https://raw.githubusercontent.com/sushiswap/list/master/logos/token-logos/network/polygon/0x7e94De269df2eb9F4D0443d46500191F19C9A8dA.jpg"
+    "address": "0x7e94de269df2eb9f4d0443d46500191f19c9a8da"
   },
   "0x7f426f6dc648e50464a0392e60e1bb465a67e9cf": {
     "chain": "polygon",
     "symbol": "pAUTO",
     "decimals": 18,
-    "address": "0x7f426f6dc648e50464a0392e60e1bb465a67e9cf",
-    "logoURI": "https://raw.githubusercontent.com/sushiswap/assets/master/blockchains/polygon/assets/0x7f426F6Dc648e50464a0392E60E1BB465a67E9cf/logo.png"
+    "address": "0x7f426f6dc648e50464a0392e60e1bb465a67e9cf"
   },
   "0x7fffea64adcb0905674ff559ad6100c309ba8210": {
     "chain": "polygon",
-    "address": "0x7fffea64adcb0905674ff559ad6100c309ba8210",
     "symbol": "MOON",
-    "decimals": 18
+    "decimals": 18,
+    "address": "0x7fffea64adcb0905674ff559ad6100c309ba8210"
   },
   "0x8184ba35ad1d2a4419690d25b9ea34840086f624": {
     "chain": "polygon",
-    "address": "0x8184ba35ad1d2a4419690d25b9ea34840086f624",
     "symbol": "FSMOL",
-    "decimals": 18
+    "decimals": 18,
+    "address": "0x8184ba35ad1d2a4419690d25b9ea34840086f624"
   },
   "0x820802fa8a99901f52e39acd21177b0be6ee2974": {
     "chain": "polygon",
     "symbol": "EUROe",
     "decimals": 6,
-    "address": "0x820802fa8a99901f52e39acd21177b0be6ee2974",
-    "logoURI": "https://raw.githubusercontent.com/sushiswap/list/master/logos/token-logos/network/polygon/0x820802Fa8a99901F52e39acD21177b0BE6EE2974.jpg"
+    "address": "0x820802fa8a99901f52e39acd21177b0be6ee2974"
   },
   "0x82a805a827d50a98d7445b02d46589cf33318d5b": {
     "chain": "polygon",
-    "address": "0x82a805a827d50a98d7445b02d46589cf33318d5b",
     "symbol": "KWETH",
-    "decimals": 18
+    "decimals": 18,
+    "address": "0x82a805a827d50a98d7445b02d46589cf33318d5b"
   },
   "0x82e64f49ed5ec1bc6e43dad4fc8af9bb3a2312ee": {
     "chain": "polygon",
-    "address": "0x82e64f49ed5ec1bc6e43dad4fc8af9bb3a2312ee",
     "symbol": "aPolDAI",
-    "decimals": 18
+    "decimals": 18,
+    "address": "0x82e64f49ed5ec1bc6e43dad4fc8af9bb3a2312ee"
   },
   "0x832ed1461ae5661739ba74999936ee72e3bbcda7": {
     "chain": "polygon",
-    "address": "0x832ed1461ae5661739ba74999936ee72e3bbcda7",
     "symbol": "MTEST3",
-    "decimals": 18
+    "decimals": 18,
+    "address": "0x832ed1461ae5661739ba74999936ee72e3bbcda7"
   },
   "0x839f1a22a59eaaf26c85958712ab32f80fea23d9": {
     "chain": "polygon",
     "symbol": "AXN",
     "decimals": 18,
-    "address": "0x839f1a22a59eaaf26c85958712ab32f80fea23d9",
-    "logoURI": "https://raw.githubusercontent.com/sushiswap/assets/master/blockchains/polygon/assets/0x839F1a22A59eAAf26c85958712aB32F80FEA23d9/logo.png"
+    "address": "0x839f1a22a59eaaf26c85958712ab32f80fea23d9"
   },
   "0x83e4e4c56cc9b07282e8f92681de8de7ff610fa2": {
     "chain": "polygon",
-    "address": "0x83e4e4c56cc9b07282e8f92681de8de7ff610fa2",
     "symbol": "FakBTC",
-    "decimals": 18
+    "decimals": 18,
+    "address": "0x83e4e4c56cc9b07282e8f92681de8de7ff610fa2"
   },
   "0x840195888db4d6a99ed9f73fcd3b225bb3cb1a79": {
     "chain": "polygon",
     "symbol": "SX",
     "decimals": 18,
-    "address": "0x840195888db4d6a99ed9f73fcd3b225bb3cb1a79",
-    "logoURI": "https://raw.githubusercontent.com/sushiswap/assets/master/blockchains/polygon/assets/0x840195888Db4D6A99ED9F73FcD3B225Bb3cB1A79/logo.png"
+    "address": "0x840195888db4d6a99ed9f73fcd3b225bb3cb1a79"
   },
   "0x84e1670f61347cdaed56dcc736fb990fbb47ddc1": {
     "chain": "polygon",
@@ -1249,56 +1149,49 @@
     "chain": "polygon",
     "symbol": "WOW",
     "decimals": 18,
-    "address": "0x855d4248672a1fce482165e8dbe1207b94b1968a",
-    "logoURI": "https://raw.githubusercontent.com/sushiswap/assets/master/blockchains/ethereum/assets/0x3405A1bd46B85c5C029483FbECf2F3E611026e45/logo.png"
+    "address": "0x855d4248672a1fce482165e8dbe1207b94b1968a"
   },
   "0x858bcee0e62dd0c961611ddddb908767b0ce801c": {
     "chain": "polygon",
     "symbol": "lsMATIC",
     "decimals": 18,
-    "address": "0x858bcee0e62dd0c961611ddddb908767b0ce801c",
-    "logoURI": "https://raw.githubusercontent.com/sushiswap/list/master/logos/token-logos/network/polygon/0x858bCEE0E62dd0c961611ddDDB908767B0ce801C.jpg"
+    "address": "0x858bcee0e62dd0c961611ddddb908767b0ce801c"
   },
   "0x85955046df4668e1dd369d2de9f3aeb98dd2a369": {
     "chain": "polygon",
-    "address": "0x85955046df4668e1dd369d2de9f3aeb98dd2a369",
     "symbol": "DPI",
-    "decimals": 18
+    "decimals": 18,
+    "address": "0x85955046df4668e1dd369d2de9f3aeb98dd2a369"
   },
   "0x89c296be2f904f3e99a6125815b4b78f5388d2dd": {
     "chain": "polygon",
     "symbol": "RCN",
     "decimals": 18,
-    "address": "0x89c296be2f904f3e99a6125815b4b78f5388d2dd",
-    "logoURI": "https://raw.githubusercontent.com/sushiswap/list/master/logos/token-logos/token/rcn.jpg"
+    "address": "0x89c296be2f904f3e99a6125815b4b78f5388d2dd"
   },
   "0x8a0e8b4b0903929f47c3ea30973940d4a9702067": {
     "chain": "polygon",
     "symbol": "INSUR",
     "decimals": 18,
-    "address": "0x8a0e8b4b0903929f47c3ea30973940d4a9702067",
-    "logoURI": "https://raw.githubusercontent.com/sushiswap/assets/master/blockchains/polygon/assets/0x8a0e8b4b0903929f47C3ea30973940D4a9702067/logo.png"
+    "address": "0x8a0e8b4b0903929f47c3ea30973940d4a9702067"
   },
   "0x8a2870fb69a90000d6439b7adfb01d4ba383a415": {
     "chain": "polygon",
     "symbol": "DEGEN",
     "decimals": 18,
-    "address": "0x8a2870fb69a90000d6439b7adfb01d4ba383a415",
-    "logoURI": "https://raw.githubusercontent.com/sushiswap/assets/master/blockchains/polygon/assets/0x8a2870fb69A90000D6439b7aDfB01d4bA383A415/logo.png"
+    "address": "0x8a2870fb69a90000d6439b7adfb01d4ba383a415"
   },
   "0x8a953cfe442c5e8855cc6c61b1293fa648bae472": {
     "chain": "polygon",
     "symbol": "PolyDoge",
     "decimals": 18,
-    "address": "0x8a953cfe442c5e8855cc6c61b1293fa648bae472",
-    "logoURI": "https://raw.githubusercontent.com/sushiswap/list/master/logos/token-logos/token/doge.jpg"
+    "address": "0x8a953cfe442c5e8855cc6c61b1293fa648bae472"
   },
   "0x8c059898ca6274750b6bf1cf38f2848347c490cc": {
     "chain": "polygon",
     "symbol": "SOS",
     "decimals": 18,
-    "address": "0x8c059898ca6274750b6bf1cf38f2848347c490cc",
-    "logoURI": "https://raw.githubusercontent.com/sushiswap/list/master/logos/token-logos/network/polygon/0x8c059898ca6274750b6bF1cf38F2848347C490cc.jpg"
+    "address": "0x8c059898ca6274750b6bf1cf38f2848347c490cc"
   },
   "0x8c92e38eca8210f4fcbf17f0951b198dd7668292": {
     "chain": "polygon",
@@ -1310,28 +1203,25 @@
     "chain": "polygon",
     "symbol": "COLLAR",
     "decimals": 18,
-    "address": "0x8df26a1bd9bd98e2ec506fc9d8009954716a05dc",
-    "logoURI": "https://raw.githubusercontent.com/sushiswap/assets/master/blockchains/polygon/assets/0x8DF26a1BD9bD98e2eC506fc9d8009954716A05DC/logo.png"
+    "address": "0x8df26a1bd9bd98e2ec506fc9d8009954716a05dc"
   },
   "0x8e41bbd8420b66c867a072fd28fc0db0d0ccabd8": {
     "chain": "polygon",
-    "address": "0x8e41bbd8420b66c867a072fd28fc0db0d0ccabd8",
     "symbol": "nTEST",
-    "decimals": 18
+    "decimals": 18,
+    "address": "0x8e41bbd8420b66c867a072fd28fc0db0d0ccabd8"
   },
   "0x8f006d1e1d9dc6c98996f50a4c810f17a47fbf19": {
     "chain": "polygon",
     "symbol": "NSFW",
     "decimals": 18,
-    "address": "0x8f006d1e1d9dc6c98996f50a4c810f17a47fbf19",
-    "logoURI": "https://raw.githubusercontent.com/sushiswap/list/master/logos/token-logos/network/polygon/0x8f006D1e1D9dC6C98996F50a4c810F17a47fBF19.jpg"
+    "address": "0x8f006d1e1d9dc6c98996f50a4c810f17a47fbf19"
   },
   "0x8f18dc399594b451eda8c5da02d0563c0b2d0f16": {
     "chain": "polygon",
     "symbol": "WOLF",
     "decimals": 9,
-    "address": "0x8f18dc399594b451eda8c5da02d0563c0b2d0f16",
-    "logoURI": "https://s2.coinmarketcap.com/static/img/coins/64x64/9158.png"
+    "address": "0x8f18dc399594b451eda8c5da02d0563c0b2d0f16"
   },
   "0x8f3cf7ad23cd3cadbd9735aff958023239c6a063": {
     "chain": "polygon",
@@ -1341,41 +1231,39 @@
   },
   "0x90b1a9b4ff0ee268c22365b53730918aece724aa": {
     "chain": "polygon",
-    "address": "0x90b1a9b4ff0ee268c22365b53730918aece724aa",
     "symbol": "TBTC2",
-    "decimals": 18
+    "decimals": 18,
+    "address": "0x90b1a9b4ff0ee268c22365b53730918aece724aa"
   },
   "0x91ca694d2b293f70fe722fba7d8a5259188959c3": {
     "chain": "polygon",
     "symbol": "MFT",
     "decimals": 18,
-    "address": "0x91ca694d2b293f70fe722fba7d8a5259188959c3",
-    "logoURI": "https://assets.coingecko.com/coins/images/3293/small/hifi_logo.png?1613102742"
+    "address": "0x91ca694d2b293f70fe722fba7d8a5259188959c3"
   },
   "0x93c3740cb967fc111b7a2f20163a5bbeaeea478a": {
     "chain": "polygon",
-    "address": "0x93c3740cb967fc111b7a2f20163a5bbeaeea478a",
     "symbol": "kTEST",
-    "decimals": 18
+    "decimals": 18,
+    "address": "0x93c3740cb967fc111b7a2f20163a5bbeaeea478a"
   },
   "0x944f91925a3f2d19f5776722f4c885efdb126ccd": {
     "chain": "polygon",
-    "address": "0x944f91925a3f2d19f5776722f4c885efdb126ccd",
     "symbol": "FBTC",
-    "decimals": 18
+    "decimals": 18,
+    "address": "0x944f91925a3f2d19f5776722f4c885efdb126ccd"
   },
   "0x960d43be128585ca45365cd74a7773b9d814dfbe": {
     "chain": "polygon",
     "symbol": "fireFBX",
     "decimals": 18,
-    "address": "0x960d43be128585ca45365cd74a7773b9d814dfbe",
-    "logoURI": "https://raw.githubusercontent.com/sushiswap/list/master/logos/token-logos/network/polygon/0x960d43BE128585Ca45365CD74a7773B9d814dfBE.jpg"
+    "address": "0x960d43be128585ca45365cd74a7773b9d814dfbe"
   },
   "0x9703d3dd6fe169ddccb6f7d3221de35fff8d3ab4": {
     "chain": "polygon",
-    "address": "0x9703d3dd6fe169ddccb6f7d3221de35fff8d3ab4",
     "symbol": "EPHANT",
-    "decimals": 18
+    "decimals": 18,
+    "address": "0x9703d3dd6fe169ddccb6f7d3221de35fff8d3ab4"
   },
   "0x9880e3dda13c8e7d4804691a45160102d31f6060": {
     "chain": "polygon",
@@ -1391,62 +1279,57 @@
   },
   "0x9a9519134dda2d7fb24b28e1649f2b07fb09979d": {
     "chain": "polygon",
-    "address": "0x9a9519134dda2d7fb24b28e1649f2b07fb09979d",
     "symbol": "WIETH2",
-    "decimals": 18
+    "decimals": 18,
+    "address": "0x9a9519134dda2d7fb24b28e1649f2b07fb09979d"
   },
   "0x9af3b7dc29d3c4b1a5731408b6a9656fa7ac3b72": {
     "chain": "polygon",
     "symbol": "PUSD",
     "decimals": 18,
-    "address": "0x9af3b7dc29d3c4b1a5731408b6a9656fa7ac3b72",
-    "logoURI": "https://raw.githubusercontent.com/sushiswap/assets/master/blockchains/polygon/assets/0x9aF3b7DC29D3C4B1A5731408B6A9656fA7aC3b72/logo.png"
+    "address": "0x9af3b7dc29d3c4b1a5731408b6a9656fa7ac3b72"
   },
   "0x9b034262e0095210ab9ddec60199741a8a1fbfe7": {
     "chain": "polygon",
     "symbol": "THREE",
     "decimals": 18,
-    "address": "0x9b034262e0095210ab9ddec60199741a8a1fbfe7",
-    "logoURI": "https://raw.githubusercontent.com/sushiswap/list/master/logos/token-logos/network/polygon/0x9B034262e0095210ab9ddec60199741a8a1FbFe7.jpg"
+    "address": "0x9b034262e0095210ab9ddec60199741a8a1fbfe7"
   },
   "0x9e20461bc2c4c980f62f1b279d71734207a6a356": {
     "chain": "polygon",
     "symbol": "OMNI",
     "decimals": 18,
-    "address": "0x9e20461bc2c4c980f62f1b279d71734207a6a356",
-    "logoURI": "https://raw.githubusercontent.com/sushiswap/list/master/logos/token-logos/network/polygon/0x9e20461bc2c4c980f62f1B279D71734207a6A356.jpg"
+    "address": "0x9e20461bc2c4c980f62f1b279d71734207a6a356"
   },
   "0x9fead45a879279036771d1a1140fc1679b0ebfef": {
     "chain": "polygon",
-    "address": "0x9fead45a879279036771d1a1140fc1679b0ebfef",
     "symbol": "C-cU-Ue-CCF",
-    "decimals": 18
+    "decimals": 18,
+    "address": "0x9fead45a879279036771d1a1140fc1679b0ebfef"
   },
   "0xa013fbd4b711f9ded6fb09c1c0d358e2fbc2eaa0": {
     "chain": "polygon",
-    "address": "0xa013fbd4b711f9ded6fb09c1c0d358e2fbc2eaa0",
     "symbol": "yvUSDC-A",
-    "decimals": 6
+    "decimals": 6,
+    "address": "0xa013fbd4b711f9ded6fb09c1c0d358e2fbc2eaa0"
   },
   "0xa041544fe2be56cce31ebb69102b965e06aace80": {
     "chain": "polygon",
     "symbol": "BOND",
     "decimals": 18,
-    "address": "0xa041544fe2be56cce31ebb69102b965e06aace80",
-    "logoURI": "https://raw.githubusercontent.com/sushiswap/assets/master/blockchains/polygon/assets/0xA041544fe2BE56CCe31Ebb69102B965E06aacE80/logo.png"
+    "address": "0xa041544fe2be56cce31ebb69102b965e06aace80"
   },
   "0xa0a6815f14ab87179674ee87726c6d1f89d6a57a": {
     "chain": "polygon",
-    "address": "0xa0a6815f14ab87179674ee87726c6d1f89d6a57a",
     "symbol": "SHME",
-    "decimals": 18
+    "decimals": 18,
+    "address": "0xa0a6815f14ab87179674ee87726c6d1f89d6a57a"
   },
   "0xa0e4c84693266a9d3bbef2f394b33712c76599ab": {
     "chain": "polygon",
     "symbol": "EURO3",
     "decimals": 18,
-    "address": "0xa0e4c84693266a9d3bbef2f394b33712c76599ab",
-    "logoURI": "https://raw.githubusercontent.com/sushiswap/list/master/logos/token-logos/network/polygon/0xA0e4c84693266a9d3BBef2f394B33712c76599Ab.jpg"
+    "address": "0xa0e4c84693266a9d3bbef2f394b33712c76599ab"
   },
   "0xa1c57f48f0deb89f569dfbe6e2b7f46d33606fd4": {
     "chain": "polygon",
@@ -1462,27 +1345,27 @@
   },
   "0xa411c9aa00e020e4f88bc19996d29c5b7adb4acf": {
     "chain": "polygon",
-    "address": "0xa411c9aa00e020e4f88bc19996d29c5b7adb4acf",
     "symbol": "XOC",
-    "decimals": 18
+    "decimals": 18,
+    "address": "0xa411c9aa00e020e4f88bc19996d29c5b7adb4acf"
   },
   "0xa481ca76ee3b90f679e1b3a76e4ed72d13176b7a": {
     "chain": "polygon",
-    "address": "0xa481ca76ee3b90f679e1b3a76e4ed72d13176b7a",
     "symbol": "TBTC",
-    "decimals": 18
+    "decimals": 18,
+    "address": "0xa481ca76ee3b90f679e1b3a76e4ed72d13176b7a"
   },
   "0xa5567c203c90d88bc9e58cb6f357f8dc3ae562ec": {
     "chain": "polygon",
-    "address": "0xa5567c203c90d88bc9e58cb6f357f8dc3ae562ec",
     "symbol": "WIETH2",
-    "decimals": 18
+    "decimals": 18,
+    "address": "0xa5567c203c90d88bc9e58cb6f357f8dc3ae562ec"
   },
   "0xa5d3dba081ed44897d859fe741b1ee9596bf851e": {
     "chain": "polygon",
-    "address": "0xa5d3dba081ed44897d859fe741b1ee9596bf851e",
     "symbol": "KLVETH",
-    "decimals": 18
+    "decimals": 18,
+    "address": "0xa5d3dba081ed44897d859fe741b1ee9596bf851e"
   },
   "0xa8b1e0764f85f53dfe21760e8afe5446d82606ac": {
     "chain": "polygon",
@@ -1494,76 +1377,67 @@
     "chain": "polygon",
     "symbol": "PECO",
     "decimals": 18,
-    "address": "0xa9536b9c75a9e0fae3b56a96ac8edf76abc91978",
-    "logoURI": "https://raw.githubusercontent.com/sushiswap/assets/master/blockchains/polygon/assets/0xA9536B9c75A9E0faE3B56a96AC8EdF76AbC91978/logo.png"
+    "address": "0xa9536b9c75a9e0fae3b56a96ac8edf76abc91978"
   },
   "0xaa9654becca45b5bdfa5ac646c939c62b527d394": {
     "chain": "polygon",
     "symbol": "DINO",
     "decimals": 18,
-    "address": "0xaa9654becca45b5bdfa5ac646c939c62b527d394",
-    "logoURI": "https://raw.githubusercontent.com/sushiswap/assets/master/blockchains/polygon/assets/0xAa9654BECca45B5BDFA5ac646c939C62b527D394/logo.png"
+    "address": "0xaa9654becca45b5bdfa5ac646c939c62b527d394"
   },
   "0xaaa5b9e6c589642f98a1cda99b9d024b8407285a": {
     "chain": "polygon",
     "symbol": "TITAN",
     "decimals": 18,
-    "address": "0xaaa5b9e6c589642f98a1cda99b9d024b8407285a",
-    "logoURI": "https://raw.githubusercontent.com/sushiswap/assets/master/blockchains/polygon/assets/0xaAa5B9e6c589642f98a1cDA99B9D024B8407285A/logo.png"
+    "address": "0xaaa5b9e6c589642f98a1cda99b9d024b8407285a"
   },
   "0xab9ad9089f23e6779a8727900709427719f753e1": {
     "chain": "polygon",
     "symbol": "NGNC",
     "decimals": 6,
-    "address": "0xab9ad9089f23e6779a8727900709427719f753e1",
-    "logoURI": "https://raw.githubusercontent.com/sushiswap/list/master/logos/token-logos/network/polygon/0xAb9aD9089f23e6779a8727900709427719f753e1.jpg"
+    "address": "0xab9ad9089f23e6779a8727900709427719f753e1"
   },
   "0xac63686230f64bdeaf086fe6764085453ab3023f": {
     "chain": "polygon",
     "symbol": "USV",
     "decimals": 9,
-    "address": "0xac63686230f64bdeaf086fe6764085453ab3023f",
-    "logoURI": "https://raw.githubusercontent.com/sushiswap/assets/master/blockchains/polygon/assets/0xAC63686230f64BDEAF086Fe6764085453ab3023F/logo.png"
+    "address": "0xac63686230f64bdeaf086fe6764085453ab3023f"
   },
   "0xacd7b3d9c10e97d0efa418903c0c7669e702e4c0": {
     "chain": "polygon",
     "symbol": "ELE",
     "decimals": 18,
-    "address": "0xacd7b3d9c10e97d0efa418903c0c7669e702e4c0",
-    "logoURI": "https://raw.githubusercontent.com/sushiswap/assets/master/blockchains/polygon/assets/0xAcD7B3D9c10e97d0efA418903C0c7669E702E4C0/logo.png"
+    "address": "0xacd7b3d9c10e97d0efa418903c0c7669e702e4c0"
   },
   "0xad01dffe604cdc172d8237566ee3a3ab6524d4c6": {
     "chain": "polygon",
     "symbol": "C3",
     "decimals": 18,
-    "address": "0xad01dffe604cdc172d8237566ee3a3ab6524d4c6",
-    "logoURI": "https://raw.githubusercontent.com/sushiswap/list/master/logos/token-logos/network/polygon/0xad01DFfe604CDc172D8237566eE3a3ab6524d4C6.jpg"
+    "address": "0xad01dffe604cdc172d8237566ee3a3ab6524d4c6"
   },
   "0xaee94e07ed83795ccd23c207568e3541fa48d219": {
     "chain": "polygon",
-    "address": "0xaee94e07ed83795ccd23c207568e3541fa48d219",
     "symbol": "NSC",
-    "decimals": 18
+    "decimals": 18,
+    "address": "0xaee94e07ed83795ccd23c207568e3541fa48d219"
   },
   "0xb0b195aefa3650a6908f15cdac7d92f8a5791b0b": {
     "chain": "polygon",
     "symbol": "BOB",
     "decimals": 18,
-    "address": "0xb0b195aefa3650a6908f15cdac7d92f8a5791b0b",
-    "logoURI": "https://raw.githubusercontent.com/sushiswap/list/master/logos/token-logos/network/polygon/0xB0B195aEFA3650A6908f15CdaC7D92F8a5791B0B.jpg"
+    "address": "0xb0b195aefa3650a6908f15cdac7d92f8a5791b0b"
   },
   "0xb0bec3ab55018b5b35f8789db118b1a2ed19c74c": {
     "chain": "polygon",
-    "address": "0xb0bec3ab55018b5b35f8789db118b1a2ed19c74c",
     "symbol": "fUSDC",
-    "decimals": 10
+    "decimals": 10,
+    "address": "0xb0bec3ab55018b5b35f8789db118b1a2ed19c74c"
   },
   "0xb121fcd122daaa153bb8a102754127b2682645cb": {
     "chain": "polygon",
     "symbol": "PERL",
     "decimals": 18,
-    "address": "0xb121fcd122daaa153bb8a102754127b2682645cb",
-    "logoURI": "https://raw.githubusercontent.com/sushiswap/list/master/logos/token-logos/network/polygon/0xB121FCD122DAAa153bB8a102754127b2682645CB.jpg"
+    "address": "0xb121fcd122daaa153bb8a102754127b2682645cb"
   },
   "0xb33eaad8d922b1083446dc23f610c2567fb5180f": {
     "chain": "polygon",
@@ -1573,28 +1447,27 @@
   },
   "0xb5eac04d431d762f4c6d7f62fbdac0776b61d564": {
     "chain": "polygon",
-    "address": "0xb5eac04d431d762f4c6d7f62fbdac0776b61d564",
     "symbol": "LDVWETH",
-    "decimals": 18
+    "decimals": 18,
+    "address": "0xb5eac04d431d762f4c6d7f62fbdac0776b61d564"
   },
   "0xb68eb7a4f55f9cd2d46a988fd7530b5d93fb837d": {
     "chain": "polygon",
-    "address": "0xb68eb7a4f55f9cd2d46a988fd7530b5d93fb837d",
     "symbol": "DWETH",
-    "decimals": 18
+    "decimals": 18,
+    "address": "0xb68eb7a4f55f9cd2d46a988fd7530b5d93fb837d"
   },
   "0xb70c70a1440b8f413d92574eccab2d973358f203": {
     "chain": "polygon",
-    "address": "0xb70c70a1440b8f413d92574eccab2d973358f203",
     "symbol": "TBTC2",
-    "decimals": 18
+    "decimals": 18,
+    "address": "0xb70c70a1440b8f413d92574eccab2d973358f203"
   },
   "0xb74f2220ad34a03730400c9c97bd10863bbc4130": {
     "chain": "polygon",
     "symbol": "CHECK",
     "decimals": 6,
-    "address": "0xb74f2220ad34a03730400c9c97bd10863bbc4130",
-    "logoURI": "https://raw.githubusercontent.com/sushiswap/list/master/logos/token-logos/network/polygon/0xb74f2220Ad34A03730400c9C97Bd10863bBc4130.jpg"
+    "address": "0xb74f2220ad34a03730400c9c97bd10863bbc4130"
   },
   "0xb87904db461005fc716a6bf9f2d451c33b10b80b": {
     "chain": "polygon",
@@ -1606,27 +1479,25 @@
     "chain": "polygon",
     "symbol": "YFI",
     "decimals": 18,
-    "address": "0xb8cb8a7f4c2885c03e57e973c74827909fdc2032",
-    "logoURI": "https://raw.githubusercontent.com/sushiswap/list/master/logos/token-logos/token/yfi.jpg"
+    "address": "0xb8cb8a7f4c2885c03e57e973c74827909fdc2032"
   },
   "0xba073ee3fdeb0fe00fda35e58f7cd75563aec607": {
     "chain": "polygon",
-    "address": "0xba073ee3fdeb0fe00fda35e58f7cd75563aec607",
     "symbol": "PTR",
-    "decimals": 18
+    "decimals": 18,
+    "address": "0xba073ee3fdeb0fe00fda35e58f7cd75563aec607"
   },
   "0xbb287e6017d3deb0e2e65061e8684eab21060123": {
     "chain": "polygon",
-    "address": "0xbb287e6017d3deb0e2e65061e8684eab21060123",
     "symbol": "yvUSDT-A",
-    "decimals": 6
+    "decimals": 6,
+    "address": "0xbb287e6017d3deb0e2e65061e8684eab21060123"
   },
   "0xbbba073c31bf03b8acf7c28ef0738decf3695683": {
     "chain": "polygon",
     "symbol": "SAND",
     "decimals": 18,
-    "address": "0xbbba073c31bf03b8acf7c28ef0738decf3695683",
-    "logoURI": "https://raw.githubusercontent.com/sushiswap/list/master/logos/token-logos/token/sand.jpg"
+    "address": "0xbbba073c31bf03b8acf7c28ef0738decf3695683"
   },
   "0xbc2b48bc930ddc4e5cfb2e87a45c379aab3aac5c": {
     "chain": "polygon",
@@ -1642,22 +1513,21 @@
   },
   "0xbdc8be220ab8de38a0d8e850f7c13dba9329c2e1": {
     "chain": "polygon",
-    "address": "0xbdc8be220ab8de38a0d8e850f7c13dba9329c2e1",
     "symbol": "ZEBE",
-    "decimals": 18
+    "decimals": 18,
+    "address": "0xbdc8be220ab8de38a0d8e850f7c13dba9329c2e1"
   },
   "0xc004e2318722ea2b15499d6375905d75ee5390b8": {
     "chain": "polygon",
     "symbol": "KOM",
     "decimals": 8,
-    "address": "0xc004e2318722ea2b15499d6375905d75ee5390b8",
-    "logoURI": "https://raw.githubusercontent.com/sushiswap/assets/master/blockchains/polygon/assets/0xC004e2318722EA2b15499D6375905d75Ee5390B8/logo.png"
+    "address": "0xc004e2318722ea2b15499d6375905d75ee5390b8"
   },
   "0xc03078c9f3feea627994695bee6cb1acb95916ce": {
     "chain": "polygon",
-    "address": "0xc03078c9f3feea627994695bee6cb1acb95916ce",
     "symbol": "JCWETH",
-    "decimals": 18
+    "decimals": 18,
+    "address": "0xc03078c9f3feea627994695bee6cb1acb95916ce"
   },
   "0xc2132d05d31c914a87c6611c10748aeb04b58e8f": {
     "chain": "polygon",
@@ -1669,8 +1539,7 @@
     "chain": "polygon",
     "symbol": "IDLE",
     "decimals": 18,
-    "address": "0xc25351811983818c9fe6d8c580531819c8ade90f",
-    "logoURI": "https://raw.githubusercontent.com/sushiswap/assets/master/blockchains/polygon/assets/0xC25351811983818c9Fe6D8c580531819c8ADe90f/logo.png"
+    "address": "0xc25351811983818c9fe6d8c580531819c8ade90f"
   },
   "0xc26d47d5c33ac71ac5cf9f776d63ba292a4f7842": {
     "chain": "polygon",
@@ -1686,150 +1555,135 @@
   },
   "0xc3c7d422809852031b44ab29eec9f1eff2a58756": {
     "chain": "polygon",
-    "address": "0xc3c7d422809852031b44ab29eec9f1eff2a58756",
     "symbol": "LDO",
-    "decimals": 18
+    "decimals": 18,
+    "address": "0xc3c7d422809852031b44ab29eec9f1eff2a58756"
   },
   "0xc3fdbadc7c795ef1d6ba111e06ff8f16a20ea539": {
     "chain": "polygon",
     "symbol": "ADDY",
     "decimals": 18,
-    "address": "0xc3fdbadc7c795ef1d6ba111e06ff8f16a20ea539",
-    "logoURI": "https://raw.githubusercontent.com/sushiswap/assets/master/blockchains/polygon/assets/0xc3FdbadC7c795EF1D6Ba111e06fF8F16A20Ea539/logo.png"
+    "address": "0xc3fdbadc7c795ef1d6ba111e06ff8f16a20ea539"
   },
   "0xc432e043d2ade1a89bc8a36a246e5c85e1901432": {
     "chain": "polygon",
-    "address": "0xc432e043d2ade1a89bc8a36a246e5c85e1901432",
     "symbol": "TESTT",
-    "decimals": 18
+    "decimals": 18,
+    "address": "0xc432e043d2ade1a89bc8a36a246e5c85e1901432"
   },
   "0xc48f61a288a08f1b80c2edd74652e1276b6a168c": {
     "chain": "polygon",
     "symbol": "GYSR",
     "decimals": 18,
-    "address": "0xc48f61a288a08f1b80c2edd74652e1276b6a168c",
-    "logoURI": "https://raw.githubusercontent.com/sushiswap/assets/master/blockchains/polygon/assets/0xc48F61a288A08F1B80c2edd74652e1276B6A168c/logo.png"
+    "address": "0xc48f61a288a08f1b80c2edd74652e1276b6a168c"
   },
   "0xc4ace9278e7e01755b670c0838c3106367639962": {
     "chain": "polygon",
     "symbol": "renFIL",
     "decimals": 18,
-    "address": "0xc4ace9278e7e01755b670c0838c3106367639962",
-    "logoURI": "https://raw.githubusercontent.com/sushiswap/assets/master/blockchains/polygon/assets/0xc4Ace9278e7E01755B670C0838c3106367639962/logo.png"
+    "address": "0xc4ace9278e7e01755b670c0838c3106367639962"
   },
   "0xc5102fe9359fd9a28f877a67e36b0f050d81a3cc": {
     "chain": "polygon",
     "symbol": "HOP",
     "decimals": 18,
-    "address": "0xc5102fe9359fd9a28f877a67e36b0f050d81a3cc",
-    "logoURI": "https://assets.coingecko.com/coins/images/25445/large/hop.png?1665541677"
+    "address": "0xc5102fe9359fd9a28f877a67e36b0f050d81a3cc"
   },
   "0xc5b57e9a1e7914fda753a88f24e5703e617ee50c": {
     "chain": "polygon",
     "symbol": "POP",
     "decimals": 18,
-    "address": "0xc5b57e9a1e7914fda753a88f24e5703e617ee50c",
-    "logoURI": "https://raw.githubusercontent.com/sushiswap/assets/master/blockchains/polygon/assets/0xC5B57e9a1E7914FDA753A88f24E5703e617Ee50c/logo.png"
+    "address": "0xc5b57e9a1e7914fda753a88f24e5703e617ee50c"
   },
   "0xc6548dfa65eec09470a9d28ca0c831cc067927e6": {
     "chain": "polygon",
-    "address": "0xc6548dfa65eec09470a9d28ca0c831cc067927e6",
     "symbol": "TEST3",
-    "decimals": 18
+    "decimals": 18,
+    "address": "0xc6548dfa65eec09470a9d28ca0c831cc067927e6"
   },
   "0xc68e83a305b0fad69e264a1769a0a070f190d2d6": {
     "chain": "polygon",
     "symbol": "ROLL",
     "decimals": 18,
-    "address": "0xc68e83a305b0fad69e264a1769a0a070f190d2d6",
-    "logoURI": "https://raw.githubusercontent.com/sushiswap/assets/master/blockchains/polygon/assets/0xC68e83a305b0FaD69E264A1769a0A070F190D2d6/logo.png"
+    "address": "0xc68e83a305b0fad69e264a1769a0a070f190d2d6"
   },
   "0xca955fa61a0506f7acf0c9b2e08c217a334d81c3": {
     "chain": "polygon",
-    "address": "0xca955fa61a0506f7acf0c9b2e08c217a334d81c3",
     "symbol": "NML",
-    "decimals": 18
+    "decimals": 18,
+    "address": "0xca955fa61a0506f7acf0c9b2e08c217a334d81c3"
   },
   "0xcaad1de0d7bfdc07f4d526d864250e82751723a8": {
     "chain": "polygon",
-    "address": "0xcaad1de0d7bfdc07f4d526d864250e82751723a8",
     "symbol": "LVWETH",
-    "decimals": 18
+    "decimals": 18,
+    "address": "0xcaad1de0d7bfdc07f4d526d864250e82751723a8"
   },
   "0xcd150b1f528f326f5194c012f32eb30135c7c2c9": {
     "chain": "polygon",
     "symbol": "OOKI",
     "decimals": 18,
-    "address": "0xcd150b1f528f326f5194c012f32eb30135c7c2c9",
-    "logoURI": "https://raw.githubusercontent.com/sushiswap/assets/master/blockchains/polygon/assets/0xCd150B1F528F326f5194c012f32Eb30135C7C2c9/logo.png"
+    "address": "0xcd150b1f528f326f5194c012f32eb30135c7c2c9"
   },
   "0xcd7361ac3307d1c5a46b63086a90742ff44c63b3": {
     "chain": "polygon",
     "symbol": "RAIDER",
     "decimals": 18,
-    "address": "0xcd7361ac3307d1c5a46b63086a90742ff44c63b3",
-    "logoURI": "https://raw.githubusercontent.com/sushiswap/assets/master/blockchains/polygon/assets/0xcd7361ac3307D1C5a46b63086a90742Ff44c63B3/logo.png"
+    "address": "0xcd7361ac3307d1c5a46b63086a90742ff44c63b3"
   },
   "0xce829a89d4a55a63418bcc43f00145adef0edb8e": {
     "chain": "polygon",
     "symbol": "renDOGE",
     "decimals": 8,
-    "address": "0xce829a89d4a55a63418bcc43f00145adef0edb8e",
-    "logoURI": "https://raw.githubusercontent.com/sushiswap/assets/master/blockchains/polygon/assets/0xcE829A89d4A55a63418bcC43F00145adef0eDB8E/logo.png"
+    "address": "0xce829a89d4a55a63418bcc43f00145adef0edb8e"
   },
   "0xd0258a3fd00f38aa8090dfee343f10a9d4d30d3f": {
     "chain": "polygon",
     "symbol": "VOXEL",
     "decimals": 18,
-    "address": "0xd0258a3fd00f38aa8090dfee343f10a9d4d30d3f",
-    "logoURI": "https://raw.githubusercontent.com/sushiswap/assets/master/blockchains/polygon/assets/0xd0258a3fD00f38aa8090dfee343f10A9D4d30D3F/logo.png"
+    "address": "0xd0258a3fd00f38aa8090dfee343f10a9d4d30d3f"
   },
   "0xd0660cd418a64a1d44e9214ad8e459324d8157f1": {
     "chain": "polygon",
     "symbol": "WOOFY",
     "decimals": 12,
-    "address": "0xd0660cd418a64a1d44e9214ad8e459324d8157f1",
-    "logoURI": "https://raw.githubusercontent.com/sushiswap/assets/master/blockchains/polygon/assets/0xD0660cD418a64a1d44E9214ad8e459324D8157f1/logo.png"
+    "address": "0xd0660cd418a64a1d44e9214ad8e459324d8157f1"
   },
   "0xd125443f38a69d776177c2b9c041f462936f8218": {
     "chain": "polygon",
     "symbol": "FBX",
     "decimals": 18,
-    "address": "0xd125443f38a69d776177c2b9c041f462936f8218",
-    "logoURI": "https://raw.githubusercontent.com/sushiswap/list/master/logos/token-logos/network/polygon/0xD125443F38A69d776177c2B9c041f462936F8218.jpg"
+    "address": "0xd125443f38a69d776177c2b9c041f462936f8218"
   },
   "0xd13cfd3133239a3c73a9e535a5c4dadee36b395c": {
     "chain": "polygon",
     "symbol": "VAI",
     "decimals": 18,
-    "address": "0xd13cfd3133239a3c73a9e535a5c4dadee36b395c",
-    "logoURI": "https://raw.githubusercontent.com/sushiswap/list/master/logos/token-logos/network/polygon/0xD13cfD3133239a3c73a9E535A5c4DadEE36b395c.jpg"
+    "address": "0xd13cfd3133239a3c73a9e535a5c4dadee36b395c"
   },
   "0xd1a718f77ab5d22e3955050658d7f65ae857a85e": {
     "chain": "polygon",
     "symbol": "fxSAIL",
     "decimals": 18,
-    "address": "0xd1a718f77ab5d22e3955050658d7f65ae857a85e",
-    "logoURI": "https://raw.githubusercontent.com/sushiswap/list/master/logos/token-logos/network/polygon/0xD1a718F77ab5d22E3955050658D7F65Ae857a85e.jpg"
+    "address": "0xd1a718f77ab5d22e3955050658d7f65ae857a85e"
   },
   "0xd3690ad3f9a44c6648933c89b8eec3c3a6a48bee": {
     "chain": "polygon",
-    "address": "0xd3690ad3f9a44c6648933c89b8eec3c3a6a48bee",
     "symbol": "FABTC",
-    "decimals": 18
+    "decimals": 18,
+    "address": "0xd3690ad3f9a44c6648933c89b8eec3c3a6a48bee"
   },
   "0xd41a14597e9993a1f5b90d688f654324d6880c69": {
     "chain": "polygon",
-    "address": "0xd41a14597e9993a1f5b90d688f654324d6880c69",
     "symbol": "FIRED",
-    "decimals": 18
+    "decimals": 18,
+    "address": "0xd41a14597e9993a1f5b90d688f654324d6880c69"
   },
   "0xd5d84e75f48e75f01fb2eb6dfd8ea148ee3d0feb": {
     "chain": "polygon",
     "symbol": "PGOV",
     "decimals": 18,
-    "address": "0xd5d84e75f48e75f01fb2eb6dfd8ea148ee3d0feb",
-    "logoURI": "https://raw.githubusercontent.com/sushiswap/assets/master/blockchains/polygon/assets/0xd5d84e75f48E75f01fb2EB6dFD8eA148eE3d0FEb/logo.png"
+    "address": "0xd5d84e75f48e75f01fb2eb6dfd8ea148ee3d0feb"
   },
   "0xd6df932a45c0f255f85145f286ea0b292b21c90b": {
     "chain": "polygon",
@@ -1847,41 +1701,37 @@
     "chain": "polygon",
     "symbol": "NCT",
     "decimals": 18,
-    "address": "0xd838290e877e0188a4a44700463419ed96c16107",
-    "logoURI": "https://raw.githubusercontent.com/sushiswap/assets/master/blockchains/polygon/assets/0xD838290e877E0188a4A44700463419ED96c16107/logo.png"
+    "address": "0xd838290e877e0188a4a44700463419ed96c16107"
   },
   "0xd85d1e945766fea5eda9103f918bd915fbca63e6": {
     "chain": "polygon",
     "symbol": "CEL",
     "decimals": 4,
-    "address": "0xd85d1e945766fea5eda9103f918bd915fbca63e6",
-    "logoURI": "https://raw.githubusercontent.com/sushiswap/list/master/logos/token-logos/token/cel.jpg"
+    "address": "0xd85d1e945766fea5eda9103f918bd915fbca63e6"
   },
   "0xd86b5923f3ad7b585ed81b448170ae026c65ae9a": {
     "chain": "polygon",
     "symbol": "IRON",
     "decimals": 18,
-    "address": "0xd86b5923f3ad7b585ed81b448170ae026c65ae9a",
-    "logoURI": "https://raw.githubusercontent.com/sushiswap/assets/master/blockchains/polygon/assets/0xD86b5923F3AD7b585eD81B448170ae026c65ae9a/logo.png"
+    "address": "0xd86b5923f3ad7b585ed81b448170ae026c65ae9a"
   },
   "0xd8ca34fd379d9ca3c6ee3b3905678320f5b45195": {
     "chain": "polygon",
     "symbol": "gOHM",
     "decimals": 18,
-    "address": "0xd8ca34fd379d9ca3c6ee3b3905678320f5b45195",
-    "logoURI": "https://raw.githubusercontent.com/sushiswap/assets/master/blockchains/polygon/assets/0xd8cA34fd379d9ca3C6Ee3b3905678320F5b45195/logo.png"
+    "address": "0xd8ca34fd379d9ca3c6ee3b3905678320f5b45195"
   },
   "0xd9f037160d31d0f9d9dd2765babc3976a0c129c9": {
     "chain": "polygon",
-    "address": "0xd9f037160d31d0f9d9dd2765babc3976a0c129c9",
     "symbol": "TEST1",
-    "decimals": 18
+    "decimals": 18,
+    "address": "0xd9f037160d31d0f9d9dd2765babc3976a0c129c9"
   },
   "0xda3a17c8ca5d23d40d59aef4e0f9c4d9da353e76": {
     "chain": "polygon",
-    "address": "0xda3a17c8ca5d23d40d59aef4e0f9c4d9da353e76",
     "symbol": "XCO-f",
-    "decimals": 18
+    "decimals": 18,
+    "address": "0xda3a17c8ca5d23d40d59aef4e0f9c4d9da353e76"
   },
   "0xda537104d6a5edd53c6fbba9a898708e465260b6": {
     "chain": "polygon",
@@ -1893,29 +1743,25 @@
     "chain": "polygon",
     "symbol": "NCR",
     "decimals": 18,
-    "address": "0xda6f726e2088f129d3ecb2257206adf7d8537ba5",
-    "logoURI": "https://raw.githubusercontent.com/sushiswap/list/master/logos/token-logos/network/ethereum/0xDA6f726E2088F129D3Ecb2257206AdF7D8537Ba5.jpg"
+    "address": "0xda6f726e2088f129d3ecb2257206adf7d8537ba5"
   },
   "0xdb725f82818de83e99f1dac22a9b5b51d3d04dd4": {
     "chain": "polygon",
     "symbol": "GET",
     "decimals": 18,
-    "address": "0xdb725f82818de83e99f1dac22a9b5b51d3d04dd4",
-    "logoURI": "https://raw.githubusercontent.com/sushiswap/assets/master/blockchains/polygon/assets/0xdb725f82818De83e99F1dAc22A9b5B51d3d04DD4/logo.png"
+    "address": "0xdb725f82818de83e99f1dac22a9b5b51d3d04dd4"
   },
   "0xdb7cb471dd0b49b29cab4a1c14d070f27216a0ab": {
     "chain": "polygon",
     "symbol": "BANK",
     "decimals": 18,
-    "address": "0xdb7cb471dd0b49b29cab4a1c14d070f27216a0ab",
-    "logoURI": "https://raw.githubusercontent.com/sushiswap/list/master/logos/token-logos/network/polygon/0xDB7Cb471dd0b49b29CAB4a1C14d070f27216a0Ab.jpg"
+    "address": "0xdb7cb471dd0b49b29cab4a1c14d070f27216a0ab"
   },
   "0xdbf31df14b66535af65aac99c32e9ea844e14501": {
     "chain": "polygon",
     "symbol": "renBTC",
     "decimals": 8,
-    "address": "0xdbf31df14b66535af65aac99c32e9ea844e14501",
-    "logoURI": "https://raw.githubusercontent.com/sushiswap/assets/master/blockchains/polygon/assets/0xDBf31dF14B66535aF65AaC99C32e9eA844e14501/logo.png"
+    "address": "0xdbf31df14b66535af65aac99c32e9ea844e14501"
   },
   "0xdc3326e71d45186f113a2f448984ca0e8d201995": {
     "chain": "polygon",
@@ -1927,182 +1773,169 @@
     "chain": "polygon",
     "symbol": "POLAR",
     "decimals": 18,
-    "address": "0xdc3acb92712d1d44ffe15d3a8d66d9d18c81e038",
-    "logoURI": "https://raw.githubusercontent.com/sushiswap/assets/master/blockchains/polygon/assets/0xdC3aCB92712D1D44fFE15d3A8D66d9d18C81e038/logo.png"
+    "address": "0xdc3acb92712d1d44ffe15d3a8d66d9d18c81e038"
   },
   "0xdea396670f08976a5e9c656cf414a8accd68cd71": {
     "chain": "polygon",
-    "address": "0xdea396670f08976a5e9c656cf414a8accd68cd71",
     "symbol": "WT1",
-    "decimals": 18
+    "decimals": 18,
+    "address": "0xdea396670f08976a5e9c656cf414a8accd68cd71"
   },
   "0xdef1fac7bf08f173d286bbbdcbeeade695129840": {
     "chain": "polygon",
     "symbol": "CERBY",
     "decimals": 18,
-    "address": "0xdef1fac7bf08f173d286bbbdcbeeade695129840",
-    "logoURI": "https://raw.githubusercontent.com/sushiswap/assets/master/blockchains/polygon/assets/0xdef1fac7Bf08f173D286BbBDcBeeADe695129840/logo.png"
+    "address": "0xdef1fac7bf08f173d286bbbdcbeeade695129840"
   },
   "0xdf7837de1f2fa4631d716cf2502f8b230f1dcc32": {
     "chain": "polygon",
     "symbol": "TEL",
     "decimals": 2,
-    "address": "0xdf7837de1f2fa4631d716cf2502f8b230f1dcc32",
-    "logoURI": "https://raw.githubusercontent.com/sushiswap/assets/master/blockchains/polygon/assets/0xdF7837DE1F2Fa4631D716CF2502f8b230F1dcc32/logo.png"
+    "address": "0xdf7837de1f2fa4631d716cf2502f8b230f1dcc32"
   },
   "0xdfbe252c548a0c43da26ad3a50799781df64924d": {
     "chain": "polygon",
-    "address": "0xdfbe252c548a0c43da26ad3a50799781df64924d",
     "symbol": "DWETH",
-    "decimals": 18
+    "decimals": 18,
+    "address": "0xdfbe252c548a0c43da26ad3a50799781df64924d"
   },
   "0xe0b52e49357fd4daf2c15e02058dce6bc0057db4": {
     "chain": "polygon",
-    "address": "0xe0b52e49357fd4daf2c15e02058dce6bc0057db4",
     "symbol": "agEUR",
-    "decimals": 18
+    "decimals": 18,
+    "address": "0xe0b52e49357fd4daf2c15e02058dce6bc0057db4"
   },
   "0xe0ce60af0850bf54072635e66e79df17082a1109": {
     "chain": "polygon",
     "symbol": "Propel",
     "decimals": 18,
-    "address": "0xe0ce60af0850bf54072635e66e79df17082a1109",
-    "logoURI": "https://raw.githubusercontent.com/sushiswap/assets/master/blockchains/polygon/assets/0xe0ce60af0850bf54072635e66e79df17082a1109/logo.png"
+    "address": "0xe0ce60af0850bf54072635e66e79df17082a1109"
   },
   "0xe111178a87a3bff0c8d18decba5798827539ae99": {
     "chain": "polygon",
-    "address": "0xe111178a87a3bff0c8d18decba5798827539ae99",
     "symbol": "EURS",
-    "decimals": 2
+    "decimals": 2,
+    "address": "0xe111178a87a3bff0c8d18decba5798827539ae99"
   },
   "0xe20b9e246db5a0d21bf9209e4858bc9a3ff7a034": {
     "chain": "polygon",
     "symbol": "wBAN",
     "decimals": 18,
-    "address": "0xe20b9e246db5a0d21bf9209e4858bc9a3ff7a034",
-    "logoURI": "https://raw.githubusercontent.com/sushiswap/assets/master/blockchains/polygon/assets/0xe20B9e246db5a0d21BF9209E4858Bc9A3ff7A034/logo.png"
+    "address": "0xe20b9e246db5a0d21bf9209e4858bc9a3ff7a034"
   },
   "0xe3c16828ce661699413002f320909a49f20b982a": {
     "chain": "polygon",
-    "address": "0xe3c16828ce661699413002f320909a49f20b982a",
     "symbol": "ELEF",
-    "decimals": 18
+    "decimals": 18,
+    "address": "0xe3c16828ce661699413002f320909a49f20b982a"
   },
   "0xe4ae315b3482ad200959173fd326783e4cf9338c": {
     "chain": "polygon",
-    "address": "0xe4ae315b3482ad200959173fd326783e4cf9338c",
     "symbol": "WIETH",
-    "decimals": 18
+    "decimals": 18,
+    "address": "0xe4ae315b3482ad200959173fd326783e4cf9338c"
   },
   "0xe4c293403fa3fc20853b22c8fd766266d44f83ef": {
     "chain": "polygon",
-    "address": "0xe4c293403fa3fc20853b22c8fd766266d44f83ef",
     "symbol": "DWETH",
-    "decimals": 18
+    "decimals": 18,
+    "address": "0xe4c293403fa3fc20853b22c8fd766266d44f83ef"
   },
   "0xe6046210d023a1d52014b585ed29840f815cdc5b": {
     "chain": "polygon",
-    "address": "0xe6046210d023a1d52014b585ed29840f815cdc5b",
     "symbol": "jWETH",
-    "decimals": 18
+    "decimals": 18,
+    "address": "0xe6046210d023a1d52014b585ed29840f815cdc5b"
   },
   "0xe61aa4e693d3ef8ebc8cd901df2fe1f0a6e2ce78": {
     "chain": "polygon",
-    "address": "0xe61aa4e693d3ef8ebc8cd901df2fe1f0a6e2ce78",
     "symbol": "MSTR",
-    "decimals": 18
+    "decimals": 18,
+    "address": "0xe61aa4e693d3ef8ebc8cd901df2fe1f0a6e2ce78"
   },
   "0xe7804d91dfcde7f776c90043e03eaa6df87e6395": {
     "chain": "polygon",
     "symbol": "DFX",
     "decimals": 18,
-    "address": "0xe7804d91dfcde7f776c90043e03eaa6df87e6395",
-    "logoURI": "https://raw.githubusercontent.com/sushiswap/assets/master/blockchains/polygon/assets/0xE7804D91dfCDE7F776c90043E03eAa6Df87E6395/logo.png"
+    "address": "0xe7804d91dfcde7f776c90043e03eaa6df87e6395"
   },
   "0xe7a24ef0c5e95ffb0f6684b813a78f2a3ad7d171": {
     "chain": "polygon",
-    "address": "0xe7a24ef0c5e95ffb0f6684b813a78f2a3ad7d171",
     "symbol": "am3CRV",
-    "decimals": 18
+    "decimals": 18,
+    "address": "0xe7a24ef0c5e95ffb0f6684b813a78f2a3ad7d171"
   },
   "0xe8377a076adabb3f9838afb77bee96eac101ffb1": {
     "chain": "polygon",
     "symbol": "MSU",
     "decimals": 18,
-    "address": "0xe8377a076adabb3f9838afb77bee96eac101ffb1",
-    "logoURI": "https://raw.githubusercontent.com/sushiswap/assets/master/blockchains/polygon/assets/0xe8377A076adAbb3F9838afB77Bee96Eac101ffB1/logo.png"
+    "address": "0xe8377a076adabb3f9838afb77bee96eac101ffb1"
   },
   "0xeb45921fedadf41df0bfcf5c33453acedda32441": {
     "chain": "polygon",
     "symbol": "pZUG",
     "decimals": 18,
-    "address": "0xeb45921fedadf41df0bfcf5c33453acedda32441",
-    "logoURI": "https://raw.githubusercontent.com/sushiswap/assets/master/blockchains/polygon/assets/0xeb45921FEDaDF41dF0BfCF5c33453aCedDA32441/logo.png"
+    "address": "0xeb45921fedadf41df0bfcf5c33453acedda32441"
   },
   "0xedc79782f42fd1ba3f2faf9570866ea83ed93413": {
     "chain": "polygon",
-    "address": "0xedc79782f42fd1ba3f2faf9570866ea83ed93413",
     "symbol": "KLVWETH",
-    "decimals": 18
+    "decimals": 18,
+    "address": "0xedc79782f42fd1ba3f2faf9570866ea83ed93413"
   },
   "0xede1b77c0ccc45bfa949636757cd2ca7ef30137f": {
     "chain": "polygon",
     "symbol": "wFIL",
     "decimals": 18,
-    "address": "0xede1b77c0ccc45bfa949636757cd2ca7ef30137f",
-    "logoURI": "https://raw.githubusercontent.com/sushiswap/list/master/logos/token-logos/token/fil.jpg"
+    "address": "0xede1b77c0ccc45bfa949636757cd2ca7ef30137f"
   },
   "0xee800b277a96b0f490a1a732e1d6395fad960a26": {
     "chain": "polygon",
     "symbol": "ARPA",
     "decimals": 18,
-    "address": "0xee800b277a96b0f490a1a732e1d6395fad960a26",
-    "logoURI": "https://raw.githubusercontent.com/sushiswap/assets/master/blockchains/polygon/assets/0xEE800B277A96B0f490a1A732e1D6395FAD960A26/logo.png"
+    "address": "0xee800b277a96b0f490a1a732e1d6395fad960a26"
   },
   "0xf08b776b6d85866305866601b47bff154d440462": {
     "chain": "polygon",
-    "address": "0xf08b776b6d85866305866601b47bff154d440462",
     "symbol": "COMPASS",
-    "decimals": 18
+    "decimals": 18,
+    "address": "0xf08b776b6d85866305866601b47bff154d440462"
   },
   "0xf13c42b049aef131cd47c35461ae4ed950b23bb0": {
     "chain": "polygon",
-    "address": "0xf13c42b049aef131cd47c35461ae4ed950b23bb0",
     "symbol": "CC",
-    "decimals": 18
+    "decimals": 18,
+    "address": "0xf13c42b049aef131cd47c35461ae4ed950b23bb0"
   },
   "0xf148fee39a4b4b22f2b11f1f36585f8ec0f57e70": {
     "chain": "polygon",
-    "address": "0xf148fee39a4b4b22f2b11f1f36585f8ec0f57e70",
     "symbol": "WIETH1",
-    "decimals": 18
+    "decimals": 18,
+    "address": "0xf148fee39a4b4b22f2b11f1f36585f8ec0f57e70"
   },
   "0xf155ccf956a677572c8d24e06ef78ba6d704f8f9": {
     "chain": "polygon",
-    "address": "0xf155ccf956a677572c8d24e06ef78ba6d704f8f9",
     "symbol": "DWSTETH",
-    "decimals": 18
+    "decimals": 18,
+    "address": "0xf155ccf956a677572c8d24e06ef78ba6d704f8f9"
   },
   "0xf328b73b6c685831f238c30a23fc19140cb4d8fc": {
     "chain": "polygon",
     "symbol": "ACX",
     "decimals": 18,
-    "address": "0xf328b73b6c685831f238c30a23fc19140cb4d8fc",
-    "logoURI": "https://raw.githubusercontent.com/sushiswap/list/master/logos/token-logos/network/polygon/0xF328b73B6c685831F238c30a23Fc19140CB4D8FC.jpg"
+    "address": "0xf328b73b6c685831f238c30a23fc19140cb4d8fc"
   },
   "0xf4b0903774532aee5ee567c02aab681a81539e92": {
     "chain": "polygon",
     "symbol": "GAJ",
     "decimals": 18,
-    "address": "0xf4b0903774532aee5ee567c02aab681a81539e92",
-    "logoURI": "https://raw.githubusercontent.com/sushiswap/assets/master/blockchains/polygon/assets/0xF4B0903774532AEe5ee567C02aaB681a81539e92/logo.png"
+    "address": "0xf4b0903774532aee5ee567c02aab681a81539e92"
   },
   "0xf501dd45a1198c2e1b5aef5314a68b9006d842e0": {
     "chain": "polygon",
     "symbol": "MTA",
     "decimals": 18,
-    "address": "0xf501dd45a1198c2e1b5aef5314a68b9006d842e0",
-    "logoURI": "https://raw.githubusercontent.com/sushiswap/assets/master/blockchains/polygon/assets/0xF501dd45a1198C2E1b5aEF5314A68B9006D842E0/logo.png"
+    "address": "0xf501dd45a1198c2e1b5aef5314a68b9006d842e0"
   },
   "0xf50d05a1402d0adafa880d36050736f9f6ee7dee": {
     "chain": "polygon",
@@ -2114,8 +1947,7 @@
     "chain": "polygon",
     "symbol": "SPADE",
     "decimals": 18,
-    "address": "0xf5ea626334037a2cf0155d49ea6462fddc6eff19",
-    "logoURI": "https://raw.githubusercontent.com/sushiswap/assets/master/blockchains/polygon/assets/0xf5EA626334037a2cf0155D49eA6462fDdC6Eff19/logo.png"
+    "address": "0xf5ea626334037a2cf0155d49ea6462fddc6eff19"
   },
   "0xf81b4bec6ca8f9fe7be01ca734f55b2b6e03a7a0": {
     "chain": "polygon",
@@ -2125,42 +1957,38 @@
   },
   "0xfa2bd259fe9af3edd69432361d4bd98a6cbdeb19": {
     "chain": "polygon",
-    "address": "0xfa2bd259fe9af3edd69432361d4bd98a6cbdeb19",
     "symbol": "bTEST",
-    "decimals": 18
+    "decimals": 18,
+    "address": "0xfa2bd259fe9af3edd69432361d4bd98a6cbdeb19"
   },
   "0xfa3872970c1952741c518b33f1dce815f55dc00a": {
     "chain": "polygon",
     "symbol": "WARU",
     "decimals": 18,
-    "address": "0xfa3872970c1952741c518b33f1dce815f55dc00a",
-    "logoURI": "https://raw.githubusercontent.com/sushiswap/list/master/logos/token-logos/network/polygon/0xFA3872970c1952741C518B33f1DcE815f55Dc00A.jpg"
+    "address": "0xfa3872970c1952741c518b33f1dce815f55dc00a"
   },
   "0xfa68fb4628dff1028cfec22b4162fccd0d45efb6": {
     "chain": "polygon",
-    "address": "0xfa68fb4628dff1028cfec22b4162fccd0d45efb6",
     "symbol": "MaticX",
-    "decimals": 18
+    "decimals": 18,
+    "address": "0xfa68fb4628dff1028cfec22b4162fccd0d45efb6"
   },
   "0xfbdd194376de19a88118e84e279b977f165d01b8": {
     "chain": "polygon",
     "symbol": "BIFI",
     "decimals": 18,
-    "address": "0xfbdd194376de19a88118e84e279b977f165d01b8",
-    "logoURI": "https://raw.githubusercontent.com/sushiswap/assets/master/blockchains/polygon/assets/0xFbdd194376de19a88118e84E279b977f165d01b8/logo.png"
+    "address": "0xfbdd194376de19a88118e84e279b977f165d01b8"
   },
   "0xfe712251173a2cd5f5be2b46bb528328ea3565e1": {
     "chain": "polygon",
     "symbol": "MVI",
     "decimals": 18,
-    "address": "0xfe712251173a2cd5f5be2b46bb528328ea3565e1",
-    "logoURI": "https://raw.githubusercontent.com/sushiswap/assets/master/blockchains/polygon/assets/0xfe712251173A2cd5F5bE2B46Bb528328EA3565E1/logo.png"
+    "address": "0xfe712251173a2cd5f5be2b46bb528328ea3565e1"
   },
   "0xff88434e29d1e2333ad6baa08d358b436196da6b": {
     "chain": "polygon",
     "symbol": "BOR",
     "decimals": 18,
-    "address": "0xff88434e29d1e2333ad6baa08d358b436196da6b",
-    "logoURI": "https://raw.githubusercontent.com/sushiswap/assets/master/blockchains/polygon/assets/0xff88434E29d1E2333aD6baa08D358b436196da6b/logo.png"
+    "address": "0xff88434e29d1e2333ad6baa08d358b436196da6b"
   }
 }
