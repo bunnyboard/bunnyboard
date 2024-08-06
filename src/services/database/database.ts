@@ -20,6 +20,10 @@ export default class DatabaseService implements IDatabaseService {
 
   constructor() {}
 
+  public async isConnected(): Promise<boolean> {
+    return this._connected;
+  }
+
   public async connect(url: string, name: string) {
     if (!this._connected) {
       this._client = new MongoClient(url);

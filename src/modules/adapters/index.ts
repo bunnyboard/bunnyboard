@@ -36,6 +36,8 @@ import SonneAdapter from './sonne/sonne';
 import SparkAdapter from './spark/spark';
 import SushiAdapter from './sushi/sushi';
 import TectonicAdapter from './tectonic/tectonic';
+import Uniswapv2Adapter from './uniswap/uniswapv2';
+import Uniswapv3Adapter from './uniswap/uniswapv3';
 import UwulendAdapter from './uwulend/uwulend';
 import VenusAdapter from './venus/venus';
 import ZerolendAdapter from './zerolend/zerolend';
@@ -92,5 +94,7 @@ export function getProtocolAdapters(
     curvelend: new CurvelendAdapter(services, storages, ProtocolConfigs.curvelend),
     polter: new Aavev2Adapter(services, storages, ProtocolConfigs.polter),
     // ethereum: new EthereumAdapter(services, storages, ProtocolConfigs.ethereum),
+    uniswapv2: new Uniswapv2Adapter(services, storages, ProtocolConfigs.uniswapv2),
+    uniswapv3: new Uniswapv3Adapter(services, storages, ProtocolConfigs.uniswapv3),
   };
 }

@@ -41,6 +41,27 @@ export default class BlockchainService extends CachingService implements IBlockc
     });
   }
 
+  public async getLastestBlockNumber(chain: string): Promise<number> {
+    const client = this.getPublicClient(chain);
+    return Number(await client.getBlockNumber());
+  }
+
+  public async getBlock(chain: string, number: number): Promise<any> {
+    const cachingKey = `blockdata-${chain}-${number}`;
+    const cachingData = await this.getCachingData(cachingKey);
+    if (cachingData) {
+      return cachingData;
+    }
+
+    const client = this.getPublicClient(chain);
+    const block = await client.getBlock({
+      blockNumber: BigInt(number),
+    });
+    await this.setCachingData(cachingKey, block);
+
+    return block;
+  }
+
   public async getTokenInfo(options: GetTokenOptions): Promise<Token | null> {
     const { chain, onchain } = options;
     const address = normalizeAddress(options.address);

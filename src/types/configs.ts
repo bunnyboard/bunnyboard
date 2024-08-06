@@ -43,6 +43,9 @@ export interface DatabaseCollectionConfig {
   // raw contract event logs
   cachingContractLogs: MongoCollectionConfig;
 
+  // metadata
+  metadataDexLiquidityPools: MongoCollectionConfig;
+
   crossLendingReserveStates: MongoCollectionConfig;
   crossLendingReserveSnapshots: MongoCollectionConfig;
 
@@ -63,6 +66,10 @@ export interface DatabaseCollectionConfig {
   // for flashloan
   flashloanDataStates: MongoCollectionConfig;
   flashloanDataSnapshots: MongoCollectionConfig;
+
+  // for dexes
+  dexLiquidityPoolStates: MongoCollectionConfig;
+  dexLiquidityPoolSnapshots: MongoCollectionConfig;
 }
 
 export interface EnvConfig {
@@ -188,6 +195,29 @@ export type FlashloanVerion = (typeof AllFlashloanVersions)[number];
 
 export interface FlashloanConfig extends MetricConfig {
   version: FlashloanVerion;
+}
+
+export const DexVersions = {
+  // https://docs.uniswap.org/contracts/v2/overview
+  univ2: 'univ2',
+
+  // https://docs.uniswap.org/contracts/v3/overview
+  univ3: 'univ3',
+
+  // https://docs.balancer.fi/concepts/vault/
+  balv2: 'balv2',
+};
+const AllDexVersions = Object.values(DexVersions);
+export type DexVersion = (typeof AllDexVersions)[number];
+
+export interface DexConfig extends MetricConfig {
+  version: DexVersion;
+
+  // if the dex fee is 0.3%, feeRate should be '0.003'
+  feeRate?: string;
+
+  // block number where factory contract where deployed
+  birthblock?: number;
 }
 
 export interface ProtocolConfig {

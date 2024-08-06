@@ -5,7 +5,7 @@ import ProtocolAdapter from '../adapter';
 import BalancerFlashloanAdapter from './flashloan';
 
 export default class BalancerAdapter extends ProtocolAdapter {
-  public readonly name: string = 'adapter.balancer';
+  public readonly name: string = 'adapter.balancer ⚖';
 
   private flashloan: BalancerFlashloanAdapter;
 

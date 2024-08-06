@@ -1,4 +1,11 @@
 {
+  "0x01c3d9cbcf40482ba0d5206f63e3f04ef9e134d9": {
+    "chain": "fantom",
+    "symbol": "SFI",
+    "decimals": 18,
+    "address": "0x01c3d9cbcf40482ba0d5206f63e3f04ef9e134d9",
+    "logoURI": "https://raw.githubusercontent.com/sushiswap/list/master/logos/token-logos/token/sfi.jpg"
+  },
   "0x01e77288b38b416f972428d562454fb329350bac": {
     "chain": "fantom",
     "symbol": "MMY",
@@ -17,17 +24,45 @@
     "decimals": 6,
     "address": "0x049d68029688eabf473097a2fc38ef61633a3c7a"
   },
+  "0x05e31a691405d06708a355c029599c12d5da8b28": {
+    "chain": "fantom",
+    "symbol": "fSONIC",
+    "decimals": 18,
+    "address": "0x05e31a691405d06708a355c029599c12d5da8b28",
+    "logoURI": "https://raw.githubusercontent.com/sushiswap/list/master/logos/token-logos/network/fantom/0x05e31a691405d06708A355C029599c12d5da8b28.jpg"
+  },
+  "0x078eef5a2fb533e1a4d487ef64b27df113d12c32": {
+    "chain": "fantom",
+    "symbol": "fBAND",
+    "decimals": 18,
+    "address": "0x078eef5a2fb533e1a4d487ef64b27df113d12c32",
+    "logoURI": "https://raw.githubusercontent.com/sushiswap/list/master/logos/token-logos/token/band.jpg"
+  },
   "0x0dec85e74a92c52b7f708c4b10207d9560cefaf0": {
     "chain": "fantom",
     "address": "0x0dec85e74a92c52b7f708c4b10207d9560cefaf0",
     "symbol": "yvWFTM",
     "decimals": 18
   },
+  "0x0e1694483ebb3b74d3054e383840c6cf011e518e": {
+    "chain": "fantom",
+    "symbol": "sUSD",
+    "decimals": 18,
+    "address": "0x0e1694483ebb3b74d3054e383840c6cf011e518e",
+    "logoURI": "https://raw.githubusercontent.com/sushiswap/list/master/logos/token-logos/token/susd.jpg"
+  },
   "0x10010078a54396f62c96df8532dc2b4847d47ed3": {
     "chain": "fantom",
     "symbol": "HND",
     "decimals": 18,
     "address": "0x10010078a54396f62c96df8532dc2b4847d47ed3"
+  },
+  "0x1b6382dbdea11d97f24495c9a90b7c88469134a4": {
+    "chain": "fantom",
+    "symbol": "axlUSDC",
+    "decimals": 6,
+    "address": "0x1b6382dbdea11d97f24495c9a90b7c88469134a4",
+    "logoURI": "https://raw.githubusercontent.com/sushiswap/list/master/logos/token-logos/network/fantom/0x1B6382DBDEa11d97f24495C9A90b7c88469134a4.jpg"
   },
   "0x1e4f97b9f9f913c46f1632781732927b9019c68b": {
     "chain": "fantom",
@@ -47,11 +82,60 @@
     "decimals": 18,
     "address": "0x21be370d5312f44cb42ce377bc9b8a0cef1a4c83"
   },
+  "0x2202c52c9076a49400aaccf159e1956269eaa673": {
+    "chain": "fantom",
+    "symbol": "fGOLD",
+    "decimals": 18,
+    "address": "0x2202c52c9076a49400aaccf159e1956269eaa673",
+    "logoURI": "https://raw.githubusercontent.com/sushiswap/list/master/logos/token-logos/token/fgold.jpg"
+  },
+  "0x24d39324cf3697fd9fd78714e8cdeb5df66e3dcd": {
+    "chain": "fantom",
+    "symbol": "fCNY",
+    "decimals": 18,
+    "address": "0x24d39324cf3697fd9fd78714e8cdeb5df66e3dcd",
+    "logoURI": "https://raw.githubusercontent.com/sushiswap/list/master/logos/token-logos/token/fcny.jpg"
+  },
+  "0x27f26f00e1605903645bbabc0a73e35027dccd45": {
+    "chain": "fantom",
+    "symbol": "fBNB",
+    "decimals": 18,
+    "address": "0x27f26f00e1605903645bbabc0a73e35027dccd45",
+    "logoURI": "https://raw.githubusercontent.com/sushiswap/list/master/logos/token-logos/token/bnb.jpg"
+  },
+  "0x28a92dde19d9989f39a49905d7c9c2fac7799bdf": {
+    "chain": "fantom",
+    "symbol": "USDC",
+    "decimals": 6,
+    "address": "0x28a92dde19d9989f39a49905d7c9c2fac7799bdf",
+    "logoURI": "https://raw.githubusercontent.com/sushiswap/list/master/logos/token-logos/network/fantom/0x28a92dde19D9989F39A49905d7C9C2FAc7799bDf.jpg"
+  },
   "0x29b0da86e484e1c0029b56e817912d778ac0ec69": {
     "chain": "fantom",
     "symbol": "YFI",
     "decimals": 18,
     "address": "0x29b0da86e484e1c0029b56e817912d778ac0ec69"
+  },
+  "0x2a5062d22adcfaafbd5c541d4da82e4b450d4212": {
+    "chain": "fantom",
+    "symbol": "KP3R",
+    "decimals": 18,
+    "address": "0x2a5062d22adcfaafbd5c541d4da82e4b450d4212",
+    "logoURI": "https://raw.githubusercontent.com/sushiswap/list/master/logos/token-logos/token/kp3r.jpg"
+  },
+  "0x2b9c073ec670b70f417bbaf3bbb052aa563a0a23": {
+    "chain": "fantom",
+    "symbol": "fKRW",
+    "decimals": 18,
+    "address": "0x2b9c073ec670b70f417bbaf3bbb052aa563a0a23",
+    "logoURI": "https://raw.githubusercontent.com/sushiswap/list/master/logos/token-logos/token/fkrw.jpg"
+  },
+  "0x2f6f07cdcf3588944bf4c42ac74ff24bf56e7590": {
+    "chain": "fantom",
+    "symbol": "STG",
+    "decimals": 18,
+    "address": "0x2f6f07cdcf3588944bf4c42ac74ff24bf56e7590",
+    "logoURI": "https://raw.githubusercontent.com/sushiswap/list/master/logos/token-logos/network/fantom/0x2F6F07CDcf3588944Bf4C42aC74ff24bF56e7590.jpg"
   },
   "0x3028b4395f98777123c7da327010c40f3c7cc4ef": {
     "chain": "fantom",
@@ -65,11 +149,39 @@
     "decimals": 18,
     "address": "0x3129662808bec728a27ab6a6b9afd3cbaca8a43c"
   },
+  "0x31a47b49b4dbdc54d403b8c4880ac9bb1a9ebae8": {
+    "chain": "fantom",
+    "symbol": "POOCH",
+    "decimals": 18,
+    "address": "0x31a47b49b4dbdc54d403b8c4880ac9bb1a9ebae8",
+    "logoURI": "https://raw.githubusercontent.com/sushiswap/assets/master/blockchains/fantom/assets/0x31A47B49b4DBDC54d403b8c4880Ac9BB1A9EbAE8/logo.png"
+  },
   "0x321162cd933e2be498cd2267a90534a804051b11": {
     "chain": "fantom",
     "symbol": "WBTC",
     "decimals": 8,
     "address": "0x321162cd933e2be498cd2267a90534a804051b11"
+  },
+  "0x3b74389bc23057325bab96523dbec8c445f55799": {
+    "chain": "fantom",
+    "symbol": "fJPY",
+    "decimals": 18,
+    "address": "0x3b74389bc23057325bab96523dbec8c445f55799",
+    "logoURI": "https://raw.githubusercontent.com/sushiswap/list/master/logos/token-logos/token/fjpy.jpg"
+  },
+  "0x448d59b4302ab5d2dadf9611bed9457491926c8e": {
+    "chain": "fantom",
+    "symbol": "axlWBTC",
+    "decimals": 8,
+    "address": "0x448d59b4302ab5d2dadf9611bed9457491926c8e",
+    "logoURI": "https://raw.githubusercontent.com/sushiswap/list/master/logos/token-logos/network/fantom/0x448d59B4302aB5d2dadf9611bED9457491926c8e.jpg"
+  },
+  "0x44b26e839eb3572c5e959f994804a5de66600349": {
+    "chain": "fantom",
+    "symbol": "HEGIC",
+    "decimals": 18,
+    "address": "0x44b26e839eb3572c5e959f994804a5de66600349",
+    "logoURI": "https://raw.githubusercontent.com/sushiswap/list/master/logos/token-logos/token/hegic.jpg"
   },
   "0x468003b688943977e6130f4f68f23aad939a1040": {
     "chain": "fantom",
@@ -77,11 +189,53 @@
     "decimals": 18,
     "address": "0x468003b688943977e6130f4f68f23aad939a1040"
   },
+  "0x46e7628e8b4350b2716ab470ee0ba1fa9e76c6c5": {
+    "chain": "fantom",
+    "symbol": "BAND",
+    "decimals": 18,
+    "address": "0x46e7628e8b4350b2716ab470ee0ba1fa9e76c6c5",
+    "logoURI": "https://raw.githubusercontent.com/sushiswap/list/master/logos/token-logos/token/band.jpg"
+  },
   "0x56ee926bd8c72b2d5fa1af4d9e4cbb515a1e3adc": {
     "chain": "fantom",
     "address": "0x56ee926bd8c72b2d5fa1af4d9e4cbb515a1e3adc",
     "symbol": "SNX",
     "decimals": 18
+  },
+  "0x5a33869045db8a6a16c9f351293501cfd92cf7ed": {
+    "chain": "fantom",
+    "symbol": "anyBSGG",
+    "decimals": 18,
+    "address": "0x5a33869045db8a6a16c9f351293501cfd92cf7ed",
+    "logoURI": "https://raw.githubusercontent.com/sushiswap/list/master/logos/token-logos/network/ethereum/0x69570f3E84f51Ea70b7B68055c8d667e77735a25.jpg"
+  },
+  "0x657a1861c15a3ded9af0b6799a195a249ebdcbc6": {
+    "chain": "fantom",
+    "symbol": "CREAM",
+    "decimals": 18,
+    "address": "0x657a1861c15a3ded9af0b6799a195a249ebdcbc6",
+    "logoURI": "https://raw.githubusercontent.com/sushiswap/list/master/logos/token-logos/token/cream.jpg"
+  },
+  "0x658b0c7613e890ee50b8c4bc6a3f41ef411208ad": {
+    "chain": "fantom",
+    "symbol": "fETH",
+    "decimals": 18,
+    "address": "0x658b0c7613e890ee50b8c4bc6a3f41ef411208ad",
+    "logoURI": "https://raw.githubusercontent.com/sushiswap/list/master/logos/token-logos/token/eth.jpg"
+  },
+  "0x695921034f0387eac4e11620ee91b1b15a6a09fe": {
+    "chain": "fantom",
+    "symbol": "WETH",
+    "decimals": 18,
+    "address": "0x695921034f0387eac4e11620ee91b1b15a6a09fe",
+    "logoURI": "https://raw.githubusercontent.com/sushiswap/list/master/logos/token-logos/network/fantom/0x695921034f0387eAc4e11620EE91b1b15A6A09fE.jpg"
+  },
+  "0x69c744d3444202d35a2783929a0f930f2fbb05ad": {
+    "chain": "fantom",
+    "symbol": "sFTM",
+    "decimals": 18,
+    "address": "0x69c744d3444202d35a2783929a0f930f2fbb05ad",
+    "logoURI": "https://raw.githubusercontent.com/sushiswap/list/master/logos/token-logos/token/sftm.jpg"
   },
   "0x6a07a792ab2965c72a5b8088d3a069a7ac3a993b": {
     "chain": "fantom",
@@ -107,6 +261,20 @@
     "decimals": 18,
     "address": "0x7d016eec9c25232b01f23ef992d98ca97fc2af5a"
   },
+  "0x7f620d7d0b3479b1655cefb1b0bc67fb0ef4e443": {
+    "chain": "fantom",
+    "symbol": "nICE",
+    "decimals": 18,
+    "address": "0x7f620d7d0b3479b1655cefb1b0bc67fb0ef4e443",
+    "logoURI": "https://raw.githubusercontent.com/sushiswap/list/master/logos/token-logos/network/fantom/0x7f620d7d0b3479b1655cEFB1B0Bc67fB0EF4E443.png"
+  },
+  "0x81740d647493a61329e1c574a11ee7577659fb14": {
+    "chain": "fantom",
+    "symbol": "fCHF",
+    "decimals": 18,
+    "address": "0x81740d647493a61329e1c574a11ee7577659fb14",
+    "logoURI": "https://raw.githubusercontent.com/sushiswap/list/master/logos/token-logos/token/fchf.jpg"
+  },
   "0x82f0b8b456c1a451378467398982d4834b6829c1": {
     "chain": "fantom",
     "symbol": "MIM",
@@ -119,17 +287,45 @@
     "decimals": 18,
     "address": "0x8d11ec38a3eb5e956b052f67da8bdc9bef8abf3e"
   },
+  "0x9e8862e39496bd336565dd15ce2c0b90bc7dc121": {
+    "chain": "fantom",
+    "symbol": "FOUR",
+    "decimals": 18,
+    "address": "0x9e8862e39496bd336565dd15ce2c0b90bc7dc121",
+    "logoURI": "https://raw.githubusercontent.com/sushiswap/list/master/logos/token-logos/network/fantom/0x9E8862e39496BD336565Dd15cE2C0B90bc7dc121.jpg"
+  },
   "0xa48d959ae2e88f1daa7d5f611e01908106de7598": {
     "chain": "fantom",
     "address": "0xa48d959ae2e88f1daa7d5f611e01908106de7598",
     "symbol": "xBOO",
     "decimals": 18
   },
+  "0xa649a19423052dc6b320360b3c760884e095ac57": {
+    "chain": "fantom",
+    "symbol": "fLINK",
+    "decimals": 18,
+    "address": "0xa649a19423052dc6b320360b3c760884e095ac57",
+    "logoURI": "https://raw.githubusercontent.com/sushiswap/list/master/logos/token-logos/token/flink.jpg"
+  },
+  "0xad84341756bf337f5a0164515b1f6f993d194e1f": {
+    "chain": "fantom",
+    "symbol": "fUSD",
+    "decimals": 18,
+    "address": "0xad84341756bf337f5a0164515b1f6f993d194e1f",
+    "logoURI": "https://raw.githubusercontent.com/sushiswap/list/master/logos/token-logos/token/fusd.jpg"
+  },
   "0xae75a438b2e0cb8bb01ec1e1e376de11d44477cc": {
     "chain": "fantom",
     "symbol": "SUSHI",
     "decimals": 18,
     "address": "0xae75a438b2e0cb8bb01ec1e1e376de11d44477cc"
+  },
+  "0xb01e8419d842beebf1b70a7b5f7142abbaf7159d": {
+    "chain": "fantom",
+    "symbol": "COVER",
+    "decimals": 18,
+    "address": "0xb01e8419d842beebf1b70a7b5f7142abbaf7159d",
+    "logoURI": "https://raw.githubusercontent.com/sushiswap/list/master/logos/token-logos/token/cover.jpg"
   },
   "0xb32b31dfafbd53e310390f641c7119b5b9ea0488": {
     "chain": "fantom",
@@ -143,11 +339,95 @@
     "decimals": 18,
     "address": "0xb3654dc3d10ea7645f8319668e8f54d2574fbdc8"
   },
+  "0xbb29d2a58d880af8aa5859e30470134deaf84f2b": {
+    "chain": "fantom",
+    "symbol": "sSPELL",
+    "decimals": 18,
+    "address": "0xbb29d2a58d880af8aa5859e30470134deaf84f2b",
+    "logoURI": "https://raw.githubusercontent.com/sushiswap/list/master/logos/token-logos/network/fantom/0xbB29D2A58d880Af8AA5859e30470134dEAf84F2B.jpg"
+  },
+  "0xc2a45fe7d40bcac8369371b08419ddafd3131b4a": {
+    "chain": "fantom",
+    "symbol": "LCD",
+    "decimals": 18,
+    "address": "0xc2a45fe7d40bcac8369371b08419ddafd3131b4a",
+    "logoURI": "https://raw.githubusercontent.com/sushiswap/list/master/logos/token-logos/network/fantom/0xc2A45FE7d40bCAc8369371B08419DDAFd3131b4a.jpg"
+  },
+  "0xcc1b99ddac1a33c201a742a1851662e87bc7f22c": {
+    "chain": "fantom",
+    "symbol": "USDT",
+    "decimals": 6,
+    "address": "0xcc1b99ddac1a33c201a742a1851662e87bc7f22c",
+    "logoURI": "https://raw.githubusercontent.com/sushiswap/list/master/logos/token-logos/network/fantom/0xcc1b99dDAc1a33c201a742A1851662E87BC7f22C.jpg"
+  },
+  "0xcde58e4b6c7b78b04da664edb0a9752cc5fedbd5": {
+    "chain": "fantom",
+    "symbol": "fGBP",
+    "decimals": 18,
+    "address": "0xcde58e4b6c7b78b04da664edb0a9752cc5fedbd5",
+    "logoURI": "https://raw.githubusercontent.com/sushiswap/list/master/logos/token-logos/token/fgbp.jpg"
+  },
+  "0xd226392c23fb3476274ed6759d4a478db3197d82": {
+    "chain": "fantom",
+    "symbol": "axlUSDT",
+    "decimals": 6,
+    "address": "0xd226392c23fb3476274ed6759d4a478db3197d82",
+    "logoURI": "https://raw.githubusercontent.com/sushiswap/list/master/logos/token-logos/network/fantom/0xd226392C23fb3476274ED6759D4a478db3197d82.jpg"
+  },
+  "0xd5d5350f42cb484036a1c1af5f2df77eafadcaff": {
+    "chain": "fantom",
+    "symbol": "axlDAI",
+    "decimals": 18,
+    "address": "0xd5d5350f42cb484036a1c1af5f2df77eafadcaff",
+    "logoURI": "https://raw.githubusercontent.com/sushiswap/list/master/logos/token-logos/network/fantom/0xD5d5350F42CB484036A1C1aF5F2DF77eAFadcAFF.jpg"
+  },
   "0xdc301622e621166bd8e82f2ca0a26c13ad0be355": {
     "chain": "fantom",
     "symbol": "FRAX",
     "decimals": 18,
     "address": "0xdc301622e621166bd8e82f2ca0a26c13ad0be355"
+  },
+  "0xdef1fac7bf08f173d286bbbdcbeeade695129840": {
+    "chain": "fantom",
+    "symbol": "CERBY",
+    "decimals": 18,
+    "address": "0xdef1fac7bf08f173d286bbbdcbeeade695129840",
+    "logoURI": "https://raw.githubusercontent.com/sushiswap/assets/master/blockchains/fantom/assets/0xdef1fac7Bf08f173D286BbBDcBeeADe695129840/logo.png"
+  },
+  "0xe105621721d1293c27be7718e041a4ce0ebb227e": {
+    "chain": "fantom",
+    "symbol": "fEUR",
+    "decimals": 18,
+    "address": "0xe105621721d1293c27be7718e041a4ce0ebb227e",
+    "logoURI": "https://raw.githubusercontent.com/sushiswap/list/master/logos/token-logos/token/feur.jpg"
+  },
+  "0xe1146b9ac456fcbb60644c36fd3f868a9072fc6e": {
+    "chain": "fantom",
+    "symbol": "fBTC",
+    "decimals": 18,
+    "address": "0xe1146b9ac456fcbb60644c36fd3f868a9072fc6e",
+    "logoURI": "https://raw.githubusercontent.com/sushiswap/list/master/logos/token-logos/token/btc.jpg"
+  },
+  "0xe297e06761a5489380538a0308b6f9b4a53bea45": {
+    "chain": "fantom",
+    "symbol": "fWTIOIL",
+    "decimals": 18,
+    "address": "0xe297e06761a5489380538a0308b6f9b4a53bea45",
+    "logoURI": "https://raw.githubusercontent.com/sushiswap/list/master/logos/token-logos/token/fwtioil.jpg"
+  },
+  "0xf15e88eef35bf4709a4c3e99c00358f9247d4531": {
+    "chain": "fantom",
+    "symbol": "fSILVER",
+    "decimals": 18,
+    "address": "0xf15e88eef35bf4709a4c3e99c00358f9247d4531",
+    "logoURI": "https://raw.githubusercontent.com/sushiswap/list/master/logos/token-logos/token/fsilver.jpg"
+  },
+  "0xf1648c50d2863f780c57849d812b4b7686031a3d": {
+    "chain": "fantom",
+    "symbol": "WBTC",
+    "decimals": 8,
+    "address": "0xf1648c50d2863f780c57849d812b4b7686031a3d",
+    "logoURI": "https://raw.githubusercontent.com/sushiswap/list/master/logos/token-logos/network/fantom/0xf1648C50d2863f780c57849D812b4B7686031A3D.jpg"
   },
   "0xf16e81dce15b08f326220742020379b855b87df9": {
     "chain": "fantom",
@@ -155,10 +435,24 @@
     "decimals": 18,
     "address": "0xf16e81dce15b08f326220742020379b855b87df9"
   },
+  "0xf32554c06d030035cd6ca1902b3874fdb7230c14": {
+    "chain": "fantom",
+    "symbol": "NSFW",
+    "decimals": 18,
+    "address": "0xf32554c06d030035cd6ca1902b3874fdb7230c14",
+    "logoURI": "https://raw.githubusercontent.com/sushiswap/list/master/logos/token-logos/network/fantom/0xf32554C06D030035cd6Ca1902B3874fDB7230c14.jpg"
+  },
   "0xfb98b335551a418cd0737375a2ea0ded62ea213b": {
     "chain": "fantom",
     "symbol": "MIMATIC",
     "decimals": 18,
     "address": "0xfb98b335551a418cd0737375a2ea0ded62ea213b"
+  },
+  "0xfe7eda5f2c56160d406869a8aa4b2f365d544c7b": {
+    "chain": "fantom",
+    "symbol": "axlETH",
+    "decimals": 18,
+    "address": "0xfe7eda5f2c56160d406869a8aa4b2f365d544c7b",
+    "logoURI": "https://raw.githubusercontent.com/sushiswap/list/master/logos/token-logos/network/fantom/0xfe7eDa5F2c56160d406869A8aA4B2F365d544C7B.jpg"
   }
 }

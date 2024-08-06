@@ -1,324 +1,361 @@
-// import retry from 'async-retry';
-// import axios, { RawAxiosRequestHeaders } from 'axios';
-// import BigNumber from 'bignumber.js';
-//
-// import { TimeUnits } from '../../../configs/constants';
-// import EnvConfig from '../../../configs/envConfig';
-// import { tryQueryBlockMeta } from '../../../lib/subgraph';
-// import { normalizeAddress } from '../../../lib/utils';
-// import { DexConfig, DexSubgraph, ProtocolConfig } from '../../../types/configs';
-// import { DexDataState, DexDataTimeframe, DexDataTrader } from '../../../types/domains/dex';
-// import { ContextServices, ContextStorages } from '../../../types/namespaces';
-// import { GetAdapterDataStateOptions, GetAdapterDataTimeframeOptions } from '../../../types/options';
-// import DexProtocolAdapter from '../dex';
-//
-// export interface FactoryData {
-//   totalLiquidity: string;
-//   feesTrading: string;
-//   volumeTrading: string;
-//   numberOfTransactions: number;
-// }
-//
-// export interface EventData {
-//   // list of addressed as traders
-//   // map address with trade volume in USD
-//   traders: Array<DexDataTrader>;
-// }
-//
-// export default class Uniswapv2Adapter extends DexProtocolAdapter {
-//   public readonly name: string = 'adapter.uniswapv2';
-//
-//   constructor(services: ContextServices, storages: ContextStorages, protocolConfig: ProtocolConfig) {
-//     super(services, storages, protocolConfig);
-//   }
-//
-//   protected async getFactoryData(
-//     subgraphConfig: DexSubgraph,
-//     fromBlock: number,
-//     toBlock: number,
-//   ): Promise<FactoryData | null> {
-//     if (subgraphConfig) {
-//       const filters = subgraphConfig.filters.factory;
-//       const factoryQuery = `
-//         {
-//           dataFrom: ${filters.factories}(first: 1, block: {number: ${fromBlock}}) {
-//             ${filters.volume}
-//             ${filters.liquidity}
-//             ${filters.txCount}
-//           }
-//           dataTo: ${filters.factories}(first: 1, block: {number: ${toBlock}}) {
-//              ${filters.volume}
-//             ${filters.liquidity}
-//             ${filters.txCount}
-//           }
-//         }
-//       `;
-//
-//       const data = await retry(
-//         async function () {
-//           const response = await axios.post(
-//             subgraphConfig.endpoint,
-//             {
-//               query: factoryQuery,
-//             },
-//             {
-//               headers: {
-//                 'Content-Type': 'application/json',
-//               } as RawAxiosRequestHeaders,
-//             },
-//           );
-//
-//           return response.data.data;
-//         },
-//         {
-//           retries: 5,
-//         },
-//       );
-//       if (data) {
-//         try {
-//           const totalVolumeFrom = new BigNumber(data.dataFrom[0][filters.volume].toString());
-//           const totalVolumeTo = new BigNumber(data.dataTo[0][filters.volume].toString());
-//           const volumeTrading = totalVolumeTo.minus(totalVolumeFrom);
-//           const feesTrading = volumeTrading
-//             .multipliedBy(subgraphConfig.fixedFeePercentage ? subgraphConfig.fixedFeePercentage : 0.3)
-//             .dividedBy(100);
-//
-//           return {
-//             totalLiquidity: data.dataTo[0][filters.liquidity].toString(),
-//             feesTrading: feesTrading.toString(10),
-//             volumeTrading: volumeTrading.toString(10),
-//             numberOfTransactions: Number(data.dataTo[0][filters.txCount]) - Number(data.dataFrom[0][filters.txCount]),
-//           };
-//         } catch (e: any) {}
-//       }
-//     }
-//
-//     return null;
-//   }
-//
-//   protected async getFactoryDayData(subgraphConfig: DexSubgraph, date: number): Promise<FactoryData | null> {
-//     if (subgraphConfig && subgraphConfig.filters.factoryDayData) {
-//       const filters = subgraphConfig.filters.factoryDayData;
-//       const factoryQuery = `
-//         {
-//           dayData: ${filters.factories}(first: 1, where: {date: ${date}}) {
-//             ${filters.volume}
-//             ${filters.liquidity}
-//             ${filters.txCount}
-//           }
-//         }
-//       `;
-//
-//       const data = await retry(
-//         async function () {
-//           const response = await axios.post(
-//             subgraphConfig.endpoint,
-//             {
-//               query: factoryQuery,
-//             },
-//             {
-//               headers: {
-//                 'Content-Type': 'application/json',
-//               } as RawAxiosRequestHeaders,
-//             },
-//           );
-//
-//           return response.data.data;
-//         },
-//         {
-//           retries: 5,
-//         },
-//       );
-//       if (data) {
-//         try {
-//           const totalLiquidityUsd = new BigNumber(data.dayData[0][filters.liquidity].toString());
-//           const totalVolumeUsd = new BigNumber(data.dayData[0][filters.volume].toString());
-//           const feesTrading = totalVolumeUsd
-//             .multipliedBy(subgraphConfig.fixedFeePercentage ? subgraphConfig.fixedFeePercentage : 0.3)
-//             .dividedBy(100);
-//
-//           return {
-//             totalLiquidity: totalLiquidityUsd.toString(),
-//             feesTrading: feesTrading.toString(10),
-//             volumeTrading: totalVolumeUsd.toString(10),
-//             numberOfTransactions: Number(data.dayData[0][filters.txCount]),
-//           };
-//         } catch (e: any) {}
-//       }
-//     }
-//
-//     return null;
-//   }
-//
-//   protected async getEventData(dexConfig: DexConfig, fromTime: number, toTime: number): Promise<EventData | null> {
-//     const subgraphConfig = dexConfig.subgraph;
-//
-//     if (subgraphConfig && subgraphConfig.filters.eventSwaps) {
-//       const filters = subgraphConfig.filters.eventSwaps;
-//
-//       let timestamp = fromTime;
-//       const transactionIds: { [key: string]: boolean } = {};
-//       const traders: { [key: string]: DexDataTrader } = {};
-//       do {
-//         const eventSwapsQuery = `
-//           {
-//             swaps: ${filters.event}(first: 1000, where: { timestamp_gte: ${timestamp}, timestamp_lte: ${toTime} }, orderBy: timestamp, orderDirection: asc) {
-//               id
-//               ${filters.trader}
-//               ${filters.volumeUsd}
-//               ${filters.timestamp}
-//             }
-//           }
-//         `;
-//
-//         const data = await retry(
-//           async function () {
-//             const response = await axios.post(
-//               subgraphConfig.endpoint,
-//               {
-//                 query: eventSwapsQuery,
-//               },
-//               {
-//                 headers: {
-//                   'Content-Type': 'application/json',
-//                 } as RawAxiosRequestHeaders,
-//               },
-//             );
-//
-//             return response.data.data;
-//           },
-//           {
-//             retries: 5,
-//           },
-//         );
-//
-//         const swapEvents = data.swaps ? (data.swaps as Array<any>) : [];
-//         for (const swapEvent of swapEvents) {
-//           if (!transactionIds[swapEvent.id]) {
-//             transactionIds[swapEvent.id] = true;
-//
-//             const trader = normalizeAddress(swapEvent[filters.trader]);
-//             if (!traders[trader]) {
-//               traders[trader] = {
-//                 address: trader,
-//                 volumeUsd: '0',
-//               };
-//             }
-//
-//             traders[trader].volumeUsd = new BigNumber(traders[trader].volumeUsd)
-//               .plus(new BigNumber(swapEvent[filters.volumeUsd].toString()))
-//               .toString(10);
-//           }
-//         }
-//
-//         timestamp =
-//           swapEvents.length > 0 ? Number(swapEvents[swapEvents.length - 1][filters.timestamp]) + 1 : toTime + 1;
-//       } while (timestamp <= toTime);
-//
-//       return {
-//         traders: Object.values(traders),
-//       };
-//     }
-//
-//     return null;
-//   }
-//
-//   public async getDexDataState(options: GetAdapterDataStateOptions): Promise<DexDataState | null> {
-//     const dexConfig = options.config as DexConfig;
-//     if (dexConfig.subgraph) {
-//       const metaBlock = await tryQueryBlockMeta(EnvConfig.blockchains[options.config.chain].blockSubgraph);
-//       const beginBlock = await this.services.blockchain.tryGetBlockNumberAtTimestamp(
-//         options.config.chain,
-//         options.timestamp - TimeUnits.SecondsPerDay,
-//       );
-//       const endBlock = await this.services.blockchain.tryGetBlockNumberAtTimestamp(
-//         options.config.chain,
-//         options.timestamp,
-//       );
-//
-//       const factoryData = await this.getFactoryData(
-//         dexConfig.subgraph,
-//         beginBlock,
-//         endBlock > metaBlock ? metaBlock : endBlock,
-//       );
-//       if (factoryData) {
-//         return {
-//           protocol: dexConfig.protocol,
-//           chain: dexConfig.chain,
-//           metric: dexConfig.metric,
-//           version: dexConfig.version,
-//           timestamp: options.timestamp,
-//           totalLiquidityUsd: factoryData.totalLiquidity,
-//         };
-//       }
-//     }
-//
-//     return null;
-//   }
-//
-//   public async getDexDataTimeframe(options: GetAdapterDataTimeframeOptions): Promise<DexDataTimeframe | null> {
-//     const dexConfig = options.config as DexConfig;
-//
-//     if (dexConfig.subgraph) {
-//       const metaBlock = await tryQueryBlockMeta(dexConfig.subgraph.endpoint);
-//       const beginBlock = await this.services.blockchain.tryGetBlockNumberAtTimestamp(
-//         options.config.chain,
-//         options.fromTime,
-//       );
-//       const endBlock = await this.services.blockchain.tryGetBlockNumberAtTimestamp(
-//         options.config.chain,
-//         options.toTime,
-//       );
-//
-//       const dexData: DexDataTimeframe = {
-//         protocol: dexConfig.protocol,
-//         chain: dexConfig.chain,
-//         metric: dexConfig.metric,
-//         version: dexConfig.version,
-//         timestamp: options.fromTime,
-//         timefrom: options.fromTime,
-//         timeto: options.toTime,
-//
-//         totalLiquidityUsd: '0',
-//         feesTradingUsd: '0',
-//         volumeTradingUsd: '0',
-//         numberOfTransactions: 0,
-//
-//         traders: [],
-//       };
-//       const factoryData = await this.getFactoryData(
-//         dexConfig.subgraph,
-//         beginBlock,
-//         endBlock > metaBlock ? metaBlock : endBlock,
-//       );
-//       if (factoryData) {
-//         dexData.totalLiquidityUsd = factoryData.totalLiquidity;
-//         dexData.feesTradingUsd = factoryData.feesTrading;
-//         dexData.volumeTradingUsd = factoryData.volumeTrading;
-//         dexData.numberOfTransactions = factoryData.numberOfTransactions;
-//       } else {
-//         // try query date data
-//         const factoryDayData = await this.getFactoryDayData(dexConfig.subgraph, options.fromTime);
-//         if (factoryDayData) {
-//           dexData.totalLiquidityUsd = factoryDayData.totalLiquidity;
-//           dexData.feesTradingUsd = factoryDayData.feesTrading;
-//           dexData.volumeTradingUsd = factoryDayData.volumeTrading;
-//           dexData.numberOfTransactions = factoryDayData.numberOfTransactions;
-//         }
-//       }
-//
-//       if (options.props && options.props.disableGetEvents) {
-//         return dexData;
-//       }
-//
-//       // const eventData = await this.getEventData(dexConfig, options.fromTime, options.toTime);
-//       // if (eventData) {
-//       //   dexData.traders = eventData.traders;
-//       // }
-//
-//       return dexData;
-//     }
-//
-//     return null;
-//   }
-// }
+import { DataMetrics, DexConfig, DexVersions, ProtocolConfig } from '../../../types/configs';
+import { ContextServices, ContextStorages } from '../../../types/namespaces';
+import { GetAdapterDataTimeframeOptions, RunAdapterOptions } from '../../../types/options';
+import DexProtocolAdapter from '../dex';
+import { DexLiquidityPoolDataTimeframe, DexLiquidityPoolMetadata } from '../../../types/domains/dex';
+import UniswapV2FactoryAbi from '../../../configs/abi/uniswap/UniswapV2Factory.json';
+import UniswapV2PairAbi from '../../../configs/abi/uniswap/UniswapV2Pair.json';
+import envConfig from '../../../configs/envConfig';
+import logger from '../../../lib/logger';
+import { compareAddress, formatBigNumberToString, normalizeAddress } from '../../../lib/utils';
+import { TokenDexBase } from '../../../configs';
+import BigNumber from 'bignumber.js';
+import { DexBaseTokenBalanceUsdMinToTrackVolume } from '../../../configs/constants';
+import { UniswapV2Events } from './abis';
+import { decodeEventLog } from 'viem';
+
+export default class Uniswapv2Adapter extends DexProtocolAdapter {
+  public readonly name: string = 'adapter.uniswapv2 🦄';
+
+  constructor(services: ContextServices, storages: ContextStorages, protocolConfig: ProtocolConfig) {
+    super(services, storages, protocolConfig);
+  }
+
+  public async getDexLiquidityPoolMetadata(dexConfig: DexConfig): Promise<Array<DexLiquidityPoolMetadata>> {
+    const liquidityPools: Array<DexLiquidityPoolMetadata> = [];
+
+    // find the latest block number when events was synced from database
+    let startFromBlock = dexConfig.birthblock ? dexConfig.birthblock : 0;
+    const latestBlock = await this.services.blockchain.getLastestBlockNumber(dexConfig.chain);
+
+    const databaseConnected = await this.storages.database.isConnected();
+    const databaseLatestPairIdStateKey = `metadata-uniswapv2-factory-pools-${dexConfig.chain}-${dexConfig.protocol}-${dexConfig.address}`;
+
+    if (databaseConnected) {
+      // get existed pool from database
+      const pools: Array<any> = await this.storages.database.query({
+        collection: envConfig.mongodb.collections.metadataDexLiquidityPools.name,
+        query: {
+          chain: dexConfig.chain,
+          protocol: dexConfig.protocol,
+        },
+      });
+      for (const existedPool of pools) {
+        liquidityPools.push({
+          protocol: existedPool.protocol,
+          chain: existedPool.chain,
+          version: existedPool.version,
+          address: existedPool.address,
+          poolId: existedPool.poolId,
+          tokens: existedPool.tokens,
+          feeRate: existedPool.feeRate,
+          birthblock: existedPool.birthblock,
+          birthday: existedPool.birthday,
+        });
+      }
+
+      const latestSyncState = await this.storages.database.find({
+        collection: envConfig.mongodb.collections.cachingStates.name,
+        query: {
+          name: databaseLatestPairIdStateKey,
+        },
+      });
+      if (latestSyncState) {
+        startFromBlock = Number(latestSyncState.blockNumber) + 1;
+      }
+    }
+
+    logger.debug('start to get all univ2 pair metadata', {
+      service: this.name,
+      protocol: dexConfig.protocol,
+      chain: dexConfig.chain,
+      factory: dexConfig.chain,
+      fromBlock: startFromBlock,
+      toBlock: latestBlock,
+    });
+
+    const chunkSize = 5000;
+    while (startFromBlock < latestBlock) {
+      const toBlock = startFromBlock + chunkSize > latestBlock ? latestBlock : startFromBlock + chunkSize;
+      const logs = await this.services.blockchain.getContractLogs({
+        chain: dexConfig.chain,
+        address: dexConfig.address,
+        fromBlock: startFromBlock,
+        toBlock: toBlock,
+      });
+      for (const log of logs) {
+        if (log.topics[0] === UniswapV2Events.PairCreated) {
+          const block = await this.services.blockchain.getBlock(dexConfig.chain, log.blockNumber);
+          const event: any = decodeEventLog({
+            abi: UniswapV2FactoryAbi,
+            topics: log.topics,
+            data: log.data,
+          });
+          const pairAddress = normalizeAddress(event.args.pair);
+          const token0Address = normalizeAddress(event.args.token0);
+          const token1Address = normalizeAddress(event.args.token1);
+
+          const token0 = await this.services.blockchain.getTokenInfo({
+            chain: dexConfig.chain,
+            address: token0Address,
+          });
+          const token1 = await this.services.blockchain.getTokenInfo({
+            chain: dexConfig.chain,
+            address: token1Address,
+          });
+          if (token0 && token1) {
+            const liquidityPool: DexLiquidityPoolMetadata = {
+              protocol: dexConfig.protocol,
+              chain: dexConfig.chain,
+              version: dexConfig.version,
+              address: normalizeAddress(pairAddress),
+              poolId: `${normalizeAddress(dexConfig.address)}-${pairAddress}`,
+              tokens: [token0, token1],
+              feeRate: dexConfig.feeRate ? dexConfig.feeRate : '0.003',
+              birthblock: Number(log.blockNumber),
+              birthday: Number(block.timestamp),
+            };
+
+            liquidityPools.push(liquidityPool);
+
+            if (databaseConnected) {
+              await this.storages.database.update({
+                collection: envConfig.mongodb.collections.metadataDexLiquidityPools.name,
+                keys: {
+                  protocol: liquidityPool.protocol,
+                  chain: liquidityPool.chain,
+                  address: liquidityPool.address,
+                  poolId: liquidityPool.poolId,
+                },
+                updates: {
+                  ...liquidityPool,
+                },
+                upsert: true,
+              });
+            }
+
+            logger.debug('got univ2 pair metadata', {
+              service: this.name,
+              protocol: dexConfig.protocol,
+              chain: dexConfig.chain,
+              pairAddress: liquidityPool.address,
+              tokens: `${liquidityPool.tokens[0].symbol}-${liquidityPool.tokens[1].symbol}`,
+            });
+          }
+        }
+      }
+
+      // update latest block number which indexed logs
+      if (databaseConnected) {
+        await this.storages.database.update({
+          collection: envConfig.mongodb.collections.cachingStates.name,
+          keys: {
+            name: databaseLatestPairIdStateKey,
+          },
+          updates: {
+            name: databaseLatestPairIdStateKey,
+            blockNumber: toBlock + 1,
+          },
+          upsert: true,
+        });
+      }
+
+      startFromBlock = toBlock + 1;
+    }
+
+    return liquidityPools;
+  }
+
+  public async getDexDataTimeframe(
+    options: GetAdapterDataTimeframeOptions,
+  ): Promise<Array<DexLiquidityPoolDataTimeframe> | null> {
+    const dexConfig = options.config as DexConfig;
+
+    if (dexConfig.metric !== DataMetrics.dex || dexConfig.version !== DexVersions.univ2) {
+      return null;
+    }
+
+    const liquidityPoolMetadata: Array<DexLiquidityPoolMetadata> = await this.getDexLiquidityPoolMetadata(dexConfig);
+
+    const beginBlock = await this.services.blockchain.tryGetBlockNumberAtTimestamp(dexConfig.chain, options.fromTime);
+    const endBlock = await this.services.blockchain.tryGetBlockNumberAtTimestamp(dexConfig.chain, options.toTime);
+    const stateBlock = options.latestState ? endBlock : beginBlock;
+    const stateTime = options.latestState ? options.toTime : options.fromTime;
+
+    const liquidityPools: Array<DexLiquidityPoolDataTimeframe> = [];
+    for (const liquidityPool of liquidityPoolMetadata) {
+      if (liquidityPool.birthblock > stateBlock) {
+        // pool has not existed yet
+        continue;
+      }
+
+      const [reserve0, reserve1] = await this.services.blockchain.readContract({
+        chain: dexConfig.chain,
+        abi: UniswapV2PairAbi,
+        target: liquidityPool.address,
+        method: 'getReserves',
+        params: [],
+        blockNumber: stateBlock,
+      });
+      const token0Reserve = formatBigNumberToString(reserve0.toString(), liquidityPool.tokens[0].decimals);
+      const token1Reserve = formatBigNumberToString(reserve1.toString(), liquidityPool.tokens[1].decimals);
+
+      let token0Price = '0';
+      let token1Price = '0';
+      let liquidityUsd = new BigNumber(0);
+      if ((TokenDexBase as any)[liquidityPool.chain].includes(liquidityPool.tokens[0].address)) {
+        const tokenPrice = await this.services.oracle.getTokenPriceUsd({
+          chain: dexConfig.chain,
+          address: liquidityPool.tokens[0].address,
+          timestamp: stateTime,
+        });
+        token0Price = tokenPrice ? tokenPrice : '0';
+        token1Price = new BigNumber(token0Price)
+          .multipliedBy(new BigNumber(token0Reserve))
+          .dividedBy(new BigNumber(token1Reserve))
+          .toString(10);
+
+        liquidityUsd = new BigNumber(token0Price).multipliedBy(new BigNumber(token0Reserve)).multipliedBy(2);
+      } else if ((TokenDexBase as any)[liquidityPool.chain].includes(liquidityPool.tokens[1].address)) {
+        const tokenPrice = await this.services.oracle.getTokenPriceUsd({
+          chain: dexConfig.chain,
+          address: liquidityPool.tokens[1].address,
+          timestamp: stateTime,
+        });
+        token1Price = tokenPrice ? tokenPrice : '0';
+        token0Price = new BigNumber(token1Price)
+          .multipliedBy(new BigNumber(token1Reserve))
+          .dividedBy(new BigNumber(token0Reserve))
+          .toString(10);
+        liquidityUsd = new BigNumber(token1Price).multipliedBy(new BigNumber(token1Reserve)).multipliedBy(2);
+      } else {
+        continue;
+      }
+
+      const liquidityPoolData: DexLiquidityPoolDataTimeframe = {
+        ...liquidityPool,
+        timestamp: stateTime,
+        timefrom: options.fromTime,
+        timeto: options.toTime,
+
+        tokenPrices: [token0Price, token1Price],
+        tokenBalances: [token0Reserve, token1Reserve],
+        totalLiquidityUsd: liquidityUsd.toString(10),
+        volumeSwapUsd: '0',
+        volumeAddLiquidityUsd: '0',
+        volumeRemoveLiquidityUsd: '0',
+        addressRouters: {},
+        addressSwappers: {},
+        tradeCount: 0,
+      };
+
+      if (liquidityUsd.gte(DexBaseTokenBalanceUsdMinToTrackVolume)) {
+        // we track volumes only on pools have more than DexBaseTokenBalanceUsdMinToTrackVolume liquidity
+        const logs = await this.services.blockchain.getContractLogs({
+          chain: dexConfig.chain,
+          address: liquidityPool.address,
+          fromBlock: beginBlock,
+          toBlock: endBlock,
+        });
+
+        const addressRouters: { [key: string]: string } = {};
+        const addressSwappers: { [key: string]: string } = {};
+        for (const log of logs) {
+          const signature = log.topics[0];
+          if (Object.values(UniswapV2Events).includes(signature)) {
+            const event: any = decodeEventLog({
+              abi: UniswapV2PairAbi,
+              topics: log.topics,
+              data: log.data,
+            });
+            switch (signature) {
+              case UniswapV2Events.Swap: {
+                // count new trade
+                liquidityPoolData.tradeCount += 1;
+
+                // cal amount usd
+                let amountUsd = new BigNumber(0);
+                if (event.args.amount0In.toString() !== '0') {
+                  amountUsd = new BigNumber(
+                    formatBigNumberToString(event.args.amount0In.toString(), liquidityPoolData.tokens[0].decimals),
+                  ).multipliedBy(liquidityPoolData.tokenPrices[0]);
+                } else {
+                  amountUsd = new BigNumber(
+                    formatBigNumberToString(event.args.amount1In.toString(), liquidityPoolData.tokens[1].decimals),
+                  ).multipliedBy(liquidityPoolData.tokenPrices[1]);
+                }
+
+                liquidityPoolData.volumeSwapUsd = new BigNumber(liquidityPoolData.volumeSwapUsd)
+                  .plus(amountUsd)
+                  .toString(10);
+
+                const routerAddress = normalizeAddress(event.args.sender);
+                const swapperAddress = normalizeAddress(event.args.to);
+
+                if (!compareAddress(routerAddress, swapperAddress)) {
+                  // count router address volume
+                  if (!addressRouters[routerAddress]) {
+                    addressRouters[routerAddress] = '0';
+                  }
+                  addressRouters[routerAddress] = new BigNumber(addressRouters[routerAddress])
+                    .plus(amountUsd)
+                    .toString(10);
+                }
+
+                // count swapper address volume
+                if (!addressSwappers[swapperAddress]) {
+                  addressSwappers[swapperAddress] = '0';
+                }
+                addressSwappers[swapperAddress] = new BigNumber(addressSwappers[swapperAddress])
+                  .plus(amountUsd)
+                  .toString(10);
+
+                break;
+              }
+              case UniswapV2Events.Mint: {
+                // cal amount usd
+                const amount0Usd = new BigNumber(
+                  formatBigNumberToString(event.args.amount0.toString(), liquidityPoolData.tokens[0].decimals),
+                ).multipliedBy(liquidityPoolData.tokenPrices[0]);
+                const amount1Usd = new BigNumber(
+                  formatBigNumberToString(event.args.amount1.toString(), liquidityPoolData.tokens[1].decimals),
+                ).multipliedBy(liquidityPoolData.tokenPrices[1]);
+                liquidityPoolData.volumeAddLiquidityUsd = new BigNumber(liquidityPoolData.volumeAddLiquidityUsd)
+                  .plus(amount0Usd)
+                  .plus(amount1Usd)
+                  .toString(10);
+
+                break;
+              }
+              case UniswapV2Events.Burn: {
+                // cal amount usd
+                const amount0Usd = new BigNumber(
+                  formatBigNumberToString(event.args.amount0.toString(), liquidityPoolData.tokens[0].decimals),
+                ).multipliedBy(liquidityPoolData.tokenPrices[0]);
+                const amount1Usd = new BigNumber(
+                  formatBigNumberToString(event.args.amount1.toString(), liquidityPoolData.tokens[1].decimals),
+                ).multipliedBy(liquidityPoolData.tokenPrices[1]);
+                liquidityPoolData.volumeRemoveLiquidityUsd = new BigNumber(liquidityPoolData.volumeRemoveLiquidityUsd)
+                  .plus(amount0Usd)
+                  .plus(amount1Usd)
+                  .toString(10);
+
+                break;
+              }
+            }
+          }
+        }
+        liquidityPoolData.addressRouters = addressRouters;
+        liquidityPoolData.addressSwappers = addressSwappers;
+      }
+
+      liquidityPools.push(liquidityPoolData);
+    }
+
+    return liquidityPools;
+  }
+
+  public async runTest(options: RunAdapterOptions): Promise<void> {
+    await this.getDexLiquidityPoolMetadata(options.metricConfig as DexConfig);
+  }
+}

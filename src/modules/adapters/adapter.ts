@@ -150,8 +150,8 @@ export default class ProtocolAdapter implements IProtocolAdapter {
 
       runTime += TimeUnits.SecondsPerDay;
 
-      // sleep 10 seconds before process next snapshot
-      await sleep(10);
+      // sleep 1 seconds before process next snapshot
+      await sleep(1);
     }
   }
 }

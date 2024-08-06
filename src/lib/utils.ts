@@ -24,7 +24,7 @@ export function getDateString(timestamp: number): string {
   return new Date(timestamp * 1000).toISOString().split('T')[0];
 }
 
-export function normalizeAddress(address: string | undefined): string {
+export function normalizeAddress(address: string | undefined | null): string {
   return address ? address.toLowerCase() : '';
 }
 

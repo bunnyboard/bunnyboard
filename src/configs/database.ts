@@ -33,6 +33,17 @@ export const DatabaseCollectionConfigs: DatabaseCollectionConfig = {
       },
     ],
   },
+  metadataDexLiquidityPools: {
+    name: `${MongodbPrefix}.metadataDexLiquidityPools`,
+    indies: [
+      {
+        protocol: 1,
+        chain: 1,
+        address: 1, // pool address
+        poolId: 1, // pool id
+      },
+    ],
+  },
 
   crossLendingReserveStates: {
     name: `${MongodbPrefix}.crossLendingReserveStates`,
@@ -165,6 +176,30 @@ export const DatabaseCollectionConfigs: DatabaseCollectionConfig = {
         protocol: 1,
         chain: 1,
         address: 1,
+        timestamp: 1,
+      },
+    ],
+  },
+
+  dexLiquidityPoolStates: {
+    name: `${MongodbPrefix}.dexLiquidityPoolStates`,
+    indies: [
+      {
+        protocol: 1,
+        chain: 1,
+        address: 1, // pool address
+        poolId: 1, // pool id
+      },
+    ],
+  },
+  dexLiquidityPoolSnapshots: {
+    name: `${MongodbPrefix}.dexLiquidityPoolSnapshots`,
+    indies: [
+      {
+        protocol: 1,
+        chain: 1,
+        address: 1, // pool address
+        poolId: 1, // pool id
         timestamp: 1,
       },
     ],

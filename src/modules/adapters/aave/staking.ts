@@ -6,7 +6,6 @@ import AaveStakedAaveOldAbi from '../../../configs/abi/aave/StakedAave.json';
 import AaveStakingAbi from '../../../configs/abi/aave/StakedAaveV3.json';
 import BalancerVaultAbi from '../../../configs/abi/balancer/Vault.json';
 import { TimeUnits } from '../../../configs/constants';
-import { TokensBookBase } from '../../../configs/data';
 import { AaveStakingConfig } from '../../../configs/protocols/aave';
 import { compareAddress, formatBigNumberToString, normalizeAddress } from '../../../lib/utils';
 import { ProtocolConfig, StakingVersions, Token } from '../../../types/configs';
@@ -16,6 +15,7 @@ import { GetAdapterDataTimeframeOptions } from '../../../types/options';
 import { AdapterGetEventLogsOptions } from '../adapter';
 import StakingProtocolAdapter from '../staking';
 import { AaveStakingEvents } from './abis';
+import { TokensBook } from '../../../configs/data';
 
 export default class AaveStakingAdapter extends StakingProtocolAdapter {
   public readonly name: string = 'adapter.aave';
@@ -38,8 +38,8 @@ export default class AaveStakingAdapter extends StakingProtocolAdapter {
       });
     } else if (token.symbol === 'ABPT') {
       const bPool = '0xC697051d1C6296C24aE3bceF39acA743861D9A81';
-      const wethToken = TokensBookBase.ethereum.WETH;
-      const aaveToken = TokensBookBase.ethereum.AAVE;
+      const wethToken = TokensBook.ethereum['0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'];
+      const aaveToken = TokensBook.ethereum['0x7fc66500c84a76ad7e9c93437bfc5ac33e2ddae9'];
       const [wethBalance, aaveBalance, lpSupply] = await this.services.blockchain.multicall({
         chain: token.chain,
         blockNumber: blockNumber,
@@ -113,8 +113,8 @@ export default class AaveStakingAdapter extends StakingProtocolAdapter {
         ],
       });
 
-      const wstETHToken = TokensBookBase.ethereum.wstETH;
-      const aaveToken = TokensBookBase.ethereum.AAVE;
+      const wstETHToken = TokensBook.ethereum['0x7f39c581f595b53c5cb19bd0b3f8da6c935e2ca0'];
+      const aaveToken = TokensBook.ethereum['0x7fc66500c84a76ad7e9c93437bfc5ac33e2ddae9'];
 
       const [wstETHPrice, aavePrice] = await Promise.all([
         this.services.oracle.getTokenPriceUsd({

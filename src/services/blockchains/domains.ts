@@ -55,6 +55,12 @@ export interface IBlockchainService {
 
   getPublicClient: (chain: string) => PublicClient;
 
+  // get latest block number from chain
+  getLastestBlockNumber: (chain: string) => Promise<number>;
+
+  // get block
+  getBlock: (chain: string, number: number) => Promise<any>;
+
   // get token info
   getTokenInfo: (options: GetTokenOptions) => Promise<Token | null>;
 

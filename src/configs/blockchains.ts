@@ -212,6 +212,18 @@ export const BlockchainConfigs: { [key: string]: Blockchain } = {
       decimals: 18,
     },
   },
+  [ChainNames.celo]: {
+    name: ChainNames.celo,
+    family: 'evm',
+    chainId: 42220,
+    nodeRpc: String(process.env.BUNNYBOARD_CELO_NODE),
+    nativeToken: {
+      chain: ChainNames.celo,
+      address: AddressZero,
+      symbol: 'CELO',
+      decimals: 18,
+    },
+  },
   [ChainNames.mantle]: {
     name: ChainNames.mantle,
     family: 'evm',

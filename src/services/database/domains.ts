@@ -40,6 +40,9 @@ export interface IDatabaseService {
   // given name helps logging better
   name: string;
 
+  // check the connection status
+  isConnected: () => Promise<boolean>;
+
   // do connect to the database server
   connect: (mongoUri: string, databaseName: string) => Promise<void>;
 

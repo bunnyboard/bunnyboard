@@ -1,9 +1,31 @@
 {
-  "0x5300000000000000000000000000000000000004": {
+  "0x406cde76a3fd20e48bc1e0f60651e60ae204b040": {
     "chain": "scroll",
-    "symbol": "WETH",
+    "symbol": "axlFRAX",
     "decimals": 18,
-    "address": "0x5300000000000000000000000000000000000004"
+    "address": "0x406cde76a3fd20e48bc1e0f60651e60ae204b040",
+    "logoURI": "https://raw.githubusercontent.com/sushiswap/list/master/logos/token-logos/network/scroll/0x406Cde76a3fD20e48bc1E0F60651e60Ae204B040.jpg"
+  },
+  "0xeb466342c4d449bc9f53a865d5cb90586f405215": {
+    "chain": "scroll",
+    "symbol": "axlUSDC",
+    "decimals": 6,
+    "address": "0xeb466342c4d449bc9f53a865d5cb90586f405215",
+    "logoURI": "https://raw.githubusercontent.com/sushiswap/list/master/logos/network/scroll/0xEB466342C4d449BC9f53A865D5Cb90586f405215.jpg"
+  },
+  "0xca77eb3fefe3725dc33bccb54edefc3d9f764f97": {
+    "chain": "scroll",
+    "symbol": "DAI",
+    "decimals": 18,
+    "address": "0xca77eb3fefe3725dc33bccb54edefc3d9f764f97",
+    "logoURI": "https://raw.githubusercontent.com/sushiswap/list/master/logos/network/scroll/0xcA77eB3fEFe3725Dc33bccB54eDEFc3D9f764f97.jpg"
+  },
+  "0xecc68d0451e20292406967fe7c04280e5238ac7d": {
+    "chain": "scroll",
+    "symbol": "frxETH",
+    "decimals": 18,
+    "address": "0xecc68d0451e20292406967fe7c04280e5238ac7d",
+    "logoURI": "https://raw.githubusercontent.com/sushiswap/list/master/logos/token-logos/network/scroll/0xEcc68d0451E20292406967Fe7C04280E5238Ac7D.jpg"
   },
   "0x06efdbff2a14a7c8e15944d1f4a48f9f95f663a4": {
     "chain": "scroll",
@@ -11,17 +33,30 @@
     "symbol": "USDC",
     "decimals": 6
   },
-  "0xf610a9dfb7c89644979b4a0f27063e9e7d7cda32": {
-    "chain": "scroll",
-    "address": "0xf610a9dfb7c89644979b4a0f27063e9e7d7cda32",
-    "symbol": "wstETH",
-    "decimals": 18
-  },
   "0xf55bec9cafdbe8730f096aa55dad6d22d44099df": {
     "chain": "scroll",
     "address": "0xf55bec9cafdbe8730f096aa55dad6d22d44099df",
     "symbol": "USDT",
     "decimals": 6
+  },
+  "0x3c1bca5a656e69edcd0d4e36bebb3fcdaca60cf1": {
+    "chain": "scroll",
+    "symbol": "WBTC",
+    "decimals": 8,
+    "address": "0x3c1bca5a656e69edcd0d4e36bebb3fcdaca60cf1",
+    "logoURI": "https://tokens.pancakeswap.finance/images/symbol/wbtc.png"
+  },
+  "0x5300000000000000000000000000000000000004": {
+    "chain": "scroll",
+    "symbol": "WETH",
+    "decimals": 18,
+    "address": "0x5300000000000000000000000000000000000004"
+  },
+  "0xf610a9dfb7c89644979b4a0f27063e9e7d7cda32": {
+    "chain": "scroll",
+    "address": "0xf610a9dfb7c89644979b4a0f27063e9e7d7cda32",
+    "symbol": "wstETH",
+    "decimals": 18
   },
   "0x80137510979822322193fc997d400d5a6c747bf7": {
     "chain": "scroll",

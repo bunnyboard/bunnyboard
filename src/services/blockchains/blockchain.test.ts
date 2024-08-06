@@ -166,6 +166,11 @@ const testcases = [
     timestamp: 1717200000, // Sat Jun 01 2024 00:00:00 GMT+0000
     expectedBlockNumber: 2018107,
   },
+  {
+    ...EnvConfig.blockchains.celo,
+    timestamp: 1672531200, // Sun Jan 01 2023 00:00:00 GMT+0000
+    expectedBlockNumber: 16972631,
+  },
 ];
 
 describe('getBlockNumberAtTimestamp', function () {

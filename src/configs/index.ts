@@ -1,5 +1,5 @@
 import { Token } from '../types/configs';
-import { TokensBook, TokensBookBase } from './data';
+import { TokenBookDexBase, TokensBook } from './data';
 import { AaveConfigs, Aavev2Configs, Aavev3Configs } from './protocols/aave';
 import { AbracadabraConfigs } from './protocols/abracadabra';
 import { AjnaConfigs } from './protocols/ajna';
@@ -40,6 +40,7 @@ import { SparkConfigs } from './protocols/spark';
 import { StrikeConfigs } from './protocols/strike';
 import { SushiConfigs } from './protocols/sushi';
 import { TectonicConfigs } from './protocols/tectonic';
+import { Uniswapv2Configs, Uniswapv3Configs } from './protocols/uniswap';
 import { UwulendConfigs } from './protocols/uwulend';
 import { VenusConfigs } from './protocols/venus';
 import { YethConfigs } from './protocols/yearn';
@@ -56,7 +57,7 @@ export const CustomQueryContractLogsBlockRange: { [key: string]: number } = {
 export const DefaultMemcacheTime = 300; // 5 minutes
 
 export const TokenList: { [key: string]: { [key: string]: Token } } = TokensBook;
-export const TokenListBase = TokensBookBase;
+export const TokenDexBase = TokenBookDexBase;
 
 export const ProtocolConfigs = {
   aave: AaveConfigs,
@@ -102,6 +103,8 @@ export const ProtocolConfigs = {
   sushi: SushiConfigs,
   strike: StrikeConfigs,
   tectonic: TectonicConfigs,
+  uniswapv2: Uniswapv2Configs,
+  uniswapv3: Uniswapv3Configs,
   uwulend: UwulendConfigs,
   venus: VenusConfigs,
   yeth: YethConfigs,

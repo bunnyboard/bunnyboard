@@ -41,3 +41,6 @@ export const ChainBlockPeriods: { [key: string]: number } = {
   cronos: 5.6, // 5.6 seconds
   scroll: 3, // 3 seconds
 };
+
+// we track dex volume only on pools have more than $10k liquidity
+export const DexBaseTokenBalanceUsdMinToTrackVolume = 10_000;

@@ -11,7 +11,7 @@ import FlashloanProtocolAdapter from '../flashloan';
 import { BalancerEventSignatures } from './abis';
 
 export default class BalancerFlashloanAdapter extends FlashloanProtocolAdapter {
-  public readonly name: string = 'adapter.balancer';
+  public readonly name: string = 'adapter.balancer ⚖';
 
   constructor(services: ContextServices, storages: ContextStorages, protocolConfig: ProtocolConfig) {
     super(services, storages, protocolConfig);

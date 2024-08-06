@@ -5,6 +5,13 @@
     "symbol": "stUSD",
     "decimals": 18
   },
+  "0x04c0599ae5a44757c0af6f9ec3b93da8976c150a": {
+    "chain": "base",
+    "symbol": "weETH",
+    "decimals": 18,
+    "address": "0x04c0599ae5a44757c0af6f9ec3b93da8976c150a",
+    "logoURI": "https://tokens.pancakeswap.finance/images/base/0x04C0599Ae5A44757c0af6F9eC3b93da8976c150A.png"
+  },
   "0x04d5ddf5f3a8939889f11e97f8c4bb48317f1938": {
     "chain": "base",
     "address": "0x04d5ddf5f3a8939889f11e97f8c4bb48317f1938",
@@ -16,6 +23,13 @@
     "address": "0x0578d8a44db98b23bf096a382e016e29a5ce0ffe",
     "symbol": "HIGHER",
     "decimals": 18
+  },
+  "0x09deb3cf353186e7a84abfd7434bf643f77eb686": {
+    "chain": "base",
+    "symbol": "BOT",
+    "decimals": 18,
+    "address": "0x09deb3cf353186e7a84abfd7434bf643f77eb686",
+    "logoURI": "https://raw.githubusercontent.com/sushiswap/list/master/logos/network/base/0x09DeB3CF353186E7A84aBfD7434BF643f77eB686.jpg"
   },
   "0x0bd4887f7d41b35cd75dff9ffee2856106f86670": {
     "chain": "base",
@@ -29,17 +43,59 @@
     "symbol": "TYBG",
     "decimals": 18
   },
+  "0x0fa70e156cd3b03ac4080bfe55bd8ab50f5bcb98": {
+    "chain": "base",
+    "symbol": "YOU",
+    "decimals": 18,
+    "address": "0x0fa70e156cd3b03ac4080bfe55bd8ab50f5bcb98",
+    "logoURI": "https://raw.githubusercontent.com/sushiswap/list/master/logos/token-logos/network/base/0x0FA70E156Cd3B03aC4080bfe55BD8AB50f5Bcb98.jpg"
+  },
+  "0x10c1b6f768e13c624a4a23337f1a5ba5c9be0e4b": {
+    "chain": "base",
+    "symbol": "WARPIE",
+    "decimals": 18,
+    "address": "0x10c1b6f768e13c624a4a23337f1a5ba5c9be0e4b",
+    "logoURI": "https://raw.githubusercontent.com/sushiswap/list/master/logos/token-logos/network/base/0x10c1B6f768e13c624A4A23337f1a5bA5c9BE0E4B.jpg"
+  },
+  "0x122a3f185655847980639e8edf0f0f66cd91c5fe": {
+    "chain": "base",
+    "symbol": "FELLA",
+    "decimals": 18,
+    "address": "0x122a3f185655847980639e8edf0f0f66cd91c5fe",
+    "logoURI": "https://raw.githubusercontent.com/sushiswap/list/master/logos/token-logos/network/base/0x122A3f185655847980639E8EdF0F0f66cd91C5fE.jpg"
+  },
+  "0x137a61b3311e967b0d1e79d5546167c9dc9e6b5b": {
+    "chain": "base",
+    "symbol": "NSFW",
+    "decimals": 18,
+    "address": "0x137a61b3311e967b0d1e79d5546167c9dc9e6b5b",
+    "logoURI": "https://raw.githubusercontent.com/sushiswap/list/master/logos/token-logos/network/base/0x137A61B3311E967b0D1e79d5546167C9DC9E6B5B.jpg"
+  },
   "0x13f4196cc779275888440b3000ae533bbbbc3166": {
     "chain": "base",
     "symbol": "AMKT",
     "decimals": 18,
     "address": "0x13f4196cc779275888440b3000ae533bbbbc3166"
   },
+  "0x1443cbca252d1ffae56b4ee4cc904e9554e2f6ad": {
+    "chain": "base",
+    "symbol": "baldcat",
+    "decimals": 8,
+    "address": "0x1443cbca252d1ffae56b4ee4cc904e9554e2f6ad",
+    "logoURI": "https://raw.githubusercontent.com/sushiswap/list/master/logos/token-logos/network/base/0x1443Cbca252D1ffAE56b4ee4cc904e9554E2F6aD.jpg"
+  },
   "0x17c7bc92719e3ab661fc1238054b26b2c77ee0d7": {
     "chain": "base",
     "address": "0x17c7bc92719e3ab661fc1238054b26b2c77ee0d7",
     "symbol": "MOON",
     "decimals": 18
+  },
+  "0x18a8bd1fe17a1bb9ffb39ecd83e9489cfd17a022": {
+    "chain": "base",
+    "symbol": "ANDY",
+    "decimals": 18,
+    "address": "0x18a8bd1fe17a1bb9ffb39ecd83e9489cfd17a022",
+    "logoURI": "https://raw.githubusercontent.com/sushiswap/list/master/logos/token-logos/network/base/0x18A8BD1fe17A1BB9FFB39eCD83E9489cfD17a022.jpg"
   },
   "0x1bf77c0269e1af595421255acd7751dcd299d14b": {
     "chain": "base",
@@ -59,11 +115,25 @@
     "symbol": "NOTEAM",
     "decimals": 18
   },
+  "0x2228363213e6e16e8ccc556aa270a05f1f1a4e02": {
+    "chain": "base",
+    "symbol": "MOCHITOSHI",
+    "decimals": 18,
+    "address": "0x2228363213e6e16e8ccc556aa270a05f1f1a4e02",
+    "logoURI": "https://raw.githubusercontent.com/sushiswap/list/master/logos/token-logos/network/base/0x2228363213E6E16e8ccC556Aa270a05f1F1A4E02.jpg"
+  },
   "0x22a2488fe295047ba13bd8cccdbc8361dbd8cf7c": {
     "chain": "base",
     "address": "0x22a2488fe295047ba13bd8cccdbc8361dbd8cf7c",
     "symbol": "SONNE",
     "decimals": 18
+  },
+  "0x22dc834c3ff3e45f484bf24b9b07b851b981900f": {
+    "chain": "base",
+    "symbol": "SMUDCAT",
+    "decimals": 18,
+    "address": "0x22dc834c3ff3e45f484bf24b9b07b851b981900f",
+    "logoURI": "https://raw.githubusercontent.com/sushiswap/list/master/logos/token-logos/network/base/0x22DC834C3Ff3e45f484bF24B9B07b851B981900f.jpg"
   },
   "0x22e6966b799c4d5b13be962e1d117b56327fda66": {
     "chain": "base",
@@ -83,17 +153,45 @@
     "symbol": "AXL",
     "decimals": 6
   },
+  "0x27d2decb4bfc9c76f0309b8e88dec3a601fe25a8": {
+    "chain": "base",
+    "symbol": "BALD",
+    "decimals": 18,
+    "address": "0x27d2decb4bfc9c76f0309b8e88dec3a601fe25a8",
+    "logoURI": "https://raw.githubusercontent.com/sushiswap/list/master/logos/network/base/0x27D2DECb4bFC9C76F0309b8E88dec3a601Fe25a8.jpg"
+  },
   "0x2ae3f1ec7f1f5012cfeab0185bfc7aa3cf0dec22": {
     "chain": "base",
     "address": "0x2ae3f1ec7f1f5012cfeab0185bfc7aa3cf0dec22",
     "symbol": "cbETH",
     "decimals": 18
   },
+  "0x2ccbecc47d83ee80e27fd09c8e757b82f1ffad4c": {
+    "chain": "base",
+    "symbol": "NANG",
+    "decimals": 18,
+    "address": "0x2ccbecc47d83ee80e27fd09c8e757b82f1ffad4c",
+    "logoURI": "https://raw.githubusercontent.com/sushiswap/list/master/logos/token-logos/network/base/0x2CcbEcc47D83eE80e27fd09c8e757B82F1fFad4C.jpg"
+  },
   "0x2e98656ce8880dd9883fac77c6c3f2d3cda3b21b": {
     "chain": "base",
     "address": "0x2e98656ce8880dd9883fac77c6c3f2d3cda3b21b",
     "symbol": "PPSN",
     "decimals": 18
+  },
+  "0x3055913c90fcc1a6ce9a358911721eeb942013a1": {
+    "chain": "base",
+    "symbol": "CAKE",
+    "decimals": 18,
+    "address": "0x3055913c90fcc1a6ce9a358911721eeb942013a1",
+    "logoURI": "https://tokens.pancakeswap.finance/images/base/0x3055913c90Fcc1A6CE9a358911721eEb942013A1.png"
+  },
+  "0x3124678d62d2aa1f615b54525310fbfda6dcf7ae": {
+    "chain": "base",
+    "symbol": "SNSY",
+    "decimals": 18,
+    "address": "0x3124678d62d2aa1f615b54525310fbfda6dcf7ae",
+    "logoURI": "https://raw.githubusercontent.com/sushiswap/list/master/logos/token-logos/network/base/0x3124678D62D2aa1f615B54525310fbfDa6DcF7AE.jpg"
   },
   "0x321725ee44cb4bfa544cf45a5a585b925d30a58c": {
     "chain": "base",
@@ -113,11 +211,32 @@
     "decimals": 18,
     "address": "0x38815a4455921667d673b4cb3d48f0383ee93400"
   },
+  "0x3bb4445d30ac020a84c1b5a8a2c6248ebc9779d0": {
+    "chain": "base",
+    "symbol": "ZRX",
+    "decimals": 18,
+    "address": "0x3bb4445d30ac020a84c1b5a8a2c6248ebc9779d0",
+    "logoURI": "https://raw.githubusercontent.com/sushiswap/list/master/logos/network/base/0x3bB4445D30AC020a84c1b5A8A2C6248ebC9779D0.jpg"
+  },
+  "0x3e7ef8f50246f725885102e8238cbba33f276747": {
+    "chain": "base",
+    "symbol": "HANeP",
+    "decimals": 18,
+    "address": "0x3e7ef8f50246f725885102e8238cbba33f276747",
+    "logoURI": "https://raw.githubusercontent.com/sushiswap/list/master/logos/token-logos/network/base/0x3e7eF8f50246f725885102E8238CBba33F276747.jpg"
+  },
   "0x3e8707557d4ad25d6042f590bcf8a06071da2c5f": {
     "chain": "base",
     "address": "0x3e8707557d4ad25d6042f590bcf8a06071da2c5f",
     "symbol": "rWETH",
     "decimals": 18
+  },
+  "0x40468be13c4388d2ab68a09f56973fa95db5bca0": {
+    "chain": "base",
+    "symbol": "PIZZA",
+    "decimals": 18,
+    "address": "0x40468be13c4388d2ab68a09f56973fa95db5bca0",
+    "logoURI": "https://raw.githubusercontent.com/sushiswap/list/master/logos/token-logos/network/base/0x40468be13c4388D2AB68a09F56973fa95DB5bca0.jpg"
   },
   "0x4200000000000000000000000000000000000006": {
     "chain": "base",
@@ -137,11 +256,32 @@
     "symbol": "DOLA",
     "decimals": 18
   },
+  "0x47b464edb8dc9bc67b5cd4c9310bb87b773845bd": {
+    "chain": "base",
+    "symbol": "NORMIE",
+    "decimals": 9,
+    "address": "0x47b464edb8dc9bc67b5cd4c9310bb87b773845bd",
+    "logoURI": "https://raw.githubusercontent.com/sushiswap/list/master/logos/token-logos/network/base/0x47b464eDB8Dc9BC67b5CD4C9310BB87b773845bD.jpg"
+  },
   "0x48d5b938b59f21b10d13c8f5ebd191a844649b07": {
     "chain": "base",
     "address": "0x48d5b938b59f21b10d13c8f5ebd191a844649b07",
     "symbol": "FINE",
     "decimals": 18
+  },
+  "0x4d25e94291fe8dcfbfa572cbb2aaa7b755087c91": {
+    "chain": "base",
+    "symbol": "HIGH",
+    "decimals": 18,
+    "address": "0x4d25e94291fe8dcfbfa572cbb2aaa7b755087c91",
+    "logoURI": "https://raw.githubusercontent.com/sushiswap/list/master/logos/token-logos/network/base/0x4d25E94291FE8dcFBfA572cbB2aAa7B755087c91.jpg"
+  },
+  "0x4e496c0256fb9d4cc7ba2fdf931bc9cbb7731660": {
+    "chain": "base",
+    "symbol": "BOGE",
+    "decimals": 9,
+    "address": "0x4e496c0256fb9d4cc7ba2fdf931bc9cbb7731660",
+    "logoURI": "https://raw.githubusercontent.com/sushiswap/list/master/logos/token-logos/network/base/0x4e496c0256FB9D4CC7Ba2fdF931bC9CbB7731660.jpg"
   },
   "0x4ea71a20e655794051d1ee8b6e4a3269b13ccacc": {
     "chain": "base",
@@ -161,6 +301,13 @@
     "symbol": "DAI",
     "decimals": 18
   },
+  "0x532f27101965dd16442e59d40670faf5ebb142e4": {
+    "chain": "base",
+    "symbol": "BRETT",
+    "decimals": 18,
+    "address": "0x532f27101965dd16442e59d40670faf5ebb142e4",
+    "logoURI": "https://tokens.pancakeswap.finance/images/base/0x532f27101965dd16442E59d40670FaF5eBB142E4.png"
+  },
   "0x56b0c620daa19d4781f3c6bc1fdafce338e00e1a": {
     "chain": "base",
     "address": "0x56b0c620daa19d4781f3c6bc1fdafce338e00e1a",
@@ -179,17 +326,45 @@
     "symbol": "RVNU",
     "decimals": 18
   },
+  "0x5a76a56ad937335168b30df3aa1327277421c6ae": {
+    "chain": "base",
+    "symbol": "VELA",
+    "decimals": 18,
+    "address": "0x5a76a56ad937335168b30df3aa1327277421c6ae",
+    "logoURI": "https://raw.githubusercontent.com/sushiswap/list/master/logos/token-logos/network/base/0x5A76A56ad937335168b30dF3AA1327277421C6Ae.jpg"
+  },
   "0x5c65707ac2b03078a19a48df730add4449975e08": {
     "chain": "base",
     "address": "0x5c65707ac2b03078a19a48df730add4449975e08",
     "symbol": "MoonInc",
     "decimals": 18
   },
+  "0x5c7e299cf531eb66f2a1df637d37abb78e6200c7": {
+    "chain": "base",
+    "symbol": "axlDAI",
+    "decimals": 18,
+    "address": "0x5c7e299cf531eb66f2a1df637d37abb78e6200c7",
+    "logoURI": "https://raw.githubusercontent.com/sushiswap/list/master/logos/network/base/0x5C7e299CF531eb66f2A1dF637d37AbB78e6200C7.jpg"
+  },
+  "0x60a3e35cc302bfa44cb288bc5a4f316fdb1adb42": {
+    "chain": "base",
+    "symbol": "EURC",
+    "decimals": 6,
+    "address": "0x60a3e35cc302bfa44cb288bc5a4f316fdb1adb42",
+    "logoURI": "https://assets.coingecko.com/coins/images/26045/standard/euro.png"
+  },
   "0x6333d4542f1a9a2f147b8e83b98c95a19f38d4f2": {
     "chain": "base",
     "address": "0x6333d4542f1a9a2f147b8e83b98c95a19f38d4f2",
     "symbol": "Porshe",
     "decimals": 18
+  },
+  "0x64cc19a52f4d631ef5be07947caba14ae00c52eb": {
+    "chain": "base",
+    "symbol": "KIBBLE",
+    "decimals": 18,
+    "address": "0x64cc19a52f4d631ef5be07947caba14ae00c52eb",
+    "logoURI": "https://raw.githubusercontent.com/sushiswap/list/master/logos/token-logos/network/base/0x64cc19A52f4D631eF5BE07947CABA14aE00c52Eb.jpg"
   },
   "0x68d12b4d0fb52aa9749c02b88fc56d191d151036": {
     "chain": "base",
@@ -215,6 +390,34 @@
     "symbol": "test",
     "decimals": 18
   },
+  "0x7771450ece9c61430953d2646f995e33a06c91f5": {
+    "chain": "base",
+    "symbol": "MONKE",
+    "decimals": 18,
+    "address": "0x7771450ece9c61430953d2646f995e33a06c91f5",
+    "logoURI": "https://raw.githubusercontent.com/sushiswap/list/master/logos/token-logos/network/base/0x7771450EcE9C61430953D2646f995E33a06C91F5.jpg"
+  },
+  "0x7c6b91d9be155a6db01f749217d76ff02a7227f2": {
+    "chain": "base",
+    "symbol": "BAL",
+    "decimals": 18,
+    "address": "0x7c6b91d9be155a6db01f749217d76ff02a7227f2",
+    "logoURI": "https://raw.githubusercontent.com/sushiswap/list/master/logos/network/base/0x7c6b91D9Be155A6Db01f749217d76fF02A7227F2.jpg"
+  },
+  "0x7d49a065d17d6d4a55dc13649901fdbb98b2afba": {
+    "chain": "base",
+    "symbol": "SUSHI",
+    "decimals": 18,
+    "address": "0x7d49a065d17d6d4a55dc13649901fdbb98b2afba",
+    "logoURI": "https://raw.githubusercontent.com/sushiswap/list/master/logos/token-logos/network/base/0x7D49a065D17d6d4a55dc13649901fdBB98B2AFBA.jpg"
+  },
+  "0x7ed613ab8b2b4c6a781ddc97ea98a666c6437511": {
+    "chain": "base",
+    "symbol": "AYB",
+    "decimals": 18,
+    "address": "0x7ed613ab8b2b4c6a781ddc97ea98a666c6437511",
+    "logoURI": "https://raw.githubusercontent.com/sushiswap/list/master/logos/token-logos/network/base/0x7ED613AB8b2b4c6A781DDC97eA98a666c6437511.jpg"
+  },
   "0x7f12d13b34f5f4f0a9449c16bcd42f0da47af200": {
     "chain": "base",
     "address": "0x7f12d13b34f5f4f0a9449c16bcd42f0da47af200",
@@ -227,17 +430,59 @@
     "decimals": 6,
     "address": "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913"
   },
+  "0x8544fe9d190fd7ec52860abbf45088e81ee24a8c": {
+    "chain": "base",
+    "symbol": "TOSHI",
+    "decimals": 18,
+    "address": "0x8544fe9d190fd7ec52860abbf45088e81ee24a8c",
+    "logoURI": "https://raw.githubusercontent.com/sushiswap/list/master/logos/network/base/0x8544FE9D190fD7EC52860abBf45088E81Ee24a8c.jpg"
+  },
+  "0x85e90a5430af45776548adb82ee4cd9e33b08077": {
+    "chain": "base",
+    "symbol": "DINO",
+    "decimals": 18,
+    "address": "0x85e90a5430af45776548adb82ee4cd9e33b08077",
+    "logoURI": "https://raw.githubusercontent.com/sushiswap/list/master/logos/token-logos/network/base/0x85E90a5430AF45776548ADB82eE4cD9E33B08077.jpg"
+  },
+  "0x895a26f67a8375d0419cb7e4bd1109ac139ab741": {
+    "chain": "base",
+    "symbol": "JELLY",
+    "decimals": 18,
+    "address": "0x895a26f67a8375d0419cb7e4bd1109ac139ab741",
+    "logoURI": "https://raw.githubusercontent.com/sushiswap/list/master/logos/token-logos/network/base/0x895A26F67a8375D0419Cb7E4bd1109aC139ab741.jpg"
+  },
   "0x8ee73c484a26e0a5df2ee2a4960b789967dd0415": {
     "chain": "base",
     "address": "0x8ee73c484a26e0a5df2ee2a4960b789967dd0415",
     "symbol": "CRV",
     "decimals": 18
   },
+  "0x8fbd0648971d56f1f2c35fa075ff5bc75fb0e39d": {
+    "chain": "base",
+    "symbol": "MBS",
+    "decimals": 18,
+    "address": "0x8fbd0648971d56f1f2c35fa075ff5bc75fb0e39d",
+    "logoURI": "https://raw.githubusercontent.com/sushiswap/list/master/logos/token-logos/network/base/0x8Fbd0648971d56f1f2c35Fa075Ff5Bc75fb0e39D.jpg"
+  },
   "0x940181a94a35a4569e4529a3cdfb74e38fd98631": {
     "chain": "base",
     "address": "0x940181a94a35a4569e4529a3cdfb74e38fd98631",
     "symbol": "AERO",
     "decimals": 18
+  },
+  "0x981d41c115a2d48cb1215d13bda8f989d407c9c5": {
+    "chain": "base",
+    "symbol": "XEN",
+    "decimals": 18,
+    "address": "0x981d41c115a2d48cb1215d13bda8f989d407c9c5",
+    "logoURI": "https://raw.githubusercontent.com/sushiswap/list/master/logos/token-logos/network/base/0x981D41C115a2d48Cb1215D13Bda8f989d407c9c5.jpg"
+  },
+  "0x9d8a9aec7adcb2b203d285b9c6f91abbcdf1d7e4": {
+    "chain": "base",
+    "symbol": "DOLP",
+    "decimals": 18,
+    "address": "0x9d8a9aec7adcb2b203d285b9c6f91abbcdf1d7e4",
+    "logoURI": "https://raw.githubusercontent.com/sushiswap/list/master/logos/token-logos/network/base/0x9D8a9aEc7aDcb2b203D285b9c6F91ABbcDF1D7e4.jpg"
   },
   "0x9de16c805a3227b9b92e39a446f9d56cf59fe640": {
     "chain": "base",
@@ -250,6 +495,20 @@
     "address": "0x9e1028f5f1d5ede59748ffcee5532509976840e0",
     "symbol": "COMP",
     "decimals": 18
+  },
+  "0x9e5aac1ba1a2e6aed6b32689dfcf62a509ca96f3": {
+    "chain": "base",
+    "symbol": "HAN",
+    "decimals": 18,
+    "address": "0x9e5aac1ba1a2e6aed6b32689dfcf62a509ca96f3",
+    "logoURI": "https://raw.githubusercontent.com/sushiswap/list/master/logos/token-logos/network/base/0x9e5AAC1Ba1a2e6aEd6b32689DFcF62A509Ca96f3.jpg"
+  },
+  "0xa3d1a8deb97b111454b294e2324efad13a9d8396": {
+    "chain": "base",
+    "symbol": "OVN",
+    "decimals": 18,
+    "address": "0xa3d1a8deb97b111454b294e2324efad13a9d8396",
+    "logoURI": "https://tokens.pancakeswap.finance/images/base/0xA3d1a8DEB97B111454B294E2324EfAD13a9d8396.png"
   },
   "0xac1bd2486aaf3b5c0fc3fd868558b082a531b2b4": {
     "chain": "base",
@@ -269,6 +528,27 @@
     "symbol": "cUSDCv3",
     "decimals": 6
   },
+  "0xb166e8b140d35d9d8226e40c09f757bac5a4d87d": {
+    "chain": "base",
+    "symbol": "NPC",
+    "decimals": 18,
+    "address": "0xb166e8b140d35d9d8226e40c09f757bac5a4d87d",
+    "logoURI": "https://raw.githubusercontent.com/sushiswap/list/master/logos/token-logos/network/base/0xB166E8B140D35D9D8226E40C09f757BAC5A4d87d.jpg"
+  },
+  "0xb1a03eda10342529bbf8eb700a06c60441fef25d": {
+    "chain": "base",
+    "symbol": "MIGGLES",
+    "decimals": 18,
+    "address": "0xb1a03eda10342529bbf8eb700a06c60441fef25d",
+    "logoURI": "https://tokens.pancakeswap.finance/images/base/0xB1a03EdA10342529bBF8EB700a06C60441fEf25d.png"
+  },
+  "0xb310c7d7428b95ad1b86ba4191704576150429b6": {
+    "chain": "base",
+    "symbol": "BOMB",
+    "decimals": 18,
+    "address": "0xb310c7d7428b95ad1b86ba4191704576150429b6",
+    "logoURI": "https://raw.githubusercontent.com/sushiswap/list/master/logos/token-logos/network/base/0xB310C7D7428B95aD1B86ba4191704576150429B6.jpg"
+  },
   "0xb31462268e5c0907a001f655d8bc7af8ff579ed0": {
     "chain": "base",
     "address": "0xb31462268e5c0907a001f655d8bc7af8ff579ed0",
@@ -287,17 +567,66 @@
     "symbol": "BRUCE",
     "decimals": 18
   },
+  "0xb79dd08ea68a908a97220c76d19a6aa9cbde4376": {
+    "chain": "base",
+    "symbol": "USD+",
+    "decimals": 6,
+    "address": "0xb79dd08ea68a908a97220c76d19a6aa9cbde4376",
+    "logoURI": "https://tokens.pancakeswap.finance/images/base/0xB79DD08EA68A908A97220C76d19A6aA9cBDE4376.png"
+  },
+  "0xb8d98a102b0079b69ffbc760c8d857a31653e56e": {
+    "chain": "base",
+    "symbol": "toby",
+    "decimals": 18,
+    "address": "0xb8d98a102b0079b69ffbc760c8d857a31653e56e",
+    "logoURI": "https://raw.githubusercontent.com/sushiswap/list/master/logos/token-logos/network/base/0xb8D98a102b0079B69FFbc760C8d857A31653e56e.jpg"
+  },
+  "0xba0dda8762c24da9487f5fa026a9b64b695a07ea": {
+    "chain": "base",
+    "symbol": "OX",
+    "decimals": 18,
+    "address": "0xba0dda8762c24da9487f5fa026a9b64b695a07ea",
+    "logoURI": "https://raw.githubusercontent.com/sushiswap/list/master/logos/token-logos/network/base/0xba0Dda8762C24dA9487f5FA026a9B64b695A07Ea.jpg"
+  },
+  "0xba5b9b2d2d06a9021eb3190ea5fb0e02160839a4": {
+    "chain": "base",
+    "symbol": "Sendit",
+    "decimals": 18,
+    "address": "0xba5b9b2d2d06a9021eb3190ea5fb0e02160839a4",
+    "logoURI": "https://raw.githubusercontent.com/sushiswap/list/master/logos/token-logos/network/base/0xBa5B9B2D2d06a9021EB3190ea5Fb0e02160839A4.jpg"
+  },
   "0xba71cb8ef2d59de7399745793657838829e0b147": {
     "chain": "base",
     "address": "0xba71cb8ef2d59de7399745793657838829e0b147",
     "symbol": "SIAM",
     "decimals": 18
   },
+  "0xbc45647ea894030a4e9801ec03479739fa2485f0": {
+    "chain": "base",
+    "symbol": "BENJI",
+    "decimals": 18,
+    "address": "0xbc45647ea894030a4e9801ec03479739fa2485f0",
+    "logoURI": "https://raw.githubusercontent.com/sushiswap/list/master/logos/token-logos/network/base/0xBC45647eA894030a4E9801Ec03479739FA2485F0.jpg"
+  },
   "0xbde0b41189be87b8b7dceccbdf47013652d49240": {
     "chain": "base",
     "address": "0xbde0b41189be87b8b7dceccbdf47013652d49240",
     "symbol": "TUMP",
     "decimals": 18
+  },
+  "0xbe3111856e4aca828593274ea6872f27968c8dd6": {
+    "chain": "base",
+    "symbol": "KRAV",
+    "decimals": 18,
+    "address": "0xbe3111856e4aca828593274ea6872f27968c8dd6",
+    "logoURI": "https://raw.githubusercontent.com/sushiswap/list/master/logos/network/base/0xbE3111856e4acA828593274eA6872f27968C8DD6.jpg"
+  },
+  "0xbfd5206962267c7b4b4a8b3d76ac2e1b2a5c4d5e": {
+    "chain": "base",
+    "symbol": "OSAK",
+    "decimals": 18,
+    "address": "0xbfd5206962267c7b4b4a8b3d76ac2e1b2a5c4d5e",
+    "logoURI": "https://raw.githubusercontent.com/sushiswap/list/master/logos/token-logos/network/base/0xbFd5206962267c7b4b4A8B3D76AC2E1b2A5c4d5e.jpg"
   },
   "0xc1cba3fcea344f92d9239c08c0568f6f2f0ee452": {
     "chain": "base",
@@ -310,6 +639,27 @@
     "address": "0xc1e02884af4a283ca25ab63c45360d220d69da52",
     "symbol": "sUSDCy",
     "decimals": 18
+  },
+  "0xc2106ca72996e49bbadcb836eec52b765977fd20": {
+    "chain": "base",
+    "symbol": "NFTE",
+    "decimals": 18,
+    "address": "0xc2106ca72996e49bbadcb836eec52b765977fd20",
+    "logoURI": "https://raw.githubusercontent.com/sushiswap/list/master/logos/token-logos/network/base/0xc2106ca72996e49bBADcB836eeC52B765977fd20.jpg"
+  },
+  "0xc48e605c7b722a57277e087a6170b9e227e5ac0a": {
+    "chain": "base",
+    "symbol": "OMNI",
+    "decimals": 18,
+    "address": "0xc48e605c7b722a57277e087a6170b9e227e5ac0a",
+    "logoURI": "https://raw.githubusercontent.com/sushiswap/list/master/logos/token-logos/network/base/0xC48E605c7b722a57277e087a6170B9E227e5AC0A.jpg"
+  },
+  "0xc702b80a1bebac118cab22ce6f2978ef59563b3f": {
+    "chain": "base",
+    "symbol": "RAFL",
+    "decimals": 8,
+    "address": "0xc702b80a1bebac118cab22ce6f2978ef59563b3f",
+    "logoURI": "https://raw.githubusercontent.com/sushiswap/list/master/logos/token-logos/network/base/0xC702b80a1bEBac118cab22Ce6F2978ef59563b3F.jpg"
   },
   "0xc7b8f52b31b7ae02eb7067ca23b60347a9aa01db": {
     "chain": "base",
@@ -335,11 +685,32 @@
     "symbol": "aBascbETH",
     "decimals": 18
   },
+  "0xd08a2917653d4e460893203471f0000826fb4034": {
+    "chain": "base",
+    "symbol": "FARM",
+    "decimals": 18,
+    "address": "0xd08a2917653d4e460893203471f0000826fb4034",
+    "logoURI": "https://raw.githubusercontent.com/sushiswap/list/master/logos/token-logos/network/base/0xD08a2917653d4E460893203471f0000826fb4034.jpg"
+  },
+  "0xd1917629b3e6a72e6772aab5dbe58eb7fa3c2f33": {
+    "chain": "base",
+    "symbol": "SEXY",
+    "decimals": 18,
+    "address": "0xd1917629b3e6a72e6772aab5dbe58eb7fa3c2f33",
+    "logoURI": "https://raw.githubusercontent.com/sushiswap/list/master/logos/token-logos/network/base/0xD1917629B3E6A72E6772Aab5dBe58Eb7FA3C2F33.jpg"
+  },
   "0xd1db4851bcf5b41442caa32025ce0afe6b8eabc2": {
     "chain": "base",
     "address": "0xd1db4851bcf5b41442caa32025ce0afe6b8eabc2",
     "symbol": "ZOOMER",
     "decimals": 18
+  },
+  "0xd3a61a3a9b8e0dd8160c9bf5ea79159e3e2452b8": {
+    "chain": "base",
+    "symbol": "HAM",
+    "decimals": 18,
+    "address": "0xd3a61a3a9b8e0dd8160c9bf5ea79159e3e2452b8",
+    "logoURI": "https://raw.githubusercontent.com/sushiswap/list/master/logos/token-logos/network/base/0xd3a61a3A9b8E0dD8160C9bF5Ea79159e3E2452B8.jpg"
   },
   "0xd75f5bee37168f97552f843076adc2ea9a8a0935": {
     "chain": "base",
@@ -353,11 +724,25 @@
     "decimals": 6,
     "address": "0xd9aaec86b65d86f6a7b5b1b0c42ffa531710b6ca"
   },
+  "0xda761a290e01c69325d12d82ac402e5a73d62e81": {
+    "chain": "base",
+    "symbol": "BPS",
+    "decimals": 18,
+    "address": "0xda761a290e01c69325d12d82ac402e5a73d62e81",
+    "logoURI": "https://raw.githubusercontent.com/sushiswap/list/master/logos/token-logos/network/base/0xDa761A290e01c69325D12D82AC402E5a73D62E81.jpg"
+  },
   "0xddf7d080c82b8048baae54e376a3406572429b4e": {
     "chain": "base",
     "address": "0xddf7d080c82b8048baae54e376a3406572429b4e",
     "symbol": "oooOOO",
     "decimals": 18
+  },
+  "0xe1f9ac62a2f34881f6fe0f84322de9d7024c2b8e": {
+    "chain": "base",
+    "symbol": "MOCHI",
+    "decimals": 8,
+    "address": "0xe1f9ac62a2f34881f6fe0f84322de9d7024c2b8e",
+    "logoURI": "https://raw.githubusercontent.com/sushiswap/list/master/logos/token-logos/network/base/0xe1f9ac62a2f34881f6Fe0F84322dE9d7024C2b8E.jpg"
   },
   "0xe31ee12bdfdd0573d634124611e85338e2cbf0cf": {
     "chain": "base",
@@ -371,11 +756,39 @@
     "symbol": "TINO",
     "decimals": 18
   },
+  "0xe5393cdbc4fe7b62f1d76a990ca7da17ad718313": {
+    "chain": "base",
+    "symbol": "SABLE",
+    "decimals": 18,
+    "address": "0xe5393cdbc4fe7b62f1d76a990ca7da17ad718313",
+    "logoURI": "https://tokens.pancakeswap.finance/images/base/0xE5393cdBC4Fe7B62F1d76A990Ca7Da17ad718313.png"
+  },
+  "0xe7798f023fc62146e8aa1b36da45fb70855a77ea": {
+    "chain": "base",
+    "symbol": "iFARM",
+    "decimals": 18,
+    "address": "0xe7798f023fc62146e8aa1b36da45fb70855a77ea",
+    "logoURI": "https://raw.githubusercontent.com/sushiswap/list/master/logos/token-logos/network/base/0xE7798f023fC62146e8Aa1b36Da45fb70855a77Ea.jpg"
+  },
   "0xe78b2ff44a17e91a1e5991c5d821cbea6837a413": {
     "chain": "base",
     "address": "0xe78b2ff44a17e91a1e5991c5d821cbea6837a413",
     "symbol": "gm",
     "decimals": 18
+  },
+  "0xea930c80d8eac45993d127055e718555e7155fb1": {
+    "chain": "base",
+    "symbol": "INF",
+    "decimals": 18,
+    "address": "0xea930c80d8eac45993d127055e718555e7155fb1",
+    "logoURI": "https://raw.githubusercontent.com/sushiswap/list/master/logos/token-logos/network/base/0xeA930c80d8eac45993d127055E718555e7155fB1.jpg"
+  },
+  "0xeb466342c4d449bc9f53a865d5cb90586f405215": {
+    "chain": "base",
+    "symbol": "axlUSDC",
+    "decimals": 6,
+    "address": "0xeb466342c4d449bc9f53a865d5cb90586f405215",
+    "logoURI": "https://tokens.pancakeswap.finance/images/base/0xEB466342C4d449BC9f53A865D5Cb90586f405215.png"
   },
   "0xebf418fe2512e7e6bd9b87a8f0f294acdc67e6b4": {
     "chain": "base",
@@ -389,6 +802,13 @@
     "symbol": "SAM",
     "decimals": 18
   },
+  "0xecaf81eb42cd30014eb44130b89bcd6d4ad98b92": {
+    "chain": "base",
+    "symbol": "CHAD",
+    "decimals": 18,
+    "address": "0xecaf81eb42cd30014eb44130b89bcd6d4ad98b92",
+    "logoURI": "https://raw.githubusercontent.com/sushiswap/list/master/logos/token-logos/network/base/0xecaF81Eb42cd30014EB44130b89Bcd6d4Ad98B92.jpg"
+  },
   "0xef2b9649d32e16bc110468c811d63d55b7a5f084": {
     "chain": "base",
     "address": "0xef2b9649d32e16bc110468c811d63d55b7a5f084",
@@ -401,10 +821,45 @@
     "symbol": "bwAJNA",
     "decimals": 18
   },
+  "0xf6e932ca12afa26665dc4dde7e27be02a7c02e50": {
+    "chain": "base",
+    "symbol": "MOCHI",
+    "decimals": 18,
+    "address": "0xf6e932ca12afa26665dc4dde7e27be02a7c02e50",
+    "logoURI": "https://raw.githubusercontent.com/sushiswap/list/master/logos/token-logos/network/base/0xF6e932Ca12afa26665dC4dDE7e27be02A7c02e50.jpg"
+  },
+  "0xf7c1cefcf7e1dd8161e00099facd3e1db9e528ee": {
+    "chain": "base",
+    "symbol": "TOWER",
+    "decimals": 18,
+    "address": "0xf7c1cefcf7e1dd8161e00099facd3e1db9e528ee",
+    "logoURI": "https://raw.githubusercontent.com/sushiswap/list/master/logos/token-logos/network/base/0xf7C1CEfCf7E1dd8161e00099facD3E1Db9e528ee.jpg"
+  },
   "0xfa980ced6895ac314e7de34ef1bfae90a5add21b": {
     "chain": "base",
     "address": "0xfa980ced6895ac314e7de34ef1bfae90a5add21b",
     "symbol": "PRIME",
     "decimals": 18
+  },
+  "0xfde4c96c8593536e31f229ea8f37b2ada2699bb2": {
+    "chain": "base",
+    "symbol": "USDT",
+    "decimals": 6,
+    "address": "0xfde4c96c8593536e31f229ea8f37b2ada2699bb2",
+    "logoURI": "https://tokens.pancakeswap.finance/images/symbol/usdt.png"
+  },
+  "0xfea9dcdc9e23a9068bf557ad5b186675c61d33ea": {
+    "chain": "base",
+    "symbol": "BSHIB",
+    "decimals": 18,
+    "address": "0xfea9dcdc9e23a9068bf557ad5b186675c61d33ea",
+    "logoURI": "https://raw.githubusercontent.com/sushiswap/list/master/logos/token-logos/network/base/0xfEA9DcDc9E23a9068bF557AD5b186675C61d33eA.jpg"
+  },
+  "0xff0c532fdb8cd566ae169c1cb157ff2bdc83e105": {
+    "chain": "base",
+    "symbol": "Fren Pet",
+    "decimals": 18,
+    "address": "0xff0c532fdb8cd566ae169c1cb157ff2bdc83e105",
+    "logoURI": "https://raw.githubusercontent.com/sushiswap/list/master/logos/token-logos/network/base/0xFF0C532FDB8Cd566Ae169C1CB157ff2Bdc83E105.jpg"
   }
 }

@@ -1,5 +1,5 @@
 import { DataMetrics, ProtocolConfig, StakingConfig, StakingVersions, Token } from '../../types/configs';
-import { TokensBookBase } from '../data';
+import { TokensBook } from '../data';
 import { ChainNames, ProtocolNames } from '../names';
 
 export interface SushiBarConfig extends StakingConfig {
@@ -101,7 +101,7 @@ export const SushiConfigs: SushiConfig = {
       version: StakingVersions.xsushi,
       poolId: 'xSushi',
       birthday: 1599696000, // Thu Sep 10 2020 00:00:00 GMT+0000
-      token: TokensBookBase.ethereum.SUSHI,
+      token: TokensBook.ethereum['0x6b3595068778dd592e39a122f4f5a5cf09c90fe2'],
       address: '0x8798249c2e607446efb7ad49ec89dd1865ff4272',
       sushiLp: '0x795065dcc9f64b5614c407a6efdc400da6221fb0',
     },

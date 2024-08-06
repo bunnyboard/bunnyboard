@@ -5,11 +5,39 @@
     "symbol": "ETH",
     "decimals": 18
   },
+  "0x000f1720a263f96532d1ac2bb9cdc12b72c6f386": {
+    "chain": "arbitrum",
+    "symbol": "FLY",
+    "decimals": 6,
+    "address": "0x000f1720a263f96532d1ac2bb9cdc12b72c6f386",
+    "logoURI": "https://tokens.pancakeswap.finance/images/arbitrum/0x000F1720A263f96532D1ac2bb9CDC12b72C6f386.png"
+  },
   "0x004626a008b1acdc4c74ab51644093b155e59a23": {
     "chain": "arbitrum",
     "address": "0x004626a008b1acdc4c74ab51644093b155e59a23",
     "symbol": "stEUR",
     "decimals": 18
+  },
+  "0x02150e97271fdc0d6e3a16d9094a0948266f07dd": {
+    "chain": "arbitrum",
+    "symbol": "HAMI",
+    "decimals": 18,
+    "address": "0x02150e97271fdc0d6e3a16d9094a0948266f07dd",
+    "logoURI": "https://raw.githubusercontent.com/sushiswap/list/master/logos/token-logos/network/arbitrum/0x02150e97271fDC0D6E3A16d9094A0948266F07dD.jpg"
+  },
+  "0x031d35296154279dc1984dcd93e392b1f946737b": {
+    "chain": "arbitrum",
+    "symbol": "CAP",
+    "decimals": 18,
+    "address": "0x031d35296154279dc1984dcd93e392b1f946737b",
+    "logoURI": "https://raw.githubusercontent.com/sushiswap/list/master/logos/token-logos/token/cap.jpg"
+  },
+  "0x0341c0c0ec423328621788d4854119b97f44e391": {
+    "chain": "arbitrum",
+    "symbol": "Silo",
+    "decimals": 18,
+    "address": "0x0341c0c0ec423328621788d4854119b97f44e391",
+    "logoURI": "https://raw.githubusercontent.com/sushiswap/list/master/logos/token-logos/network/arbitrum/0x0341C0C0ec423328621788d4854119B97f44E391.jpg"
   },
   "0x040d1edc9569d4bab2d15287dc5a4f10f56a56b8": {
     "chain": "arbitrum",
@@ -23,6 +51,20 @@
     "symbol": "DLCBTC",
     "decimals": 8
   },
+  "0x07e49d5de43dda6162fa28d24d5935c151875283": {
+    "chain": "arbitrum",
+    "symbol": "GOVI",
+    "decimals": 18,
+    "address": "0x07e49d5de43dda6162fa28d24d5935c151875283",
+    "logoURI": "https://raw.githubusercontent.com/sushiswap/list/master/logos/token-logos/network/arbitrum/0x07E49d5dE43DDA6162Fa28D24d5935C151875283.jpg"
+  },
+  "0x088cd8f5ef3652623c22d48b1605dcfe860cd704": {
+    "chain": "arbitrum",
+    "symbol": "VELA",
+    "decimals": 18,
+    "address": "0x088cd8f5ef3652623c22d48b1605dcfe860cd704",
+    "logoURI": "https://raw.githubusercontent.com/sushiswap/list/master/logos/token-logos/token/vela.jpg"
+  },
   "0x09199d9a5f4448d0848e4395d065e1ad9c4a1f74": {
     "chain": "arbitrum",
     "symbol": "BONK",
@@ -35,17 +77,73 @@
     "symbol": "GM",
     "decimals": 18
   },
+  "0x09ad12552ec45f82be90b38dfe7b06332a680864": {
+    "chain": "arbitrum",
+    "symbol": "ARBY",
+    "decimals": 18,
+    "address": "0x09ad12552ec45f82be90b38dfe7b06332a680864",
+    "logoURI": "https://raw.githubusercontent.com/sushiswap/assets/master/blockchains/arbitrum/assets/0x09ad12552ec45f82bE90B38dFE7b06332A680864/logo.png"
+  },
+  "0x0c4681e6c0235179ec3d4f4fc4df3d14fdd96017": {
+    "chain": "arbitrum",
+    "symbol": "RDNT",
+    "decimals": 18,
+    "address": "0x0c4681e6c0235179ec3d4f4fc4df3d14fdd96017",
+    "logoURI": "https://raw.githubusercontent.com/sushiswap/list/master/logos/token-logos/network/arbitrum/0x0C4681e6C0235179ec3D4F4fc4DF3d14FDD96017.jpg"
+  },
   "0x0c880f6761f1af8d9aa9c466984b80dab9a8c9e8": {
     "chain": "arbitrum",
     "symbol": "PENDLE",
     "decimals": 18,
     "address": "0x0c880f6761f1af8d9aa9c466984b80dab9a8c9e8"
   },
+  "0x0e15258734300290a651fdbae8deb039a8e7a2fa": {
+    "chain": "arbitrum",
+    "symbol": "ALCH",
+    "decimals": 18,
+    "address": "0x0e15258734300290a651fdbae8deb039a8e7a2fa",
+    "logoURI": "https://raw.githubusercontent.com/sushiswap/list/master/logos/token-logos/token/alch.jpg"
+  },
+  "0x10010078a54396f62c96df8532dc2b4847d47ed3": {
+    "chain": "arbitrum",
+    "symbol": "HND",
+    "decimals": 18,
+    "address": "0x10010078a54396f62c96df8532dc2b4847d47ed3",
+    "logoURI": "https://raw.githubusercontent.com/sushiswap/assets/master/blockchains/arbitrum/assets/0x10010078a54396F62c96dF8532dc2B4847d47ED3/logo.png"
+  },
+  "0x10393c20975cf177a3513071bc110f7962cd67da": {
+    "chain": "arbitrum",
+    "symbol": "JONES",
+    "decimals": 18,
+    "address": "0x10393c20975cf177a3513071bc110f7962cd67da",
+    "logoURI": "https://raw.githubusercontent.com/sushiswap/list/master/logos/token-logos/network/arbitrum/0x10393c20975cF177a3513071bC110f7962CD67da.jpg"
+  },
   "0x11cdb42b0eb46d95f990bedd4695a6e3fa034978": {
     "chain": "arbitrum",
     "symbol": "CRV",
     "decimals": 18,
     "address": "0x11cdb42b0eb46d95f990bedd4695a6e3fa034978"
+  },
+  "0x123389c2f0e9194d9ba98c21e63c375b67614108": {
+    "chain": "arbitrum",
+    "symbol": "EMAX",
+    "decimals": 18,
+    "address": "0x123389c2f0e9194d9ba98c21e63c375b67614108",
+    "logoURI": "https://raw.githubusercontent.com/sushiswap/list/master/logos/token-logos/network/arbitrum/0x123389C2f0e9194d9bA98c21E63c375B67614108.jpg"
+  },
+  "0x1337420ded5adb9980cfc35f8f2b054ea86f8ab1": {
+    "chain": "arbitrum",
+    "symbol": "SQD",
+    "decimals": 18,
+    "address": "0x1337420ded5adb9980cfc35f8f2b054ea86f8ab1",
+    "logoURI": "https://tokens.pancakeswap.finance/images/arbitrum/0x1337420dED5ADb9980CFc35f8f2B054ea86f8aB1.png"
+  },
+  "0x155f0dd04424939368972f4e1838687d6a831151": {
+    "chain": "arbitrum",
+    "symbol": "ADoge",
+    "decimals": 18,
+    "address": "0x155f0dd04424939368972f4e1838687d6a831151",
+    "logoURI": "https://raw.githubusercontent.com/sushiswap/list/master/logos/token-logos/token/doge.jpg"
   },
   "0x1622bf67e6e5747b81866fe0b85178a93c7f86e3": {
     "chain": "arbitrum",
@@ -59,11 +157,46 @@
     "decimals": 18,
     "address": "0x17fc002b466eec40dae837fc4be5c67993ddbd6f"
   },
+  "0x18c14c2d707b2212e17d1579789fc06010cfca23": {
+    "chain": "arbitrum",
+    "symbol": "ETH+",
+    "decimals": 18,
+    "address": "0x18c14c2d707b2212e17d1579789fc06010cfca23",
+    "logoURI": "https://tokens.pancakeswap.finance/images/arbitrum/0x18C14C2D707b2212e17d1579789Fc06010cfca23.png"
+  },
   "0x1922c36f3bc762ca300b4a46bb2102f84b1684ab": {
     "chain": "arbitrum",
     "symbol": "CMUMAMI",
     "decimals": 9,
     "address": "0x1922c36f3bc762ca300b4a46bb2102f84b1684ab"
+  },
+  "0x1a7bd9edc36fb2b3c0852bcd7438c2a957fd7ad5": {
+    "chain": "arbitrum",
+    "symbol": "aMoon",
+    "decimals": 9,
+    "address": "0x1a7bd9edc36fb2b3c0852bcd7438c2a957fd7ad5",
+    "logoURI": "https://raw.githubusercontent.com/ArbiMoonXyz/MyFiles/main/arbimoon.jpg"
+  },
+  "0x1b896893dfc86bb67cf57767298b9073d2c1ba2c": {
+    "chain": "arbitrum",
+    "symbol": "CAKE",
+    "decimals": 18,
+    "address": "0x1b896893dfc86bb67cf57767298b9073d2c1ba2c",
+    "logoURI": "https://tokens.pancakeswap.finance/images/arbitrum/0x1b896893dfc86bb67Cf57767298b9073D2c1bA2c.png"
+  },
+  "0x1c43d05be7e5b54d506e3ddb6f0305e8a66cd04e": {
+    "chain": "arbitrum",
+    "symbol": "ZTX",
+    "decimals": 18,
+    "address": "0x1c43d05be7e5b54d506e3ddb6f0305e8a66cd04e",
+    "logoURI": "https://raw.githubusercontent.com/sushiswap/list/master/logos/token-logos/network/arbitrum/0x1C43D05be7E5b54D506e3DdB6f0305e8A66CD04e.jpg"
+  },
+  "0x1c7f32699ff9163f928089c0a4d6ee5ad5885c6f": {
+    "chain": "arbitrum",
+    "symbol": "AGS",
+    "decimals": 18,
+    "address": "0x1c7f32699ff9163f928089c0a4d6ee5ad5885c6f",
+    "logoURI": "https://raw.githubusercontent.com/sushiswap/list/master/logos/token-logos/network/arbitrum/0x1C7F32699Ff9163f928089C0a4D6EE5Ad5885C6f.jpg"
   },
   "0x1debd73e752beaf79865fd6446b0c970eae7732f": {
     "chain": "arbitrum",
@@ -71,11 +204,39 @@
     "decimals": 18,
     "address": "0x1debd73e752beaf79865fd6446b0c970eae7732f"
   },
+  "0x1f6fa7a58701b3773b08a1a16d06b656b0eccb23": {
+    "chain": "arbitrum",
+    "symbol": "jrDPX",
+    "decimals": 18,
+    "address": "0x1f6fa7a58701b3773b08a1a16d06b656b0eccb23",
+    "logoURI": "https://raw.githubusercontent.com/sushiswap/list/master/logos/token-logos/network/arbitrum/0x1f6Fa7A58701b3773b08a1a16D06b656B0eCcb23.jpg"
+  },
+  "0x1fae2a29940015632f2a6ce006dfa7e3225515a7": {
+    "chain": "arbitrum",
+    "symbol": "NIFLOKI",
+    "decimals": 9,
+    "address": "0x1fae2a29940015632f2a6ce006dfa7e3225515a7",
+    "logoURI": "https://raw.githubusercontent.com/sushiswap/list/master/logos/token-logos/network/arbitrum/0x1FAe2A29940015632f2a6CE006dFA7E3225515A7.jpg"
+  },
+  "0x2338a5d62e9a766289934e8d2e83a443e8065b83": {
+    "chain": "arbitrum",
+    "symbol": "FLUX",
+    "decimals": 18,
+    "address": "0x2338a5d62e9a766289934e8d2e83a443e8065b83",
+    "logoURI": "https://raw.githubusercontent.com/sushiswap/list/master/logos/token-logos/network/arbitrum/0x2338a5d62E9A766289934e8d2e83a443e8065b83.jpg"
+  },
   "0x23a941036ae778ac51ab04cea08ed6e2fe103614": {
     "chain": "arbitrum",
     "symbol": "GRT",
     "decimals": 18,
     "address": "0x23a941036ae778ac51ab04cea08ed6e2fe103614"
+  },
+  "0x23ee2343b892b1bb63503a4fabc840e0e2c6810f": {
+    "chain": "arbitrum",
+    "symbol": "AXL",
+    "decimals": 6,
+    "address": "0x23ee2343b892b1bb63503a4fabc840e0e2c6810f",
+    "logoURI": "https://assets.coingecko.com/coins/images/27277/large/V-65_xQ1_400x400.jpeg"
   },
   "0x2416092f143378750bb29b79ed961ab195cceea5": {
     "chain": "arbitrum",
@@ -94,6 +255,13 @@
     "symbol": "WSOL",
     "decimals": 9,
     "address": "0x2bcc6d6cdbbdc0a4071e48bb3b969b06b3330c07"
+  },
+  "0x2c650dab03a59332e2e0c0c4a7f726913e5028c1": {
+    "chain": "arbitrum",
+    "symbol": "TAP",
+    "decimals": 18,
+    "address": "0x2c650dab03a59332e2e0c0c4a7f726913e5028c1",
+    "logoURI": "https://tokens.pancakeswap.finance/images/arbitrum/0x2C650dAb03A59332e2E0C0C4A7F726913e5028C1.png"
   },
   "0x2cab3abfc1670d1a452df502e216a66883cdf079": {
     "chain": "arbitrum",
@@ -119,11 +287,53 @@
     "symbol": "RDNT",
     "decimals": 18
   },
+  "0x3124678d62d2aa1f615b54525310fbfda6dcf7ae": {
+    "chain": "arbitrum",
+    "symbol": "SNSY",
+    "decimals": 18,
+    "address": "0x3124678d62d2aa1f615b54525310fbfda6dcf7ae",
+    "logoURI": "https://raw.githubusercontent.com/sushiswap/list/master/logos/token-logos/network/arbitrum/0x3124678D62D2aa1f615B54525310fbfDa6DcF7AE.jpg"
+  },
+  "0x323665443cef804a3b5206103304bd4872ea4253": {
+    "chain": "arbitrum",
+    "symbol": "USDV",
+    "decimals": 6,
+    "address": "0x323665443cef804a3b5206103304bd4872ea4253",
+    "logoURI": "https://tokens.pancakeswap.finance/images/arbitrum/0x323665443CEf804A3b5206103304BD4872EA4253.png"
+  },
+  "0x326c33fd1113c1f29b35b4407f3d6312a8518431": {
+    "chain": "arbitrum",
+    "symbol": "STRP",
+    "decimals": 18,
+    "address": "0x326c33fd1113c1f29b35b4407f3d6312a8518431",
+    "logoURI": "https://raw.githubusercontent.com/sushiswap/assets/master/blockchains/arbitrum/assets/0x326c33FD1113c1F29B35B4407F3d6312a8518431/logo.png"
+  },
+  "0x32df62dc3aed2cd6224193052ce665dc18165841": {
+    "chain": "arbitrum",
+    "symbol": "DLP",
+    "decimals": 18,
+    "address": "0x32df62dc3aed2cd6224193052ce665dc18165841",
+    "logoURI": "https://tokens.pancakeswap.finance/images/arbitrum/0x32dF62dc3aEd2cD6224193052Ce665DC18165841.png"
+  },
+  "0x32e4d98d3010ac12d75019c484caa78665b03986": {
+    "chain": "arbitrum",
+    "symbol": "GBOT",
+    "decimals": 18,
+    "address": "0x32e4d98d3010ac12d75019c484caa78665b03986",
+    "logoURI": "https://raw.githubusercontent.com/sushiswap/list/master/logos/token-logos/network/arbitrum/0x32e4d98d3010AC12d75019C484cAA78665B03986.jpg"
+  },
   "0x32eb7902d4134bf98a28b963d26de779af92a212": {
     "chain": "arbitrum",
     "symbol": "RDPX",
     "decimals": 18,
     "address": "0x32eb7902d4134bf98a28b963d26de779af92a212"
+  },
+  "0x346c574c56e1a4aaa8dc88cda8f7eb12b39947ab": {
+    "chain": "arbitrum",
+    "symbol": "SolvBTC.BBN",
+    "decimals": 18,
+    "address": "0x346c574c56e1a4aaa8dc88cda8f7eb12b39947ab",
+    "logoURI": "https://raw.githubusercontent.com/sushiswap/list/master/logos/token-logos/network/arbitrum/0x346c574C56e1A4aAa8dc88Cda8F7EB12b39947aB.jpg"
   },
   "0x3477df28ce70cecf61fffa7a95be4bec3b3c7e75": {
     "chain": "arbitrum",
@@ -148,6 +358,27 @@
     "symbol": "PL2",
     "decimals": 18,
     "address": "0x3642c0680329ae3e103e2b5ab29ddfed4d43cbe5"
+  },
+  "0x3647c54c4c2c65bc7a2d63c0da2809b399dbbdc0": {
+    "chain": "arbitrum",
+    "symbol": "SolvBTC",
+    "decimals": 18,
+    "address": "0x3647c54c4c2c65bc7a2d63c0da2809b399dbbdc0",
+    "logoURI": "https://tokens.pancakeswap.finance/images/arbitrum/0x3647c54c4c2C65bC7a2D63c0Da2809B399DBBDC0.png"
+  },
+  "0x369eb8197062093a20402935d3a707b4ae414e9d": {
+    "chain": "arbitrum",
+    "symbol": "PANA",
+    "decimals": 18,
+    "address": "0x369eb8197062093a20402935d3a707b4ae414e9d",
+    "logoURI": "https://raw.githubusercontent.com/sushiswap/list/master/logos/token-logos/network/arbitrum/0x369eB8197062093a20402935D3a707b4aE414E9D.jpg"
+  },
+  "0x3a18dcc9745edcd1ef33ecb93b0b6eba5671e7ca": {
+    "chain": "arbitrum",
+    "symbol": "KUJI",
+    "decimals": 6,
+    "address": "0x3a18dcc9745edcd1ef33ecb93b0b6eba5671e7ca",
+    "logoURI": "https://tokens.pancakeswap.finance/images/arbitrum/0x3A18dcC9745eDcD1Ef33ecB93b0b6eBA5671e7Ca.png"
   },
   "0x3a6bbd8bb827d055fd639249f8f98a53bae855b4": {
     "chain": "arbitrum",
@@ -179,6 +410,34 @@
     "symbol": "COIN.dw",
     "decimals": 18
   },
+  "0x4186bfc76e2e237523cbc30fd220fe055156b41f": {
+    "chain": "arbitrum",
+    "symbol": "rsETH",
+    "decimals": 18,
+    "address": "0x4186bfc76e2e237523cbc30fd220fe055156b41f",
+    "logoURI": "https://tokens.pancakeswap.finance/images/arbitrum/0x4186BFC76E2E237523CBC30FD220FE055156b41F.png"
+  },
+  "0x41b94c5867f7f6217c9a30520cb3e793b1ee1b97": {
+    "chain": "arbitrum",
+    "symbol": "axlTIA",
+    "decimals": 6,
+    "address": "0x41b94c5867f7f6217c9a30520cb3e793b1ee1b97",
+    "logoURI": "https://raw.githubusercontent.com/sushiswap/list/master/logos/token-logos/network/arbitrum/0x41b94c5867f7F6217C9a30520Cb3e793B1ee1b97.jpg"
+  },
+  "0x43ab8f7d2a8dd4102ccea6b438f6d747b1b9f034": {
+    "chain": "arbitrum",
+    "symbol": "SVY",
+    "decimals": 18,
+    "address": "0x43ab8f7d2a8dd4102ccea6b438f6d747b1b9f034",
+    "logoURI": "https://raw.githubusercontent.com/sushiswap/list/master/logos/token-logos/network/arbitrum/0x43aB8f7d2A8Dd4102cCEA6b438F6d747b1B9F034.jpg"
+  },
+  "0x4425742f1ec8d98779690b5a3a6276db85ddc01a": {
+    "chain": "arbitrum",
+    "symbol": "DOG",
+    "decimals": 18,
+    "address": "0x4425742f1ec8d98779690b5a3a6276db85ddc01a",
+    "logoURI": "https://raw.githubusercontent.com/sushiswap/assets/master/blockchains/ethereum/assets/0xBAac2B4491727D78D2b78815144570b9f2Fe8899/logo.png"
+  },
   "0x47904963fc8b2340414262125af798b9655e58cd": {
     "chain": "arbitrum",
     "symbol": "BTC",
@@ -197,11 +456,46 @@
     "decimals": 18,
     "address": "0x498c620c7c91c6eba2e3cd5485383f41613b7eb6"
   },
+  "0x4cb9a7ae498cedcbb5eae9f25736ae7d428c9d66": {
+    "chain": "arbitrum",
+    "symbol": "XAI",
+    "decimals": 18,
+    "address": "0x4cb9a7ae498cedcbb5eae9f25736ae7d428c9d66",
+    "logoURI": "https://tokens.pancakeswap.finance/images/arbitrum/0x4Cb9a7AE498CEDcBb5EAe9f25736aE7d428C9D66.png"
+  },
+  "0x4cfa50b7ce747e2d61724fcac57f24b748ff2b2a": {
+    "chain": "arbitrum",
+    "symbol": "fUSDC",
+    "decimals": 6,
+    "address": "0x4cfa50b7ce747e2d61724fcac57f24b748ff2b2a",
+    "logoURI": "https://tokens.pancakeswap.finance/images/arbitrum/0x4CFA50B7Ce747e2D61724fcAc57f24B748FF2b2A.png"
+  },
   "0x4e352cf164e64adcbad318c3a1e222e9eba4ce42": {
     "chain": "arbitrum",
     "symbol": "MCB",
     "decimals": 18,
     "address": "0x4e352cf164e64adcbad318c3a1e222e9eba4ce42"
+  },
+  "0x4e51ac49bc5e2d87e0ef713e9e5ab2d71ef4f336": {
+    "chain": "arbitrum",
+    "symbol": "CELO",
+    "decimals": 18,
+    "address": "0x4e51ac49bc5e2d87e0ef713e9e5ab2d71ef4f336",
+    "logoURI": "https://raw.githubusercontent.com/wormhole-foundation/wormhole-token-list/main/assets/celo_wh.png"
+  },
+  "0x51318b7d00db7acc4026c88c3952b66278b6a67f": {
+    "chain": "arbitrum",
+    "symbol": "PLS",
+    "decimals": 18,
+    "address": "0x51318b7d00db7acc4026c88c3952b66278b6a67f",
+    "logoURI": "https://raw.githubusercontent.com/sushiswap/list/master/logos/token-logos/network/arbitrum/0x51318B7D00db7ACc4026C88c3952B66278B6A67F.jpg"
+  },
+  "0x51b902f19a56f0c8e409a34a215ad2673edf3284": {
+    "chain": "arbitrum",
+    "symbol": "NFTE",
+    "decimals": 18,
+    "address": "0x51b902f19a56f0c8e409a34a215ad2673edf3284",
+    "logoURI": "https://raw.githubusercontent.com/sushiswap/list/master/logos/token-logos/network/arbitrum/0x51B902f19a56F0c8E409a34a215AD2673EDF3284.jpg"
   },
   "0x51fc0f6660482ea73330e414efd7808811a57fa2": {
     "chain": "arbitrum",
@@ -209,17 +503,52 @@
     "decimals": 18,
     "address": "0x51fc0f6660482ea73330e414efd7808811a57fa2"
   },
+  "0x53691596d1bce8cea565b84d4915e69e03d9c99d": {
+    "chain": "arbitrum",
+    "symbol": "ACX",
+    "decimals": 18,
+    "address": "0x53691596d1bce8cea565b84d4915e69e03d9c99d",
+    "logoURI": "https://raw.githubusercontent.com/sushiswap/list/master/logos/token-logos/network/arbitrum/0x53691596d1BCe8CEa565b84d4915e69e03d9C99d.jpg"
+  },
+  "0x5375616bb6c52a90439ff96882a986d8fcdce421": {
+    "chain": "arbitrum",
+    "symbol": "jgOHM",
+    "decimals": 18,
+    "address": "0x5375616bb6c52a90439ff96882a986d8fcdce421",
+    "logoURI": "https://raw.githubusercontent.com/sushiswap/list/master/logos/token-logos/network/arbitrum/0x5375616bB6c52A90439fF96882a986d8FCdCe421.jpg"
+  },
   "0x539bde0d7dbd336b79148aa742883198bbf60342": {
     "chain": "arbitrum",
     "symbol": "MAGIC",
     "decimals": 18,
     "address": "0x539bde0d7dbd336b79148aa742883198bbf60342"
   },
+  "0x55678cd083fcdc2947a0df635c93c838c89454a3": {
+    "chain": "arbitrum",
+    "symbol": "LON",
+    "decimals": 18,
+    "address": "0x55678cd083fcdc2947a0df635c93c838c89454a3",
+    "logoURI": "https://raw.githubusercontent.com/sushiswap/list/master/logos/token-logos/network/arbitrum/0x55678cd083fcDC2947a0Df635c93C838C89454A3.jpg"
+  },
   "0x565609faf65b92f7be02468acf86f8979423e514": {
     "chain": "arbitrum",
     "address": "0x565609faf65b92f7be02468acf86f8979423e514",
     "symbol": "WAVAX",
     "decimals": 18
+  },
+  "0x57f12fe6a4e5fe819eec699fadf9db2d06606bb4": {
+    "chain": "arbitrum",
+    "symbol": "NPM",
+    "decimals": 18,
+    "address": "0x57f12fe6a4e5fe819eec699fadf9db2d06606bb4",
+    "logoURI": "https://raw.githubusercontent.com/sushiswap/list/master/logos/token-logos/network/arbitrum/0x57f12FE6A4e5fe819eec699FAdf9Db2D06606bB4.jpg"
+  },
+  "0x58cb98a966f62aa6f2190eb3aa03132a0c3de3d5": {
+    "chain": "arbitrum",
+    "symbol": "OPEN",
+    "decimals": 18,
+    "address": "0x58cb98a966f62aa6f2190eb3aa03132a0c3de3d5",
+    "logoURI": "https://raw.githubusercontent.com/sushiswap/list/master/logos/token-logos/network/arbitrum/0x58CB98A966F62aA6F2190eB3AA03132A0c3de3D5.jpg"
   },
   "0x5979d7b546e38e414f7e9822514be443a4800529": {
     "chain": "arbitrum",
@@ -232,6 +561,48 @@
     "address": "0x59d9356e565ab3a36dd77763fc0d87feaf85508c",
     "symbol": "USDM",
     "decimals": 18
+  },
+  "0x5c816d4582c857dcadb1bb1f62ad6c9dede4576a": {
+    "chain": "arbitrum",
+    "symbol": "TURBO",
+    "decimals": 18,
+    "address": "0x5c816d4582c857dcadb1bb1f62ad6c9dede4576a",
+    "logoURI": "https://raw.githubusercontent.com/sushiswap/assets/master/blockchains/arbitrum/assets/0x5C816d4582c857dcadb1bB1F62Ad6c9DEde4576a/logo.png"
+  },
+  "0x5d3a1ff2b6bab83b63cd9ad0787074081a52ef34": {
+    "chain": "arbitrum",
+    "symbol": "USDe",
+    "decimals": 18,
+    "address": "0x5d3a1ff2b6bab83b63cd9ad0787074081a52ef34",
+    "logoURI": "https://tokens.pancakeswap.finance/images/arbitrum/0x5d3a1Ff2b6BAb83b63cd9AD0787074081a52ef34.png"
+  },
+  "0x64081252c497fcfec247a664e9d10ca8ed71b276": {
+    "chain": "arbitrum",
+    "symbol": "ArbiFLUX",
+    "decimals": 18,
+    "address": "0x64081252c497fcfec247a664e9d10ca8ed71b276",
+    "logoURI": "https://raw.githubusercontent.com/sushiswap/list/master/logos/token-logos/network/arbitrum/0x64081252c497FCfeC247a664e9D10Ca8eD71b276.jpg"
+  },
+  "0x641441c631e2f909700d2f41fd87f0aa6a6b4edb": {
+    "chain": "arbitrum",
+    "symbol": "USX",
+    "decimals": 18,
+    "address": "0x641441c631e2f909700d2f41fd87f0aa6a6b4edb",
+    "logoURI": "https://raw.githubusercontent.com/sushiswap/list/master/logos/token-logos/network/arbitrum/0x641441c631e2F909700d2f41FD87F0aA6A6b4EDb.jpg"
+  },
+  "0x65cd2e7d7bacdac3aa9dae68fb5d548dfe1fefb5": {
+    "chain": "arbitrum",
+    "symbol": "slUSDT",
+    "decimals": 18,
+    "address": "0x65cd2e7d7bacdac3aa9dae68fb5d548dfe1fefb5",
+    "logoURI": "https://raw.githubusercontent.com/sushiswap/list/master/logos/token-logos/network/arbitrum/0x65CD2E7d7BAcDaC3AA9dAe68fb5d548dfE1fEFB5.jpg"
+  },
+  "0x662d0f9ff837a51cf89a1fe7e0882a906dac08a3": {
+    "chain": "arbitrum",
+    "symbol": "jETH",
+    "decimals": 18,
+    "address": "0x662d0f9ff837a51cf89a1fe7e0882a906dac08a3",
+    "logoURI": "https://raw.githubusercontent.com/sushiswap/list/master/logos/token-logos/network/arbitrum/0x662d0f9Ff837A51cF89A1FE7E0882a906dAC08a3.jpg"
   },
   "0x6694340fc020c5e6b96567843da2df01b2ce1eb6": {
     "chain": "arbitrum",
@@ -263,11 +634,25 @@
     "decimals": 18,
     "address": "0x6c2c06790b3e3e3c38e12ee22f8183b37a13ee55"
   },
+  "0x6db8b088c4d41d622b44cd81b900ba690f2d496c": {
+    "chain": "arbitrum",
+    "symbol": "IDIA",
+    "decimals": 18,
+    "address": "0x6db8b088c4d41d622b44cd81b900ba690f2d496c",
+    "logoURI": "https://tokens.pancakeswap.finance/images/arbitrum/0x6Db8b088c4d41d622B44CD81B900bA690f2d496C.png"
+  },
   "0x70d95587d40a2caf56bd97485ab3eec10bee6336": {
     "chain": "arbitrum",
     "address": "0x70d95587d40a2caf56bd97485ab3eec10bee6336",
     "symbol": "GM",
     "decimals": 18
+  },
+  "0x73700aecfc4621e112304b6edc5ba9e36d7743d3": {
+    "chain": "arbitrum",
+    "symbol": "lqETH",
+    "decimals": 18,
+    "address": "0x73700aecfc4621e112304b6edc5ba9e36d7743d3",
+    "logoURI": "https://raw.githubusercontent.com/sushiswap/list/master/logos/token-logos/network/arbitrum/0x73700aeCfC4621E112304B6eDC5BA9e36D7743D3.jpg"
   },
   "0x739ca6d71365a08f584c8fc4e1029045fa8abc4b": {
     "chain": "arbitrum",
@@ -280,6 +665,20 @@
     "address": "0x75289388d50364c3013583d97bd70ced0e183e32",
     "symbol": "asdCRV",
     "decimals": 18
+  },
+  "0x78055daa07035aa5ebc3e5139c281ce6312e1b22": {
+    "chain": "arbitrum",
+    "symbol": "PPEGG",
+    "decimals": 18,
+    "address": "0x78055daa07035aa5ebc3e5139c281ce6312e1b22",
+    "logoURI": "https://raw.githubusercontent.com/sushiswap/assets/master/blockchains/arbitrum/assets/0x78055dAA07035Aa5EBC3e5139C281Ce6312E1b22/logo.png"
+  },
+  "0x7ba4a00d54a07461d9db2aef539e91409943adc9": {
+    "chain": "arbitrum",
+    "symbol": "SDT",
+    "decimals": 18,
+    "address": "0x7ba4a00d54a07461d9db2aef539e91409943adc9",
+    "logoURI": "https://raw.githubusercontent.com/sushiswap/list/master/logos/token-logos/token/sdt.jpg"
   },
   "0x7cbaf5a14d953ff896e5b3312031515c858737c8": {
     "chain": "arbitrum",
@@ -299,6 +698,13 @@
     "symbol": "YAK",
     "decimals": 18
   },
+  "0x8096ad3107715747361acefe685943bfb427c722": {
+    "chain": "arbitrum",
+    "symbol": "CVOL",
+    "decimals": 18,
+    "address": "0x8096ad3107715747361acefe685943bfb427c722",
+    "logoURI": "https://raw.githubusercontent.com/sushiswap/list/master/logos/token-logos/network/arbitrum/0x8096aD3107715747361acefE685943bFB427C722.jpg"
+  },
   "0x81c958c2cb5158e2b7d3d8a7c41ef2110c0ef98d": {
     "chain": "arbitrum",
     "address": "0x81c958c2cb5158e2b7d3d8a7c41ef2110c0ef98d",
@@ -311,17 +717,101 @@
     "decimals": 18,
     "address": "0x82af49447d8a07e3bd95bd0d56f35241523fbab1"
   },
+  "0x82e3a8f066a6989666b031d916c43672085b1582": {
+    "chain": "arbitrum",
+    "symbol": "YFI",
+    "decimals": 18,
+    "address": "0x82e3a8f066a6989666b031d916c43672085b1582",
+    "logoURI": "https://raw.githubusercontent.com/sushiswap/list/master/logos/token-logos/token/yfi.jpg"
+  },
   "0x85667409a723684fe1e57dd1abde8d88c2f54214": {
     "chain": "arbitrum",
     "address": "0x85667409a723684fe1e57dd1abde8d88c2f54214",
     "symbol": "mGLP",
     "decimals": 18
   },
+  "0x867b1cd06039eb70385788a048b57f6d4fdc5dbb": {
+    "chain": "arbitrum",
+    "symbol": "pSLVR",
+    "decimals": 18,
+    "address": "0x867b1cd06039eb70385788a048b57f6d4fdc5dbb",
+    "logoURI": "https://raw.githubusercontent.com/sushiswap/list/master/logos/token-logos/network/arbitrum/0x867B1Cd06039Eb70385788a048B57F6d4fDC5Dbb.jpg"
+  },
+  "0x86a1012d437bbff84fbdf62569d12d4fd3396f8c": {
+    "chain": "arbitrum",
+    "symbol": "ARBYS",
+    "decimals": 18,
+    "address": "0x86a1012d437bbff84fbdf62569d12d4fd3396f8c",
+    "logoURI": "https://raw.githubusercontent.com/sushiswap/assets/master/blockchains/arbitrum/assets/0x86A1012d437BBFf84fbDF62569D12d4FD3396F8c/logo.png"
+  },
+  "0x876ec6be52486eeec06bc06434f3e629d695c6ba": {
+    "chain": "arbitrum",
+    "symbol": "FLUID",
+    "decimals": 18,
+    "address": "0x876ec6be52486eeec06bc06434f3e629d695c6ba",
+    "logoURI": "https://raw.githubusercontent.com/sushiswap/assets/master/blockchains/ethereum/assets/0x876Ec6bE52486Eeec06bc06434f3E629D695c6bA/logo.png"
+  },
+  "0x8933fedd98cbb482e27c41e1bd7216a4e42ebd39": {
+    "chain": "arbitrum",
+    "symbol": "PGS",
+    "decimals": 18,
+    "address": "0x8933fedd98cbb482e27c41e1bd7216a4e42ebd39",
+    "logoURI": "https://raw.githubusercontent.com/sushiswap/list/master/logos/token-logos/network/arbitrum/0x8933fEDD98Cbb482e27C41e1bD7216a4e42eBd39.jpg"
+  },
+  "0x894134a25a5fac1c2c26f1d8fbf05111a3cb9487": {
+    "chain": "arbitrum",
+    "symbol": "GRAI",
+    "decimals": 18,
+    "address": "0x894134a25a5fac1c2c26f1d8fbf05111a3cb9487",
+    "logoURI": "https://tokens.pancakeswap.finance/images/arbitrum/0x894134a25a5faC1c2C26F1d8fBf05111a3CB9487.png"
+  },
+  "0x8b0e6f19ee57089f7649a455d89d7bc6314d04e8": {
+    "chain": "arbitrum",
+    "symbol": "DMT",
+    "decimals": 18,
+    "address": "0x8b0e6f19ee57089f7649a455d89d7bc6314d04e8",
+    "logoURI": "https://tokens.pancakeswap.finance/images/arbitrum/0x8B0E6f19Ee57089F7649A455D89D7bC6314D04e8.png"
+  },
+  "0x8cf7e3aa6faf6ae180e5ec3f0fb95081c2086ebe": {
+    "chain": "arbitrum",
+    "symbol": "SX",
+    "decimals": 18,
+    "address": "0x8cf7e3aa6faf6ae180e5ec3f0fb95081c2086ebe",
+    "logoURI": "https://tokens.pancakeswap.finance/images/arbitrum/0x8CF7e3aa6fAf6Ae180E5eC3f0fb95081C2086eBe.png"
+  },
+  "0x8d9ba570d6cb60c7e3e0f31343efe75ab8e65fb1": {
+    "chain": "arbitrum",
+    "symbol": "gOHM",
+    "decimals": 18,
+    "address": "0x8d9ba570d6cb60c7e3e0f31343efe75ab8e65fb1",
+    "logoURI": "https://raw.githubusercontent.com/sushiswap/assets/master/blockchains/arbitrum/assets/0x8D9bA570D6cb60C7e3e0F31343Efe75AB8E65FB1/logo.png"
+  },
+  "0x8dcd3393a6e48e898a60e05baec0d568df128f89": {
+    "chain": "arbitrum",
+    "symbol": "pTSLA",
+    "decimals": 18,
+    "address": "0x8dcd3393a6e48e898a60e05baec0d568df128f89",
+    "logoURI": "https://raw.githubusercontent.com/sushiswap/list/master/logos/token-logos/network/arbitrum/0x8DCD3393a6e48E898A60e05baeC0d568df128F89.jpg"
+  },
   "0x8ea5040d423410f1fdc363379af88e1db5ea1c34": {
     "chain": "arbitrum",
     "address": "0x8ea5040d423410f1fdc363379af88e1db5ea1c34",
     "symbol": "PT-ezETH-27JUN2024",
     "decimals": 18
+  },
+  "0x8ed4191f81f1e1d24a8a1195267d024d9358c9d7": {
+    "chain": "arbitrum",
+    "symbol": "MAGNET",
+    "decimals": 18,
+    "address": "0x8ed4191f81f1e1d24a8a1195267d024d9358c9d7",
+    "logoURI": "https://raw.githubusercontent.com/Magnethereum/MyFiles/main/magnethereum.jpg"
+  },
+  "0x910d3c72c5177c3f1bfb0863b793ec23fa7f6990": {
+    "chain": "arbitrum",
+    "symbol": "NISHIB",
+    "decimals": 18,
+    "address": "0x910d3c72c5177c3f1bfb0863b793ec23fa7f6990",
+    "logoURI": "https://raw.githubusercontent.com/sushiswap/list/master/logos/token-logos/network/arbitrum/0x910d3c72c5177c3f1bfb0863b793ec23Fa7f6990.jpg"
   },
   "0x912ce59144191c1204e64559fe8253a0e49e6548": {
     "chain": "arbitrum",
@@ -334,6 +824,48 @@
     "symbol": "LUSD",
     "decimals": 18,
     "address": "0x93b346b6bc2548da6a1e7d98e9a421b42541425b"
+  },
+  "0x93c15cd7de26f07265f0272e0b831c5d7fab174f": {
+    "chain": "arbitrum",
+    "symbol": "LIQD",
+    "decimals": 18,
+    "address": "0x93c15cd7de26f07265f0272e0b831c5d7fab174f",
+    "logoURI": "https://raw.githubusercontent.com/sushiswap/list/master/logos/token-logos/network/arbitrum/0x93C15cd7DE26f07265f0272E0b831C5D7fAb174f.jpg"
+  },
+  "0x955b9fe60a5b5093df9dc4b1b18ec8e934e77162": {
+    "chain": "arbitrum",
+    "symbol": "SWPR",
+    "decimals": 18,
+    "address": "0x955b9fe60a5b5093df9dc4b1b18ec8e934e77162",
+    "logoURI": "https://raw.githubusercontent.com/sushiswap/list/master/logos/token-logos/token/swpr.jpg"
+  },
+  "0x9623063377ad1b27544c965ccd7342f7ea7e88c7": {
+    "chain": "arbitrum",
+    "symbol": "GRT",
+    "decimals": 18,
+    "address": "0x9623063377ad1b27544c965ccd7342f7ea7e88c7",
+    "logoURI": "https://tokens.pancakeswap.finance/images/arbitrum/0x9623063377AD1B27544C965cCd7342f7EA7e88C7.png"
+  },
+  "0x969131d8ddc06c2be11a13e6e7facf22cf57d95e": {
+    "chain": "arbitrum",
+    "symbol": "EUX",
+    "decimals": 18,
+    "address": "0x969131d8ddc06c2be11a13e6e7facf22cf57d95e",
+    "logoURI": "https://raw.githubusercontent.com/sushiswap/list/master/logos/token-logos/token/eux.jpg"
+  },
+  "0x98a5f77d1fec5d68c9a6decb715f11beaba84f38": {
+    "chain": "arbitrum",
+    "symbol": "NSFW",
+    "decimals": 18,
+    "address": "0x98a5f77d1fec5d68c9a6decb715f11beaba84f38",
+    "logoURI": "https://raw.githubusercontent.com/sushiswap/list/master/logos/token-logos/network/arbitrum/0x98A5F77d1feC5D68c9a6DEcB715F11beaBa84F38.jpg"
+  },
+  "0x995c235521820f2637303ca1970c7c044583df44": {
+    "chain": "arbitrum",
+    "symbol": "VISR",
+    "decimals": 18,
+    "address": "0x995c235521820f2637303ca1970c7c044583df44",
+    "logoURI": "https://raw.githubusercontent.com/sushiswap/list/master/logos/token-logos/token/visr.jpg"
   },
   "0x99c409e5f62e4bd2ac142f17cafb6810b8f0baae": {
     "chain": "arbitrum",
@@ -353,11 +885,32 @@
     "decimals": 18,
     "address": "0x9d2f299715d94d8a7e6f5eaa8e654e8c74a988a7"
   },
+  "0x9e20461bc2c4c980f62f1b279d71734207a6a356": {
+    "chain": "arbitrum",
+    "symbol": "OMNI",
+    "decimals": 18,
+    "address": "0x9e20461bc2c4c980f62f1b279d71734207a6a356",
+    "logoURI": "https://raw.githubusercontent.com/sushiswap/list/master/logos/token-logos/network/arbitrum/0x9e20461bc2c4c980f62f1B279D71734207a6A356.jpg"
+  },
   "0x9e758b8a98a42d612b3d38b66a22074dc03d7370": {
     "chain": "arbitrum",
     "symbol": "SIS",
     "decimals": 18,
     "address": "0x9e758b8a98a42d612b3d38b66a22074dc03d7370"
+  },
+  "0x9f20de1fc9b161b34089cbeae888168b44b03461": {
+    "chain": "arbitrum",
+    "symbol": "ARBIS",
+    "decimals": 18,
+    "address": "0x9f20de1fc9b161b34089cbeae888168b44b03461",
+    "logoURI": "https://raw.githubusercontent.com/sushiswap/assets/master/blockchains/arbitrum/assets/0x9f20de1fc9b161b34089cbEAE888168B44b03461/logo.png"
+  },
+  "0x9f6abbf0ba6b5bfa27f4deb6597cc6ec20573fda": {
+    "chain": "arbitrum",
+    "symbol": "FRM",
+    "decimals": 18,
+    "address": "0x9f6abbf0ba6b5bfa27f4deb6597cc6ec20573fda",
+    "logoURI": "https://raw.githubusercontent.com/sushiswap/list/master/logos/token-logos/network/arbitrum/0x9f6AbbF0Ba6B5bfa27f4deb6597CC6Ec20573FDA.jpg"
   },
   "0xa0b862f60edef4452f25b4160f177db44deb6cf1": {
     "chain": "arbitrum",
@@ -371,11 +924,67 @@
     "decimals": 18,
     "address": "0xa1150db5105987cec5fd092273d1e3cbb22b378b"
   },
+  "0xa3d1a8deb97b111454b294e2324efad13a9d8396": {
+    "chain": "arbitrum",
+    "symbol": "OVN",
+    "decimals": 18,
+    "address": "0xa3d1a8deb97b111454b294e2324efad13a9d8396",
+    "logoURI": "https://tokens.pancakeswap.finance/images/arbitrum/0xA3d1a8DEB97B111454B294E2324EfAD13a9d8396.png"
+  },
+  "0xa54b8e178a49f8e5405a4d44bb31f496e5564a05": {
+    "chain": "arbitrum",
+    "symbol": "PEPE",
+    "decimals": 18,
+    "address": "0xa54b8e178a49f8e5405a4d44bb31f496e5564a05",
+    "logoURI": "https://raw.githubusercontent.com/sushiswap/list/master/logos/token-logos/network/arbitrum/0xA54B8e178A49F8e5405A4d44Bb31F496e5564A05.jpg"
+  },
+  "0xa61f74247455a40b01b0559ff6274441fafa22a3": {
+    "chain": "arbitrum",
+    "symbol": "MGP",
+    "decimals": 18,
+    "address": "0xa61f74247455a40b01b0559ff6274441fafa22a3",
+    "logoURI": "https://tokens.pancakeswap.finance/images/arbitrum/0xa61F74247455A40b01b0559ff6274441FAfa22A3.png"
+  },
+  "0xa6219b4bf4b861a2b1c02da43b2af266186edc04": {
+    "chain": "arbitrum",
+    "symbol": "ARVAULT",
+    "decimals": 9,
+    "address": "0xa6219b4bf4b861a2b1c02da43b2af266186edc04",
+    "logoURI": "https://raw.githubusercontent.com/sushiswap/assets/master/blockchains/arbitrum/assets/0xA6219B4Bf4B861A2b1C02da43b2aF266186eDC04/logo.png"
+  },
+  "0xa72159fc390f0e3c6d415e658264c7c4051e9b87": {
+    "chain": "arbitrum",
+    "symbol": "TCR",
+    "decimals": 18,
+    "address": "0xa72159fc390f0e3c6d415e658264c7c4051e9b87",
+    "logoURI": "https://raw.githubusercontent.com/sushiswap/assets/master/blockchains/arbitrum/assets/0xA72159FC390f0E3C6D415e658264c7c4051E9b87/logo.png"
+  },
+  "0xa7aa2921618e3d63da433829d448b58c9445a4c3": {
+    "chain": "arbitrum",
+    "symbol": "DVF",
+    "decimals": 18,
+    "address": "0xa7aa2921618e3d63da433829d448b58c9445a4c3",
+    "logoURI": "https://raw.githubusercontent.com/sushiswap/assets/master/blockchains/ethereum/assets/0xDDdddd4301A082e62E84e43F474f044423921918/logo.png"
+  },
   "0xa9004a5421372e1d83fb1f85b0fc986c912f91f3": {
     "chain": "arbitrum",
     "address": "0xa9004a5421372e1d83fb1f85b0fc986c912f91f3",
     "symbol": "WBNB",
     "decimals": 18
+  },
+  "0xa970af1a584579b618be4d69ad6f73459d112f95": {
+    "chain": "arbitrum",
+    "symbol": "sUSD",
+    "decimals": 18,
+    "address": "0xa970af1a584579b618be4d69ad6f73459d112f95",
+    "logoURI": "https://raw.githubusercontent.com/sushiswap/list/master/logos/token-logos/token/susd.jpg"
+  },
+  "0xaeeba475edc438f8eeb6bfbc3164c1c7716fb304": {
+    "chain": "arbitrum",
+    "symbol": "DICE",
+    "decimals": 18,
+    "address": "0xaeeba475edc438f8eeb6bfbc3164c1c7716fb304",
+    "logoURI": "https://raw.githubusercontent.com/sushiswap/list/master/logos/token-logos/network/arbitrum/0xAeEBa475eDC438f8Eeb6BFBc3164c1C7716Fb304.jpg"
   },
   "0xaf88d065e77c8cc2239327c5edb3a432268e5831": {
     "chain": "arbitrum",
@@ -383,11 +992,39 @@
     "decimals": 6,
     "address": "0xaf88d065e77c8cc2239327c5edb3a432268e5831"
   },
+  "0xafafd68afe3fe65d376eec9eab1802616cfaccb8": {
+    "chain": "arbitrum",
+    "symbol": "SolvBTC.ENA",
+    "decimals": 18,
+    "address": "0xafafd68afe3fe65d376eec9eab1802616cfaccb8",
+    "logoURI": "https://tokens.pancakeswap.finance/images/arbitrum/0xaFAfd68AFe3fe65d376eEC9Eab1802616cFacCb8.png"
+  },
+  "0xafd871f684f21ab9d7137608c71808f83d75e6fc": {
+    "chain": "arbitrum",
+    "symbol": "BUCK",
+    "decimals": 18,
+    "address": "0xafd871f684f21ab9d7137608c71808f83d75e6fc",
+    "logoURI": "https://raw.githubusercontent.com/sushiswap/assets/master/blockchains/arbitrum/assets/0xAFD871f684F21Ab9D7137608C71808f83D75e6fc/logo.png"
+  },
   "0xb0c7a3ba49c7a6eaba6cd4a96c55a1391070ac9a": {
     "chain": "arbitrum",
     "address": "0xb0c7a3ba49c7a6eaba6cd4a96c55a1391070ac9a",
     "symbol": "MAGIC",
     "decimals": 18
+  },
+  "0xb1084db8d3c05cebd5fa9335df95ee4b8a0edc30": {
+    "chain": "arbitrum",
+    "symbol": "USDT+",
+    "decimals": 6,
+    "address": "0xb1084db8d3c05cebd5fa9335df95ee4b8a0edc30",
+    "logoURI": "https://tokens.pancakeswap.finance/images/arbitrum/0xb1084db8D3C05CEbd5FA9335dF95EE4b8a0edc30.png"
+  },
+  "0xb261104a83887ae92392fb5ce5899fcfe5481456": {
+    "chain": "arbitrum",
+    "symbol": "NFTE",
+    "decimals": 18,
+    "address": "0xb261104a83887ae92392fb5ce5899fcfe5481456",
+    "logoURI": "https://raw.githubusercontent.com/sushiswap/list/master/logos/token-logos/network/arbitrum/0xB261104A83887aE92392Fb5CE5899fCFe5481456.jpg"
   },
   "0xb2f30a7c980f052f02563fb518dcc39e6bf38175": {
     "chain": "arbitrum",
@@ -401,17 +1038,52 @@
     "symbol": "mooAuraGyroaUSDCn/aUSDTn",
     "decimals": 18
   },
+  "0xb41bd4c99da73510d9e081c5fadbe7a27ac1f814": {
+    "chain": "arbitrum",
+    "symbol": "IMO",
+    "decimals": 18,
+    "address": "0xb41bd4c99da73510d9e081c5fadbe7a27ac1f814",
+    "logoURI": "https://raw.githubusercontent.com/sushiswap/assets/master/blockchains/arbitrum/assets/0xB41bd4C99dA73510d9e081C5FADBE7A27Ac1F814/logo.png"
+  },
   "0xb46a094bc4b0adbd801e14b9db95e05e28962764": {
     "chain": "arbitrum",
     "symbol": "LTC",
     "decimals": 18,
     "address": "0xb46a094bc4b0adbd801e14b9db95e05e28962764"
   },
+  "0xb52bd62ee0cf462fa9ccbda4bf27fe84d9ab6cf7": {
+    "chain": "arbitrum",
+    "symbol": "SAIL",
+    "decimals": 18,
+    "address": "0xb52bd62ee0cf462fa9ccbda4bf27fe84d9ab6cf7",
+    "logoURI": "https://raw.githubusercontent.com/sushiswap/list/master/logos/token-logos/network/arbitrum/0xb52BD62eE0Cf462Fa9CCbDA4bf27Fe84D9ab6Cf7.jpg"
+  },
   "0xb56c29413af8778977093b9b4947efeea7136c36": {
     "chain": "arbitrum",
     "address": "0xb56c29413af8778977093b9b4947efeea7136c36",
     "symbol": "TORQ",
     "decimals": 18
+  },
+  "0xb64e280e9d1b5dbec4accedb2257a87b400db149": {
+    "chain": "arbitrum",
+    "symbol": "LVL",
+    "decimals": 18,
+    "address": "0xb64e280e9d1b5dbec4accedb2257a87b400db149",
+    "logoURI": "https://tokens.pancakeswap.finance/images/arbitrum/0xB64E280e9D1B5DbEc4AcceDb2257A87b400DB149.png"
+  },
+  "0xb688ba096b7bb75d7841e47163cd12d18b36a5bf": {
+    "chain": "arbitrum",
+    "symbol": "mPENDLE",
+    "decimals": 18,
+    "address": "0xb688ba096b7bb75d7841e47163cd12d18b36a5bf",
+    "logoURI": "https://tokens.pancakeswap.finance/images/arbitrum/0xB688BA096b7Bb75d7841e47163Cd12D18B36A5bF.png"
+  },
+  "0xb816688e4b70c9076bd87d45b5309f205ec2cf5f": {
+    "chain": "arbitrum",
+    "symbol": "pOIL",
+    "decimals": 18,
+    "address": "0xb816688e4b70c9076bd87d45b5309f205ec2cf5f",
+    "logoURI": "https://raw.githubusercontent.com/sushiswap/list/master/logos/token-logos/network/arbitrum/0xb816688E4B70C9076BD87d45b5309F205ec2cf5f.jpg"
   },
   "0xb86af5eb59a8e871bfa573fa656123ea86f47c3a": {
     "chain": "arbitrum",
@@ -424,6 +1096,48 @@
     "address": "0xba5ddd1f9d7f570dc94a51479a000e3bce967196",
     "symbol": "AAVE",
     "decimals": 18
+  },
+  "0xbc011a12da28e8f0f528d9ee5e7039e22f91cf18": {
+    "chain": "arbitrum",
+    "symbol": "swETH",
+    "decimals": 18,
+    "address": "0xbc011a12da28e8f0f528d9ee5e7039e22f91cf18",
+    "logoURI": "https://tokens.pancakeswap.finance/images/arbitrum/0xbc011A12Da28e8F0f528d9eE5E7039E22F91cf18.png"
+  },
+  "0xbcc9c1763d54427bdf5efb6e9eb9494e5a1fbabf": {
+    "chain": "arbitrum",
+    "symbol": "HWT",
+    "decimals": 18,
+    "address": "0xbcc9c1763d54427bdf5efb6e9eb9494e5a1fbabf",
+    "logoURI": "https://raw.githubusercontent.com/sushiswap/list/master/logos/token-logos/network/arbitrum/0xBcc9C1763d54427bDF5EfB6e9EB9494E5a1fbAbf.jpg"
+  },
+  "0xbdef0e9ef12e689f366fe494a7a7d0dad25d9286": {
+    "chain": "arbitrum",
+    "symbol": "FUSE",
+    "decimals": 18,
+    "address": "0xbdef0e9ef12e689f366fe494a7a7d0dad25d9286",
+    "logoURI": "https://raw.githubusercontent.com/sushiswap/list/master/logos/token-logos/token/fuse.jpg"
+  },
+  "0xbfbcfe8873fe28dfa25f1099282b088d52bbad9c": {
+    "chain": "arbitrum",
+    "symbol": "EQB",
+    "decimals": 18,
+    "address": "0xbfbcfe8873fe28dfa25f1099282b088d52bbad9c",
+    "logoURI": "https://tokens.pancakeswap.finance/images/arbitrum/0xBfbCFe8873fE28Dfa25f1099282b088D52bbAD9C.png"
+  },
+  "0xbfd5206962267c7b4b4a8b3d76ac2e1b2a5c4d5e": {
+    "chain": "arbitrum",
+    "symbol": "OSAK",
+    "decimals": 18,
+    "address": "0xbfd5206962267c7b4b4a8b3d76ac2e1b2a5c4d5e",
+    "logoURI": "https://raw.githubusercontent.com/sushiswap/list/master/logos/token-logos/network/arbitrum/0xbFd5206962267c7b4b4A8B3D76AC2E1b2A5c4d5e.jpg"
+  },
+  "0xc136e6b376a9946b156db1ed3a34b08afdaed76d": {
+    "chain": "arbitrum",
+    "symbol": "CREDA",
+    "decimals": 18,
+    "address": "0xc136e6b376a9946b156db1ed3a34b08afdaed76d",
+    "logoURI": "https://raw.githubusercontent.com/sushiswap/assets/master/blockchains/arbitrum/assets/0xc136E6B376a9946B156db1ED3A34b08AFdAeD76d/logo.png"
   },
   "0xc14e065b0067de91534e032868f5ac6ecf2c6868": {
     "chain": "arbitrum",
@@ -449,11 +1163,39 @@
     "decimals": 18,
     "address": "0xc4da4c24fd591125c3f47b340b6f4f76111883d8"
   },
+  "0xc5102fe9359fd9a28f877a67e36b0f050d81a3cc": {
+    "chain": "arbitrum",
+    "symbol": "HOP",
+    "decimals": 18,
+    "address": "0xc5102fe9359fd9a28f877a67e36b0f050d81a3cc",
+    "logoURI": "https://assets.coingecko.com/coins/images/25445/large/hop.png?1665541677"
+  },
   "0xcafcd85d8ca7ad1e1c6f82f651fa15e33aefd07b": {
     "chain": "arbitrum",
     "symbol": "WOO",
     "decimals": 18,
     "address": "0xcafcd85d8ca7ad1e1c6f82f651fa15e33aefd07b"
+  },
+  "0xcb58418aa51ba525aef0fe474109c0354d844b7c": {
+    "chain": "arbitrum",
+    "symbol": "ICE",
+    "decimals": 18,
+    "address": "0xcb58418aa51ba525aef0fe474109c0354d844b7c",
+    "logoURI": "https://raw.githubusercontent.com/sushiswap/list/master/logos/token-logos/network/arbitrum/0xCB58418Aa51Ba525aEF0FE474109C0354d844b7c.jpg"
+  },
+  "0xccd05a0fcfc1380e9da27862adb2198e58e0d66f": {
+    "chain": "arbitrum",
+    "symbol": "ANIMA",
+    "decimals": 18,
+    "address": "0xccd05a0fcfc1380e9da27862adb2198e58e0d66f",
+    "logoURI": "https://raw.githubusercontent.com/sushiswap/list/master/logos/token-logos/network/arbitrum/0xcCd05A0fcfc1380e9Da27862Adb2198E58e0D66f.jpg"
+  },
+  "0xcf985aba4647a432e60efceeb8054bbd64244305": {
+    "chain": "arbitrum",
+    "symbol": "EUROe",
+    "decimals": 6,
+    "address": "0xcf985aba4647a432e60efceeb8054bbd64244305",
+    "logoURI": "https://raw.githubusercontent.com/sushiswap/list/master/logos/token-logos/network/arbitrum/0xcF985abA4647a432E60efcEeB8054BBd64244305.jpg"
   },
   "0xd22a58f79e9481d1a88e00c343885a588b34b68b": {
     "chain": "arbitrum",
@@ -461,11 +1203,32 @@
     "symbol": "EURS",
     "decimals": 2
   },
+  "0xd4939d69b31fbe981ed6904a3af43ee1dc777aab": {
+    "chain": "arbitrum",
+    "symbol": "ETH+",
+    "decimals": 18,
+    "address": "0xd4939d69b31fbe981ed6904a3af43ee1dc777aab",
+    "logoURI": "https://tokens.pancakeswap.finance/images/arbitrum/0xD4939D69B31fbE981ed6904A3aF43Ee1dc777Aab.png"
+  },
+  "0xd4d026322c88c2d49942a75dff920fcfbc5614c1": {
+    "chain": "arbitrum",
+    "symbol": "OLE",
+    "decimals": 18,
+    "address": "0xd4d026322c88c2d49942a75dff920fcfbc5614c1",
+    "logoURI": "https://raw.githubusercontent.com/sushiswap/list/master/logos/token-logos/network/arbitrum/0xD4d026322C88C2d49942A75DfF920FCfbC5614C1.jpg"
+  },
   "0xd4d42f0b6def4ce0383636770ef773390d85c61a": {
     "chain": "arbitrum",
     "symbol": "SUSHI",
     "decimals": 18,
     "address": "0xd4d42f0b6def4ce0383636770ef773390d85c61a"
+  },
+  "0xd56734d7f9979dd94fae3d67c7e928234e71cd4c": {
+    "chain": "arbitrum",
+    "symbol": "TIA.n",
+    "decimals": 6,
+    "address": "0xd56734d7f9979dd94fae3d67c7e928234e71cd4c",
+    "logoURI": "https://tokens.pancakeswap.finance/images/arbitrum/0xD56734d7f9979dD94FAE3d67C7e928234e71cD4C.png"
   },
   "0xd8724322f44e5c58d7a815f542036fb17dbbf839": {
     "chain": "arbitrum",
@@ -479,11 +1242,60 @@
     "decimals": 18,
     "address": "0xda10009cbd5d07dd0cecc66161fc93d7c9000da1"
   },
+  "0xdb96f8efd6865644993505318cc08ff9c42fb9ac": {
+    "chain": "arbitrum",
+    "symbol": "Z2O",
+    "decimals": 9,
+    "address": "0xdb96f8efd6865644993505318cc08ff9c42fb9ac",
+    "logoURI": "https://raw.githubusercontent.com/sushiswap/assets/master/blockchains/arbitrum/assets/0xdb96f8efd6865644993505318cc08FF9C42fb9aC/logo.png"
+  },
+  "0xdee46be9d0b207e5d88d2efd84a045e725a242f7": {
+    "chain": "arbitrum",
+    "symbol": "PEPE",
+    "decimals": 18,
+    "address": "0xdee46be9d0b207e5d88d2efd84a045e725a242f7",
+    "logoURI": "https://raw.githubusercontent.com/sushiswap/list/master/logos/token-logos/network/arbitrum/0xDEE46BE9D0b207e5d88D2Efd84a045E725A242F7.jpg"
+  },
+  "0xe367d4b1b9bb40e34adce448e1edb0141fc6a8ac": {
+    "chain": "arbitrum",
+    "symbol": "Bridged mstETH",
+    "decimals": 18,
+    "address": "0xe367d4b1b9bb40e34adce448e1edb0141fc6a8ac",
+    "logoURI": "https://tokens.pancakeswap.finance/images/arbitrum/0xE367d4b1b9bB40e34aDCE448e1edb0141Fc6a8AC.png"
+  },
+  "0xe656165d39419c03d588515c835d109e19221e1e": {
+    "chain": "arbitrum",
+    "symbol": "pAMZN",
+    "decimals": 18,
+    "address": "0xe656165d39419c03d588515c835d109e19221e1e",
+    "logoURI": "https://raw.githubusercontent.com/sushiswap/list/master/logos/token-logos/network/arbitrum/0xE656165d39419C03D588515c835d109E19221e1E.jpg"
+  },
+  "0xe7f6c3c1f0018e4c08acc52965e5cbff99e34a44": {
+    "chain": "arbitrum",
+    "symbol": "plsJONES",
+    "decimals": 18,
+    "address": "0xe7f6c3c1f0018e4c08acc52965e5cbff99e34a44",
+    "logoURI": "https://raw.githubusercontent.com/sushiswap/list/master/logos/token-logos/network/arbitrum/0xe7f6C3c1F0018E4C08aCC52965e5cbfF99e34A44.jpg"
+  },
+  "0xe80772eaf6e2e18b651f160bc9158b2a5cafca65": {
+    "chain": "arbitrum",
+    "symbol": "USD+",
+    "decimals": 6,
+    "address": "0xe80772eaf6e2e18b651f160bc9158b2a5cafca65",
+    "logoURI": "https://tokens.pancakeswap.finance/images/arbitrum/0xe80772Eaf6e2E18B651F160Bc9158b2A5caFCA65.png"
+  },
   "0xe85b662fe97e8562f4099d8a1d5a92d4b453bf30": {
     "chain": "arbitrum",
     "symbol": "THALES",
     "decimals": 18,
     "address": "0xe85b662fe97e8562f4099d8a1d5a92d4b453bf30"
+  },
+  "0xeb466342c4d449bc9f53a865d5cb90586f405215": {
+    "chain": "arbitrum",
+    "symbol": "axlUSDC",
+    "decimals": 6,
+    "address": "0xeb466342c4d449bc9f53a865d5cb90586f405215",
+    "logoURI": "https://tokens.pancakeswap.finance/images/arbitrum/0xEB466342C4d449BC9f53A865D5Cb90586f405215.png"
   },
   "0xec70dcb4a1efa46b8f2d97c310c9c4790ba5ffa8": {
     "chain": "arbitrum",
@@ -491,11 +1303,95 @@
     "decimals": 18,
     "address": "0xec70dcb4a1efa46b8f2d97c310c9c4790ba5ffa8"
   },
+  "0xed3fb761414da74b74f33e5c5a1f78104b188dfc": {
+    "chain": "arbitrum",
+    "symbol": "NYAN",
+    "decimals": 18,
+    "address": "0xed3fb761414da74b74f33e5c5a1f78104b188dfc",
+    "logoURI": "https://raw.githubusercontent.com/sushiswap/list/master/logos/token-logos/token/nyan.jpg"
+  },
+  "0xed65c5085a18fa160af0313e60dcc7905e944dc7": {
+    "chain": "arbitrum",
+    "symbol": "ETHx",
+    "decimals": 18,
+    "address": "0xed65c5085a18fa160af0313e60dcc7905e944dc7",
+    "logoURI": "https://tokens.pancakeswap.finance/images/arbitrum/0xED65C5085a18Fa160Af0313E60dcc7905E944Dc7.png"
+  },
+  "0xee9801669c6138e84bd50deb500827b776777d28": {
+    "chain": "arbitrum",
+    "symbol": "O3",
+    "decimals": 18,
+    "address": "0xee9801669c6138e84bd50deb500827b776777d28",
+    "logoURI": "https://raw.githubusercontent.com/sushiswap/list/master/logos/token-logos/network/arbitrum/0xEe9801669C6138E84bD50dEB500827b776777d28.jpg"
+  },
+  "0xef888bca6ab6b1d26dbec977c455388ecd794794": {
+    "chain": "arbitrum",
+    "symbol": "RGT",
+    "decimals": 18,
+    "address": "0xef888bca6ab6b1d26dbec977c455388ecd794794",
+    "logoURI": "https://raw.githubusercontent.com/sushiswap/list/master/logos/token-logos/token/rgt.jpg"
+  },
+  "0xf018865b26ffab9cd1735dcca549d95b0cb9ea19": {
+    "chain": "arbitrum",
+    "symbol": "jDPX",
+    "decimals": 18,
+    "address": "0xf018865b26ffab9cd1735dcca549d95b0cb9ea19",
+    "logoURI": "https://raw.githubusercontent.com/sushiswap/list/master/logos/token-logos/network/arbitrum/0xF018865b26fFAb9cd1735DCca549D95b0CB9Ea19.jpg"
+  },
+  "0xf0b5ceefc89684889e5f7e0a7775bd100fcd3709": {
+    "chain": "arbitrum",
+    "symbol": "DUSD",
+    "decimals": 6,
+    "address": "0xf0b5ceefc89684889e5f7e0a7775bd100fcd3709",
+    "logoURI": "https://raw.githubusercontent.com/sushiswap/assets/master/blockchains/ethereum/assets/0xF0B5cEeFc89684889e5F7e0A7775Bd100FcD3709/logo.png"
+  },
   "0xf12132857fb45b1f1342420eaaf818509f850468": {
     "chain": "arbitrum",
     "address": "0xf12132857fb45b1f1342420eaaf818509f850468",
     "symbol": "BobrCRV",
     "decimals": 18
+  },
+  "0xf236ea74b515ef96a9898f5a4ed4aa591f253ce1": {
+    "chain": "arbitrum",
+    "symbol": "plsDPX",
+    "decimals": 18,
+    "address": "0xf236ea74b515ef96a9898f5a4ed4aa591f253ce1",
+    "logoURI": "https://raw.githubusercontent.com/sushiswap/list/master/logos/token-logos/network/arbitrum/0xF236ea74B515eF96a9898F5a4ed4Aa591f253Ce1.jpg"
+  },
+  "0xf42e2b8bc2af8b110b65be98db1321b1ab8d44f5": {
+    "chain": "arbitrum",
+    "symbol": "DONUT",
+    "decimals": 18,
+    "address": "0xf42e2b8bc2af8b110b65be98db1321b1ab8d44f5",
+    "logoURI": "https://raw.githubusercontent.com/sushiswap/list/master/logos/token-logos/network/arbitrum/0xF42e2B8bc2aF8B110b65be98dB1321B1ab8D44f5.jpg"
+  },
+  "0xf4d48ce3ee1ac3651998971541badbb9a14d7234": {
+    "chain": "arbitrum",
+    "symbol": "CREAM",
+    "decimals": 18,
+    "address": "0xf4d48ce3ee1ac3651998971541badbb9a14d7234",
+    "logoURI": "https://raw.githubusercontent.com/sushiswap/list/master/logos/token-logos/token/cream.jpg"
+  },
+  "0xf602a45812040d90b202355bdc05438918cd3fe3": {
+    "chain": "arbitrum",
+    "symbol": "pGOLD",
+    "decimals": 18,
+    "address": "0xf602a45812040d90b202355bdc05438918cd3fe3",
+    "logoURI": "https://raw.githubusercontent.com/sushiswap/list/master/logos/token-logos/network/arbitrum/0xF602A45812040D90B202355bdc05438918CD3FE3.jpg"
+  },
+  "0xf7428ffcb2581a2804998efbb036a43255c8a8d3": {
+    "chain": "arbitrum",
+    "symbol": "sSPELL",
+    "decimals": 18,
+    "address": "0xf7428ffcb2581a2804998efbb036a43255c8a8d3",
+    "logoURI": "https://raw.githubusercontent.com/sushiswap/list/master/logos/token-logos/network/arbitrum/0xF7428FFCb2581A2804998eFbB036A43255c8A8D3.jpg"
+  },
+  "0xf7693c6fd9a7172d537fa75d133d309501cbd657": {
+    "chain": "arbitrum",
+    "symbol": "W3N",
+    "decimals": 18,
+    "address": "0xf7693c6fd9a7172d537fa75d133d309501cbd657",
+    "logoURI": "https://raw.githubusercontent.com/sushiswap/list/master/logos/token-logos/network/arbitrum/0xf7693c6fD9a7172D537FA75D133D309501Cbd657.jpg"
   },
   "0xf7f6718cf69967203740ccb431f6bdbff1e0fb68": {
     "chain": "arbitrum",
@@ -503,17 +1399,59 @@
     "symbol": "TUSD",
     "decimals": 18
   },
+  "0xf80d589b3dbe130c270a69f1a69d050f268786df": {
+    "chain": "arbitrum",
+    "symbol": "FLUX",
+    "decimals": 18,
+    "address": "0xf80d589b3dbe130c270a69f1a69d050f268786df",
+    "logoURI": "https://raw.githubusercontent.com/sushiswap/list/master/logos/token-logos/network/arbitrum/0xF80D589b3Dbe130c270a69F1a69D050f268786Df.jpg"
+  },
+  "0xf8388c2b6edf00e2e27eef5200b1befb24ce141d": {
+    "chain": "arbitrum",
+    "symbol": "NOLA",
+    "decimals": 18,
+    "address": "0xf8388c2b6edf00e2e27eef5200b1befb24ce141d",
+    "logoURI": "https://raw.githubusercontent.com/sushiswap/list/master/logos/token-logos/network/arbitrum/0xF8388c2B6Edf00E2E27eEF5200B1beFB24cE141d.jpg"
+  },
+  "0xf8f636bb3be1feeb979e1ea281389b49cf3a6853": {
+    "chain": "arbitrum",
+    "symbol": "pAAPL",
+    "decimals": 18,
+    "address": "0xf8f636bb3be1feeb979e1ea281389b49cf3a6853",
+    "logoURI": "https://raw.githubusercontent.com/sushiswap/list/master/logos/token-logos/network/arbitrum/0xf8f636BB3Be1fEEB979E1ea281389b49CF3a6853.jpg"
+  },
   "0xf97f4df75117a78c1a5a0dbb814af92458539fb4": {
     "chain": "arbitrum",
     "symbol": "LINK",
     "decimals": 18,
     "address": "0xf97f4df75117a78c1a5a0dbb814af92458539fb4"
   },
+  "0xfa58c669b855b29f99374d0f160db286849d139b": {
+    "chain": "arbitrum",
+    "symbol": "MKC",
+    "decimals": 18,
+    "address": "0xfa58c669b855b29f99374d0f160db286849d139b",
+    "logoURI": "https://raw.githubusercontent.com/sushiswap/list/master/logos/token-logos/network/arbitrum/0xFA58c669B855b29f99374d0F160dB286849D139B.jpg"
+  },
+  "0xfa5ed56a203466cbbc2430a43c66b9d8723528e7": {
+    "chain": "arbitrum",
+    "symbol": "agEUR",
+    "decimals": 18,
+    "address": "0xfa5ed56a203466cbbc2430a43c66b9d8723528e7",
+    "logoURI": "https://raw.githubusercontent.com/sushiswap/list/master/logos/token-logos/network/arbitrum/0xFA5Ed56A203466CbBC2430a43c66b9D8723528E7.jpg"
+  },
   "0xfa7f8980b0f1e64a2062791cc3b0871572f1f7f0": {
     "chain": "arbitrum",
     "symbol": "UNI",
     "decimals": 18,
     "address": "0xfa7f8980b0f1e64a2062791cc3b0871572f1f7f0"
+  },
+  "0xfb9fed8cb962548a11fe7f6f282949061395c7f5": {
+    "chain": "arbitrum",
+    "symbol": "NUON",
+    "decimals": 18,
+    "address": "0xfb9fed8cb962548a11fe7f6f282949061395c7f5",
+    "logoURI": "https://raw.githubusercontent.com/sushiswap/list/master/logos/token-logos/network/arbitrum/0xfb9Fed8cB962548A11fE7F6F282949061395c7F5.jpg"
   },
   "0xfc5a1a6eb076a2c7ad06ed22c90d7e710e35ad0a": {
     "chain": "arbitrum",
@@ -526,6 +1464,13 @@
     "symbol": "USDT",
     "decimals": 6,
     "address": "0xfd086bc7cd5c481dcc9c85ebe478a1c0b69fcbb9"
+  },
+  "0xfe14f790da92971131544d915c4ada6f1abce3bd": {
+    "chain": "arbitrum",
+    "symbol": "mDLP",
+    "decimals": 18,
+    "address": "0xfe14f790da92971131544d915c4ada6f1abce3bd",
+    "logoURI": "https://tokens.pancakeswap.finance/images/arbitrum/0xfe14F790DA92971131544d915c4ADa6F1abce3Bd.png"
   },
   "0xfea7a6a0b346362bf88a9e4a88416b77a57d6c2a": {
     "chain": "arbitrum",

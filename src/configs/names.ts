@@ -41,6 +41,7 @@ export const ChainNames = {
   kroma: 'kroma',
   ancient8: 'ancient8',
   lisk: 'lisk',
+  celo: 'celo',
 };
 
 export const ProtocolNames = {

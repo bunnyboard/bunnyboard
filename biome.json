@@ -10,6 +10,9 @@
     "attributePosition": "auto",
     "ignore": ["**/build", "**/node_modules", "**/readme.md", "**/.yarn"]
   },
+  "files": {
+    "maxSize": 5242880
+  },
   "organizeImports": { "enabled": true },
   "linter": { "enabled": true, "rules": { "recommended": true } },
   "javascript": {
