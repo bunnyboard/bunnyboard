@@ -2,12 +2,12 @@ import { IBlockchainService } from '../services/blockchains/domains';
 import { IMemcacheService } from '../services/caching/domains';
 import { IDatabaseService } from '../services/database/domains';
 import { IOracleService } from '../services/oracle/domains';
-import { DexConfig, ProtocolConfig } from './configs';
+import { DexConfig, IsolatedLendingMarketConfig, ProtocolConfig } from './configs';
 import { CdpLendingAssetDataTimeframe } from './domains/cdpLending';
 import { CrossLendingReserveDataTimeframe } from './domains/crossLending';
 import { DexLiquidityPoolDataTimeframe, DexLiquidityPoolMetadata } from './domains/dex';
 import { FlashloanDataTimeframe } from './domains/flashloan';
-import { IsolatedLendingPoolDataTimeframe } from './domains/isolatedLending';
+import { IsolatedLendingPoolDataTimeframe, IsolatedLendingPoolMetadata } from './domains/isolatedLending';
 import { StakingPoolDataTimeframe } from './domains/staking';
 import { AdapterAbiConfigs, GetAdapterDataTimeframeOptions, RunAdapterOptions } from './options';
 
@@ -51,6 +51,10 @@ export interface ICdpLendingProtocolAdapter extends IProtocolAdapter {
 }
 
 export interface IIsolatedLendingProtocolAdapter extends IProtocolAdapter {
+  getIsolatedLendingPoolMetadata: (
+    config: IsolatedLendingMarketConfig,
+  ) => Promise<Array<IsolatedLendingPoolMetadata> | null>;
+
   getLendingPoolData: (
     options: GetAdapterDataTimeframeOptions,
   ) => Promise<Array<IsolatedLendingPoolDataTimeframe> | null>;

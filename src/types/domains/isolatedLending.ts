@@ -1,5 +1,27 @@
 import { DataTimeframe } from '../base';
-import { Token } from '../configs';
+import { LendingIsolatedVersion, Token } from '../configs';
+
+export interface IsolatedLendingPoolMetadata {
+  chain: string;
+  protocol: string;
+
+  version: LendingIsolatedVersion;
+
+  // pool contract address
+  address: string;
+
+  // poolId on every protocol
+  poolId: string;
+
+  // debt/borrowed token
+  debtToken: Token;
+
+  // list of collateral tokens
+  collaterals: Array<Token>;
+
+  birthday: number;
+  birthblock: number;
+}
 
 export interface IsolatedLendingCollateralData {
   // token

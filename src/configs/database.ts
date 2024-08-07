@@ -44,6 +44,17 @@ export const DatabaseCollectionConfigs: DatabaseCollectionConfig = {
       },
     ],
   },
+  metadataLendingIsolatedPools: {
+    name: `${MongodbPrefix}.metadataLendingIsolatedPools`,
+    indies: [
+      {
+        protocol: 1,
+        chain: 1,
+        address: 1, // pool address
+        poolId: 1, // pool id
+      },
+    ],
+  },
 
   crossLendingReserveStates: {
     name: `${MongodbPrefix}.crossLendingReserveStates`,

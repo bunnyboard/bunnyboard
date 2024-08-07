@@ -5,6 +5,7 @@ import { DataMetrics, IsolatedLendingMarketConfig, MetricConfig, ProtocolConfig,
 import {
   IsolatedLendingPoolDataStateWithTimeframes,
   IsolatedLendingPoolDataTimeframe,
+  IsolatedLendingPoolMetadata,
 } from '../../types/domains/isolatedLending';
 import { ContextServices, ContextStorages, IIsolatedLendingProtocolAdapter } from '../../types/namespaces';
 import { GetAdapterDataTimeframeOptions, RunAdapterOptions } from '../../types/options';
@@ -23,6 +24,12 @@ export default class IsolatedLendingProtocolAdapter extends ProtocolAdapter impl
 
   constructor(services: ContextServices, storages: ContextStorages, protocolConfig: ProtocolConfig) {
     super(services, storages, protocolConfig);
+  }
+
+  public async getIsolatedLendingPoolMetadata(
+    config: IsolatedLendingMarketConfig,
+  ): Promise<Array<IsolatedLendingPoolMetadata> | null> {
+    return null;
   }
 
   public async getLendingPoolData(

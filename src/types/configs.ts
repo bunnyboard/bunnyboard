@@ -45,6 +45,7 @@ export interface DatabaseCollectionConfig {
 
   // metadata
   metadataDexLiquidityPools: MongoCollectionConfig;
+  metadataLendingIsolatedPools: MongoCollectionConfig;
 
   crossLendingReserveStates: MongoCollectionConfig;
   crossLendingReserveSnapshots: MongoCollectionConfig;
