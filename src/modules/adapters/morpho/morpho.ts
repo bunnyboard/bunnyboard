@@ -15,7 +15,6 @@ import { ContextServices, ContextStorages } from '../../../types/namespaces';
 import { GetAdapterDataTimeframeOptions, RunAdapterOptions } from '../../../types/options';
 import IsolatedLendingProtocolAdapter from '../isolatedLending';
 import { MorphoEventSignatures } from './abis';
-import MorphoMarkets from '../../../configs/data/statics/MorphoBlueMarkets.json';
 
 interface MorphoBluePoolMetadata extends IsolatedLendingPoolMetadata {
   oracle: string;
@@ -379,60 +378,6 @@ export default class MorphoAdapter extends IsolatedLendingProtocolAdapter {
     const latestBlock = await this.services.blockchain.getLastestBlockNumber(config.chain);
 
     const databaseConnected = await this.storages.database.isConnected();
-    const databaseLatestStateKey = `metadata-isolated-lending-pools-${config.chain}-${config.protocol}-${config.address}`;
-
-    // we have some pool metadata static data collected before
-    // we write them into the database - metadata pools collection
-    for (const marketStatic of Object.values(MorphoMarkets)) {
-      if (marketStatic.chain === config.chain) {
-        const poolMetadata: MorphoBluePoolMetadata = {
-          chain: marketStatic.chain,
-          protocol: config.protocol,
-          version: config.version,
-          address: normalizeAddress(config.address), // morpho blue contract
-          poolId: marketStatic.marketId,
-          oracle: marketStatic.oracle,
-          irm: marketStatic.irm,
-          ltv: marketStatic.ltv,
-          debtToken: marketStatic.debtToken,
-          collaterals: [marketStatic.collateral],
-          birthblock: marketStatic.birthblock,
-          birthday: marketStatic.birthday,
-        };
-
-        lendingPools[marketStatic.marketId] = poolMetadata;
-
-        if (databaseConnected) {
-          await this.storages.database.update({
-            collection: envConfig.mongodb.collections.metadataLendingIsolatedPools.name,
-            keys: {
-              protocol: poolMetadata.protocol,
-              chain: poolMetadata.chain,
-              address: poolMetadata.address,
-              poolId: poolMetadata.poolId,
-            },
-            updates: {
-              ...poolMetadata,
-            },
-            upsert: true,
-          });
-
-          if (startFromBlock < poolMetadata.birthblock) {
-            await this.storages.database.update({
-              collection: envConfig.mongodb.collections.cachingStates.name,
-              keys: {
-                name: databaseLatestStateKey,
-              },
-              updates: {
-                name: databaseLatestStateKey,
-                blockNumber: marketStatic.birthblock,
-              },
-              upsert: true,
-            });
-          }
-        }
-      }
-    }
 
     if (databaseConnected) {
       // get existed pools from database
@@ -459,17 +404,10 @@ export default class MorphoAdapter extends IsolatedLendingProtocolAdapter {
           irm: existedPool.irm,
           ltv: existedPool.ltv,
         };
-      }
 
-      const latestSyncState = await this.storages.database.find({
-        collection: envConfig.mongodb.collections.cachingStates.name,
-        query: {
-          name: databaseLatestStateKey,
-        },
-      });
-      if (latestSyncState) {
-        // sync from latest block number from database
-        startFromBlock = Number(latestSyncState.blockNumber) + 1;
+        if (lendingPools[existedPool.poolId].birthblock > startFromBlock) {
+          startFromBlock = lendingPools[existedPool.poolId].birthblock + 1;
+        }
       }
     }
 
@@ -527,21 +465,6 @@ export default class MorphoAdapter extends IsolatedLendingProtocolAdapter {
             });
           }
         }
-      }
-
-      // update latest block number which indexed logs
-      if (databaseConnected) {
-        await this.storages.database.update({
-          collection: envConfig.mongodb.collections.cachingStates.name,
-          keys: {
-            name: databaseLatestStateKey,
-          },
-          updates: {
-            name: databaseLatestStateKey,
-            blockNumber: toBlock + 1,
-          },
-          upsert: true,
-        });
       }
 
       startFromBlock = toBlock + 1;
