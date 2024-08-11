@@ -39,13 +39,13 @@ export const BungeeConfigs: BungeeProtocolConfig = {
         '0x16eccfdbb4ee1a85a33f3a9b21175cd7ae753db4',
       ],
     },
-    {
-      chain: ChainNames.aurora,
-      protocol: ProtocolNames.bungee,
-      metric: DataMetrics.ecosystem,
-      birthday: 1679097600, // Sat Mar 18 2023 00:00:00 GMT+0000
-      address: '0x3a23f943181408eac424116af7b7790c94cb97a5',
-    },
+    // {
+    //   chain: ChainNames.aurora,
+    //   protocol: ProtocolNames.bungee,
+    //   metric: DataMetrics.ecosystem,
+    //   birthday: 1679097600, // Sat Mar 18 2023 00:00:00 GMT+0000
+    //   address: '0x3a23f943181408eac424116af7b7790c94cb97a5',
+    // },
     {
       chain: ChainNames.avalanche,
       protocol: ProtocolNames.bungee,
