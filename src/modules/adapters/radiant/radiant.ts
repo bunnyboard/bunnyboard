@@ -30,4 +30,17 @@ export default class RadiantAdapter extends ProtocolAdapter {
       }
     }
   }
+
+  public async runTest(options: RunAdapterOptions): Promise<void> {
+    switch (options.metricConfig.metric) {
+      case DataMetrics.crossLending: {
+        await this.aavev2.runTest(options);
+        break;
+      }
+      case DataMetrics.flashloan: {
+        await this.flashloan.runTest(options);
+        break;
+      }
+    }
+  }
 }

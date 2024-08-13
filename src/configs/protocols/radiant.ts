@@ -45,6 +45,19 @@ export const RadiantConfigs: AaveProtocolConfig = {
         address: AddressesBook.bnbchain.RadiantOracle,
       },
     },
+    {
+      chain: ChainNames.base,
+      protocol: ProtocolNames.radiant,
+      version: LendingMarketVersions.cross.aavev2,
+      birthday: 1715990400, // Sat May 18 2024 00:00:00 GMT+0000
+      metric: DataMetrics.crossLending,
+      address: '0x30798cfe2cca822321ceed7e6085e633aabc492f',
+      dataProvider: '0x07d2dc09a1cbdd01e5f6ca984b060a3ff31b9eaf',
+      oracle: {
+        currency: 'usd',
+        address: '0xe373749cd9b2d379f7f6dd595e5164498b922164',
+      },
+    },
 
     // for flashloan
     {
@@ -71,6 +84,14 @@ export const RadiantConfigs: AaveProtocolConfig = {
       birthday: 1679961600, // Tue Mar 28 2023 00:00:00 GMT+0000
       metric: DataMetrics.flashloan,
       address: AddressesBook.bnbchain.RadiantLendingPool,
+    },
+    {
+      chain: ChainNames.base,
+      protocol: ProtocolNames.radiant,
+      version: LendingMarketVersions.cross.aavev2,
+      birthday: 1715990400, // Sat May 18 2024 00:00:00 GMT+0000
+      metric: DataMetrics.flashloan,
+      address: '0x30798cfe2cca822321ceed7e6085e633aabc492f',
     },
   ],
 };
