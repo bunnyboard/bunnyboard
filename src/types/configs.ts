@@ -92,6 +92,7 @@ export interface EnvConfig {
   externalConfigs: {
     etherscanApiKey: string;
     beaconNode: string;
+    alchemyKey: string;
   };
 }
 

@@ -21,6 +21,7 @@
     "@uniswap/v3-sdk": "^3.10.0",
     "axios": "^1.6.8",
     "bignumber.js": "^9.0.2",
+    "dayjs": "^1.11.12",
     "dotenv": "^16.0.0",
     "mongodb": "^4.4.1",
     "typescript": "^5.3.3",

@@ -655,6 +655,7 @@ __metadata:
     "@uniswap/v3-sdk": "npm:^3.10.0"
     axios: "npm:^1.6.8"
     bignumber.js: "npm:^9.0.2"
+    dayjs: "npm:^1.11.12"
     dotenv: "npm:^16.0.0"
     mongodb: "npm:^4.4.1"
     typescript: "npm:^5.3.3"
@@ -2390,6 +2391,13 @@ __metadata:
     shebang-command: "npm:^2.0.0"
     which: "npm:^2.0.1"
   checksum: 5738c312387081c98d69c98e105b6327b069197f864a60593245d64c8089c8a0a744e16349281210d56835bb9274130d825a78b2ad6853ca13cfbeffc0c31750
+  languageName: node
+  linkType: hard
+
+"dayjs@npm:^1.11.12":
+  version: 1.11.12
+  resolution: "dayjs@npm:1.11.12"
+  checksum: 9673d37f3f9ad8a91caaeae9b3fea9a0010c81c7f58599fb9d860bc3359b86632fbff8eb7dddc86c2acaab01c5e6860bc672952f17b58c9286140c52b077c8e4
   languageName: node
   linkType: hard
 

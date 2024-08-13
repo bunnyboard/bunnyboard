@@ -1,4 +1,4 @@
-export interface EthereumBeaconDeposit {
+export interface EthereumBeaconDepositor {
   depositor: string;
 
   // transaction to address
@@ -12,23 +12,28 @@ export interface EthereumLayer2Stats {
   layer2: string;
 
   // total ETH were being locked in contract layer
-  totalCoinLocked: string;
-}
-
-export interface EthereumLiquidStakingData {
-  protocol: string;
-
-  // total ETh were being staked
   totalDeposited: string;
 }
 
+export interface EthereumLiquidStakingStats {
+  protocol: string;
+
+  // total ETH were being staked
+  totalDeposited: string;
+}
+
+// the miner/validator address
 export interface EthereumMinerStats {
   address: string;
   producedBlockCount: number;
+  feesEarned: string;
 }
 
-export interface EthereumSenderStats {
+export interface EthereumAddressStats {
   address: string;
+  totalGasUsed: string;
+  totalFeesBurnt: string;
+  totalFeesPaid: string;
   transactionCount: number;
 }
 
@@ -37,72 +42,59 @@ export interface EthereumDataTimeframe {
   chain: string;
   timestamp: number;
 
-  coinPrice: string;
+  ethPrice: string;
 
-  // total ETH was deposited into staking contract
-  volumeCoinDeposited: string;
+  // total ETH was deposited into beacon staking contract
+  totalBeaconDeposited: string;
 
-  // total ETH was withdrawn
-  volumeCoinWithdrawn: string;
+  // total ETH was withdrawn from beacon chain
+  totalBeaconWithdrawn: string;
 
   // total ETH was burned by EIP-1559
-  volumeCoinBurnt: string;
+  totalFeesBurnt: string;
+
+  // total ETH was paid from transactions fees
+  totalFeesPaid: string;
 
   // total gas limits from all blocks
-  gasLimit: string;
+  totalGasLimit: string;
 
   // total gas were spent
-  gasUsed: string;
+  totalGasUsed: string;
 
   // total transactions were sent
   transactionCount: number;
 
-  // transaction type distribution
-  transactuonTypes: {
+  // transaction types distribution
+  transactionTypes: {
     [key: string]: number;
   };
 
   // sender addresses
-  senderAddresses: Array<EthereumSenderStats>;
+  senderAddresses: Array<EthereumAddressStats>;
+
+  // address/contract consume gas
+  guzzlerAddresses: Array<EthereumAddressStats>;
 
   // fee recipients or block builders
   minerAddresses: Array<EthereumMinerStats>;
 
   // list of beacon deposits
-  beaconDeposits: Array<EthereumBeaconDeposit>;
+  beaconDeposits: Array<EthereumBeaconDepositor>;
 
   // list of layer 2 bridge stats
   layer2: Array<EthereumLayer2Stats>;
 
   // liquid staking
-  liquidStaking: Array<EthereumLiquidStakingData>;
-}
-
-export interface EthereumBeaconStats {
-  // total validators includes all status from the genesis
-  totalValidator: number;
-
-  // status => validator count
-  validatorStatus: {
-    [key: string]: number;
-  };
+  liquidStaking: Array<EthereumLiquidStakingStats>;
 }
 
 export interface EthereumDataState extends EthereumDataTimeframe {
   // total ETH supply ever exists
-  totalCoinSupply: string;
+  totalEthSupply: string;
 
   // total ETH were ever burnt
-  totalCoinBurnt: string;
-
-  // total ETH rewards for eth2 staking
-  totalCoinEth2Rewards: string;
-
-  // total ETH were withdrawn from eth2
-  totalCoinEth2Withdrawn: string;
-
-  // current beacon chain stats
-  beaconStats: EthereumBeaconStats | null;
+  totalEthBurnt: string;
 }
 
 export interface EthereumDataStateWithTimeframe extends EthereumDataState {
