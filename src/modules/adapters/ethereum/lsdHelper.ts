@@ -1,6 +1,6 @@
 import { EthereumEcosystemConfig } from '../../../configs/protocols/ethereum';
 import logger from '../../../lib/logger';
-import { EthereumLiquidStakingData } from '../../../types/domains/ecosystem/ethereum';
+import { EthereumLiquidStakingStats } from '../../../types/domains/ecosystem/ethereum';
 import { ContextServices } from '../../../types/namespaces';
 import LidoStETHAbi from '../../../configs/abi/lido/stETH.json';
 import rETHAbi from '../../../configs/abi/rocketpool/rETH.json';
@@ -22,10 +22,10 @@ export interface GetLsdDataOptions {
 }
 
 export default class LsdHelper {
-  public static async getEthereumLsdData(options: GetLsdDataOptions): Promise<Array<EthereumLiquidStakingData>> {
+  public static async getEthereumLsdData(options: GetLsdDataOptions): Promise<Array<EthereumLiquidStakingStats>> {
     const { services, ethereumConfig, timestamp } = options;
 
-    const data: Array<EthereumLiquidStakingData> = [];
+    const data: Array<EthereumLiquidStakingStats> = [];
 
     for (const liquidStakingConfig of ethereumConfig.liquidStaking) {
       logger.debug(`getting liquid staking data`, {
@@ -45,7 +45,7 @@ export default class LsdHelper {
           params: [],
           blockNumber: blockNumber,
         });
-        const lidoData: EthereumLiquidStakingData = {
+        const lidoData: EthereumLiquidStakingStats = {
           protocol: liquidStakingConfig.protocol,
           totalDeposited: formatBigNumberToString(getTotalPooledEther.toString(), 18),
         };
@@ -78,7 +78,7 @@ export default class LsdHelper {
             .toString(10),
         });
       } else if (liquidStakingConfig.protocol === ProtocolNames.binanceStakedEth) {
-        const wBETHData: EthereumLiquidStakingData = {
+        const wBETHData: EthereumLiquidStakingStats = {
           protocol: liquidStakingConfig.protocol,
           totalDeposited: '0',
         };

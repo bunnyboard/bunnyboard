@@ -18,8 +18,9 @@ const envConfig: EnvConfig = {
     debug: String(process.env.BUNNYBOARD_ENV_DEBUG) === 'true',
   },
   externalConfigs: {
-    etherscanApiKey: String(process.env.BUNNYBOARD_ETHERSCAN_API_KEY),
-    beaconNode: String(process.env.BUNNYBOARD_BEACON_NODE),
+    etherscanApiKey: String(process.env.BUNNYBOARD_ETH_ETHERSCAN_API_KEY),
+    beaconNode: String(process.env.BUNNYBOARD_ETH_BEACON_NODE),
+    alchemyKey: String(process.env.BUNNYBOARD_ETH_ALCHEMY_KEY),
   },
 };
 

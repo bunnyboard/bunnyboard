@@ -56,6 +56,7 @@ export default class BlockchainService extends CachingService implements IBlockc
     const client = this.getPublicClient(chain);
     const block = await client.getBlock({
       blockNumber: BigInt(number),
+      includeTransactions: true,
     });
     await this.setCachingData(cachingKey, block);
 

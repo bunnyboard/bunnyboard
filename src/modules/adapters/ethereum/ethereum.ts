@@ -74,7 +74,6 @@ export default class EthereumAdapter extends ProtocolAdapter {
     if (dataTimeframe) {
       return {
         ...dataTimeframe,
-        beaconStats: null,
         totalCoinSupply: etherscanResponse
           ? formatBigNumberToString(etherscanResponse.result.EthSupply.toString(), 18)
           : '0',
@@ -123,16 +122,18 @@ export default class EthereumAdapter extends ProtocolAdapter {
       timestamp: stateTime,
       coinPrice: ethPrice ? ethPrice : '0',
 
-      volumeCoinDeposited: '0',
-      volumeCoinWithdrawn: '0',
-      volumeCoinBurnt: '0',
+      totalBeaconDeposited: '0',
+      totalBeaconWithdrawn: '0',
+      totalFeesBurnt: '0',
+      totalFeesPaid: '0',
 
-      gasLimit: '0',
-      gasUsed: '0',
+      totalGasLimit: '0',
+      totalGasUsed: '0',
 
       transactionCount: 0,
-      transactuonTypes: {},
+      transactionTypes: {},
       senderAddresses: [],
+      guzzlerAddresses: [],
       minerAddresses: [],
       beaconDeposits: [],
       layer2: [],
@@ -141,12 +142,14 @@ export default class EthereumAdapter extends ProtocolAdapter {
 
     const client = this.services.blockchain.getPublicClient(ethereumConfig.chain);
 
-    const beacoinEvents = await this.services.blockchain.getContractLogs({
-      chain: ethereumConfig.chain,
-      address: ethereumConfig.address,
-      fromBlock: beginBlock,
-      toBlock: endBlock,
-    });
+    // const beacoinEvents = await this.services.blockchain.getContractLogs({
+    //   chain: ethereumConfig.chain,
+    //   address: ethereumConfig.address,
+    //   fromBlock: beginBlock,
+    //   toBlock: endBlock,
+    // });
+
+    const beacoinEvents: Array<any> = [];
 
     logger.debug(`processing beacon deposit events logs`, {
       service: this.name,
@@ -183,7 +186,7 @@ export default class EthereumAdapter extends ProtocolAdapter {
           amount,
         });
 
-        ethereumData.volumeCoinDeposited = new BigNumber(ethereumData.volumeCoinDeposited).plus(amount).toString(10);
+        ethereumData.totalBeaconDeposited = new BigNumber(ethereumData.totalBeaconDeposited).plus(amount).toString(10);
       }
     }
 
@@ -198,17 +201,18 @@ export default class EthereumAdapter extends ProtocolAdapter {
 
     const result = await ChainHelper.getChainStats({
       services: this.services,
+      storages: this.storages,
       ethereumConfig: ethereumConfig,
       beginBlock: beginBlock,
       endBlock: endBlock,
     });
 
-    ethereumData.gasLimit = result.gasLimit;
-    ethereumData.gasUsed = result.gasUsed;
-    ethereumData.volumeCoinBurnt = result.volumeCoinBurnt;
-    ethereumData.volumeCoinWithdrawn = result.volumeCoinWithdrawn;
+    ethereumData.totalGasLimit = result.gasLimit;
+    ethereumData.totalGasUsed = result.gasUsed;
+    ethereumData.totalFeesBurnt = result.totalFeesBurnt;
+    ethereumData.totalBeaconWithdrawn = result.totalBeaconWithdrawn;
     ethereumData.transactionCount = result.transactionCount;
-    ethereumData.transactuonTypes = result.transactuonTypes;
+    ethereumData.transactionTypes = result.transactionTypes;
     ethereumData.senderAddresses = result.senderAddresses;
     ethereumData.minerAddresses = result.minerAddresses;
 
