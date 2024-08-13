@@ -32,7 +32,7 @@ export default class Layer2Helper {
 
       const layer2Stats: EthereumLayer2Stats = {
         layer2: layer2Config.layer2,
-        totalCoinLocked: '0',
+        totalDeposited: '0',
       };
 
       if (layer2Config.layer2 === ChainNames.blast) {
@@ -44,13 +44,13 @@ export default class Layer2Helper {
           params: [],
           blockNumber: stateBlock,
         });
-        layer2Stats.totalCoinLocked = formatBigNumberToString(balance.toString(), 18);
+        layer2Stats.totalDeposited = formatBigNumberToString(balance.toString(), 18);
       } else {
         const client = services.blockchain.getPublicClient(ethereumConfig.chain);
         const balance = await client.getBalance({
           address: layer2Config.bridgeConfig.contractHoldEth as Address,
         });
-        layer2Stats.totalCoinLocked = formatBigNumberToString(balance.toString(), 18);
+        layer2Stats.totalDeposited = formatBigNumberToString(balance.toString(), 18);
       }
 
       stats.push(layer2Stats);

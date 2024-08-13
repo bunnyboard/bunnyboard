@@ -1,4 +1,4 @@
-export interface EthereumBeaconDeposit {
+export interface EthereumBeaconDepositor {
   depositor: string;
 
   // transaction to address
@@ -12,13 +12,13 @@ export interface EthereumLayer2Stats {
   layer2: string;
 
   // total ETH were being locked in contract layer
-  totalCoinLocked: string;
+  totalDeposited: string;
 }
 
 export interface EthereumLiquidStakingStats {
   protocol: string;
 
-  // total ETh were being staked
+  // total ETH were being staked
   totalDeposited: string;
 }
 
@@ -42,7 +42,7 @@ export interface EthereumDataTimeframe {
   chain: string;
   timestamp: number;
 
-  coinPrice: string;
+  ethPrice: string;
 
   // total ETH was deposited into beacon staking contract
   totalBeaconDeposited: string;
@@ -80,7 +80,7 @@ export interface EthereumDataTimeframe {
   minerAddresses: Array<EthereumMinerStats>;
 
   // list of beacon deposits
-  beaconDeposits: Array<EthereumBeaconDeposit>;
+  beaconDeposits: Array<EthereumBeaconDepositor>;
 
   // list of layer 2 bridge stats
   layer2: Array<EthereumLayer2Stats>;
@@ -91,16 +91,10 @@ export interface EthereumDataTimeframe {
 
 export interface EthereumDataState extends EthereumDataTimeframe {
   // total ETH supply ever exists
-  totalCoinSupply: string;
+  totalEthSupply: string;
 
   // total ETH were ever burnt
-  totalCoinBurnt: string;
-
-  // total ETH rewards for eth2 staking
-  totalCoinEth2Rewards: string;
-
-  // total ETH were withdrawn from eth2
-  totalCoinEth2Withdrawn: string;
+  totalEthBurnt: string;
 }
 
 export interface EthereumDataStateWithTimeframe extends EthereumDataState {
