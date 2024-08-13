@@ -22,22 +22,22 @@ export const MoonwellConfigs: CompoundProtocolConfig = {
         '0x298f2e346b82d69a473bf25f329bdf869e17dec8': true,
       },
     },
-    {
-      chain: ChainNames.moonriver,
-      protocol: ProtocolNames.moonwell,
-      version: LendingMarketVersions.cross.compound,
-      birthday: 1644451200, // Thu Feb 10 2022 00:00:00 GMT+0000
-      metric: DataMetrics.crossLending,
-      address: '0x0b7a0eaa884849c6af7a129e899536dddca4905e',
-      governanceToken: null,
-      underlying: cTokenMappings,
-      blacklists: {
-        '0xd0670aee3698f66e2d4daf071eb9c690d978bfa8': true,
-        '0x36918b66f9a3ec7a59d0007d8458db17bdffbf21': true,
-        '0x6503d905338e2ebb550c9ec39ced525b612e77ae': true,
-        '0x6e745367f4ad2b3da7339aee65dc85d416614d90': true,
-      },
-    },
+    // {
+    //   chain: ChainNames.moonriver,
+    //   protocol: ProtocolNames.moonwell,
+    //   version: LendingMarketVersions.cross.compound,
+    //   birthday: 1644451200, // Thu Feb 10 2022 00:00:00 GMT+0000
+    //   metric: DataMetrics.crossLending,
+    //   address: '0x0b7a0eaa884849c6af7a129e899536dddca4905e',
+    //   governanceToken: null,
+    //   underlying: cTokenMappings,
+    //   blacklists: {
+    //     '0xd0670aee3698f66e2d4daf071eb9c690d978bfa8': true,
+    //     '0x36918b66f9a3ec7a59d0007d8458db17bdffbf21': true,
+    //     '0x6503d905338e2ebb550c9ec39ced525b612e77ae': true,
+    //     '0x6e745367f4ad2b3da7339aee65dc85d416614d90': true,
+    //   },
+    // },
     {
       chain: ChainNames.base,
       protocol: ProtocolNames.moonwell,
