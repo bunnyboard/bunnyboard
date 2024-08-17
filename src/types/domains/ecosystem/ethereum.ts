@@ -8,6 +8,62 @@ export interface EthereumBeaconDepositor {
   amount: string;
 }
 
+export interface EthereumAddressStats {
+  address: string;
+  gasUsed: string;
+  feesBurnt: string;
+  feesPaid: string;
+  transactionCount: number;
+}
+
+export interface EthereumBlockData {
+  chain: string;
+
+  // block number
+  number: number;
+
+  // block timestamp
+  timestamp: number;
+
+  // miner (PoW) or fee recipient address (PoS)
+  miner: string;
+
+  // total ETH was deposited into Beacon chain in this block
+  beaconDeposited: string;
+
+  // total ETH was withdrawn from Beacon in this block
+  beaconWithdrawn: string;
+
+  // block gas limit
+  gasLimit: number;
+
+  // block gas used total from all transactions
+  gasUsed: number;
+
+  // total transaction fees were paid
+  totalFeesPaid: string;
+
+  // total ETH fees were burnt
+  totalFeesBurnt: string;
+
+  // number of transaction of this block
+  transactionCount: number;
+
+  // transaction types distribution
+  transactionTypes: {
+    [key: string]: number;
+  };
+
+  // transaction sender
+  senderAddresses: Array<EthereumAddressStats>;
+
+  // transaction recipient/to
+  guzzlerAddresses: Array<EthereumAddressStats>;
+
+  // list of beacon depositors
+  beaconDeposits: Array<EthereumBeaconDepositor>;
+}
+
 export interface EthereumLayer2Stats {
   layer2: string;
 
