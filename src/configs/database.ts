@@ -215,4 +215,14 @@ export const DatabaseCollectionConfigs: DatabaseCollectionConfig = {
       },
     ],
   },
+  ethereumBlocks: {
+    name: `${MongodbPrefix}.ethereumBlocks`,
+    indies: [
+      {
+        chain: 1,
+        number: 1, // block number
+        timestamp: 1, // block time
+      },
+    ],
+  },
 };

@@ -71,6 +71,9 @@ export interface DatabaseCollectionConfig {
   // for dexes
   dexLiquidityPoolStates: MongoCollectionConfig;
   dexLiquidityPoolSnapshots: MongoCollectionConfig;
+
+  // save ethereum block data
+  ethereumBlocks: MongoCollectionConfig;
 }
 
 export interface EnvConfig {
