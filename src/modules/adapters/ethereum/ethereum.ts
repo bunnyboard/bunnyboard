@@ -233,14 +233,18 @@ export default class EthereumAdapter extends ProtocolAdapter {
   }
 
   public async run(options: RunAdapterOptions): Promise<void> {
-    // sync all blocks
-    // await this.syncBlocks(options);
+    if (options.service === undefined || options.service === 'state') {
+      // update data states
+      await this.updateLatestState(options);
+    }
 
-    // update data states
-    await this.updateLatestState(options);
+    if (options.service === undefined || options.service === 'snapshot') {
+      // sync all blocks
+      await this.syncBlocks(options);
 
-    // update snapshots
-    await this.updateSnapshots(options);
+      // update snapshots
+      await this.updateSnapshots(options);
+    }
   }
 
   protected async syncBlocks(options: RunAdapterOptions): Promise<void> {
