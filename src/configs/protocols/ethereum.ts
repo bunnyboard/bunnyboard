@@ -1,7 +1,6 @@
 import assert from 'node:assert';
 import { DataMetrics, MetricConfig, ProtocolConfig } from '../../types/configs';
 import { EthereumBeaconDepositContract } from '../constants';
-import envConfig from '../envConfig';
 import { ChainNames, ProtocolNames } from '../names';
 import { normalizeAddress } from '../../lib/utils';
 
@@ -16,32 +15,12 @@ export interface Layer2Config {
   };
 }
 
-export interface LiquidStakingConfig {
-  protocol: string;
-  contracts: {
-    [key: string]: {
-      chain: string;
-      address: string;
-    };
-  };
-}
-
 export interface EthereumEcosystemConfig extends MetricConfig {
   // should be the staking contract
   address: string;
 
-  // etherscan api key
-  etherscanApiKey: string;
-
-  // beacon api
-  beaconNode: string;
-
   // list of layer 2 configs
   layer2: Array<Layer2Config>;
-
-  // list of liquid staking protocol
-  // which stake ETH into eth2
-  liquidStaking: Array<LiquidStakingConfig>;
 }
 
 export interface EthereumProtocolConfig extends ProtocolConfig {
@@ -84,12 +63,6 @@ export const EthereumConfigs: EthereumProtocolConfig = {
       birthday: 1704067200, // Mon Jan 01 2024 00:00:00 GMT+0000
       address: EthereumBeaconDepositContract,
 
-      // to get Ether supply info
-      etherscanApiKey: envConfig.externalConfigs.etherscanApiKey,
-
-      // to get beacon CL data
-      beaconNode: envConfig.externalConfigs.beaconNode,
-
       // layer 2 configs
       layer2: AllLayer2.map((item) => {
         const [chain, based, address] = item.split(':');
@@ -104,138 +77,6 @@ export const EthereumConfigs: EthereumProtocolConfig = {
           },
         };
       }),
-
-      // liquid staking configs
-      liquidStaking: [
-        {
-          protocol: ProtocolNames.lido,
-          contracts: {
-            stETH: {
-              chain: ChainNames.ethereum,
-              address: '0xae7ab96520de3a18e5e111b5eaab095312d7fe84',
-            },
-          },
-        },
-        {
-          protocol: ProtocolNames.rocketpool,
-          contracts: {
-            rETH: {
-              chain: ChainNames.ethereum,
-              address: '0xae78736Cd615f374D3085123A210448E74Fc6393',
-            },
-            miniPoolManager: {
-              chain: ChainNames.ethereum,
-              address: '0x6293B8abC1F36aFB22406Be5f96D893072A8cF3a',
-            },
-          },
-        },
-        {
-          protocol: ProtocolNames.binanceStakedEth,
-          contracts: {
-            wBETHEthereum: {
-              chain: ChainNames.ethereum,
-              address: '0xa2e3356610840701bdf5611a53974510ae27e2e1',
-            },
-            wBETHBnbChain: {
-              chain: ChainNames.bnbchain,
-              address: '0xa2e3356610840701bdf5611a53974510ae27e2e1',
-            },
-          },
-        },
-        {
-          protocol: ProtocolNames.mantleStakedEth,
-          contracts: {
-            stakingContract: {
-              chain: ChainNames.ethereum,
-              address: '0xe3cbd06d7dadb3f4e6557bab7edd924cd1489e8f',
-            },
-          },
-        },
-        {
-          protocol: ProtocolNames.coinbaseStakedEth,
-          contracts: {},
-        },
-        {
-          protocol: ProtocolNames.fraxether,
-          contracts: {
-            frxETH: {
-              chain: ChainNames.ethereum,
-              address: '0x5e8422345238f34275888049021821e8e08caa1f',
-            },
-          },
-        },
-        {
-          protocol: ProtocolNames.swellnetwork,
-          contracts: {
-            swETH: {
-              chain: ChainNames.ethereum,
-              address: '0xf951e335afb289353dc249e82926178eac7ded78',
-            },
-          },
-        },
-        {
-          protocol: ProtocolNames.stakestone,
-          contracts: {
-            assetValut: {
-              chain: ChainNames.ethereum,
-              address: '0x9485711f11B17f73f2CCc8561bcae05BDc7E9ad9',
-            },
-            strategyManager: {
-              chain: ChainNames.ethereum,
-              address: '0x396aBF9fF46E21694F4eF01ca77C6d7893A017B2',
-            },
-          },
-        },
-        {
-          protocol: ProtocolNames.stader,
-          contracts: {
-            stakingPoolManager: {
-              chain: ChainNames.ethereum,
-              address: '0xcf5ea1b38380f6af39068375516daf40ed70d299',
-            },
-            nodeRegistry: {
-              chain: ChainNames.ethereum,
-              address: '0x4f4bfa0861f62309934a5551e0b2541ee82fdcf1',
-            },
-          },
-        },
-        {
-          protocol: ProtocolNames.liquidcollective,
-          contracts: {
-            lsETH: {
-              chain: ChainNames.ethereum,
-              address: '0x8c1BEd5b9a0928467c9B1341Da1D7BD5e10b6549',
-            },
-          },
-        },
-        {
-          protocol: ProtocolNames.originether,
-          contracts: {
-            OETHVault: {
-              chain: ChainNames.ethereum,
-              address: '0x39254033945aa2e4809cc2977e7087bee48bd7ab',
-            },
-          },
-        },
-        {
-          protocol: ProtocolNames.ankr,
-          contracts: {
-            ankrETH: {
-              chain: ChainNames.ethereum,
-              address: '0xe95a203b1a91a908f9b9ce46459d101078c2c3cb',
-            },
-          },
-        },
-        {
-          protocol: ProtocolNames.cryptocomStakedEth,
-          contracts: {
-            CDCETH: {
-              chain: ChainNames.cronos,
-              address: '0x7a7c9db510ab29a2fc362a4c34260becb5ce3446',
-            },
-          },
-        },
-      ],
     },
   ],
 };

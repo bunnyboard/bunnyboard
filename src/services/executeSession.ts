@@ -20,7 +20,7 @@ export default class ExecuteSession {
 
     logger.info(message, {
       ...props,
-      elapses: `${elapsed}s`,
+      took: `${elapsed}s`,
     });
 
     // reset session

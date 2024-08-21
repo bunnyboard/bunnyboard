@@ -1,22 +1,37 @@
-export interface EthereumBeaconDepositor {
+import { DataMetric } from '../../configs';
+
+export interface EthBeaconDeposit {
+  // the depositor address
   depositor: string;
 
-  // transaction to address
+  // the proxy smart contract which deposited ETH to beacon
   contract: string;
 
   // amount deposit, from DepositEvent
   amount: string;
 }
 
-export interface EthereumAddressStats {
+export interface EthAddressStats {
+  // the from/to address of transaction
   address: string;
+
+  // total gasUsed by this address in all transaction in block
   gasUsed: string;
-  feesBurnt: string;
+
+  // total transaction fees were paid by this address
+  // in all txn in block
   feesPaid: string;
+
+  // total ETH was burnt by this address
+  // from transaction fees were paid by this address
+  feesBurnt: string;
+
+  // total transaction were sent by from addresses
+  // or called to by to address
   transactionCount: number;
 }
 
-export interface EthereumBlockData {
+export interface EthBlockData {
   chain: string;
 
   // block number
@@ -27,6 +42,9 @@ export interface EthereumBlockData {
 
   // miner (PoW) or fee recipient address (PoS)
   miner: string;
+
+  // total ETH was earned by miner
+  minerEarned: string;
 
   // total ETH was deposited into Beacon chain in this block
   beaconDeposited: string;
@@ -54,106 +72,49 @@ export interface EthereumBlockData {
     [key: string]: number;
   };
 
-  // transaction sender
-  senderAddresses: Array<EthereumAddressStats>;
+  // transaction from address list
+  addressFrom: Array<EthAddressStats>;
 
-  // transaction recipient/to
-  guzzlerAddresses: Array<EthereumAddressStats>;
+  // transaction to address list
+  addressTo: Array<EthAddressStats>;
 
-  // list of beacon depositors
-  beaconDeposits: Array<EthereumBeaconDepositor>;
+  // list of beacon deposit
+  beaconDeposits: Array<EthBeaconDeposit>;
 }
 
-export interface EthereumLayer2Stats {
+export interface EthLayer2Stats {
+  // layer2 name id: optimism, arbitrum, ...
   layer2: string;
 
-  // total ETH were being locked in contract layer
-  totalDeposited: string;
+  // total ETH are existing on the layer2
+  // count by ETH were being locked in bridge contract on Ethereum blockchain
+  totalEthDeposited: string;
 }
 
-export interface EthereumLiquidStakingStats {
-  protocol: string;
+// query from etherscan api
+// https://docs.etherscan.io/api-endpoints/stats-1
+export interface EthSupplyStats {
+  // total ETH ever exists
+  totalSupply: string;
 
-  // total ETH were being staked
-  totalDeposited: string;
+  // total ETH staking rewards
+  totalStakingRewards: string;
+
+  // total ETH were burnt
+  totalBurnt: string;
 }
 
-// the miner/validator address
-export interface EthereumMinerStats {
-  address: string;
-  producedBlockCount: number;
-  feesEarned: string;
-}
-
-export interface EthereumAddressStats {
-  address: string;
-  totalGasUsed: string;
-  totalFeesBurnt: string;
-  totalFeesPaid: string;
-  transactionCount: number;
-}
-
-export interface EthereumDataTimeframe {
-  protocol: string;
+export interface EthDataTimeframe {
   chain: string;
+  protocol: string;
   timestamp: number;
+  metric: DataMetric;
 
   ethPrice: string;
 
-  // total ETH was deposited into beacon staking contract
-  totalBeaconDeposited: string;
-
-  // total ETH was withdrawn from beacon chain
-  totalBeaconWithdrawn: string;
-
-  // total ETH was burned by EIP-1559
-  totalFeesBurnt: string;
-
-  // total ETH was paid from transactions fees
-  totalFeesPaid: string;
-
-  // total gas limits from all blocks
-  totalGasLimit: string;
-
-  // total gas were spent
-  totalGasUsed: string;
-
-  // total transactions were sent
-  transactionCount: number;
-
-  // transaction types distribution
-  transactionTypes: {
-    [key: string]: number;
-  };
-
-  // sender addresses
-  senderAddresses: Array<EthereumAddressStats>;
-
-  // address/contract consume gas
-  guzzlerAddresses: Array<EthereumAddressStats>;
-
-  // fee recipients or block builders
-  minerAddresses: Array<EthereumMinerStats>;
-
-  // list of beacon deposits
-  beaconDeposits: Array<EthereumBeaconDepositor>;
-
-  // list of layer 2 bridge stats
-  layer2: Array<EthereumLayer2Stats>;
-
-  // liquid staking
-  liquidStaking: Array<EthereumLiquidStakingStats>;
+  layer2Stats: Array<EthLayer2Stats>;
 }
 
-export interface EthereumDataState extends EthereumDataTimeframe {
-  // total ETH supply ever exists
-  totalEthSupply: string;
-
-  // total ETH were ever burnt
-  totalEthBurnt: string;
-}
-
-export interface EthereumDataStateWithTimeframe extends EthereumDataState {
-  // previous day data
-  last24Hours: EthereumDataTimeframe | null;
+export interface EthDataState extends EthDataTimeframe {
+  supplyStats: EthSupplyStats | null;
 }

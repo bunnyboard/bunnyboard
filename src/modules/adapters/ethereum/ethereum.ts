@@ -1,438 +1,428 @@
-import { AddressZero, TimeUnits } from '../../../configs/constants';
-import EnvConfig from '../../../configs/envConfig';
 import {
   formatBigNumberToString,
   formatLittleEndian64ToString,
   formatTime,
+  getDateString,
+  getStartDayTimestamp,
   getTimestamp,
+  getTodayUTCTimestamp,
   normalizeAddress,
-  sleep,
 } from '../../../lib/utils';
-import { DataMetrics, MetricConfig, ProtocolConfig } from '../../../types/configs';
+import { ProtocolConfig } from '../../../types/configs';
 import { ContextServices, ContextStorages } from '../../../types/namespaces';
 import { GetAdapterDataTimeframeOptions, RunAdapterOptions } from '../../../types/options';
 import ProtocolAdapter from '../adapter';
 import { EthereumEcosystemConfig } from '../../../configs/protocols/ethereum';
-import logger from '../../../lib/logger';
-import axios from 'axios';
 import {
-  EthereumAddressStats,
-  EthereumDataState,
-  EthereumDataStateWithTimeframe,
-  EthereumDataTimeframe,
-  EthereumMinerStats,
+  EthAddressStats,
+  EthBlockData,
+  EthDataState,
+  EthDataTimeframe,
 } from '../../../types/domains/ecosystem/ethereum';
 import BigNumber from 'bignumber.js';
 import { decodeEventLog } from 'viem';
 import BeaconDepositAbi from '../../../configs/abi/BeaconDeposit.json';
-import LsdHelper from './lsdHelper';
-import Layer2Helper from './layer2Helper';
 import envConfig from '../../../configs/envConfig';
+import logger from '../../../lib/logger';
+import ExecuteSession from '../../../services/executeSession';
+import Layer2Helper from './layer2Helper';
+import AlchemyLibs from '../../libs/alchemy';
+import { AddressZero, TimeUnits } from '../../../configs/constants';
+import EtherscanLibs from '../../libs/etherscan';
 
 const BeaconDepositEvent = '0x649bbc62d0e31342afea4e5cd82d4049e7e1ee912fc0889aa790803be39038c5';
 
 export default class EthereumAdapter extends ProtocolAdapter {
   public readonly name: string = 'adapter.ethereum';
 
+  private executeSession: ExecuteSession;
+
   constructor(services: ContextServices, storages: ContextStorages, protocolConfig: ProtocolConfig) {
     super(services, storages, protocolConfig);
+
+    this.executeSession = new ExecuteSession();
   }
 
-  private async getTransactionReceipts(blockNumber: number): Promise<any> {
-    // https://docs.alchemy.com/reference/alchemy-gettransactionreceipts
-    const response = await axios.post(`https://eth-mainnet.g.alchemy.com/v2/${envConfig.externalConfigs.alchemyKey}`, {
-      id: 1,
-      jsonrpc: '2.0',
-      method: 'alchemy_getTransactionReceipts',
-      params: [
-        {
-          blockNumber: `0x${blockNumber.toString(16)}`,
-        },
-      ],
-    });
-    if (response && response.data) {
-      return response.data.result.receipts;
-    }
+  public async getBlockData(config: EthereumEcosystemConfig, blockNumber: number): Promise<EthBlockData | null> {
+    // get block and all transaction receipts
+    const block = await this.services.blockchain.getBlock(config.chain, blockNumber);
+    const transactionReceipts = await AlchemyLibs.getBlockTransactionReceipts(config.chain, blockNumber);
+    if (block && transactionReceipts) {
+      const blockData: EthBlockData = {
+        chain: config.chain,
+        number: blockNumber,
+        timestamp: Number(block.timestamp),
+        miner: normalizeAddress(block.miner),
+        minerEarned: '0',
+        beaconDeposited: '0',
+        beaconWithdrawn: '0',
+        gasLimit: Number(block.gasLimit),
+        gasUsed: Number(block.gasUsed),
+        totalFeesPaid: '0',
+        totalFeesBurnt: '0',
+        transactionCount: block.transactions.length,
+        transactionTypes: {},
+        addressFrom: [],
+        addressTo: [],
+        beaconDeposits: [],
+      };
 
-    return null;
-  }
+      // EthBurnt = BlockBaseFeePerGas * GasUsed
+      blockData.totalFeesBurnt = new BigNumber(block.baseFeePerGas)
+        .multipliedBy(new BigNumber(block.gasUsed.toString()))
+        .dividedBy(1e18)
+        .toString(10);
 
-  public async getEthereumDataState(options: GetAdapterDataTimeframeOptions): Promise<EthereumDataState | null> {
-    const ethereumConfig = options.config as EthereumEcosystemConfig;
-
-    if (ethereumConfig.metric !== DataMetrics.ecosystem) {
-      return null;
-    }
-
-    // query stats from Etherscan
-    let etherscanResponse = null;
-    const etherscanUrl = `https://api.etherscan.io/api?module=stats&action=ethsupply2&apikey=${ethereumConfig.etherscanApiKey}`;
-
-    logger.debug('get eth supply data from etherscan', {
-      service: this.name,
-      queryUrl: etherscanUrl,
-    });
-
-    do {
-      if (ethereumConfig.etherscanApiKey !== '') {
-        try {
-          etherscanResponse = (await axios.get(etherscanUrl)).data;
-        } catch (e: any) {
-          logger.warn('failed to query etherscan api, retrying', {
-            service: this.name,
-            chain: ethereumConfig.chain,
-            protocol: ethereumConfig.protocol,
-            error: e.message,
-          });
+      // count beacon withdrawals
+      if (block.withdrawals) {
+        for (const withdrawal of block.withdrawals) {
+          blockData.beaconWithdrawn = new BigNumber(blockData.beaconWithdrawn)
+            .plus(formatBigNumberToString(withdrawal.amount.toString(), 9))
+            .toString(10);
         }
       }
 
-      if (etherscanResponse === null) {
-        await sleep(5);
+      // count transaction types
+      for (const transaction of block.transactions) {
+        if (!blockData.transactionTypes[transaction.type]) {
+          blockData.transactionTypes[transaction.type] = 0;
+        }
+        blockData.transactionTypes[transaction.type] += 1;
       }
-    } while (etherscanResponse === null);
 
-    // const beaconStats = await BeaconHelper.getBeaconData({
-    //   services: this.services,
-    //   ethereumConfig: ethereumConfig,
-    // });
+      // process receipts
+      const addressFrom: { [key: string]: EthAddressStats } = {};
+      const addressTo: { [key: string]: EthAddressStats } = {};
+      for (const receipt of transactionReceipts) {
+        // fees paid and fees burnt
+        const transactionFeePaid = new BigNumber(receipt.gasUsed.toString(), 16)
+          .multipliedBy(new BigNumber(receipt.effectiveGasPrice.toString(), 16))
+          .dividedBy(1e18);
+        const transactionFeeBurnt = new BigNumber(receipt.gasUsed.toString(), 16)
+          .multipliedBy(block.baseFeePerGas.toString(10))
+          .dividedBy(1e18);
 
-    const dataTimeframe = await this.getEcosystemDataTimeframe(options);
-    if (dataTimeframe) {
-      return {
-        ...dataTimeframe,
-        totalEthSupply: etherscanResponse
-          ? formatBigNumberToString(etherscanResponse.result.EthSupply.toString(), 18)
-          : '0',
-        totalEthBurnt: etherscanResponse
-          ? formatBigNumberToString(etherscanResponse.result.BurntFees.toString(), 18)
-          : '0',
-      };
+        // count transaction fees paid
+        blockData.totalFeesPaid = new BigNumber(blockData.totalFeesPaid).plus(transactionFeePaid).toString(10);
+
+        // minerEarned = transactionFeePaid - transactionFeeBurnt
+        const minerEarned = new BigNumber(transactionFeePaid).minus(transactionFeeBurnt);
+        blockData.minerEarned = new BigNumber(blockData.minerEarned).plus(minerEarned).toString(10);
+
+        // update from addresses
+        const sender = normalizeAddress(receipt.from);
+        if (!addressFrom[sender]) {
+          addressFrom[sender] = {
+            address: sender,
+            gasUsed: '0',
+            feesBurnt: '0',
+            feesPaid: '0',
+            transactionCount: 0,
+          };
+        }
+        addressFrom[sender].transactionCount += 1;
+        addressFrom[sender].gasUsed = new BigNumber(addressFrom[sender].gasUsed)
+          .plus(new BigNumber(receipt.gasUsed.toString(), 16))
+          .toString(10);
+        addressFrom[sender].feesPaid = new BigNumber(addressFrom[sender].feesPaid)
+          .plus(transactionFeePaid)
+          .toString(10);
+        addressFrom[sender].feesBurnt = new BigNumber(addressFrom[sender].feesBurnt)
+          .plus(transactionFeeBurnt)
+          .toString(10);
+
+        // update to addresses
+        const guzzler = normalizeAddress(receipt.to ? receipt.to : '');
+        if (guzzler !== '') {
+          if (!addressTo[guzzler]) {
+            addressTo[guzzler] = {
+              address: guzzler,
+              gasUsed: '0',
+              feesPaid: '0',
+              feesBurnt: '0',
+              transactionCount: 0,
+            };
+          }
+          addressTo[guzzler].transactionCount += 1;
+          addressTo[guzzler].gasUsed = new BigNumber(addressTo[guzzler].gasUsed)
+            .plus(new BigNumber(receipt.gasUsed.toString(), 16))
+            .toString(10);
+          addressTo[guzzler].feesPaid = new BigNumber(addressTo[guzzler].feesPaid)
+            .plus(transactionFeePaid)
+            .toString(10);
+          addressTo[guzzler].feesBurnt = new BigNumber(addressTo[guzzler].feesBurnt)
+            .plus(transactionFeeBurnt)
+            .toString(10);
+        }
+
+        // process transaction logs
+        for (const log of receipt.logs) {
+          if (log.topics[0] === BeaconDepositEvent) {
+            const event: any = decodeEventLog({
+              abi: BeaconDepositAbi,
+              topics: log.topics,
+              data: log.data,
+            });
+
+            const depositor = normalizeAddress(receipt.from);
+            const contract = receipt.to ? normalizeAddress(receipt.to) : '';
+            const amount = formatLittleEndian64ToString(event.args.amount.toString());
+
+            blockData.beaconDeposits.push({
+              depositor,
+              contract,
+              amount,
+            });
+
+            // count beacon deposit total ETH
+            blockData.beaconDeposited = new BigNumber(blockData.beaconDeposited).plus(amount).toString(10);
+          }
+        }
+      }
+
+      blockData.addressFrom = Object.values(addressFrom);
+      blockData.addressTo = Object.values(addressTo);
+
+      return blockData;
     }
 
     return null;
   }
 
-  public async getEcosystemDataTimeframe(
-    options: GetAdapterDataTimeframeOptions,
-  ): Promise<EthereumDataTimeframe | null> {
+  public async getDataTimeframe(options: GetAdapterDataTimeframeOptions): Promise<EthDataTimeframe | null> {
     const ethereumConfig = options.config as EthereumEcosystemConfig;
-
-    if (ethereumConfig.metric !== DataMetrics.ecosystem) {
-      return null;
-    }
-
-    const beginBlock = await this.services.blockchain.tryGetBlockNumberAtTimestamp(
-      options.config.chain,
-      options.fromTime,
-    );
-    const endBlock = await this.services.blockchain.tryGetBlockNumberAtTimestamp(options.config.chain, options.toTime);
-
     const stateTime = options.latestState ? options.toTime : options.fromTime;
-    const stateBlock = options.latestState ? endBlock : beginBlock;
-
+    const blockNumber = await this.services.blockchain.tryGetBlockNumberAtTimestamp(ethereumConfig.chain, stateTime);
     const ethPrice = await this.services.oracle.getTokenPriceUsd({
       chain: ethereumConfig.chain,
       address: AddressZero,
       timestamp: stateTime,
     });
-
-    const ethereumData: EthereumDataTimeframe = {
-      protocol: ethereumConfig.protocol,
+    return {
       chain: ethereumConfig.chain,
+      protocol: ethereumConfig.protocol,
       timestamp: stateTime,
+      metric: ethereumConfig.metric,
       ethPrice: ethPrice ? ethPrice : '0',
-
-      totalBeaconDeposited: '0',
-      totalBeaconWithdrawn: '0',
-      totalFeesBurnt: '0',
-      totalFeesPaid: '0',
-
-      totalGasLimit: '0',
-      totalGasUsed: '0',
-
-      transactionCount: 0,
-      transactionTypes: {},
-      senderAddresses: [],
-      guzzlerAddresses: [],
-      minerAddresses: [],
-      beaconDeposits: [],
-      layer2: [],
-      liquidStaking: [],
+      layer2Stats: await Layer2Helper.getLayer2Data({
+        services: this.services,
+        ethereumConfig: options.config as EthereumEcosystemConfig,
+        blockNumber: blockNumber,
+      }),
     };
+  }
 
-    logger.debug('getting ethereum blocks data', {
-      service: this.name,
-      chain: ethereumConfig.chain,
-      protocol: ethereumConfig.protocol,
-      total: endBlock - beginBlock,
-      fromBlock: beginBlock,
-      toBlock: endBlock,
+  public async getDataState(ethereumConfig: EthereumEcosystemConfig): Promise<EthDataState | null> {
+    const timestamp = getTimestamp();
+
+    const ethDataTimeframe = await this.getDataTimeframe({
+      config: ethereumConfig,
+      fromTime: timestamp,
+      toTime: timestamp,
+      latestState: true,
     });
 
-    const senderAddresses: { [key: string]: EthereumAddressStats } = {};
-    const guzzlerAddresses: { [key: string]: EthereumAddressStats } = {};
-    const minerAddresses: { [key: string]: EthereumMinerStats } = {};
-    for (let queryBlock = beginBlock; queryBlock <= endBlock; queryBlock++) {
-      // get block and all transaction receipts
-      const block = await this.services.blockchain.getBlock(ethereumConfig.chain, queryBlock);
-      const transactionReceipts = await this.getTransactionReceipts(queryBlock);
+    if (ethDataTimeframe) {
+      return {
+        ...ethDataTimeframe,
+        supplyStats: await EtherscanLibs.getEthSupply(),
+      };
+    }
 
-      if (block && transactionReceipts) {
-        const miner = normalizeAddress(block.miner);
-        if (!minerAddresses[miner]) {
-          minerAddresses[miner] = {
-            address: miner,
-            producedBlockCount: 0,
-            feesEarned: '0',
-          };
-        }
-        minerAddresses[miner].producedBlockCount += 1;
+    return null;
+  }
 
-        // count gas
-        ethereumData.totalGasLimit = new BigNumber(ethereumData.totalGasLimit)
-          .plus(new BigNumber(block.gasLimit.toString()))
-          .toString(10);
-        ethereumData.totalGasUsed = new BigNumber(ethereumData.totalGasUsed)
-          .plus(new BigNumber(block.gasUsed.toString()))
-          .toString(10);
+  public async run(options: RunAdapterOptions): Promise<void> {
+    // sync all blocks
+    // await this.syncBlocks(options);
 
-        // count ETH fees burnt
-        const feesBurnt = new BigNumber(block.gasUsed.toString())
-          .multipliedBy(new BigNumber(block.baseFeePerGas ? block.baseFeePerGas.toString() : '0'))
-          .dividedBy(1e18);
-        ethereumData.totalFeesBurnt = new BigNumber(ethereumData.totalFeesBurnt).plus(feesBurnt).toString(10);
+    // update data states
+    await this.updateLatestState(options);
 
-        // count number of transactions
-        ethereumData.transactionCount += block.transactions.length;
+    // update snapshots
+    await this.updateSnapshots(options);
+  }
 
-        // count beacon withdraw
-        if (block.withdrawals) {
-          for (const withdrawal of block.withdrawals) {
-            ethereumData.totalBeaconWithdrawn = new BigNumber(ethereumData.totalBeaconWithdrawn)
-              .plus(formatBigNumberToString(withdrawal.amount.toString(), 9))
-              .toString(10);
-          }
-        }
+  protected async syncBlocks(options: RunAdapterOptions): Promise<void> {
+    const ethereumConfig = options.metricConfig as EthereumEcosystemConfig;
 
-        // count transaction types
-        for (const transaction of block.transactions) {
-          if (!ethereumData.transactionTypes[transaction.type]) {
-            ethereumData.transactionTypes[transaction.type] = 0;
-          }
-          ethereumData.transactionTypes[transaction.type] += 1;
-        }
+    const startTime = options.fromTime ? options.fromTime : ethereumConfig.birthday;
 
-        // process receipts
-        for (const receipt of transactionReceipts) {
-          // fees paid and fees burnt
-          const transactionFeePaid = new BigNumber(receipt.gasUsed.toString(), 16)
-            .multipliedBy(new BigNumber(receipt.effectiveGasPrice.toString(), 16))
-            .dividedBy(1e18);
-          const transactionFeeBurnt = new BigNumber(receipt.gasUsed.toString(), 16)
-            .multipliedBy(block.baseFeePerGas.toString(10))
-            .dividedBy(1e18);
+    // sync blocks data
+    let startBlock = ethereumConfig.birthblock ? ethereumConfig.birthblock : 0;
+    if (startBlock === 0) {
+      startBlock = await this.services.blockchain.tryGetBlockNumberAtTimestamp(ethereumConfig.chain, startTime);
+    }
 
-          // count transaction fees paid
-          ethereumData.totalFeesPaid = new BigNumber(ethereumData.totalFeesPaid).plus(transactionFeePaid).toString(10);
-
-          // count ETH earned to minter/validator
-          const minerEarned = new BigNumber(transactionFeePaid).minus(transactionFeeBurnt);
-          minerAddresses[miner].feesEarned = new BigNumber(minerAddresses[miner].feesEarned)
-            .plus(minerEarned)
-            .toString(10);
-
-          // update sender addresses
-          const sender = normalizeAddress(receipt.from);
-          if (!senderAddresses[sender]) {
-            senderAddresses[sender] = {
-              address: sender,
-              totalGasUsed: '0',
-              totalFeesBurnt: '0',
-              totalFeesPaid: '0',
-              transactionCount: 0,
-            };
-          }
-          senderAddresses[sender].transactionCount += 1;
-          senderAddresses[sender].totalGasUsed = new BigNumber(senderAddresses[sender].totalGasUsed)
-            .plus(new BigNumber(receipt.gasUsed.toString(), 16))
-            .toString(10);
-          senderAddresses[sender].totalFeesPaid = new BigNumber(senderAddresses[sender].totalFeesPaid)
-            .plus(transactionFeePaid)
-            .toString(10);
-          senderAddresses[sender].totalFeesBurnt = new BigNumber(senderAddresses[sender].totalFeesBurnt)
-            .plus(transactionFeeBurnt)
-            .toString(10);
-
-          // update guzzler (contract/address called) addresses
-          const guzzler = normalizeAddress(receipt.to ? receipt.to : '');
-          if (guzzler !== '') {
-            if (!guzzlerAddresses[guzzler]) {
-              guzzlerAddresses[guzzler] = {
-                address: guzzler,
-                totalGasUsed: '0',
-                totalFeesBurnt: '0',
-                totalFeesPaid: '0',
-                transactionCount: 0,
-              };
-            }
-            guzzlerAddresses[guzzler].transactionCount += 1;
-            guzzlerAddresses[guzzler].totalGasUsed = new BigNumber(guzzlerAddresses[guzzler].totalGasUsed)
-              .plus(new BigNumber(receipt.gasUsed.toString(), 16))
-              .toString(10);
-            guzzlerAddresses[guzzler].totalFeesPaid = new BigNumber(guzzlerAddresses[guzzler].totalFeesPaid)
-              .plus(transactionFeePaid)
-              .toString(10);
-            guzzlerAddresses[guzzler].totalFeesBurnt = new BigNumber(guzzlerAddresses[guzzler].totalFeesBurnt)
-              .plus(transactionFeeBurnt)
-              .toString(10);
-          }
-
-          // process transaction logs
-          for (const log of receipt.logs) {
-            if (log.topics[0] === BeaconDepositEvent) {
-              const event: any = decodeEventLog({
-                abi: BeaconDepositAbi,
-                topics: log.topics,
-                data: log.data,
-              });
-
-              const depositor = normalizeAddress(receipt.from);
-              const contract = receipt.to ? normalizeAddress(receipt.to) : '';
-              const amount = formatLittleEndian64ToString(event.args.amount.toString());
-
-              ethereumData.beaconDeposits.push({
-                depositor,
-                contract,
-                amount,
-              });
-
-              ethereumData.totalBeaconDeposited = new BigNumber(ethereumData.totalBeaconDeposited)
-                .plus(amount)
-                .toString(10);
-
-              logger.debug('got beacon deposit event', {
-                service: this.name,
-                chain: ethereumConfig.chain,
-                protocol: ethereumConfig.protocol,
-                blockNumber: queryBlock,
-                depositor,
-                amount,
-              });
-            }
-          }
-        }
-
-        logger.debug('processed ethereum block data', {
-          service: this.name,
-          chain: ethereumConfig.chain,
-          protocol: ethereumConfig.protocol,
-          number: queryBlock,
-          age: formatTime(Number(block.timestamp)),
-        });
-      } else {
-        logger.warn('failed to get ethereum block data', {
-          service: this.name,
-          chain: ethereumConfig.chain,
-          protocol: ethereumConfig.protocol,
-          number: queryBlock,
-        });
+    if (!options.force) {
+      // find the latest block from database
+      const latestBlock = (
+        await this.storages.database.query({
+          collection: envConfig.mongodb.collections.ethereumBlocks.name,
+          query: {
+            chain: ethereumConfig.chain,
+          },
+          options: {
+            limit: 1,
+            skip: 0,
+            order: { number: -1 },
+          },
+        })
+      )[0];
+      if (latestBlock && latestBlock.number > startBlock) {
+        startBlock = latestBlock.number;
       }
     }
 
-    ethereumData.senderAddresses = Object.values(senderAddresses);
-    ethereumData.guzzlerAddresses = Object.values(guzzlerAddresses);
-    ethereumData.minerAddresses = Object.values(minerAddresses);
+    const latestBlockNumber = await this.services.blockchain.getLastestBlockNumber(ethereumConfig.chain);
 
-    // get layer 2 data
-    ethereumData.layer2 = await Layer2Helper.getLayer2Data({
-      services: this.services,
-      ethereumConfig: ethereumConfig,
-      beginBlock,
-      endBlock,
-      stateBlock,
+    logger.info('start sync ethereum blocks data', {
+      service: this.name,
+      chain: ethereumConfig.chain,
+      fromBlock: startBlock,
+      toBlock: latestBlockNumber,
     });
 
-    // get liquid staking data
-    ethereumData.liquidStaking = await LsdHelper.getEthereumLsdData({
-      services: this.services,
-      ethereumConfig: ethereumConfig,
-      timestamp: stateTime,
-    });
+    while (startBlock <= latestBlockNumber) {
+      this.executeSession.startSessionMuted();
 
-    return ethereumData;
-  }
+      const blockData = await this.getBlockData(ethereumConfig, startBlock);
+      if (blockData) {
+        await this.storages.database.update({
+          collection: envConfig.mongodb.collections.ethereumBlocks.name,
+          keys: {
+            chain: ethereumConfig.chain,
+            number: blockData.number,
+            timestamp: blockData.timestamp,
+          },
+          updates: {
+            ...blockData,
+          },
+          upsert: true,
+        });
+        this.executeSession.endSession('got ethereum block data', {
+          service: this.name,
+          chain: ethereumConfig.chain,
+          number: startBlock,
+          age: formatTime(blockData.timestamp),
+        });
+      } else {
+        logger.error('failed to get ethereum block data', {
+          service: this.name,
+          chain: ethereumConfig.chain,
+          number: startBlock,
+        });
+      }
 
-  public async collectDataState(options: RunAdapterOptions): Promise<void> {
-    const timestamp = getTimestamp();
-    const timestampLast24Hours = timestamp - TimeUnits.SecondsPerDay;
-    const timestampLast48Hours = timestamp - TimeUnits.SecondsPerDay * 2;
-
-    const dataCurrent = await this.getEthereumDataState({
-      config: options.metricConfig,
-      fromTime: timestampLast24Hours,
-      toTime: timestamp,
-      latestState: true,
-    });
-
-    const dataLast24Hours = await this.getEcosystemDataTimeframe({
-      config: options.metricConfig,
-      fromTime: timestampLast48Hours,
-      toTime: timestampLast24Hours,
-      latestState: true,
-    });
-
-    if (dataCurrent && dataLast24Hours) {
-      const stateWithTimeframes: EthereumDataStateWithTimeframe = {
-        ...dataCurrent,
-        last24Hours: dataLast24Hours,
-      };
-
-      await this.storages.database.update({
-        collection: EnvConfig.mongodb.collections.ecosystemDataStates.name,
-        keys: {
-          chain: dataCurrent.chain,
-          protocol: dataCurrent.protocol,
-        },
-        updates: {
-          ...stateWithTimeframes,
-        },
-        upsert: true,
-      });
+      startBlock += 1;
     }
   }
 
-  protected async getSnapshot(config: MetricConfig, fromTime: number, toTime: number): Promise<any> {
-    return await this.getEcosystemDataTimeframe({
-      config: config,
-      fromTime: fromTime,
-      toTime: toTime,
+  protected async updateLatestState(options: RunAdapterOptions): Promise<void> {
+    const ethereumConfig = options.metricConfig as EthereumEcosystemConfig;
+    this.executeSession.startSession('start to update ethereum state data', {
+      service: this.name,
+      protocol: ethereumConfig.protocol,
+      chain: ethereumConfig.chain,
+      metric: ethereumConfig.metric,
     });
-  }
-
-  protected async processSnapshot(config: MetricConfig, snapshot: any): Promise<void> {
+    const dataState = await this.getDataState(ethereumConfig);
     await this.storages.database.update({
-      collection: EnvConfig.mongodb.collections.ecosystemDataSnapshots.name,
+      collection: envConfig.mongodb.collections.ecosystemDataStates.name,
       keys: {
-        chain: snapshot.chain,
-        protocol: snapshot.protocol,
-        timestamp: snapshot.timestamp,
+        protocol: ethereumConfig.protocol,
+        chain: ethereumConfig.chain,
       },
       updates: {
-        ...snapshot,
+        ...dataState,
       },
       upsert: true,
     });
+    this.executeSession.endSession('updated ethereum state data', {
+      service: this.name,
+      protocol: ethereumConfig.protocol,
+      chain: ethereumConfig.chain,
+      metric: ethereumConfig.metric,
+    });
+  }
+
+  protected async updateSnapshots(options: RunAdapterOptions): Promise<void> {
+    const ethereumConfig = options.metricConfig as EthereumEcosystemConfig;
+    let startTime = options.fromTime ? options.fromTime : ethereumConfig.birthday;
+    if (!options.force) {
+      const latestSnapshot = (
+        await this.storages.database.query({
+          collection: envConfig.mongodb.collections.ecosystemDataSnapshots.name,
+          query: {
+            protocol: ethereumConfig.protocol,
+            chain: ethereumConfig.chain,
+          },
+          options: {
+            limit: 1,
+            skip: 0,
+            order: { timestamp: -1 },
+          },
+        })
+      )[0];
+      if (latestSnapshot && latestSnapshot.timestamp > startTime) {
+        startTime = latestSnapshot.timestamp;
+      }
+    }
+
+    const todayTimestamp = getTodayUTCTimestamp();
+
+    // make sure it is a start day timestamp at 00:00 UTC
+    startTime = getStartDayTimestamp(startTime);
+
+    logger.info('updating ethereum data snapshots', {
+      service: this.name,
+      protocol: ethereumConfig.protocol,
+      chain: ethereumConfig.chain,
+      metric: ethereumConfig.metric,
+      fromDate: getDateString(startTime),
+      toDate: getDateString(todayTimestamp),
+    });
+
+    while (startTime <= todayTimestamp) {
+      this.executeSession.startSessionMuted();
+      const dataTimeframe = await this.getDataTimeframe({
+        config: ethereumConfig,
+        fromTime: startTime,
+        toTime: startTime + TimeUnits.SecondsPerDay - 1,
+        latestState: false,
+      });
+      if (dataTimeframe) {
+        await this.storages.database.update({
+          collection: envConfig.mongodb.collections.ecosystemDataSnapshots.name,
+          keys: {
+            protocol: dataTimeframe.protocol,
+            chain: dataTimeframe.chain,
+            timestamp: dataTimeframe.timestamp,
+          },
+          updates: {
+            ...dataTimeframe,
+          },
+          upsert: true,
+        });
+      }
+      this.executeSession.endSession('updated ethereum data snapshot', {
+        service: this.name,
+        protocol: ethereumConfig.protocol,
+        chain: ethereumConfig.chain,
+        metric: ethereumConfig.metric,
+        date: getDateString(startTime),
+      });
+
+      startTime += TimeUnits.SecondsPerDay;
+    }
   }
 
   public async runTest(options: RunAdapterOptions): Promise<void> {
-    const timestamp = getTimestamp();
-    const data = await this.getEthereumDataState({
-      config: options.metricConfig,
-      fromTime: timestamp - 60 * 60,
-      toTime: timestamp,
-      latestState: true,
-    });
-    console.log(data);
+    const blockNumber = 20555719;
+    const blockData = await this.getBlockData(options.metricConfig as EthereumEcosystemConfig, blockNumber);
+    console.log(blockData);
+
+    const dataState = await this.getDataState(options.metricConfig as EthereumEcosystemConfig);
+    console.log(dataState);
   }
 }
